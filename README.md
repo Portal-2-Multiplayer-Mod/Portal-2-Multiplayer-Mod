@@ -4,3 +4,8 @@ This version of the mod simply adds
 1. MultiplayerMod.cmd (Allows You To Start The Mod)
 2. A Custom Wait Screen
 3. Player Cap Of 33
+
+# How To Install
+1. download the source code
+2. drop the files inside the zip you downloaded into your portal 2 game folder
+3. open MultiplayerMod.cmd
