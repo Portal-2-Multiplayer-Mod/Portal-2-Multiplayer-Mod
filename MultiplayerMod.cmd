@@ -1,6 +1,6 @@
 @echo off
-echo copying [96mserver.dll[0m and [96mbackupserver.dll[0m to "[93m\portal2\bin[0m"
-xcopy /y "%cd%\MultiplayerModFiles" "%cd%\portal2">nul
+echo copying [96mcore files[0m to "[93m\portal2[0m"
+xcopy /y /S "%cd%\MultiplayerModFiles" "%cd%\portal2"
 echo [42mDone![0m
 cls
 set ip_address_string="IPv4 Address"
