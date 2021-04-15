@@ -41,7 +41,7 @@ echo Press [[33mENTER[0m] To Start [36mPortal[0m [33m2 MP[0m!
 pause >nul
 echo [42mStarting Portal 2 Multiplayer Mod![0m
 
-portal2.exe %Parameters% %windowed% +exec multiplayermod.cfg +sv_lan 0 +mp_wait_for_other_player_notconnecting_timeout 240 +mp_wait_for_other_player_timeout 240 +map mp_coop_lobby_3
+portal2.exe %Parameters% %windowed% -allowspectators +exec multiplayermod.cfg +sv_lan 0 +mp_wait_for_other_player_notconnecting_timeout 240 +mp_wait_for_other_player_timeout 240 +map mp_coop_lobby_3
 
 goto Exit
 
