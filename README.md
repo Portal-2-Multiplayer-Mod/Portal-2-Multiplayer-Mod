@@ -8,7 +8,20 @@ This version of the mod simply adds
 
 # How To Install
 1. download the Latest Relese From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/tag/b1.0.0
-2. drop the files inside the zip you downloaded into your portal 2 game folder
-# How To Use
-1. make sure you have 27015 port forwarded on your router (if you want to play with friends online)
-2. open MultiplayerMod.cmd
+2. Go to your games library and find Portal 2
+3. At the left panel right click portal 2 click manage then click browse local files
+4. Drop the files inside the zip you downloaded into your portal 2 game folder
+# How To Host
+1. Make sure you have 27015 port forwarded on your router (if you want to play with friends online)
+2. Open MultiplayerMod.cmd
+3. Follow the instructions in MultiplayerMod.cmd
+#How To Enable The Console
+1. Open Portal 2
+2. Click "options"
+3. Click "keyboard/mouse"
+4. Change "allow developer console to enabled"
+#How To Join
+1. Open Portal 2 
+2. Press the key above tab that looks like ~ aka tilde to open the console
+3. Type "connect youfreindsiphere" replace "yourfreindsiphere" with your friends ip (they should see there ip in the MultiplayerMod.cmd when they opened it)
+4. Press [ENTER] a
