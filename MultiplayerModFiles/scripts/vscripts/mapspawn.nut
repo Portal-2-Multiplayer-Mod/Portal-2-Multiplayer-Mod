@@ -28,3 +28,9 @@ SetColor <- function(){
 
 Entities.First().ConnectOutput("OnUser1", "init");
 DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null);
+printl(GetMapName())
+if (GetMapName() == "mp_coop_lobby_3"){
+	printl("Map is lobby 3")
+} else {
+	printl("map isnt lobby 3") //simple test to later remove entities from lobby_3 to allow for 33 players
+}
