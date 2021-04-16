@@ -1,5 +1,8 @@
 @echo off
 
+rem stop portal 2
+taskkill /F /IM portal2.exe
+
 rem print text
 echo copying [96mcore files[0m to "[93m\portal2[0m"
 
