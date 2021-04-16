@@ -8,4 +8,6 @@ This version of the mod simply adds
 # How To Install
 1. download the source code
 2. drop the files inside the zip you downloaded into your portal 2 game folder
-3. open MultiplayerMod.cmd
+# How To Use
+1. make sure you have 27015 port forwarded on your router (if you want to play with friends online)
+2. open MultiplayerMod.cmd
