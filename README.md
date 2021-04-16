@@ -24,4 +24,4 @@ This version of the mod simply adds
 1. Open Portal 2 
 2. Press the key above tab that looks like ~ aka tilde to open the console
 3. Type "connect youfreindsiphere" replace "yourfreindsiphere" with your friends ip (they should see there ip in the MultiplayerMod.cmd when they opened it)
-4. Press [ENTER] a
+4. Press [ENTER]
