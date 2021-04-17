@@ -32,12 +32,6 @@ command <- Entities.CreateByClassname("point_servercommand")
 if (GetMapName() == "mp_coop_lobby_3") {
 	DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
 //Delete 38 Entitys
-	DoEntFire("!self", "Command", "ent_remove_all dlc_exit_tube", 0.0, null, command) //3
-    DoEntFire("!self", "Command", "ent_remove_all track6-orange-ballbot_assembler", 0.0, null, command) //1
-    DoEntFire("!self", "Command", "ent_remove_all track4-orange-ballbot_assembler", 0.0, null, command) //1
-    DoEntFire("!self", "Command", "ent_remove_all track3-orange-ballbot_assembler", 0.0, null, command) //1
-    DoEntFire("!self", "Command", "ent_remove_all track2-orange-ballbot_assembler", 0.0, null, command) //1
-    DoEntFire("!self", "Command", "ent_remove_all track1-orange-ballbot_assembler", 0.0, null, command) //1
     DoEntFire("!self", "Command", "ent_remove_all track6-blue-cradle_arm", 0.0, null, command) //1
     DoEntFire("!self", "Command", "ent_remove_all track4-blue-cradle_arm", 0.0, null, command) //1
     DoEntFire("!self", "Command", "ent_remove_all track3-blue-cradle_arm", 0.0, null, command) //1
