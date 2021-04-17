@@ -66,8 +66,7 @@ if (GetMapName() == "mp_coop_lobby_3") {
 	DoEntFire("!self", "Command", "ent_remove_all env_sprite", 0.0, null, command) //31
 	DoEntFire("!self", "Command", "ent_remove_all env_spark", 0.0, null, command) //3
 	DoEntFire("!self", "Command", "ent_remove_all func_portal_bumper", 0.0, null, command) //3
-	
-    //
+	DoEntFire("!self", "Command", "sv_cheats 0", 0.0, null, command)
 } else {
 	printl("map not lobby_3")
 }
