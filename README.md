@@ -4,12 +4,13 @@ This version of the mod simply adds
 1. MultiplayerMod.cmd (Allows You To Start The Mod)
 2. A Custom Wait Screen
 3. Player Cap Of 33
-4. Random Player Colors Thanks @Darnias#3156 For The Script
+4. Random Player Colors Thanks Darnias#3156 For The Script
+5. Better Player Collision
 #Bugs
-1. players get stuck inside eacother when exiting tubes (top priority) [temporary fix: open the console and type "bind v noclip" and press v when you want to get unstuck]
+None so far if you find one report it in the Issues section
 
 # How To Install
-1. download the Latest Relese From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/tag/b1.0.0
+1. download the Latest Release From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/tag/b1.1.0
 2. Go to your games library and find Portal 2
 3. At the left panel right click portal 2 click manage then click browse local files
 4. Drop the files inside the zip you downloaded into your portal 2 game folder
