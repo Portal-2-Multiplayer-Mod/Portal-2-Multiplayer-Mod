@@ -14,6 +14,7 @@ function init(){
 SetColor <- function(){
     local p = null;
     while (p = Entities.FindByClassname(p, "player")){
+        collisionfix()
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
             if (!("Colored" in script_scope)){
@@ -24,6 +25,11 @@ SetColor <- function(){
             }
         }
     }
+}
+
+function collisionfix() {
+	local entity = null;
+	SendToConsole("exec collisionfix")
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
