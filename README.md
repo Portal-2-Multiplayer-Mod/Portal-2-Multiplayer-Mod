@@ -5,6 +5,8 @@ This version of the mod simply adds
 2. A Custom Wait Screen
 3. Player Cap Of 33
 4. Random Player Colors Thanks @Darnias#3156 For The Script
+#Bugs
+1. players get stuck inside eacother when exiting tubes (top priority) [temporary fix: open the console and type "bind v noclip" and press v when you want to get unstuck]
 
 # How To Install
 1. download the Latest Relese From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/tag/b1.0.0
