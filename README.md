@@ -6,6 +6,7 @@ This version of the mod simply adds
 3. Player Cap Of 33
 4. Random Player Colors Thanks Darnias#3156 For The Script
 5. Better Player Collision
+6. MultiplayerModUninstall.cmd (Uninstalls The Mod)
 #Bugs
 None so far if you find one report it in the Issues section
 
