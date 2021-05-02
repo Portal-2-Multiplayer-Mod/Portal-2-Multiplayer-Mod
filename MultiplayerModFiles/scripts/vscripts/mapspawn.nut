@@ -2,6 +2,8 @@
 //MAPSPAWN.nut is called on newgame or transitions
 //********************************************************************************************
 
+
+ivar <- 0
 local place = GetMapName();
 local length = place.len();
 local lfString = place.slice(0, 8)
@@ -20,13 +22,35 @@ function init(){
 
 SetColor <- function(){
     local p = null;
-    collisionfix()
     while (p = Entities.FindByClassname(p, "player")){
+        loop()
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
             if (!("Colored" in script_scope)){
+                ivar <- ivar + 1
+                local coj = "say Player " + ivar + " Joined The Game"
+                coj = coj.tostring()
+                printl("Player " + ivar + " Joined The Game")
+                SendToConsole(coj)
+                if (ivar == 3) {
+                    R <- 180, G <- 255,  B <- 180;
+                }
+                if (ivar == 4) {
+                    R <- 120, G <- 140,  B <- 255;
+                }
+                if (ivar == 5) {
+                    R <- 255, G <- 170,  B <- 120;
+                }
+                if (ivar == 6) {
+                    R <- 255, G <- 100,  B <- 100;
+                }
+                if (ivar == 7) {
+                    R <- 255, G <- 180,  B <- 255;
+                }
+                if (ivar == 8) {
+                    R <- 255, G <- 255,  B <- 180;
+                }
                 script_scope.Colored <- true;
-                local R = RandomInt(0, 255), G = RandomInt(0, 255), B = RandomInt(0, 255);
                 EntFireByHandle(p, "Color", (R+" "+G+" "+B), 0, null, null);
                 return
             }
@@ -34,10 +58,10 @@ SetColor <- function(){
     }
 }
 
-function collisionfix() {
+function loop() {
 	local entity = null;
-	SendToConsole("exec collisionfix")
 	SendToConsole("sv_cheats 1") 
+	SendToConsole("exec collisionfix")
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
@@ -85,6 +109,17 @@ if (GetMapName() == "mp_coop_lobby_3") {
 	printl("map not lobby_3")
 }
 DoEntFire("!self", "Kill", "", 0.0, null, command)
+
+
+
+
+
+
+
+
+
+
+
 } else {
     printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
 }
