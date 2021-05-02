@@ -1,6 +1,13 @@
 //********************************************************************************************
 //MAPSPAWN.nut is called on newgame or transitions
 //********************************************************************************************
+
+local place = GetMapName();
+local length = place.len();
+local lfString = place.slice(0, 8)
+fString <- lfString
+if (fString == "mp_coop_") {
+
 printl("==== calling mapspawn.nut")
 function init(){
     timer <- Entities.CreateByClassname("logic_timer");
@@ -13,8 +20,8 @@ function init(){
 
 SetColor <- function(){
     local p = null;
+    collisionfix()
     while (p = Entities.FindByClassname(p, "player")){
-        collisionfix()
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
             if (!("Colored" in script_scope)){
@@ -30,6 +37,9 @@ SetColor <- function(){
 function collisionfix() {
 	local entity = null;
 	SendToConsole("exec collisionfix")
+	SendToConsole("sv_cheats 1") 
+    printl(GetMapName())
+    printl(fString)
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
@@ -77,3 +87,6 @@ if (GetMapName() == "mp_coop_lobby_3") {
 	printl("map not lobby_3")
 }
 DoEntFire("!self", "Kill", "", 0.0, null, command)
+} else {
+    printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
+}
