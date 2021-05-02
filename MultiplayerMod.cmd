@@ -163,12 +163,6 @@ goto endw7
 
 :endw10
 cls
-echo [36mPortal[0m [33m2[0m Was Closed [91mExiting[0m In 5...
-timeout 1 >nul
-cls
-echo [36mPortal[0m [33m2[0m Was Closed [91mExiting[0m In 4...
-timeout 1 >nul
-cls
 echo [36mPortal[0m [33m2[0m Was Closed [91mExiting[0m In 3...
 timeout 1 >nul
 cls
@@ -183,12 +177,6 @@ goto killscriptfinal
 rem display end screen message for outdates os versions
 :endw7
 cls
-echo Portal 2 Was Closed Exiting In 5...
-timeout 1 >nul
-cls
-echo Portal 2 Was Closed Exiting In 4...
-timeout 1 >nul
-cls
 echo Portal 2 Was Closed Exiting In 3...
 timeout 1 >nul
 cls
@@ -201,3 +189,9 @@ echo Exiting
 goto killscriptfinal
 
 :killscriptfinal
+xcopy /y /S "%cd%\MultiplayerModFiles\MPML" "%cd%\portal2"
+if exist "%cd%\portal2\scripts\vscripts\mapspawn.nut" del /q /f "%cd%\portal2\scripts\vscripts\mapspawn.nut">nul
+echo %cd%\portal2\scripts\vscripts\mapspawn.nut
+if exist "%cd%\portal2\cfg\collisionfix.cfg" del /q /f "%cd%\portal2\cfg\collisionfix.cfg">nul
+echo %cd%\portal2\cfg\collisionfix.cfg
+if exist "%cd%\portal2\cfg\multiplayermod.cfg" del /q /f "%cd%\portal2\cfg\multiplayermod.cfg">nul
