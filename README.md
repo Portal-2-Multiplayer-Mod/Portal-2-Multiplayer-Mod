@@ -1,4 +1,4 @@
-*** # Created By BumpyAHK & Kyleraykbs ***
+#***Created By BumpyAHK & Kyleraykbs***
 
 # Portal 2 32 Player Mod Lite
 
