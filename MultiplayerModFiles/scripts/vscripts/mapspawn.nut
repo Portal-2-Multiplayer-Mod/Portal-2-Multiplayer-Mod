@@ -32,6 +32,17 @@ SetColor <- function(){
                 coj = coj.tostring()
                 printl("Player " + ivar + " Joined The Game")
                 SendToConsole(coj)
+                if (ivar == 16) {
+                    R <- 0, G <- 75,  B <- 0;
+                } else {
+                        R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255);
+                }
+                if (ivar == 1) {
+                    R <- 255, G <- 255,  B <- 255;
+                }
+                if (ivar == 2) {
+                    R <- 255, G <- 255,  B <- 255;
+                }
                 if (ivar == 3) {
                     R <- 180, G <- 255,  B <- 180;
                 }
@@ -49,6 +60,27 @@ SetColor <- function(){
                 }
                 if (ivar == 8) {
                     R <- 255, G <- 255,  B <- 180;
+                }
+                if (ivar == 9) {
+                    R <- 0, G <- 255,  B <- 240;
+                }
+                if (ivar == 10) {
+                    R <- 75, G <- 75,  B <- 75;
+                }
+                if (ivar == 11) {
+                    R <- 120, G <- 155,  B <- 25;
+                }
+                if (ivar == 12) {
+                    R <- 0, G <- 80,  B <- 100;
+                }
+                if (ivar == 13) {
+                    R <- 100, G <- 80,  B <- 0;
+                }
+                if (ivar == 14) {
+                    R <- 0, G <- 0,  B <- 100;
+                }
+                if (ivar == 15) {
+                    R <- 80, G <- 0,  B <- 0;
                 }
                 script_scope.Colored <- true;
                 EntFireByHandle(p, "Color", (R+" "+G+" "+B), 0, null, null);

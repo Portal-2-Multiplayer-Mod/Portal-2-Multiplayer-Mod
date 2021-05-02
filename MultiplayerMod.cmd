@@ -154,7 +154,7 @@ rem print text
 echo Starting Portal 2 Multiplayer Mod!
 
 rem start portal 2 with the parameters to allow for 33 players 
-portal2.exe %Parameters% %windowed% -allowspectators +exec multiplayermod.cfg +sv_lan 0 +mp_wait_for_other_player_notconnecting_timeout 240 +mp_wait_for_other_player_timeout 240 +map mp_coop_lobby_3
+portal2.exe %windowed% -novid -allowspectators +exec multiplayermod.cfg +sv_lan 0 +mp_wait_for_other_player_notconnecting_timeout 240 +mp_wait_for_other_player_timeout 240 +map mp_coop_lobby_3
 
 rem show end screen for old os versions
 goto endw7
@@ -189,9 +189,9 @@ echo Exiting
 goto killscriptfinal
 
 :killscriptfinal
-xcopy /y /S "%cd%\MultiplayerModFiles\MPML" "%cd%\portal2"
-if exist "%cd%\portal2\scripts\vscripts\mapspawn.nut" del /q /f "%cd%\portal2\scripts\vscripts\mapspawn.nut">nul
-echo %cd%\portal2\scripts\vscripts\mapspawn.nut
-if exist "%cd%\portal2\cfg\collisionfix.cfg" del /q /f "%cd%\portal2\cfg\collisionfix.cfg">nul
-echo %cd%\portal2\cfg\collisionfix.cfg
-if exist "%cd%\portal2\cfg\multiplayermod.cfg" del /q /f "%cd%\portal2\cfg\multiplayermod.cfg">nul
+ xcopy /y /S "%cd%\MultiplayerModFiles\MPML" "%cd%\portal2"
+ if exist "%cd%\portal2\scripts\vscripts\mapspawn.nut" del /q /f "%cd%\portal2\scripts\vscripts\mapspawn.nut">nul
+ echo %cd%\portal2\scripts\vscripts\mapspawn.nut
+ if exist "%cd%\portal2\cfg\collisionfix.cfg" del /q /f "%cd%\portal2\cfg\collisionfix.cfg">nul
+ echo %cd%\portal2\cfg\collisionfix.cfg
+ if exist "%cd%\portal2\cfg\multiplayermod.cfg" del /q /f "%cd%\portal2\cfg\multiplayermod.cfg">nul
