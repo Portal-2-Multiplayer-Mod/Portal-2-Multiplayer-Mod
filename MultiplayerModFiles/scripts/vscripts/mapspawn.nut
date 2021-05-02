@@ -38,8 +38,6 @@ function collisionfix() {
 	local entity = null;
 	SendToConsole("exec collisionfix")
 	SendToConsole("sv_cheats 1") 
-    printl(GetMapName())
-    printl(fString)
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
