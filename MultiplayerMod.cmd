@@ -1,5 +1,7 @@
 @echo off
 
+title [Beta 1.1.2] Portal 2 32 Player Mod Lite - BumpyAHK and Kyleraykbs
+
 rem detect os version and store it in a varible called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 
@@ -130,7 +132,7 @@ echo The public server ip is:
 
 rem nag the user about using an outdated OS and show them how to get their public ip
 echo It looks like your running an outdated version of windows 
-echo For this reason we cannot find your public within console
+echo For this reason we cannot find your public ip in console
 echo To find your public ip please visit http://api.ipify.org/
 echo.
 
