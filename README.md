@@ -1,3 +1,5 @@
+#Created By BumpyAHK & Kyleraykbs
+
 # Portal 2 32 Player Mod Lite
 
 This version of the mod simply adds
