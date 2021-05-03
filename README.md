@@ -11,7 +11,7 @@ This version of the mod simply adds
 6. Custom colors depending on order joined (up to 16 players)
 7. Custom join message
 8. Support for Windows 10-8.1-8-7-Vista-XP
-**{Currently we are actively developing this mod check back often for MAJOR updates}**
+**Currently we are actively developing this mod check back often for MAJOR updates**
 
 *future plans*
 ```
