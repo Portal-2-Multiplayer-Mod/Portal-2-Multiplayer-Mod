@@ -10,7 +10,7 @@ This version of the mod simply adds
 5. MultiplayerModUninstall.cmd (Uninstalls The Mod)
 6. Custom colors depending on order joined (up to 16 players)
 7. Custom join message
-8. Support for Windows 7-XP
+8. Support for Windows 10-8.1-8-7-Vista-XP
 
 #Bugs
 None so far if you find one report it in the Issues section
