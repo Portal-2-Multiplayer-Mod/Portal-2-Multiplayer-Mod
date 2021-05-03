@@ -2,7 +2,6 @@
 //MAPSPAWN.nut is called on newgame or transitions
 //********************************************************************************************
 
-
 ivar <- 0
 local place = GetMapName();
 local length = place.len();
@@ -141,17 +140,6 @@ if (GetMapName() == "mp_coop_lobby_3") {
 	printl("map not lobby_3")
 }
 DoEntFire("!self", "Kill", "", 0.0, null, command)
-
-
-
-
-
-
-
-
-
-
-
 } else {
     printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
 }
