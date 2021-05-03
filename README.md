@@ -6,9 +6,12 @@ This version of the mod simply adds
 1. MultiplayerMod.cmd (Allows You To Start The Mod)
 2. A Custom Wait Screen
 3. Player Cap Of 33
-4. Random Player Colors Thanks Darnias#3156 For The Script
-5. Better Player Collision
-6. MultiplayerModUninstall.cmd (Uninstalls The Mod)
+4. Better Player Collision
+5. MultiplayerModUninstall.cmd (Uninstalls The Mod)
+6. Custom colors depending on order joined (up to 16 players)
+7. Custom join message
+8. Support for Windows 7-XP
+
 #Bugs
 None so far if you find one report it in the Issues section
 
