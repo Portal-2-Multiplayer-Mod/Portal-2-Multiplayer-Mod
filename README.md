@@ -12,7 +12,7 @@ This version of the mod simply adds
 7. Custom join message
 8. Support for Windows 10-8.1-8-7-Vista-XP
 
-**we are actively developing this mod check back often for updates**
+**We are VERY actively developing this mod check back often for updates**
 
 
 *future plans*
