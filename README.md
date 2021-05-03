@@ -12,7 +12,8 @@ This version of the mod simply adds
 7. Custom join message
 8. Support for Windows 10-8.1-8-7-Vista-XP
 
-**Currently we are actively developing this mod check back often for updates**
+**we are actively developing this mod check back often for updates**
+
 
 *future plans*
 ```
@@ -20,6 +21,7 @@ This version of the mod simply adds
 2. dedicated servers 
 3. in game chat commands <- (probably not possible)
 4. support for linux and macosx
+
 **again we are actively developing this mod check back often for updates**
 ```
 
