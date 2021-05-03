@@ -16,7 +16,7 @@ This version of the mod simply adds
 None so far if you find one report it in the Issues section
 
 # How To Install
-1. download the Latest Release From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/tag/b1.1.0
+1. download the Latest Release From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases
 2. Go to your games library and find Portal 2
 3. At the left panel right click portal 2 click manage then click browse local files
 4. Drop the files inside the zip you downloaded into your portal 2 game folder
