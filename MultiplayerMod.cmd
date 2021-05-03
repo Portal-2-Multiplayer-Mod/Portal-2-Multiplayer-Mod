@@ -1,5 +1,7 @@
 @echo off
 
+set lemongod=0
+
 title [Beta 1.1.2] Portal 2 32 Player Mod Lite - BumpyAHK and Kyleraykbs
 
 rem detect os version and store it in a variable called "version"
@@ -34,16 +36,21 @@ if exist mpmod.cfg (
     goto win10norm
 )
 
-:win10fts
+rem user configuation code
 if exist "mpmod.cfg" del /q /f "mpmod.cfg">nul
+rem print text
 echo                [101;93mFirst Time Setup[0m
 echo [93m==============================================[0m
 echo Please read all of the following so you 
 echo can configure the mod to your liking!
+rem wait 5 seconds and then let the user continue
 timeout /T 5 /NOBREAK > nul
 echo [92mPress Any Key[0m
 pause >nul
+:win10cfge
+if exist "mpmod.cfg" del /q /f "mpmod.cfg">nul
 cls
+set lemongod=1
 echo [96m(Type Y if you play challange mode as keeping the files installed will break it)[0m
 echo [96m(If you dont play challange mode I recommend you type N)[0m
 set /P c=Only [93menable[0m the mod when launched through this file? [92my[0m/[31mn[0m:
@@ -85,8 +92,20 @@ echo The [4mpublic[0m server [35mip[0m is:
 
 rem get the public ip of the user and print it
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do echo [33mPUB[0m[44mIP[0m: [35m%%a[0m
-echo. 
+echo.
 
+rem if the user edited the config skip the option to edit the config again
+if %lemongod%==1 (
+    goto skipcfgw10
+)
+rem ask the user if they want to change config
+set /P c=Would you like to [93medit[0m the [94mconfig[0m? [94my[0m/[92mn[0m:
+rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
+if /I "%c%" EQU "Y" goto win10cfge
+rem if the user type "n" echo that windowed mode is disabled
+if /I "%c%" EQU "N" echo.
+
+:skipcfgw10
 rem ask the user if they want windowed mode
 set /P c=Start in [93mwindowed[0m mode? [92my[0m/[31mn[0m:
 rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
@@ -120,7 +139,6 @@ if exist mpmod.cfg (
     goto win7norm
 )
 
-:win7fts
 if exist "mpmod.cfg" del /q /f "mpmod.cfg">nul
 echo                First Time Setup
 echo ==============================================
@@ -129,7 +147,9 @@ echo can configure the mod to your liking!
 timeout /T 5 /NOBREAK > nul
 echo Press Any Key
 pause >nul
+:win7cfge
 cls
+set lemongod=1
 echo (Type Y if you play challange mode as keeping the files installed will break it)
 echo (If you dont play challange mode I recommend you type N)
 set /P c=Only enable the mod when launched through this file? y/n:
@@ -181,6 +201,18 @@ echo For this reason we cannot find your public ip in console
 echo To find your public ip please visit http://api.ipify.org/
 echo.
 
+rem if the user edited the config skip the option to edit the config again
+if %lemongod%==1 (
+    goto skipcfgw7
+)
+rem ask the user if they want to change config
+set /P c=Would you like to edit the config? y/n:
+rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
+if /I "%c%" EQU "Y" goto win7cfge
+rem if the user type "n" echo that windowed mode is disabled
+if /I "%c%" EQU "N" echo.
+
+:skipcfgw7
 rem ask the user if they want windowed mode
 set /P c=Start in windowed mode? y/n:
 rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
