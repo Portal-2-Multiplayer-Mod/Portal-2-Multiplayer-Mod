@@ -2,7 +2,7 @@
 
 title [Beta 1.1.2] Portal 2 32 Player Mod Lite - BumpyAHK and Kyleraykbs
 
-rem detect os version and store it in a varible called "version"
+rem detect os version and store it in a variable called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 
 rem stop portal 2
@@ -23,7 +23,7 @@ echo [42mDone![0m
 rem clear screen
 cls
 
-rem set varibles to default
+rem set variable to default
 set ip_address_string="IPv4 Address"
 set windowed=
 
@@ -41,7 +41,7 @@ echo [91mHow To Host[0m :
 echo [92mCase 1.[0m : your playing with friends online
 echo then send them the public ip
 echo (also make sure you have 27015 or 27016 port forwarded)
-echo [92mCase 2.[0m : your playing with freinds on your
+echo [92mCase 2.[0m : your playing with friends on your
 echo local network/in your home then send them the local ip
 echo [91mHow To Join (tell your friends this)[0m :
 echo [92mStep 1.[0m : Open the console in game
