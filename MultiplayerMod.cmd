@@ -10,34 +10,19 @@ for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 rem stop portal 2
 taskkill /F /IM portal2.exe
 
+rem clear screen
 cls
 
-echo checking for existing backup
-
-if exist %cd%\portal2\bin\server.dll.bak (
-    goto skipbackup
-)
-
-echo backing up [96moriginal files[0m in "[93m\portal2[0m"
-
-move /y %cd%\portal2\bin\server.dll %cd%\portal2\bin\server.dll.bak
-move /y %cd%\portal2\media\coop_bluebot_load.bik %cd%\portal2\bin\coop_bluebot_load.bik.bak
-move /y %cd%\portal2\media\coop_orangebot_load.bik %cd%\portal2\bin\coop_orangebot_load.bik.bak
-move /y %cd%\portal2\scripts\vscripts\mapspawn.nut %cd%\portal2\scripts\vscripts\mapspawn.nut.bak
-
-echo [42mDone![0m
-
-cls
-
-:skipbackup
-
+rem print text
 echo copying [96mcore files[0m to "[93m\portal2[0m"
 
 rem copy everything from "MultiplayerModFiles" to "portal2"
 xcopy /y /S "%cd%\MultiplayerModFiles" "%cd%\portal2"
 
+rem print text
 echo [42mDone![0m
 
+rem clear screen
 cls
 
 rem set variable to default
@@ -102,6 +87,7 @@ for /f "usebackq tokens=2 delims=:" %%f in (`ipconfig ^| findstr /c:%ip_address_
 rem goto next as to not print the ip forever
 :next
 
+rem print text
 echo The [4mpublic[0m server [35mip[0m is:
 
 rem get the public ip of the user and print it
@@ -127,12 +113,14 @@ if /I "%c%" EQU "Y" set windowed=-window -w 1280 -h 720 & echo Windowed mode [9
 rem if the user type "n" echo that windowed mode is disabled
 if /I "%c%" EQU "N" echo Windowed mode [31mDisabled[0m
 
+rem print text
 echo.
 echo Press [[33mENTER[0m] To Start [36mPortal[0m [33m2 MP[0m!
 
 rem Wait Until a key Is Pressed
 pause >nul
 
+rem print text
 echo [42mStarting Portal 2 Multiplayer Mod![0m
 
 rem start portal 2 with the parameters to allow for 33 players 
@@ -175,6 +163,7 @@ cls
 rem nag user about outdated os
 echo  Running On Outdated Version Of Windows [Compatibility Mode Enabled]
 echo.
+rem print text
 echo  Portal 2 Multiplayer Mod [Fixed!... Again]
 echo.
 echo                   How To Use
@@ -203,6 +192,7 @@ for /f "usebackq tokens=2 delims=:" %%f in (`ipconfig ^| findstr /c:%ip_address_
 rem goto next as to not print the ip forever
 :next
 
+rem print text
 echo The public server ip is:
 
 rem nag the user about using an outdated OS and show them how to get their public ip
@@ -230,12 +220,14 @@ if /I "%c%" EQU "Y" set windowed=-window -w 1280 -h 720 & echo Windowed mode Ena
 rem if the user type "n" echo that windowed mode is disabled
 if /I "%c%" EQU "N" echo Windowed mode Disabled
 
+rem print text
 echo.
 echo Press [ENTER] To Start Portal 2 MP!
 
 rem Wait Until a key Is Pressed
 pause >nul
 
+rem print text
 echo Starting Portal 2 Multiplayer Mod!
 
 rem start portal 2 with the parameters to allow for 33 players 
@@ -275,7 +267,7 @@ goto killscriptfinal
 
 :killscriptfinal
 @echo off
-setlocal 6
+setlocal enabledelayedexpansion
 for /f "tokens=*" %%a in (mpmod.cfg) do (
   set line=%%a
   set chars=!line:~0,1!
@@ -283,13 +275,7 @@ for /f "tokens=*" %%a in (mpmod.cfg) do (
       goto eoc
   )
 )
-rem xcopy /y /S "%cd%\MultiplayerModFiles\MPML" "%cd%\portal2" (screw you xcopy for making me move shit because single files)
-
-move /y %cd%\portal2\bin\server.dll.bak %cd%\portal2\bin\server.dll
-move /y %cd%\portal2\bin\coop_bluebot_load.bik.bak %cd%\portal2\media\coop_bluebot_load.bik
-move /y %cd%\portal2\bin\coop_orangebot_load.bik.bak %cd%\portal2\media\coop_orangebot_load.bik
-move /y %cd%\portal2\scripts\vscripts\mapspawn.nut.bak %cd%\portal2\scripts\vscripts\mapspawn.nut
-
+ xcopy /y /S "%cd%\MultiplayerModFiles\MPML" "%cd%\portal2"
  if exist "%cd%\portal2\scripts\vscripts\mapspawn.nut" del /q /f "%cd%\portal2\scripts\vscripts\mapspawn.nut">nul
  echo %cd%\portal2\scripts\vscripts\mapspawn.nut
  if exist "%cd%\portal2\cfg\collisionfix.cfg" del /q /f "%cd%\portal2\cfg\collisionfix.cfg">nul

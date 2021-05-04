@@ -2,16 +2,19 @@
 set /P c=ARE YOU SURE YOU WANT TO [31mUNINSTALL[0m THE MOD? [31my[0m/[92mn[0m:
 cls
 taskkill /F /IM portal2.exe
-move /y %cd%\portal2\bin\server.dll.bak %cd%\portal2\bin\server.dll
-move /y %cd%\portal2\bin\coop_bluebot_load.bik.bak %cd%\portal2\media\coop_bluebot_load.bik
-move /y %cd%\portal2\bin\coop_orangebot_load.bik.bak %cd%\portal2\media\coop_orangebot_load.bik
-move /y %cd%\portal2\scripts\vscripts\mapspawn.nut.bak %cd%\portal2\scripts\vscripts\mapspawn.nut
-
+xcopy /y /S "%cd%\MultiplayerModFiles\MPML" "%cd%\portal2"
 if exist "%cd%\portal2\scripts\vscripts\mapspawn.nut" del /q /f "%cd%\portal2\scripts\vscripts\mapspawn.nut">nul
+ping 127.0.0.1 -n 1 -w 800> nul
 echo %cd%\portal2\scripts\vscripts\mapspawn.nut
 if exist "%cd%\portal2\cfg\collisionfix.cfg" del /q /f "%cd%\portal2\cfg\collisionfix.cfg">nul
+ping 127.0.0.1 -n 1 -w 800> nul
 echo %cd%\portal2\cfg\collisionfix.cfg
 if exist "%cd%\portal2\cfg\multiplayermod.cfg" del /q /f "%cd%\portal2\cfg\multiplayermod.cfg">nul
+ping 127.0.0.1 -n 1 -w 800> nul
+echo %cd%\portal2\cfg\multiplayermod.cfg
+ping 127.0.0.1 -n 1 -w 800> nul
+echo 3 File(s) deleted
+ping 127.0.0.1 -n 1 -w 350> nul
 cls
 echo [32mPLEASE READ ALL OF THE FOLLOWING TEXT[0m (Press Enter)
 pause>nul
