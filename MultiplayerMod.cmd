@@ -5,7 +5,7 @@ del /s update.bat
 
 set lemongod=0
 
-title [Beta 1.1.2] Portal 2 32 Player Mod Lite - BumpyAHK and Kyleraykbs
+title Portal 2 32 Player Mod Lite - BumpyAHK Kyleraykbs KonradCzerw
 
 rem detect os version and store it in a variable called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
