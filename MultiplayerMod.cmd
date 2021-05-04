@@ -28,11 +28,33 @@ set ip_address_string="IPv4 Address"
 set windowed=
 
 rem check if OS version is windows 10 if not goto "outdatedOS" if it is windows 10 continue as normal
-if "%version%" == "10.0" (echo.) else (goto outdatedOS)
+if "%version%" == "10.0" (cls) else (goto outdatedOS)
 
+if exist mpmod.cfg (
+    goto win10norm
+)
+
+:win10fts
+if exist "mpmod.cfg" del /q /f "mpmod.cfg">nul
+echo                [101;93mFirst Time Setup[0m
+echo [93m==============================================[0m
+echo Please read all of the following so you 
+echo can configure the mod to your liking!
+timeout /T 5 /NOBREAK > nul
+echo [92mPress Any Key[0m
+pause >nul
+cls
+echo [96m(Type Y if you play challange mode as keeping the files installed will break it)[0m
+echo [96m(If you dont play challange mode I recommend you type N)[0m
+set /P c=Only [93menable[0m the mod when launched through this file? [92my[0m/[31mn[0m:
+if /I "%c%" EQU "Y" set option1=0
+if /I "%c%" EQU "N" set option1=1
+echo %option1% > mpmod.cfg
+cls
+
+:win10norm
 rem print text
 echo  Portal 2 [36mMultiplayer[0m [33mMod[0m [[32mFixed!... Again[0m]
-echo.
 echo                   [91mHow To Use[0m
 echo [93m==============================================[0m
 echo make sure you and your friends have the same
@@ -83,7 +105,7 @@ rem print text
 echo [42mStarting Portal 2 Multiplayer Mod![0m
 
 rem start portal 2 with the parameters to allow for 33 players 
-portal2.exe %Parameters% %windowed% -allowspectators +exec multiplayermod.cfg +sv_lan 0 +mp_wait_for_other_player_notconnecting_timeout 240 +mp_wait_for_other_player_timeout 240 +map mp_coop_lobby_3 -nosixense
+portal2.exe %windowed% -novid -allowspectators +exec multiplayermod.cfg +sv_lan 0 +mp_wait_for_other_player_notconnecting_timeout 240 +mp_wait_for_other_player_timeout 240 +map mp_coop_lobby_3 -nosixense
 
 goto endw10
 
@@ -94,6 +116,29 @@ goto endw10
 
 rem run in compatibility mode
 :outdatedOS
+if exist mpmod.cfg (
+    goto win7norm
+)
+
+:win7fts
+if exist "mpmod.cfg" del /q /f "mpmod.cfg">nul
+echo                First Time Setup
+echo ==============================================
+echo Please read all of the following so you 
+echo can configure the mod to your liking!
+timeout /T 5 /NOBREAK > nul
+echo Press Any Key
+pause >nul
+cls
+echo (Type Y if you play challange mode as keeping the files installed will break it)
+echo (If you dont play challange mode I recommend you type N)
+set /P c=Only enable the mod when launched through this file? y/n:
+if /I "%c%" EQU "Y" set option1=0
+if /I "%c%" EQU "N" set option1=1
+echo %option1% > mpmod.cfg
+cls
+
+:win7norm
 
 rem nag user about outdated os
 echo  Running On Outdated Version Of Windows [Compatibility Mode Enabled]
@@ -189,9 +234,19 @@ echo Exiting
 goto killscriptfinal
 
 :killscriptfinal
+@echo off
+setlocal enabledelayedexpansion
+for /f "tokens=*" %%a in (mpmod.cfg) do (
+  set line=%%a
+  set chars=!line:~0,1!
+  if !chars! == 1 (
+      goto eoc
+  )
+)
  xcopy /y /S "%cd%\MultiplayerModFiles\MPML" "%cd%\portal2"
  if exist "%cd%\portal2\scripts\vscripts\mapspawn.nut" del /q /f "%cd%\portal2\scripts\vscripts\mapspawn.nut">nul
  echo %cd%\portal2\scripts\vscripts\mapspawn.nut
  if exist "%cd%\portal2\cfg\collisionfix.cfg" del /q /f "%cd%\portal2\cfg\collisionfix.cfg">nul
  echo %cd%\portal2\cfg\collisionfix.cfg
  if exist "%cd%\portal2\cfg\multiplayermod.cfg" del /q /f "%cd%\portal2\cfg\multiplayermod.cfg">nul
+:eoc
