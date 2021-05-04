@@ -1,5 +1,7 @@
 @echo off
 
+del /s update.bat
+
 set lemongod=0
 
 title [Beta 1.1.2] Portal 2 32 Player Mod Lite - BumpyAHK and Kyleraykbs
