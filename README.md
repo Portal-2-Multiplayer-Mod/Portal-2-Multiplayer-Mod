@@ -17,10 +17,8 @@ This version of the mod simply adds
 
 *future plans*
 ```
-1. option on first startup of MultiplayerMod.cmd to always be enabled (excluding singleplayer)
-2. dedicated servers 
-3. in game chat commands <- (probably not possible)
-4. support for linux and macosx
+Moved to Trello
+https://trello.com/b/3TJJqoQf/portal-2-32-player-mod
 
 **again we are actively developing this mod check back often for updates**
 ```
