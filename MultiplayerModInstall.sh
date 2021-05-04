@@ -33,8 +33,8 @@ else
 fi
 
 RUNPATH="$GAMEPATH/MultiplayerModRun.sh"
-cmp -s "$MODFILEPATH/bin/server.so" "$GAMEPATH/portal2/bin/server.so"
-if [ "$?" -eq "1" ] && [ -f $GAMEPATH/portal2/bin/server.so ]; then
+cmp -s "$MODFILEPATH/bin/server.so" "$GAMEPATH/portal2/bin/server.so.modded"
+if [ "$?" -eq "0" ] && [ -f "$GAMEPATH/portal2/bin/server.so.modded" ]; then
 	color $GREEN
 	echo "Files already installed!"
 else
@@ -48,7 +48,7 @@ else
 			cp -vf "$MODFILEPATH/$f" "$GAMEPATH/portal2/$f"
 		fi
 	done
-	cp -vf "$PWD/MultiplayerModRun.sh" "$RUNPATH"
+	cp -vf "$MODFILEPATH/linux/MultiplayerModRun.sh" "$RUNPATH"
 fi
 
 color $GREEN

@@ -30,8 +30,14 @@ done
 
 color $GREEN
 read -p "Run in windowed mode? (y/n): " WINDOWED
-
 if [[ $WINDOWED =~ ^[Yy]$ ]]; then WINDOWED="-window -w 1280 -h 720"; else WINDOWED=""; fi
+
+if command -v upnpc &> /dev/null; then
+	read -p "It looks like you have upnpc installed, would you like to automatically try to forward port 27015 UDP? (y/n)" FORWARD
+	if [[ $FORWARD =~ ^[Yy]$ ]]; then
+		upnpc -a `ip -4 addr show $(ip route | grep '^default' | grep 'src' | awk '{print $5}') | grep -oP '(?<=inet\s)\d+(\.\d+){3}'` 27015 27015 UDP
+	fi
+fi
 
 # run game script (NOT portal2_linux, it errors out since the lib loader is fucked on leenok)
 color $NC
