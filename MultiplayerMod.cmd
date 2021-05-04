@@ -1,3 +1,4 @@
+:start
 @echo off
 
 del /s update.bat
@@ -95,6 +96,16 @@ echo The [4mpublic[0m server [35mip[0m is:
 rem get the public ip of the user and print it
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do echo [33mPUB[0m[44mIP[0m: [35m%%a[0m
 echo.
+
+rem ask the user if they want to change config
+set /P c=Would you like to check for [94mupdates[0m? [94my[0m/[92mn[0m:
+rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
+if /I "%c%" EQU "Y" call "%cd%\MultiplayerModUpdater.cmd" & set rsscfu=1
+rem if the user type "n" echo that windowed mode is disabled
+if /I "%c%" EQU "N" echo.
+if rsscfu==1 (
+    goto start
+) 
 
 rem if the user edited the config skip the option to edit the config again
 if %lemongod%==1 (
@@ -202,6 +213,16 @@ echo It looks like your running an outdated version of windows
 echo For this reason we cannot find your public ip in console
 echo To find your public ip please visit http://api.ipify.org/
 echo.
+
+rem ask the user if they want to change config
+set /P c=Would you like to check for updates? y/n:
+rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
+if /I "%c%" EQU "Y" call "%cd%\MultiplayerModUpdater.cmd" & set rsscfu=1
+rem if the user type "n" echo that windowed mode is disabled
+if /I "%c%" EQU "N" echo.
+if rsscfu==1 (
+    goto start
+) 
 
 rem if the user edited the config skip the option to edit the config again
 if %lemongod%==1 (
