@@ -103,9 +103,6 @@ rem if the user types "y" set the varible %windowed% to be the parameters for wi
 if /I "%c%" EQU "Y" call "%cd%\MultiplayerModUpdater.cmd" & set rsscfu=1
 rem if the user type "n" echo that windowed mode is disabled
 if /I "%c%" EQU "N" echo.
-if rsscfu==1 (
-    goto start
-) 
 
 rem if the user edited the config skip the option to edit the config again
 if %lemongod%==1 (
@@ -220,9 +217,6 @@ rem if the user types "y" set the varible %windowed% to be the parameters for wi
 if /I "%c%" EQU "Y" call "%cd%\MultiplayerModUpdater.cmd" & set rsscfu=1
 rem if the user type "n" echo that windowed mode is disabled
 if /I "%c%" EQU "N" echo.
-if rsscfu==1 (
-    goto start
-) 
 
 rem if the user edited the config skip the option to edit the config again
 if %lemongod%==1 (
