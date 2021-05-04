@@ -37,7 +37,8 @@ exit
 :outdatedOS
 color 4
 echo ERROR: Check Failed!!!
-echo ERROR: The updater doesnt support Windows 7 please check https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest for the latest update
+echo ERROR: The updater doesnt support Windows 7 please check 
+echo https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest for the latest update
 echo Press Any Key
 pause >nul
 exit
