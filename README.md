@@ -16,9 +16,9 @@ This version of the mod simply adds
 
 
 *future plans*
+https://trello.com/b/3TJJqoQf/portal-2-32-player-mod
 ```
 Moved to Trello
-https://trello.com/b/3TJJqoQf/portal-2-32-player-mod
 
 **again we are actively developing this mod check back often for updates**
 ```
