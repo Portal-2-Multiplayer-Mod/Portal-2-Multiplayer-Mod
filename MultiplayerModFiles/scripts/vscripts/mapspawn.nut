@@ -3,13 +3,18 @@
 //********************************************************************************************
 
 
-ivar <- 0
-local place = GetMapName();
-local length = place.len();
-local lfString = place.slice(0, 8)
-fString <- lfString
-if (fString == "mp_coop_") {
+CurrentPlayerCount <- 0
+GBIsMultiplayer <- 0
+try {
+    if ( ::IsMultiplayer() ){
+        GBIsMultiplayer <- 1
+    }
+} catch(exception) {
+    GBIsMultiplayer <- 0
+}
 
+
+if (GBIsMultiplayer==1) {
 printl("==== calling mapspawn.nut")
 function init(){
     timer <- Entities.CreateByClassname("logic_timer");
@@ -27,59 +32,59 @@ SetColor <- function(){
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
             if (!("Colored" in script_scope)){
-                ivar <- ivar + 1
-                local coj = "say Player " + ivar + " Joined The Game"
+                CurrentPlayerCount <- CurrentPlayerCount + 1
+                local coj = "say Player " + CurrentPlayerCount + " Joined The Game"
                 coj = coj.tostring()
-                printl("Player " + ivar + " Joined The Game")
+                printl("Player " + CurrentPlayerCount + " Joined The Game")
                 SendToConsole(coj)
-                if (ivar == 16) {
+                if (CurrentPlayerCount == 16) {
                     R <- 0, G <- 75,  B <- 0;
                 } else {
                         R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255);
                 }
-                if (ivar == 1) {
+                if (CurrentPlayerCount == 1) {
                     R <- 255, G <- 255,  B <- 255;
                 }
-                if (ivar == 2) {
+                if (CurrentPlayerCount == 2) {
                     R <- 255, G <- 255,  B <- 255;
                 }
-                if (ivar == 3) {
+                if (CurrentPlayerCount == 3) {
                     R <- 180, G <- 255,  B <- 180;
                 }
-                if (ivar == 4) {
+                if (CurrentPlayerCount == 4) {
                     R <- 120, G <- 140,  B <- 255;
                 }
-                if (ivar == 5) {
+                if (CurrentPlayerCount == 5) {
                     R <- 255, G <- 170,  B <- 120;
                 }
-                if (ivar == 6) {
+                if (CurrentPlayerCount == 6) {
                     R <- 255, G <- 100,  B <- 100;
                 }
-                if (ivar == 7) {
+                if (CurrentPlayerCount == 7) {
                     R <- 255, G <- 180,  B <- 255;
                 }
-                if (ivar == 8) {
+                if (CurrentPlayerCount == 8) {
                     R <- 255, G <- 255,  B <- 180;
                 }
-                if (ivar == 9) {
+                if (CurrentPlayerCount == 9) {
                     R <- 0, G <- 255,  B <- 240;
                 }
-                if (ivar == 10) {
+                if (CurrentPlayerCount == 10) {
                     R <- 75, G <- 75,  B <- 75;
                 }
-                if (ivar == 11) {
+                if (CurrentPlayerCount == 11) {
                     R <- 120, G <- 155,  B <- 25;
                 }
-                if (ivar == 12) {
+                if (CurrentPlayerCount == 12) {
                     R <- 0, G <- 80,  B <- 100;
                 }
-                if (ivar == 13) {
+                if (CurrentPlayerCount == 13) {
                     R <- 100, G <- 80,  B <- 0;
                 }
-                if (ivar == 14) {
+                if (CurrentPlayerCount == 14) {
                     R <- 0, G <- 0,  B <- 100;
                 }
-                if (ivar == 15) {
+                if (CurrentPlayerCount == 15) {
                     R <- 80, G <- 0,  B <- 0;
                 }
                 script_scope.Colored <- true;
@@ -141,17 +146,6 @@ if (GetMapName() == "mp_coop_lobby_3") {
 	printl("map not lobby_3")
 }
 DoEntFire("!self", "Kill", "", 0.0, null, command)
-
-
-
-
-
-
-
-
-
-
-
 } else {
     printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
 }
