@@ -97,11 +97,11 @@ rem get the public ip of the user and print it
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do echo [33mPUB[0m[44mIP[0m: [35m%%a[0m
 echo.
 
-rem ask the user if they want to change config
+rem ask the user if they want to update
 set /P c=Would you like to check for [94mupdates[0m? [94my[0m/[92mn[0m:
-rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
+rem if the user types "y" open the updater
 if /I "%c%" EQU "Y" call "%cd%\MultiplayerModUpdater.cmd" & set rsscfu=1
-rem if the user type "n" echo that windowed mode is disabled
+rem if the user type "n", skip
 if /I "%c%" EQU "N" echo.
 
 rem if the user edited the config skip the option to edit the config again
@@ -110,10 +110,11 @@ if %lemongod%==1 (
 )
 rem ask the user if they want to change config
 set /P c=Would you like to [93medit[0m the [94mconfig[0m? [94my[0m/[92mn[0m:
-rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
+rem if the user types "y" jump to edit config
 if /I "%c%" EQU "Y" goto win10cfge
-rem if the user type "n" echo that windowed mode is disabled
+rem if the user type "n", skip
 if /I "%c%" EQU "N" echo.
+
 
 :skipcfgw10
 rem ask the user if they want windowed mode
@@ -123,14 +124,14 @@ if /I "%c%" EQU "Y" set windowed=-window -w 1280 -h 720 & echo Windowed mode [9
 rem if the user type "n" echo that windowed mode is disabled
 if /I "%c%" EQU "N" echo Windowed mode [31mDisabled[0m
 
-rem print text
+rem tell the user they can start the game.
 echo.
 echo Press [[33mENTER[0m] To Start [36mPortal[0m [33m2 MP[0m!
 
 rem Wait Until a key Is Pressed
 pause >nul
 
-rem print text
+rem tell the user portal 2 is starting.
 echo [42mStarting Portal 2 Multiplayer Mod![0m
 
 rem start portal 2 with the parameters to allow for 33 players 
@@ -211,11 +212,11 @@ echo For this reason we cannot find your public ip in console
 echo To find your public ip please visit http://api.ipify.org/
 echo.
 
-rem ask the user if they want to change config
+rem ask the user if they want to update
 set /P c=Would you like to check for updates? y/n:
-rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
+rem if the user types "y" to open the updater
 if /I "%c%" EQU "Y" call "%cd%\MultiplayerModUpdater.cmd" & set rsscfu=1
-rem if the user type "n" echo that windowed mode is disabled
+rem if the user type "n", skip
 if /I "%c%" EQU "N" echo.
 
 rem if the user edited the config skip the option to edit the config again
@@ -224,9 +225,9 @@ if %lemongod%==1 (
 )
 rem ask the user if they want to change config
 set /P c=Would you like to edit the config? y/n:
-rem if the user types "y" set the varible %windowed% to be the parameters for windowed mode
+rem if the user types "y" jump to edit the config
 if /I "%c%" EQU "Y" goto win7cfge
-rem if the user type "n" echo that windowed mode is disabled
+rem if the user type "n", skip.
 if /I "%c%" EQU "N" echo.
 
 :skipcfgw7
@@ -244,7 +245,7 @@ echo Press [ENTER] To Start Portal 2 MP!
 rem Wait Until a key Is Pressed
 pause >nul
 
-rem print text
+rem tell the user portal 2 is starting
 echo Starting Portal 2 Multiplayer Mod!
 
 rem start portal 2 with the parameters to allow for 33 players 
