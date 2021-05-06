@@ -46,8 +46,9 @@ Moved to Trello
 
 # Support
 Before you do any of this check our FAQ (Scroll Down) to make sure your problem isn't a common one
-If you have any bugs/suggestions or you need help please create an issue
-Or join our discord server https://discord.gg/kW3nG6GKpF us devs are always happy to help
+If you have any bugs/suggestions or you need help join our 
+Discord server https://discord.gg/kW3nG6GKpF us devs are always happy to help
+Or create an issue in the tab at the top
 
 # Bugs
 None so far if you find one report it in the Issues section
