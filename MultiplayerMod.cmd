@@ -16,13 +16,13 @@ taskkill /F /IM portal2.exe
 rem clear screen
 cls
 
-rem print text
+rem tell the user copying core files.
 echo copying [96mcore files[0m to "[93m\portal2[0m"
 
 rem copy everything from "MultiplayerModFiles" to "portal2"
 xcopy /y /S "%cd%\MultiplayerModFiles" "%cd%\portal2"
 
-rem print text
+rem tell the user Done.
 echo [42mDone![0m
 
 rem clear screen
@@ -41,7 +41,7 @@ if exist mpmod.cfg (
 
 rem user configuation code
 if exist "mpmod.cfg" del /q /f "mpmod.cfg">nul
-rem print text
+rem tell the user first time setup
 echo                [101;93mFirst Time Setup[0m
 echo [93m==============================================[0m
 echo Please read all of the following so you 
@@ -63,7 +63,7 @@ echo %option1% > mpmod.cfg
 cls
 
 :win10norm
-rem print text
+rem tell the user how to use
 echo  Portal 2 [36mMultiplayer[0m [33mMod[0m [[32mFixed!... Again[0m]
 echo                   [91mHow To Use[0m
 echo [93m==============================================[0m
@@ -90,7 +90,7 @@ for /f "usebackq tokens=2 delims=:" %%f in (`ipconfig ^| findstr /c:%ip_address_
 rem goto next as to not print the ip forever
 :next
 
-rem print text
+rem tell the user the public server ip
 echo The [4mpublic[0m server [35mip[0m is:
 
 rem get the public ip of the user and print it
@@ -174,7 +174,7 @@ cls
 rem nag user about outdated os
 echo  Running On Outdated Version Of Windows [Compatibility Mode Enabled]
 echo.
-rem print text
+rem tell the user how to use (outdated os)
 echo  Portal 2 Multiplayer Mod [Fixed!... Again]
 echo.
 echo                   How To Use
@@ -203,7 +203,7 @@ for /f "usebackq tokens=2 delims=:" %%f in (`ipconfig ^| findstr /c:%ip_address_
 rem goto next as to not print the ip forever
 :next
 
-rem print text
+rem tell the user the public ip (outdated os)
 echo The public server ip is:
 
 rem nag the user about using an outdated OS and show them how to get their public ip
@@ -238,7 +238,7 @@ if /I "%c%" EQU "Y" set windowed=-window -w 1280 -h 720 & echo Windowed mode Ena
 rem if the user type "n" echo that windowed mode is disabled
 if /I "%c%" EQU "N" echo Windowed mode Disabled
 
-rem print text
+rem tell the user to press enter to start portal 2.
 echo.
 echo Press [ENTER] To Start Portal 2 MP!
 
