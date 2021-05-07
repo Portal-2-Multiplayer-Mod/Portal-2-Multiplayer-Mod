@@ -14,7 +14,7 @@ This version of the mod simply adds
 8. Support for Windows 10-8.1-8-7-Vista-XP
 
 **We are VERY actively developing this mod check back often for updates**
-
+**And also please join the discord if you want betas and help https://discord.gg/kW3nG6GKpF**
 
 *future plans*
 https://trello.com/b/3TJJqoQf/portal-2-32-player-mod
@@ -46,10 +46,9 @@ Moved to Trello
 
 # Support
 Before you do any of this check our FAQ (Scroll Down) to make sure your problem isn't a common one
-If you have any bugs/suggestions or you need help please create an issue
-Or freind kyleraykbs on Steam or Discord
-Discord:kyleraykbs#3230
-Steam:kyleraykbs
+If you have any bugs/suggestions or you need help join our 
+Discord server https://discord.gg/kW3nG6GKpF us devs are always happy to help
+Or create an issue in the tab at the top
 
 # Bugs
 None so far if you find one report it in the Issues section
@@ -57,7 +56,7 @@ None so far if you find one report it in the Issues section
 # Contribute
 If you know vscript batch or shell
 and you think you can contribute to the project in some way
-please contact me on discord kyleraykbs#3230
+please contact me on discord kyleraykbs#3230 or https://discord.gg/kW3nG6GKpF
 
 
 # FAQ
