@@ -1,0 +1,26 @@
+{
+      "editor.fontSize": 25,
+      "files.exclude": {
+            ".gitattributes": true,
+            ".vscode": true,
+            "**.zip": true,
+            "bin": true,
+            "game_actions_620.vdf": true,
+            "installscript_osx.vdf": true,
+            "mpmod.cfg": true,
+            "platform": true,
+            "portal2_dlc1": true,
+            "portal2_dlc2": true,
+            "portal2_linux": true,
+            "portal2_osx": true,
+            "portal2.exe": true,
+            "portal2.ico": true,
+            "portal2.sh": true,
+            "README.md": true,
+            "sdk_content": true,
+            "Soundtrack": true,
+            "steam_appid.txt": true,
+            "thirdpartylegalnotices.doc": true,
+            "update": true
+      }
+}
