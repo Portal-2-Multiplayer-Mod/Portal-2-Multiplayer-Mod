@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# i swear to god, i won't comment this, this was too much painal to get to work for a simple ass bash script
+# i swear to god, i won't comment this, this was too much pain to get to work for a simple ass bash script
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
