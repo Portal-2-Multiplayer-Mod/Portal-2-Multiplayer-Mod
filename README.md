@@ -1,5 +1,6 @@
 # ***Created By BumpyAHK & Kyleraykbs & VistaX64 & Vecc***
-
+***Credits***
+thePineapple (Added Hamachi Support)
 
 # Portal 2 32 Player Mod Lite
 
