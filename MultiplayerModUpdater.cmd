@@ -12,7 +12,7 @@ del /s updatepack.zip
 rmdir /q /s "%cd%\updatepack"
 rmdir /q /s "%cd%\MultiplayerModFiles"
 cls
-echo Check Passed! 
+echo Check Passed Running Windows 10! 
 echo Updating...
 echo Preparing Download...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/raw/main/Portal2-32PlayerMod-Lite.Beta.zip', 'updatepack.zip')"
