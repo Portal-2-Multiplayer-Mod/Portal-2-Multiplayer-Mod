@@ -1,3 +1,4 @@
+rem imagine not commenting this
 @echo off
 set /P c=ARE YOU SURE YOU WANT TO [31mUNINSTALL[0m THE MOD? [31my[0m/[92mn[0m:
 cls
@@ -21,12 +22,4 @@ pause>nul
 cls
 echo [31mUninstalled mod[0m [96mif your uninstalling because of a bug please report it in the issues section on the github and freind   kyleraykbs#3230 on discord[0m
 echo [93m(To reinstall open MultiplayerMod.cmd)[0m
-goto end
-rem if the user type "n" echo that windowed mode is disabled
-if /I "%c%" EQU "N" echo [92mExiting![0m:
-timeout 1
-goto kill
-:end
 pause>nul
-:kill
-exit
