@@ -5,7 +5,7 @@ del /s update.bat
 
 set lemongod=0
 
-title Portal 2 32 Player Mod Lite - BumpyAHK Kyleraykbs KonradCzerw
+title Portal 2 32 Player Mod Lite - BumpyAHK Kyleraykbs KonradCzerw/Vista
 
 rem detect os version and store it in a variable called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
@@ -57,7 +57,7 @@ pause >nul
 if exist "mpmod.cfg" del /q /f "mpmod.cfg">nul
 cls
 set lemongod=1
-echo [96m(Type Y if you play challange mode as keeping the files installed will break it)[0m
+echo [96m(Type Y if you speedrun or play challange mode as keeping the files installed will break some singleplayer features)[0m
 echo [96m(If you dont play challange mode I recommend you type N)[0m
 set /P c=Only [93menable[0m the mod when launched through this file? [92my[0m/[31mn[0m:
 if /I "%c%" EQU "Y" set option1=0
@@ -179,7 +179,7 @@ pause >nul
 :win7cfge
 cls
 set lemongod=1
-echo (Type Y if you play challange mode as keeping the files installed will break it)
+echo (Type Y if you speedrun or play challange mode as keeping the files installed will break some singleplayer features)
 echo (If you dont play challange mode I recommend you type N)
 set /P c=Only enable the mod when launched through this file? y/n:
 if /I "%c%" EQU "Y" set option1=0
