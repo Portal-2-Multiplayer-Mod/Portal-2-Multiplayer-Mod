@@ -1,5 +1,5 @@
 {
-      "editor.fontSize": 25,
+      "editor.fontSize": 12,
       "files.exclude": {
             ".gitattributes": true,
             ".vscode": true,
