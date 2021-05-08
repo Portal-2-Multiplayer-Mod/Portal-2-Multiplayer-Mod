@@ -1,5 +1,5 @@
-# ***Created By BumpyAHK & Kyleraykbs & VistaX64***
-### Special Thanks To Vecc
+# ***Created By BumpyAHK & Kyleraykbs & VistaX64 & Vecc***
+
 
 # Portal 2 32 Player Mod Lite
 
