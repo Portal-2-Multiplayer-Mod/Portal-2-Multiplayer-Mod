@@ -2,6 +2,14 @@
 //MAPSPAWN.nut is called on newgame or transitions
 //********************************************************************************************
 
+function init(){
+    timer <- Entities.CreateByClassname("logic_timer");
+    timer.__KeyValueFromString("targetname", "timer");
+    EntFireByHandle(timer, "AddOutput", "RefireTime 0.1", 0, null, null);
+    EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null);
+    EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:SetColor():0:-1", 0, null, null);
+    EntFireByHandle(timer, "Enable", "", 0.1, null, null);
+}
 
 CurrentPlayerCount <- 0
 GBIsMultiplayer <- 0
@@ -15,15 +23,7 @@ try {
 
 
 if (GBIsMultiplayer==1) {
-printl("==== calling mapspawn.nut")
-function init(){
-    timer <- Entities.CreateByClassname("logic_timer");
-    timer.__KeyValueFromString("targetname", "timer");
-    EntFireByHandle(timer, "AddOutput", "RefireTime 0.1", 0, null, null);
-    EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null);
-    EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:SetColor():0:-1", 0, null, null);
-    EntFireByHandle(timer, "Enable", "", 0.1, null, null);
-}
+//Multiplayer Code
 
 SetColor <- function(){
     local p = null;
@@ -97,10 +97,8 @@ SetColor <- function(){
 
 function loop() {
 	local entity = null;
-	//local j = "solid ";
-	local k = "CollisionGroup ";
-	//EntFire("player", "addoutput", j+4);
-	EntFire("player", "addoutput", k+2);
+	local j = "solid ";
+	EntFire("player", "addoutput", j+4);
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
@@ -149,5 +147,24 @@ if (GetMapName() == "mp_coop_lobby_3") {
 }
 DoEntFire("!self", "Kill", "", 0.0, null, command)
 } else {
-    printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
+//Singleplayer Code
+printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
+GlobalRunSingleplayer <- 1
+
+SetColor <- function(){
+    local p = null;
+    while (p = Entities.FindByClassname(p, "player")){
+        if (p.ValidateScriptScope()){
+            local script_scope = p.GetScriptScope();
+            if (GlobalRunSingleplayer==1){
+                SendToConsole("script_execute singleplayer")
+                GlobalRunSingleplayer <- 0
+                return
+            }
+        }
+    }
+}
+
+Entities.First().ConnectOutput("OnUser1", "init");
+DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null);
 }
