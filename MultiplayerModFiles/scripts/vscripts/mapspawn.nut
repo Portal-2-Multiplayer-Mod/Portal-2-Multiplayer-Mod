@@ -97,8 +97,10 @@ SetColor <- function(){
 
 function loop() {
 	local entity = null;
-	local j = "solid ";
-	EntFire("player", "addoutput", j+4);
+	//local j = "solid ";
+	local k = "CollisionGroup ";
+	//EntFire("player", "addoutput", j+4);
+	EntFire("player", "addoutput", k+2);
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
