@@ -1,6 +1,10 @@
 //********************************************************************************************
 //MAPSPAWN.nut is called on newgame or transitions
 //********************************************************************************************
+CheatsOff <- 0
+ReadyCheatsOff <- 0
+CurrentPlayerCount <- 0
+GBIsMultiplayer <- 0
 
 function init(){
     timer <- Entities.CreateByClassname("logic_timer");
@@ -11,8 +15,6 @@ function init(){
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
 }
 
-CurrentPlayerCount <- 0
-GBIsMultiplayer <- 0
 try {
     if ( ::IsMultiplayer() ){
         GBIsMultiplayer <- 1
@@ -39,53 +41,71 @@ SetColor <- function(){
                 SendToConsole(coj)
                 if (CurrentPlayerCount == 16) {
                     R <- 0, G <- 75,  B <- 0;
+                    ReadyCheatsOff <- 1
                 } else {
+                    if (CurrentPlayerCount != 1) {
                         R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255);
+                        ReadyCheatsOff <- 1
+                    }
                 }
                 if (CurrentPlayerCount == 1) {
                     R <- 255, G <- 255,  B <- 255;
                 }
                 if (CurrentPlayerCount == 2) {
                     R <- 255, G <- 255,  B <- 255;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 3) {
                     R <- 180, G <- 255,  B <- 180;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 4) {
                     R <- 120, G <- 140,  B <- 255;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 5) {
                     R <- 255, G <- 170,  B <- 120;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 6) {
                     R <- 255, G <- 100,  B <- 100;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 7) {
                     R <- 255, G <- 180,  B <- 255;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 8) {
                     R <- 255, G <- 255,  B <- 180;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 9) {
                     R <- 0, G <- 255,  B <- 240;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 10) {
                     R <- 75, G <- 75,  B <- 75;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 11) {
                     R <- 120, G <- 155,  B <- 25;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 12) {
                     R <- 0, G <- 80,  B <- 100;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 13) {
                     R <- 100, G <- 80,  B <- 0;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 14) {
                     R <- 0, G <- 0,  B <- 100;
+                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 15) {
                     R <- 80, G <- 0,  B <- 0;
+                    ReadyCheatsOff <- 1
                 }
                 script_scope.Colored <- true;
                 EntFireByHandle(p, "Color", (R+" "+G+" "+B), 0, null, null);
@@ -97,10 +117,20 @@ SetColor <- function(){
 
 function loop() {
 	local entity = null;
-	//local j = "solid ";
+	//Disable Collision
+    //local j = "solid ";
 	local k = "CollisionGroup ";
 	//EntFire("player", "addoutput", j+4);
 	EntFire("player", "addoutput", k+2);
+    
+    //sv_cheats 0
+    //check if ready to turn cheats off
+    if (ReadyCheatsOff==1) {
+        if (CheatsOff==0) {
+            SendToConsole("sv_cheats 0")
+            CheatsOff <- 1
+        }
+    }
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
@@ -143,7 +173,6 @@ if (GetMapName() == "mp_coop_lobby_3") {
 	DoEntFire("!self", "Command", "ent_remove_all env_sprite", 0.0, null, command) //31
 	DoEntFire("!self", "Command", "ent_remove_all env_spark", 0.0, null, command) //3
 	DoEntFire("!self", "Command", "ent_remove_all func_portal_bumper", 0.0, null, command) //3
-    //DoEntFire("!self", "Command", "sv_cheats 0", 0.0, null, command)
 } else {
 	printl("map not lobby_3")
 }
