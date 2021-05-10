@@ -11,6 +11,7 @@
             "platform": true,
             "portal2_dlc1": true,
             "portal2_dlc2": true,
+            "portal2_dlc3*": true,
             "portal2_linux": true,
             "portal2_osx": true,
             "portal2.exe": true,
