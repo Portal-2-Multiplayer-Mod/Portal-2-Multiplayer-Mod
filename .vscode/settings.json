@@ -1,6 +1,7 @@
 {
-      "editor.fontSize": 12,
+      "editor.fontSize": 18,
       "files.exclude": {
+            ".git*": true,
             ".gitattributes": true,
             ".vscode": true,
             "**.zip": true,
@@ -9,6 +10,7 @@
             "installscript_osx.vdf": true,
             "mpmod.cfg": true,
             "platform": true,
+            "portal2_*": true,
             "portal2_dlc1": true,
             "portal2_dlc2": true,
             "portal2_dlc3*": true,
@@ -19,6 +21,7 @@
             "portal2.sh": true,
             "README.md": true,
             "sdk_content": true,
+            "sdk_tools": true,
             "Soundtrack": true,
             "steam_appid.txt": true,
             "thirdpartylegalnotices.doc": true,
