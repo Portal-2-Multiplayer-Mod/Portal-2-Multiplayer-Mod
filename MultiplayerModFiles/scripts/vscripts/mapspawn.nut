@@ -13,6 +13,8 @@ function init(){
     EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null);
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:SetColor():0:-1", 0, null, null);
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
+    //Create An Entity That Sends A Client Command
+    clientcommand <- Entities.CreateByClassname("point_clientcommand");
 }
 
 try {
@@ -117,7 +119,13 @@ SetColor <- function(){
 
 function loop() {
 	local entity = null;
-	//Disable Collision
+    local p = null;
+    while (p = Entities.FindByClassname(p, "player")) {
+    //Set Fast Path To 0
+    EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p);
+    }
+
+    //Disable Collision
     //local j = "solid ";
 	local k = "CollisionGroup ";
 	//EntFire("player", "addoutput", j+4);
