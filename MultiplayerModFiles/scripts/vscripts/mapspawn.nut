@@ -3,6 +3,7 @@
 //********************************************************************************************
 CheatsOff <- 0
 ReadyCheatsOff <- 0
+PlayerJoined <- 0
 CurrentPlayerCount <- 0
 GBIsMultiplayer <- 0
 
@@ -36,78 +37,65 @@ SetColor <- function(){
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
             if (!("Colored" in script_scope)){
+                PlayerJoined <- 1
                 CurrentPlayerCount <- CurrentPlayerCount + 1
                 local coj = "say Player " + CurrentPlayerCount + " Joined The Game"
                 coj = coj.tostring()
                 printl("Player " + CurrentPlayerCount + " Joined The Game")
                 SendToConsole(coj)
-                if (CurrentPlayerCount == 16) {
-                    R <- 0, G <- 75,  B <- 0;
+                //Set Random Color If Over 16
+                if (CurrentPlayerCount != 1) {
+                    R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255);
                     ReadyCheatsOff <- 1
-                } else {
-                    if (CurrentPlayerCount != 1) {
-                        R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255);
-                        ReadyCheatsOff <- 1
-                    }
                 }
+                //Set Preset Colors Up To 16
                 if (CurrentPlayerCount == 1) {
                     R <- 255, G <- 255,  B <- 255;
                 }
                 if (CurrentPlayerCount == 2) {
                     R <- 255, G <- 255,  B <- 255;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 3) {
                     R <- 180, G <- 255,  B <- 180;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 4) {
                     R <- 120, G <- 140,  B <- 255;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 5) {
                     R <- 255, G <- 170,  B <- 120;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 6) {
                     R <- 255, G <- 100,  B <- 100;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 7) {
                     R <- 255, G <- 180,  B <- 255;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 8) {
                     R <- 255, G <- 255,  B <- 180;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 9) {
                     R <- 0, G <- 255,  B <- 240;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 10) {
                     R <- 75, G <- 75,  B <- 75;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 11) {
                     R <- 120, G <- 155,  B <- 25;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 12) {
                     R <- 0, G <- 80,  B <- 100;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 13) {
                     R <- 100, G <- 80,  B <- 0;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 14) {
                     R <- 0, G <- 0,  B <- 100;
-                    ReadyCheatsOff <- 1
                 }
                 if (CurrentPlayerCount == 15) {
                     R <- 80, G <- 0,  B <- 0;
-                    ReadyCheatsOff <- 1
+                }
+                if (CurrentPlayerCount == 16) {
+                    R <- 0, G <- 75,  B <- 0;
                 }
                 script_scope.Colored <- true;
                 EntFireByHandle(p, "Color", (R+" "+G+" "+B), 0, null, null);
@@ -120,18 +108,13 @@ SetColor <- function(){
 function loop() {
 	local entity = null;
     local p = null;
-    while (p = Entities.FindByClassname(p, "player")) {
-    //Set Fast Path To 0
-    EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p);
-    }
-
-    //Disable Collision
+//Disable Collision
     //local j = "solid ";
 	local k = "CollisionGroup ";
 	//EntFire("player", "addoutput", j+4);
 	EntFire("player", "addoutput", k+2);
     
-    //sv_cheats 0
+//sv_cheats 0
     //check if ready to turn cheats off
     if (ReadyCheatsOff==1) {
         if (CheatsOff==0) {
@@ -139,6 +122,16 @@ function loop() {
             CheatsOff <- 1
         }
     }
+
+//r_portal_fastpath 0 Fix
+    while (PlayerJoined==1) {
+        while (p = Entities.FindByClassname(p, "player")) {
+            EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
+            PlayerJoined <- 0
+        }
+    } 
+
+
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
