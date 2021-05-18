@@ -1,4 +1,4 @@
-# ***Created By BumpyAHK & Kyleraykbs & VistaX64 & ***
+# ***Created By BumpyAHK & Kyleraykbs & VistaX64 & Wolfe Strider Shooter***
 ***Credits***
 thePineapple (Added Hamachi Support)
 
