@@ -66,3 +66,4 @@ please contact me on discord kyleraykbs#3230 or https://discord.gg/kW3nG6GKpF
 
 2. Q : How do I make sure I have the mod installed
 2. A : Run MultiplayerMod.cmd follow the steps once your at the "Waiting For Players" screen open console and type "maxplayers" if it says maxplayers = 33 the install worked
+windows 7 bad uwu
