@@ -1,4 +1,4 @@
-# ***Created By BumpyAHK & Kyleraykbs & VistaX64 & Vecc***
+# ***Created By BumpyAHK & Kyleraykbs & VistaX64 & ***
 ***Credits***
 thePineapple (Added Hamachi Support)
 
