@@ -14,16 +14,12 @@ This version of the mod simply adds
 7. Custom join message
 8. Support for Windows 10-8.1-8-7-Vista-XP
 
-**We are actively developing this mod check back often for updates**
-**And also please join the discord if you want betas and help https://discord.gg/kW3nG6GKpF**
+**We are currently working on porting this mod to p2ce updates for this version will be scarce until its ported**
+**Expect 
+**And join the discord! If you want betas help or want to talk to the devs https://discord.gg/kW3nG6GKpF**
 
 *future plans*
 https://trello.com/b/3TJJqoQf/portal-2-32-player-mod
-```
-Moved to Trello
-
-**again we are actively developing this mod check back often for updates**
-```
 
 # How To Install
 1. download the Latest Release From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
