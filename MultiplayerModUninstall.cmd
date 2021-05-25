@@ -3,7 +3,7 @@
 rem detect os version and store it in a variable called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 rem check if OS version is windows 10 if not goto "outdatedOS" if it is windows 10 continue as normal
-if "%version%" == "10.01" (cls) else (goto outdatedOS)
+if "%version%" == "10.0" (cls) else (goto outdatedOS)
 
 
 echo [101;93mPLEASE READ ALL OF THE FOLLOWING[0m
