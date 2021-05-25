@@ -1,25 +1,35 @@
-rem imagine not commenting this
 @echo off
+echo [101;93mPLEASE READ ALL OF THE FOLLOWING[0m
+echo.
+echo [93mBefore you uninstall the mod[0m join the [36mdiscord.gg/kW3nG6GKpF[0m.
+echo If you had an issue with our mod please tell us we're trying to make our mod the best
+echo it can be and we would be happy to help. If you didn't have an issue please continue
+echo.
 set /P c=ARE YOU SURE YOU WANT TO [31mUNINSTALL[0m THE MOD? [31my[0m/[92mn[0m:
+if /I "%c%" EQU "N" exit
 cls
+echo [93mAttempting To Close Portal 2...[0m
 taskkill /F /IM portal2.exe
+echo [93mReplacing MPMod Files With Originals...[0m
 xcopy /y /S "%cd%\MultiplayerModFiles\MPML" "%cd%\portal2"
+echo [93mDeleteing Leftover MPMod Files...[0m
 if exist "%cd%\portal2\scripts\vscripts\mapspawn.nut" del /q /f "%cd%\portal2\scripts\vscripts\mapspawn.nut">nul
-ping 127.0.0.1 -n 1 -w 800> nul
 echo %cd%\portal2\scripts\vscripts\mapspawn.nut
 if exist "%cd%\portal2\cfg\collisionfix.cfg" del /q /f "%cd%\portal2\cfg\collisionfix.cfg">nul
-ping 127.0.0.1 -n 1 -w 800> nul
 echo %cd%\portal2\cfg\collisionfix.cfg
 if exist "%cd%\portal2\cfg\multiplayermod.cfg" del /q /f "%cd%\portal2\cfg\multiplayermod.cfg">nul
-ping 127.0.0.1 -n 1 -w 800> nul
 echo %cd%\portal2\cfg\multiplayermod.cfg
-ping 127.0.0.1 -n 1 -w 800> nul
 echo 3 File(s) deleted
-ping 127.0.0.1 -n 1 -w 350> nul
+echo [92mUninstalled Successfully![0m
+timeout 1 >nul
 cls
-echo [32mPLEASE READ ALL OF THE FOLLOWING TEXT[0m (Press Enter)
-pause>nul
-cls
-echo [31mUninstalled mod[0m [96mif your uninstalling because of a bug please report it in the issues section on the github and freind   kyleraykbs#3230 on discord[0m
-echo [93m(To reinstall open MultiplayerMod.cmd)[0m
+echo  [101;93mUnMounted The Mod[0m
+echo.
+echo [93mTo fully uninstall the mod delete the following files:[0m
+echo /MultiplayerModFiles
+echo /MultiplayerMod.cmd
+echo /MultiplayerModUpdater.cmd
+echo /MultiplayerModUninstall.cmd
+echo.
+echo (Press Any Key To Exit)
 pause>nul
