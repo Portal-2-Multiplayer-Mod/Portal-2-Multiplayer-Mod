@@ -41,7 +41,6 @@ SetColor <- function(){
                 PlayerID <- PlayerID.entindex()
                 printl ("Player Id=" + PlayerID)
                 PlayerJoined <- 1
-                PlayerID <- PlayerID + 1
                 local coj = "say Player " + PlayerID + " Joined The Game"
                 coj = coj.tostring()
                 printl("Player " + PlayerID + " Joined The Game")
