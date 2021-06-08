@@ -167,5 +167,4 @@ SetColor <- function(){
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
-DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null);
 }

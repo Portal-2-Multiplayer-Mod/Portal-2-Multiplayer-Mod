@@ -11,7 +11,7 @@ rem detect os version and store it in a variable called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 
 rem stop portal 2
-taskkill /F /IM portal2.exe
+rem taskkill /F /IM portal2.exe
 
 rem clear screen
 cls
@@ -57,7 +57,7 @@ pause >nul
 if exist "mpmod.cfg" del /q /f "mpmod.cfg">nul
 cls
 set lemongod=1
-echo [96m(Type Y if you speedrun, play challange mode, want to get achivments or play singleplayer as keeping the files installed will break some singleplayer features like loading)[0m
+echo [96m(Type Y if you speedrun, play challange mode, want to get achivments or play singleplayer as keeping the files installed will break some singleplayer features like save loading)[0m
 echo [96m(If you play singleplayer I recommend you type Y)[0m
 set /P c=Only [93menable[0m the mod when launched through this file? [92my[0m/[31mn[0m:
 if /I "%c%" EQU "Y" set option1=0
