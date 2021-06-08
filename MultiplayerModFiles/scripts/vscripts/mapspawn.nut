@@ -40,10 +40,20 @@ SetColor <- function(){
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
                 PlayerJoined <- 1
-                local coj = "say Player " + PlayerID + " Joined The Game"
+                local coj = "Player " + PlayerID + " Joined The Game"
                 coj = coj.tostring()
+                //Say Join Message
+                SendToConsole("gameinstructor_enable 1")
+                EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
+                jmessage <- Entities.CreateByClassname("env_instructor_hint")
+                jmessage.__KeyValueFromString("hint_icon_onscreen", "icon_caution");
+                jmessage.__KeyValueFromString("targetname", "nametag");
+                jmessage.__KeyValueFromString("hint_caption", coj);
+                jmessage.__KeyValueFromString("hint_color", "255 200 0");
+                jmessage.__KeyValueFromString("hint_timeout", "3");
+                DoEntFire("!self", "showhint", "", 0.0, null, jmessage)
                 printl("Player " + PlayerID + " Joined The Game")
-                SendToConsole(coj)
+                //SendToConsole("say " + coj)
                 //Set Random Color If Over 16
                 if (PlayerID != 1) {
                     R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255);
