@@ -11,7 +11,7 @@ rem detect os version and store it in a variable called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 
 rem stop portal 2
-rem taskkill /F /IM portal2.exe
+taskkill /F /IM portal2.exe
 
 rem clear screen
 cls

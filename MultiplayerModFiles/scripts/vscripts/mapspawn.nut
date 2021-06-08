@@ -139,9 +139,8 @@ function loop() {
 Entities.First().ConnectOutput("OnUser1", "init");
 DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null);
 command <- Entities.CreateByClassname("point_servercommand")
+DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
 if (GetMapName() == "mp_coop_lobby_3") {
-	DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
-
 	DoEntFire("!self", "Command", "ent_remove_all func_portal_bumper", 0.0, null, command) // 165 entities removed
 } else {
 	printl("map not lobby_3")
