@@ -2,18 +2,6 @@
 ***Credits***
 thePineapple (Added Hamachi Support)
 
-# **Temporary development halt**
-For the next three days I will be halting development the mod however should work as normal
-as long as valve doesnt push another portal 2 update that breaks everything
-for more information and help join the discord https://discord.gg/kW3nG6GKpF and check the
-#announcements channel
-
-
-
-
-
-
-
 # Portal 2 32 Player Mod Lite
 This version of the mod simply adds
 1. MultiplayerMod.cmd (Allows You To Start The Mod)
