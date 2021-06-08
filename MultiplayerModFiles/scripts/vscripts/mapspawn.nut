@@ -39,7 +39,6 @@ SetColor <- function(){
             if (!("Colored" in script_scope)){
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
-                printl ("Player Id=" + PlayerID)
                 PlayerJoined <- 1
                 local coj = "say Player " + PlayerID + " Joined The Game"
                 coj = coj.tostring()
@@ -55,49 +54,49 @@ SetColor <- function(){
                     R <- 255, G <- 255,  B <- 255;
                 }
                 if (PlayerID == 2) {
-                    R <- 255, G <- 255,  B <- 255;
-                }
-                if (PlayerID == 3) {
                     R <- 180, G <- 255,  B <- 180;
                 }
-                if (PlayerID == 4) {
+                if (PlayerID == 3) {
                     R <- 120, G <- 140,  B <- 255;
                 }
-                if (PlayerID == 5) {
+                if (PlayerID == 4) {
                     R <- 255, G <- 170,  B <- 120;
                 }
-                if (PlayerID == 6) {
+                if (PlayerID == 5) {
                     R <- 255, G <- 100,  B <- 100;
                 }
-                if (PlayerID == 7) {
+                if (PlayerID == 6) {
                     R <- 255, G <- 180,  B <- 255;
                 }
-                if (PlayerID == 8) {
+                if (PlayerID == 7) {
                     R <- 255, G <- 255,  B <- 180;
                 }
-                if (PlayerID == 9) {
+                if (PlayerID == 8) {
                     R <- 0, G <- 255,  B <- 240;
                 }
-                if (PlayerID == 10) {
+                if (PlayerID == 9) {
                     R <- 75, G <- 75,  B <- 75;
                 }
-                if (PlayerID == 11) {
+                if (PlayerID == 10) {
                     R <- 120, G <- 155,  B <- 25;
                 }
-                if (PlayerID == 12) {
+                if (PlayerID == 11) {
                     R <- 0, G <- 80,  B <- 100;
                 }
-                if (PlayerID == 13) {
+                if (PlayerID == 12) {
                     R <- 100, G <- 80,  B <- 0;
                 }
-                if (PlayerID == 14) {
+                if (PlayerID == 13) {
                     R <- 0, G <- 0,  B <- 100;
                 }
-                if (PlayerID == 15) {
+                if (PlayerID == 14) {
                     R <- 80, G <- 0,  B <- 0;
                 }
-                if (PlayerID == 16) {
+                if (PlayerID == 15) {
                     R <- 0, G <- 75,  B <- 0;
+                }
+                if (PlayerID == 16) {
+                    R <- 0, G <- 75,  B <- 75;
                 }
                 script_scope.Colored <- true;
                 EntFireByHandle(p, "Color", (R+" "+G+" "+B), 0, null, null);
@@ -164,6 +163,4 @@ SetColor <- function(){
         }
     }
 }
-
-Entities.First().ConnectOutput("OnUser1", "init");
 }
