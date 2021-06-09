@@ -6,6 +6,7 @@ ReadyCheatsOff <- 0
 PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
+ReadyForCustomTargets <- 0
 
 function init(){
     timer <- Entities.CreateByClassname("logic_timer");
@@ -33,6 +34,7 @@ if (GBIsMultiplayer==1) {
 SetColor <- function(){
     local p = null;
     while (p = Entities.FindByClassname(p, "player")){
+        EntFireByHandle(clientcommand, "Command", "-remote_view", 0, p, p)
         loop()
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
@@ -42,18 +44,24 @@ SetColor <- function(){
                 PlayerJoined <- 1
                 local coj = "Player " + PlayerID + " Joined The Game"
                 coj = coj.tostring()
+                PID <- "player" + PlayerID
+                PID <- PID.tostring()
                 //Say Join Message
                 SendToConsole("gameinstructor_enable 1")
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
                 jmessage <- Entities.CreateByClassname("env_instructor_hint")
                 jmessage.__KeyValueFromString("hint_icon_onscreen", "icon_caution");
-                jmessage.__KeyValueFromString("targetname", "nametag");
+                jmessage.__KeyValueFromString("targetname", "jmessagetarget");
                 jmessage.__KeyValueFromString("hint_caption", coj);
                 jmessage.__KeyValueFromString("hint_color", "255 200 0");
                 jmessage.__KeyValueFromString("hint_timeout", "3");
-                DoEntFire("!self", "showhint", "", 0.0, null, jmessage)
+                jmessage.__KeyValueFromString("hint_static", "0");
+                DoEntFire("jmessagetarget", "showhint", "", 0.0, null, p)
                 printl("Player " + PlayerID + " Joined The Game")
-                //SendToConsole("say " + coj)
+                //Assign Playerdata
+                if (ReadyForCustomTargets == 1) {
+                    p.__KeyValueFromString("targetname", PID);
+                }
                 //Set Random Color If Over 16
                 if (PlayerID != 1) {
                     R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255);
@@ -65,6 +73,7 @@ SetColor <- function(){
                 }
                 if (PlayerID == 2) {
                     R <- 180, G <- 255,  B <- 180;
+                    ReadyForCustomTargets <- 1
                 }
                 if (PlayerID == 3) {
                     R <- 120, G <- 140,  B <- 255;
@@ -119,6 +128,7 @@ SetColor <- function(){
 function loop() {
 	local entity = null;
     local p = null;
+    SendToConsole("-remote_view")
 //Disable Collision
     //local j = "solid ";
 	local k = "CollisionGroup ";
