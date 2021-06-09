@@ -55,8 +55,6 @@ SetColor <- function(){
                 jmessage.__KeyValueFromString("hint_caption", coj);
                 jmessage.__KeyValueFromString("hint_color", "255 200 0");
                 jmessage.__KeyValueFromString("hint_timeout", "3");
-                jmessage.__KeyValueFromString("hint_static", "0");
-                DoEntFire("jmessagetarget", "showhint", "", 0.0, null, p)
                 printl("Player " + PlayerID + " Joined The Game")
                 //Assign Playerdata
                 if (ReadyForCustomTargets == 1) {
