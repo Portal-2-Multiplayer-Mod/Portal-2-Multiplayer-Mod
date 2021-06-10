@@ -1,9 +1,17 @@
 @echo off
+set /p mpmodver=<mpmodver.txt
+cls
 echo Checking OS Version...
 rem detect os version and store it in a variable called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 if "%version%" == "10.0" (cls) else (goto outdatedOS)
 cls
+echo [31mDon't[0m close the [94mUpdater[0m until it finishes
+echo [33mWARNING:[0m [93mIf you run the updater alot it doesnt mean there are new updates it just means your redownloading it[0m
+echo [Current Version: [95m%mpmodver%[0m]
+echo.
+echo Press [92m[ENTER][0m to start the update!
+pause>nul
 echo Deleting Old Files...
 del /s MultiplayerModUninstall.cmd
 del /s MultiplayerMod.cmd
@@ -33,6 +41,11 @@ echo Running Update Specific Code...
 call "%cd%\update.bat"
 echo Code Ran!
 cls
+echo Updater has [92mCompleted[0m!
+echo [[93mCurrent Version:[0m [95m%mpmodver%[0m]
+echo.
+echo Press [92m[ENTER][0m to [91mclose[0m!
+pause >nul
 exit
 :outdatedOS
 color 4
