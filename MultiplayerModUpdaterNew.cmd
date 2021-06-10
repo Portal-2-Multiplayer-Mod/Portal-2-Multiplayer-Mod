@@ -42,6 +42,7 @@ call "%cd%\update.bat"
 echo Code Ran!
 cls
 del /s update.bat
+cls
 echo Updater has [92mCompleted[0m!
 echo [[93mCurrent Version:[0m [95m%mpmodver%[0m]
 echo.
