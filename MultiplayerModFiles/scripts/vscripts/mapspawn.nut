@@ -7,6 +7,7 @@ PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
+jmessage <- Entities.CreateByClassname("env_instructor_hint")
 
 function init(){
     timer <- Entities.CreateByClassname("logic_timer");
@@ -49,13 +50,11 @@ SetColor <- function(){
                 //Say Join Message
                 SendToConsole("gameinstructor_enable 1")
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
-                jmessage <- Entities.CreateByClassname("env_instructor_hint")
                 jmessage.__KeyValueFromString("hint_icon_onscreen", "icon_caution");
                 jmessage.__KeyValueFromString("targetname", "jmessagetarget");
                 jmessage.__KeyValueFromString("hint_caption", coj);
                 jmessage.__KeyValueFromString("hint_color", "255 200 0");
                 jmessage.__KeyValueFromString("hint_timeout", "3");
-                jmessage.__KeyValueFromString("hint_static", "0");
                 DoEntFire("jmessagetarget", "showhint", "", 0.0, null, p)
                 printl("Player " + PlayerID + " Joined The Game")
                 //Assign Playerdata
