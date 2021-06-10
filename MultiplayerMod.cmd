@@ -34,8 +34,8 @@ rem set variable to default
 set ip_address_string="IPv4 Address"
 set windowed=
 
-rem check hamachi adapter
-set hamachi_adaptor="Ethernet adapter Hamachi:"
+rem check hamatchi adapter
+set hamatchi_adaptor="Ethernet adapter Hamachi:"
 
 rem check if OS version is windows 10 if not goto "outdatedOS" if it is windows 10 continue as normal
 if "%version%" == "10.0" (cls) else (goto outdatedOS)
@@ -88,15 +88,15 @@ echo replace "theipthehostgaveyou" with the ip the host gave you
 echo [92mStep 3.[0m : Press [[33mENTER[0m] and have fun!
 echo [93m==============================================[0m
 
-rem check for hamachi adapter
-for /f "usebackq tokens=1,2,3" %%h in (`ipconfig ^| findstr /c:%hamachi_adaptor%`) do goto hamachi
+rem check for hamatchi adapter
+for /f "usebackq tokens=1,2,3" %%h in (`ipconfig ^| findstr /c:%hamatchi_adaptor%`) do goto hamatchi
 
-rem if no hamachi adapter this runs
+rem if no hamatchi adapter this runs
 for /f "usebackq tokens=1,2,3" %%h in (`ipconfig ^| findstr /c:%ip_address_string%`) do goto default
 
-:hamachi
-echo The [1mHamachi[0m server [35mip[0m is:
-for /f "usebackq tokens=2 delims=:" %%f in (`ipconfig ^| findstr /c:%ip_address_string%`) do echo [96mHAMACHI[0m [44mIP[0m:[35m%%f[0m & goto default_w_h
+:hamatchi
+echo The [1mHamatchi[0m server [35mip[0m is:
+for /f "usebackq tokens=2 delims=:" %%f in (`ipconfig ^| findstr /c:%ip_address_string%`) do echo Hamatchi[44mIP[0m:[35m%%f[0m & goto default_w_h
 
 :default_w_h
 echo The [1mlocal/lan[0m server [35mip[0m is:
