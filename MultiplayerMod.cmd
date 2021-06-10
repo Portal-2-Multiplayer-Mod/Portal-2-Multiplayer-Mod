@@ -1,11 +1,13 @@
 :start
 @echo off
 
+set /p mpmodver=<mpmodver.data
+
 del /s update.bat
 
 set lemongod=0
 
-title Portal 2 32 Player Mod Lite - BumpyAHK Kyleraykbs KonradCzerw/Vista
+title Portal 2 32 Player Mod Lite %mpmodver% - BumpyAHK Kyleraykbs KonradCzerw/Vista
 
 rem detect os version and store it in a variable called "version"
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j

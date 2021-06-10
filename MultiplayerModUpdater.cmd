@@ -1,5 +1,5 @@
 @echo off
-set /p mpmodver=<mpmodver.txt
+set /p mpmodver=<mpmodver.data
 cls
 echo Checking OS Version...
 rem detect os version and store it in a variable called "version"
