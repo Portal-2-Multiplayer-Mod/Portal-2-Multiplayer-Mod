@@ -31,6 +31,7 @@ echo [92mUninstalled Successfully![0m
 timeout 1 >nul
 cls
 echo  [101;93mUnMounted The Mod[0m
+echo (The game will run normally)
 echo.
 echo [93mTo fully uninstall the mod delete the following files:[0m
 echo /MultiplayerModFiles
