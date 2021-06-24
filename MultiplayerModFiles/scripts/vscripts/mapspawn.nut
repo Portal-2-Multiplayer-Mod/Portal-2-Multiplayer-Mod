@@ -225,8 +225,8 @@ DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
 if (GetMapName() == "mp_coop_lobby_3") {
     //Remove Entities
 	DoEntFire("!self", "Command", "ent_remove_all func_portal_bumper", 0.0, null, command) // 165 entities removed
-    DoEntFire("!self", "Command", "dlc_room_fall_push_right", 0.0, null, command) // 1 entities removed
-    DoEntFire("!self", "Command", "dlc_room_fall_push_left", 0.0, null, command) // 1 entities removed
+    DoEntFire("!self", "Command", "ent_remove dlc_room_fall_push_right", 0.0, null, command) // 1 entities removed
+    DoEntFire("!self", "Command", "ent_remove dlc_room_fall_push_left", 0.0, null, command) // 1 entities removed
 } else {
 	printl("map not lobby_3")
 }
