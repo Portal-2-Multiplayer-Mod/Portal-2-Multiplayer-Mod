@@ -43,15 +43,19 @@ function init(){
     AddCoopCreditsName("Sheuron")
     AddCoopCreditsName("SuperSpeed")
     AddCoopCreditsName("goldengamer")
+    AddCoopCreditsName("JDWMGB")
     AddCoopCreditsName("Portalboy")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("My supportive group of freinds!")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("")
+    AddCoopCreditsName("Sure | Nick/KingKong")
     AddCoopCreditsName("Craig is love Craig is life | -WOLF BATTLER ")
-    AddCoopCreditsName("Bunger Bunger Bunger | Ayden")
+    AddCoopCreditsName("Bunger from Bugsnax | Ayden")
+    AddCoopCreditsName("Bananabread | KaiserInfinitus")
     AddCoopCreditsName("(one of my most kind friends) Jazzy/jasmine")
     AddCoopCreditsName("David/Mr. E")
+    AddCoopCreditsName("")
     AddCoopCreditsName("")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("Thank you all so so much!!!")
@@ -72,7 +76,6 @@ try {
 } catch(exception) {
     GBIsMultiplayer <- 0
 }
-
 
 if (GBIsMultiplayer==1) {
 //Multiplayer Code
@@ -105,6 +108,7 @@ SetColor <- function(){
                 //Assign Playerdata
                 if (ReadyForCustomTargets == 1) {
                     p.__KeyValueFromString("targetname", PID);
+                //VeiwControl Teleport
                 }
                 //Set Random Color If Over 16
                 if (PlayerID != 1) {
@@ -170,6 +174,20 @@ SetColor <- function(){
 }
 
 function loop() {
+    //Teleport All Players To Art Therapy
+    local vectorE;
+    vectorE = Vector(3201, -1152, 1272);
+    local ent = null;
+    while(ent = Entities.FindByClassnameWithin(ent, "player", vectorE, 150)) 
+    {
+        local ent2 = null;
+        while(ent2 = Entities.FindByClassname(ent2, "player")) {
+            ent2.SetOrigin(Vector(3198, -1235, 858))
+            ent2.SetAngles(89.000008, -1.708179, -0.000003)
+            print("Player " + ent2 + "Teleported To Art Therapy")
+        }
+    }    
+//Disable Remote View
 	local entity = null;
     local p = null;
     SendToConsole("-remote_view")
@@ -203,8 +221,12 @@ Entities.First().ConnectOutput("OnUser1", "init");
 DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null);
 command <- Entities.CreateByClassname("point_servercommand")
 DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
+//mp_coop_lobby_3 Specific Code
 if (GetMapName() == "mp_coop_lobby_3") {
+    //Remove Entities
 	DoEntFire("!self", "Command", "ent_remove_all func_portal_bumper", 0.0, null, command) // 165 entities removed
+    DoEntFire("!self", "Command", "dlc_room_fall_push_right", 0.0, null, command) // 1 entities removed
+    DoEntFire("!self", "Command", "dlc_room_fall_push_left", 0.0, null, command) // 1 entities removed
 } else {
 	printl("map not lobby_3")
 }
