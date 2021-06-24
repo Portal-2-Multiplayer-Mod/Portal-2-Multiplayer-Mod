@@ -7,15 +7,60 @@ PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
-jmessage <- Entities.CreateByClassname("env_instructor_hint")
 
 function init(){
+    jmessage <- Entities.CreateByClassname("env_instructor_hint")
     timer <- Entities.CreateByClassname("logic_timer");
     timer.__KeyValueFromString("targetname", "timer");
     EntFireByHandle(timer, "AddOutput", "RefireTime 0.1", 0, null, null);
     EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null);
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:SetColor():0:-1", 0, null, null);
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
+    //Add Teams Name To Credits
+    AddCoopCreditsName("Portal 2 Multiplayer Mod: Team")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("kyleraykbs | Scripting + Team Lead")
+    AddCoopCreditsName("Bumpy | Scripting + Script Theory")
+    AddCoopCreditsName("Vista | Reverse Engineering")
+    AddCoopCreditsName("Wolfe Strider Shooter | Scripting Help")
+    AddCoopCreditsName("Nanoman2525 | Mapping + Command Help")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Portal 2 Multiplayer Mod: Contributers")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Darnias | Code Base")
+    AddCoopCreditsName("The Pineapple | Hamachi support")
+    AddCoopCreditsName("SlingEXE | Optimisations")
+    AddCoopCreditsName("Blub/Vecc | Code Cleanup + Commenting")
+    AddCoopCreditsName("AngelPuzzle | Translations")
+    AddCoopCreditsName("MicrosoftWindows | Windows 11 ISO")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Portal 2 Multiplayer Mod: Special Thanks")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("sear")
+    AddCoopCreditsName("Trico_Everfire")
+    AddCoopCreditsName("hulkstar")
+    AddCoopCreditsName("neck")
+    AddCoopCreditsName("Sheuron")
+    AddCoopCreditsName("SuperSpeed")
+    AddCoopCreditsName("goldengamer")
+    AddCoopCreditsName("Portalboy")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("My supportive group of freinds!")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("Craig is love Craig is life | -WOLF BATTLER ")
+    AddCoopCreditsName("Bunger Bunger Bunger | Ayden")
+    AddCoopCreditsName("(one of my most kind friends) Jazzy/jasmine")
+    AddCoopCreditsName("David/Mr. E")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Thank you all so so much!!!")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("Valve Credits")
+    AddCoopCreditsName("--------------------------")
     //Create An Entity That Sends A Client Command
     clientcommand <- Entities.CreateByClassname("point_clientcommand");
 }
