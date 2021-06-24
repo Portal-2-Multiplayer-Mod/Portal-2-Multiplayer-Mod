@@ -20,6 +20,9 @@ This version of the mod simply adds
 *future plans*
 https://trello.com/b/3TJJqoQf/portal-2-32-player-mod
 
+# Installation & Use Video
+https://www.youtube.com/watch?v=xy9ltSXRRC0
+
 # How To Install
 1. download the Latest Release From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
 2. Go to your games library and find Portal 2
