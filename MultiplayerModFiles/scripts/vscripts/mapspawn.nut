@@ -227,7 +227,7 @@ function ArtTherapyLobby() {
     while(LCTent = Entities.FindByClassnameWithin(LCTent, "player", vectorLCT, 30)) {
         print("Teleported Player To Art Therapy")
         LCTent.SetOrigin(Vector(3194, -1069, 1676))
-        LCTent.SetAngles(Vector(0, 0, 0))
+        LCTent.SetAngles(0, 0, 0)
     }
 //Art Therapy Right Chute Enabler
     local vectorEER;
@@ -249,7 +249,7 @@ function ArtTherapyLobby() {
     while(RCTent = Entities.FindByClassnameWithin(RCTent, "player", vectorRCT, 30)) {
         print("Teleported Player To Art Therapy")
         RCTent.SetOrigin(Vector(3191, -1228, 1682))
-        RCTent.SetAngles(Vector(0, 0, 0))
+        RCTent.SetAngles(0, 0, 0)
     }
 //Disable Art Therapy Chutes
     local vectorE;
@@ -270,7 +270,6 @@ function ArtTherapyLobby() {
     while(AEent = Entities.FindByClassnameWithin(AEent, "player", vectorEx, 30)) 
     {
         AEent.SetOrigin(Vector(3919, 3352, 158))
-        AEent.SetAngles(Vector(0, 0, 0))
     } 
 }
 
