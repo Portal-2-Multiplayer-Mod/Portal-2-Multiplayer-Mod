@@ -17,24 +17,26 @@ function init(){
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:SetColor():0:-1", 0, null, null);
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
     //Add Teams Name To Credits
-    AddCoopCreditsName("Portal 2 Multiplayer Mod: Team")
+    AddCoopCreditsName("Portal 2 Multiplayer Mod: Credits")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Multiplayer Mod: Team")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("kyleraykbs | Scripting + Team Lead")
     AddCoopCreditsName("Bumpy | Scripting + Script Theory")
     AddCoopCreditsName("Vista | Reverse Engineering")
-    AddCoopCreditsName("Wolfe Strider Shooter | Scripting Help")
-    AddCoopCreditsName("Nanoman2525 | Mapping + Command Help")
+    AddCoopCreditsName("Wolfe Strider Shooter | Scripting")
+    AddCoopCreditsName("Nanoman2525 | Mapping + Entity Help")
     AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Portal 2 Multiplayer Mod: Contributers")
+    AddCoopCreditsName("Multiplayer Mod: Contributers")
     AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Darnias | Code Base")
+    AddCoopCreditsName("Darnias | Jumpstarter Code")
     AddCoopCreditsName("The Pineapple | Hamachi support")
     AddCoopCreditsName("SlingEXE | Optimisations")
     AddCoopCreditsName("Blub/Vecc | Code Cleanup + Commenting")
     AddCoopCreditsName("AngelPuzzle | Translations")
     AddCoopCreditsName("MicrosoftWindows | Windows 11 ISO")
     AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Portal 2 Multiplayer Mod: Special Thanks")
+    AddCoopCreditsName("Multiplayer Mod: Special Thanks")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("sear")
     AddCoopCreditsName("Trico_Everfire")
@@ -46,24 +48,24 @@ function init(){
     AddCoopCreditsName("JDWMGB")
     AddCoopCreditsName("Portalboy")
     AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("My supportive group of freinds!")
+    AddCoopCreditsName("And my supportive group of freinds!")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("")
-    AddCoopCreditsName("Sure | Nick/KingKong")
-    AddCoopCreditsName("Craig is love Craig is life | -WOLF BATTLER ")
+    AddCoopCreditsName("Nick/KingKong")
+    AddCoopCreditsName("Latte/Luna")
+    AddCoopCreditsName("Craig is love Craig is life | WOLF BATTLER ")
     AddCoopCreditsName("Bunger from Bugsnax | Ayden")
     AddCoopCreditsName("Bananabread | KaiserInfinitus")
-    AddCoopCreditsName("(one of my most kind friends) Jazzy/jasmine")
+    AddCoopCreditsName("Jazzy/jasmine")
     AddCoopCreditsName("David/Mr. E")
-    AddCoopCreditsName("")
     AddCoopCreditsName("")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("Thank you all so so much!!!")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("")
     AddCoopCreditsName("")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("Valve Credits")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Valve: Credits")
     AddCoopCreditsName("--------------------------")
     //Create An Entity That Sends A Client Command
     clientcommand <- Entities.CreateByClassname("point_clientcommand");
@@ -222,7 +224,7 @@ function ArtTherapyLobby() {
     } 
 //Art Therapy Left Chute Teleporter
     local vectorLCT;
-    vectorLCT = Vector(5729, 3336, 442);
+    vectorLCT = Vector(5729, 3336, 1005);
     local LCTent = null;
     while(LCTent = Entities.FindByClassnameWithin(LCTent, "player", vectorLCT, 30)) {
         print("Teleported Player To Art Therapy")
