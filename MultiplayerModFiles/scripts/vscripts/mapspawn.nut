@@ -174,19 +174,8 @@ SetColor <- function(){
 }
 
 function loop() {
-    //Teleport All Players To Art Therapy
-    local vectorE;
-    vectorE = Vector(3201, -1152, 1272);
-    local ent = null;
-    while(ent = Entities.FindByClassnameWithin(ent, "player", vectorE, 150)) 
-    {
-        local ent2 = null;
-        while(ent2 = Entities.FindByClassname(ent2, "player")) {
-            ent2.SetOrigin(Vector(3198, -1235, 858))
-            ent2.SetAngles(89.000008, -1.708179, -0.000003)
-            print("Player " + ent2 + "Teleported To Art Therapy")
-        }
-    }    
+//Run All Required Loops
+    ArtTherapyLobby()
 //Disable Remote View
 	local entity = null;
     local p = null;
@@ -213,8 +202,76 @@ function loop() {
             PlayerJoined <- 0
         }
     } 
+}
 
 
+
+function ArtTherapyLobby() {
+//Art Therapy Left Chute Enabler
+    local vectorEEL;
+    vectorEEL = Vector(5727, 3336, -441);
+    local EELent = null;
+    while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) 
+    {
+        print("Enabled Left Chute")
+        local LCatEn = null;
+        while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
+        DoEntFire("!self", "enable", "", 0.0, null, LCatEn) 
+        DoEntFire("!self", "trigger", "", 0.0, null, LCatEn) 
+        }
+    } 
+//Art Therapy Left Chute Teleporter
+    local vectorLCT;
+    vectorLCT = Vector(5729, 3336, 442);
+    local LCTent = null;
+    while(LCTent = Entities.FindByClassnameWithin(LCTent, "player", vectorLCT, 30)) {
+        print("Teleported Player To Art Therapy")
+        LCTent.SetOrigin(Vector(3194, -1069, 1676))
+        LCTent.SetAngles(Vector(0, 0, 0))
+    }
+//Art Therapy Right Chute Enabler
+    local vectorEER;
+    vectorEER = Vector(5727, 3192, -441);
+    local EERent = null;
+    while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) 
+    {
+        print("Enabled Left Chute")
+        local RCatEn = null;
+        while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
+        DoEntFire("!self", "enable", "", 0.0, null, RCatEn) 
+        DoEntFire("!self", "trigger", "", 0.0, null, RCatEn) 
+        }
+    } 
+//Art Therapy Right Chute Teleporter
+    local vectorRCT;
+    vectorRCT = Vector(5727, 3180, 1005);
+    local RCTent = null;
+    while(RCTent = Entities.FindByClassnameWithin(RCTent, "player", vectorRCT, 30)) {
+        print("Teleported Player To Art Therapy")
+        RCTent.SetOrigin(Vector(3191, -1228, 1682))
+        RCTent.SetAngles(Vector(0, 0, 0))
+    }
+//Disable Art Therapy Chutes
+    local vectorE;
+    vectorE = Vector(3201, -1152, 1272);
+    local Aent = null;
+    while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) 
+    {
+        local LCatDis = null;
+        while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
+        DoEntFire("!self", "enable", "", 0.0, null, LCatDis) 
+        DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
+        }
+    }   
+//Teleport Exiting Player Out Of Art Therapy
+    local vectorEx;
+    vectorEx = Vector(3584, -1669, 466);
+    local AEent = null;
+    while(AEent = Entities.FindByClassnameWithin(AEent, "player", vectorEx, 30)) 
+    {
+        AEent.SetOrigin(Vector(3919, 3352, 158))
+        AEent.SetAngles(Vector(0, 0, 0))
+    } 
 }
 
 Entities.First().ConnectOutput("OnUser1", "init");
