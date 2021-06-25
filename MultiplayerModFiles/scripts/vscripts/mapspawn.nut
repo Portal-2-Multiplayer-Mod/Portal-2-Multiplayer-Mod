@@ -259,8 +259,15 @@ function ArtTherapyLobby() {
     {
         local LCatDis = null;
         while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
+        print("Disabled Right Chute")
         DoEntFire("!self", "enable", "", 0.0, null, LCatDis) 
         DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
+        }
+        local RCatDis = null;
+        while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
+        print("Disabled Right Chute")
+        DoEntFire("!self", "enable", "", 0.0, null, RCatDis) 
+        DoEntFire("!self", "trigger", "", 0.0, null, RCatDis)
         }
     }   
 //Teleport Exiting Player Out Of Art Therapy
