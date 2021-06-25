@@ -218,8 +218,8 @@ function ArtTherapyLobby() {
         print("Enabled Left Chute")
         local LCatEn = null;
         while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
-        DoEntFire("!self", "enable", "", 0.0, null, LCatEn) 
-        DoEntFire("!self", "trigger", "", 0.0, null, LCatEn) 
+            DoEntFire("!self", "enable", "", 0.0, null, LCatEn) 
+            DoEntFire("!self", "trigger", "", 0.0, null, LCatEn) 
         }
     } 
 //Art Therapy Left Chute Teleporter
@@ -240,8 +240,8 @@ function ArtTherapyLobby() {
         print("Enabled Left Chute")
         local RCatEn = null;
         while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
-        DoEntFire("!self", "enable", "", 0.0, null, RCatEn) 
-        DoEntFire("!self", "trigger", "", 0.0, null, RCatEn) 
+            DoEntFire("!self", "enable", "", 0.0, null, RCatEn) 
+            DoEntFire("!self", "trigger", "", 0.0, null, RCatEn) 
         }
     } 
 //Art Therapy Right Chute Teleporter
@@ -262,14 +262,14 @@ function ArtTherapyLobby() {
         local LCatDis = null;
         while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
         print("Disabled Right Chute")
-        DoEntFire("!self", "enable", "", 0.0, null, LCatDis) 
-        DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
+            DoEntFire("!self", "enable", "", 0.0, null, LCatDis) 
+            DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
         }
         local RCatDis = null;
         while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
-        print("Disabled Right Chute")
-        DoEntFire("!self", "enable", "", 0.0, null, RCatDis) 
-        DoEntFire("!self", "trigger", "", 0.0, null, RCatDis)
+            print("Disabled Right Chute")
+            DoEntFire("!self", "enable", "", 0.0, null, RCatDis) 
+            DoEntFire("!self", "trigger", "", 0.0, null, RCatDis)
         }
     }   
 //Teleport Exiting Player Out Of Art Therapy
