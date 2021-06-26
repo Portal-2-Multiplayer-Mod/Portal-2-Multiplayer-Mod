@@ -7,39 +7,11 @@ PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
+command <- Entities.CreateByClassname("point_servercommand")
 DedicatedServerOneTimeRun <- 1
 
+//Is Dedicated Server
 DedicatedServer <- 0
-function DedicatedServer() {
-    if (DedicatedServerOneTimeRun==1) {
-        //Enable Team Building Course
-        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
-        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
-        //Enable TBeam Course
-        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_tbeam"))
-        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_tbeam"))
-        //Enable Paint Course
-        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_paint"))
-        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_paint"))
-        //Enable Fling Course
-        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_fling"))
-        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_fling"))
-        //Enable Extra Course
-        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_extra"))
-        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_extra"))
-        //Enable All Finished Course
-        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_all_finished"))
-        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_all_finished"))
-        DedicatedServerOneTimeRun <- 0
-    }
-            //Enable Music
-        DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null,"@music_lobby_7"))
-    local p = null;
-    local MainPlayer = null
-    while(MainPlayer = Entities.FindByName(MainPlayer, "blue")) {
-        MainPlayer.SetOrigin(Vector(4096,4096,4096))
-    }
-}
 
 function init(){
     jmessage <- Entities.CreateByClassname("env_instructor_hint")
@@ -49,59 +21,6 @@ function init(){
     EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null);
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:SetColor():0:-1", 0, null, null);
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
-    //Add Teams Name To Credits
-    AddCoopCreditsName("Portal 2 Multiplayer Mod: Credits")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Multiplayer Mod: Team")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("kyleraykbs | Scripting + Team Lead")
-    AddCoopCreditsName("Bumpy | Scripting + Script Theory")
-    AddCoopCreditsName("Vista | Reverse Engineering")
-    AddCoopCreditsName("Wolfe Strider Shooter | Scripting")
-    AddCoopCreditsName("Nanoman2525 | Mapping + Entity Help")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Multiplayer Mod: Contributers")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Darnias | Jumpstarter Code")
-    AddCoopCreditsName("The Pineapple | Hamachi support")
-    AddCoopCreditsName("SlingEXE | Optimisations")
-    AddCoopCreditsName("Blub/Vecc | Code Cleanup + Commenting")
-    AddCoopCreditsName("AngelPuzzle | Translations")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Multiplayer Mod: Special Thanks")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("MicrosoftWindows")
-    AddCoopCreditsName("sear")
-    AddCoopCreditsName("Trico_Everfire")
-    AddCoopCreditsName("Brawler")
-    AddCoopCreditsName("iambread")
-    AddCoopCreditsName("hulkstar")
-    AddCoopCreditsName("neck")
-    AddCoopCreditsName("Sheuron")
-    AddCoopCreditsName("SuperSpeed")
-    AddCoopCreditsName("goldengamer")
-    AddCoopCreditsName("JDWMGB")
-    AddCoopCreditsName("Portalboy")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("And my supportive group of friends!")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("Nick/KingKong")
-    AddCoopCreditsName("Latte/Luna")
-    AddCoopCreditsName("Craig is love Craig is life | WOLF BATTLER ")
-    AddCoopCreditsName("Bunger from Bugsnax | Ayden")
-    AddCoopCreditsName("Bananabread | KaiserInfinitus")
-    AddCoopCreditsName("Jazzy/jasmine")
-    AddCoopCreditsName("David/Mr. E")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Thank you all so so much!!!")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Valve: Credits")
-    AddCoopCreditsName("--------------------------")
     //Create An Entity That Sends A Client Command
     clientcommand <- Entities.CreateByClassname("point_clientcommand");
 }
@@ -243,8 +162,14 @@ function loop() {
         }
     } 
 }
-
-
+DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
+//mp_coop_lobby_3 Specific Code
+if (GetMapName() == "mp_coop_lobby_3") {
+    //Remove Entities
+	DoEntFire("!self", "Command", "ent_remove_all func_portal_bumper", 0.0, null, command) // 165 entities removed
+    DoEntFire("!self", "Command", "ent_remove dlc_room_fall_push_right", 0.0, null, command) // 1 entities removed
+    DoEntFire("!self", "Command", "ent_remove dlc_room_fall_push_left", 0.0, null, command) // 1 entities removed
+}
 
 function ArtTherapyLobby() {
 //Art Therapy Left Chute Enabler
@@ -320,22 +245,102 @@ function ArtTherapyLobby() {
     } 
 }
 
-Entities.First().ConnectOutput("OnUser1", "init");
-DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null);
-command <- Entities.CreateByClassname("point_servercommand")
-DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
-//mp_coop_lobby_3 Specific Code
-if (GetMapName() == "mp_coop_lobby_3") {
-    //Remove Entities
-	DoEntFire("!self", "Command", "ent_remove_all func_portal_bumper", 0.0, null, command) // 165 entities removed
-    DoEntFire("!self", "Command", "ent_remove dlc_room_fall_push_right", 0.0, null, command) // 1 entities removed
-    DoEntFire("!self", "Command", "ent_remove dlc_room_fall_push_left", 0.0, null, command) // 1 entities removed
-} else {
-	printl("map not lobby_3")
+//Dedicated Server Code
+function DedicatedServer() {
+    if (DedicatedServerOneTimeRun==1) {
+        //Enable Team Building Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
+        //Enable TBeam Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_tbeam"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_tbeam"))
+        //Enable Paint Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_paint"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_paint"))
+        //Enable Fling Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_fling"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_fling"))
+        //Enable Extra Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_extra"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_extra"))
+        //Enable All Finished Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_all_finished"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_all_finished"))
+        DedicatedServerOneTimeRun <- 0
+    }
+            //Enable Music
+        DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null,"@music_lobby_7"))
+    local p = null;
+    local MainPlayer = null
+    while(MainPlayer = Entities.FindByName(MainPlayer, "blue")) {
+        MainPlayer.SetOrigin(Vector(4096,4096,4096))
+    }
+}
+
+//mp_coop_credits Specific Code
+if (GetMapName() == "mp_coop_credits") {
+    //Add Teams Name To Credits
+    AddCoopCreditsName("Portal 2 Multiplayer Mod: Credits")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Multiplayer Mod: Team")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("kyleraykbs | Scripting + Team Lead")
+    AddCoopCreditsName("Bumpy | Scripting + Script Theory")
+    AddCoopCreditsName("Vista | Reverse Engineering")
+    AddCoopCreditsName("Wolfe Strider Shooter | Scripting")
+    AddCoopCreditsName("Nanoman2525 | Mapping + Entity Help")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Multiplayer Mod: Contributers")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Darnias | Jumpstarter Code")
+    AddCoopCreditsName("The Pineapple | Hamachi support")
+    AddCoopCreditsName("SlingEXE | Optimisations")
+    AddCoopCreditsName("Blub/Vecc | Code Cleanup + Commenting")
+    AddCoopCreditsName("AngelPuzzle | Translations")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Multiplayer Mod: Special Thanks")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("MicrosoftWindows")
+    AddCoopCreditsName("sear")
+    AddCoopCreditsName("Trico_Everfire")
+    AddCoopCreditsName("Brawler")
+    AddCoopCreditsName("iambread")
+    AddCoopCreditsName("hulkstar")
+    AddCoopCreditsName("neck")
+    AddCoopCreditsName("Sheuron")
+    AddCoopCreditsName("SuperSpeed")
+    AddCoopCreditsName("goldengamer")
+    AddCoopCreditsName("JDWMGB")
+    AddCoopCreditsName("Portalboy")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("And my supportive group of friends!")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("Nick/KingKong")
+    AddCoopCreditsName("Latte/Luna")
+    AddCoopCreditsName("Craig is love Craig is life | WOLF BATTLER ")
+    AddCoopCreditsName("Bunger from Bugsnax | Ayden")
+    AddCoopCreditsName("Bananabread | KaiserInfinitus")
+    AddCoopCreditsName("Jazzy/jasmine")
+    AddCoopCreditsName("David/Mr. E")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Thank you all so so much!!!")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("")
+    AddCoopCreditsName("--------------------------")
+    AddCoopCreditsName("Valve: Credits")
+    AddCoopCreditsName("--------------------------")
 }
 DoEntFire("!self", "Kill", "", 0.0, null, command)
-} else {
+
+//Run init Code
+Entities.First().ConnectOutput("OnUser1", "init");
+DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null);
+
 //Singleplayer Code
+} else {
 printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
 GlobalRunSingleplayer <- 1
 
