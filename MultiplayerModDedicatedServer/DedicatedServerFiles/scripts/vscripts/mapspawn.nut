@@ -125,7 +125,7 @@ SetColor <- function(){
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
                 PlayerJoined <- 1
-                local coj = "Player " + PlayerID + " #game_player_joined_game Joined The Game"
+                local coj = "Player " + PlayerID + " Joined The Game"
                 coj = coj.tostring()
                 PID <- "player" + PlayerID
                 PID <- PID.tostring()
@@ -206,6 +206,7 @@ SetColor <- function(){
         }
     }
 }
+
 
 function loop() {
     if (DedicatedServer==1) {
