@@ -7,7 +7,6 @@ PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
-command <- Entities.CreateByClassname("point_servercommand")
 DedicatedServerOneTimeRun <- 1
 
 //Is Dedicated Server
@@ -130,14 +129,11 @@ SetColor <- function(){
 
 
 function loop() {
-    if (DedicatedServer==1) {
-        DedicatedServer()
-    }
 //Run All Required Loops
     ArtTherapyLobby()
-    if (DedicatedServer==1) {
-        DedicatedServer()
-    }
+    //if (DedicatedServer==1) {
+        DedicatedServerFunc()
+    //}
 //Disable Collision
     //local j = "solid ";
 	local k = "CollisionGroup ";
@@ -162,6 +158,9 @@ function loop() {
         }
     } 
 }
+
+//Enable sv_cheats Temorarily
+command <- Entities.CreateByClassname("point_servercommand")
 DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
 //mp_coop_lobby_3 Specific Code
 if (GetMapName() == "mp_coop_lobby_3") {
@@ -246,7 +245,7 @@ function ArtTherapyLobby() {
 }
 
 //Dedicated Server Code
-function DedicatedServer() {
+function DedicatedServerFunc() {
     if (DedicatedServerOneTimeRun==1) {
         //Enable Team Building Course
         DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
@@ -271,9 +270,10 @@ function DedicatedServer() {
             //Enable Music
         DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null,"@music_lobby_7"))
     local p = null;
-    local MainPlayer = null
-    while(MainPlayer = Entities.FindByName(MainPlayer, "blue")) {
-        MainPlayer.SetOrigin(Vector(4096,4096,4096))
+    while (p = Entities.FindByClassname(p, "player")) {
+        if (p.entindex()==1) {
+            p.SetOrigin(Vector(4096,4096,4096))
+        }
     }
 }
 
@@ -333,7 +333,6 @@ if (GetMapName() == "mp_coop_credits") {
     AddCoopCreditsName("Valve: Credits")
     AddCoopCreditsName("--------------------------")
 }
-DoEntFire("!self", "Kill", "", 0.0, null, command)
 
 //Run init Code
 Entities.First().ConnectOutput("OnUser1", "init");
