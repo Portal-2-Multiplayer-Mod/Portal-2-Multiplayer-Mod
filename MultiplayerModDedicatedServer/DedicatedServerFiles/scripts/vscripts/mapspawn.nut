@@ -131,9 +131,9 @@ SetColor <- function(){
 function loop() {
 //Run All Required Loops
     ArtTherapyLobby()
-    //if (DedicatedServer==1) {
+    if (DedicatedServer==1) {
         DedicatedServerFunc()
-    //}
+    }
 //Disable Collision
     //local j = "solid ";
 	local k = "CollisionGroup ";
@@ -276,7 +276,8 @@ function DedicatedServerFunc() {
     local p = null;
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.entindex()==1) {
-            p.SetOrigin(Vector(4096,4096,4096))
+            p.SetOrigin(Vector(69420,69420,69420))
+            SendToConsole("exec DedicatedServerCommands")
         }
     }
 }
