@@ -1,5 +1,4 @@
 @echo off
-cd..
 :start
 set /P c=Command:
 cls
