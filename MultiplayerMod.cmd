@@ -292,27 +292,14 @@ goto endw7
 
 :endw10
 cls
-echo [36mPortal[0m [33m2[0m Was Closed [91mExiting[0m In 3...
-timeout 1 >nul
-cls
-echo [36mPortal[0m [33m2[0m Was Closed [91mExiting[0m In 2...
-timeout 1 >nul
-cls
-echo [36mPortal[0m [33m2[0m Was Closed [91mExiting[0m In 1...
+echo [36mPortal[0m [33m2[0m Was Closed [91mExiting[0m...
 timeout 1 >nul
 echo Exiting
 goto killscriptfinal
 
 rem display end screen message for outdates os versions
 :endw7
-cls
-echo Portal 2 Was Closed Exiting In 3...
-timeout 1 >nul
-cls
-echo Portal 2 Was Closed Exiting In 2...
-timeout 1 >nul
-cls
-echo Portal 2 Was Closed Exiting In 1...
+echo Portal 2 Was Closed Exiting...
 timeout 1 >nul
 echo Exiting
 goto killscriptfinal

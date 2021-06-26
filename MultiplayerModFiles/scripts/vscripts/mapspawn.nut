@@ -7,6 +7,39 @@ PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
+DedicatedServerOneTimeRun <- 1
+
+DedicatedServer <- 0
+function DedicatedServer() {
+    if (DedicatedServerOneTimeRun==1) {
+        //Enable Team Building Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
+        //Enable TBeam Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_tbeam"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_tbeam"))
+        //Enable Paint Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_paint"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_paint"))
+        //Enable Fling Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_fling"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_fling"))
+        //Enable Extra Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_extra"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_extra"))
+        //Enable All Finished Course
+        DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_all_finished"))
+        DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_all_finished"))
+        DedicatedServerOneTimeRun <- 0
+    }
+            //Enable Music
+        DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null,"@music_lobby_7"))
+    local p = null;
+    local MainPlayer = null
+    while(MainPlayer = Entities.FindByName(MainPlayer, "blue")) {
+        MainPlayer.SetOrigin(Vector(4096,4096,4096))
+    }
+}
 
 function init(){
     jmessage <- Entities.CreateByClassname("env_instructor_hint")
@@ -38,17 +71,17 @@ function init(){
     AddCoopCreditsName("Multiplayer Mod: Special Thanks")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("MicrosoftWindows")
-    AddCoopCreditsName("sear")
+    AddCoopCreditsName("Thanks to : sear : for ____blank")
     AddCoopCreditsName("Trico_Everfire")
     AddCoopCreditsName("hulkstar")
     AddCoopCreditsName("neck")
     AddCoopCreditsName("Sheuron")
-    AddCoopCreditsName("SuperSpeed")
+    //AddCoopCreditsName("SuperSpeed")
     AddCoopCreditsName("goldengamer")
     AddCoopCreditsName("JDWMGB")
     AddCoopCreditsName("Portalboy")
     AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("And my supportive group of freinds!")
+    AddCoopCreditsName("And my supportive group of friends!")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("")
     AddCoopCreditsName("Nick/KingKong")
@@ -85,7 +118,6 @@ if (GBIsMultiplayer==1) {
 SetColor <- function(){
     local p = null;
     while (p = Entities.FindByClassname(p, "player")){
-        EntFireByHandle(clientcommand, "Command", "-remote_view", 0, p, p)
         loop()
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
@@ -93,7 +125,7 @@ SetColor <- function(){
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
                 PlayerJoined <- 1
-                local coj = "Player " + PlayerID + " Joined The Game"
+                local coj = "Player " + PlayerID + " #game_player_joined_game Joined The Game"
                 coj = coj.tostring()
                 PID <- "player" + PlayerID
                 PID <- PID.tostring()
@@ -175,13 +207,16 @@ SetColor <- function(){
     }
 }
 
+
 function loop() {
+    if (DedicatedServer==1) {
+        DedicatedServer()
+    }
 //Run All Required Loops
     ArtTherapyLobby()
-//Disable Remote View
-	local entity = null;
-    local p = null;
-    SendToConsole("-remote_view")
+    if (DedicatedServer==1) {
+        DedicatedServer()
+    }
 //Disable Collision
     //local j = "solid ";
 	local k = "CollisionGroup ";
@@ -198,6 +233,7 @@ function loop() {
     }
 
 //r_portal_fastpath 0 Fix
+    local p = null;
     while (PlayerJoined==1) {
         while (p = Entities.FindByClassname(p, "player")) {
             EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)

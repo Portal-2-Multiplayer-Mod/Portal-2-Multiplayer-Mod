@@ -7,8 +7,9 @@ PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
-
 DedicatedServerOneTimeRun <- 1
+
+DedicatedServer <- 1
 function DedicatedServer() {
     if (DedicatedServerOneTimeRun==1) {
         //Enable Team Building Course
@@ -70,7 +71,7 @@ function init(){
     AddCoopCreditsName("Multiplayer Mod: Special Thanks")
     AddCoopCreditsName("--------------------------")
     AddCoopCreditsName("MicrosoftWindows")
-    //AddCoopCreditsName("sear")
+    AddCoopCreditsName("Thanks to : sear : for ____blank")
     AddCoopCreditsName("Trico_Everfire")
     AddCoopCreditsName("hulkstar")
     AddCoopCreditsName("neck")
@@ -117,7 +118,6 @@ if (GBIsMultiplayer==1) {
 SetColor <- function(){
     local p = null;
     while (p = Entities.FindByClassname(p, "player")){
-        EntFireByHandle(clientcommand, "Command", "-remote_view", 0, p, p)
         loop()
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
@@ -125,7 +125,7 @@ SetColor <- function(){
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
                 PlayerJoined <- 1
-                local coj = "Player " + PlayerID + " Joined The Game"
+                local coj = "Player " + PlayerID + " #game_player_joined_game Joined The Game"
                 coj = coj.tostring()
                 PID <- "player" + PlayerID
                 PID <- PID.tostring()
@@ -208,13 +208,14 @@ SetColor <- function(){
 }
 
 function loop() {
+    if (DedicatedServer==1) {
         DedicatedServer()
+    }
 //Run All Required Loops
     ArtTherapyLobby()
-//Disable Remote View
-	local entity = null;
-    local p = null;
-    SendToConsole("-remote_view")
+    if (DedicatedServer==1) {
+        DedicatedServer()
+    }
 //Disable Collision
     //local j = "solid ";
 	local k = "CollisionGroup ";
@@ -231,6 +232,7 @@ function loop() {
     }
 
 //r_portal_fastpath 0 Fix
+    local p = null;
     while (PlayerJoined==1) {
         while (p = Entities.FindByClassname(p, "player")) {
             EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
