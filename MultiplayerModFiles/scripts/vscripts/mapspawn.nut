@@ -23,7 +23,9 @@ function init(){
     //Create An Entity That Sends A Client Command
     clientcommand <- Entities.CreateByClassname("point_clientcommand");
     //Run Lobby Code
-    LobbyOneTimeRun()
+    if (GetMapName()=="mp_coop_lobby_3") {
+        LobbyOneTimeRun()
+    }
 }
 
 try {
@@ -172,11 +174,33 @@ function LobbyOneTimeRun() {
     {
         ent.Destroy() // 165 entities removed
     }
-    //Fix Art Therapy Tube Glitches
+    
+//Fix Art Therapy Tube Glitches
     Entities.FindByName(null,"dlc_room_fall_push_right").Destroy()
     Entities.FindByName(null,"dlc_room_fall_push_left").Destroy()
-    //Fix Track 5 Door
-    Entities.FindByName(null,"track5-door_paint-relay_doorclose").Destroy()
+
+//Fix Track 5
+    //Entry Door Fix
+    Entities.FindByName(null,"track5-door_paint-trigger_hurt_door").Destroy()
+    Entities.FindByName(null,"track5-door_paint-collide_door").Destroy()
+    //Light Fix
+    Entities.FindByName(null,"@light_shadowed_paintroom").Destroy()
+    //Door Remover
+        //Orange Exit Door
+    local ent = null;
+    while(ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit"))
+    {
+        ent.Destroy()
+    }
+    Entities.FindByName(null,"track5-orangeescape_elevator_clip").Destroy()
+        //Blue Exit Door
+    local ent = null;
+    while(ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit"))
+    {
+        ent.Destroy()
+    }
+    Entities.FindByName(null,"track5-escape_elevator_clip").Destroy()
+
 }
 
 function ArtTherapyLobby() {
