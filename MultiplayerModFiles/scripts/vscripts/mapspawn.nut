@@ -22,6 +22,8 @@ function init(){
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
     //Create An Entity That Sends A Client Command
     clientcommand <- Entities.CreateByClassname("point_clientcommand");
+    //Run Lobby Code
+    LobbyOneTimeRun()
 }
 
 try {
@@ -130,7 +132,9 @@ SetColor <- function(){
 
 function loop() {
 //Run All Required Loops
-    ArtTherapyLobby()
+    if (GetMapName()=="mp_coop_lobby_3") {
+        ArtTherapyLobby()
+    } 
     if (DedicatedServer==1) {
         DedicatedServerFunc()
     }
@@ -159,15 +163,20 @@ function loop() {
     } 
 }
 
-//Enable sv_cheats Temorarily
-command <- Entities.CreateByClassname("point_servercommand")
-DoEntFire("!self", "Command", "sv_cheats 1", 0.0, null, command)
-//mp_coop_lobby_3 Specific Code
-if (GetMapName() == "mp_coop_lobby_3") {
-    //Remove Entities
-	DoEntFire("!self", "Command", "ent_remove_all func_portal_bumper", 0.0, null, command) // 165 entities removed
-    DoEntFire("!self", "Command", "ent_remove dlc_room_fall_push_right", 0.0, null, command) // 1 entities removed
-    DoEntFire("!self", "Command", "ent_remove dlc_room_fall_push_left", 0.0, null, command) // 1 entities removed
+//Lobby setup code
+function LobbyOneTimeRun() {
+//Remove Entities
+    //Fix Edicts Error
+    local ent = null;
+    while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
+    {
+        ent.Destroy() // 165 entities removed
+    }
+    //Fix Art Therapy Tube Glitches
+    Entities.FindByName(null,"dlc_room_fall_push_right").Destroy()
+    Entities.FindByName(null,"dlc_room_fall_push_left").Destroy()
+    //Fix Track 5 Door
+    Entities.FindByName(null,"track5-door_paint-relay_doorclose").Destroy()
 }
 
 function ArtTherapyLobby() {
@@ -177,7 +186,7 @@ function ArtTherapyLobby() {
     local EELent = null;
     while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) 
     {
-        print("Enabled Left Chute")
+        printl("Enabled Left Chute")
         local LCatEn = null;
         while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
             DoEntFire("!self", "enable", "", 0.0, null, LCatEn) 
@@ -189,7 +198,7 @@ function ArtTherapyLobby() {
     vectorLCT = Vector(5729, 3336, 1005);
     local LCTent = null;
     while(LCTent = Entities.FindByClassnameWithin(LCTent, "player", vectorLCT, 30)) {
-        print("Teleported Player To Art Therapy")
+        printl("Teleported Player To Art Therapy")
         LCTent.SetOrigin(Vector(3194, -1069, 1676))
         LCTent.SetAngles(0, 0, 0)
     }
@@ -199,7 +208,7 @@ function ArtTherapyLobby() {
     local EERent = null;
     while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) 
     {
-        print("Enabled Left Chute")
+        printl("Enabled Left Chute")
         local RCatEn = null;
         while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
             DoEntFire("!self", "enable", "", 0.0, null, RCatEn) 
@@ -211,7 +220,7 @@ function ArtTherapyLobby() {
     vectorRCT = Vector(5727, 3180, 1005);
     local RCTent = null;
     while(RCTent = Entities.FindByClassnameWithin(RCTent, "player", vectorRCT, 30)) {
-        print("Teleported Player To Art Therapy")
+        printl("Teleported Player To Art Therapy")
         RCTent.SetOrigin(Vector(3191, -1228, 1682))
         RCTent.SetAngles(0, 0, 0)
     }
@@ -223,13 +232,13 @@ function ArtTherapyLobby() {
     {
         local LCatDis = null;
         while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
-        print("Disabled Right Chute")
+        printl("Disabled Right Chute")
             DoEntFire("!self", "enable", "", 0.0, null, LCatDis) 
             DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
         }
         local RCatDis = null;
         while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
-            print("Disabled Right Chute")
+            printl("Disabled Right Chute")
             DoEntFire("!self", "enable", "", 0.0, null, RCatDis) 
             DoEntFire("!self", "trigger", "", 0.0, null, RCatDis)
         }
