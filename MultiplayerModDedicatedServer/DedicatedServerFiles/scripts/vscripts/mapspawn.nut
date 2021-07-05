@@ -8,6 +8,8 @@ PlayerID <- 0
 GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
 DedicatedServerOneTimeRun <- 1
+TryGelocity <- 1
+GelocityOneTimeRun <- 1
 
 //Is Dedicated Server
 DedicatedServer <- 1
@@ -136,7 +138,25 @@ function loop() {
 //Run All Required Loops
     if (GetMapName()=="mp_coop_lobby_3") {
         ArtTherapyLobby()
-    } 
+    }
+    //Run Credits Code
+    if (GetMapName()=="mp_coop_credits") {
+        CreditsLoop()
+    }
+    //Run Gelocity Code 
+    //=========================
+    if (TryGelocity==1) {
+        try {
+            if (GetMapName().slice(28,50)=="mp_coop_gelocity_1_v02") {
+                Gelocity()
+            }
+        } catch(exception) {
+            printl("Map Not Gelocity 1 Handling")
+            TryGelocity<-0
+        }
+    }
+    //=========================
+    //Run Dedicated Server Code
     if (DedicatedServer==1) {
         DedicatedServerFunc()
     }
@@ -150,7 +170,7 @@ function loop() {
     //check if ready to turn cheats off
     if (ReadyCheatsOff==1) {
         if (CheatsOff==0) {
-            SendToConsole("sv_cheats 0")
+            //SendToConsole("sv_cheats 0")
             CheatsOff <- 1
         }
     }
@@ -277,6 +297,28 @@ function ArtTherapyLobby() {
     } 
 }
 
+//Gelocity 1 Code
+function Gelocity() {
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door2_player2"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door2_player1"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"start_clip_1"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"start_clip_2"))
+    if (GelocityOneTimeRun==1) {
+        local ent = null;
+        //Remove Entities
+        while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
+        {
+            ent.Destroy() // 20 entities removed
+        }
+        while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
+        {
+            ent.Destroy() // 85 entities removed
+        }
+        printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
+        GelocityOneTimeRun <- 0
+    }
+}
+
 //Dedicated Server Code
 function DedicatedServerFunc() {
     if (DedicatedServerOneTimeRun==1) {
@@ -315,6 +357,77 @@ function DedicatedServerFunc() {
     }
 }
 
+//==================================
+//             CREDITS
+//==================================
+
+//Set Credits Animations
+AnimationsPB <- ["taunt_laugh", "portalgun_jump_spring", "portalgun_thrash_fall", "taunt_teamhug_idle", "noGun_crouch_idle", "portalgun_tractorbeam_float", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
+CRAnimationTimesPB <- -1
+AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "portalgun_tractorbeam_float", "noGun_airwalk"]
+CRAnimationTimesAL <- -1
+MPMCredits <- 0
+foreach (value in AnimationsPB) {
+    CRAnimationTimesPB <- CRAnimationTimesPB + 1
+}
+foreach (value in AnimationsAL) {
+    CRAnimationTimesAL <- CRAnimationTimesAL + 1
+}
+
+//Replace Females With Pbodys
+function CreditsSetModelPB(ent) {
+    MPMCredits <- MPMCredits + 1
+    //Set Model
+    ent.SetModel("models/player/eggbot/eggbot.mdl")
+    //Set Color
+    EntFireByHandle(ent, "Color", (RandomInt(0, 255)+" "+RandomInt(0, 255)+" "+RandomInt(0, 255)), 0, null, null);
+    //Set Position
+    ent.SetOrigin(Vector(0, 0, 10))
+    //Set Animation
+    EntFireByHandle(ent, "setanimation", AnimationsPB[RandomInt(0, CRAnimationTimesPB)], 0, null, null)
+}
+
+//Replace Males With Atlases
+function CreditsSetModelAL(ent) {
+    MPMCredits <- MPMCredits + 1
+    //Set Model
+    ent.SetModel("models/player/ballbot/ballbot.mdl")
+    //Set Color
+    EntFireByHandle(ent, "Color", (RandomInt(0, 255)+" "+RandomInt(0, 255)+" "+RandomInt(0, 255)), 0, null, null);
+    //Set Position
+    ent.SetOrigin(Vector(-2, 0, 7.5))
+    //Set Animation
+    EntFireByHandle(ent, "setanimation", AnimationsAL[RandomInt(0, CRAnimationTimesAL)], 0, null, null)
+}
+
+function CreditsLoop() {
+    if (MPMCredits<=51) {
+    local ent = null;
+    while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male.mdl")) {
+        CreditsSetModelAL(ent)
+    }
+    local ent = null;
+    while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male01.mdl")) {
+        CreditsSetModelAL(ent)
+    }
+    local ent = null;
+    while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male_02.mdl")) {
+        CreditsSetModelAL(ent)
+    }
+    local ent = null;
+    while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_01.mdl")) {
+        CreditsSetModelPB(ent)
+    }
+    local ent = null;
+    while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_02.mdl")) {
+        CreditsSetModelPB(ent)
+    }
+    local ent = null;
+    while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_03.mdl")) {
+        CreditsSetModelPB(ent)
+    }
+    }
+}
 //mp_coop_credits Specific Code
 if (GetMapName() == "mp_coop_credits") {
     //Add Teams Name To Credits

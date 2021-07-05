@@ -16,12 +16,7 @@ Soundtrack
 bee2
 thirdpartylegalnotices.doc
 sdk_tools
-bspsrc/mp_coop_lobby_3.vmf
-bspsrc/mp_coop_lobby_3.bsp
-bspsrc/bspsrc.jar
-bspsrc/mp_coop_gelocity_1_v02.bsp
-bspsrc/mp_coop_gelocity_1_v02_d.vmf
-bspsrc/mp_coop_gelocity_2_v01.bsp
-bspsrc/mp_coop_gelocity_2_v01_d.vmf
-bspsrc/mp_coop_gelocity_3_v02.bsp
-bspsrc/mp_coop_gelocity_3_v02_d.vmf
+bspsrc
+MultiplayerModGUI/SmartGUI.exe
+MultiplayerModGUI/SmartGUI.ini
+MultiplayerModGUI/How To Use.xcf
