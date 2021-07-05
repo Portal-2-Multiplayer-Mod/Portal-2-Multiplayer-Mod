@@ -361,21 +361,9 @@ function DedicatedServerFunc() {
 //             CREDITS
 //==================================
 
-//Set Credits Animations
-AnimationsPB <- ["taunt_laugh", "portalgun_jump_spring", "portalgun_thrash_fall", "taunt_teamhug_idle", "noGun_crouch_idle", "portalgun_tractorbeam_float", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
-CRAnimationTimesPB <- -1
-AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "portalgun_tractorbeam_float", "noGun_airwalk"]
-CRAnimationTimesAL <- -1
-MPMCredits <- 0
-foreach (value in AnimationsPB) {
-    CRAnimationTimesPB <- CRAnimationTimesPB + 1
-}
-foreach (value in AnimationsAL) {
-    CRAnimationTimesAL <- CRAnimationTimesAL + 1
-}
-
 //Replace Females With Pbodys
 function CreditsSetModelPB(ent) {
+    //Count How Many Times A Credit Comes On Screen So We Can Change To Humans
     MPMCredits <- MPMCredits + 1
     //Set Model
     ent.SetModel("models/player/eggbot/eggbot.mdl")
@@ -389,6 +377,7 @@ function CreditsSetModelPB(ent) {
 
 //Replace Males With Atlases
 function CreditsSetModelAL(ent) {
+    //Count How Many Times A Credit Comes On Screen So We Can Change To Humans
     MPMCredits <- MPMCredits + 1
     //Set Model
     ent.SetModel("models/player/ballbot/ballbot.mdl")
@@ -401,7 +390,9 @@ function CreditsSetModelAL(ent) {
 }
 
 function CreditsLoop() {
-    if (MPMCredits<=51) {
+//If 51 Credits Haven't Passed Change Humans To Robots
+if (MPMCredits<=51) {
+    //Change Males To Atlases
     local ent = null;
     while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male.mdl")) {
         CreditsSetModelAL(ent)
@@ -414,6 +405,7 @@ function CreditsLoop() {
     while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male_02.mdl")) {
         CreditsSetModelAL(ent)
     }
+    //Change Females To Pbodys
     local ent = null;
     while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_01.mdl")) {
         CreditsSetModelPB(ent)
@@ -428,8 +420,28 @@ function CreditsLoop() {
     }
     }
 }
-//mp_coop_credits Specific Code
+
+//Credits One Time Run Code
 if (GetMapName() == "mp_coop_credits") {
+    //Set Credits Animations
+    //Pbody Animations
+    AnimationsPB <- ["taunt_laugh", "portalgun_jump_spring", "portalgun_thrash_fall", "taunt_teamhug_idle", "noGun_crouch_idle", "portalgun_tractorbeam_float", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
+    //Pbody Animation Count
+    CRAnimationTimesPB <- -1
+    //Atlas Animations
+    AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "portalgun_tractorbeam_float", "noGun_airwalk"]
+    //Atlas Animation Count
+    CRAnimationTimesAL <- -1
+    //Credit Run counter
+    MPMCredits <- 0
+    //Set The Amount Of PBody Animations
+    foreach (value in AnimationsPB) {
+        CRAnimationTimesPB <- CRAnimationTimesPB + 1
+    }
+    //Set The Amount Of Atlas Animations
+    foreach (value in AnimationsAL) {
+        CRAnimationTimesAL <- CRAnimationTimesAL + 1
+    }
     //Add Teams Name To Credits
     AddCoopCreditsName("Portal 2 Multiplayer Mod: Credits")
     AddCoopCreditsName("--------------------------")
