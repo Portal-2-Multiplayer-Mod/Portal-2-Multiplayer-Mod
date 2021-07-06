@@ -521,8 +521,14 @@ if (GetMapName() == "mp_coop_credits") {
         CRAnimationTypesAL <- CRAnimationTypesAL + 1
     }
     //Add Teams Name To Credits
-    MPMCoopCreditNames <- ["Portal 2 Multiplayer Mod: Credits", 
+    MPMCoopCreditNames <- [
     "",
+    "",
+    "",
+    "",
+    "Portal 2 Multiplayer Mod: Credits", 
+    "",
+    "--------------------------",
     "Multiplayer Mod: Team",
     "--------------------------",
     "kyleraykbs | Scripting + Team Lead",
@@ -542,7 +548,6 @@ if (GetMapName() == "mp_coop_credits") {
     "--------------------------",
     "Multiplayer Mod: Special Thanks",
     "--------------------------",
-    "MicrosoftWindows | The Person Not The Company",
     "sear",
     "Trico_Everfire",
     "Brawler",
@@ -552,8 +557,7 @@ if (GetMapName() == "mp_coop_credits") {
     "Sheuron",
     "SuperSpeed",
     "JDWMGB",
-    "goldengamer",
-    "Portalboy",
+    "MicrosoftWindows | The Person Not The Company",
     "--------------------------",
     "And my supportive group of friends!",
     "--------------------------",
