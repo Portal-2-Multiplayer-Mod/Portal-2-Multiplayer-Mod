@@ -420,7 +420,7 @@ function CreditsSetModelPB(ent) {
     //Count How Many Times A Credit Comes On Screen So We Can Change To Humans
     MPMCredits <- MPMCredits + 1
     //Preset Animation
-    local RandomAnimation = RandomInt(0, CRAnimationTimesPB)
+    local RandomAnimation = RandomInt(0, CRAnimationTypesPB)
     //Remove Pod If Needed
     HasRemovedPod <- 0
     foreach (anim in NOTubeAnimsPB) {
@@ -445,7 +445,7 @@ function CreditsSetModelAL(ent) {
     //Count How Many Times A Credit Comes On Screen So We Can Change To Humans
     MPMCredits <- MPMCredits + 1
     //Preset Animation
-    local RandomAnimation = RandomInt(0, CRAnimationTimesAL)
+    local RandomAnimation = RandomInt(0, CRAnimationTypesAL)
     //Set Model
     ent.SetModel("models/player/ballbot/ballbot.mdl")
     //Set Color
@@ -467,7 +467,7 @@ function CreditsSetModelAL(ent) {
 
 function CreditsLoop() {
 //If 51 Credits Haven't Passed Change Humans To Robots
-if (MPMCredits<=51) {
+if (MPMCredits<=MPModCreditNumber) {
     //Change Males To Atlases
     local ent = null;
     while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male.mdl")) {
@@ -502,12 +502,8 @@ if (GetMapName() == "mp_coop_credits") {
     //Set Credits Animations
     //Pbody Animations
     AnimationsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "noGun_airwalk", "portalgun_drowning", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
-    //Pbody Animation Count
-    CRAnimationTimesPB <- -1
     //Atlas Animations
     AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "noGun_airwalk", "noGun_airwalk"]
-    //Atlas Animation Count
-    CRAnimationTimesAL <- -1
     //Pbody Animations Out Of Tube
     NOTubeAnimsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
     //Atlas Animations Out Of Tube
@@ -515,12 +511,19 @@ if (GetMapName() == "mp_coop_credits") {
     //Credit Run counter
     MPMCredits <- 0
     //Set The Amount Of PBody Animations
+    CRAnimationTypesPB <- -1
     foreach (value in AnimationsPB) {
-        CRAnimationTimesPB <- CRAnimationTimesPB + 1
+        CRAnimationTypesPB <- CRAnimationTypesPB + 1
     }
     //Set The Amount Of Atlas Animations
+    CRAnimationTypesAL <- -1
     foreach (value in AnimationsAL) {
-        CRAnimationTimesAL <- CRAnimationTimesAL + 1
+        CRAnimationTypesAL <- CRAnimationTypesAL + 1
+    }
+    //Set The Amount Of Credits
+    MPModCreditNumber <- -1
+    foreach (value in MPMCoopCreditNames) {
+        MPModCreditNumber <- MPModCreditNumber + 1
     }
     //Add Teams Name To Credits
     MPMCoopCreditNames <- ["Portal 2 Multiplayer Mod: Credits", 
