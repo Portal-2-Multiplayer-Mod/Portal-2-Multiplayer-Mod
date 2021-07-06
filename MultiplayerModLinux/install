@@ -1,0 +1,68 @@
+#!/bin/bash
+
+SERVERSOSHA1="d06838387d3d6b2a702fc9d668d5bf358a8c04bf"
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+color () { printf ${!1}; }
+
+askForPath () {
+	color GREEN
+	read -p "Please enter the path or drag & drop the your steam library or the game folder itself: " GAMEPATH
+	GAMEPATH="${GAMEPATH[@]//\'/}"
+	if [ -d "$GAMEPATH/portal2" ]; then
+		return
+	elif [ -d "$GAMEPATH/steamapps/common/Portal 2/portal2" ]; then
+		GAMEPATH="$GAMEPATH/steamapps/common/Portal 2"
+		return
+	else
+		echo -e "$RED Invalid path!"
+		askForPath
+		return
+	fi
+}
+
+color GREEN
+echo "Checking for default game installation folder.."
+GAMEPATH="/home/$USER/.local/share/Steam/steamapps/common/Portal 2"
+if [ ! -d "$GAMEPATH" ]; then
+	color RED
+	echo "Error: game files not found!"
+	echo "(this may be related to using a custom steam library folder)"
+	askForPath
+	echo "Found game in $GAMEPATH, continuing..."
+else
+	echo "Found game in default directory, continuing..."
+fi
+
+SHA1CHECK=`sha1sum "$GAMEPATH/portal2/bin/linux32/server.so" | awk '{print $1}'`
+if [ "$SERVERSOSHA1" == "$SHA1CHECK" ]; then
+	echo "SHA1 match, continuing..."
+else
+	color RED
+	echo "SHA1 sum bad (probably game update, please notify @vista#3744 on dsc)! Exitting!"
+	color NC
+	exit 1
+fi
+
+color BLUE
+
+echo "Creating patched game files..."
+
+rm -f "$GAMEPATH/portal2/bin/linux32/server.so.patched"
+./bspatch "$GAMEPATH/portal2/bin/linux32/server.so" "$GAMEPATH/portal2/bin/linux32/server.so.patched" server.patch
+
+echo "Copying files..."
+
+cp -rf data/* "$GAMEPATH"
+cp -rf ../MultiplayerModFiles "$GAMEPATH/portal2"
+
+echo "Done!"
+
+color GREEN
+
+echo "You may now run the mod by executing ./32pmod in your game folder"
+
+color NC
