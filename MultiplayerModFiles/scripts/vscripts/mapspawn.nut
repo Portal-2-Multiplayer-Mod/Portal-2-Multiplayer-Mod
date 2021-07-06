@@ -9,8 +9,11 @@ GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
 DedicatedServerOneTimeRun <- 1
 TryGelocity <- 1
+TryGelocity2 <- 1
 TryGelocity3 <- 1
 GelocityOneTimeRun <- 1
+Gelocity2OneTimeRun <- 1
+Gelocity3OneTimeRun <- 1
 
 //Is Dedicated Server
 DedicatedServer <- 0
@@ -165,8 +168,21 @@ function loop() {
                 Gelocity3()
             }
         } catch(exception) {
-            printl("Map Not Gelocity 1 Handling")
+            printl("Map Not Gelocity 3 Handling")
             TryGelocity3<-0
+        }
+    }
+    //=========================
+    //Run Gelocity 2 Code
+    //=========================
+        if (TryGelocity2==1) {
+        try {
+            if (GetMapName().slice(28,50)=="mp_coop_gelocity_2_v01") {
+                Gelocity2()
+            }
+        } catch(exception) {
+            printl("Map Not Gelocity 2 Handling")
+            TryGelocity2<-0
         }
     }
     //=========================
@@ -330,6 +346,72 @@ function Gelocity() {
         }
         printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
         GelocityOneTimeRun <- 0
+    }
+}
+
+//Gelocity 2 Code
+function Gelocity2() {
+    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_2_2"))
+    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_2_1"))
+    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_1_2"))
+    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_1_1"))
+    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start"))
+    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"red_dropper-door_eixt"))
+    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"blue_dropper-item_door"))
+    local PLent = null;
+    
+    while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 10)) {
+        local APLent = null;
+        while(APLent = Entities.FindByClassname(APLent, "player")) {
+            APLent.SetOrigin(Vector(2367, -8126, 20))
+        }
+    }
+    if (Gelocity2OneTimeRun==1) {
+        local ent = null;
+        //Remove Entities
+        while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
+        {
+            ent.Destroy() // 20 entities removed
+        }
+        while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
+        {
+            ent.Destroy() // 85 entities removed
+        }
+        while(ent = Entities.FindByClassname(ent, "env_glow"))
+        {
+            ent.Destroy() // 85 entities removed
+        }
+        while(ent = Entities.FindByClassname(ent, "info_placement_helper"))
+        {
+            ent.Destroy() // 85 entities removed
+        }
+        printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
+        Gelocity2OneTimeRun <- 0
+    }
+}
+
+//Gelocity 3 Code
+function Gelocity3() {
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_2_2"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_2_1"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_1_2"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_1_1"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"red_dropper-door_eixt"))
+    DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"blue_dropper-item_door"))
+    if (Gelocity3OneTimeRun==1) {
+        local ent = null;
+        //Remove Entities
+        while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
+        {
+            ent.Destroy() // 20 entities removed
+        }
+        while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
+        {
+            ent.Destroy() // 85 entities removed
+        }
+        printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
+        Gelocity3OneTimeRun <- 0
     }
 }
 
