@@ -461,7 +461,6 @@ function CreditsSetModelAL(ent) {
             HasRemovedPod <- 1
             CreditsRemovePod()
             ent.SetOrigin(Vector(0, 0, 7.5))
-            printl(AnimationsAL[RandomAnimation])
         }
     }
 }
