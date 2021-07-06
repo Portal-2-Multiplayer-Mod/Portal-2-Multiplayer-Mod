@@ -451,7 +451,7 @@ function CreditsSetModelAL(ent) {
     //Set Color
     EntFireByHandle(ent, "Color", (RandomInt(0, 255)+" "+RandomInt(0, 255)+" "+RandomInt(0, 255)), 0, null, null);
     //Set Position
-    ent.SetOrigin(Vector(-10, 0, 21))
+    ent.SetOrigin(Vector(-10, 0, 25.5))
     //Set Animation
     EntFireByHandle(ent, "setanimation", AnimationsAL[RandomAnimation], 0, null, null)
     //Remove Pod If Needed
@@ -520,11 +520,6 @@ if (GetMapName() == "mp_coop_credits") {
     foreach (value in AnimationsAL) {
         CRAnimationTypesAL <- CRAnimationTypesAL + 1
     }
-    //Set The Amount Of Credits
-    MPModCreditNumber <- -1
-    foreach (value in MPMCoopCreditNames) {
-        MPModCreditNumber <- MPModCreditNumber + 1
-    }
     //Add Teams Name To Credits
     MPMCoopCreditNames <- ["Portal 2 Multiplayer Mod: Credits", 
     "",
@@ -578,6 +573,12 @@ if (GetMapName() == "mp_coop_credits") {
     "Valve: Credits",
     "--------------------------",
     ];
+    //Set The Amount Of Credits
+    MPModCreditNumber <- -1
+    foreach (value in MPMCoopCreditNames) {
+        MPModCreditNumber <- MPModCreditNumber + 1
+    }
+    //Mount List Of Credits To Credits
     foreach (Name in MPMCoopCreditNames) {
         AddCoopCreditsName(Name)
     }
