@@ -9,6 +9,7 @@ GBIsMultiplayer <- 0
 ReadyForCustomTargets <- 0
 DedicatedServerOneTimeRun <- 1
 TryGelocity <- 1
+TryGelocity3 <- 1
 GelocityOneTimeRun <- 1
 
 //Is Dedicated Server
@@ -153,6 +154,19 @@ function loop() {
         } catch(exception) {
             printl("Map Not Gelocity 1 Handling")
             TryGelocity<-0
+        }
+    }
+    //=========================
+    //Run Gelocity 3 Code
+    //=========================
+        if (TryGelocity3==1) {
+        try {
+            if (GetMapName().slice(28,50)=="mp_coop_gelocity_3_v02") {
+                Gelocity3()
+            }
+        } catch(exception) {
+            printl("Map Not Gelocity 1 Handling")
+            TryGelocity3<-0
         }
     }
     //=========================
@@ -319,6 +333,22 @@ function Gelocity() {
     }
 }
 
+try {
+if (GetMapName().slice(28,50)=="mp_coop_gelocity_3_v02") {
+        local ent = null;
+        //Remove Entities
+        while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
+        {
+            ent.Destroy() // 20 entities removed
+        }
+        while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
+        {
+            ent.Destroy() // 85 entities removed
+        }
+}
+} catch (exception) {
+    printl("Map Not Gelocity 3 Handling")
+}
 //Dedicated Server Code
 function DedicatedServerFunc() {
     if (DedicatedServerOneTimeRun==1) {
@@ -361,32 +391,79 @@ function DedicatedServerFunc() {
 //             CREDITS
 //==================================
 
+//Remove Selected Pods
+function CreditsRemovePod() {
+    local ent = null;
+    while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
+        ent.Destroy()
+    }
+    local ent2 = null;
+    while (ent2 = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
+        ent2.Destroy()
+    }
+}
+
+//Fix Void Camera Glitch
+function FixCreditsCameras() {
+    //Disable Useless Cameras
+    EntFireByHandle(Entities.FindByName(null, "camera_SP"), "disable", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "camera_O"), "disable", "", 0, null, null)
+    //Reload Main Camera With New Params
+    Entities.FindByName(null, "camera").__KeyValueFromString("target_team", "-1");
+    EntFireByHandle(Entities.FindByName(null, "camera"), "disable", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "camera"), "enable", "", 0, null, null)
+}
+
 //Replace Females With Pbodys
 function CreditsSetModelPB(ent) {
+    FixCreditsCameras()
     //Count How Many Times A Credit Comes On Screen So We Can Change To Humans
     MPMCredits <- MPMCredits + 1
+    //Preset Animation
+    local RandomAnimation = RandomInt(0, CRAnimationTimesPB)
+    //Remove Pod If Needed
+    HasRemovedPod <- 0
+    foreach (anim in NOTubeAnimsPB) {
+        if (AnimationsPB[RandomAnimation] == anim && HasRemovedPod==0) {
+            HasRemovedPod <- 1
+            CreditsRemovePod()
+        }
+    }
     //Set Model
     ent.SetModel("models/player/eggbot/eggbot.mdl")
     //Set Color
     EntFireByHandle(ent, "Color", (RandomInt(0, 255)+" "+RandomInt(0, 255)+" "+RandomInt(0, 255)), 0, null, null);
     //Set Position
-    ent.SetOrigin(Vector(0, 0, 10))
+    ent.SetOrigin(Vector(0, 0, 7.5))
     //Set Animation
-    EntFireByHandle(ent, "setanimation", AnimationsPB[RandomInt(0, CRAnimationTimesPB)], 0, null, null)
+    EntFireByHandle(ent, "setanimation", AnimationsPB[RandomAnimation], 0, null, null)
 }
 
 //Replace Males With Atlases
 function CreditsSetModelAL(ent) {
+    FixCreditsCameras()
     //Count How Many Times A Credit Comes On Screen So We Can Change To Humans
     MPMCredits <- MPMCredits + 1
+    //Preset Animation
+    local RandomAnimation = RandomInt(0, CRAnimationTimesAL)
     //Set Model
     ent.SetModel("models/player/ballbot/ballbot.mdl")
     //Set Color
     EntFireByHandle(ent, "Color", (RandomInt(0, 255)+" "+RandomInt(0, 255)+" "+RandomInt(0, 255)), 0, null, null);
     //Set Position
-    ent.SetOrigin(Vector(-2, 0, 7.5))
+    ent.SetOrigin(Vector(-10, 0, 21))
     //Set Animation
-    EntFireByHandle(ent, "setanimation", AnimationsAL[RandomInt(0, CRAnimationTimesAL)], 0, null, null)
+    EntFireByHandle(ent, "setanimation", AnimationsAL[RandomAnimation], 0, null, null)
+    //Remove Pod If Needed
+    HasRemovedPod <- 0
+    foreach (anim in NOTubeAnimsAL) {
+        if (AnimationsAL[RandomAnimation] == anim && HasRemovedPod==0) {
+            HasRemovedPod <- 1
+            CreditsRemovePod()
+            ent.SetOrigin(Vector(0, 0, 7.5))
+            printl(AnimationsAL[RandomAnimation])
+        }
+    }
 }
 
 function CreditsLoop() {
@@ -425,13 +502,17 @@ if (MPMCredits<=51) {
 if (GetMapName() == "mp_coop_credits") {
     //Set Credits Animations
     //Pbody Animations
-    AnimationsPB <- ["taunt_laugh", "portalgun_jump_spring", "portalgun_thrash_fall", "taunt_teamhug_idle", "noGun_crouch_idle", "portalgun_tractorbeam_float", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
+    AnimationsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "noGun_airwalk", "portalgun_drowning", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
     //Pbody Animation Count
     CRAnimationTimesPB <- -1
     //Atlas Animations
-    AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "portalgun_tractorbeam_float", "noGun_airwalk"]
+    AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "noGun_airwalk", "noGun_airwalk"]
     //Atlas Animation Count
     CRAnimationTimesAL <- -1
+    //Pbody Animations Out Of Tube
+    NOTubeAnimsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
+    //Atlas Animations Out Of Tube
+    NOTubeAnimsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "noGun_crouch_idle"]
     //Credit Run counter
     MPMCredits <- 0
     //Set The Amount Of PBody Animations
@@ -443,58 +524,61 @@ if (GetMapName() == "mp_coop_credits") {
         CRAnimationTimesAL <- CRAnimationTimesAL + 1
     }
     //Add Teams Name To Credits
-    AddCoopCreditsName("Portal 2 Multiplayer Mod: Credits")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Multiplayer Mod: Team")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("kyleraykbs | Scripting + Team Lead")
-    AddCoopCreditsName("Bumpy | Scripting + Script Theory")
-    AddCoopCreditsName("Vista | Reverse Engineering")
-    AddCoopCreditsName("Wolfe Strider Shooter | Scripting")
-    AddCoopCreditsName("Nanoman2525 | Mapping + Entity Help")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Multiplayer Mod: Contributers")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Darnias | Jumpstarter Code")
-    AddCoopCreditsName("The Pineapple | Hamachi support")
-    AddCoopCreditsName("SlingEXE | Optimisations")
-    AddCoopCreditsName("Blub/Vecc | Code Cleanup + Commenting")
-    AddCoopCreditsName("AngelPuzzle | Translations")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Multiplayer Mod: Special Thanks")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("MicrosoftWindows")
-    AddCoopCreditsName("sear")
-    AddCoopCreditsName("Trico_Everfire")
-    AddCoopCreditsName("Brawler")
-    AddCoopCreditsName("iambread")
-    AddCoopCreditsName("hulkstar")
-    AddCoopCreditsName("neck")
-    AddCoopCreditsName("Sheuron")
-    AddCoopCreditsName("SuperSpeed")
-    AddCoopCreditsName("goldengamer")
-    AddCoopCreditsName("JDWMGB")
-    AddCoopCreditsName("Portalboy")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("And my supportive group of friends!")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("Nick/KingKong")
-    AddCoopCreditsName("Latte/Luna")
-    AddCoopCreditsName("Craig is love Craig is life | WOLF BATTLER ")
-    AddCoopCreditsName("Bunger from Bugsnax | Ayden")
-    AddCoopCreditsName("Bananabread | KaiserInfinitus")
-    AddCoopCreditsName("Jazzy/jasmine")
-    AddCoopCreditsName("David/Mr. E")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Thank you all so so much!!!")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("")
-    AddCoopCreditsName("--------------------------")
-    AddCoopCreditsName("Valve: Credits")
-    AddCoopCreditsName("--------------------------")
+    MPMCoopCreditNames <- ["Portal 2 Multiplayer Mod: Credits", 
+    "",
+    "Multiplayer Mod: Team",
+    "--------------------------",
+    "kyleraykbs | Scripting + Team Lead",
+    "Bumpy | Scripting + Script Theory",
+    "Vista | Reverse Engineering",
+    "Wolfe Strider Shooter | Scripting",
+    "Nanoman2525 | Mapping + Entity Help",
+    "--------------------------",
+    "Multiplayer Mod: Contributers",
+    "--------------------------",
+    "Darnias | Jumpstarter Code",
+    "The Pineapple | Hamachi support",
+    "SlingEXE | Optimisations",
+    "actu | Remote File Downloads",
+    "Blub/Vecc | Code Cleanup + Commenting",
+    "AngelPuzzle | Translations",
+    "--------------------------",
+    "Multiplayer Mod: Special Thanks",
+    "--------------------------",
+    "MicrosoftWindows | The Person Not The Company",
+    "sear",
+    "Trico_Everfire",
+    "Brawler",
+    "iambread",
+    "hulkstar",
+    "neck",
+    "Sheuron",
+    "SuperSpeed",
+    "JDWMGB",
+    "goldengamer",
+    "Portalboy",
+    "--------------------------",
+    "And my supportive group of friends!",
+    "--------------------------",
+    "Nick/KingKong",
+    "Latte/Luna",
+    "Craig is love Craig is life | WOLF BATTLER ",
+    "Bunger from Bugsnax | Ayden",
+    "Bananabread | KaiserInfinitus",
+    "Jazzy/jasmine",
+    "David/Mr. E"
+    "--------------------------",
+    "Thank you all so so much!!!",
+    "--------------------------"
+    "",
+    "",
+    "--------------------------",
+    "Valve: Credits",
+    "--------------------------",
+    ];
+    foreach (Name in MPMCoopCreditNames) {
+        AddCoopCreditsName(Name)
+    }
 }
 
 //Run init Code
@@ -503,7 +587,6 @@ DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null);
 
 //Singleplayer Code
 } else {
-printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
 GlobalRunSingleplayer <- 1
 
 SetColor <- function(){
@@ -513,6 +596,7 @@ SetColor <- function(){
             local script_scope = p.GetScriptScope();
             if (GlobalRunSingleplayer==1){
                 SendToConsole("script_execute singleplayer")
+                printl("Playing Map In Single Player [Multiplayer Mod Disabled]")
                 GlobalRunSingleplayer <- 0
                 return
             }
