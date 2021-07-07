@@ -24,6 +24,19 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	WINDOWED="-window -w 1280 -h 720"
 fi
 
+UPNP=0
+if command -v upnpc &> /dev/null; then
+	read -p "Looks like your system has upnpc installed, try port forwarding with it? [y/n]" -n 1 -r
+	echo
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		UPNP=1
+		color NC
+		upnpc -a `ip route | grep '^default' | grep 'src' | awk '{print $(NF-2)}'` 27015 27015 UDP
+		upnpc -a `ip route | grep '^default' | grep 'src' | awk '{print $(NF-2)}'` 27015 27015 TCP
+		color BLUE
+	fi
+fi
+
 echo "Backing up orignal files..."
 
 mv "portal2/bin/linux32/server.so" "portal2/bin/linux32/server.so.orig"
@@ -50,5 +63,13 @@ mv "portal2/bin/linux32/server.so.orig" "portal2/bin/linux32/server.so"
 mv "portal2/scripts/vscripts/mapspawn.nut.orig" "portal2/scripts/vscripts/mapspawn.nut"
 mv "portal2/media/coop_bluebot_load.bik.orig" "portal2/media/coop_bluebot_load.bik"
 mv "portal2/media/coop_orangebot_load.bik.orig" "portal2/media/coop_orangebot_load.bik"
+
+if [ $UPNP -eq 1 ]; then
+	echo "Removing UPNP forward..."
+	color NC
+	upnpc -d 27015 UDP
+	upnpc -d 27015 TCP
+	color BLUE
+fi
 
 color NC
