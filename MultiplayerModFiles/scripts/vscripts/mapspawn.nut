@@ -11,20 +11,23 @@ DedicatedServerOneTimeRun <- 1
 TryGelocity <- 1
 TryGelocity2 <- 1
 TryGelocity3 <- 1
-GelocityOneTimeRun <- 1
-Gelocity2OneTimeRun <- 1
-Gelocity3OneTimeRun <- 1
 
 //Is Dedicated Server
 DedicatedServer <- 0
 
 function init(){
+    //Create A Join Message Entity
     jmessage <- Entities.CreateByClassname("env_instructor_hint")
+    jmessage.__KeyValueFromString("targetname", "jmessagetarget");
+    jmessage.__KeyValueFromString("hint_icon_onscreen", "icon_caution");
+    jmessage.__KeyValueFromString("hint_color", "255 200 0");
+    jmessage.__KeyValueFromString("hint_timeout", "3");
+    //Create Entity To Run loop() Every 0.1 Seconds
     timer <- Entities.CreateByClassname("logic_timer");
     timer.__KeyValueFromString("targetname", "timer");
     EntFireByHandle(timer, "AddOutput", "RefireTime 0.1", 0, null, null);
     EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null);
-    EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:SetColor():0:-1", 0, null, null);
+    EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null);
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
     //Create An Entity That Sends A Client Command
     clientcommand <- Entities.CreateByClassname("point_clientcommand");
@@ -32,8 +35,45 @@ function init(){
     if (GetMapName()=="mp_coop_lobby_3") {
         LobbyOneTimeRun()
     }
+    //-------------------------
+    //  Run Map Support code
+    //-------------------------
+    //Run Gelocity Code 
+    if (TryGelocity==1) {
+        try {
+            if (GetMapName().slice(28,50)=="mp_coop_gelocity_1_v02") {
+                Gelocity()
+            }
+        } catch(exception) {
+            printl("Map Not Gelocity 1 Handling")
+            TryGelocity<-0
+        }
+    }
+    //Run Gelocity 3 Code
+        if (TryGelocity3==1) {
+        try {
+            if (GetMapName().slice(28,50)=="mp_coop_gelocity_3_v02") {
+                Gelocity3()
+            }
+        } catch(exception) {
+            printl("Map Not Gelocity 3 Handling")
+            TryGelocity3<-0
+        }
+    }
+    //Run Gelocity 2 Code
+        if (TryGelocity2==1) {
+        try {
+            if (GetMapName().slice(28,50)=="mp_coop_gelocity_2_v01") {
+                Gelocity2()
+            }
+        } catch(exception) {
+            printl("Map Not Gelocity 2 Handling")
+            TryGelocity2<-0
+        }
+    }
 }
 
+//Make Sure Game Is Running In Multiplayer
 try {
     if ( ::IsMultiplayer() ){
         GBIsMultiplayer <- 1
@@ -48,30 +88,26 @@ if (GBIsMultiplayer==1) {
 SetColor <- function(){
     local p = null;
     while (p = Entities.FindByClassname(p, "player")){
-        loop()
         if (p.ValidateScriptScope()){
             local script_scope = p.GetScriptScope();
             if (!("Colored" in script_scope)){
+                //GetPlayersIndex And Store It
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
-                PlayerJoined <- 1
+                //Enable Cvars On Client
+                SendToConsole("gameinstructor_enable 1")
+                EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
+                //Say Join Message
                 local coj = "Player " + PlayerID + " Joined The Game"
                 coj = coj.tostring()
-                PID <- "player" + PlayerID
-                PID <- PID.tostring()
-                //Say Join Message
-                SendToConsole("gameinstructor_enable 1")
-                EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
-                jmessage.__KeyValueFromString("hint_icon_onscreen", "icon_caution");
-                jmessage.__KeyValueFromString("targetname", "jmessagetarget");
                 jmessage.__KeyValueFromString("hint_caption", coj);
-                jmessage.__KeyValueFromString("hint_color", "255 200 0");
-                jmessage.__KeyValueFromString("hint_timeout", "3");
+
                 DoEntFire("jmessagetarget", "showhint", "", 0.0, null, p)
                 printl("Player " + PlayerID + " Joined The Game")
-                //Assign Playerdata
+                //Assign Player TargetName
                 if (ReadyForCustomTargets == 1) {
-                    p.__KeyValueFromString("targetname", PID);
+                    p.__KeyValueFromString("targetname", "player" + PlayerID);
                 //VeiwControl Teleport
                 }
                 //Set Random Color If Over 16
@@ -139,6 +175,9 @@ SetColor <- function(){
 
 
 function loop() {
+//Set All Player Colors
+SetColor()
+
 //Run All Required Loops
     if (GetMapName()=="mp_coop_lobby_3") {
         ArtTherapyLobby()
@@ -146,44 +185,6 @@ function loop() {
     //Run Credits Code
     if (GetMapName()=="mp_coop_credits") {
         CreditsLoop()
-    }
-    //Run Gelocity Code 
-    //=========================
-    if (TryGelocity==1) {
-        try {
-            if (GetMapName().slice(28,50)=="mp_coop_gelocity_1_v02") {
-                Gelocity()
-            }
-        } catch(exception) {
-            printl("Map Not Gelocity 1 Handling")
-            TryGelocity<-0
-        }
-    }
-    //=========================
-    //Run Gelocity 3 Code
-    //=========================
-        if (TryGelocity3==1) {
-        try {
-            if (GetMapName().slice(28,50)=="mp_coop_gelocity_3_v02") {
-                Gelocity3()
-            }
-        } catch(exception) {
-            printl("Map Not Gelocity 3 Handling")
-            TryGelocity3<-0
-        }
-    }
-    //=========================
-    //Run Gelocity 2 Code
-    //=========================
-        if (TryGelocity2==1) {
-        try {
-            if (GetMapName().slice(28,50)=="mp_coop_gelocity_2_v01") {
-                Gelocity2()
-            }
-        } catch(exception) {
-            printl("Map Not Gelocity 2 Handling")
-            TryGelocity2<-0
-        }
     }
     //=========================
     //Run Dedicated Server Code
@@ -204,15 +205,6 @@ function loop() {
             CheatsOff <- 1
         }
     }
-
-//r_portal_fastpath 0 Fix
-    local p = null;
-    while (PlayerJoined==1) {
-        while (p = Entities.FindByClassname(p, "player")) {
-            EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
-            PlayerJoined <- 0
-        }
-    } 
 }
 
 //Lobby setup code
@@ -327,70 +319,62 @@ function ArtTherapyLobby() {
     } 
 }
 
-//Gelocity 1 Code
+//==================================
+//         Gelocity 1 Code
+//==================================
 function Gelocity() {
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door2_player2"))
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door2_player1"))
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"start_clip_1"))
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"start_clip_2"))
-    if (GelocityOneTimeRun==1) {
-        local ent = null;
-        //Remove Entities
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
-        {
-            ent.Destroy() // 20 entities removed
-        }
-        while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
-        {
-            ent.Destroy() // 85 entities removed
-        }
-        printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
-        GelocityOneTimeRun <- 0
+    local ent = null;
+    //Remove Entities
+    while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
+    {
+        ent.Destroy() // 20 entities removed
     }
+    while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
 }
 
-//Gelocity 2 Code
+//==================================
+//         Gelocity 2 Code
+//==================================
 function Gelocity2() {
-    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_2_2"))
-    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_2_1"))
-    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_1_2"))
-    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_1_1"))
-    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start"))
-    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"red_dropper-door_eixt"))
-    // DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"blue_dropper-item_door"))
     local PLent = null;
-    
     while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 10)) {
         local APLent = null;
         while(APLent = Entities.FindByClassname(APLent, "player")) {
-            APLent.SetOrigin(Vector(2367, -8126, 20))
+            APLent.SetOrigin(Vector(2493, -8125, 478))
         }
     }
-    if (Gelocity2OneTimeRun==1) {
-        local ent = null;
-        //Remove Entities
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
-        {
-            ent.Destroy() // 20 entities removed
-        }
-        while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
-        {
-            ent.Destroy() // 85 entities removed
-        }
-        while(ent = Entities.FindByClassname(ent, "env_glow"))
-        {
-            ent.Destroy() // 85 entities removed
-        }
-        while(ent = Entities.FindByClassname(ent, "info_placement_helper"))
-        {
-            ent.Destroy() // 85 entities removed
-        }
-        printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
-        Gelocity2OneTimeRun <- 0
+    local ent = null;
+    //Remove Entities
+    while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
+    {
+        ent.Destroy() // 20 entities removed
     }
+    while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    while(ent = Entities.FindByClassname(ent, "env_glow"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    while(ent = Entities.FindByClassname(ent, "info_placement_helper"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
 }
 
-//Gelocity 3 Code
+//==================================
+//         Gelocity 3 Code
+//==================================
 function Gelocity3() {
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_2_2"))
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start_2_1"))
@@ -399,39 +383,22 @@ function Gelocity3() {
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"door_start"))
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"red_dropper-door_eixt"))
     DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null,"blue_dropper-item_door"))
-    if (Gelocity3OneTimeRun==1) {
-        local ent = null;
+    local ent = null;
         //Remove Entities
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
-        {
-            ent.Destroy() // 20 entities removed
-        }
-        while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
-        {
-            ent.Destroy() // 85 entities removed
-        }
-        printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
-        Gelocity3OneTimeRun <- 0
+    while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
+    {
+        ent.Destroy() // 20 entities removed
     }
+    while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
 }
 
-try {
-if (GetMapName().slice(28,50)=="mp_coop_gelocity_3_v02") {
-        local ent = null;
-        //Remove Entities
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
-        {
-            ent.Destroy() // 20 entities removed
-        }
-        while(ent = Entities.FindByClassname(ent, "beam_spotlight"))
-        {
-            ent.Destroy() // 85 entities removed
-        }
-}
-} catch (exception) {
-    printl("Map Not Gelocity 3 Handling")
-}
-//Dedicated Server Code
+//==================================
+//      Dedicated Server Code
+//==================================
 function DedicatedServerFunc() {
     if (DedicatedServerOneTimeRun==1) {
         if (GetMapName() == "mp_coop_lobby_3") {
@@ -468,6 +435,9 @@ function DedicatedServerFunc() {
         }
     }
 }
+
+
+
 
 //==================================
 //             CREDITS
