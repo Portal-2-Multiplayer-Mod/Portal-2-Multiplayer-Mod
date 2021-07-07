@@ -209,6 +209,14 @@ SetColor()
             CheatsOff <- 1
         }
     }
+//TPG
+    local PLent = null;
+    while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
+        local APLent = null;
+        while(APLent = Entities.FindByClassname(APLent, "player")) {
+            APLent.SetOrigin(Vector(2495, -7451, 410))
+        }
+    }
 }
 
 //Lobby setup code
@@ -348,13 +356,6 @@ function Gelocity() {
 //         Gelocity 2 Code
 //==================================
 function Gelocity2() {
-    local PLent = null;
-    while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 10)) {
-        local APLent = null;
-        while(APLent = Entities.FindByClassname(APLent, "player")) {
-            APLent.SetOrigin(Vector(2493, -8125, 478))
-        }
-    }
     local ent = null;
     //Remove Entities
     while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
@@ -369,13 +370,24 @@ function Gelocity2() {
     {
         ent.Destroy() // 85 entities removed
     }
-    while(ent = Entities.FindByClassname(ent, "info_placement_helper"))
+    while(ent = Entities.FindByClassname(ent, "light_spot"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    while(ent = Entities.FindByClassname(ent, "keyframe_rope"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    while(ent = Entities.FindByClassname(ent, "move_rope"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    while(ent = Entities.FindByClassname(ent, "info_overlay"))
     {
         ent.Destroy() // 85 entities removed
     }
     printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
 }
-
 //==================================
 //         Gelocity 3 Code
 //==================================

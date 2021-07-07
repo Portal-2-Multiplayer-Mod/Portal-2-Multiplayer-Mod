@@ -1,2 +1,0 @@
-del /s MultiplayerModUpdater.cmd
-ren MultiplayerModUpdaterNew.cmd MultiplayerModUpdater.cmd
