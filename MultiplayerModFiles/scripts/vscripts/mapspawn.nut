@@ -16,6 +16,10 @@ TryGelocity3 <- 1
 DedicatedServer <- 0
 
 function init(){
+    //Enable Fast Download
+    SendToConsole("sv_downloadurl https://github.com/kyleraykbs/gilbert/raw/main/portal2")    
+    SendToConsole("sv_allowdownload 1") 
+    SendToConsole("sv_allowupload 1")
     //Create A Join Message Entity
     jmessage <- Entities.CreateByClassname("env_instructor_hint")
     jmessage.__KeyValueFromString("targetname", "jmessagetarget");
