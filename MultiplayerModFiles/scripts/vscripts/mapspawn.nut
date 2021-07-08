@@ -20,6 +20,16 @@ function init(){
     SendToConsole("sv_downloadurl https://github.com/kyleraykbs/gilbert/raw/main/portal2")    
     SendToConsole("sv_allowdownload 1") 
     SendToConsole("sv_allowupload 1")
+    //Create A On Screen Text Message Entity
+    onscreendisplay <- Entities.CreateByClassname("game_text")
+    onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod");
+    onscreendisplay.__KeyValueFromString("message", "Waiting For Players...");
+    onscreendisplay.__KeyValueFromString("holdtime", "0.1");
+    onscreendisplay.__KeyValueFromString("spawnflags", "1");
+    onscreendisplay.__KeyValueFromString("color", "100 255 100");
+    onscreendisplay.__KeyValueFromString("channel", "1");
+    // onscreendisplay.__KeyValueFromString("x", "-1.1");
+    // onscreendisplay.__KeyValueFromString("y", "-1.1");
     //Create A Join Message Entity
     jmessage <- Entities.CreateByClassname("env_instructor_hint")
     jmessage.__KeyValueFromString("targetname", "jmessagetarget");
@@ -100,6 +110,7 @@ SetColor <- function(){
                 PlayerID <- PlayerID.entindex()
                 //Enable Cvars On Client
                 SendToConsole("gameinstructor_enable 1")
+                EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "mat_motion_blur_enabled 1", 0, p, p)
@@ -180,9 +191,25 @@ SetColor <- function(){
 
 
 function loop() {
+//Remove Dropper Bottom
+if (ReadyCheatsOff==0) {
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local ent = null;
+        while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", p.GetOrigin(), 500)) {
+            if (ent.GetModelName()=="models/props_underground/underground_boxdropper.mdl" || ent.GetModelName()=="models/props_backstage/item_dropper.mdl") {
+                ent.Destroy()
+            }
+        }
+    }
+}
 //Set All Player Colors
-SetColor()
+    SetColor()
 
+//Display waiting for players...
+    if (ReadyCheatsOff==0) {
+        DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+    }
 //Run All Required Loops
     if (GetMapName()=="mp_coop_lobby_3") {
         ArtTherapyLobby()
@@ -570,6 +597,7 @@ if (MPMCredits<=MPModCreditNumber) {
 
 //Credits One Time Run Code
 if (GetMapName() == "mp_coop_credits") {
+
     //Set Credits Animations
     //Pbody Animations
     AnimationsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "noGun_airwalk", "portalgun_drowning", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]

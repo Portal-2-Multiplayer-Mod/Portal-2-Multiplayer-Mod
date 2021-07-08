@@ -102,6 +102,7 @@ SetColor <- function(){
                 SendToConsole("gameinstructor_enable 1")
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "mat_motion_blur_enabled 1", 0, p, p)
                 //Say Join Message
                 local coj = "Player " + PlayerID + " Joined The Game"
                 coj = coj.tostring()
@@ -205,8 +206,18 @@ SetColor()
     //check if ready to turn cheats off
     if (ReadyCheatsOff==1) {
         if (CheatsOff==0) {
-            //SendToConsole("sv_cheats 0")
+            if (GetMapName()=="mp_coop_lobby_3") {
+            SendToConsole("sv_cheats 0")
+            }
             CheatsOff <- 1
+        }
+    }
+//TPG
+    local PLent = null;
+    while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
+        local APLent = null;
+        while(APLent = Entities.FindByClassname(APLent, "player")) {
+            APLent.SetOrigin(Vector(2495, -7451, 410))
         }
     }
 }
@@ -348,13 +359,6 @@ function Gelocity() {
 //         Gelocity 2 Code
 //==================================
 function Gelocity2() {
-    local PLent = null;
-    while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 10)) {
-        local APLent = null;
-        while(APLent = Entities.FindByClassname(APLent, "player")) {
-            APLent.SetOrigin(Vector(2493, -8125, 478))
-        }
-    }
     local ent = null;
     //Remove Entities
     while(ent = Entities.FindByClassname(ent, "func_portal_bumper"))
@@ -369,13 +373,24 @@ function Gelocity2() {
     {
         ent.Destroy() // 85 entities removed
     }
-    while(ent = Entities.FindByClassname(ent, "info_placement_helper"))
+    while(ent = Entities.FindByClassname(ent, "light_spot"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    while(ent = Entities.FindByClassname(ent, "keyframe_rope"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    while(ent = Entities.FindByClassname(ent, "move_rope"))
+    {
+        ent.Destroy() // 85 entities removed
+    }
+    while(ent = Entities.FindByClassname(ent, "info_overlay"))
     {
         ent.Destroy() // 85 entities removed
     }
     printl("Portal 2 Multiplayer Mod: Removed 20 Portal Bumpers")
 }
-
 //==================================
 //         Gelocity 3 Code
 //==================================
@@ -602,7 +617,7 @@ if (GetMapName() == "mp_coop_credits") {
     "Blub/Vecc | Code Cleanup + Commenting",
     "AngelPuzzle | Translations",
     "--------------------------",
-    "Multiplayer Mod: Special Thanks",
+    "Multiplayer Mod: Beta Testers",
     "--------------------------",
     "sear",
     "Trico_Everfire",
@@ -610,10 +625,22 @@ if (GetMapName() == "mp_coop_credits") {
     "iambread",
     "hulkstar",
     "neck",
+    "soulfur",
+    "brawler",
     "Sheuron",
+    "NintenDude",
     "SuperSpeed",
+    "portalboy",
+    "charity",
+    "Souper Marilogi",
+    "fluffys",
     "JDWMGB",
-    "MicrosoftWindows | The Person Not The Company",
+    "ALIEN GOD",
+    "mono",
+    "Funky Kong",
+    "MicrosoftWindows",
+    "dactam",
+    "wol",
     "--------------------------",
     "And my supportive group of friends!",
     "--------------------------",
