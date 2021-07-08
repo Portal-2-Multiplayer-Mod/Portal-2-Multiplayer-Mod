@@ -221,6 +221,7 @@ SetColor()
 
 //Lobby setup code
 function LobbyOneTimeRun() {
+    SendToConsole("sv_cheats 0")
 //Remove Entities
     //Fix Edicts Error
     local ent = null;
