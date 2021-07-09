@@ -11,6 +11,8 @@ DedicatedServerOneTimeRun <- 1
 TryGelocity <- 1
 TryGelocity2 <- 1
 TryGelocity3 <- 1
+copp <- 0
+WFPDisplayDisabled <- 0
 
 //Is Dedicated Server
 DedicatedServer <- 1
@@ -20,6 +22,18 @@ function init(){
     SendToConsole("sv_downloadurl https://github.com/kyleraykbs/gilbert/raw/main/portal2")    
     SendToConsole("sv_allowdownload 1") 
     SendToConsole("sv_allowupload 1")
+    //Create A On Screen Text Message Entity
+    onscreendisplay <- Entities.CreateByClassname("game_text")
+    onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod");
+    onscreendisplay.__KeyValueFromString("message", "Waiting For Players...");
+    onscreendisplay.__KeyValueFromString("holdtime", "0.2");
+    onscreendisplay.__KeyValueFromString("fadeout", "0.2");
+    onscreendisplay.__KeyValueFromString("fadein", "0.2");
+    onscreendisplay.__KeyValueFromString("spawnflags", "1");
+    onscreendisplay.__KeyValueFromString("color", "60 200 60");
+    onscreendisplay.__KeyValueFromString("channel", "1");
+    // onscreendisplay.__KeyValueFromString("x", "-1.1");
+    // onscreendisplay.__KeyValueFromString("y", "-1.1");
     //Create A Join Message Entity
     jmessage <- Entities.CreateByClassname("env_instructor_hint")
     jmessage.__KeyValueFromString("targetname", "jmessagetarget");
@@ -35,13 +49,19 @@ function init(){
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
     //Create An Entity That Sends A Client Command
     clientcommand <- Entities.CreateByClassname("point_clientcommand");
+    //-------------------------
+    //  Run Map Support code
+    //-------------------------
     //Run Lobby Code
     if (GetMapName()=="mp_coop_lobby_3") {
         LobbyOneTimeRun()
     }
-    //-------------------------
-    //  Run Map Support code
-    //-------------------------
+
+    //Run mp_coop_paint_conversion Code
+    if (GetMapName()=="mp_coop_paint_conversion") {
+        mp_coop_paint_conversionFIX()
+    }
+
     //Run Gelocity Code 
     if (TryGelocity==1) {
         try {
@@ -100,6 +120,8 @@ SetColor <- function(){
                 PlayerID <- PlayerID.entindex()
                 //Enable Cvars On Client
                 SendToConsole("gameinstructor_enable 1")
+                EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "mat_motion_blur_enabled 1", 0, p, p)
@@ -180,9 +202,35 @@ SetColor <- function(){
 
 
 function loop() {
+//Remove Dropper Bottom
+if (ReadyCheatsOff==0) {
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local ent = null;
+        while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", p.GetOrigin(), 500)) {
+            if (ent.GetModelName()=="models/props_underground/underground_boxdropper.mdl" || ent.GetModelName()=="models/props_backstage/item_dropper.mdl") {
+                ent.Destroy()
+            }
+        }
+    }
+}
 //Set All Player Colors
-SetColor()
+    SetColor()
 
+//Display waiting for players...
+    if (WFPDisplayDisabled==0) {
+        //Cache Old Player Pos
+        if (copp==0) {
+            OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+            copp <- 1
+        }
+        //See If Player In Spawn Zone
+        if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 20)) {
+                DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+        } else {
+            WFPDisplayDisabled <- 1
+        }
+    }
 //Run All Required Loops
     if (GetMapName()=="mp_coop_lobby_3") {
         ArtTherapyLobby()
@@ -260,6 +308,13 @@ function LobbyOneTimeRun() {
 
 }
 
+//======================================
+//======================================
+//           MAP SUPPORT CODE
+//======================================
+//======================================
+
+
 function ArtTherapyLobby() {
 //Art Therapy Left Chute Enabler
     local vectorEEL;
@@ -332,6 +387,20 @@ function ArtTherapyLobby() {
     {
         AEent.SetOrigin(Vector(3919, 3352, 158))
     } 
+}
+
+//==================================
+//     mp_coop_paint_conversion
+//==================================
+function mp_coop_paint_conversionFIX() {
+    Entities.FindByName(null,"disassembler_1_door_blocker").Destroy()
+    Entities.FindByName(null,"disassembler_2_door_blocker").Destroy()
+
+    Entities.FindByName(null,"disassembler_1_door_2").Destroy()
+    Entities.FindByName(null,"disassembler_1_door_1").Destroy()
+
+    Entities.FindByName(null,"disassembler_2_door_2").Destroy()
+    Entities.FindByName(null,"disassembler_2_door_1").Destroy()
 }
 
 //==================================
@@ -570,6 +639,7 @@ if (MPMCredits<=MPModCreditNumber) {
 
 //Credits One Time Run Code
 if (GetMapName() == "mp_coop_credits") {
+
     //Set Credits Animations
     //Pbody Animations
     AnimationsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "noGun_airwalk", "portalgun_drowning", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]

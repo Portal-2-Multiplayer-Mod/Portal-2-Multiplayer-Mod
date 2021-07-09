@@ -11,6 +11,8 @@ DedicatedServerOneTimeRun <- 1
 TryGelocity <- 1
 TryGelocity2 <- 1
 TryGelocity3 <- 1
+copp <- 0
+WFPDisplayDisabled <- 0
 
 //Is Dedicated Server
 DedicatedServer <- 0
@@ -24,9 +26,11 @@ function init(){
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod");
     onscreendisplay.__KeyValueFromString("message", "Waiting For Players...");
-    onscreendisplay.__KeyValueFromString("holdtime", "0.1");
+    onscreendisplay.__KeyValueFromString("holdtime", "0.2");
+    onscreendisplay.__KeyValueFromString("fadeout", "0.2");
+    onscreendisplay.__KeyValueFromString("fadein", "0.2");
     onscreendisplay.__KeyValueFromString("spawnflags", "1");
-    onscreendisplay.__KeyValueFromString("color", "100 255 100");
+    onscreendisplay.__KeyValueFromString("color", "60 200 60");
     onscreendisplay.__KeyValueFromString("channel", "1");
     // onscreendisplay.__KeyValueFromString("x", "-1.1");
     // onscreendisplay.__KeyValueFromString("y", "-1.1");
@@ -116,6 +120,7 @@ SetColor <- function(){
                 PlayerID <- PlayerID.entindex()
                 //Enable Cvars On Client
                 SendToConsole("gameinstructor_enable 1")
+                EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
@@ -213,8 +218,18 @@ if (ReadyCheatsOff==0) {
     SetColor()
 
 //Display waiting for players...
-    if (ReadyCheatsOff==0) {
-        DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+    if (WFPDisplayDisabled==0) {
+        //Cache Old Player Pos
+        if (copp==0) {
+            OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+            copp <- 1
+        }
+        //See If Player In Spawn Zone
+        if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 20)) {
+                DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+        } else {
+            WFPDisplayDisabled <- 1
+        }
     }
 //Run All Required Loops
     if (GetMapName()=="mp_coop_lobby_3") {
