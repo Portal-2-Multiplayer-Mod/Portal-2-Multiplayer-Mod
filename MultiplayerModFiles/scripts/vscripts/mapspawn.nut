@@ -45,13 +45,19 @@ function init(){
     EntFireByHandle(timer, "Enable", "", 0.1, null, null);
     //Create An Entity That Sends A Client Command
     clientcommand <- Entities.CreateByClassname("point_clientcommand");
+    //-------------------------
+    //  Run Map Support code
+    //-------------------------
     //Run Lobby Code
     if (GetMapName()=="mp_coop_lobby_3") {
         LobbyOneTimeRun()
     }
-    //-------------------------
-    //  Run Map Support code
-    //-------------------------
+
+    //Run mp_coop_paint_conversion Code
+    if (GetMapName()=="mp_coop_paint_conversion") {
+        mp_coop_paint_conversionFIX()
+    }
+
     //Run Gelocity Code 
     if (TryGelocity==1) {
         try {
@@ -287,6 +293,13 @@ function LobbyOneTimeRun() {
 
 }
 
+//======================================
+//======================================
+//           MAP SUPPORT CODE
+//======================================
+//======================================
+
+
 function ArtTherapyLobby() {
 //Art Therapy Left Chute Enabler
     local vectorEEL;
@@ -359,6 +372,20 @@ function ArtTherapyLobby() {
     {
         AEent.SetOrigin(Vector(3919, 3352, 158))
     } 
+}
+
+//==================================
+//     mp_coop_paint_conversion
+//==================================
+function mp_coop_paint_conversionFIX() {
+    Entities.FindByName(null,"disassembler_1_door_blocker").Destroy()
+    Entities.FindByName(null,"disassembler_2_door_blocker").Destroy()
+
+    Entities.FindByName(null,"disassembler_1_door_2").Destroy()
+    Entities.FindByName(null,"disassembler_1_door_1").Destroy()
+
+    Entities.FindByName(null,"disassembler_2_door_2").Destroy()
+    Entities.FindByName(null,"disassembler_2_door_1").Destroy()
 }
 
 //==================================
