@@ -69,7 +69,7 @@ function init(){
                 Gelocity()
             }
         } catch(exception) {
-            printl("Map Not Gelocity 1 Handling")
+            print("")
             TryGelocity<-0
         }
     }
@@ -80,7 +80,7 @@ function init(){
                 Gelocity3()
             }
         } catch(exception) {
-            printl("Map Not Gelocity 3 Handling")
+            print("")
             TryGelocity3<-0
         }
     }
@@ -91,7 +91,7 @@ function init(){
                 Gelocity2()
             }
         } catch(exception) {
-            printl("Map Not Gelocity 2 Handling")
+            print("")
             TryGelocity2<-0
         }
     }
@@ -202,23 +202,14 @@ SetColor <- function(){
 
 
 function loop() {
-//Remove Dropper Bottom
-if (ReadyCheatsOff==0) {
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        local ent = null;
-        while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", p.GetOrigin(), 500)) {
-            if (ent.GetModelName()=="models/props_underground/underground_boxdropper.mdl" || ent.GetModelName()=="models/props_backstage/item_dropper.mdl") {
-                ent.Destroy()
-            }
-        }
-    }
-}
 //Set All Player Colors
     SetColor()
 
 //Display waiting for players...
     if (WFPDisplayDisabled==0) {
+        //General Map Code
+        General()
+        try {
         //Cache Old Player Pos
         if (copp==0) {
             OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
@@ -229,6 +220,10 @@ if (ReadyCheatsOff==0) {
                 DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
         } else {
             WFPDisplayDisabled <- 1
+            GeneralOneTime()
+        }
+        } catch(exception) {
+            print("")
         }
     }
 //Run All Required Loops
@@ -314,6 +309,39 @@ function LobbyOneTimeRun() {
 //======================================
 //======================================
 
+function General() {
+//Remove Dropper Bottom
+if (ReadyCheatsOff==0) {
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local ent = null;
+        while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", p.GetOrigin(), 500)) {
+            if (ent.GetModelName()=="models/props_underground/underground_boxdropper.mdl" || ent.GetModelName()=="models/props_backstage/item_dropper.mdl") {
+                ent.Destroy()
+            }
+        }
+    }
+}
+}
+
+//General One Time Run
+function GeneralOneTime() {
+    try {
+    Entities.FindByName(null,"airlock_1-door1-airlock_entry_door_close_rl").Destroy()
+    Entities.FindByName(null,"airlock_1-door1-ramp_close_start").Destroy()
+    RanGenCode <- 1
+    } catch(exception) {
+        printl("")
+    }
+    
+    try {
+    Entities.FindByName(null,"airlock_2-door1-airlock_entry_door_close_rl").Destroy()
+    Entities.FindByName(null,"airlock_2-door1-ramp_close_start").Destroy()
+    RanGenCode <- 1
+    } catch(exception) {
+        print("")
+    }
+}
 
 function ArtTherapyLobby() {
 //Art Therapy Left Chute Enabler
