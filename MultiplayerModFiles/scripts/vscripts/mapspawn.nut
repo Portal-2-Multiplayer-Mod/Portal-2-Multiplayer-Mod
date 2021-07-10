@@ -204,17 +204,21 @@ SetColor <- function(){
 function loop() {
 //Set All Player Colors
     SetColor()
-
-//Display waiting for players...
+    //Cache Old Player Pos
+    try {
+    if (copp==0) {
+        OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+        copp <- 1
+    }
+    } catch(exception) {
+        print("")
+    }
+//Run General Code
+    General()
+//Display waiting for players & run nessacary code after spawn...
     if (WFPDisplayDisabled==0) {
         //General Map Code
-        General()
         try {
-        //Cache Old Player Pos
-        if (copp==0) {
-            OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-            copp <- 1
-        }
         //See If Player In Spawn Zone
         if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 20)) {
                 DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
@@ -311,17 +315,18 @@ function LobbyOneTimeRun() {
 
 function General() {
 //Remove Dropper Bottom
-if (ReadyCheatsOff==0) {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         local ent = null;
-        while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", p.GetOrigin(), 500)) {
-            if (ent.GetModelName()=="models/props_underground/underground_boxdropper.mdl" || ent.GetModelName()=="models/props_backstage/item_dropper.mdl") {
-                ent.Destroy()
+        while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500)) {
+            if (ent.GetModelName()=="models/props_underground/underground_boxdropper.mdl") {
+                EntFireByHandle(ent, "SetAnimation", "open_idle", 0.0, null, null)
+            }
+            if (ent.GetModelName()=="models/props_backstage/item_dropper.mdl") {
+                EntFireByHandle(ent, "SetAnimation", "item_dropper_idle", 0.0, null, null)
             }
         }
     }
-}
 }
 
 //General One Time Run
@@ -329,7 +334,6 @@ function GeneralOneTime() {
     try {
     Entities.FindByName(null,"airlock_1-door1-airlock_entry_door_close_rl").Destroy()
     Entities.FindByName(null,"airlock_1-door1-ramp_close_start").Destroy()
-    RanGenCode <- 1
     } catch(exception) {
         printl("")
     }
@@ -337,7 +341,20 @@ function GeneralOneTime() {
     try {
     Entities.FindByName(null,"airlock_2-door1-airlock_entry_door_close_rl").Destroy()
     Entities.FindByName(null,"airlock_2-door1-ramp_close_start").Destroy()
-    RanGenCode <- 1
+    } catch(exception) {
+        print("")
+    }
+
+    try {
+    Entities.FindByName(null,"airlock_1-door1-door_close").Destroy()
+    
+    } catch(exception) {
+        print("")
+    }
+        
+    try {
+    Entities.FindByName(null,"airlock1-door1-door_close").Destroy()
+    
     } catch(exception) {
         print("")
     }
