@@ -536,6 +536,7 @@ function DedicatedServerFunc() {
     if (DedicatedServerOneTimeRun==1) {
         if (GetMapName() == "mp_coop_lobby_3") {
             Entities.FindByName(null,"brush_spawn_blocker_red").Destroy()
+            Entities.FindByName(null,"brush_spawn_blocker_blue").Destroy()
             //Enable Team Building Course
             DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
             DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
@@ -563,7 +564,6 @@ function DedicatedServerFunc() {
     local p = null;
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.entindex()==1) {
-            p.SetOrigin(Vector(69420,69420,69420))
             SendToConsole("exec DedicatedServerCommands")
         }
     }
