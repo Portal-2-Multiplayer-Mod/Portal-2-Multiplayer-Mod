@@ -313,6 +313,9 @@ function LobbyOneTimeRun() {
 //======================================
 //======================================
 
+//==================================
+//    General Fixes For All Maps
+//==================================
 function General() {
 //Remove Dropper Bottom
     local p = null
@@ -331,35 +334,26 @@ function General() {
 
 //General One Time Run
 function GeneralOneTime() {
-    try {
-    Entities.FindByName(null,"airlock_1-door1-airlock_entry_door_close_rl").Destroy()
-    Entities.FindByName(null,"airlock_1-door1-ramp_close_start").Destroy()
-    } catch(exception) {
-        printl("")
-    }
-    
-    try {
-    Entities.FindByName(null,"airlock_2-door1-airlock_entry_door_close_rl").Destroy()
-    Entities.FindByName(null,"airlock_2-door1-ramp_close_start").Destroy()
-    } catch(exception) {
-        print("")
-    }
 
-    try {
-    Entities.FindByName(null,"airlock_1-door1-door_close").Destroy()
-    
-    } catch(exception) {
-        print("")
-    }
-        
-    try {
-    Entities.FindByName(null,"airlock1-door1-door_close").Destroy()
-    
-    } catch(exception) {
-        print("")
+    local DoorEntities = [
+        "airlock_1-door1-airlock_entry_door_close_rl",
+        "airlock_2-door1-airlock_entry_door_close_rl",
+        "last_airlock-door1-airlock_entry_door_close_rl",
+        "airlock_1-door1-door_close",
+        "airlock1-door1-door_close",
+    ]
+    foreach (DoorType in DoorEntities) {
+        try {
+        Entities.FindByName(null, DoorType).Destroy()
+        } catch(exception) {
+            printl("")
+        }
     }
 }
 
+//==================================
+//        Art Therapy Lobby
+//==================================
 function ArtTherapyLobby() {
 //Art Therapy Left Chute Enabler
     local vectorEEL;
@@ -536,6 +530,7 @@ function DedicatedServerFunc() {
     if (DedicatedServerOneTimeRun==1) {
         if (GetMapName() == "mp_coop_lobby_3") {
             Entities.FindByName(null,"brush_spawn_blocker_red").Destroy()
+            Entities.FindByName(null,"brush_spawn_blocker_blue").Destroy()
             //Enable Team Building Course
             DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
             DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
@@ -563,7 +558,6 @@ function DedicatedServerFunc() {
     local p = null;
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.entindex()==1) {
-            p.SetOrigin(Vector(69420,69420,69420))
             SendToConsole("exec DedicatedServerCommands")
         }
     }
