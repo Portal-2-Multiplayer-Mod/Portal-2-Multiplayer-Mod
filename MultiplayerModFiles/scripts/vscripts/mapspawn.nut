@@ -341,6 +341,8 @@ function GeneralOneTime() {
         "last_airlock-door1-airlock_entry_door_close_rl",
         "airlock_1-door1-door_close",
         "airlock1-door1-door_close",
+        "camera_door_3-relay_doorclose",
+        "entry_airlock-door1-airlock_entry_door_close_rl",
     ]
     foreach (DoorType in DoorEntities) {
         try {
