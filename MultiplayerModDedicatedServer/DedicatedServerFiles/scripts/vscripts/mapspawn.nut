@@ -6,7 +6,6 @@ ReadyCheatsOff <- 0
 PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
-ReadyForCustomTargets <- 0
 DedicatedServerOneTimeRun <- 1
 TryGelocity <- 1
 TryGelocity2 <- 1
@@ -133,9 +132,8 @@ SetColor <- function(){
                 DoEntFire("jmessagetarget", "showhint", "", 0.0, null, p)
                 printl("Player " + PlayerID + " Joined The Game")
                 //Assign Player TargetName
-                if (ReadyForCustomTargets == 1) {
-                    p.__KeyValueFromString("targetname", "player" + PlayerID);
-                //VeiwControl Teleport
+                if (PlayerID >= 3) {
+                p.__KeyValueFromString("targetname", "player" + PlayerID);
                 }
                 //Set Random Color If Over 16
                 if (PlayerID != 1) {
@@ -148,7 +146,6 @@ SetColor <- function(){
                 }
                 if (PlayerID == 2) {
                     R <- 180, G <- 255,  B <- 180;
-                    ReadyForCustomTargets <- 1
                 }
                 if (PlayerID == 3) {
                     R <- 120, G <- 140,  B <- 255;
@@ -341,6 +338,8 @@ function GeneralOneTime() {
         "last_airlock-door1-airlock_entry_door_close_rl",
         "airlock_1-door1-door_close",
         "airlock1-door1-door_close",
+        "camera_door_3-relay_doorclose",
+        "entry_airlock-door1-airlock_entry_door_close_rl",
     ]
     foreach (DoorType in DoorEntities) {
         try {
