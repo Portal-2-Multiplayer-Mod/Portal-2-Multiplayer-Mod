@@ -558,6 +558,8 @@ function DedicatedServerFunc() {
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.entindex()==1) {
             SendToConsole("exec DedicatedServerCommands")
+            //Set Size To 0
+            EntFireByHandle(p, "AddOutput", "ModelScale 0", 0, null, null);
         }
     }
 }
