@@ -117,6 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="HowToUseMainText.Text" xml:space="preserve">
+    <value>Hosting :
+
+Playing online:
+Send your friends your public ip. (You can find it in the top left.)
+Make sure you have 27015 port forwarded with UDP and TCP
+Then finally click START to run the mod
+
+Playing locally (Or with hamachi.):
+Send your friends the local ip and click START
+
+Joining:
+Step 1: Open the console in game (Details in video or online.)
+Step 2: Type "connect HOSTIP" (Replace HOSTIP obviously)
+Step 3:Press [ENTER] to connect!
+</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
