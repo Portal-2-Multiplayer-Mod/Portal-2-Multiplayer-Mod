@@ -5,13 +5,13 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MultiplayerModGUI")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MultiplayerModGUI")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTitle("MultiplayerMod")]
+[assembly: AssemblyDescription("Game launcher for the Portal 2 Multiplayer Mod")]
+[assembly: AssemblyConfiguration("GUI V1.0")]
+[assembly: AssemblyCompany("Portal 2 Multiplayer: Team")]
+[assembly: AssemblyProduct("MultiplayerMod")]
+[assembly: AssemblyCopyright("Copyright GNU © Portal 2 Multiplayer: Team 2021")]
+[assembly: AssemblyTrademark("Portal 2 Multiplayer: Team")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible

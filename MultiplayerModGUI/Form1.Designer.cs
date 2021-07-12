@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Net;
 using System.Net.Sockets;
+using System.Windows.Forms;
 
 namespace MultiplayerModGUI
 {
@@ -110,6 +113,7 @@ namespace MultiplayerModGUI
             this.button3.TabIndex = 5;
             this.button3.Text = "Uninstall";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new EventHandler(UninstallButton_Click);
             // 
             // button2
             // 
@@ -178,6 +182,23 @@ namespace MultiplayerModGUI
             this.PubIP.Size = new System.Drawing.Size(110, 23);
             this.PubIP.TabIndex = 5;
             this.PubIP.Text = "Fetching IP...";
+            string GetIPAddress()
+            {
+                String address = "";
+                WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
+                using (WebResponse response = request.GetResponse())
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    address = stream.ReadToEnd();
+                }
+
+                int first = address.IndexOf("Address: ") + 9;
+                int last = address.LastIndexOf("</body>");
+                address = address.Substring(first, last - first);
+
+                return address;
+            }
+            this.PubIP.Text = GetIPAddress();
             // 
             // LANIP
             // 
@@ -189,6 +210,19 @@ namespace MultiplayerModGUI
             this.LANIP.Size = new System.Drawing.Size(110, 23);
             this.LANIP.TabIndex = 4;
             this.LANIP.Text = "Fetching IP...";
+            string GetLocalIPAddress()
+            {
+                var host = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
+                foreach (var ip in host.AddressList)
+                {
+                    if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    {
+                        return ip.ToString();
+                    }
+                }
+                throw new Exception("No network adapters with an IPv4 address in the system!");
+            }
+            this.LANIP.Text = GetLocalIPAddress();
             // 
             // label3
             // 
@@ -289,6 +323,22 @@ namespace MultiplayerModGUI
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
+        }
+
+        private void UninstallButton_Click(object sender, EventArgs e)
+        {
+            string message = "Are you sure you want to uninstall?";
+            string title = "Uninstall?";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, title, buttons);
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+            }
+            else
+            {
+                // Do Nothing
+            }
         }
 
         #endregion
