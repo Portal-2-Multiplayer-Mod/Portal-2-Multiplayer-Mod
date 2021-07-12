@@ -49,7 +49,7 @@ echo "Copying files..."
 cp -rf "portal2/MultiplayerModFiles/cfg" "portal2"
 cp -rf "portal2/MultiplayerModFiles/media" "portal2"
 cp -rf "portal2/MultiplayerModFiles/scripts" "portal2"
-cp -r "portal2/bin/linux32/server.so.patched" "portal2/bin/linux32/server.so"
+cp -f "portal2/bin/linux32/server.so.patched" "portal2/bin/linux32/server.so"
 
 echo "Running game..."
 color NC
