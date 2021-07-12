@@ -367,6 +367,9 @@ function GeneralOneTime() {
     if (GetMapName()=="mp_coop_separation_1") {
         mp_coop_separation_1FIXONETIME()
     }
+    // if (GetMapName()=="mp_coop_2paints_1bridge") {
+    //     mp_coop_2paints_1bridgeFIX()
+    // }
 }
 
 //==================================
@@ -445,6 +448,18 @@ function ArtTherapyLobby() {
         AEent.SetOrigin(Vector(3919, 3352, 158))
     } 
 }
+
+//==================================
+//      mp_coop_2pains_1sadness
+//==================================
+// function mp_coop_2paints_1bridgeFIX() {
+//     local ent = null;
+//     while(ent = Entities.FindByClassnameWithin(null, "trigger_once", Vector(1472, 1392, 68), 10)) 
+//     {
+//         ent.Destroy()
+//     } 
+//     EntFireByHandle(Entities.FindByName(null, "bridge_2"), "enable", "", 0, null, null)
+// }
 
 //==================================
 //      mp_coop_tripleaxis
@@ -811,16 +826,18 @@ if (GetMapName() == "mp_coop_credits") {
     "MicrosoftWindows",
     "dactam",
     "wol",
-    "--------------------------",
-    "And my supportive group of friends!",
-    "--------------------------",
-    "Nick/KingKong",
-    "Latte/Luna",
-    "Craig is love Craig is life | WOLF BATTLER ",
-    "Bunger from Bugsnax | Ayden",
-    "Bananabread | KaiserInfinitus",
-    "Jazzy/jasmine",
-    "David/Mr. E"
+    "kitsune",
+    "charzar",
+    // "--------------------------",
+    // "And my supportive group of friends!",
+    // "--------------------------",
+    // "Nick/KingKong",
+    // "Latte/Luna",
+    // "Craig is love Craig is life | WOLF BATTLER ",
+    // "Bunger from Bugsnax | Ayden",
+    // "Bananabread | KaiserInfinitus",
+    // "Jazzy/jasmine",
+    // "David/Mr. E"
     "--------------------------",
     "Thank you all so so much!!!",
     "--------------------------"
