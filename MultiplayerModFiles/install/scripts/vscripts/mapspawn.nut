@@ -56,6 +56,11 @@ function init(){
         LobbyOneTimeRun()
     }
 
+    //Run mp_coop_tripleaxis Cod
+    if (GetMapName()=="mp_coop_tripleaxis") {
+        mp_coop_tripleaxisFIX()
+    }
+
     //Run mp_coop_separation_1 Code
     if (GetMapName()=="mp_coop_separation_1") {
             mp_coop_separation_1FIX()
@@ -442,7 +447,14 @@ function ArtTherapyLobby() {
 }
 
 //==================================
-//     mp_coop_separation_1
+//      mp_coop_tripleaxis
+//==================================
+function mp_coop_tripleaxisFIX() {
+    Entities.FindByName(null, "outro_math_counter").Destroy()
+}
+
+//==================================
+//      mp_coop_separation_1
 //==================================
 function mp_coop_separation_1FIX() {
     EntFireByHandle(Entities.FindByName(null, "left_1st_room_spawn-initial_blue_spawn"), "SetAsActiveSpawn", "", 0, null, null)
