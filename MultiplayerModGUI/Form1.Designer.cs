@@ -313,7 +313,7 @@ namespace MultiplayerModGUI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Portal 2 Multiplayer: Mod";
+            this.Text = "Portal 2: Multiplayer Mod";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -333,7 +333,7 @@ namespace MultiplayerModGUI
             DialogResult result = MessageBox.Show(message, title, buttons);
             if (result == DialogResult.Yes)
             {
-                this.Close();
+                System.Diagnostics.Process.Start("calc.exe");
             }
             else
             {
