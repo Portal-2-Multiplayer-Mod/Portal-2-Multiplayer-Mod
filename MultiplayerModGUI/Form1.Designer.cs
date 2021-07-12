@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
-
 namespace MultiplayerModGUI
 {
     partial class Form1
@@ -323,6 +322,17 @@ namespace MultiplayerModGUI
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
+            //CLOSE IF NOT IN PORTAL 2 DIRECTORY
+            if (AppDomain.CurrentDomain.BaseDirectory.Contains("Portal 2"))
+            { if (AppDomain.CurrentDomain.BaseDirectory.Contains("portal2"))
+                {
+                    MessageBox.Show("PROGRAM NOT RUNNING IN THE PORTAL 2 FOLDER\n\nTo fix this put this and \"MultiplayerModFiles\"\nin your steamapps/common/Portal 2 directory\n\n(for more info go to the mod page)", "ERROR");
+                    this.Close();
+                }
+                    } else {
+                    MessageBox.Show("PROGRAM NOT RUNNING IN THE PORTAL 2 FOLDER\n\nTo fix this put this and \"MultiplayerModFiles\"\nin your steamapps/common/Portal 2 directory\n\n(for more info go to the mod page)", "ERROR");
+                    this.Close();
+                }
         }
 
         private void UninstallButton_Click(object sender, EventArgs e)
@@ -333,7 +343,11 @@ namespace MultiplayerModGUI
             DialogResult result = MessageBox.Show(message, title, buttons);
             if (result == DialogResult.Yes)
             {
-                System.Diagnostics.Process.Start("calc.exe");
+                if (AppDomain.CurrentDomain.BaseDirectory.Contains("Portal 2"))
+                {
+                    System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "MultiplayerModFiles/uninstaller.cmd");
+                    this.Close();
+                }
             }
             else
             {

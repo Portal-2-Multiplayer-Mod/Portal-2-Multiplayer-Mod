@@ -56,6 +56,11 @@ function init(){
         LobbyOneTimeRun()
     }
 
+    //Run mp_coop_separation_1 Code
+    if (GetMapName()=="mp_coop_separation_1") {
+            mp_coop_separation_1FIX()
+    }
+
     //Run mp_coop_paint_conversion Code
     if (GetMapName()=="mp_coop_paint_conversion") {
         mp_coop_paint_conversionFIX()
@@ -331,7 +336,6 @@ function General() {
 
 //General One Time Run
 function GeneralOneTime() {
-
     local DoorEntities = [
         "airlock_1-door1-airlock_entry_door_close_rl",
         "airlock_2-door1-airlock_entry_door_close_rl",
@@ -340,6 +344,12 @@ function GeneralOneTime() {
         "airlock1-door1-door_close",
         "camera_door_3-relay_doorclose",
         "entry_airlock-door1-airlock_entry_door_close_rl",
+        "door1-airlock_entry_door_close_rl",
+        "airlock-door1-airlock_entry_door_close_rl",
+        "orange_door_1-ramp_close_start",
+        "blue_door_1-ramp_close_start",
+        "orange_door_1-airlock_player_block",
+        "blue_door_1-airlock_player_block",
     ]
     foreach (DoorType in DoorEntities) {
         try {
@@ -347,6 +357,10 @@ function GeneralOneTime() {
         } catch(exception) {
             printl("")
         }
+    }
+    //Map Support
+    if (GetMapName()=="mp_coop_separation_1") {
+        mp_coop_separation_1FIXONETIME()
     }
 }
 
@@ -425,6 +439,40 @@ function ArtTherapyLobby() {
     {
         AEent.SetOrigin(Vector(3919, 3352, 158))
     } 
+}
+
+//==================================
+//     mp_coop_separation_1
+//==================================
+function mp_coop_separation_1FIX() {
+    EntFireByHandle(Entities.FindByName(null, "left_1st_room_spawn-initial_blue_spawn"), "SetAsActiveSpawn", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "right_1st_room_spawn-initial_orange_spawn"), "SetAsActiveSpawn", "", 0, null, null)
+    Entities.FindByName(null, "split_counter").Destroy()
+}
+function mp_coop_separation_1FIXONETIME() {
+    EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopMapStart()", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(1)", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(2)", 0, null, null)
+
+    local ent = null;
+    while(ent = Entities.FindByName(ent, "split_exit_arms")) {
+        EntFireByHandle(ent, "setanimation", "90up", 0, null, null)
+    }
+    local ent = null;
+    while(ent = Entities.FindByName(ent, "split_entrance_arms")) {
+        EntFireByHandle(ent, "setanimation", "90down", 0, null, null)
+    }
+
+    local ent = null;
+    while (ent = Entities.FindByClassnameWithin(ent, "func_areaportalwindow", OldPlayerPos, 5000)) {
+        EntFireByHandle(ent, "SetFadeEndDistance", "10000", 0, null, null)
+    }
+
+    local loopTimes = 0;
+    while (loopTimes <= 0) {
+        Entities.FindByName(null, "split_exit_fake_collision").Destroy()
+    local loopTimes = loopTimes + 1
+    }
 }
 
 //==================================
