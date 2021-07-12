@@ -70,6 +70,7 @@ namespace MultiplayerModGUI
             this.button1.TabIndex = 3;
             this.button1.Text = " Start";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new EventHandler(StartButton_Click);
             // 
             // panel2
             // 
@@ -96,7 +97,7 @@ namespace MultiplayerModGUI
             this.checkBox1.TabIndex = 1;
             this.checkBox1.Text = "Windowed Mode";
             this.checkBox1.UseVisualStyleBackColor = false;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBox1.Click += new EventHandler(checkBox1_Click);
             // 
             // button3
             // 
@@ -128,6 +129,7 @@ namespace MultiplayerModGUI
             this.button2.TabIndex = 4;
             this.button2.Text = "Update";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new EventHandler(UpdateButton_Click);
             // 
             // panel1
             // 
@@ -329,12 +331,18 @@ namespace MultiplayerModGUI
                     MessageBox.Show("PROGRAM NOT RUNNING IN THE PORTAL 2 FOLDER\n\nTo fix this put this and \"MultiplayerModFiles\"\nin your steamapps/common/Portal 2 directory\n\n(for more info go to the mod page)", "ERROR");
                     this.Close();
                 }
-                    } else {
-                    MessageBox.Show("PROGRAM NOT RUNNING IN THE PORTAL 2 FOLDER\n\nTo fix this put this and \"MultiplayerModFiles\"\nin your steamapps/common/Portal 2 directory\n\n(for more info go to the mod page)", "ERROR");
-                    this.Close();
-                }
+            } else {
+                MessageBox.Show("PROGRAM NOT RUNNING IN THE PORTAL 2 FOLDER\n\nTo fix this put this and \"MultiplayerModFiles\"\nin your steamapps/common/Portal 2 directory\n\n(for more info go to the mod page)", "ERROR");
+                this.Close();
+            }
+            //CLOSE IF "MultiplayerModFiles" DO NO EXIST
+            if (Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/MultiplayerModFiles"))
+            { } else {
+                MessageBox.Show("PROGRAM NOT RUNNING NEXT TO \"MultiplayerModFiles\"\n\nTo fix this put \"MultiplayerModFiles\"\nin the same folder as MultiplayerModGUI.exe\n\n(for more info go to the mod page)", "ERROR");
+                this.Close();
+            }
         }
-
+        //UNINSTALL BUTTON
         private void UninstallButton_Click(object sender, EventArgs e)
         {
             string message = "Are you sure you want to uninstall?";
@@ -343,15 +351,47 @@ namespace MultiplayerModGUI
             DialogResult result = MessageBox.Show(message, title, buttons);
             if (result == DialogResult.Yes)
             {
-                if (AppDomain.CurrentDomain.BaseDirectory.Contains("Portal 2"))
-                {
-                    System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "MultiplayerModFiles/uninstaller.cmd");
-                    this.Close();
-                }
+                System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "MultiplayerModFiles/uninstaller.cmd");
+                this.Close();
             }
             else
             {
                 // Do Nothing
+            }
+        }
+        //bool RunGameInWindowed = false;
+        public bool RunGameInWindowed = false;
+        //START BUTTON
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            if (RunGameInWindowed == false) {
+                System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "MultiplayerModFiles/runi.vbs");
+            } 
+            else
+            {
+                System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "MultiplayerModFiles/runwindowedi.vbs");
+
+            }
+            
+        }
+        //UPDATE BUTTON
+        private void UpdateButton_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "MultiplayerModFiles/updater.cmd");
+        }
+
+        //CHECKBOX
+        private void checkBox1_Click(object sender, System.EventArgs e)
+        {
+            // The CheckBox control's Text property is changed each time the
+            // control is clicked, indicating a checked or unchecked state.  
+            if (checkBox1.Checked)
+            {
+                RunGameInWindowed = true;
+            }
+            else
+            {
+                RunGameInWindowed = false;
             }
         }
 

@@ -1,5 +1,5 @@
 @echo off
-cd..
+cd.
 cls
 
 rem detect os version and store it in a variable called "version"
