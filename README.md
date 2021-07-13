@@ -4,7 +4,7 @@ thePineapple (Added Hamachi Support)
 
 # Portal 2 32 Player Mod Lite
 ```
-This version of the mod simply adds
+Features
 1. Full C# GUI | MultiplayerModGUI.exe
 2. Custom Wait Screen
 3. Player Cap Of 33
