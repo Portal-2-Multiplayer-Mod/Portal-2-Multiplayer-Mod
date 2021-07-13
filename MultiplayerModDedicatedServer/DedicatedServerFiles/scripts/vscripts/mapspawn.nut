@@ -56,6 +56,11 @@ function init(){
         LobbyOneTimeRun()
     }
 
+    //Run mp_coop_tripleaxis Cod
+    if (GetMapName()=="mp_coop_tripleaxis") {
+        mp_coop_tripleaxisFIX()
+    }
+
     //Run mp_coop_separation_1 Code
     if (GetMapName()=="mp_coop_separation_1") {
             mp_coop_separation_1FIX()
@@ -362,6 +367,9 @@ function GeneralOneTime() {
     if (GetMapName()=="mp_coop_separation_1") {
         mp_coop_separation_1FIXONETIME()
     }
+    // if (GetMapName()=="mp_coop_2paints_1bridge") {
+    //     mp_coop_2paints_1bridgeFIX()
+    // }
 }
 
 //==================================
@@ -442,7 +450,26 @@ function ArtTherapyLobby() {
 }
 
 //==================================
-//     mp_coop_separation_1
+//      mp_coop_2pains_1sadness
+//==================================
+// function mp_coop_2paints_1bridgeFIX() {
+//     local ent = null;
+//     while(ent = Entities.FindByClassnameWithin(null, "trigger_once", Vector(1472, 1392, 68), 10)) 
+//     {
+//         ent.Destroy()
+//     } 
+//     EntFireByHandle(Entities.FindByName(null, "bridge_2"), "enable", "", 0, null, null)
+// }
+
+//==================================
+//      mp_coop_tripleaxis
+//==================================
+function mp_coop_tripleaxisFIX() {
+    Entities.FindByName(null, "outro_math_counter").Destroy()
+}
+
+//==================================
+//      mp_coop_separation_1
 //==================================
 function mp_coop_separation_1FIX() {
     EntFireByHandle(Entities.FindByName(null, "left_1st_room_spawn-initial_blue_spawn"), "SetAsActiveSpawn", "", 0, null, null)
@@ -799,16 +826,18 @@ if (GetMapName() == "mp_coop_credits") {
     "MicrosoftWindows",
     "dactam",
     "wol",
-    "--------------------------",
-    "And my supportive group of friends!",
-    "--------------------------",
-    "Nick/KingKong",
-    "Latte/Luna",
-    "Craig is love Craig is life | WOLF BATTLER ",
-    "Bunger from Bugsnax | Ayden",
-    "Bananabread | KaiserInfinitus",
-    "Jazzy/jasmine",
-    "David/Mr. E"
+    "kitsune",
+    "charzar",
+    // "--------------------------",
+    // "And my supportive group of friends!",
+    // "--------------------------",
+    // "Nick/KingKong",
+    // "Latte/Luna",
+    // "Craig is love Craig is life | WOLF BATTLER ",
+    // "Bunger from Bugsnax | Ayden",
+    // "Bananabread | KaiserInfinitus",
+    // "Jazzy/jasmine",
+    // "David/Mr. E"
     "--------------------------",
     "Thank you all so so much!!!",
     "--------------------------"
