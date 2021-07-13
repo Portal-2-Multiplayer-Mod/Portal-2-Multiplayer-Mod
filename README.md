@@ -2,20 +2,25 @@
 ***Credits***
 thePineapple (Added Hamachi Support)
 
+```
 # Portal 2 32 Player Mod Lite
 This version of the mod simply adds
-1. MultiplayerMod.cmd (Allows You To Start The Mod)
-2. A Custom Wait Screen
+1. Full C# GUI | MultiplayerModGUI.exe
+2. Custom Wait Screen
 3. Player Cap Of 33
-4. Better Player Collision
-5. MultiplayerModUninstall.cmd (Uninstalls The Mod)
-6. Custom colors depending on order joined (up to 16 players)
+4. Removed Player Collision
+6. Custom player colors
 7. Custom join message
-8. Support for Windows 10-8.1-8-7-Vista-XP
+8. Player disconnect message
+9. Removed game breaking commands!
+10. Full coop campaign support
+11. Partial Gelocity 1 2 & 3 support (ask in discord if you want to use it)
+12. "dedicated" servers!
+13. Linux support (/MultiplayerModFiles/linux)
+14. Support for Windows 10-8.1-8-7-Vista-XP
+```
 
-**We are currently working on porting this mod to p2ce updates for this version will be scarce until its ported**
-**Expect 
-**And join the discord! If you want betas help or want to talk to the devs https://discord.gg/kW3nG6GKpF**
+**Join the discord! If you want to beta test need help or want to talk to the community https://discord.gg/kW3nG6GKpF**
 
 *future plans*
 https://trello.com/b/3TJJqoQf/portal-2-32-player-mod
@@ -30,8 +35,8 @@ https://www.youtube.com/watch?v=xy9ltSXRRC0
 4. Drop the files inside the zip you downloaded into your portal 2 game folder
 # How To Host
 1. Make sure you have 27015 port forwarded on your router (if you want to play with friends online)
-2. Open MultiplayerMod.cmd
-3. Follow the instructions in MultiplayerMod.cmd
+2. Open MultiplayerModGUI.exe
+3. Follow the instructions in MultiplayerModGUI.exe
 # How To Enable The Console
 1. Open Portal 2
 2. Click "options"
@@ -40,7 +45,7 @@ https://www.youtube.com/watch?v=xy9ltSXRRC0
 # How To Join
 1. Open Portal 2 
 2. Press the key above tab that looks like ~ aka tilde to open the console
-3. Type "connect youfriendsiphere" replace "yourfriendsiphere" with your friends ip (they should see there ip in the MultiplayerMod.cmd when they opened it)
+3. Type "connect youfriendsiphere" replace "yourfriendsiphere" with your friends ip (they should see their ip in the MultiplayerMod.cmd when they opened it)
 4. Press [ENTER]
 
 # Support
