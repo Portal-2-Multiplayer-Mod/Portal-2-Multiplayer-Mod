@@ -1,4 +1,4 @@
-# ***Created By BumpyAHK Kyleraykbs Wolfe Strider Shooter & VistaX64***
+# ***Created By Kyleraykbs Vista BumpyAHK Nanoman & Wolfe Strider Shooter***
 ***Credits***
 thePineapple (Added Hamachi Support)
 
@@ -22,11 +22,8 @@ Features
 
 **Join the discord! If you want to beta test need help or want to talk to the community https://discord.gg/kW3nG6GKpF**
 
-*future plans*
-https://trello.com/b/3TJJqoQf/portal-2-32-player-mod
-
 # Installation & Use Video
-https://www.youtube.com/watch?v=xy9ltSXRRC0
+https://www.youtube.com/watch?v=AOh6qela-uI&t=18s
 
 # How To Install
 1. download the Latest Release From Here:https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
@@ -58,7 +55,7 @@ Or create an issue in the tab at the top
 None so far if you find one report it in the Issues section
 
 # Contribute
-If you know vscript batch or shell
+If you know VScript C++ or C#
 and you think you can contribute to the project in some way
 please contact me on discord kyleraykbs#3230 or https://discord.gg/kW3nG6GKpF
 
