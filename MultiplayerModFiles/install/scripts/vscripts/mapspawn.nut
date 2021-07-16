@@ -153,6 +153,7 @@ SetColor <- function(){
                 //Set Preset Colors Up To 16
                 if (PlayerID == 1) {
                     R <- 255, G <- 255,  B <- 255;
+                    p.SetModel("models/player/ballbot/ballbot_skin_moon.mdl")
                 }
                 if (PlayerID == 2) {
                     R <- 180, G <- 255,  B <- 180;
@@ -355,6 +356,7 @@ function GeneralOneTime() {
         "blue_door_1-ramp_close_start",
         "orange_door_1-airlock_player_block",
         "blue_door_1-airlock_player_block",
+        "airlock_0-door1-airlock_entry_door_close_rl"
     ]
     foreach (DoorType in DoorEntities) {
         try {
