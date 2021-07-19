@@ -350,6 +350,7 @@ function GeneralOneTime() {
         "blue_door_1-ramp_close_start",
         "orange_door_1-airlock_player_block",
         "blue_door_1-airlock_player_block",
+        "airlock_0-door1-airlock_entry_door_close_rl"
     ]
     foreach (DoorType in DoorEntities) {
         try {

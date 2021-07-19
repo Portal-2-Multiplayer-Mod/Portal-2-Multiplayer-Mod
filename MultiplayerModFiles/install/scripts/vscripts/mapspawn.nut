@@ -156,7 +156,6 @@ SetColor <- function(){
                 // set preset colors up to 16
                 if (PlayerID == 1) {
                     R <- 255, G <- 255,  B <- 255;
-                    p.SetModel("models/player/ballbot/ballbot_skin_moon.mdl")
                 }
                 if (PlayerID == 2) {
                     R <- 180, G <- 255,  B <- 180;
