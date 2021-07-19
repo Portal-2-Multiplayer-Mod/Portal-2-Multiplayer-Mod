@@ -61,7 +61,7 @@ function init(){
         LobbyOneTimeRun()
     }
 
-    //Run mp_coop_tripleaxis Cod
+    //Run mp_coop_tripleaxis Code
     if (GetMapName()=="mp_coop_tripleaxis") {
         mp_coop_tripleaxisFIX()
     }
@@ -768,7 +768,7 @@ if (MPMCredits<=MPModCreditNumber) {
     }
 }
 
-//Credits One Time Run Code
+// credits one time run code
 if (GetMapName() == "mp_coop_credits") {
 
     //Set Credits Animations
