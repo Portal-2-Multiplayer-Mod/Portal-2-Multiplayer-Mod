@@ -21,3 +21,6 @@ MultiplayerModGUI/SmartGUI.exe
 MultiplayerModGUI/SmartGUI.ini
 MultiplayerModGUI/How To Use.xcf
 MultiplayerModLinux/temp
+d3d9.dll
+d3d9.log
+ReShade.ini
