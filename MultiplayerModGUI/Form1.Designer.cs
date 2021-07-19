@@ -324,7 +324,7 @@ namespace MultiplayerModGUI
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
-            // close if not in portal 2 directory
+            //CLOSE IF NOT IN PORTAL 2 DIRECTORY
             if (AppDomain.CurrentDomain.BaseDirectory.Contains("Portal 2"))
             { if (AppDomain.CurrentDomain.BaseDirectory.Contains("portal2"))
                 {
@@ -335,14 +335,14 @@ namespace MultiplayerModGUI
                 MessageBox.Show("PROGRAM NOT RUNNING IN THE PORTAL 2 FOLDER\n\nTo fix this put this and \"MultiplayerModFiles\"\nin your steamapps/common/Portal 2 directory\n\n(for more info go to the mod page)", "ERROR");
                 this.Close();
             }
-            // close if "MultiplayerModFiles" do not exist
+            //CLOSE IF "MultiplayerModFiles" DO NO EXIST
             if (Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "/MultiplayerModFiles"))
             { } else {
                 MessageBox.Show("PROGRAM NOT RUNNING NEXT TO \"MultiplayerModFiles\"\n\nTo fix this put \"MultiplayerModFiles\"\nin the same folder as MultiplayerModGUI.exe\n\n(for more info go to the mod page)", "ERROR");
                 this.Close();
             }
         }
-        // uninstall button
+        //UNINSTALL BUTTON
         private void UninstallButton_Click(object sender, EventArgs e)
         {
             string message = "Are you sure you want to uninstall?";
@@ -356,12 +356,12 @@ namespace MultiplayerModGUI
             }
             else
             {
-                // do nothing
+                // Do Nothing
             }
         }
         //bool RunGameInWindowed = false;
         public bool RunGameInWindowed = false;
-        // start button
+        //START BUTTON
         private void StartButton_Click(object sender, EventArgs e)
         {
             if (RunGameInWindowed == false) {
@@ -374,13 +374,13 @@ namespace MultiplayerModGUI
             }
             
         }
-        // update button
+        //UPDATE BUTTON
         private void UpdateButton_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory + "MultiplayerModFiles/updater.cmd");
         }
 
-        // checkbox
+        //CHECKBOX
         private void checkBox1_Click(object sender, System.EventArgs e)
         {
             // The CheckBox control's Text property is changed each time the

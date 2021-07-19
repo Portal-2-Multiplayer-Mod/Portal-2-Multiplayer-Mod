@@ -35,13 +35,13 @@ if (GlobalRunScript>=1) {
       local p = null;
       while (p = Entities.FindByClassname(p, "player")){
             printl(MapNameSliced)
-            // oneportalgun
+            //oneportalgun
             foreach (value in OnePortalMaps) {
                   if (value == MapName) {
                         GivePortalGunStageOne()
                   }
             }
-            // twoportalgun
+            //twoportalgun
             if (MapNameSliced == "sp_a2") {
                   GivePortalGunStageTwo()
             } else {
@@ -51,7 +51,7 @@ if (GlobalRunScript>=1) {
                               }
                         }
                   }
-            // potatos
+            //potatos
             if (MapNameSliced == "sp_a4") {
                   GivePortalGunStageThree()
             } else {
