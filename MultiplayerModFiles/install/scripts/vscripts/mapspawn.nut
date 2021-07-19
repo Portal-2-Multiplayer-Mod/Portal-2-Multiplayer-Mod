@@ -458,7 +458,7 @@ function mp_coop_2paints_1bridgeFIX() {
 }
 */
 
-// mp_coop_separation_1 fix
+// mp_coop_tripleaxis fix
 function mp_coop_tripleaxisFIX() {
     Entities.FindByName(null, "outro_math_counter").Destroy()
 }
@@ -735,7 +735,7 @@ if (MPMCredits<=MPModCreditNumber) {
     }
 }
 
-//Credits One Time Run Code
+// credits one time run code
 if (GetMapName() == "mp_coop_credits") {
 
     // set credits animations
