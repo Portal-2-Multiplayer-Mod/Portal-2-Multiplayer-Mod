@@ -12,16 +12,11 @@ TryGelocity2 <- 1
 TryGelocity3 <- 1
 copp <- 0
 WFPDisplayDisabled <- 0
-IsSingleplayerMap <- 0
 
 //Is Dedicated Server
 DedicatedServer <- 1
 
 function init(){
-    //SinglePlayer Code Enabler
-    if (GetMapName().slice(0, 7)!="mp_coop") {
-        Singleplayer()
-    }
     //Enable Fast Download
     SendToConsole("sv_downloadurl https://github.com/kyleraykbs/gilbert/raw/main/portal2")    
     SendToConsole("sv_allowdownload 1") 
@@ -83,7 +78,7 @@ function init(){
                 Gelocity()
             }
         } catch(exception) {
-            //print("")
+            print("")
             TryGelocity<-0
         }
     }
@@ -94,7 +89,7 @@ function init(){
                 Gelocity3()
             }
         } catch(exception) {
-            //print("")
+            print("")
             TryGelocity3<-0
         }
     }
@@ -105,7 +100,7 @@ function init(){
                 Gelocity2()
             }
         } catch(exception) {
-            //print("")
+            print("")
             TryGelocity2<-0
         }
     }
@@ -132,17 +127,13 @@ SetColor <- function(){
                 //GetPlayersIndex And Store It
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
-                //Singleplayer Code Runner
-                if (GetMapName().slice(0, 7)!="mp_coop") {
-                    SingleplayerOnFirstSpawn(p)
-                }
                 //Enable Cvars On Client
                 SendToConsole("gameinstructor_enable 1")
                 EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "mat_motion_blur_enabled 1", 0, p, p)
                 //Say Join Message
                 local coj = "Player " + PlayerID + " Joined The Game"
                 coj = coj.tostring()
@@ -218,11 +209,7 @@ SetColor <- function(){
 
 
 function loop() {
-    //SinglePlayer Loop
-    if (GetMapName().slice(0, 7)!="mp_coop") {
-        SingleplayerLoop()
-    }
-    //Set All Player Colors
+//Set All Player Colors
     SetColor()
     //Cache Old Player Pos
     try {
@@ -231,7 +218,7 @@ function loop() {
         copp <- 1
     }
     } catch(exception) {
-        //print("")
+        print("")
     }
 //Run General Code
     General()
@@ -247,7 +234,7 @@ function loop() {
             GeneralOneTime()
         }
         } catch(exception) {
-            //print("")
+            print("")
         }
     }
 //Run All Required Loops
@@ -616,7 +603,8 @@ function Gelocity3() {
 function DedicatedServerFunc() {
     if (DedicatedServerOneTimeRun==1) {
         if (GetMapName() == "mp_coop_lobby_3") {
-            try {
+            Entities.FindByName(null,"brush_spawn_blocker_red").Destroy()
+            Entities.FindByName(null,"brush_spawn_blocker_blue").Destroy()
             //Enable Team Building Course
             DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
             DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_teambuilding"))
@@ -637,18 +625,14 @@ function DedicatedServerFunc() {
             DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null,"relay_reveal_all_finished"))
             //Enable Music
             DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null,"@music_lobby_7"))
-            Entities.FindByName(null,"brush_spawn_blocker_red").Destroy()
-            Entities.FindByName(null,"brush_spawn_blocker_blue").Destroy()
-            } catch(exception) {
-                //print("")
-            }
         }
         DedicatedServerOneTimeRun <- 0
     }
+
     local p = null;
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.entindex()==1) {
-            EntFireByHandle(clientcommand, "Command", "exec DedicatedServerCommands", 0, p, p)
+            SendToConsole("exec DedicatedServerCommands")
             //Set Size To 0
             EntFireByHandle(p, "AddOutput", "ModelScale 0", 0, null, null);
         }
@@ -803,11 +787,11 @@ if (GetMapName() == "mp_coop_credits") {
     "--------------------------",
     "Multiplayer Mod: Team",
     "--------------------------",
-    "kyleraykbs | Team Lead + Scripting + Gui Design",
-    "Vista | Reverse Engineering + Plugin Dev + Platform Support",
-    "Nanoman2525 | Mapping + Entity Help + Stress Testing",
-    "Bumpy | Scripting + Workarounds",
+    "kyleraykbs | Scripting + Team Lead",
+    "Bumpy | Scripting + Script Theory",
+    "Vista | Reverse Engineering",
     "Wolfe Strider Shooter | Scripting",
+    "Nanoman2525 | Mapping + Entity Help",
     "--------------------------",
     "Multiplayer Mod: Contributers",
     "--------------------------",
@@ -817,13 +801,6 @@ if (GetMapName() == "mp_coop_credits") {
     "actu | Remote File Downloads",
     "Blub/Vecc | Code Cleanup + Commenting",
     "AngelPuzzle | Translations",
-    "--------------------------",
-    "Multiplayer Mod: Special Thanks",
-    "--------------------------",
-    "Brawler",
-    "Sear",
-    "Souper Marilogi",
-    "neck",
     "--------------------------",
     "Multiplayer Mod: Beta Testers",
     "--------------------------",
@@ -851,8 +828,6 @@ if (GetMapName() == "mp_coop_credits") {
     "wol",
     "kitsune",
     "charzar",
-    "CowlzBeef",
-    "AngelPuzzle",
     // "--------------------------",
     // "And my supportive group of friends!",
     // "--------------------------",
@@ -906,161 +881,3 @@ SetColor <- function(){
     }
 }
 }
-
-//=======================================
-//=======================================
-//=======================================
-//        SINGLEPLAYER FUNCTIONS
-//=======================================
-//=======================================
-//=======================================
-function Singleplayer() {
-    //SP_A1_INTRO2
-    if (GetMapName()=="sp_a1_intro2") {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        SendToConsole("commentary 0")
-        Entities.FindByName(null,"@entry_door-door_close_relay").Destroy()
-        Entities.FindByName(null,"@exit_door-door_close_relay").Destroy()
-        Entities.FindByName(null,"Fizzle_Trigger").Destroy()
-    }
-    //SP_A1_INTRO3
-    if (GetMapName()=="sp_a1_intro3") {
-        Entities.FindByName(null,"door_0-door_close_relay").Destroy()
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        Entities.FindByName(null, "player_clips").Destroy()
-        //Destroy Pusher x4
-        Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
-        Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
-        Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
-        Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
-        Entities.FindByName(null, "door_3-door_close_relay").Destroy()
-        Entities.FindByName(null, "portal_orange_2").Destroy()
-        Entities.FindByName(null, "emitter_orange_2").Destroy()
-        Entities.FindByName(null, "backtrack_brush").Destroy()
-        Entities.FindByName(null, "portal_orange_mtg").Destroy()
-        Entities.FindByName(null, "emitter_orange_mtg").Destroy()
-        hasgotportalgunSPMP <- 0
-        timeout <- 1
-    }
-    
-    //INTRO4
-    if (GetMapName()=="sp_a1_intro4") {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        Entities.FindByName(null, "door_0-door_close_relay").Destroy()
-        Entities.FindByName(null, "just_enough_door_for_the_job-door_close_relay").Destroy()
-        EntFireByHandle(Entities.FindByName(null, "glass_pane_intact_model"), "kill", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "glass_pane_fractured_model"), "enable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "glass_pane_1_door_1"), "open", "", 0, null, null)
-        Entities.FindByName(null, "glass_pane_1_door_1_blocker").Destroy()
-    }
-}
-
-function SingleplayerLoop() {
-    //SP_A1_INTRO2
-    if (GetMapName()=="sp_a1_intro2") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) { }
-        local portalgun = null
-        while ( portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
-            portalgun.Destroy()
-        }
-
-        local p = null;
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 45)) {
-            SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a1_intro3")
-        }
-
-        try {
-            Entities.FindByName(null,"block_boxes").Destroy()
-        } catch(exception) { }
-    }
-
-    //SP_A1_INTRO3
-    if (GetMapName()=="sp_a1_intro3") {
-        local p = null;
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 45)) {
-           SendToConsole("commentary 1")
-           SendToConsole("changelevel sp_a1_intro4")
-        }
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) { }
-        //remove portalgun
-        local portalgun = null
-        if (hasgotportalgunSPMP==0) {
-        while ( portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
-                portalgun.Destroy()
-            }
-        }
-
-        if (Entities.FindByName(null, "portalgun")) { } else {
-            if (timeout!=25) {
-            timeout <- timeout + 1
-            hasgotportalgunSPMP <- 1
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                EntFireByHandle(clientcommand, "Command", "hud_saytext_time 0", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "give weapon_portalgun", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "upgrade_portalgun", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "sv_cheats 1", 0, p, p)
-            }
-            } else {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {            
-                    EntFireByHandle(clientcommand, "Command", "sv_cheats 0", 0, p, p)
-                    EntFireByHandle(clientcommand, "Command", "hud_saytext_time 12", 0, p, p)
-                }
-            }
-        }
-
-        //Make wheatly look at player
-        local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-        EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-    }
-        //SP_A1_INTRO4
-    if (GetMapName()=="sp_a1_intro4") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-    }
-}
-
-function SingleplayerOnFirstSpawn(player) {
-    //SP_A1_INTRO2
-    if (GetMapName()=="sp_a1_intro2") {
-        
-    }
-}
-
-
-//====================
-//   cut paste code
-//====================
-
-//Entities.FindByName(null,"NAME").Destroy()
-
-//Entities.FindByClassnameNearest("CLASS", Vector(1, 2, 3), 1).Destroy()
-
-//local p = null;
-//while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
-//    SendToConsole("commentary 1")
-//    SendToConsole("changelevel LEVELNAME")
-//}
-
-// local ent = null
-// while ( ent = Entities.FindByClassname(ent, "CLASSNAME")) {
-//     ent.Destroy()
-// }
-
-
-// if (GetMapName()=="MAPNAME") {
-//     SendToConsole("commentary 0")
-// }
-
-//EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
-
-// try {
-//     EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-// } catch(exception) { }
