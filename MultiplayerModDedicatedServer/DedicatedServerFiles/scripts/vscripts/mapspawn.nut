@@ -17,9 +17,10 @@ IsSingleplayerMap <- 0;
 // is dedicated server
 DedicatedServer <- 1;
 
+// initialization code
 function init() {
-    // enable fast download
-    if (GetMapName().slice(0, 7) != "mp_coop") {
+    // run singleplayer code
+    if (!startswith(GetMapName(), "mp_coop")) {
         Singleplayer();
     }
     SendToConsole("sv_downloadurl https://github.com/kyleraykbs/gilbert/raw/main/portal2");
