@@ -70,7 +70,7 @@ function init() {
 
     // run mp_coop_separation_1 code
     if (GetMapName() == "mp_coop_separation_1") {
-            mp_coop_separation_1FIX();
+        mp_coop_separation_1FIX();
     }
 
     // run mp_coop_paint_conversion code
