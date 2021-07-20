@@ -1,17 +1,17 @@
 function GivePortalGunStageOne() {
-            SendToConsole("sv_cheats 1");
-            SendToConsole("give weapon_portalgun");
+    SendToConsole("sv_cheats 1");
+    SendToConsole("give weapon_portalgun");
 }
 function GivePortalGunStageTwo() {
-            SendToConsole("sv_cheats 1");
-            SendToConsole("give weapon_portalgun");
-            SendToConsole("upgrade_portalgun");
+    SendToConsole("sv_cheats 1");
+    SendToConsole("give weapon_portalgun");
+    SendToConsole("upgrade_portalgun");
 }
 function GivePortalGunStageThree() {
-            SendToConsole("sv_cheats 1");
-            SendToConsole("give weapon_portalgun");
-            SendToConsole("upgrade_portalgun");
-            SendToConsole("upgrade_potatogun");
+    SendToConsole("sv_cheats 1");
+    SendToConsole("give weapon_portalgun");
+    SendToConsole("upgrade_portalgun");
+    SendToConsole("upgrade_potatogun");
 }
 
 MapName <- GetMapName();
@@ -32,38 +32,38 @@ try {
 }
 
 if (GlobalRunScript>=1) {
-      local p = null;
-      while (p = Entities.FindByClassname(p, "player")) {
-            printl(MapNameSliced);
-            // oneportalgun
-            foreach (value in OnePortalMaps) {
-                  if (value == MapName) {
-                        GivePortalGunStageOne();
-                  }
+    local p = null;
+    while (p = Entities.FindByClassname(p, "player")) {
+        printl(MapNameSliced);
+        // oneportalgun
+        foreach (value in OnePortalMaps) {
+            if (value == MapName) {
+                GivePortalGunStageOne();
             }
-            // twoportalgun
-            if (MapNameSliced == "sp_a2") {
-                  GivePortalGunStageTwo();
-            } else {
+        }
+        // twoportalgun
+        if (MapNameSliced == "sp_a2") {
+            GivePortalGunStageTwo();
+        } else {
             foreach (value in TwoPortalMaps) {
-                  if (value == MapName) {
-                        GivePortalGunStageTwo();
-                              }
-                        }
-                  }
-            // potatos
-            if (MapNameSliced == "sp_a4") {
-                  GivePortalGunStageThree();
-            } else {
+                if (value == MapName) {
+                    GivePortalGunStageTwo();
+                }
+            }
+        }
+        // potatos
+        if (MapNameSliced == "sp_a4") {
+            GivePortalGunStageThree();
+        } else {
             foreach (value in ThreePortalMaps) {
-                  if (value == MapName) {
-                        GivePortalGunStageThree();
-                              }
-                        }
-                  }
+                if (value == MapName) {
+                    GivePortalGunStageThree();
+                }
+            }
+        }
 
-            GlobalRunScript <- GlobalRunScript - 1;
-      }
+        GlobalRunScript <- GlobalRunScript - 1;
+    }
 }
 if (GlobalRunScript == 0) {
       SendToConsole("say Playing In Singleplayer                                          [Multiplayer Mod In: SP BugFix Mode]");
