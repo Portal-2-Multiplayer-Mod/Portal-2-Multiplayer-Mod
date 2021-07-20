@@ -979,7 +979,7 @@ function SingleplayerLoop() {
         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000);
         EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null);
     }
-        // sp_a1_intro4
+    // sp_a1_intro4
     if (GetMapName() == "sp_a1_intro4") {
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null);
@@ -1005,7 +1005,7 @@ Entities.FindByName(null, "NAME").Destroy();
 Entities.FindByClassnameNearest("CLASS", Vector(1, 2, 3), 1).Destroy();
 
 local p = null;
-while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
+while(p = Entities.FindByClassna-meWithin(p, "player", Vector(1, 2, 3), 45)) {
     SendToConsole("commentary 1");
     SendToConsole("changelevel LEVELNAME");
 }
