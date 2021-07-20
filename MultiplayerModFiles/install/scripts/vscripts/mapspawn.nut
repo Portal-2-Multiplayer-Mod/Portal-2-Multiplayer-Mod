@@ -84,7 +84,6 @@ function init(){
                 Gelocity()
             }
         } catch(exception) {
-            //print("")
             TryGelocity<-0
         }
     }
@@ -95,7 +94,6 @@ function init(){
                 Gelocity3()
             }
         } catch(exception) {
-            //print("")
             TryGelocity3<-0
         }
     }
@@ -106,7 +104,6 @@ function init(){
                 Gelocity2()
             }
         } catch(exception) {
-            //print("")
             TryGelocity2<-0
         }
     }
@@ -233,9 +230,7 @@ function loop() {
         OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
         copp <- 1
     }
-    } catch(exception) {
-        //print("")
-    }
+    } catch(exception) {}
     // run general code
     General()
     // display waiting for players and run nessacary code after spawn
@@ -249,9 +244,7 @@ function loop() {
             WFPDisplayDisabled <- 1
             GeneralOneTime()
         }
-        } catch(exception) {
-            //print("")
-        }
+        } catch(exception) {}
     }
     // run all required loops
     if (GetMapName()=="mp_coop_lobby_3") {
@@ -623,9 +616,7 @@ function DedicatedServerFunc() {
             DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null,"@music_lobby_7"))
             Entities.FindByName(null,"brush_spawn_blocker_red").Destroy()
             Entities.FindByName(null,"brush_spawn_blocker_blue").Destroy()
-            } catch(exception) {
-                //print("")
-            }
+            } catch(exception) {}
         }
         DedicatedServerOneTimeRun <- 0
     }
