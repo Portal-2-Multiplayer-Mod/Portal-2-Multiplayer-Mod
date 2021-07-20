@@ -88,6 +88,16 @@ function init() {
             TryGelocity <- 0;
         }
     }
+    // run gelocity 2 code
+    if (TryGelocity2 == 1) {
+        try {
+            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_2_v01") {
+                Gelocity2();
+            }
+        } catch(exception) {
+            TryGelocity2 <- 0;
+        }
+    }
     // run gelocity 3 code
     if (TryGelocity3 == 1) {
         try {
