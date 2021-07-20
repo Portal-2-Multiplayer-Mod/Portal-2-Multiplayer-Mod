@@ -1,5 +1,5 @@
 @echo off
-cd.
+cd .
 cls
 
 rem detect os version and store it in a variable called "version"
@@ -21,7 +21,7 @@ taskkill /F /IM portal2.exe
 echo [93mReplacing MPMod Files With Originals...[0m
 xcopy /y /S "%cd%\MultiplayerModFiles\uninstall" "%cd%\portal2"
 echo [92mUninstalled Successfully![0m
-timeout 1 >nul
+timeout 1 > nul
 cls
 echo  [101;93mUninstalled The Mod[0m
 echo (The game will run normally)
@@ -31,7 +31,7 @@ echo /MultiplayerModFiles
 echo /MultiplayerModGUI.exe
 echo.
 echo (Press Any Key To Exit)
-pause>nul
+pause > nul
 exit
 
 
@@ -51,7 +51,7 @@ echo Replacing MPMod Files With Originals...
 xcopy /y /S "%cd%\MultiplayerModFiles\uninstall" "%cd%\portal2"
 
 echo Uninstalled Successfully!
-timeout 1 >nul
+timeout 1 > nul
 cls
 echo  UnMounted The Mod
 echo.
@@ -62,5 +62,5 @@ echo /MultiplayerModUpdater.cmd
 echo /MultiplayerModUninstall.cmd
 echo.
 echo (Press Any Key To Exit)
-pause>nul
+pause > nul
 exit

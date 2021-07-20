@@ -1,6 +1,6 @@
 @echo off
 title Multiplayer Mod Updater
-cd.
+cd .
 set /p mpmodver=<mpmodver.data
 echo Checking OS Version...
 rem detect os version and store it in a variable called "version"
@@ -55,5 +55,5 @@ echo ERROR: Check Failed!!!
 echo ERROR: The updater doesnt support Windows 7 please check 
 echo https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest for the latest update
 echo Press Any Key
-pause >nul
+pause > nul
 exit

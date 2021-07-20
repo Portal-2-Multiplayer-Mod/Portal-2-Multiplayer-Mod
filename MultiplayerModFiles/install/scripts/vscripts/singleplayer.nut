@@ -21,9 +21,9 @@ TwoPortalMaps <- ["sp_a3_00", "sp_a3_01", "sp_a3_03", "sp_a3_jump_intro", "sp_a3
 ThreePortalMaps <- ["sp_a3_speed_ramp", "sp_a3_speed_flings", "sp_a3_portal_intro", "sp_a3_end", "", "", "", "", "", "", "", "", "", "", "", ]
 
 try {
-    if (GlobalRunScript == 0){
+    if (GlobalRunScript == 0) {
         printl("GaveUserGun")
-    } else{
+    } else {
           SendToConsole("script_execute singleplayer")
     }
 } catch(exception) {
@@ -33,7 +33,7 @@ try {
 
 if (GlobalRunScript>=1) {
       local p = null;
-      while (p = Entities.FindByClassname(p, "player")){
+      while (p = Entities.FindByClassname(p, "player")) {
             printl(MapNameSliced)
             // oneportalgun
             foreach (value in OnePortalMaps) {
@@ -65,6 +65,6 @@ if (GlobalRunScript>=1) {
             GlobalRunScript <- GlobalRunScript - 1
       }
 }
-if (GlobalRunScript==0) {
+if (GlobalRunScript == 0) {
       SendToConsole("say Playing In Singleplayer                                          [Multiplayer Mod In: SP BugFix Mode]")
 }
