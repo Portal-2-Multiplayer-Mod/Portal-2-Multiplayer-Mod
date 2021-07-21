@@ -1,5 +1,6 @@
-# ***Created By Kyleraykbs Vista BumpyAHK Nanoman & Wolfe Strider Shooter***
+# ***Created By Kyleraykbs Vista BumpyAHK & Wolfe Strider Shooter***
 ***Credits***
+Nanoman | mapping, scripting, entity help
 thePineapple (Added Hamachi Support)
 
 # Portal 2 32 Player Mod Lite
