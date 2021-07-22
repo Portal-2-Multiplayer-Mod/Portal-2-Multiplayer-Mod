@@ -552,18 +552,9 @@ if (GBIsMultiplayer == 1) {
         }
 
         while(ent = Entities.FindByClassname(ent, "keyframe_rope")) {
-            ent.Destroy(); // 85 entitiCheatsOff <- 0;
-ReadyCheatsOff <- 0;
-PlayerJoined <- 0;
-PlayerID <- 0;
-GBIsMultiplayer <- 0;
-DedicatedServerOneTimeRun <- 1;
-TryGelocity <- 1;
-TryGelocity2 <- 1;
-TryGelocity3 <- 1;
-copp <- 0;
-WFPDisplayDisabled <- 0;
-IsSingleplayerMap <- 0;
+            ent.Destroy(); // 85 entities removed
+        }
+
         while(ent = Entities.FindByClassname(ent, "move_rope")) {
             ent.Destroy(); // 85 entities removed
         }
