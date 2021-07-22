@@ -909,8 +909,8 @@ function SingleplayerLoop() {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null);
         } catch(exception) {}
         // remove portalgun
-        local portalgun = null;
         if (hasgotportalgunSPMP == 0) {
+            local portalgun = null;
             while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
                 portalgun.Destroy();
             }
