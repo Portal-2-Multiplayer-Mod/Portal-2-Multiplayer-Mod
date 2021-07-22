@@ -916,11 +916,12 @@ function SingleplayerLoop() {
             }
         }
 
-        if (Entities.FindByName(null, "portalgun")) {} else {
+        if (!Entities.FindByName(null, "portalgun")) {
+            local p = null;
             if (timeout != 25) {
                 timeout <- timeout + 1;
                 hasgotportalgunSPMP <- 1;
-                local p = null;
+
                 while (p = Entities.FindByClassname(p, "player")) {
                     EntFireByHandle(clientcommand, "Command", "hud_saytext_time 0", 0, p, p);
                     EntFireByHandle(clientcommand, "Command", "give weapon_portalgun", 0, p, p);
