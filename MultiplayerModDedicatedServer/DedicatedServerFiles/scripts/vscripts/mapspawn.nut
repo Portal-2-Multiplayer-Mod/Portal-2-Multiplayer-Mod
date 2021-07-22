@@ -603,9 +603,9 @@ if (GBIsMultiplayer == 1) {
         while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
             ent.Destroy();
         }
-        local ent2 = null;
-        while (ent2 = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
-            ent2.Destroy();
+
+        while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
+            ent.Destroy();
         }
     }
 
