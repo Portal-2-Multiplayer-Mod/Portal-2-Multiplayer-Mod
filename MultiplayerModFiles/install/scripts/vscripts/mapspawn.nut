@@ -200,7 +200,7 @@ SetColor <- function() {
 
     function loop() {
         if (GBIsMultiplayer==0) {
-            SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from steam\"")
+            SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
         }
 
         // singleplayer loop
