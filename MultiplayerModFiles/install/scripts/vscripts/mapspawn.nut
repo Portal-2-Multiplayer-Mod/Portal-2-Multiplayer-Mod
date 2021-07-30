@@ -131,79 +131,78 @@ try {
 * multiplayer code *
 *******************/
 
-if (GBIsMultiplayer == 1) {
-    SetColor <- function() {
-        local p = null
+SetColor <- function() {
+    local p = null
 
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.ValidateScriptScope()) {
-                local script_scope = p.GetScriptScope()
+    while (p = Entities.FindByClassname(p, "player")) {
+        if (p.ValidateScriptScope()) {
+            local script_scope = p.GetScriptScope()
 
-                if (!("Colored" in script_scope)) {
-                    // get player's index and store it
-                    PlayerID <- p.GetRootMoveParent()
-                    PlayerID <- PlayerID.entindex()
+            if (!("Colored" in script_scope)) {
+                // get player's index and store it
+                PlayerID <- p.GetRootMoveParent()
+                PlayerID <- PlayerID.entindex()
 
-                    // singleplayer code runner n(p)
-                    
+                // enable cvars on client
+                SendToConsole("gameinstructor_enable 1")
+                EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
 
-                    // enable cvars on client
-                    SendToConsole("gameinstructor_enable 1")
-                    EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
-                    EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
-                    EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
-                    EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
-                    EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+                // say join message
+                local coj = "Player " + PlayerID + " Joined The Game"
+                coj = coj.tostring()
+                jmessage.__KeyValueFromString("hint_caption", coj)
+                DoEntFire("jmessagetarget", "showhint", "", 0.0, null, p)
+                printl("Player " + PlayerID + " Joined The Game")
 
-                    // say join message
-                    local coj = "Player " + PlayerID + " Joined The Game"
-                    coj = coj.tostring()
-                    jmessage.__KeyValueFromString("hint_caption", coj)
-                    DoEntFire("jmessagetarget", "showhint", "", 0.0, null, p)
-                    printl("Player " + PlayerID + " Joined The Game")
+                // assign player targetname
+                if (PlayerID >= 3) {
+                    p.__KeyValueFromString("targetname", "player" + PlayerID)
+                }
 
-                    // assign player targetname
-                    if (PlayerID >= 3) {
-                        p.__KeyValueFromString("targetname", "player" + PlayerID)
-                    }
+                // set random color if over 16
+                if (PlayerID != 1) {
+                    R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
+                    ReadyCheatsOff <- 1
+                }
 
-                    // set random color if over 16
-                    if (PlayerID != 1) {
-                        R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
-                        ReadyCheatsOff <- 1
-                    }
+                // set preset colors up to 16
+                switch (PlayerID) {
+                    case 1 : R <- 255; G <- 255; B <- 255; break;
+                    case 2 : R <- 180, G <- 255, B <- 180; break;
+                    case 3 : R <- 120, G <- 140, B <- 255; break;
+                    case 4 : R <- 255, G <- 170, B <- 120; break;
+                    case 5 : R <- 255, G <- 100, B <- 100; break;
+                    case 6 : R <- 255, G <- 180, B <- 255; break;
+                    case 7 : R <- 255, G <- 255, B <- 180; break;
+                    case 8 : R <-   0, G <- 255, B <- 240; break;
+                    case 9 : R <-  75, G <-  75, B <-  75; break;
+                    case 10: R <- 120, G <- 155, B <-  25; break;
+                    case 11: R <-   0, G <-  80, B <- 100; break;
+                    case 12: R <- 100, G <-  80, B <-   0; break;
+                    case 13: R <-   0, G <-   0, B <- 100; break;
+                    case 14: R <-  80, G <-   0, B <-   0; break;
+                    case 15: R <-   0, G <-  75, B <-   0; break;
+                    case 16: R <-   0, G <-  75, B <-  75; break;
+                }
 
-                    // set preset colors up to 16
-                    switch (PlayerID) {
-                        case 1 : R <- 255; G <- 255; B <- 255; break;
-                        case 2 : R <- 180, G <- 255, B <- 180; break;
-                        case 3 : R <- 120, G <- 140, B <- 255; break;
-                        case 4 : R <- 255, G <- 170, B <- 120; break;
-                        case 5 : R <- 255, G <- 100, B <- 100; break;
-                        case 6 : R <- 255, G <- 180, B <- 255; break;
-                        case 7 : R <- 255, G <- 255, B <- 180; break;
-                        case 8 : R <-   0, G <- 255, B <- 240; break;
-                        case 9 : R <-  75, G <-  75, B <-  75; break;
-                        case 10: R <- 120, G <- 155, B <-  25; break;
-                        case 11: R <-   0, G <-  80, B <- 100; break;
-                        case 12: R <- 100, G <-  80, B <-   0; break;
-                        case 13: R <-   0, G <-   0, B <- 100; break;
-                        case 14: R <-  80, G <-   0, B <-   0; break;
-                        case 15: R <-   0, G <-  75, B <-   0; break;
-                        case 16: R <-   0, G <-  75, B <-  75; break;
-                    }
+                script_scope.Colored <- true
+                EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
 
-                    script_scope.Colored <- true
-                    EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
-
-                    return
-                    }
+                return
                 }
             }
         }
     }
 
     function loop() {
+        if (GBIsMultiplayer==0) {
+            SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod.   Please restart the game from steam\"")
+        }
+
         // singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
             SingleplayerLoop()
