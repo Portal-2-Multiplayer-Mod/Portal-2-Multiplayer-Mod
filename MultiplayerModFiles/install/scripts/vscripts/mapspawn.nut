@@ -118,6 +118,14 @@ function init() {
     }
 }
 
+function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
+    local ent = null
+    while(ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis)) {
+        printl("Teleported Player To Art Therapy")
+        ent.SetOrigin(TeleportDest)
+    }
+}
+
 // set GBIsMultiplayer if game is multiplayer
 try {
     if (::IsMultiplayer()) {
@@ -390,14 +398,7 @@ SetColor <- function() {
         }
 
         // art therapy left chute teleporter
-        local vectorLCT
-        vectorLCT = Vector(5729, 3336, 1005)
-        local LCTent = null
-        while(LCTent = Entities.FindByClassnameWithin(LCTent, "player", vectorLCT, 30)) {
-            printl("Teleported Player To Art Therapy")
-            LCTent.SetOrigin(Vector(3194, -1069, 1676))
-            LCTent.SetAngles(0, 0, 0)
-        }
+        TeleportPlayerWithinDistance(Vector(5729, 3336, 1005), 30, Vector(3194, -1069, 1676))
 
         // art therapy right chute enabler
         local vectorEER
@@ -413,14 +414,7 @@ SetColor <- function() {
         }
 
         // art therapy right chute teleporter
-        local vectorRCT
-        vectorRCT = Vector(5727, 3180, 1005)
-        local RCTent = null
-        while(RCTent = Entities.FindByClassnameWithin(RCTent, "player", vectorRCT, 30)) {
-            printl("Teleported Player To Art Therapy")
-            RCTent.SetOrigin(Vector(3191, -1228, 1682))
-            RCTent.SetAngles(0, 0, 0)
-        }
+        TeleportPlayerWithinDistance(Vector(5727, 3180, 1005), 30, Vector(3191, -1228, 1682))
 
         // disable art therapy chutes
         local vectorE
@@ -442,12 +436,7 @@ SetColor <- function() {
         }
 
         // teleport exiting player out of art therapy
-        local vectorEx
-        vectorEx = Vector(3584, -1669, 466)
-        local AEent = null
-        while(AEent = Entities.FindByClassnameWithin(AEent, "player", vectorEx, 30)) {
-            AEent.SetOrigin(Vector(3919, 3352, 158))
-        }
+        TeleportPlayerWithinDistance(Vector(3584, -1669, 466), 30, Vector(3919, 3352, 158))
     }
 
     /*
