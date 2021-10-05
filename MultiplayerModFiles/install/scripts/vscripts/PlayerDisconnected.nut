@@ -5,7 +5,7 @@ try {
 } catch(exception) {
     dismessage <- Entities.CreateByClassname("env_instructor_hint");
     printl("Created Disconnect Message Entity");
-}
+} // disconnect hud manager
 dismessage.__KeyValueFromString("hint_icon_onscreen", "icon_alert_red");
 dismessage.__KeyValueFromString("targetname", "dismessage");
 dismessage.__KeyValueFromString("hint_caption", "Player Disconnected");
