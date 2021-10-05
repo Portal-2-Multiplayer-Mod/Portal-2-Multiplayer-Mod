@@ -51,7 +51,7 @@ Before you do any of this check our FAQ (Scroll Down) to make sure your problem 
 None so far if you find one report it in the Issues section.
 
 # Contribute
-If you know VScript C++ or C# and you think you can contribute to the project in some way please contact me on discord kyleraykbs#3230 or https://discord.gg/kW3nG6GKpF.
+If you know VScript, C++, or C# and you think you can contribute to the project in some way please contact me on discord kyleraykbs#3230 or https://discord.gg/kW3nG6GKpF.
 
 
 # FAQ
