@@ -4,6 +4,10 @@
 //     under a GNU GPLv3 license
 //===================================
 
+///////////////
+DevMode <- true
+///////////////
+
 IsInSpawnZone <- []
 HasSpawned <- false
 PlayerColorCached <- []
@@ -268,9 +272,11 @@ OnPlayerJoin <- function() {
         }
     }   
 
+////////////////////////////
     /*******************
     *     loop code    *
     *******************/
+////////////////////////////
     
     function loop() {
 
@@ -284,7 +290,7 @@ OnPlayerJoin <- function() {
         if (HasSpawned==true) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                if (!Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 18) && !Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 18))  {
+                if (!Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 28) && !Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 28))  {
                     foreach (index, item in IsInSpawnZone)  {
                         if (item == p.GetRootMoveParent().entindex().tostring())  {
                             IsInSpawnZone.remove(index)
@@ -300,7 +306,7 @@ OnPlayerJoin <- function() {
             }
 
             if (ContinueDeathCode==true) {
-                if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 18) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 18)) {
+                if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 28) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 28)) {
                     //ON DEATH
                     printl("Player " + p.GetRootMoveParent().entindex().tostring() + " Has Respawned")
                     //show player color again
@@ -335,7 +341,7 @@ OnPlayerJoin <- function() {
                             case 3 : RGB <- "120 140 255"; COLORMESSAGE <- "Blue"      ; break;
                             case 4 : RGB <- "255 170 120"; COLORMESSAGE <- "Orange"    ; break;
                             case 5 : RGB <- "255 100 100"; COLORMESSAGE <- "Red"       ; break;
-                            case 6 : RGB <- "255 180 255"; COLORMESSAGE <- "Pink"      ; break;
+                            case 6 : RGB <- "255 110 255"; COLORMESSAGE <- "Pink"      ; break;
                             case 7 : RGB <- "255 255 180"; COLORMESSAGE <- "Yellow"    ; break;
                             case 8 : RGB <- "0 255 240"  ; COLORMESSAGE <- "Aqua"      ; break;
                             case 9 : RGB <- "75 75 75"   ; COLORMESSAGE <- "Black"     ; break;
@@ -386,20 +392,16 @@ OnPlayerJoin <- function() {
                 CheatsOff <- 1
             }
         }
+
+        if (DevMode==true) {
+            DevHacks()
+        }
+    }
+/**********************************/
         ////////////////////
         //END OF LOOP CODE//
         ////////////////////
-
-
-        // TPG
-        local PLent = null
-        while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
-            local APLent = null
-            while(APLent = Entities.FindByClassname(APLent, "player")) {
-                APLent.SetOrigin(Vector(2495, -7451, 410))
-            }
-        }
-    }
+/**********************************/
 
     // lobby setup code
     function LobbyOneTimeRun() {
@@ -545,6 +547,15 @@ OnPlayerJoin <- function() {
 
     // art therapy lobby
     function ArtTherapyLobby() {
+        // TPG
+        local PLent = null
+        while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
+            local APLent = null
+            while(APLent = Entities.FindByClassname(APLent, "player")) {
+                APLent.SetOrigin(Vector(2495, -7451, 410))
+            }
+        }
+
         // art therapy left chute enabler
         local vectorEEL
         vectorEEL = Vector(5727, 3336, -441)
@@ -1062,6 +1073,13 @@ function Singleplayer() {
         EntFireByHandle(Entities.FindByName(null, "glass_pane_1_door_1"), "open", "", 0, null, null)
         Entities.FindByName(null, "glass_pane_1_door_1_blocker").Destroy()
     }
+}
+
+/////////////
+//DEV HACKS//
+/////////////
+function DevHacks() {
+
 }
 
 // function SingleplayerLoop() {
