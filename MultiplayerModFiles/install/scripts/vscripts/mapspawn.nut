@@ -4,6 +4,9 @@
 //     under a GNU GPLv3 license
 //===================================
 
+IsInSpawnZone <- []
+HasSpawned <- false
+PlayerColorCached <- []
 CheatsOff <- 0
 ReadyCheatsOff <- 0
 PlayerJoined <- 0
@@ -44,16 +47,6 @@ function init() {
     onscreendisplay.__KeyValueFromString("channel", "1")
     //onscreendisplay.__KeyValueFromString("x", "-1.1")
     //onscreendisplay.__KeyValueFromString("y", "-1.1")
-
-    // create a nametag display entity
-    nametagdisplay <- Entities.CreateByClassname("game_text")
-    nametagdisplay.__KeyValueFromString("targetname", "nametagdisplay")
-    nametagdisplay.__KeyValueFromString("holdtime", "0.025")
-    nametagdisplay.__KeyValueFromString("fadeout", "0.05")
-    nametagdisplay.__KeyValueFromString("fadein", "0.05")
-    nametagdisplay.__KeyValueFromString("spawnflags", "1")
-    nametagdisplay.__KeyValueFromString("channel", "0")
-    nametagdisplay.__KeyValueFromString("y", "0.6")
 
     // create a join message entity
     jmessage <- Entities.CreateByClassname("env_instructor_hint")
@@ -154,6 +147,25 @@ function PlayerWithinDistance(SearchPos, SearchDis) {
     }
 }
 
+function DeleteModels(ModelName) {
+    local ent = null
+    while (ent=Entities.FindByModel(ent, "models/"+ModelName)) {
+        printl("Model " + ModelName + " deleted!")
+    }
+}
+
+function CacheModel(ModelName) {
+        if (Entities.FindByModel(null, "models/"+ModelName)) {
+            printl("Model " + ModelName + " is already cached!")
+        } else {
+        SendToConsole("sv_cheats 1")
+        SendToConsole("prop_dynamic_create " + ModelName)
+        SendToConsole("sv_cheats 0")
+        //Delete previously created entity
+        printl("Model " + ModelName + " has been cached sucessfully!")
+        DelModel(ModelName)
+    }
+}
 /*******************
 * multiplayer code *
 *******************/
@@ -169,19 +181,19 @@ try {
 
 OnPlayerJoin <- function() {
     local p = null
-
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.ValidateScriptScope()) {
             local script_scope = p.GetScriptScope()
-
             if (!("Colored" in script_scope)) {
+
                 // get player's index and store it
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
 
                 // enable cvars on client
+                SendToConsole("sv_timeout 3")
                 SendToConsole("gameinstructor_enable 1")
-                //EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
+                EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
@@ -217,6 +229,16 @@ OnPlayerJoin <- function() {
                     ReadyCheatsOff <- 1
                 }
 
+                // create a nametag display entity
+                colordisplay <- Entities.CreateByClassname("game_text")
+                colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
+                colordisplay.__KeyValueFromString("x", "0")
+                colordisplay.__KeyValueFromString("holdtime", "100000")
+                colordisplay.__KeyValueFromString("fadeout", "0")
+                colordisplay.__KeyValueFromString("fadein", "0")
+                colordisplay.__KeyValueFromString("channel", "0")
+                colordisplay.__KeyValueFromString("y", "1")
+
                 // set preset colors up to 16
                 switch (PlayerID) {
                     case 1 : R <- 255; G <- 255; B <- 255; break;
@@ -228,9 +250,9 @@ OnPlayerJoin <- function() {
                     case 7 : R <- 255, G <- 255, B <- 180; break;
                     case 8 : R <-   0, G <- 255, B <- 240; break;
                     case 9 : R <-  75, G <-  75, B <-  75; break;
-                    case 10: R <- 120, G <- 155, B <-  25; break;
+                    case 10: R <- 100, G <-  80, B <-   0; break;
                     case 11: R <-   0, G <-  80, B <- 100; break;
-                    case 12: R <- 100, G <-  80, B <-   0; break;
+                    case 12: R <- 120, G <- 155, B <-  25; break;
                     case 13: R <-   0, G <-   0, B <- 100; break;
                     case 14: R <-  80, G <-   0, B <-   0; break;
                     case 15: R <-   0, G <-  75, B <-   0; break;
@@ -251,99 +273,99 @@ OnPlayerJoin <- function() {
     *******************/
     
     function loop() {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local p2 = null
-            while (p2 = Entities.FindByClassnameWithin(p2, "player", p.GetOrigin(), 50)) {
-                if (p2 != p) {
-                    if (p2.GetRootMoveParent().entindex() != 1) {
-                        currentnametag <- p2.GetRootMoveParent().entindex().tostring()
-                        currentnametaglen <- currentnametag.len().tofloat() / 250 - 0.4934
-                        currentnametaglen <- currentnametaglen.tostring()
-                        nametagdisplay.__KeyValueFromString("message", currentnametag)
-                        nametagdisplay.__KeyValueFromString("x", currentnametaglen)
-                        printl(p2.GetRootMoveParent().entindex())
-                        printl("hi")
-						// loop over player colors
-                        switch (p2.GetRootMoveParent().entindex()) {
-                            case 1 : RGB <- "255 255 255"; break;
-                            case 2 : RGB <- "180 255 180"; break;
-                            case 3 : RGB <- "120 140 255"; break;
-                            case 4 : RGB <- "255 170 120"; break;
-                            case 5 : RGB <- "255 100 100"; break;
-                            case 6 : RGB <- "255 180 255"; break;
-                            case 7 : RGB <- "255 255 180"; break;
-                            case 8 : RGB <- "0 255 240"  ; break;
-                            case 9 : RGB <- "75 75 75"   ; break;
-                            case 10: RGB <- "120 155 25" ; break;
-                            case 11: RGB <- "0 80 100"   ; break;
-                            case 12: RGB <- "100 80 0"   ; break;
-                            case 13: RGB <- "0 0 100"    ; break;
-                            case 14: RGB <- "80 0 0"     ; break;
-                            case 15: RGB <- "0 75 0"     ; break;
-                            case 16: RGB <- "0 75 75"    ; break;
+
+        OnPlayerJoin() // run player join code 
+
+        General() // run general code
+
+        AllMapsLoopCode() // run map loops
+
+        //detect death
+        if (HasSpawned==true) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (!Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 18) && !Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 18))  {
+                    foreach (index, item in IsInSpawnZone)  {
+                        if (item == p.GetRootMoveParent().entindex().tostring())  {
+                            IsInSpawnZone.remove(index)
                         }
-                        nametagdisplay.__KeyValueFromString("color", RGB)
-                        EntFireByHandle(nametagdisplay, "display", "", 0.0, null, null)
+                    }
+                }
+
+            ContinueDeathCode <- true
+            foreach (Name in IsInSpawnZone) {
+                if (Name==p.GetRootMoveParent().entindex().tostring()) {
+                    ContinueDeathCode <- false
+                }
+            }
+
+            if (ContinueDeathCode==true) {
+                if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 18) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 18)) {
+                    //ON DEATH
+                    printl("Player " + p.GetRootMoveParent().entindex().tostring() + " Has Respawned")
+                    //show player color again
+                    foreach (index, item in PlayerColorCached)  {
+                        if (item == p.GetRootMoveParent().entindex().tostring())  {
+                            PlayerColorCached.remove(index)
+                        }
+                    }
+                    //END OF ON DEATH
+                    IsInSpawnZone.push(p.GetRootMoveParent().entindex().tostring())
                     }
                 }
             }
         }
+        
+        //display the current player color in the bottom right of their screen
+        if (HasSpawned==true) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                CanTag <- true
+                foreach (Name in PlayerColorCached) {
+                    if (Name==p.GetRootMoveParent().entindex().tostring()) {
+                        CanTag <- false
+                    }
+                }
+                currentnametag <- p.GetRootMoveParent().entindex().tostring()
+                if (CanTag==true) {
+                        RGB <- "255 255 255"; COLORMESSAGE <- "Random Color";
+                        switch (p.GetRootMoveParent().entindex()) {
+                            case 1 : RGB <- "255 255 255"; COLORMESSAGE <- "White"     ; break;
+                            case 2 : RGB <- "120 255 120"; COLORMESSAGE <- "Green"     ; break;
+                            case 3 : RGB <- "120 140 255"; COLORMESSAGE <- "Blue"      ; break;
+                            case 4 : RGB <- "255 170 120"; COLORMESSAGE <- "Orange"    ; break;
+                            case 5 : RGB <- "255 100 100"; COLORMESSAGE <- "Red"       ; break;
+                            case 6 : RGB <- "255 180 255"; COLORMESSAGE <- "Pink"      ; break;
+                            case 7 : RGB <- "255 255 180"; COLORMESSAGE <- "Yellow"    ; break;
+                            case 8 : RGB <- "0 255 240"  ; COLORMESSAGE <- "Aqua"      ; break;
+                            case 9 : RGB <- "75 75 75"   ; COLORMESSAGE <- "Black"     ; break;
+                            case 10: RGB <- "100 80 0"   ; COLORMESSAGE <- "Brown"     ; break;
+                            case 11: RGB <- "0 80 100"   ; COLORMESSAGE <- "Dark Cyan" ; break;
+                            case 12: RGB <- "120 155 25" ; COLORMESSAGE <- "Dark Lime" ; break;
+                            case 13: RGB <- "0 0 100"    ; COLORMESSAGE <- "Dark Blue" ; break;
+                            case 14: RGB <- "80 0 0"     ; COLORMESSAGE <- "Dark Red"  ; break;
+                            case 15: RGB <- "0 75 0"     ; COLORMESSAGE <- "Dark Green"; break;
+                            case 16: RGB <- "0 75 75"    ; COLORMESSAGE <- "Dark Aqua" ; break;
+                        }
+                        Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("message", "Player Color: " + COLORMESSAGE)
+                        Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("color", RGB)
+                        EntFireByHandle(Entities.FindByName(null, "colordisplay" + currentnametag), "display", "", 0.0, p, p)
+                        PlayerColorCached.push(currentnametag);
+                }
+            }
+        }
 
+        //disconnect player if trying to play singleplayer
         if (GBIsMultiplayer==0) {
             SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
-        } // protocal to avoid fixing singleplayer issues with mod installed.
+        }
 
         // singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
             SingleplayerLoop()
         }
 
-        // run player join code 
-        OnPlayerJoin()
-
-        // cache old player position
-        try {
-            if (copp == 0) {
-                OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-                copp <- 1
-            }
-        } catch(exception) {}
-
-        General() // run general code
-
-        // display waiting for players and run nessacary code after spawn
-        if (WFPDisplayDisabled == 0) { 
-            try {
-                // see if player is in spawn zone
-                if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 20)) {
-                    DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
-                } else {
-                    WFPDisplayDisabled <- 1
-                    GeneralOneTime()
-                }
-            } catch(exception) {}
-        }
-
-        // run all required loops
-        if (GetMapName() == "mp_coop_lobby_3") {
-            ArtTherapyLobby()
-        }
-
-        // run credits code
-        if (GetMapName() == "mp_coop_credits") {
-            CreditsLoop()
-        }
-
-                if (GetMapName() == "mp_coop_wall_5") {
-            mp_coop_wall_5FIX()
-        }
-
-        if (GetMapName() == "mp_coop_2paints_1bridge") {
-            mp_coop_2paints_1bridgeFIX()
-        }
-
-        // run ""dedicated server"" code
+        // run dedicated server code
         if (DedicatedServer == 1) {
             DedicatedServerFunc()
         }
@@ -364,6 +386,10 @@ OnPlayerJoin <- function() {
                 CheatsOff <- 1
             }
         }
+        ////////////////////
+        //END OF LOOP CODE//
+        ////////////////////
+
 
         // TPG
         local PLent = null
@@ -419,6 +445,26 @@ OnPlayerJoin <- function() {
 
     // general fixes for all maps
     function General() {
+            // display waiting for players and run nessacary code after spawn
+            if (WFPDisplayDisabled == 0) { 
+                        try {
+                if (copp == 0) {
+                    OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+                    copp <- 1
+                }
+            } catch(exception) {}
+
+            try {
+                // see if player is in spawn zone
+                if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 35)) {
+                    DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+                } else {
+                    WFPDisplayDisabled <- 1
+                    GeneralOneTime()
+                }
+            } catch(exception) {}
+        }
+
         // remove dropper bottom
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -437,6 +483,16 @@ OnPlayerJoin <- function() {
 
     // general one time run
     function GeneralOneTime() {
+
+        HasSpawned <- true
+
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            if (p.GetTeam()==2) {
+                OrangeOldPlayerPos <- p.GetOrigin()
+            }
+        }
+
         local DoorEntities = [
             "airlock_1-door1-airlock_entry_door_close_rl",
             "airlock_2-door1-airlock_entry_door_close_rl",
@@ -463,6 +519,27 @@ OnPlayerJoin <- function() {
         // map support
         if (GetMapName() == "mp_coop_separation_1") {
             mp_coop_separation_1FIXONETIME()
+        }
+    }
+
+    //run all required map loops every tick
+    function AllMapsLoopCode() {
+        // run all required loops
+        if (GetMapName() == "mp_coop_lobby_3") {
+            ArtTherapyLobby()
+        }
+
+        // run credits code
+        if (GetMapName() == "mp_coop_credits") {
+            CreditsLoop()
+        }
+
+                if (GetMapName() == "mp_coop_wall_5") {
+            mp_coop_wall_5FIX()
+        }
+
+        if (GetMapName() == "mp_coop_2paints_1bridge") {
+            mp_coop_2paints_1bridgeFIX()
         }
     }
 
@@ -652,7 +729,7 @@ OnPlayerJoin <- function() {
         }
     }
 
-    // ""dedicated server"" code
+    // dedicated server code
     function DedicatedServerFunc() {
         if (DedicatedServerOneTimeRun == 1) {
             if (GetMapName() == "mp_coop_lobby_3") {
@@ -882,10 +959,10 @@ OnPlayerJoin <- function() {
         "Nanoman2525 (retired) | Mapping + Entity and Command Help",
         "Darnias | Jumpstarter Code",
         "The Pineapple | Hamachi support",
-        "SlingEXE | Optimisations",
         "actu | Remote File Downloads",
         "Blub/Vecc | Code Cleanup + Commenting",
         "AngelPuzzle | Translations",
+        "SuperSpeed | spedrun da test",
         "--------------------------",
         "Multiplayer Mod: Beta Testers",
         "--------------------------",
@@ -898,8 +975,6 @@ OnPlayerJoin <- function() {
         "soulfur",
         "brawler",
         "Sheuron",
-        "NintenDude",
-        "SuperSpeed",
         "portalboy",
         "charity",
         "Souper Marilogi",
@@ -907,22 +982,16 @@ OnPlayerJoin <- function() {
         "JDWMGB",
         "ALIEN GOD",
         "mono",
+        "mp_emerald",
         "Funky Kong",
         "MicrosoftWindows",
         "dactam",
         "wol",
         "kitsune",
         "charzar",
-        "--------------------------",
-        "And my supportive group of friends!",
-        "--------------------------",
-        "Nick/KingKong",
-        "Latte/Luna",
-        "Craig is love Craig is life | WOLF BATTLER ",
-        "Bunger from Bugsnax | Ayden",
-        "Bananabread | KaiserInfinitus",
-        "Jazzy/jasmine",
-        "David/Mr. E"
+        "Enator",
+        "NintenDude 👎",
+        "SlingEXE 👎",
         "--------------------------",
         "Thank you all so so much!!!",
         "--------------------------"
