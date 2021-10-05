@@ -264,6 +264,7 @@ OnPlayerJoin <- function() {
                         nametagdisplay.__KeyValueFromString("x", currentnametaglen)
                         printl(p2.GetRootMoveParent().entindex())
                         printl("hi")
+						// loop over player colors
                         switch (p2.GetRootMoveParent().entindex()) {
                             case 1 : RGB <- "255 255 255"; break;
                             case 2 : RGB <- "180 255 180"; break;
@@ -291,7 +292,7 @@ OnPlayerJoin <- function() {
 
         if (GBIsMultiplayer==0) {
             SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
-        }
+        } // protocal to avoid fixing singleplayer issues with mod installed.
 
         // singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
@@ -342,7 +343,7 @@ OnPlayerJoin <- function() {
             mp_coop_2paints_1bridgeFIX()
         }
 
-        // run dedicated server code
+        // run ""dedicated server"" code
         if (DedicatedServer == 1) {
             DedicatedServerFunc()
         }
@@ -651,7 +652,7 @@ OnPlayerJoin <- function() {
         }
     }
 
-    // dedicated server code
+    // ""dedicated server"" code
     function DedicatedServerFunc() {
         if (DedicatedServerOneTimeRun == 1) {
             if (GetMapName() == "mp_coop_lobby_3") {
