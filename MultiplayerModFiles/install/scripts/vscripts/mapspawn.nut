@@ -518,10 +518,16 @@ OnPlayerJoin <- function() {
             }
         }
 
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "trigger_playerteam")) {
+            DoEntFire("!self", "starttouch", "", 0.0, null, ent)
+        }
+
         // map support
         if (GetMapName() == "mp_coop_separation_1") {
             mp_coop_separation_1FIXONETIME()
         }
+        
     }
 
     //run all required map loops every tick
@@ -1079,7 +1085,62 @@ function Singleplayer() {
 //DEV HACKS//
 /////////////
 function DevHacks() {
+    if (GetMapName()=="mp_coop_paint_longjump_intro") {
+        //airlockexit teleport
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector(80, -7567, 960), 200)) {
+            ent.SetOrigin(Vector(243, -7037, 960))
+        }
 
+        //teleportfromexit to gel
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 80, -7087, 960), 90)) {
+            ent.SetOrigin(Vector(198, -6553, 960))
+        }
+
+        //yeet to brig
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 220, -5829, 807), 350)) {
+            ent.SetOrigin(Vector(257, -5352, 960))
+        }
+
+
+        //orang brig
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -437, -1541, 448), 80)) {
+            ent.SetOrigin(Vector(-453, -1541, 942))
+        }
+
+        //speee juhmp
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -1, 406, 104), 80)) {
+            ent.SetOrigin(Vector(-136, 58, 1027))
+        }
+
+        //speee juhmp minr
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 431, -2127, 448), 80)) {
+            ent.SetOrigin(Vector(-136, 58, 1027))
+        }
+
+        //speee oragneuntp
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -448, -1543, 758), 80)) {
+            ent.SetOrigin(Vector(-471, -1722, 975))
+        }
+
+        //tp tu vaulht
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 390, -4977, 960), 80)) {
+            ent.SetOrigin(Vector(-171, -1663, 960))
+        }
+
+        //tp tu vaulht
+        local ent = null
+        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 751, -6575, 960), 100)) {
+            ent.SetOrigin(Vector(7, 841, 1216))
+        }
+    }
 }
 
 // function SingleplayerLoop() {
