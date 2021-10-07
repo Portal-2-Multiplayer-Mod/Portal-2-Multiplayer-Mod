@@ -1,5 +1,6 @@
 @echo off
 cd.
+rem clear
 cls
 rem copy everything from "MultiplayerModFiles" to "portal2"
 xcopy /y /S "%cd%\MultiplayerModFiles\install" "%cd%\portal2"
