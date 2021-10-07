@@ -1,4 +1,4 @@
-# ***Created By Kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
+# ***Created By kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
 ***Special thanks to:***
  - thePineapple: Added Hamachi support
 
@@ -17,7 +17,7 @@
 # Installation & Use
 
 - Steam Guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
-  - ***The Steam guide goes over everything you need to know in order to get going with the mod, but just in case, we have also prepared a supplementary video in case you get stuck.***
+  - ***The Steam guide goes over everything you need to know in order to get the mod working, but just in case, we have also prepared a supplementary video if you get stuck.***
 - Video: https://www.youtube.com/watch?v=AOh6qela-uI&t=18s
 
 # Discord
