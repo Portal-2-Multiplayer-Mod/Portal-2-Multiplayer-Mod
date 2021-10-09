@@ -89,10 +89,7 @@ except:
     print("\gamedir Copy Failed (The Game Is Probably Running)")
 
 #rename server.dll to disabledserver.dll so our newly patched server.dll runs
-os.chdir(owd + "\portal2\\bin")
-os.rename("server.dll", "disabledserver.dll")
-os.chdir(owd)
-
+os.rename(owd + "\portal2\\bin\server.dll", owd + "\portal2\\bin\disabledserver.dll")
 
 
 
@@ -116,9 +113,7 @@ except:
 
 #rename main server.dll back to server.dll 
 try:
-    os.chdir(owd + "\portal2\\bin")
-    os.rename("disabledserver.dll", "server.dll")
-    os.chdir(owd)
+    os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
     print("Renamed disabledserver.dll Back To server.dll")
 except:
     print("Renaming Main disabledserver.dll To server.dll Failed")
