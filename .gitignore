@@ -1,5 +1,5 @@
 bin
-!MultiplayerModFiles/*
+!MultiplayerModFiles/MainFiles/gamedir/bin
 mpmod.cfg
 platform
 portal2.*
