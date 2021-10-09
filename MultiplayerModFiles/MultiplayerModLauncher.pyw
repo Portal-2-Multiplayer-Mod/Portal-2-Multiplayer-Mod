@@ -225,12 +225,14 @@ def RemoveMultiplayerFiles():
         if (iow):
             os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
         else:
-            os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
-            os.rename(owd + "/portal2/bin/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
-        print("Renamed disabledserver.dll Back To server.dll")
+            try:
+                os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
+            except:
+                print("Server.dll Not Found When Trying To Rename (Not A Problem)")
+            os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
+        print("UnRenamed server.dll/server.so")
     except:
-        print("Renaming Main disabledserver.dll To server.dll Failed")
-
+        print("Failed To UnRename server.dll/server.so")
 
 
 
@@ -246,3 +248,9 @@ while True:
         RemoveMultiplayerFiles()
         break
     time.sleep(1)
+
+
+print("")
+print("==================")
+print("Exiting Program...")
+print("==================")
