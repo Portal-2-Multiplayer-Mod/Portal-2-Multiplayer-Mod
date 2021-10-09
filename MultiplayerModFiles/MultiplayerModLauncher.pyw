@@ -37,8 +37,9 @@ for number in NumList:
 #undo the server.dll rename to disabledserver.dll so we can patch the server.dll again
 try:
     os.rename(owd + "\portal2\\bin\disabledserver.dll", "server.dll")
+    print("found disabledserver.dll just renamed to server.dll (Python Probably Crashed Last Session)")
 except:
-    print("Couldn't Find Disabled server.dll Everything Is Probably Fine")
+    print()
 
 #open server.dll into binary
 f = open(owd + "\portal2\\bin\server.dll", 'rb')
@@ -73,6 +74,9 @@ f2 = open("server.dll", 'wb')
 f2.write(data)
 f2.close()
 
+
+
+
 #copy the multiplayermod files into the new dlc using the dlc name
 shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcname)
 print("Copied \MultiplayerModFiles to " + dlcname)
@@ -89,10 +93,11 @@ os.chdir(owd + "\portal2\\bin")
 os.rename("server.dll", "disabledserver.dll")
 os.chdir(owd)
 
+
+
+
 #start portal 2 with launch options
 subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
-
-
 
 
 
