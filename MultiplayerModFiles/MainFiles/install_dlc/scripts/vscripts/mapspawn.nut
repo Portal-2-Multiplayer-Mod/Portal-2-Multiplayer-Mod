@@ -971,11 +971,13 @@ OnPlayerJoin <- function() {
         "Bumpy | Scripting + Script Theory",
         "Vista | Reverse Engineering",
         "Wolfe Strider Shooter | Scripting",
+        "Enator18 | Python" 
+        "Nanoman2525 | Mapping + Entity and Command Help",
         "--------------------------",
         "Multiplayer Mod: Contributers",
         "--------------------------",
-        "Nanoman2525 (retired) | Mapping + Entity and Command Help",
         "Darnias | Jumpstarter Code",
+        "Mellow | stole all of Python"
         "The Pineapple | Hamachi support",
         "actu | Remote File Downloads",
         "Blub/Vecc | Code Cleanup + Commenting",
