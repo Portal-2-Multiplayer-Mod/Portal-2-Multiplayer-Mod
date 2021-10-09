@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 import mmap
+import time
 NumList = []
 lastnumber = 0
 owd = os.getcwd()
@@ -35,15 +36,14 @@ for number in NumList:
 
 #undo the server.dll rename to disabledserver.dll so we can patch the server.dll again
 try:
-    os.chdir(owd + "\portal2\\bin")
-    os.rename("disabledserver.dll", "server.dll")
-    os.chdir(owd)
+    os.rename(owd + "\portal2\\bin\disabledserver.dll", "server.dll")
 except:
     print("Couldn't Find Disabled server.dll Everything Is Probably Fine")
 
 #open server.dll into binary
-with open(owd + "\portal2\\bin\server.dll", 'rb') as f:
-    data = f.read()
+f = open(owd + "\portal2\\bin\server.dll", 'rb')
+data = f.read()
+f.close()
 
 #33 player cap edit
 data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15(2X\x10', b'\x8bM\x08\xc7\x00\x1f\x00\x00\x00\xc7\x01\x1f\x00\x00\x00\xff\x15(2X\x10')
@@ -69,17 +69,13 @@ data = data.replace(b'mp_select_level', b'portal2mpmpsell')
 data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
 #write changes into a new toplevel server.dll
-try:
-    with open("server.dll", 'wb') as f:
-        f.write(data)
-except:
-    print("Couldn't Patch server.dll (The Game Is Probably Running)")
+f2 = open("server.dll", 'wb')
+f2.write(data)
+f2.close()
 
-#rename server.dll to disabledserver.dll so our newly patched server.dll runs
-os.chdir(owd + "\portal2\\bin")
-os.rename("server.dll", "disabledserver.dll")
-os.chdir(owd)
-
+#copy the multiplayermod files into the new dlc using the dlc name
+shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcname)
+print("Copied \MultiplayerModFiles to " + dlcname)
 
 try:
     #copy multiplayermod engine files into gamedir
@@ -88,9 +84,10 @@ try:
 except:
     print("\gamedir Copy Failed (The Game Is Probably Running)")
 
-#copy the multiplayermod files into the new dlc using the dlc name
-shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcname)
-print("Copied \MultiplayerModFiles to " + dlcname)
+#rename server.dll to disabledserver.dll so our newly patched server.dll runs
+os.chdir(owd + "\portal2\\bin")
+os.rename("server.dll", "disabledserver.dll")
+os.chdir(owd)
 
 #start portal 2 with launch options
 subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
