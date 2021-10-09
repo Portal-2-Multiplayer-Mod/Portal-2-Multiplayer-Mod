@@ -74,6 +74,9 @@ try:
 except:
     print()
 
+
+
+#patcher server.dll
 try:
     #open server.dll into binary
     if (iow):
@@ -113,6 +116,47 @@ try:
 except:
     print("Failed To Patch server.dll")
 
+#server.so patch
+if (iow):
+    print("Running Windows Skipping server.so Patch")
+else:
+    try:
+        #open server.dll into binary
+        f = open(owd + "/portal2/bin/linux32/server.so", 'rb')
+        data = f.read()
+        f.close()
+
+        #33 player cap edit
+        data = data.replace(b'\x01\x00\x00\x00\x8bD$\x14\xc7\x00\x01', b'\x1f\x00\x00\x00\x8bD$\x14\xc7\x00\x1f')
+        data = data.replace(b'\xc0\x0f\xb6\xc0\x83\xc0\x02\x89\x02\x83\xc4', b'\xc0\x0f\xb6\xc0\x83\xc0 \x89\x02\x83\xc4')
+        data = data.replace(b'\x0f\xb6\xc0\x83\xc0\x02\x83\xec\x04\x89\xf3', b'\x0f\xb6\xc0\x83\xc0 \x83\xec\x04\x89\xf3')
+        data = data.replace(b'K\x8de\xf4\xb8\x01\x00\x00\x00[^', b'K\x8de\xf4\xb8\x1f\x00\x00\x00[^')
+
+        #partner disconnect edit
+        data = data.replace(b'disconnect "Partner disconnected"', b'script_execute playerdisconnected')
+
+        #command patch edit
+        data = data.replace(b'restart_level', b'portal2mprslv')
+        data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
+        data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
+        data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
+        data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
+        data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
+        data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
+        data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
+        data = data.replace(b'transition_map', b'portal2mptrmap')
+        data = data.replace(b'select_map', b'p2mpselmap')
+        data = data.replace(b'mp_select_level', b'portal2mpmpsell')
+        data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
+
+        #write changes into a new toplevel server.dll
+        f2 = open("server.so", 'wb')
+        f2.write(data)
+        f2.close()
+    except:
+        print("Failed To Patch server.so")
+
+
 
 #copy the multiplayermod files into the new dlc using the dlc name
 if (iow):
@@ -136,6 +180,7 @@ if (iow):
     os.rename(owd + "\portal2\\bin\server.dll", owd + "\portal2\\bin\disabledserver.dll")
 else:
     os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
+    os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
 
 
 
@@ -158,6 +203,7 @@ def RemoveMultiplayerFiles():
             os.remove(owd + "\server.dll")
         else:
             os.remove(owd + "/server.dll")
+            os.remove(owd + "/server.so")
         print("Removed Modded \server.dll")
     except:
         print("Removing Modded server.dll Failed")
@@ -174,6 +220,7 @@ def RemoveMultiplayerFiles():
             os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
         else:
             os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
+            os.rename(owd + "/portal2/bin/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
         print("Renamed disabledserver.dll Back To server.dll")
     except:
         print("Renaming Main disabledserver.dll To server.dll Failed")
