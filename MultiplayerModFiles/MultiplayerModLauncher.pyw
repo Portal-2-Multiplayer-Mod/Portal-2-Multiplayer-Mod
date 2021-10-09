@@ -25,5 +25,6 @@ for number in NumList:
                 dlcname = "\portal2_dlc" + str(number + 1)
 
 shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\gamedir", owd, dirs_exist_ok=True)
+print("copied \MultiplayerModFiles\MainFiles\gamedir\MultiplayerModFiles to \Portal 2")
 shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcname)
 print("copied \MultiplayerModFiles to " + dlcname)
