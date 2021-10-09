@@ -5,8 +5,8 @@ import mmap
 NumList = []
 lastnumber = 0
 owd = os.getcwd()
+#get current directory
 os.chdir(owd.replace("\\MultiplayerModFiles", ""))
-print(os.getcwd())
 owd = os.getcwd()
 
 #get a number list of all the dlcs
