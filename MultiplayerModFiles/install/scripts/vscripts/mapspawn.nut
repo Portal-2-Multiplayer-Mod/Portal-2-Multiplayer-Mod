@@ -509,6 +509,7 @@ OnPlayerJoin <- function() {
             "blue_door_1-ramp_close_start",
             "orange_door_1-airlock_player_block",
             "blue_door_1-airlock_player_block",
+            "airlock_3-door1-airlock_entry_door_close_rl",  //mp_coop_sx_bounce (Sixense map)
         ]
 
         foreach (DoorType in DoorEntities) {
