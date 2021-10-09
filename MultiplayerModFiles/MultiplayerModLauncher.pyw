@@ -33,6 +33,14 @@ for number in NumList:
 
 
 
+#undo the server.dll rename to disabledserver.dll so we can patch the server.dll again
+try:
+    os.chdir(owd + "\portal2\\bin")
+    os.rename("disabledserver.dll", "server.dll")
+    os.chdir(owd)
+except:
+    print("Couldn't Find Disabled server.dll Everything Is Probably Fine")
+
 #open server.dll into binary
 with open(owd + "\portal2\\bin\server.dll", 'rb') as f:
     data = f.read()
@@ -61,19 +69,32 @@ data = data.replace(b'mp_select_level', b'portal2mpmpsell')
 data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
 #write changes into a new toplevel server.dll
-with open("server.dll", 'wb') as f:
-    f.write(data)
+try:
+    with open("server.dll", 'wb') as f:
+        f.write(data)
+except:
+    print("Couldn't Patch server.dll (The Game Is Probably Running)")
+
+#rename server.dll to disabledserver.dll so our newly patched server.dll runs
+os.chdir(owd + "\portal2\\bin")
+os.rename("server.dll", "disabledserver.dll")
+os.chdir(owd)
 
 
-
-#copy multiplayermod engine files into gamedir
-shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\gamedir", owd, dirs_exist_ok=True)
-print("copied \MultiplayerModFiles\MainFiles\gamedir\MultiplayerModFiles to \Portal 2")
+try:
+    #copy multiplayermod engine files into gamedir
+    shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\gamedir", owd, dirs_exist_ok=True)
+    print("copied \MultiplayerModFiles\MainFiles\gamedir\MultiplayerModFiles to \Portal 2")
+except:
+    print("gamedir Copy Failed (The Game Is Probably Running)")
 
 #copy the multiplayermod files into the new dlc using the dlc name
 shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcname)
 print("copied \MultiplayerModFiles to " + dlcname)
 
 #start portal 2 with launch options
-args = ["portal2.exe", "-windowed", "-w 69", "-h 69"]
-subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
+try:
+    subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
+except:
+    print("Game Start Failed (The Game Is Probably Running) Exiting Script")
+    exit
