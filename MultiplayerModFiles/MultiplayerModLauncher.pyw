@@ -175,11 +175,10 @@ try:
     #copy multiplayermod engine files into gamedir
     if (iow):
         shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\gamedir", owd, dirs_exist_ok=True)
-    else:
-        shutil.copytree(owd + "/MultiplayerModFiles/MainFiles/gamedir", owd, dirs_exist_ok=True)
+
     print("Copied \MultiplayerModFiles\MainFiles\gamedir\MultiplayerModFiles to \Portal 2")
 except:
-    print("\gamedir Copy Failed (The Game Is Probably Running)" + os.getcwd())
+    print("\gamedir Copy Failed (The Game Is Probably Running)")
 
 #rename server.dll to disabledserver.dll so our newly patched server.dll runs
 if (iow):
@@ -191,6 +190,7 @@ else:
 
 
 #start portal 2 with launch options
+print("=======Game Launch=======")
 try:
     if (iow):
         subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
@@ -210,7 +210,7 @@ def RemoveMultiplayerFiles():
         else:
             os.remove(owd + "/server.dll")
             os.remove(owd + "/server.so")
-        print("Removed Modded \server.dll")
+        print("Removed Modded server.so/server.dll")
     except:
         print("Removing Modded server.dll Failed")
 
@@ -245,12 +245,13 @@ while True:
         print('Portal 2 Is Still Running')
     else:
         print('Portal 2 Not Found Closing')
+        print("=======Game Closed=======")
         RemoveMultiplayerFiles()
         break
     time.sleep(1)
 
 
 print("")
-print("==================")
-print("Exiting Program...")
-print("==================")
+print("=========================")
+print("     Exiting Program...")
+print("=========================")
