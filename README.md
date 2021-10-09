@@ -1,4 +1,4 @@
-# ***Created By kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
+# ***Created by kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
 ***Special thanks to:***
  - thePineapple: Added Hamachi support
 
