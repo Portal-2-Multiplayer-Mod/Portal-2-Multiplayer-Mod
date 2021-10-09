@@ -93,8 +93,15 @@ shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcnam
 print("copied \MultiplayerModFiles to " + dlcname)
 
 #start portal 2 with launch options
-try:
-    subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
-except:
-    print("Game Start Failed (The Game Is Probably Running) Exiting Script")
-    exit
+subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
+
+
+
+#remove multiplayer mod files 
+os.remove(owd + "\server.dll")
+shutil.rmtree(owd + dlcname)
+
+#rename main server.dll back to server.dll 
+os.chdir(owd + "\portal2\\bin")
+os.rename("disabledserver.dll", "server.dll")
+os.chdir(owd)
