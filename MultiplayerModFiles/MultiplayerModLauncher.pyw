@@ -84,24 +84,39 @@ os.chdir(owd)
 try:
     #copy multiplayermod engine files into gamedir
     shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\gamedir", owd, dirs_exist_ok=True)
-    print("copied \MultiplayerModFiles\MainFiles\gamedir\MultiplayerModFiles to \Portal 2")
+    print("Copied \MultiplayerModFiles\MainFiles\gamedir\MultiplayerModFiles to \Portal 2")
 except:
-    print("gamedir Copy Failed (The Game Is Probably Running)")
+    print("\gamedir Copy Failed (The Game Is Probably Running)")
 
 #copy the multiplayermod files into the new dlc using the dlc name
 shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcname)
-print("copied \MultiplayerModFiles to " + dlcname)
+print("Copied \MultiplayerModFiles to " + dlcname)
 
 #start portal 2 with launch options
 subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
 
 
 
+
+
 #remove multiplayer mod files 
-os.remove(owd + "\server.dll")
-shutil.rmtree(owd + dlcname)
+try:
+    os.remove(owd + "\server.dll")
+    print("Removed Modded \server.dll")
+except:
+    print("Removing Modded server.dll Failed")
+
+try:
+    shutil.rmtree(owd + dlcname)
+    print("Removed " + dlcname)
+except:
+    print("Removing Multiplayer Mod DLCs Failed")
 
 #rename main server.dll back to server.dll 
-os.chdir(owd + "\portal2\\bin")
-os.rename("disabledserver.dll", "server.dll")
-os.chdir(owd)
+try:
+    os.chdir(owd + "\portal2\\bin")
+    os.rename("disabledserver.dll", "server.dll")
+    os.chdir(owd)
+    print("Renamed disabledserver.dll Back To server.dll")
+except:
+    print("Renaming Main disabledserver.dll To server.dll Failed")
