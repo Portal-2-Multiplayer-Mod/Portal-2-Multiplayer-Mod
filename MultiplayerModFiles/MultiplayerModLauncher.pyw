@@ -65,14 +65,20 @@ for number in NumList:
 
 
 #undo the server.dll rename to disabledserver.dll so we can patch the server.dll again
+
 try:
     if (iow):
         os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
     else:
-        os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
+        try:
+            os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
+        except:
+            print("Server.dll Not Found When Trying To Rename (Not A Problem)")
+        os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
     print("found disabledserver.dll just renamed to server.dll (Python Probably Crashed Last Session)")
 except:
     print()
+
 
 
 
