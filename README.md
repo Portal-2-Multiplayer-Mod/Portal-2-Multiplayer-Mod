@@ -1,6 +1,4 @@
 # ***Created by kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
-***Special thanks to:***
- - thePineapple: Added Hamachi support
 
 # Mod Features
 1. Custom Wait Screen
