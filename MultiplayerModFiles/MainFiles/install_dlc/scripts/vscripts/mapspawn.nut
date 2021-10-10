@@ -23,12 +23,15 @@ TryGelocity3 <- 1
 copp <- 0
 WFPDisplayDisabled <- 0
 IsSingleplayerMap <- 0
+LoadPlugin <- false
+PluginLoaded <- true
 
 // is dedicated server
 DedicatedServer <- 0
 
 // initialization code
 function init() {
+
     // run singleplayer code
     if (GetMapName().slice(0, 7) != "mp_coop") {
         Singleplayer()
@@ -69,6 +72,21 @@ function init() {
 
     // create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
+
+    // load plugin
+    if("getPlayerName" in this) {
+        printl("=================================")
+        printl("Plugin Already Loaded Skipping...")
+        printl("=================================")
+    } else {
+        printl("============================")
+        printl("Plugin Not Loaded Loading...")
+        printl("============================")
+        pluginloadcommand <- Entities.CreateByClassname("point_servercommand")
+        // SendToConsole("plugin_load pl")
+        LoadPlugin <- true
+        PluginLoaded <- false
+    }
 
     /***********************
     * run map support code *
@@ -202,6 +220,11 @@ OnPlayerJoin <- function() {
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+                
+                if (LoadPlugin==true) {
+                    EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+                    PluginLoaded <- true
+                }
 
                 // say join message
                 rejoined <- 0
