@@ -93,6 +93,9 @@ except:
 
 
 
+##################################
+#        START OF PATCHING       #
+##################################
 
 #server.dll patch
 try:
@@ -195,6 +198,11 @@ if (iow):
     #     print("Failed To Patch engine.dll")
 else:
     print("Running Linux Skipping engine.dll Patch")
+
+##################################
+#         END OF PATCHING        #
+##################################
+
 
 #copy the multiplayermod files into the new dlc using the dlc name
 if (iow):
