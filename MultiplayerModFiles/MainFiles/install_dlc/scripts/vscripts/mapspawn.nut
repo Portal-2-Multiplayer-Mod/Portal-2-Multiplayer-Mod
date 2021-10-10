@@ -8,7 +8,10 @@
 DevMode <- true
 ///////////////
 
+/////////////////
 UsePlugin <- true
+/////////////////
+
 IsInSpawnZone <- []
 HasSpawned <- false
 PlayerColorCached <- []
