@@ -3,12 +3,18 @@ try {
         printl("Disconnect Message Entity Already Exists Handling");
     }
 } catch(exception) {
-    dismessage <- Entities.CreateByClassname("env_instructor_hint");
+    disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
     printl("Created Disconnect Message Entity");
 } // disconnect hud manager
-dismessage.__KeyValueFromString("hint_icon_onscreen", "icon_alert_red");
-dismessage.__KeyValueFromString("targetname", "dismessage");
-dismessage.__KeyValueFromString("hint_caption", "Player Disconnected");
-dismessage.__KeyValueFromString("hint_color", "255 70 70");
-dismessage.__KeyValueFromString("hint_timeout", "3");
-DoEntFire("dismessage", "showhint", "", 0.0, null, "");
+// create a join message entity
+    disconnectmessagedisplay.__KeyValueFromString("targetname", "disconnectmessagedisplaympmod")
+    disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
+    disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
+    disconnectmessagedisplay.__KeyValueFromString("fadein", "0.2")
+    disconnectmessagedisplay.__KeyValueFromString("spawnflags", "1")
+    disconnectmessagedisplay.__KeyValueFromString("color", "255 40 40")
+    disconnectmessagedisplay.__KeyValueFromString("channel", "3")
+    joinmessagedisplay.__KeyValueFromString("message", "Player Disconnected")
+    EntFireByHandle(disconnectmessagedisplay, "display", "", 0.0, null, null)
+    //disconnectmessagedisplay.__KeyValueFromString("x", "0.1")
+    //disconnectmessagedisplay.__KeyValueFromString("y", "0.1")

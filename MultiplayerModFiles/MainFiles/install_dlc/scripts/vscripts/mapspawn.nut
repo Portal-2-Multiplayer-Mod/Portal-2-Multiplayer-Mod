@@ -56,11 +56,16 @@ function init() {
     //onscreendisplay.__KeyValueFromString("y", "-1.1")
 
     // create a join message entity
-    jmessage <- Entities.CreateByClassname("env_instructor_hint")
-    jmessage.__KeyValueFromString("targetname", "jmessagetarget")
-    jmessage.__KeyValueFromString("hint_icon_onscreen", "icon_caution")
-    jmessage.__KeyValueFromString("hint_color", "255 200 0")
-    jmessage.__KeyValueFromString("hint_timeout", "3")
+    joinmessagedisplay <- Entities.CreateByClassname("game_text")
+    joinmessagedisplay.__KeyValueFromString("targetname", "joinmessagedisplaympmod")
+    joinmessagedisplay.__KeyValueFromString("holdtime", "3")
+    joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
+    joinmessagedisplay.__KeyValueFromString("fadein", "0.2")
+    joinmessagedisplay.__KeyValueFromString("spawnflags", "1")
+    joinmessagedisplay.__KeyValueFromString("color", "255 200 0")
+    joinmessagedisplay.__KeyValueFromString("channel", "3")
+    //joinmessagedisplay.__KeyValueFromString("x", "0.1")
+    //joinmessagedisplay.__KeyValueFromString("y", "0.1")
 
     // create entity to run loop() every 0.1 seconds
     timer <- Entities.CreateByClassname("logic_timer")
@@ -212,38 +217,28 @@ OnPlayerJoin <- function() {
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
 
+                //load plugin
+                if (LoadPlugin==true) {
+                    EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+                    PluginLoaded <- true
+                }
+
                 // enable cvars on client
                 SendToConsole("sv_timeout 3")
                 SendToConsole("gameinstructor_enable 1")
                 EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
-                
-                if (LoadPlugin==true) {
-                    EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
-                    PluginLoaded <- true
-                }
 
                 // say join message
-                rejoined <- 0
-                local AllPlayerIndex = null
-                while (AllPlayerIndex = Entities.FindByClassname(AllPlayerIndex, "player")) {
-                    AllPlayerIndex.GetRootMoveParent()
-                    local APIN = AllPlayerIndex.entindex()
-                    if (PlayerID+1 <= APIN) {
-                        coj <- "Player " + PlayerID + " ReJoined The Game"
-                        rejoined <- 1
-                    }
+                JoinMessage <- "Player " + getPlayerName(PlayerID-1) + " Joined The Game"
+                JoinMessage = JoinMessage.tostring()
+                joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
+                EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+                if (PlayerID >= 2) {
+                    onscreendisplay.__KeyValueFromString("y", "0.075")
                 }
-                if (rejoined==0) {
-                    coj <- "Player " + PlayerID + " Joined The Game"
-                }
-                coj = coj.tostring()
-                jmessage.__KeyValueFromString("hint_caption", coj)
-                DoEntFire("jmessagetarget", "showhint", "", 0.0, null, p)
-                printl("Player " + PlayerID + " Joined The Game")
 
                 // assign player targetname
                 if (PlayerID >= 3) {
@@ -344,7 +339,7 @@ OnPlayerJoin <- function() {
                 }
             }
         }
-        
+
         //display the current player color in the bottom right of their screen
         if (HasSpawned==true) {
             local p = null
@@ -428,6 +423,37 @@ OnPlayerJoin <- function() {
 
     // lobby setup code
     function LobbyOneTimeRun() {
+        //activate whole lobby
+        try {
+            // enable team building course
+            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
+            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
+
+            // enable tbeam course
+            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
+            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
+
+            // enable paint course
+            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
+            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
+
+            // enable fling course
+            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
+            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
+
+            // enable extra course
+            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
+            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
+
+            // enable all finished course
+            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
+            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
+
+            // enable music
+            DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
+            // Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
+            // Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
+        } catch(exception) {}
         // remove entities
         // fix edicts error
         local ent = null
@@ -559,7 +585,7 @@ OnPlayerJoin <- function() {
         // run all required loops
         if (GetMapName() == "mp_coop_lobby_3") {
             ArtTherapyLobby()
-        }
+            }
 
         // run credits code
         if (GetMapName() == "mp_coop_credits") {
@@ -772,42 +798,7 @@ OnPlayerJoin <- function() {
 
     // dedicated server code
     function DedicatedServerFunc() {
-        if (DedicatedServerOneTimeRun == 1) {
-            if (GetMapName() == "mp_coop_lobby_3") {
-                try {
-                    // enable team building course
-                    DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
-                    DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
-
-                    // enable tbeam course
-                    DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
-                    DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
-
-                    // enable paint course
-                    DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
-                    DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
-
-                    // enable fling course
-                    DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
-                    DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
-
-                    // enable extra course
-                    DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-                    DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-
-                    // enable all finished course
-                    DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
-                    DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
-
-                    // enable music
-                    DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
-                    Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
-                    Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
-                } catch(exception) {}
-            }
-
-            DedicatedServerOneTimeRun <- 0
-        }
+        if (DedicatedServerOneTimeRun == 1) {print()}
 
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
