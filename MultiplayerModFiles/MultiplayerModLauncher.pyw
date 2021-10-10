@@ -71,23 +71,23 @@ try:
             os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
             print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
         except:
-            print()
+            pass
         try:
             os.rename(owd + "\\bin\disabledengine.dll", owd + "\\bin\engine.dll")
             print("found engine.dll just renamed to engine.dll (python probably crashed last session)")
         except:
-            print()
+            pass
     else:
         try:
             os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
             print("found disabledserver.dll just renamed to server.dll (python probably crashed last session)")
         except:
-            print()
+            pass
         try:
             os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
             print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
         except:
-            print()
+            pass
 except:
     print("Error Trys Gave Exeption (odd)")
 
@@ -269,23 +269,23 @@ def RemoveMultiplayerFiles():
                 os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
                 print("Enabled disabledserver.dll")
             except:
-                print()
+                pass
             try:
                 os.rename(owd + "\\bin\disabledengine.dll", owd + "\\bin\engine.dll")
                 print("Enabled engine.dll")
             except:
-                print()
+                pass
         else:
             try:
                 os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
                 print("Enabled server.dll")
             except:
-                print()
+                pass
             try:
                 os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
                 print("Enabled server.so")
             except:
-                print()
+                pass
     except:
         print("Failed To UnRename Nessasary Files (Somehow???)")
 
