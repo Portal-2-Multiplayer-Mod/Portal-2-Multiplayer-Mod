@@ -64,25 +64,37 @@ for number in NumList:
 
 
 
-#undo the server.dll rename to disabledserver.dll so we can patch the server.dll again
-
+#undo the patch dll renames so we can patch the server.dll again
 try:
     if (iow):
-        os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
+        try:
+            os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
+            print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
+        except:
+            print()
+        try:
+            os.rename(owd + "\\bin\disabledengine.dll", owd + "\\bin\engine.dll")
+            print("found engine.dll just renamed to engine.dll (python probably crashed last session)")
+        except:
+            print()
     else:
         try:
             os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
+            print("found disabledserver.dll just renamed to server.dll (python probably crashed last session)")
         except:
-            print("Server.dll Not Found When Trying To Rename (Not A Problem)")
-        os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
-    print("found disabledserver.dll just renamed to server.dll (Python Probably Crashed Last Session)")
+            print()
+        try:
+            os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
+            print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
+        except:
+            print()
 except:
-    print()
+    print("Error Trys Gave Exeption (odd)")
 
 
 
 
-#patcher server.dll
+#server.dll patch
 try:
     #open server.dll into binary
     if (iow):
@@ -127,7 +139,7 @@ if (iow):
     print("Running Windows Skipping server.so Patch")
 else:
     try:
-        #open server.dll into binary
+        #open server.so into binary
         f = open(owd + "/portal2/bin/linux32/server.so", 'rb')
         data = f.read()
         f.close()
@@ -155,14 +167,34 @@ else:
         data = data.replace(b'mp_select_level', b'portal2mpmpsell')
         data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
-        #write changes into a new toplevel server.dll
+        #write changes into a new toplevel server.so
         f2 = open("server.so", 'wb')
         f2.write(data)
         f2.close()
     except:
         print("Failed To Patch server.so")
 
+#engine.dll patch
+if (iow):
+    # try:
+        #open engine.dll into binary
+    if (iow):
+        f = open(owd + "\\bin\engine.dll", 'rb')
+    data = f.read()
+    f.close()
 
+    #remove steam validation
+    data = data.replace(b't}\x8b\x17\x8b\x82\xcc\x00\x00', b'\xeb}\x8b\x17\x8b\x82\xcc\x00\x00')
+
+    #write changes into a new toplevel engine.dll
+    f2 = open("engine.dll", 'wb')
+    f2.write(data)
+    f2.close()
+    print("Patched engine.dll")
+    # except:
+    #     print("Failed To Patch engine.dll")
+else:
+    print("Running Linux Skipping engine.dll Patch")
 
 #copy the multiplayermod files into the new dlc using the dlc name
 if (iow):
@@ -183,6 +215,7 @@ except:
 #rename server.dll to disabledserver.dll so our newly patched server.dll runs
 if (iow):
     os.rename(owd + "\portal2\\bin\server.dll", owd + "\portal2\\bin\disabledserver.dll")
+    os.rename(owd + "\\bin\engine.dll", owd + "\\bin\disabledengine.dll")
 else:
     os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
     os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
@@ -203,10 +236,11 @@ except:
 
 #remove Game Files After Game Exits
 def RemoveMultiplayerFiles():
-        #remove multiplayer mod files 
+    #remove multiplayer mod files 
     try:
         if(iow):
             os.remove(owd + "\server.dll")
+            os.remove(owd + "\engine.dll")
         else:
             os.remove(owd + "/server.dll")
             os.remove(owd + "/server.so")
@@ -223,16 +257,29 @@ def RemoveMultiplayerFiles():
     #rename main server.dll back to server.dll 
     try:
         if (iow):
-            os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
+            try:
+                os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
+                print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
+            except:
+                print()
+            try:
+                os.rename(owd + "\\bin\disabledengine.dll", owd + "\\bin\engine.dll")
+                print("found engine.dll just renamed to engine.dll (python probably crashed last session)")
+            except:
+                print()
         else:
             try:
                 os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
+                print("found disabledserver.dll just renamed to server.dll (python probably crashed last session)")
             except:
-                print("Server.dll Not Found When Trying To Rename (Not A Problem)")
-            os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
-        print("UnRenamed server.dll/server.so")
+                print()
+            try:
+                os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
+                print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
+            except:
+                print()
     except:
-        print("Failed To UnRename server.dll/server.so")
+        print("Failed To UnRename Nessasary Files")
 
 
 
