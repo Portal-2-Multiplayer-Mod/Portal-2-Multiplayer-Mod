@@ -224,7 +224,16 @@ OnPlayerJoin <- function() {
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
 
-                //load plugin
+                // set viewmodel names 
+                local ent = null
+                while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
+                    EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
+                    printl("renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
+                    printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
+                    printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
+                }
+
+                // load plugin
                 if (UsePlugin==true) {
                     if (LoadPlugin==true) {
                         EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
@@ -236,6 +245,7 @@ OnPlayerJoin <- function() {
                 // enable cvars on client
                 SendToConsole("sv_timeout 3")
                 SendToConsole("gameinstructor_enable 1")
+                EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
@@ -995,8 +1005,8 @@ OnPlayerJoin <- function() {
         "Multiplayer Mod: Team",
         "--------------------------",
         "kyleraykbs | Scripting + Team Lead",
+        "Vista | Reverse Engineering, Plugin Dev",
         "Bumpy | Scripting + Script Theory",
-        "Vista | Reverse Engineering",
         "Wolfe Strider Shooter | Scripting",
         "Enator18 | Python" 
         "Nanoman2525 | Mapping + Entity and Command Help",
@@ -1036,9 +1046,8 @@ OnPlayerJoin <- function() {
         "wol",
         "kitsune",
         "charzar",
-        "Enator",
-        "NintenDude 👎",
-        "SlingEXE 👎",
+        "NintenDude",
+        "SlingEXE",
         "--------------------------",
         "Thank you all so so much!!!",
         "--------------------------"

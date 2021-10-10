@@ -5,6 +5,7 @@ try {
 } catch(exception) {
     disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
     printl("Created Disconnect Message Entity");
+    dismessage <- true
 } // disconnect hud manager
 // create a join message entity
     disconnectmessagedisplay.__KeyValueFromString("targetname", "disconnectmessagedisplaympmod")
