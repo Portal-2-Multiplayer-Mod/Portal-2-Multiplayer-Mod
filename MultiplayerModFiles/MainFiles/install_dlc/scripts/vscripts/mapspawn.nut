@@ -8,6 +8,7 @@
 DevMode <- true
 ///////////////
 
+UsePlugin <- true
 IsInSpawnZone <- []
 HasSpawned <- false
 PlayerColorCached <- []
@@ -24,7 +25,10 @@ copp <- 0
 WFPDisplayDisabled <- 0
 IsSingleplayerMap <- 0
 LoadPlugin <- false
-PluginLoaded <- true
+PluginLoaded <- false
+if (UsePlugin==true) {
+    PluginLoaded <- true
+}
 
 // is dedicated server
 DedicatedServer <- 0
@@ -218,10 +222,12 @@ OnPlayerJoin <- function() {
                 PlayerID <- PlayerID.entindex()
 
                 //load plugin
-                if (LoadPlugin==true) {
-                    EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
-                    EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
-                    LoadPlugin <- false
+                if (UsePlugin==true) {
+                    if (LoadPlugin==true) {
+                        EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+                        EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
+                        LoadPlugin <- false
+                    }
                 }
 
                 // enable cvars on client
@@ -235,12 +241,14 @@ OnPlayerJoin <- function() {
                 // say join message
                 if (PluginLoaded==true) {
                     JoinMessage <- "Player " + getPlayerName(PlayerID-1) + " Joined The Game"
-                    JoinMessage = JoinMessage.tostring()
-                    joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
-                    EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
-                    if (PlayerID >= 2) {
-                        onscreendisplay.__KeyValueFromString("y", "0.075")
-                    }
+                } else {
+                    JoinMessage <- "Player " + PlayerID + " Joined The Game"
+                }
+                JoinMessage = JoinMessage.tostring()
+                joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
+                EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+                if (PlayerID >= 2) {
+                    onscreendisplay.__KeyValueFromString("y", "0.075")
                 }
                 // assign player targetname
                 if (PlayerID >= 3) {
