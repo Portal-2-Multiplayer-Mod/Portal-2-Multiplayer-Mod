@@ -166,6 +166,61 @@ function init() {
 ********************
 *******************/
 
+//=================//
+//--Trace Helpers--//
+//=================//
+class TraceInfo 
+{
+	constructor(h,d)
+	{
+		Hit = h;
+		Dist = d;
+	}
+
+	Hit = null;
+	Dist = null;
+}
+//Returns the hit position of a trace between two points.
+function TraceVec(start, end, filter)
+{
+	local dir = (end-start);
+	local frac = TraceLine(start,end,filter);
+	//return start+(dir*frac);
+	return TraceInfo(start+(dir*frac),dir.Length());
+}
+//Returns the hit position of a trace along a normalized direction vector.
+function TraceDir(orig, dir, maxd, filter)
+{
+	local frac = TraceLine(orig,orig+dir*maxd,filter);
+	if(frac == 1.0) { return TraceInfo(orig+(dir*maxd),0.0);}
+	return TraceInfo(orig+(dir*(maxd*frac)),maxd*frac);
+}
+
+//==================//
+//- Trace Help END -//
+//==================//
+
+//Returns the hit position of a trace between two points.
+function TraceVec(start, end, filter)
+{
+	local dir = (end-start);
+	local frac = TraceLine(start,end,filter);
+	//return start+(dir*frac);
+	return TraceInfo(start+(dir*frac),dir.Length());
+}
+//Returns the hit position of a trace along a normalized direction vector.
+function TraceDir(orig, dir, maxd, filter)
+{
+	local frac = TraceLine(orig,orig+dir*maxd,filter);
+	if(frac == 1.0) { return TraceInfo(orig+(dir*maxd),0.0);}
+	return TraceInfo(orig+(dir*(maxd*frac)),maxd*frac);
+}
+
+////////////////
+//END OF TRACE//
+////////////////
+
+
 //Teleport Players Within A Distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
     local ent = null
@@ -229,8 +284,8 @@ OnPlayerJoin <- function() {
                 while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
                     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
                     printl("renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
-                    printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
-                    printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
+                    // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
+                    // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
                 }
 
                 // load plugin
@@ -253,7 +308,7 @@ OnPlayerJoin <- function() {
 
                 // say join message
                 if (PluginLoaded==true) {
-                    JoinMessage <- "Player " + getPlayerName(PlayerID-1) + " Joined The Game"
+                    JoinMessage <- getPlayerName(PlayerID-1) + " Joined The Game"
                 } else {
                     JoinMessage <- "Player " + PlayerID + " Joined The Game"
                 }
@@ -326,6 +381,14 @@ OnPlayerJoin <- function() {
         General() // run general code
 
         AllMapsLoopCode() // run map loops
+
+        // local player = null
+        // while (player=Entities.FindByClassname(player, "player")) {
+        //     local traceend = TraceDir(player.EyePosition(), player.GetAngles(), 100, null).Hit
+        //     local pos = TraceVec(player.EyePosition(), traceend,player).Hit
+        //     DebugDrawLine(player.EyePosition(), pos, 255, 255, 255, false, -1)
+        //     DebugDrawBox(pos, Vector(-2,-2,-2), Vector(2,2,2), 255, 0, 0, 0, 0.1)
+        // }
 
         //detect death
         if (HasSpawned==true) {
@@ -407,7 +470,7 @@ OnPlayerJoin <- function() {
             SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
         }
 
-        // singleplayer loop
+        //singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
             SingleplayerLoop()
         }
@@ -1182,86 +1245,86 @@ function DevHacks() {
     }
 }
 
-// function SingleplayerLoop() {
-//     // sp_a1_intro2
-//     if (GetMapName() == "sp_a1_intro2") {
-//         try {
-//             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-//         } catch(exception) {}
+function SingleplayerLoop() {
+    // sp_a1_intro2
+    if (GetMapName() == "sp_a1_intro2") {
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
 
-//         local portalgun = null
-//         while ( portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
-//             portalgun.Destroy()
-//         }
+        local portalgun = null
+        while ( portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
+            portalgun.Destroy()
+        }
 
-//         local p = null
-//         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 45)) {
-//             SendToConsole("commentary 1")
-//             SendToConsole("changelevel sp_a1_intro3")
-//         }
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 45)) {
+            SendToConsole("commentary 1")
+            SendToConsole("changelevel sp_a1_intro3")
+        }
 
-//         try {
-//             Entities.FindByName(null, "block_boxes").Destroy()
-//         } catch(exception) {}
-//     }
+        try {
+            Entities.FindByName(null, "block_boxes").Destroy()
+        } catch(exception) {}
+    }
 
-//     // sp_a1_intro3
-//     if (GetMapName() == "sp_a1_intro3") {
-//         local p = null
-//         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 45)) {
-//            SendToConsole("commentary 1")
-//            SendToConsole("changelevel sp_a1_intro4")
-//         }
+    // sp_a1_intro3
+    if (GetMapName() == "sp_a1_intro3") {
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 45)) {
+           SendToConsole("commentary 1")
+           SendToConsole("changelevel sp_a1_intro4")
+        }
 
-//         try {
-//             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-//         } catch(exception) {}
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
 
-//         // remove portalgun
-//         if (hasgotportalgunSPMP == 0) {
-//             local portalgun = null
-//             while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
-//                 portalgun.Destroy()
-//             }
-//         }
+        // remove portalgun
+        if (hasgotportalgunSPMP == 0) {
+            local portalgun = null
+            while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
+                portalgun.Destroy()
+            }
+        }
 
-//         if (!Entities.FindByName(null, "portalgun")) {
-//             local p = null
-//             if (timeout != 25) {
-//                 timeout <- timeout + 1
-//                 hasgotportalgunSPMP <- 1
+        if (!Entities.FindByName(null, "portalgun")) {
+            local p = null
+            if (timeout != 25) {
+                timeout <- timeout + 1
+                hasgotportalgunSPMP <- 1
 
-//                 while (p = Entities.FindByClassname(p, "player")) {
-//                     EntFireByHandle(clientcommand, "Command", "hud_saytext_time 0", 0, p, p)
-//                     EntFireByHandle(clientcommand, "Command", "give weapon_portalgun", 0, p, p)
-//                     EntFireByHandle(clientcommand, "Command", "upgrade_portalgun", 0, p, p)
-//                     EntFireByHandle(clientcommand, "Command", "sv_cheats 1", 0, p, p)
-//                 }
-//             } else {
-//                 while (p = Entities.FindByClassname(p, "player")) {
-//                     EntFireByHandle(clientcommand, "Command", "sv_cheats 0", 0, p, p)
-//                     EntFireByHandle(clientcommand, "Command", "hud_saytext_time 12", 0, p, p)
-//                 }
-//             }
-//         }
+                while (p = Entities.FindByClassname(p, "player")) {
+                    EntFireByHandle(clientcommand, "Command", "hud_saytext_time 0", 0, p, p)
+                    EntFireByHandle(clientcommand, "Command", "give weapon_portalgun", 0, p, p)
+                    EntFireByHandle(clientcommand, "Command", "upgrade_portalgun", 0, p, p)
+                    EntFireByHandle(clientcommand, "Command", "sv_cheats 1", 0, p, p)
+                }
+            } else {
+                while (p = Entities.FindByClassname(p, "player")) {
+                    EntFireByHandle(clientcommand, "Command", "sv_cheats 0", 0, p, p)
+                    EntFireByHandle(clientcommand, "Command", "hud_saytext_time 12", 0, p, p)
+                }
+            }
+        }
 
-//         // make wheatly look at player
-//         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-//         EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-//     }
+        // make wheatly look at player
+        local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+        EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+    }
 
-//     // sp_a1_intro4
-//     if (GetMapName() == "sp_a1_intro4") {
-//         try {
-//             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-//         } catch(exception) {}
-//     }
-// }
+    // sp_a1_intro4
+    if (GetMapName() == "sp_a1_intro4") {
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
+    }
+}
 
-// function SingleplayerOnFirstSpawn(player) {
-//     // sp_a1_intro2
-//     if (GetMapName() == "sp_a1_intro2") {}
-// }
+function SingleplayerOnFirstSpawn(player) {
+    // sp_a1_intro2
+    if (GetMapName() == "sp_a1_intro2") {}
+}
 
 
 

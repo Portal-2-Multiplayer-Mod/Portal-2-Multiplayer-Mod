@@ -13,7 +13,7 @@ try {
     disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
     disconnectmessagedisplay.__KeyValueFromString("fadein", "0.2")
     disconnectmessagedisplay.__KeyValueFromString("spawnflags", "1")
-    disconnectmessagedisplay.__KeyValueFromString("color", "255 40 40")
+    disconnectmessagedisplay.__KeyValueFromString("color", "140 40 40")
     disconnectmessagedisplay.__KeyValueFromString("channel", "3")
     disconnectmessagedisplay.__KeyValueFromString("message", "Player Disconnected")
     EntFireByHandle(disconnectmessagedisplay, "display", "", 0.0, null, null)
