@@ -267,27 +267,27 @@ def RemoveMultiplayerFiles():
         if (iow):
             try:
                 os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
-                print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
+                print("Enabled disabledserver.dll")
             except:
                 print()
             try:
                 os.rename(owd + "\\bin\disabledengine.dll", owd + "\\bin\engine.dll")
-                print("found engine.dll just renamed to engine.dll (python probably crashed last session)")
+                print("Enabled engine.dll")
             except:
                 print()
         else:
             try:
                 os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
-                print("found disabledserver.dll just renamed to server.dll (python probably crashed last session)")
+                print("Enabled server.dll")
             except:
                 print()
             try:
                 os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
-                print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
+                print("Enabled server.so")
             except:
                 print()
     except:
-        print("Failed To UnRename Nessasary Files")
+        print("Failed To UnRename Nessasary Files (Somehow???)")
 
 
 

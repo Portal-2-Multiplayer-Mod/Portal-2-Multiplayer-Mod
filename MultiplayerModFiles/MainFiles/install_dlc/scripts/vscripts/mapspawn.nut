@@ -290,7 +290,7 @@ OnPlayerJoin <- function() {
         if (HasSpawned==true) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                if (!Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 28) && !Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 28))  {
+                if (!Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 45) && !Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 45))  {
                     foreach (index, item in IsInSpawnZone)  {
                         if (item == p.GetRootMoveParent().entindex().tostring())  {
                             IsInSpawnZone.remove(index)
@@ -306,7 +306,7 @@ OnPlayerJoin <- function() {
             }
 
             if (ContinueDeathCode==true) {
-                if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 28) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 28)) {
+                if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 45) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 45)) {
                     //ON DEATH
                     printl("Player " + p.GetRootMoveParent().entindex().tostring() + " Has Respawned")
                     //show player color again
