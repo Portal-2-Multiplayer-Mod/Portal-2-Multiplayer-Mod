@@ -220,7 +220,8 @@ OnPlayerJoin <- function() {
                 //load plugin
                 if (LoadPlugin==true) {
                     EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
-                    PluginLoaded <- true
+                    EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
+                    LoadPlugin <- false
                 }
 
                 // enable cvars on client
@@ -232,14 +233,15 @@ OnPlayerJoin <- function() {
                 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
 
                 // say join message
-                JoinMessage <- "Player " + getPlayerName(PlayerID-1) + " Joined The Game"
-                JoinMessage = JoinMessage.tostring()
-                joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
-                EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
-                if (PlayerID >= 2) {
-                    onscreendisplay.__KeyValueFromString("y", "0.075")
+                if (PluginLoaded==true) {
+                    JoinMessage <- "Player " + getPlayerName(PlayerID-1) + " Joined The Game"
+                    JoinMessage = JoinMessage.tostring()
+                    joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
+                    EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+                    if (PlayerID >= 2) {
+                        onscreendisplay.__KeyValueFromString("y", "0.075")
+                    }
                 }
-
                 // assign player targetname
                 if (PlayerID >= 3) {
                     p.__KeyValueFromString("targetname", "player" + PlayerID)
