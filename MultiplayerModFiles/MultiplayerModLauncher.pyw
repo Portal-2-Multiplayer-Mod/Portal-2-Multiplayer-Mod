@@ -297,7 +297,7 @@ time.sleep(2)
 while True:
     #check if any portal 2 process is running
     if checkIfProcessRunning('ortal'):
-        print('Portal 2 Is Still Running')
+        print()
     else:
         print('Portal 2 Not Found Closing')
         print("=======Game Closed=======")
