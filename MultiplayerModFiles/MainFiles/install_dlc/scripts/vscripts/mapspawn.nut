@@ -377,9 +377,11 @@ OnPlayerJoin <- function() {
         }
 
         // disable collision
+        //local j = "solid "
+        local k = "CollisionGroup "
 
-        EntFire("player", "addoutput", "solid 4")
-        EntFire("player", "addoutput", "CollisionGroup 4")
+        //EntFire("player", "addoutput", j + 4)
+        EntFire("player", "addoutput", k + 2)
 
         // turn cheats off if ready (sv_cheats 0)
         if (ReadyCheatsOff == 1) {
