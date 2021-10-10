@@ -218,7 +218,7 @@ try:
 
     print("Copied \MultiplayerModFiles\MainFiles\gamedir\MultiplayerModFiles to \Portal 2")
 except:
-    print("\gamedir Copy Failed (The Game Is Probably Running)")
+    print("gamedir Copy Failed")
 
 #rename server.dll to disabledserver.dll so our newly patched server.dll runs
 if (iow):
