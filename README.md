@@ -14,6 +14,7 @@
 
 # Installation & Use
 
+- Latest Version Download: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
 - Steam Guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
   - ***The Steam guide goes over everything you need to know in order to get the mod working, but just in case, we have also prepared a supplementary video if you get stuck.***
 - Video: https://www.youtube.com/watch?v=AOh6qela-uI&t=18s
