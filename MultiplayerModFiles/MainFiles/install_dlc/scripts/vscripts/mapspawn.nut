@@ -12,6 +12,7 @@ DevMode <- true
 UsePlugin <- true
 /////////////////
 
+canclearcache <- false
 DoneCacheing <- false
 CachedModels <- []
 IsInSpawnZone <- []
@@ -407,23 +408,20 @@ OnPlayerJoin <- function() {
         // delete all cached models
         if (DoneCacheing==true) {
             foreach (index, CustomGameModel in CachedModels)  {
-                printl(CustomGameModel)
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-                Entities.FindByModel(null, CustomGameModel).Destroy()
-
+                try {
+                local ent = null
+                while (ent = Entities.FindByModel(ent, CustomGameModel)) {
+                    if (ent.GetName()!="genericcustomprop") {
+                        ent.Destroy()
+                    }
+                }
+                } catch(exception) {
+                        printl("ERROR: COULD NOT DELETE THE CUSTOM GAME MODEL: " + CustomGameModel)
+                    }
+                }
+        }
+        if (canclearcache==true) {
+            foreach (index, CustomGameModel in CachedModels)  {
                 CachedModels.remove(index)
             }
         }
@@ -588,6 +586,11 @@ OnPlayerJoin <- function() {
             ent.Destroy() // 165 entities removed
         }
 
+        local ent = null
+        while(ent = Entities.FindByClassname(ent, "env_sprite")) {
+            ent.Destroy() // 31 entities removed
+        }
+
         // fix art therapy tube glitches
         Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()
         Entities.FindByName(null, "dlc_room_fall_push_left").Destroy()
@@ -665,10 +668,155 @@ OnPlayerJoin <- function() {
         try {
             WorldInitalSpawnSingleplayer()
         } catch(exception) {}
+
+        if (GetMapName()=="mp_coop_lobby_3") {
+            ////////////////////////////////////
+            //AUTO GENERATED OBJECT CACHE CODE//
+            ////////////////////////////////////
+            CacheModel("props_gameplay/industrial_elevator_a.mdl")
+
+            CacheModel("props_bts/truss_1024.mdl")
+
+            CacheModel("props_bts/truss_1024.mdl")
+
+            CacheModel("props_bts/truss_1024.mdl")
+
+            CacheModel("props_bts/truss_1024.mdl")
+
+            CacheModel("props_bts/push_button_stand.mdl")
+
+            CacheModel("props_bts/hanging_walkway_128c.mdl")
+
+            CacheModel("props_gameplay/industrial_elevator_a.mdl")
+
+            CacheModel("props_bts/hanging_walkway_end_a.mdl")
+
+            CacheModel("props_bts/hanging_walkway_512a.mdl")
+
+            CacheModel("props_gameplay/push_button_mp.mdl")
+
+            CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
+
+            CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
+
+            CacheModel("a4_destruction/fin3_fgwallsmash_stat.mdl")
+
+            CacheModel("anim_wp/tv_wallpanel.mdl")
+
+            CacheModel("anim_wp/tv_wallpanel.mdl")
+
+            CacheModel("anim_wp/tv_wallpanel.mdl")
+
+            CacheModel("props_gameplay/push_button.mdl")
+
+            DoneCacheing <- true
+
+
+        }
+    }
+
+    function MapOneTimeRun() {
+        if (GetMapName()=="mp_coop_lobby_3") {
+            ///////////////////////////////////////
+            //AUTO GENERATED OBJECT CREATION CODE//
+            ///////////////////////////////////////
+            local modelnumber19 = CreateProp("prop_dynamic", Vector(4409.51, 3194.552, -511.907), "models/props_gameplay/industrial_elevator_a.mdl", 0)
+            modelnumber19.SetAngles(0, 179.986, 0)
+            modelnumber19.__KeyValueFromString("solid", "6")
+            modelnumber19.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber20 = CreateProp("prop_dynamic", Vector(4486.305, 3194.931, -1043.699), "models/props_bts/truss_1024.mdl", 0)
+            modelnumber20.SetAngles(-0.005, 90.01, -89.98)
+            modelnumber20.__KeyValueFromString("solid", "6")
+            modelnumber20.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber21 = CreateProp("prop_dynamic", Vector(4487.027, 3194.76, 1002.301), "models/props_bts/truss_1024.mdl", 0)
+            modelnumber21.SetAngles(-0.005, 90.01, -89.98)
+            modelnumber21.__KeyValueFromString("solid", "6")
+            modelnumber21.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber22 = CreateProp("prop_dynamic", Vector(4485.943, 3195.016, -2066.699), "models/props_bts/truss_1024.mdl", 0)
+            modelnumber22.SetAngles(-0.005, 90.01, -89.98)
+            modelnumber22.__KeyValueFromString("solid", "6")
+            modelnumber22.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber23 = CreateProp("prop_dynamic", Vector(4486.666, 3194.845, -20.699), "models/props_bts/truss_1024.mdl", 0)
+            modelnumber23.SetAngles(-0.005, 90.01, -89.98)
+            modelnumber23.__KeyValueFromString("solid", "6")
+            modelnumber23.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber24 = CreateProp("prop_dynamic", Vector(4341.034, 3275.196, -512.599), "models/props_bts/push_button_stand.mdl", 0)
+            modelnumber24.SetAngles(-0, 179.993, 0)
+            modelnumber24.__KeyValueFromString("solid", "6")
+            modelnumber24.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber25 = CreateProp("prop_dynamic", Vector(4310.044, 3193.698, 934.97), "models/props_bts/hanging_walkway_128c.mdl", 0)
+            modelnumber25.SetAngles(0.001, -0.017, -0.001)
+            modelnumber25.__KeyValueFromString("solid", "6")
+            modelnumber25.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber26 = CreateProp("prop_dynamic", Vector(4410.122, 3194.875, 934.979), "models/props_gameplay/industrial_elevator_a.mdl", 0)
+            modelnumber26.SetAngles(-0, 179.994, 0)
+            modelnumber26.__KeyValueFromString("solid", "6")
+            modelnumber26.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber27 = CreateProp("prop_dynamic", Vector(4310.418, 3113.173, 934.481), "models/props_bts/hanging_walkway_end_a.mdl", 0)
+            modelnumber27.SetAngles(0, 179.98, -0.003)
+            modelnumber27.__KeyValueFromString("solid", "6")
+            modelnumber27.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber28 = CreateProp("prop_dynamic", Vector(4310.359, 3707.202, 934.85), "models/props_bts/hanging_walkway_512a.mdl", 0)
+            modelnumber28.SetAngles(0, 179.987, 0)
+            modelnumber28.__KeyValueFromString("solid", "6")
+            modelnumber28.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber29 = CreateProp("prop_dynamic", Vector(4465.81, 3194.289, -443.653), "models/props_gameplay/push_button_mp.mdl", 0)
+            modelnumber29.SetAngles(-0, 178.691, 0)
+            modelnumber29.__KeyValueFromString("solid", "6")
+            modelnumber29.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber30 = CreateProp("prop_dynamic", Vector(4128.767, 2912.642, 415.118), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
+            modelnumber30.SetAngles(-0, 0.017, 45)
+            modelnumber30.__KeyValueFromString("solid", "6")
+            modelnumber30.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber31 = CreateProp("prop_dynamic", Vector(4383.452, 2913.066, 415.833), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
+            modelnumber31.SetAngles(0, -0.02, 45.008)
+            modelnumber31.__KeyValueFromString("solid", "6")
+            modelnumber31.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber32 = CreateProp("prop_dynamic", Vector(5058.416, 2553.027, 235.856), "models/a4_destruction/fin3_fgwallsmash_stat.mdl", 0)
+            modelnumber32.SetAngles(-0, 179.902, 90.019)
+            modelnumber32.__KeyValueFromString("solid", "6")
+            modelnumber32.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber33 = CreateProp("prop_dynamic", Vector(4470.891, 3995.562, 1002.738), "models/anim_wp/tv_wallpanel.mdl", 0)
+            modelnumber33.SetAngles(0, 179.995, 0)
+            modelnumber33.__KeyValueFromString("solid", "6")
+            modelnumber33.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber34 = CreateProp("prop_dynamic", Vector(4702.359, 3990.422, 1002.541), "models/anim_wp/tv_wallpanel.mdl", 0)
+            modelnumber34.SetAngles(0, 179.973, 0)
+            modelnumber34.__KeyValueFromString("solid", "6")
+            modelnumber34.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber35 = CreateProp("prop_dynamic", Vector(4922.485, 3998.699, 999.052), "models/anim_wp/tv_wallpanel.mdl", 0)
+            modelnumber35.SetAngles(-0, -179.972, 0)
+            modelnumber35.__KeyValueFromString("solid", "6")
+            modelnumber35.__KeyValueFromString("targetname", "genericcustomprop")
+
+            local modelnumber36 = CreateProp("prop_dynamic", Vector(4341.25, 3275.277, -466.676), "models/props_gameplay/push_button.mdl", 0)
+            modelnumber36.SetAngles(-0, 179.979, 0)
+            modelnumber36.__KeyValueFromString("solid", "6")
+            modelnumber36.__KeyValueFromString("targetname", "genericcustomprop")
+
+
+        }
     }
 
     // general one time run
     function GeneralOneTime() {
+        canclearcache <- true
 
         HasSpawned <- true
 
@@ -678,6 +826,8 @@ OnPlayerJoin <- function() {
                 OrangeOldPlayerPos <- p.GetOrigin()
             }
         }
+
+        MapOneTimeRun()
 
         SingleplayerOnFirstSpawn()
 
@@ -1473,17 +1623,19 @@ function SingleplayerOnFirstSpawn() {
 ///////////////////////////////////////
 //AUTO GENERATED OBJECT CREATION CODE//
 ///////////////////////////////////////
-local modelnumber48 = CreateProp("prop_dynamic", Vector(1604, -316, 167), "models/props_bts/hanging_walkway_128a.mdl", 0)
-modelnumber48.SetAngles(-30, 90, 0)
+local modelnumber55 = CreateProp("prop_dynamic", Vector(1630.388, -330.428, 123.608), "models/props_bts/hanging_walkway_64c.mdl", 0)
+modelnumber55.SetAngles(0, 89.991, -0)
+modelnumber55.__KeyValueFromString("solid", "6")
 
-local modelnumber49 = CreateProp("prop_dynamic", Vector(1628, -330, 124), "models/props_bts/hanging_walkway_64c.mdl", 0)
-modelnumber49.SetAngles(0, 90, 0)
+local modelnumber56 = CreateProp("prop_dynamic", Vector(1566.473, -330.395, 123.622), "models/props_bts/hanging_walkway_64d.mdl", 0)
+modelnumber56.SetAngles(0.015, -90.022, -0.001)
+modelnumber56.__KeyValueFromString("solid", "6")
 
-local modelnumber50 = CreateProp("prop_dynamic", Vector(1566, -330, 124), "models/props_bts/hanging_walkway_64d.mdl", 0)
-modelnumber50.SetAngles(0, -90, 0)
+local modelnumber57 = CreateProp("prop_dynamic", Vector(1506.789, -330.398, 123.66), "models/props_bts/hanging_walkway_64c.mdl", 0)
+modelnumber57.SetAngles(-0.004, -90.031, 0)
+modelnumber57.__KeyValueFromString("solid", "6")
 
-local modelnumber51 = CreateProp("prop_dynamic", Vector(1507, -330, 124), "models/props_bts/hanging_walkway_64c.mdl", 0)
-modelnumber51.SetAngles(0, -90, 0)
+
 
 
     }
