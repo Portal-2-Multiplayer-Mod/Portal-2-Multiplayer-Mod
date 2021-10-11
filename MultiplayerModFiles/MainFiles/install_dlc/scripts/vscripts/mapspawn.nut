@@ -1524,10 +1524,20 @@ function Singleplayer() {
         Entities.FindByName(null, "room_2_fling_portal_activate_rl").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(648, 0, 176), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(1200, -136, 188), 1024).Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(2504, -160, 448), 1024).Destroy()
         local fallenautoportal = CreateProp("prop_dynamic", Vector(-325, 24, 0), "models/props/portal_emitter.mdl", 0)
         fallenautoportal.SetAngles(-90, 69, 0)
 
 DoneCacheing <- true
+
+    }
+
+    //sp_a1_intro7
+    if (GetMapName() == "sp_a1_intro7") {
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+        Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
+        Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
 
     }
 }
@@ -1698,57 +1708,49 @@ function SingleplayerLoop() {
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
         } catch(exception) {}
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(3015, -174, -125), 60)) {
+            SendToConsole("commentary 1")
+            SendToConsole("changelevel sp_a1_intro7")
+        }
+    }
 
-    //     local p = null
-    //     while(p = Entities.FindByClassnameWithin(p, "player", Vector(-67, 1319, -102), 60)) {
-    //         SendToConsole("commentary 1")
-    //         SendToConsole("changelevel sp_a1_intro7")
-    //     }
-    // }
+    //sp_a1_intro7
+    if (GetMapName() == "sp_a1_intro7") {
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
+                // make wheatly look at player
+        local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+        EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "spherebot_1_top_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+        //make wheatly non stealable
+        Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatlyplayerpickup")
+        Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatlyplayerpickup")
     }
 
 }
 
 function WorldInitalSpawnSingleplayer() {
     if (GetMapName() == "sp_a1_intro6") {
-        ////////////////////////////////////
-        //AUTO GENERATED OBJECT CACHE CODE//
-        ////////////////////////////////////
-        CacheModel("props_bts/hanging_walkway_128a.mdl")
 
-        CacheModel("props_bts/hanging_walkway_64c.mdl")
-
-        CacheModel("props_bts/hanging_walkway_64d.mdl")
-
-        CacheModel("props_bts/hanging_walkway_64c.mdl")
-
-        DoneCacheing <- true
     }
 }
 
 function SingleplayerOnFirstSpawn() {
     if (GetMapName() == "sp_a1_intro6") {
-///////////////////////////////////////
-//AUTO GENERATED OBJECT CREATION CODE//
-///////////////////////////////////////
-local modelnumber55 = CreateProp("prop_dynamic", Vector(1630.388, -330.428, 123.608), "models/props_bts/hanging_walkway_64c.mdl", 0)
-modelnumber55.SetAngles(0, 89.991, -0)
-modelnumber55.__KeyValueFromString("solid", "6")
-
-local modelnumber56 = CreateProp("prop_dynamic", Vector(1566.473, -330.395, 123.622), "models/props_bts/hanging_walkway_64d.mdl", 0)
-modelnumber56.SetAngles(0.015, -90.022, -0.001)
-modelnumber56.__KeyValueFromString("solid", "6")
-
-local modelnumber57 = CreateProp("prop_dynamic", Vector(1506.789, -330.398, 123.66), "models/props_bts/hanging_walkway_64c.mdl", 0)
-modelnumber57.SetAngles(-0.004, -90.031, 0)
-modelnumber57.__KeyValueFromString("solid", "6")
-
-
-
 
     }
 }
 
+function disablewheatlyplayerpickup() {
+    printl("Player Picked Up Wheatly Disabling Pickup")
+    EntFire("@sphere", "disablepickup", "", 0, null)
+}
+function enablewheatlyplayerpickup() {
+    printl("Player Picked Up Wheatly Enabled Pickup")
+    EntFire("@sphere", "enablepickup", "", 0, null)
+}
 
 /********** *******
 * cut paste code *
