@@ -12,6 +12,7 @@ DevMode <- true
 UsePlugin <- true
 /////////////////
 
+DoneCacheing <- false
 CachedModels <- []
 IsInSpawnZone <- []
 HasSpawned <- false
@@ -246,13 +247,20 @@ function CacheModel(ModelName) {
     if (Entities.FindByModel(null, "models/"+ModelName)) {
             printl("Model " + ModelName + " is already cached!")
         } else {
-        // server an entity that sends a client command
-        servercommand <- Entities.CreateByClassname("point_servercommand")
+        try {
+            if (servercommand) {
+                printl("servercommand exists")
+            }
+        } catch(exception) {
+            // server an entity that sends a client command
+            servercommand <- Entities.CreateByClassname("point_servercommand")
+        }
 
         EntFireByHandle(servercommand, "command", "sv_cheats 1", 0, null, null)
         EntFireByHandle(servercommand, "command", "prop_dynamic_create " + ModelName, 0, null, null)
         EntFireByHandle(servercommand, "command", "sv_cheats 0", 0, null, null)
         CachedModels.push("models/"+ModelName)
+
         printl("Model " + ModelName + " has been cached sucessfully!")
     }
 }
@@ -306,8 +314,6 @@ OnPlayerJoin <- function() {
                 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
-
-                CacheModel("props_bts/hanging_walkway_128a.mdl")
 
                 // say join message
                 if (PluginLoaded==true) {
@@ -366,6 +372,10 @@ OnPlayerJoin <- function() {
                 script_scope.Colored <- true
                 EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
 
+                if (PlayerID==1) {
+                    WorldInitalSpawn()
+                }
+                
                 return
                 }
             }
@@ -395,18 +405,28 @@ OnPlayerJoin <- function() {
         // }
 
         // delete all cached models
-            foreach (Model in CachedModels)  {
-                local ent = null
-                while (ent = Entities.FindByModel(ent, Model)) {
-                    ent.Destroy()
-                    foreach (index, item in CachedModels)  {
-                        if (item == Model)  {
-                            CachedModels.remove(index)
-                        }
-                    }
-                    printl("Removed Model" + Model)
-                }
+        if (DoneCacheing==true) {
+            foreach (index, CustomGameModel in CachedModels)  {
+                printl(CustomGameModel)
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+                Entities.FindByModel(null, CustomGameModel).Destroy()
+
+                CachedModels.remove(index)
             }
+        }
 
         //detect death
         if (HasSpawned==true) {
@@ -433,8 +453,6 @@ OnPlayerJoin <- function() {
                     if(PluginLoaded==true) {
                         printl("Player " + getPlayerName(p.entindex()-1) + " Has Respawned")
                     }
-                    //call singleplayer respawn code
-                    SingleplayerOnRespawn(p)
                     //show player color again
                     foreach (index, item in PlayerColorCached)  {
                         if (item == p.GetRootMoveParent().entindex().tostring())  {
@@ -531,6 +549,7 @@ OnPlayerJoin <- function() {
 
     // lobby setup code
     function LobbyOneTimeRun() {
+
         //activate whole lobby
         try {
             // enable team building course
@@ -639,6 +658,13 @@ OnPlayerJoin <- function() {
                 }
             }
         }
+    }
+    
+    // world init
+    function WorldInitalSpawn() {
+        try {
+            WorldInitalSpawnSingleplayer()
+        } catch(exception) {}
     }
 
     // general one time run
@@ -1242,12 +1268,14 @@ function Singleplayer() {
         Entities.FindByClassnameNearest("trigger_once", Vector(1200, -136, 188), 1024).Destroy()
         local fallenautoportal = CreateProp("prop_dynamic", Vector(-325, 24, 0), "models/props/portal_emitter.mdl", 0)
         fallenautoportal.SetAngles(-90, 69, 0)
+
+DoneCacheing <- true
+
     }
 }
 
 /////////////
 //DEV HACKS//
-/////////////
 function DevHacks() {
 //     if (GetMapName()=="mp_coop_paint_longjump_intro") {
 //         //airlockexit teleport
@@ -1423,14 +1451,40 @@ function SingleplayerLoop() {
 
 }
 
+function WorldInitalSpawnSingleplayer() {
+    if (GetMapName() == "sp_a1_intro6") {
+        ////////////////////////////////////
+        //AUTO GENERATED OBJECT CACHE CODE//
+        ////////////////////////////////////
+        CacheModel("props_bts/hanging_walkway_128a.mdl")
+
+        CacheModel("props_bts/hanging_walkway_64c.mdl")
+
+        CacheModel("props_bts/hanging_walkway_64d.mdl")
+
+        CacheModel("props_bts/hanging_walkway_64c.mdl")
+
+        DoneCacheing <- true
+    }
+}
+
 function SingleplayerOnFirstSpawn() {
     if (GetMapName() == "sp_a1_intro6") {
-        ///////////////////////////////////////
-        //AUTO GENERATED OBJECT CREATION CODE//
-        ///////////////////////////////////////
+///////////////////////////////////////
+//AUTO GENERATED OBJECT CREATION CODE//
+///////////////////////////////////////
+local modelnumber48 = CreateProp("prop_dynamic", Vector(1604, -316, 167), "models/props_bts/hanging_walkway_128a.mdl", 0)
+modelnumber48.SetAngles(-30, 90, 0)
 
-            local modelnumber28 = CreateProp("prop_dynamic", Vector(1166, -97, 132), "models/props_bts/hanging_walkway_128a.mdl", 0)
-            modelnumber28.SetAngles(0, -151, 0)
+local modelnumber49 = CreateProp("prop_dynamic", Vector(1628, -330, 124), "models/props_bts/hanging_walkway_64c.mdl", 0)
+modelnumber49.SetAngles(0, 90, 0)
+
+local modelnumber50 = CreateProp("prop_dynamic", Vector(1566, -330, 124), "models/props_bts/hanging_walkway_64d.mdl", 0)
+modelnumber50.SetAngles(0, -90, 0)
+
+local modelnumber51 = CreateProp("prop_dynamic", Vector(1507, -330, 124), "models/props_bts/hanging_walkway_64c.mdl", 0)
+modelnumber51.SetAngles(0, -90, 0)
+
 
     }
 }
