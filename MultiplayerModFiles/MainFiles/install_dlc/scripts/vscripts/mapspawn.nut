@@ -1521,9 +1521,6 @@ function Singleplayer() {
         Entities.FindByClassnameNearest("trigger_once", Vector(2504, -160, 448), 1024).Destroy()
         local fallenautoportal = CreateProp("prop_dynamic", Vector(-325, 24, 0), "models/props/portal_emitter.mdl", 0)
         fallenautoportal.SetAngles(-90, 69, 0)
-
-DoneCacheing <- true
-
     }
 
     //sp_a1_intro7
@@ -1534,6 +1531,20 @@ DoneCacheing <- true
         Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
 
     }
+
+    //sp_a2_laser_intro
+    if (GetMapName() == "sp_a2_laser_intro") {
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+        Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
+    }
+
+    //sp_a2_laser_stairs
+    if (GetMapName() == "sp_a2_laser_stairs") {
+        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+        Entities.FindByName(null, "door_1-close_door_rl").Destroy()
+    }
+    
 }
 
 /////////////
@@ -1723,6 +1734,34 @@ function SingleplayerLoop() {
         //make wheatly non stealable
         Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatlyplayerpickup")
         Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatlyplayerpickup")
+    }
+
+    //sp_a2_laser_intro
+    if (GetMapName() == "sp_a2_laser_intro") {
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
+
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 45)) {
+            SendToConsole("commentary 1")
+            SendToConsole("changelevel sp_a2_laser_stairs")
+        }
+        
+    }
+
+    //sp_a2_laser_stairs
+    if (GetMapName() == "sp_a2_laser_stairs") {
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
+
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 45)) {
+            SendToConsole("commentary 1")
+            SendToConsole("changelevel sp_a2_dual_lasers")
+        }
+        
     }
 
 }
