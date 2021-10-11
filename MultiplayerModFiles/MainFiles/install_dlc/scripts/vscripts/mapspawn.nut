@@ -673,41 +673,61 @@ OnPlayerJoin <- function() {
 ////////////////////////////////////
 //AUTO GENERATED OBJECT CACHE CODE//
 ////////////////////////////////////
-CacheModel("props_gameplay/industrial_elevator_a.mdl")
-
 CacheModel("props_bts/truss_1024.mdl")
-
-CacheModel("props_bts/truss_1024.mdl")
-
-CacheModel("props_bts/truss_1024.mdl")
-
-CacheModel("props_bts/truss_1024.mdl")
-
-CacheModel("props_bts/push_button_stand.mdl")
-
-CacheModel("props_bts/hanging_walkway_128c.mdl")
-
-CacheModel("props_gameplay/industrial_elevator_a.mdl")
-
-CacheModel("props_bts/hanging_walkway_end_a.mdl")
-
-CacheModel("props_bts/hanging_walkway_512a.mdl")
-
-CacheModel("props_bts/push_button_stand.mdl")
-
-CacheModel("props_bts/hanging_walkway_l.mdl")
-
-CacheModel("props_bts/hanging_walkway_64a.mdl")
 
 CacheModel("props_bts/hanging_walkway_32a.mdl")
 
+CacheModel("props_bts/hanging_walkway_64a.mdl")
+
+CacheModel("props_bts/truss_1024.mdl")
+
+CacheModel("props_bts/lab_pod_b.mdl")
+
+CacheModel("props_bts/truss_1024.mdl")
+
+CacheModel("props_bts/hanging_walkway_128c.mdl")
+
 CacheModel("props_bts/hanging_walkway_512a.mdl")
 
-CacheModel("props_bts/hanging_walkway_128a.mdl")
+CacheModel("props_bts/push_button_stand.mdl")
+
+CacheModel("props_bts/truss_1024.mdl")
+
+CacheModel("props_gameplay/industrial_elevator_a.mdl")
+
+CacheModel("props_bts/hanging_walkway_l.mdl")
 
 CacheModel("props_bts/hanging_walkway_end_a.mdl")
 
+CacheModel("props_bts/push_button_stand.mdl")
+
+CacheModel("props_bts/hanging_walkway_end_a.mdl")
+
+CacheModel("props_gameplay/industrial_elevator_a.mdl")
+
+CacheModel("props_bts/hanging_walkway_128a.mdl")
+
+CacheModel("props_bts/hanging_walkway_512a.mdl")
+
+CacheModel("props_bts/lab_pod_b.mdl")
+
+CacheModel("car_int_dest/car_int_dest.mdl")
+
+CacheModel("props_gameplay/push_button.mdl")
+
+CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
+
 CacheModel("props_gameplay/push_button_mp.mdl")
+
+CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
+
+CacheModel("anim_wp/tv_wallpanel.mdl")
+
+CacheModel("anim_wp/tv_wallpanel.mdl")
+
+CacheModel("anim_wp/tv_wallpanel.mdl")
+
+CacheModel("props_gameplay/push_button.mdl")
 
 CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
 
@@ -715,17 +735,12 @@ CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
 
 CacheModel("a4_destruction/fin3_fgwallsmash_stat.mdl")
 
-CacheModel("anim_wp/tv_wallpanel.mdl")
-
-CacheModel("anim_wp/tv_wallpanel.mdl")
-
-CacheModel("anim_wp/tv_wallpanel.mdl")
-
-CacheModel("props_gameplay/push_button.mdl")
-
-CacheModel("props_gameplay/push_button.mdl")
+CacheModel("info_character/info_character_bendy.mdl")
 
 DoneCacheing <- true
+
+
+
 
 
 
@@ -734,138 +749,173 @@ DoneCacheing <- true
 
     function MapOneTimeRun() {
         if (GetMapName()=="mp_coop_lobby_3") {
-            ///////////////////////////////////////
+///////////////////////////////////////
 //AUTO GENERATED OBJECT CREATION CODE//
 ///////////////////////////////////////
-local modelnumber27 = CreateProp("prop_dynamic", Vector(4409.51, 3194.552, -511.907), "models/props_gameplay/industrial_elevator_a.mdl", 0)
-modelnumber27.SetAngles(0, 179.986, 0)
-modelnumber27.__KeyValueFromString("solid", "6")
-modelnumber27.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber28 = CreateProp("prop_dynamic", Vector(4486.305, 3194.931, -1043.699), "models/props_bts/truss_1024.mdl", 0)
-modelnumber28.SetAngles(-0.005, 90.01, -89.98)
-modelnumber28.__KeyValueFromString("solid", "6")
-modelnumber28.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber29 = CreateProp("prop_dynamic", Vector(4487.027, 3194.76, 1002.301), "models/props_bts/truss_1024.mdl", 0)
-modelnumber29.SetAngles(-0.005, 90.01, -89.98)
-modelnumber29.__KeyValueFromString("solid", "6")
-modelnumber29.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber30 = CreateProp("prop_dynamic", Vector(4485.943, 3195.016, -2066.699), "models/props_bts/truss_1024.mdl", 0)
-modelnumber30.SetAngles(-0.005, 90.01, -89.98)
-modelnumber30.__KeyValueFromString("solid", "6")
-modelnumber30.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber31 = CreateProp("prop_dynamic", Vector(4486.666, 3194.845, -20.699), "models/props_bts/truss_1024.mdl", 0)
-modelnumber31.SetAngles(-0.005, 90.01, -89.98)
-modelnumber31.__KeyValueFromString("solid", "6")
-modelnumber31.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber32 = CreateProp("prop_dynamic", Vector(4341.034, 3275.196, -512.599), "models/props_bts/push_button_stand.mdl", 0)
-modelnumber32.SetAngles(-0, 179.993, 0)
-modelnumber32.__KeyValueFromString("solid", "6")
-modelnumber32.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber33 = CreateProp("prop_dynamic", Vector(4310.044, 3193.698, 934.97), "models/props_bts/hanging_walkway_128c.mdl", 0)
-modelnumber33.SetAngles(0.001, -0.017, -0.001)
+local modelnumber33 = CreateProp("prop_dynamic", Vector(4487.027, 3194.76, 1002.301), "models/props_bts/truss_1024.mdl", 0)
+modelnumber33.SetAngles(-0.005, 90.01, -89.98)
 modelnumber33.__KeyValueFromString("solid", "6")
 modelnumber33.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber34 = CreateProp("prop_dynamic", Vector(4410.122, 3194.875, 934.979), "models/props_gameplay/industrial_elevator_a.mdl", 0)
-modelnumber34.SetAngles(-0, 179.994, 0)
+local modelnumber34 = CreateProp("prop_dynamic", Vector(4309.685, 3848.971, 934.872), "models/props_bts/hanging_walkway_32a.mdl", 0)
+modelnumber34.SetAngles(0, -179.967, 0)
 modelnumber34.__KeyValueFromString("solid", "6")
 modelnumber34.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber35 = CreateProp("prop_dynamic", Vector(4309.954, 3114.19, 934.914), "models/props_bts/hanging_walkway_end_a.mdl", 0)
-modelnumber35.SetAngles(0, 179.982, -0)
+local modelnumber35 = CreateProp("prop_dynamic", Vector(4309.694, 3801.083, 934.972), "models/props_bts/hanging_walkway_64a.mdl", 0)
+modelnumber35.SetAngles(-0, 0.01, 0)
 modelnumber35.__KeyValueFromString("solid", "6")
 modelnumber35.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber36 = CreateProp("prop_dynamic", Vector(4309.762, 3705.36, 934.965), "models/props_bts/hanging_walkway_512a.mdl", 0)
-modelnumber36.SetAngles(-0, -180, -0.022)
+local modelnumber36 = CreateProp("prop_dynamic", Vector(4486.305, 3194.931, -1043.699), "models/props_bts/truss_1024.mdl", 0)
+modelnumber36.SetAngles(-0.005, 90.01, -89.98)
 modelnumber36.__KeyValueFromString("solid", "6")
 modelnumber36.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber37 = CreateProp("prop_dynamic", Vector(4340.937, 3255.135, 935.63), "models/props_bts/push_button_stand.mdl", 0)
-modelnumber37.SetAngles(-0, 179.993, 0)
+local modelnumber37 = CreateProp("prop_dynamic", Vector(2872.21, 3923.146, 7.151), "models/props_bts/lab_pod_b.mdl", 0)
+modelnumber37.SetAngles(0, -180, -0.02)
 modelnumber37.__KeyValueFromString("solid", "6")
 modelnumber37.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber38 = CreateProp("prop_dynamic", Vector(4309.675, 3928.877, 935), "models/props_bts/hanging_walkway_l.mdl", 0)
-modelnumber38.SetAngles(-0, 0.016, 0)
+local modelnumber38 = CreateProp("prop_dynamic", Vector(4485.943, 3195.016, -2066.699), "models/props_bts/truss_1024.mdl", 0)
+modelnumber38.SetAngles(-0.005, 90.01, -89.98)
 modelnumber38.__KeyValueFromString("solid", "6")
 modelnumber38.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber39 = CreateProp("prop_dynamic", Vector(4309.694, 3801.083, 934.972), "models/props_bts/hanging_walkway_64a.mdl", 0)
-modelnumber39.SetAngles(-0, 0.01, 0)
+local modelnumber39 = CreateProp("prop_dynamic", Vector(4310.044, 3193.698, 934.97), "models/props_bts/hanging_walkway_128c.mdl", 0)
+modelnumber39.SetAngles(0.001, -0.017, -0.001)
 modelnumber39.__KeyValueFromString("solid", "6")
 modelnumber39.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber40 = CreateProp("prop_dynamic", Vector(4309.685, 3848.971, 934.872), "models/props_bts/hanging_walkway_32a.mdl", 0)
-modelnumber40.SetAngles(0, -179.967, 0)
+local modelnumber40 = CreateProp("prop_dynamic", Vector(4437.298, 3928.935, 934.958), "models/props_bts/hanging_walkway_512a.mdl", 0)
+modelnumber40.SetAngles(-0, -89.97, -0)
 modelnumber40.__KeyValueFromString("solid", "6")
 modelnumber40.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber41 = CreateProp("prop_dynamic", Vector(4437.539, 3928.921, 934.95), "models/props_bts/hanging_walkway_512a.mdl", 0)
-modelnumber41.SetAngles(-0, -90.004, -0.001)
+local modelnumber41 = CreateProp("prop_dynamic", Vector(4341.034, 3275.196, -512.599), "models/props_bts/push_button_stand.mdl", 0)
+modelnumber41.SetAngles(-0, 179.993, 0)
 modelnumber41.__KeyValueFromString("solid", "6")
 modelnumber41.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber42 = CreateProp("prop_dynamic", Vector(4948.966, 3928.912, 934.958), "models/props_bts/hanging_walkway_128a.mdl", 0)
-modelnumber42.SetAngles(0, -90.006, 0)
+local modelnumber42 = CreateProp("prop_dynamic", Vector(4486.666, 3194.845, -20.699), "models/props_bts/truss_1024.mdl", 0)
+modelnumber42.SetAngles(-0.005, 90.01, -89.98)
 modelnumber42.__KeyValueFromString("solid", "6")
 modelnumber42.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber43 = CreateProp("prop_dynamic", Vector(5028.698, 3928.908, 934.942), "models/props_bts/hanging_walkway_end_a.mdl", 0)
-modelnumber43.SetAngles(-0, -89.992, 0)
+local modelnumber43 = CreateProp("prop_dynamic", Vector(4410.122, 3194.875, 934.979), "models/props_gameplay/industrial_elevator_a.mdl", 0)
+modelnumber43.SetAngles(-0, 179.994, 0)
 modelnumber43.__KeyValueFromString("solid", "6")
 modelnumber43.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber44 = CreateProp("prop_dynamic", Vector(4465.81, 3194.289, -443.653), "models/props_gameplay/push_button_mp.mdl", 0)
-modelnumber44.SetAngles(-0, 178.691, 0)
+local modelnumber44 = CreateProp("prop_dynamic", Vector(4309.675, 3928.877, 935), "models/props_bts/hanging_walkway_l.mdl", 0)
+modelnumber44.SetAngles(-0, 0.016, 0)
 modelnumber44.__KeyValueFromString("solid", "6")
 modelnumber44.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber45 = CreateProp("prop_dynamic", Vector(4128.767, 2912.642, 415.118), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
-modelnumber45.SetAngles(-0, 0.017, 45)
+local modelnumber45 = CreateProp("prop_dynamic", Vector(5028.534, 3929.192, 934.891), "models/props_bts/hanging_walkway_end_a.mdl", 0)
+modelnumber45.SetAngles(0, -90.014, 0)
 modelnumber45.__KeyValueFromString("solid", "6")
 modelnumber45.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber46 = CreateProp("prop_dynamic", Vector(4383.452, 2913.066, 415.833), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
-modelnumber46.SetAngles(0, -0.02, 45.008)
+local modelnumber46 = CreateProp("prop_dynamic", Vector(4340.937, 3255.135, 935.63), "models/props_bts/push_button_stand.mdl", 0)
+modelnumber46.SetAngles(-0, 179.993, 0)
 modelnumber46.__KeyValueFromString("solid", "6")
 modelnumber46.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber47 = CreateProp("prop_dynamic", Vector(5058.416, 2553.027, 235.856), "models/a4_destruction/fin3_fgwallsmash_stat.mdl", 0)
-modelnumber47.SetAngles(-0, 179.902, 90.019)
+local modelnumber47 = CreateProp("prop_dynamic", Vector(4309.954, 3114.19, 934.914), "models/props_bts/hanging_walkway_end_a.mdl", 0)
+modelnumber47.SetAngles(0, 179.982, -0)
 modelnumber47.__KeyValueFromString("solid", "6")
 modelnumber47.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber48 = CreateProp("prop_dynamic", Vector(4471.268, 3994.334, 999.099), "models/anim_wp/tv_wallpanel.mdl", 0)
-modelnumber48.SetAngles(-0, 179.982, 0)
+local modelnumber48 = CreateProp("prop_dynamic", Vector(4409.51, 3194.552, -511.907), "models/props_gameplay/industrial_elevator_a.mdl", 0)
+modelnumber48.SetAngles(0, 179.986, 0)
 modelnumber48.__KeyValueFromString("solid", "6")
 modelnumber48.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber49 = CreateProp("prop_dynamic", Vector(4703.146, 3995.308, 999.202), "models/anim_wp/tv_wallpanel.mdl", 0)
-modelnumber49.SetAngles(0, 179.97, 0)
+local modelnumber49 = CreateProp("prop_dynamic", Vector(4948.96, 3929.215, 934.902), "models/props_bts/hanging_walkway_128a.mdl", 0)
+modelnumber49.SetAngles(-0, -90, 0)
 modelnumber49.__KeyValueFromString("solid", "6")
 modelnumber49.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber50 = CreateProp("prop_dynamic", Vector(4922.204, 3995.095, 999.885), "models/anim_wp/tv_wallpanel.mdl", 0)
-modelnumber50.SetAngles(-0, -179.974, 0)
+local modelnumber50 = CreateProp("prop_dynamic", Vector(4309.712, 3705.754, 934.622), "models/props_bts/hanging_walkway_512a.mdl", 0)
+modelnumber50.SetAngles(0, -180, -0.059)
 modelnumber50.__KeyValueFromString("solid", "6")
 modelnumber50.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber51 = CreateProp("prop_dynamic", Vector(4341.25, 3275.277, -466.676), "models/props_gameplay/push_button.mdl", 0)
-modelnumber51.SetAngles(-0, 179.979, 0)
+local modelnumber51 = CreateProp("prop_dynamic", Vector(2858.858, 4243.747, 7.767), "models/props_bts/lab_pod_b.mdl", 0)
+modelnumber51.SetAngles(0.02, -0.001, 0.103)
 modelnumber51.__KeyValueFromString("solid", "6")
 modelnumber51.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber52 = CreateProp("prop_dynamic", Vector(4341.152, 3255.216, 981.554), "models/props_gameplay/push_button.mdl", 0)
-modelnumber52.SetAngles(-0, 179.979, 0)
+local modelnumber52 = CreateProp("prop_dynamic", Vector(2866.799, 4066.008, 218.565), "models/car_int_dest/car_int_dest.mdl", 0)
+modelnumber52.SetAngles(-0, 90.007, 0)
 modelnumber52.__KeyValueFromString("solid", "6")
 modelnumber52.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber53 = CreateProp("prop_dynamic", Vector(4341.25, 3275.277, -466.676), "models/props_gameplay/push_button.mdl", 0)
+modelnumber53.SetAngles(-0, 179.979, 0)
+modelnumber53.__KeyValueFromString("solid", "6")
+modelnumber53.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber54 = CreateProp("prop_dynamic", Vector(4128.767, 2912.642, 415.118), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
+modelnumber54.SetAngles(-0, 0.017, 45)
+modelnumber54.__KeyValueFromString("solid", "6")
+modelnumber54.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber55 = CreateProp("prop_dynamic", Vector(4465.81, 3194.289, -443.653), "models/props_gameplay/push_button_mp.mdl", 0)
+modelnumber55.SetAngles(-0, 178.691, 0)
+modelnumber55.__KeyValueFromString("solid", "6")
+modelnumber55.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber56 = CreateProp("prop_dynamic", Vector(4128.767, 2912.642, 415.118), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
+modelnumber56.SetAngles(-0, 0.017, 45)
+modelnumber56.__KeyValueFromString("solid", "6")
+modelnumber56.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber57 = CreateProp("prop_dynamic", Vector(4471.268, 3994.334, 999.099), "models/anim_wp/tv_wallpanel.mdl", 0)
+modelnumber57.SetAngles(-0, 179.982, 0)
+modelnumber57.__KeyValueFromString("solid", "6")
+modelnumber57.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber58 = CreateProp("prop_dynamic", Vector(4922.204, 3995.095, 999.885), "models/anim_wp/tv_wallpanel.mdl", 0)
+modelnumber58.SetAngles(-0, -179.974, 0)
+modelnumber58.__KeyValueFromString("solid", "6")
+modelnumber58.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber59 = CreateProp("prop_dynamic", Vector(4703.146, 3995.308, 999.202), "models/anim_wp/tv_wallpanel.mdl", 0)
+modelnumber59.SetAngles(-0, 179.97, 0)
+modelnumber59.__KeyValueFromString("solid", "6")
+modelnumber59.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber60 = CreateProp("prop_dynamic", Vector(4341.152, 3255.216, 981.554), "models/props_gameplay/push_button.mdl", 0)
+modelnumber60.SetAngles(-0, 179.979, 0)
+modelnumber60.__KeyValueFromString("solid", "6")
+modelnumber60.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber61 = CreateProp("prop_dynamic", Vector(4383.452, 2913.066, 415.833), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
+modelnumber61.SetAngles(0, -0.02, 45.008)
+modelnumber61.__KeyValueFromString("solid", "6")
+modelnumber61.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber62 = CreateProp("prop_dynamic", Vector(4383.452, 2913.066, 415.833), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
+modelnumber62.SetAngles(0, -0.02, 45.008)
+modelnumber62.__KeyValueFromString("solid", "6")
+modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber63 = CreateProp("prop_dynamic", Vector(5058.416, 2553.027, 235.856), "models/a4_destruction/fin3_fgwallsmash_stat.mdl", 0)
+modelnumber63.SetAngles(-0, 179.902, 90.019)
+modelnumber63.__KeyValueFromString("solid", "6")
+modelnumber63.__KeyValueFromString("targetname", "genericcustomprop")
+
+local modelnumber64 = CreateProp("prop_dynamic", Vector(4325.956, 3335.216, -508.653), "models/info_character/info_character_bendy.mdl", 0)
+modelnumber64.SetAngles(0.017, 112.654, 0.023)
+modelnumber64.__KeyValueFromString("solid", "6")
+modelnumber64.__KeyValueFromString("targetname", "genericcustomprop")
+
+
+
+
+
 
 
 
