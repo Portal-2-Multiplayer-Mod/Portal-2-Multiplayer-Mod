@@ -12,6 +12,7 @@ DevMode <- true
 UsePlugin <- true
 /////////////////
 
+CachedModels <- []
 IsInSpawnZone <- []
 HasSpawned <- false
 PlayerColorCached <- []
@@ -84,6 +85,9 @@ function init() {
 
     // create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
+
+    // server an entity that sends a client command
+    servercommand <- Entities.CreateByClassname("point_servercommand")
 
     // load plugin
     if("getPlayerName" in this) {
@@ -238,23 +242,24 @@ function PlayerWithinDistance(SearchPos, SearchDis) {
 
 function DeleteModels(ModelName) {
     local ent = null
-    while (ent=Entities.FindByModel(ent, "models/"+ModelName)) {
-        printl("Model " + ModelName + " deleted!")
-    }
+    
 }
 
 function CacheModel(ModelName) {
-        if (Entities.FindByModel(null, "models/"+ModelName)) {
+    if (Entities.FindByModel(null, "models/"+ModelName)) {
             printl("Model " + ModelName + " is already cached!")
         } else {
+        EntFireByHandle(servercommand, "Command", "sv_cheats 1", 0, null, null)
+        EntFireByHandle(servercommand, "Command", "prop_dynamic_create " + ModelName, 0, null, null)
+        EntFireByHandle(servercommand, "Command", "sv_cheats 0", 0, null, null)
         SendToConsole("sv_cheats 1")
         SendToConsole("prop_dynamic_create " + ModelName)
         SendToConsole("sv_cheats 0")
-        //Delete previously created entity
+        CachedModels.push("models/"+ModelName)
+        printl(CachedModels)
         printl("Model " + ModelName + " has been cached sucessfully!")
-        DelModel(ModelName)
     }
-}
+    }
 /*******************
 * multiplayer code *
 *******************/
@@ -320,6 +325,7 @@ OnPlayerJoin <- function() {
                 }
                 // assign player targetname
                 if (PlayerID >= 3) {
+
                     p.__KeyValueFromString("targetname", "player" + PlayerID)
                 }
 
@@ -390,6 +396,20 @@ OnPlayerJoin <- function() {
         //     DebugDrawBox(pos, Vector(-2,-2,-2), Vector(2,2,2), 255, 0, 0, 0, 0.1)
         // }
 
+        // delete all cached models
+            foreach (Model in CachedModels)  {
+                local ent = null
+                while (ent = Entities.FindByModel(ent, Model)) {
+                    ent.Destroy()
+                    foreach (index, item in CachedModels)  {
+                        if (item == Model)  {
+                            CachedModels.remove(index)
+                        }
+                    }
+                    printl("Removed Model" + Model)
+                }
+            }
+
         //detect death
         if (HasSpawned==true) {
             local p = null
@@ -412,7 +432,11 @@ OnPlayerJoin <- function() {
             if (ContinueDeathCode==true) {
                 if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 45) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 45)) {
                     //ON DEATH
-                    printl("Player " + p.GetRootMoveParent().entindex().tostring() + " Has Respawned")
+                    if(PluginLoaded==true) {
+                        printl("Player " + getPlayerName(p.entindex()-1) + " Has Respawned")
+                    }
+                    //call singleplayer respawn code
+                    SingleplayerOnRespawn(p)
                     //show player color again
                     foreach (index, item in PlayerColorCached)  {
                         if (item == p.GetRootMoveParent().entindex().tostring())  {
@@ -582,6 +606,7 @@ OnPlayerJoin <- function() {
 
     // general fixes for all maps
     function General() {
+
             // display waiting for players and run nessacary code after spawn
             if (WFPDisplayDisabled == 0) { 
                         try {
@@ -1134,8 +1159,12 @@ OnPlayerJoin <- function() {
     }
 
     // run init code
+    try {
     Entities.First().ConnectOutput("OnUser1", "init")
+    } catch(exception) {}
+    try {
     DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
+    } catch(exception) {}
 
 /*************************
 * singleplayer functions *
@@ -1149,6 +1178,7 @@ function Singleplayer() {
         Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
         Entities.FindByName(null, "@exit_door-door_close_relay").Destroy()
         Entities.FindByName(null, "Fizzle_Trigger").Destroy()
+
     }
 
     // sp_a1_intro3
@@ -1175,11 +1205,66 @@ function Singleplayer() {
     if (GetMapName() == "sp_a1_intro4") {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "door_0-door_close_relay").Destroy()
-        Entities.FindByName(null, "just_enough_door_for_the_job-door_close_relay").Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(464, 136, 72), 1024).Destroy()
         EntFireByHandle(Entities.FindByName(null, "glass_pane_intact_model"), "kill", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "glass_pane_fractured_model"), "enable", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "glass_pane_1_door_1"), "open", "", 0, null, null)
         Entities.FindByName(null, "glass_pane_1_door_1_blocker").Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(878, -528, 137), 1024).Destroy()
+        Entities.FindByName(null, "glass_shard").Destroy()
+        Entities.FindByName(null, "section_2_trigger_portal_spawn_a2_rm3a").Destroy()
+        Entities.FindByName(null, "portal_a_lvl3").Destroy()
+        Entities.FindByName(null, "section_2_portal_a1_rm3a").Destroy()
+        Entities.FindByName(null, "section_2_portal_a2_rm3a").Destroy()
+        Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
+        Entities.FindByName(null, "room_2_portal_activate_rl").Destroy()
+        Entities.FindByName(null, "room_3_portal_activate_rl").Destroy()
+        Entities.FindByName(null, "door_2-close_door_rl").Destroy()
+    }
+
+    //sp_a1_intro5
+    if (GetMapName() == "sp_a1_intro5") {
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+        Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
+        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+        Entities.FindByClassnameNearest("trigger_multiple", Vector(-64, 824, 320), 1024).Destroy()
+    }
+
+    //sp_a1_intro6
+    if (GetMapName() == "sp_a1_intro6") {
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+        Entities.FindByName(null, "room_1_entry_door-close_door_rl").Destroy()
+        Entities.FindByName(null, "room_1_fling_portal_activate_rl").Destroy()
+        Entities.FindByName(null, "fling_safety_catapult").Destroy()
+        Entities.FindByName(null, "room_1_fling_portal_emitter").Destroy()
+        Entities.FindByName(null, "room_2_fling_portal_activate_rl").Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(648, 0, 176), 1024).Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(1200, -136, 188), 1024).Destroy()
+        local fallenautoportal = CreateProp("prop_dynamic", Vector(-325, 24, 0), "models/props/portal_emitter.mdl", 0)
+        fallenautoportal.SetAngles(-90, 69, 0)
+
+
+
+///////////////////////////////////////
+//AUTO GENERATED OBJECT CREATION CODE//
+///////////////////////////////////////
+
+    CacheModel("props_bts/hanging_walkway_128a.mdl")
+    local modelnumber28 = CreateProp("prop_dynamic", Vector(1166, -97, 132), "models/props_bts/hanging_walkway_128a.mdl", 0)
+    modelnumber28.SetAngles(0, -151, 0)
+
+    CacheModel("props_bts/hanging_walkway_64c.mdl")
+    local modelnumber29 = CreateProp("prop_dynamic", Vector(1628, -330, 124), "models/props_bts/hanging_walkway_64c.mdl", 0)
+    modelnumber29.SetAngles(0, 90, 0)
+
+    CacheModel("props_bts/hanging_walkway_64d.mdl")
+    local modelnumber30 = CreateProp("prop_dynamic", Vector(1566, -330, 124), "models/props_bts/hanging_walkway_64d.mdl", 0)
+    modelnumber30.SetAngles(0, -90, 0)
+
+    CacheModel("props_bts/hanging_walkway_64c.mdl")
+    local modelnumber31 = CreateProp("prop_dynamic", Vector(1507, -330, 124), "models/props_bts/hanging_walkway_64c.mdl", 0)
+    modelnumber31.SetAngles(0, -90, 0)
+
     }
 }
 
@@ -1187,62 +1272,62 @@ function Singleplayer() {
 //DEV HACKS//
 /////////////
 function DevHacks() {
-    if (GetMapName()=="mp_coop_paint_longjump_intro") {
-        //airlockexit teleport
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector(80, -7567, 960), 200)) {
-            ent.SetOrigin(Vector(243, -7037, 960))
-        }
+//     if (GetMapName()=="mp_coop_paint_longjump_intro") {
+//         //airlockexit teleport
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector(80, -7567, 960), 200)) {
+//             ent.SetOrigin(Vector(243, -7037, 960))
+//         }
 
-        //teleportfromexit to gel
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 80, -7087, 960), 90)) {
-            ent.SetOrigin(Vector(198, -6553, 960))
-        }
+//         //teleportfromexit to gel
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 80, -7087, 960), 90)) {
+//             ent.SetOrigin(Vector(198, -6553, 960))
+//         }
 
-        //yeet to brig
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 220, -5829, 807), 350)) {
-            ent.SetOrigin(Vector(257, -5352, 960))
-        }
+//         //yeet to brig
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 220, -5829, 807), 350)) {
+//             ent.SetOrigin(Vector(257, -5352, 960))
+//         }
 
 
-        //orang brig
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -437, -1541, 448), 80)) {
-            ent.SetOrigin(Vector(-453, -1541, 942))
-        }
+//         //orang brig
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -437, -1541, 448), 80)) {
+//             ent.SetOrigin(Vector(-453, -1541, 942))
+//         }
 
-        //speee juhmp
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -1, 406, 104), 80)) {
-            ent.SetOrigin(Vector(-136, 58, 1027))
-        }
+//         //speee juhmp
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -1, 406, 104), 80)) {
+//             ent.SetOrigin(Vector(-136, 58, 1027))
+//         }
 
-        //speee juhmp minr
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 431, -2127, 448), 80)) {
-            ent.SetOrigin(Vector(-136, 58, 1027))
-        }
+//         //speee juhmp minr
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 431, -2127, 448), 80)) {
+//             ent.SetOrigin(Vector(-136, 58, 1027))
+//         }
 
-        //speee oragneuntp
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -448, -1543, 758), 80)) {
-            ent.SetOrigin(Vector(-471, -1722, 975))
-        }
+//         //speee oragneuntp
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -448, -1543, 758), 80)) {
+//             ent.SetOrigin(Vector(-471, -1722, 975))
+//         }
 
-        //tp tu vaulht
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 390, -4977, 960), 80)) {
-            ent.SetOrigin(Vector(-171, -1663, 960))
-        }
+//         //tp tu vaulht
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 390, -4977, 960), 80)) {
+//             ent.SetOrigin(Vector(-171, -1663, 960))
+//         }
 
-        //tp tu vaulht
-        local ent = null
-        while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 751, -6575, 960), 100)) {
-            ent.SetOrigin(Vector(7, 841, 1216))
-        }
-    }
+//         //tp tu vaulht
+//         local ent = null
+//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 751, -6575, 960), 100)) {
+//             ent.SetOrigin(Vector(7, 841, 1216))
+//         }
+//     }
 }
 
 function SingleplayerLoop() {
@@ -1302,15 +1387,19 @@ function SingleplayerLoop() {
                 }
             } else {
                 while (p = Entities.FindByClassname(p, "player")) {
-                    EntFireByHandle(clientcommand, "Command", "sv_cheats 0", 0, p, p)
                     EntFireByHandle(clientcommand, "Command", "hud_saytext_time 12", 0, p, p)
                 }
+                EntFireByHandle(clientcommand, "Command", "sv_cheats 0", 0, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
             }
         }
 
         // make wheatly look at player
         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
         EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+    
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
     }
 
     // sp_a1_intro4
@@ -1318,24 +1407,54 @@ function SingleplayerLoop() {
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
         } catch(exception) {}
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(806, -528, 64), 150)) {
+            EntFire("projected_texture_03", "TurnOn", "", 0, null)
+        }
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector( 2151, -527, -499), 45)) {
+            SendToConsole("commentary 1")
+            SendToConsole("changelevel sp_a1_intro5")
+        }
+    }
+
+    //sp_a1_intro5
+    if (GetMapName() == "sp_a1_intro5") {
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-67, 1319, -102), 60)) {
+            SendToConsole("commentary 1")
+            SendToConsole("changelevel sp_a1_intro6")
+        }
+    }
+
+    //sp_a1_intro6
+    if (GetMapName() == "sp_a1_intro6") {
+        try {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+        } catch(exception) {}
+
+    //     local p = null
+    //     while(p = Entities.FindByClassnameWithin(p, "player", Vector(-67, 1319, -102), 60)) {
+    //         SendToConsole("commentary 1")
+    //         SendToConsole("changelevel sp_a1_intro7")
+    //     }
+    // }
+    }
+
+}
+
+function SingleplayerOnRespawn(player) {
+    // sp_a1_intro2
+    if (GetMapName() == "sp_a1_intro2") {
+        local portalgun_vm = null
+        while ( portalgun_vm = Entities.FindByClassname(portalgun, "predicted_viewmodel")) {
+            EntFireByHandle(portalgun_vm, "DisableDraw", "", 0, null, null)
+        }
     }
 }
-
-function SingleplayerOnFirstSpawn(player) {
-    // sp_a1_intro2
-    if (GetMapName() == "sp_a1_intro2") {}
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 /********** *******
@@ -1343,12 +1462,15 @@ function SingleplayerOnFirstSpawn(player) {
 *****************/
 
 /*
+
+Entities.FindByClassnameNearest("trigger_once", Vector(878, -528, 137), 1024).Destroy()
+
 Entities.FindByName(null, "NAME").Destroy()
 
 Entities.FindByClassnameNearest("CLASS", Vector(1, 2, 3), 1).Destroy()
 
 local p = null
-while(p = Entities.FindByClassna-meWithin(p, "player", Vector(1, 2, 3), 45)) {
+while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
     SendToConsole("commentary 1")
     SendToConsole("changelevel LEVELNAME")
 }
