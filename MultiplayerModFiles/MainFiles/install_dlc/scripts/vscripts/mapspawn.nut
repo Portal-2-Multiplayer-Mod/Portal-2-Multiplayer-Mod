@@ -86,9 +86,6 @@ function init() {
     // create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
 
-    // server an entity that sends a client command
-    servercommand <- Entities.CreateByClassname("point_servercommand")
-
     // load plugin
     if("getPlayerName" in this) {
         printl("=================================")
@@ -249,17 +246,16 @@ function CacheModel(ModelName) {
     if (Entities.FindByModel(null, "models/"+ModelName)) {
             printl("Model " + ModelName + " is already cached!")
         } else {
-        EntFireByHandle(servercommand, "Command", "sv_cheats 1", 0, null, null)
-        EntFireByHandle(servercommand, "Command", "prop_dynamic_create " + ModelName, 0, null, null)
-        EntFireByHandle(servercommand, "Command", "sv_cheats 0", 0, null, null)
-        SendToConsole("sv_cheats 1")
-        SendToConsole("prop_dynamic_create " + ModelName)
-        SendToConsole("sv_cheats 0")
+        // server an entity that sends a client command
+        servercommand <- Entities.CreateByClassname("point_servercommand")
+
+        EntFireByHandle(servercommand, "command", "sv_cheats 1", 0, null, null)
+        EntFireByHandle(servercommand, "command", "prop_dynamic_create " + ModelName, 0, null, null)
+        EntFireByHandle(servercommand, "command", "sv_cheats 0", 0, null, null)
         CachedModels.push("models/"+ModelName)
-        printl(CachedModels)
         printl("Model " + ModelName + " has been cached sucessfully!")
     }
-    }
+}
 /*******************
 * multiplayer code *
 *******************/
@@ -311,6 +307,8 @@ OnPlayerJoin <- function() {
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
 
+                CacheModel("props_bts/hanging_walkway_128a.mdl")
+
                 // say join message
                 if (PluginLoaded==true) {
                     JoinMessage <- getPlayerName(PlayerID-1) + " Joined The Game"
@@ -325,7 +323,7 @@ OnPlayerJoin <- function() {
                 }
                 // assign player targetname
                 if (PlayerID >= 3) {
-
+                    
                     p.__KeyValueFromString("targetname", "player" + PlayerID)
                 }
 
@@ -654,6 +652,8 @@ OnPlayerJoin <- function() {
                 OrangeOldPlayerPos <- p.GetOrigin()
             }
         }
+
+        SingleplayerOnFirstSpawn()
 
         local DoorEntities = [
             "airlock_1-door1-airlock_entry_door_close_rl",
@@ -1242,29 +1242,6 @@ function Singleplayer() {
         Entities.FindByClassnameNearest("trigger_once", Vector(1200, -136, 188), 1024).Destroy()
         local fallenautoportal = CreateProp("prop_dynamic", Vector(-325, 24, 0), "models/props/portal_emitter.mdl", 0)
         fallenautoportal.SetAngles(-90, 69, 0)
-
-
-
-///////////////////////////////////////
-//AUTO GENERATED OBJECT CREATION CODE//
-///////////////////////////////////////
-
-    CacheModel("props_bts/hanging_walkway_128a.mdl")
-    local modelnumber28 = CreateProp("prop_dynamic", Vector(1166, -97, 132), "models/props_bts/hanging_walkway_128a.mdl", 0)
-    modelnumber28.SetAngles(0, -151, 0)
-
-    CacheModel("props_bts/hanging_walkway_64c.mdl")
-    local modelnumber29 = CreateProp("prop_dynamic", Vector(1628, -330, 124), "models/props_bts/hanging_walkway_64c.mdl", 0)
-    modelnumber29.SetAngles(0, 90, 0)
-
-    CacheModel("props_bts/hanging_walkway_64d.mdl")
-    local modelnumber30 = CreateProp("prop_dynamic", Vector(1566, -330, 124), "models/props_bts/hanging_walkway_64d.mdl", 0)
-    modelnumber30.SetAngles(0, -90, 0)
-
-    CacheModel("props_bts/hanging_walkway_64c.mdl")
-    local modelnumber31 = CreateProp("prop_dynamic", Vector(1507, -330, 124), "models/props_bts/hanging_walkway_64c.mdl", 0)
-    modelnumber31.SetAngles(0, -90, 0)
-
     }
 }
 
@@ -1446,13 +1423,15 @@ function SingleplayerLoop() {
 
 }
 
-function SingleplayerOnRespawn(player) {
-    // sp_a1_intro2
-    if (GetMapName() == "sp_a1_intro2") {
-        local portalgun_vm = null
-        while ( portalgun_vm = Entities.FindByClassname(portalgun, "predicted_viewmodel")) {
-            EntFireByHandle(portalgun_vm, "DisableDraw", "", 0, null, null)
-        }
+function SingleplayerOnFirstSpawn() {
+    if (GetMapName() == "sp_a1_intro6") {
+        ///////////////////////////////////////
+        //AUTO GENERATED OBJECT CREATION CODE//
+        ///////////////////////////////////////
+
+            local modelnumber28 = CreateProp("prop_dynamic", Vector(1166, -97, 132), "models/props_bts/hanging_walkway_128a.mdl", 0)
+            modelnumber28.SetAngles(0, -151, 0)
+
     }
 }
 
