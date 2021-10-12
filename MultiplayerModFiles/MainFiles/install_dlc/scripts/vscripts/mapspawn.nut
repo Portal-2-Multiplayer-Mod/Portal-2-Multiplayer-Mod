@@ -496,8 +496,12 @@ OnPlayerJoin <- function() {
                             case 15: RGB <- "0 75 0"     ; COLORMESSAGE <- "Dark Green"; break;
                             case 16: RGB <- "0 75 75"    ; COLORMESSAGE <- "Dark Aqua" ; break;
                         }
+                        try {
                         Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("message", "Player Color: " + COLORMESSAGE)
                         Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("color", RGB)
+                        } catch(exception) {
+
+                        }
                         EntFireByHandle(Entities.FindByName(null, "colordisplay" + currentnametag), "display", "", 0.0, p, p)
                         PlayerColorCached.push(currentnametag);
                 }
@@ -1528,8 +1532,9 @@ function Singleplayer() {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
+        Entities.FindByName(null, "InstanceAuto9-socket_trigger").Destroy()
         Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
-
+    
     }
 
     //sp_a2_laser_intro
@@ -1720,20 +1725,22 @@ function SingleplayerLoop() {
         }
     }
 
-
-    loopwhfix <- false
     //sp_a1_intro7
     if (GetMapName() == "sp_a1_intro7") {
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
         } catch(exception) {}
-                // make wheatly look at player
+        // make wheatly look at player
         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
         EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "spherebot_1_top_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
         //make wheatly non stealable
+        try {
         Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatlyplayerpickup")
         Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatlyplayerpickup")
+        //skip panel bit
+        Entities.FindByName(null, "@plug_open_rl").ConnectOutput("OnTrigger","SPSkipPanel")
+        } catch(exception) { }
     }
 
     //sp_a2_laser_intro
@@ -1782,10 +1789,75 @@ function SingleplayerOnFirstSpawn() {
 function disablewheatlyplayerpickup() {
     printl("Player Picked Up Wheatly Disabling Pickup")
     EntFire("@sphere", "disablepickup", "", 0, null)
+    EntFire("@sphereDummy", "enablepickup", "", 0, null)
 }
 function enablewheatlyplayerpickup() {
     printl("Player Picked Up Wheatly Enabled Pickup")
     EntFire("@sphere", "enablepickup", "", 0, null)
+    EntFire("@sphereDummy", "enablepickup", "", 0, null)
+}
+
+VFX.LightFlickerEnd 
+{
+	channel		CHAN_AUTO
+	soundlevel	SNDLVL_105db
+	volume		1.0
+	rndwave
+	{
+		wave		"vfx/light_flicker/light_flicker_end_01.wav"
+		wave		"vfx/light_flicker/light_flicker_end_02.wav"
+		wave		"vfx/light_flicker/light_flicker_end_03.wav"
+		wave		"vfx/light_flicker/light_flicker_end_04.wav"
+	}
+
+	soundentry_version 2
+
+	operator_stacks
+	{
+		start_stack // applied when the sound begins
+		{
+			import_stack 	"P2_exclusion_time_blocker_start" // defined in scripts/sound_operator_stacks.txt
+
+			// We are now extending/configuring P2_exclusion_time_blocker_start
+
+			block_entries // prevents another sound from playing
+			{
+				input_duration 0.25 // seconds to block for
+				match_entry "World.LightFlickerEnd" // the sound entry to block
+				match_entity false // only on the same entity that this sound is playing from?
+			}
+		}
+	}
+}
+
+
+function SPSkipPanel() {
+    printl("message")
+    EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
+    myexplode2 <- Entities.CreateByClassname("env_explosion")
+    myexplode2.__KeyValueFromString("targetname", "myexplode2")
+    myexplode2.__KeyValueFromString("spawnflags", "4098")
+    myexplode2.SetOrigin(Vector(-822, -523, 1269))
+
+    myexplode <- Entities.CreateByClassname("env_ar2explosion")
+    myexplode.__KeyValueFromString("targetname", "myexplode")
+    myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
+    myexplode.SetOrigin(Vector(-822, -523, 1269))
+    EntFire("myexplode", "explode", "", 2.5, null)
+    EntFire("myexplode2", "explode", "", 2.5, null)
+    
+    Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
+    local mysphere = Entities.FindByName(null, "@spheredummy")
+    
+    PrecacheSoundScript(VFX.LightFlickerEnd)
+    local line1 = "vfx/light_flicker/light_flicker_end_01.wav"
+    local mycock = Entities.CreateByClassname("ambient_generic")
+    mycock.__KeyValueFromString("targetname", "mycock")
+    mycock.__KeyValueFromString("message", line1)
+    mycock.__KeyValueFromString("spawnflags", "16")
+    mycock.SetOrigin(mysphere.GetOrigin())
+    EntFire("mycock", "setparent", "@spheredummy", 0, null)
+    EntFire("mycock", "playsound", "", 0, null)
 }
 
 /********** *******
