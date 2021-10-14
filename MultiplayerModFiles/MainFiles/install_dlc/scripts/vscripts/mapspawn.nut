@@ -1817,13 +1817,13 @@ function SPSkipPanel() {
     
     PrecacheSoundScript(VFX.LightFlickerEnd)
     local line1 = "vfx/light_flicker/light_flicker_end_01.wav"
-    local mycock = Entities.CreateByClassname("ambient_generic")
-    mycock.__KeyValueFromString("targetname", "mycock")
-    mycock.__KeyValueFromString("message", line1)
-    mycock.__KeyValueFromString("spawnflags", "16")
-    mycock.SetOrigin(mysphere.GetOrigin())
-    EntFire("mycock", "setparent", "@spheredummy", 0, null)
-    EntFire("mycock", "playsound", "", 0, null)
+    local WheatleySound = Entities.CreateByClassname("ambient_generic")
+    WheatleySound.__KeyValueFromString("targetname", "WheatleySound")
+    WheatleySound.__KeyValueFromString("message", line1)
+    WheatleySound.__KeyValueFromString("spawnflags", "16")
+    WheatleySound.SetOrigin(mysphere.GetOrigin())
+    EntFire("WheatleySound", "setparent", "@spheredummy", 0, null)
+    EntFire("WheatleySound", "playsound", "", 0, null)
 }
 
 /********** *******
