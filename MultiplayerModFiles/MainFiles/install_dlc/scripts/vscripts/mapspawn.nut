@@ -1685,7 +1685,7 @@ function SingleplayerLoop() {
             }
         }
 
-        // make wheatly look at player
+        // make wheatley look at player
         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
         EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
     
@@ -1741,16 +1741,18 @@ function SingleplayerLoop() {
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
         } catch(exception) {}
-        // make wheatly look at player
+        // make wheatley look at player
         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
         EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "spherebot_1_top_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-        //make wheatly non stealable
+        //make wheatley non stealable
         try {
+
         Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatlyplayerpickup")
         Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatlyplayerpickup")
         //disable sentaint arm and disable pickup until spchill is over
         Entities.FindByName(null, "sphere_impact_trigger").ConnectOutput("OnStartTouch","wheatleyhitground")
+
         //skip panel bit
         Entities.FindByName(null, "@plug_open_rl").ConnectOutput("OnTrigger","SPSkipPanel")
         } catch(exception) { }
@@ -1908,13 +1910,13 @@ function SingleplayerOnFirstSpawn() {
 }
 
 //SINGLEPLAYER FUNCTIONS
-function disablewheatlyplayerpickup() {
-    printl("Player Picked Up Wheatly Disabling Pickup")
+function disablewheatleyplayerpickup() {
+    printl("Player Picked Up Wheatley. Disabling Pickup!")
     EntFire("@sphere", "disablepickup", "", 0, null)
     EntFire("@sphereDummy", "enablepickup", "", 0, null)
 }
-function enablewheatlyplayerpickup() {
-    printl("Player Picked Up Wheatly Enabled Pickup")
+function enablewheatleyplayerpickup() {
+    printl("Player Picked Up Wheatley. Enabling Pickup!")
     EntFire("@sphere", "enablepickup", "", 0, null)
     EntFire("@sphereDummy", "enablepickup", "", 0, null)
 }
@@ -1982,7 +1984,6 @@ function SPSkipPanel() {
     EntFire("playline7", "addoutput", "targetname myexplode2", 25.61, null)
 
     EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50, null)
-
 }
 
 
