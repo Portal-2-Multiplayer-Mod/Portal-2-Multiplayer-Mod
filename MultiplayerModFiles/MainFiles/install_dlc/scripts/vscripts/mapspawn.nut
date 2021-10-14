@@ -899,7 +899,7 @@ modelnumber58.SetAngles(-0, 179.97, 0)
 modelnumber58.__KeyValueFromString("solid", "6")
 modelnumber58.__KeyValueFromString("targetname", "genericcustomprop")
 
-local modelnumber59 = CreateProp("prop_dynamic", Vector(4341.152, 3255.216, 981.554), "models/props_gameplay/push_button.mdl", 0)
+local modelnumber59 = CreateProp("prop_button", Vector(4341.152, 3255.216, 981.554), "models/props_gameplay/push_button.mdl", 0)
 modelnumber59.SetAngles(-0, 179.979, 0)
 modelnumber59.__KeyValueFromString("solid", "6")
 modelnumber59.__KeyValueFromString("targetname", "genericcustomprop")
