@@ -1797,40 +1797,6 @@ function enablewheatlyplayerpickup() {
     EntFire("@sphereDummy", "enablepickup", "", 0, null)
 }
 
-VFX.LightFlickerEnd 
-{
-	channel		CHAN_AUTO
-	soundlevel	SNDLVL_105db
-	volume		1.0
-	rndwave
-	{
-		wave		"vfx/light_flicker/light_flicker_end_01.wav"
-		wave		"vfx/light_flicker/light_flicker_end_02.wav"
-		wave		"vfx/light_flicker/light_flicker_end_03.wav"
-		wave		"vfx/light_flicker/light_flicker_end_04.wav"
-	}
-
-	soundentry_version 2
-
-	operator_stacks
-	{
-		start_stack // applied when the sound begins
-		{
-			import_stack 	"P2_exclusion_time_blocker_start" // defined in scripts/sound_operator_stacks.txt
-
-			// We are now extending/configuring P2_exclusion_time_blocker_start
-
-			block_entries // prevents another sound from playing
-			{
-				input_duration 0.25 // seconds to block for
-				match_entry "World.LightFlickerEnd" // the sound entry to block
-				match_entity false // only on the same entity that this sound is playing from?
-			}
-		}
-	}
-}
-
-
 function SPSkipPanel() {
     printl("message")
     EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
