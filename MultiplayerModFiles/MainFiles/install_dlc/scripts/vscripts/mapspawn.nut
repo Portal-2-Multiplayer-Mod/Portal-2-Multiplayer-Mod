@@ -1,16 +1,14 @@
-//===================================
+//-----------------------------------
 //             COPYRIGHT
 //2020 Portal 2: Multiplayer Mod Team 
 //     under a GNU GPLv3 license
-//===================================
+//-----------------------------------
 
-///////////////
+//-----------------------------------
 DevMode <- true
-///////////////
-
-/////////////////
+//-----------------------------------
 UsePlugin <- true
-/////////////////
+//-----------------------------------
 
 canclearcache <- false
 DoneCacheing <- false
@@ -104,9 +102,9 @@ function init() {
         PluginLoaded <- false
     }
 
-    /***********************
-    * run map support code *
-    ***********************/
+//-----------------------------------
+// Run map support code
+//-----------------------------------
 
     // run lobby code
     if (GetMapName() == "mp_coop_lobby_3") {
@@ -170,9 +168,9 @@ function init() {
 ********************
 *******************/
 
-//=================//
-//--Trace Helpers--//
-//=================//
+//-----------------------------------
+// Trace Helpers
+//-----------------------------------
 class TraceInfo 
 {
 	constructor(h,d)
@@ -200,9 +198,9 @@ function TraceDir(orig, dir, maxd, filter)
 	return TraceInfo(orig+(dir*(maxd*frac)),maxd*frac);
 }
 
-//==================//
-//- Trace Help END -//
-//==================//
+//-----------------------------------
+// Trace Help END
+//-----------------------------------
 
 //Returns the hit position of a trace between two points.
 function TraceVec(start, end, filter)
@@ -220,9 +218,9 @@ function TraceDir(orig, dir, maxd, filter)
 	return TraceInfo(orig+(dir*(maxd*frac)),maxd*frac);
 }
 
-////////////////
-//END OF TRACE//
-////////////////
+//-----------------------------------
+// END OF TRACE
+//-----------------------------------
 
 
 //Teleport Players Within A Distance
@@ -266,9 +264,10 @@ function CacheModel(ModelName) {
         printl("Model " + ModelName + " has been cached sucessfully!")
     }
 }
-/*******************
-* multiplayer code *
-*******************/
+
+//-----------------------------------
+// Multiplayer Support Code
+//-----------------------------------
 
 // set GBIsMultiplayer if game is multiplayer
 try {
@@ -308,7 +307,7 @@ OnPlayerJoin <- function() {
                     }
                 }
 
-                // enable cvars on client
+                // Set some cvars on every client
                 SendToConsole("sv_timeout 3")
                 SendToConsole("gameinstructor_enable 1")
                 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
@@ -317,7 +316,7 @@ OnPlayerJoin <- function() {
                 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
                 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
 
-                // say join message
+                // say join message on HUD
                 if (PluginLoaded==true) {
                     JoinMessage <- getPlayerName(PlayerID-1) + " Joined The Game"
                 } else {
@@ -329,19 +328,19 @@ OnPlayerJoin <- function() {
                 if (PlayerID >= 2) {
                     onscreendisplay.__KeyValueFromString("y", "0.075")
                 }
-                // assign player targetname
+                // assign every client a targetname keyvalue
                 if (PlayerID >= 3) {
                     
                     p.__KeyValueFromString("targetname", "player" + PlayerID)
                 }
 
-                // set random color if over 16
+                // set a random color for clients that join after 16 have joined
                 if (PlayerID != 1) {
                     R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
                     ReadyCheatsOff <- 1
                 }
 
-                // create a nametag display entity
+                // create an entity to display player color at the bottom left of every clients' screen
                 colordisplay <- Entities.CreateByClassname("game_text")
                 colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
                 colordisplay.__KeyValueFromString("x", "0")
@@ -351,7 +350,7 @@ OnPlayerJoin <- function() {
                 colordisplay.__KeyValueFromString("channel", "0")
                 colordisplay.__KeyValueFromString("y", "1")
 
-                // set preset colors up to 16
+                // set preset colors for up to 16 clients
                 switch (PlayerID) {
                     case 1 : R <- 255; G <- 255; B <- 255; break;
                     case 2 : R <- 180, G <- 255, B <- 180; break;
@@ -384,11 +383,9 @@ OnPlayerJoin <- function() {
         }
     }   
 
-////////////////////////////
-    /*******************
-    *     loop code    *
-    *******************/
-////////////////////////////
+//-----------------------------------
+// Loop Code
+//-----------------------------------
     
     function loop() {
 
@@ -466,7 +463,7 @@ OnPlayerJoin <- function() {
             }
         }
 
-        //display the current player color in the bottom right of their screen
+        //display the current player color in the bottom right of their screen upon spawning
         if (HasSpawned==true) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -480,6 +477,7 @@ OnPlayerJoin <- function() {
                 if (CanTag==true) {
                         RGB <- "255 255 255"; COLORMESSAGE <- "Random Color";
                         switch (p.GetRootMoveParent().entindex()) {
+			    //These are the names of the colors in order of the clients that join (up to 16)
                             case 1 : RGB <- "255 255 255"; COLORMESSAGE <- "White"     ; break;
                             case 2 : RGB <- "120 255 120"; COLORMESSAGE <- "Green"     ; break;
                             case 3 : RGB <- "120 140 255"; COLORMESSAGE <- "Blue"      ; break;
@@ -527,7 +525,7 @@ OnPlayerJoin <- function() {
             DedicatedServerFunc()
         }
 
-        // disable collision
+        // Make every clients' collision more elastic
         //local j = "solid "
         local k = "CollisionGroup "
 
@@ -548,16 +546,15 @@ OnPlayerJoin <- function() {
             DevHacks()
         }
     }
-/**********************************/
-        ////////////////////
-        //END OF LOOP CODE//
-        ////////////////////
-/**********************************/
+
+//-----------------------------------
+// END OF LOOP CODE
+//-----------------------------------
 
     // lobby setup code
     function LobbyOneTimeRun() {
 
-        //activate whole lobby
+        //Purpose: Enable the hub entirely
         try {
             // enable team building course
             DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
@@ -588,13 +585,19 @@ OnPlayerJoin <- function() {
             // Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
             // Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
         } catch(exception) {}
-        // remove entities
-        // fix edicts error
+	    
+//-----------------------------------
+// Remove useless entities so that
+// the entity limit does not crash
+// the game
+//-----------------------------------
+	    
+	// Remove func_portal_bumper's from the map
         local ent = null
         while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
             ent.Destroy() // 165 entities removed
         }
-
+	// Remove env_sprite's from the map
         local ent = null
         while(ent = Entities.FindByClassname(ent, "env_sprite")) {
             ent.Destroy() // 31 entities removed
@@ -629,9 +632,9 @@ OnPlayerJoin <- function() {
         Entities.FindByName(null, "track5-escape_elevator_clip").Destroy()
     }
 
-    /*******************
-    * map support code *
-    *******************/
+//-----------------------------------
+// General Map Support Code
+//-----------------------------------
 
     // general fixes for all maps
     function General() {
@@ -646,7 +649,7 @@ OnPlayerJoin <- function() {
             } catch(exception) {}
 
             try {
-                // see if player is in spawn zone
+                // Check if client is in spawn zone
                 if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 35)) {
                     DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
                 } else {
@@ -656,7 +659,11 @@ OnPlayerJoin <- function() {
             } catch(exception) {}
         }
 
-        // remove dropper bottom
+//-----------------------------------
+// Course 5 Map Support Code
+//-----------------------------------
+	    
+        // Remove the bottom of droppers in Course 5
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             local ent = null
@@ -672,7 +679,7 @@ OnPlayerJoin <- function() {
         }
     }
     
-    // world init
+    // Run code when the map spawns
     function WorldInitalSpawn() {
         try {
             if (IsSingleplayerMap==true) {
@@ -681,9 +688,11 @@ OnPlayerJoin <- function() {
         } catch(exception) {}
 
         if (GetMapName()=="mp_coop_lobby_3") {
-////////////////////////////////////
-//AUTO GENERATED OBJECT CACHE CODE//
-////////////////////////////////////
+		
+//-----------------------------------
+// AUTO GENERATED OBJECT CACHE CODE
+//-----------------------------------
+		
 CacheModel("props_bts/truss_1024.mdl")
 
 CacheModel("props_bts/hanging_walkway_32a.mdl")
@@ -748,22 +757,16 @@ CacheModel("a4_destruction/fin3_fgwallsmash_stat.mdl")
 
 DoneCacheing <- true
 
-
-
-
-
-
-
-
-
         }
     }
 
     function MapOneTimeRun() {
         if (GetMapName()=="mp_coop_lobby_3") {
-///////////////////////////////////////
-//AUTO GENERATED OBJECT CREATION CODE//
-///////////////////////////////////////
+		
+//-----------------------------------
+// AUTO GENERATED OBJECT CREATION CODE
+//-----------------------------------
+		
 local modelnumber32 = CreateProp("prop_dynamic", Vector(4487.027, 3194.76, 1002.301), "models/props_bts/truss_1024.mdl", 0)
 modelnumber32.SetAngles(-0.005, 90.01, -89.98)
 modelnumber32.__KeyValueFromString("solid", "6")
@@ -984,19 +987,23 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
             ArtTherapyLobby()
             }
 
-        // run credits code
+        // Run custom credits code
         if (GetMapName() == "mp_coop_credits") {
             CreditsLoop()
         }
-
-                if (GetMapName() == "mp_coop_wall_5") {
+	// Run code fix for mp_coop_wall_5
+        if (GetMapName() == "mp_coop_wall_5") {
             mp_coop_wall_5FIX()
         }
-
+	// Run code fix for mp_coop_2paints_1bridge
         if (GetMapName() == "mp_coop_2paints_1bridge") {
             mp_coop_2paints_1bridgeFIX()
         }
     }
+
+//-----------------------------------
+// Course 6 Map Support Code
+//-----------------------------------
 
     // art therapy lobby
     function ArtTherapyLobby() {
@@ -1124,7 +1131,11 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         Entities.FindByName(null, "disassembler_2_door_1").Destroy()
     }
 
-    // gelocity 1 code
+//-----------------------------------
+// Custom Map Support Code
+//-----------------------------------
+
+    // Gelocity 1 code
     function Gelocity() {
         DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player2"))
         DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player1"))
@@ -1141,7 +1152,7 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         }
     }
 
-    // gelocity 2 code
+    // Gelocity 2 code
     function Gelocity2() {
         local ent = null
         while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
@@ -1173,7 +1184,7 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         }
     }
 
-    // gelocity 3 code
+    // Gelocity 3 code
     function Gelocity3() {
         DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_2"))
         DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_1"))
@@ -1193,7 +1204,10 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         }
     }
 
-    // dedicated server code
+//-----------------------------------
+// Dedicated Server Code
+//-----------------------------------
+
     function DedicatedServerFunc() {
         if (DedicatedServerOneTimeRun == 1) {print()}
 
@@ -1207,9 +1221,9 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         }
     }
 
-    /**********
-    * credits *
-    **********/
+//-----------------------------------
+// Custom Credits Code
+//-----------------------------------
 
     // remove selected pods
     function CreditsRemovePod() {
@@ -1235,7 +1249,7 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(Entities.FindByName(null, "camera"), "enable", "", 0, null, null)
     }
 
-    // replace females with pbodys
+    // replace females with P-body's
     function CreditsSetModelPB(ent) {
         FixCreditsCameras()
 
@@ -1267,7 +1281,7 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(ent, "setanimation", AnimationsPB[RandomAnimation], 0, null, null)
     }
 
-    // replace males with atlases
+    // replace males with Atlas's
     function CreditsSetModelAL(ent) {
         FixCreditsCameras()
 
@@ -1381,7 +1395,7 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         "kyleraykbs | Scripting + Team Lead",
         "Vista | Reverse Engineering, Plugin Dev",
         "Bumpy | Scripting + Script Theory",
-        "Wolfe Strider Shooter | Scripting",
+        "Wolƒe Strider Shoσter | Scripting",
         "Enator18 | Python" 
         "Nanoman2525 | Mapping + Entity and Command Help",
         "--------------------------",
@@ -1452,12 +1466,12 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
     DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
     } catch(exception) {}
 
-/*************************
-* singleplayer functions *
-*************************/
+//-----------------------------------
+// Singleplayer Support Code
+//-----------------------------------
 
 function Singleplayer() {
-    // sp_a1_intro2
+    // Support for the map sp_a1_intro2
     if (GetMapName() == "sp_a1_intro2") {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         SendToConsole("commentary 0")
@@ -1467,7 +1481,7 @@ function Singleplayer() {
 
     }
 
-    // sp_a1_intro3
+    // Support for the map sp_a1_intro3
     if (GetMapName() == "sp_a1_intro3") {
         Entities.FindByName(null, "door_0-door_close_relay").Destroy()
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
@@ -1487,7 +1501,7 @@ function Singleplayer() {
         timeout <- 1
     }
 
-    // sp_a1_intro4
+    // Support for the map sp_a1_intro4
     if (GetMapName() == "sp_a1_intro4") {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "door_0-door_close_relay").Destroy()
@@ -1508,7 +1522,7 @@ function Singleplayer() {
         Entities.FindByName(null, "door_2-close_door_rl").Destroy()
     }
 
-    //sp_a1_intro5
+    // Support for the map sp_a1_intro5
     if (GetMapName() == "sp_a1_intro5") {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
@@ -1516,7 +1530,7 @@ function Singleplayer() {
         Entities.FindByClassnameNearest("trigger_multiple", Vector(-64, 824, 320), 1024).Destroy()
     }
 
-    //sp_a1_intro6
+    // Support for the map sp_a1_intro6
     if (GetMapName() == "sp_a1_intro6") {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "room_1_entry_door-close_door_rl").Destroy()
@@ -1531,7 +1545,7 @@ function Singleplayer() {
         fallenautoportal.SetAngles(-90, 69, 0)
     }
 
-    //sp_a1_intro7
+    // Support for the map sp_a1_intro7
     if (GetMapName() == "sp_a1_intro7") {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-open"), "trigger", "", 0, null, null)
@@ -1546,14 +1560,14 @@ function Singleplayer() {
         Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
     }
 
-    //sp_a2_laser_intro
+    // Support for the map sp_a2_laser_intro
     if (GetMapName() == "sp_a2_laser_intro") {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
     }
 
-    //sp_a2_laser_stairs
+    // Support for the map sp_a2_laser_stairs
     if (GetMapName() == "sp_a2_laser_stairs") {
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByName(null, "door_1-close_door_rl").Destroy()
@@ -1561,8 +1575,10 @@ function Singleplayer() {
     
 }
 
-/////////////
-//DEV HACKS//
+//-----------------------------------
+// Developer Hacks Code
+//-----------------------------------
+
 function DevHacks() {
 //     if (GetMapName()=="mp_coop_paint_longjump_intro") {
 //         //airlockexit teleport
