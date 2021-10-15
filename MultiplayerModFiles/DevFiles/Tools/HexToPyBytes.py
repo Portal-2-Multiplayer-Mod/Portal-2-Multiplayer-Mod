@@ -2,7 +2,7 @@ byteString = input("Input Bytes: ")
 try:
     bytes = bytes.fromhex(byteString)
     print("")
-    print("PyBytes" + bytes)
+    print("PyBytes: " + bytes)
     print("")
 except:
     print("ERROR: INVALID BYTES")
