@@ -27,3 +27,4 @@ d3d9.log
 ReShade.ini
 server.dll
 server.so
+*.cache-3
