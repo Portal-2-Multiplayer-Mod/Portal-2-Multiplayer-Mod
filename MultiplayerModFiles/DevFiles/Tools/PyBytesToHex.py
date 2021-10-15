@@ -1,9 +1,9 @@
 pybyteString = input("Input PyBytes: ")
 try:
-    pybyteString = pybyteString[2:-1]
-    pybyteString = pybyteString.encode()
     print(pybyteString)
-    pyhex = bytes(pybyteString).hex()
+    pybyteString = pybyteString[2:-1]
+    pybyteString = bytes(pybyteString, 'utf-8')
+    pyhex = pybyteString.hex()
     reghex = ' '.join([pyhex[i:i+2] for i in range(0, len(pyhex), 2)])
     print("")
     print("Hex: " + reghex)
