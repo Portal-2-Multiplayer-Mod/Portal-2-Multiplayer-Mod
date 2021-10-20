@@ -244,7 +244,7 @@ except:
 
 #remove Game Files After Game Exits
 def RemoveMultiplayerFiles():
-    #remove multiplayer mod files 
+    #remove multiplayer mod files
     try:
         if(iow):
             os.remove(owd + "\server.dll")
@@ -262,7 +262,7 @@ def RemoveMultiplayerFiles():
     except:
         print("Removing Multiplayer Mod DLCs Failed")
 
-    #rename main server.dll back to server.dll 
+    #rename main server.dll back to server.dll
     try:
         if (iow):
             try:

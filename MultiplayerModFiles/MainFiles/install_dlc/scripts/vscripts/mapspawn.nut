@@ -1,14 +1,36 @@
 //-----------------------------------
 //             COPYRIGHT
-//2020 Portal 2: Multiplayer Mod Team 
+//2020 Portal 2: Multiplayer Mod Team
 //     under a GNU GPLv3 license
 //-----------------------------------
+
+//  ____               __             ___           ___       __         __       ___
+// /\  _`\            /\ \__         /\_ \        /'___`\    /\ \      /'__`\   /'___`\
+// \ \ \L\ \___   _ __\ \ ,_\    __  \//\ \      /\_\ /\ \   \ \ \    /\_\L\ \ /\_\ /\ \
+//  \ \ ,__/ __`\/\`'__\ \ \/  /'__`\  \ \ \     \/_/// /__   \ \ \   \/_/_\_<_\/_/// /__
+//   \ \ \/\ \L\ \ \ \/ \ \ \_/\ \L\.\_ \_\ \_      // /_\ \   \ \ \    /\ \L\ \  // /_\ \
+//    \ \_\ \____/\ \_\  \ \__\ \__/.\_\/\____\    /\______/    \ \ \   \ \____/ /\______/
+//     \/_/\/___/  \/_/   \/__/\/__/\/_/\/____/    \/_____/      \ \ \   \/___/  \/_____/
+//                                                                \ \_\
+//                                                                 \/_/
+
+//  ██████  ██████  ███    ██ ███████ ██  ██████
+// ██      ██    ██ ████   ██ ██      ██ ██
+// ██      ██    ██ ██ ██  ██ █████   ██ ██   ███
+// ██      ██    ██ ██  ██ ██ ██      ██ ██    ██
+//  ██████  ██████  ██   ████ ██      ██  ██████
 
 //-----------------------------------
 DevMode <- true
 //-----------------------------------
 UsePlugin <- true
 //-----------------------------------
+
+//  ██████  ██████  ██████  ███████
+// ██      ██    ██ ██   ██ ██
+// ██      ██    ██ ██   ██ █████
+// ██      ██    ██ ██   ██ ██
+//  ██████  ██████  ██████  ███████
 
 canclearcache <- false
 DoneCacheing <- false
@@ -171,7 +193,7 @@ function init() {
 //-----------------------------------
 // Trace Helpers
 //-----------------------------------
-class TraceInfo 
+class TraceInfo
 {
 	constructor(h,d)
 	{
@@ -240,7 +262,7 @@ function PlayerWithinDistance(SearchPos, SearchDis) {
 
 function DeleteModels(ModelName) {
     local ent = null
-    
+
 }
 
 function CacheModel(ModelName) {
@@ -255,7 +277,7 @@ function CacheModel(ModelName) {
             // server an entity that sends a client command
             servercommand <- Entities.CreateByClassname("point_servercommand")
         }
-
+        EntFireByHandle(servercommand, "command", "hud_saytext_time 0", 0, null, null)
         EntFireByHandle(servercommand, "command", "sv_cheats 1", 0, null, null)
         EntFireByHandle(servercommand, "command", "prop_dynamic_create " + ModelName, 0, null, null)
         EntFireByHandle(servercommand, "command", "sv_cheats 0", 0, null, null)
@@ -289,7 +311,7 @@ OnPlayerJoin <- function() {
                 PlayerID <- p.GetRootMoveParent()
                 PlayerID <- PlayerID.entindex()
 
-                // set viewmodel names 
+                // set viewmodel names
                 local ent = null
                 while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
                     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
@@ -330,7 +352,7 @@ OnPlayerJoin <- function() {
                 }
                 // assign every client a targetname keyvalue
                 if (PlayerID >= 3) {
-                    
+
                     p.__KeyValueFromString("targetname", "player" + PlayerID)
                 }
 
@@ -376,20 +398,20 @@ OnPlayerJoin <- function() {
                 if (PlayerID==1) {
                     WorldInitalSpawn()
                 }
-                
+
                 return
                 }
             }
         }
-    }   
+    }
 
 //-----------------------------------
 // Loop Code
 //-----------------------------------
-    
+
     function loop() {
 
-        OnPlayerJoin() // run player join code 
+        OnPlayerJoin() // run player join code
 
         General() // run general code
 
@@ -507,7 +529,8 @@ OnPlayerJoin <- function() {
             }
         }
         } catch(exception) {
-            printl("Death Detection Screwed Up (player probably crashed)")
+            printl("Death Detection Screwed Up (Player Probably Crashed) (Setting OrangeOldPlayerPos To BlueOldPlayerPos To Remedy The Issue)")
+            OrangeOldPlayerPos <- OldPlayerPos
         }
 
         //disconnect player if trying to play singleplayer
@@ -585,13 +608,13 @@ OnPlayerJoin <- function() {
             // Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
             // Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
         } catch(exception) {}
-	    
+
 //-----------------------------------
 // Remove useless entities so that
 // the entity limit does not crash
 // the game
 //-----------------------------------
-	    
+
 	// Remove func_portal_bumper's from the map
         local ent = null
         while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
@@ -640,7 +663,7 @@ OnPlayerJoin <- function() {
     function General() {
 
             // display waiting for players and run nessacary code after spawn
-            if (WFPDisplayDisabled == 0) { 
+            if (WFPDisplayDisabled == 0) {
                         try {
                 if (copp == 0) {
                     OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
@@ -662,7 +685,7 @@ OnPlayerJoin <- function() {
 //-----------------------------------
 // Course 5 Map Support Code
 //-----------------------------------
-	    
+
         // Remove the bottom of droppers in Course 5
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -678,7 +701,7 @@ OnPlayerJoin <- function() {
             }
         }
     }
-    
+
     // Run code when the map spawns
     function WorldInitalSpawn() {
         try {
@@ -687,244 +710,8 @@ OnPlayerJoin <- function() {
             }
         } catch(exception) {}
 
-        if (GetMapName()=="mp_coop_lobby_3") {
-		
-//-----------------------------------
-// AUTO GENERATED OBJECT CACHE CODE
-//-----------------------------------
-		
-CacheModel("props_bts/truss_1024.mdl")
-
-CacheModel("props_bts/hanging_walkway_32a.mdl")
-
-CacheModel("props_bts/hanging_walkway_64a.mdl")
-
-CacheModel("props_bts/truss_1024.mdl")
-
-CacheModel("props_bts/lab_pod_b.mdl")
-
-CacheModel("props_bts/truss_1024.mdl")
-
-CacheModel("props_bts/hanging_walkway_128c.mdl")
-
-CacheModel("props_bts/hanging_walkway_512a.mdl")
-
-CacheModel("props_bts/push_button_stand.mdl")
-
-CacheModel("props_bts/truss_1024.mdl")
-
-CacheModel("props_gameplay/industrial_elevator_a.mdl")
-
-CacheModel("props_bts/hanging_walkway_l.mdl")
-
-CacheModel("props_bts/hanging_walkway_end_a.mdl")
-
-CacheModel("props_bts/push_button_stand.mdl")
-
-CacheModel("props_bts/hanging_walkway_end_a.mdl")
-
-CacheModel("props_gameplay/industrial_elevator_a.mdl")
-
-CacheModel("props_bts/hanging_walkway_128a.mdl")
-
-CacheModel("props_bts/hanging_walkway_512a.mdl")
-
-CacheModel("props_bts/lab_pod_b.mdl")
-
-CacheModel("car_int_dest/car_int_dest.mdl")
-
-CacheModel("props_gameplay/push_button.mdl")
-
-CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
-
-CacheModel("props_gameplay/push_button_mp.mdl")
-
-CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
-
-CacheModel("anim_wp/tv_wallpanel.mdl")
-
-CacheModel("anim_wp/tv_wallpanel.mdl")
-
-CacheModel("anim_wp/tv_wallpanel.mdl")
-
-CacheModel("props_gameplay/push_button.mdl")
-
-CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
-
-CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
-
-CacheModel("a4_destruction/fin3_fgwallsmash_stat.mdl")
-
-DoneCacheing <- true
-
-        }
-    }
-
-    function MapOneTimeRun() {
-        if (GetMapName()=="mp_coop_lobby_3") {
-		
-//-----------------------------------
-// AUTO GENERATED OBJECT CREATION CODE
-//-----------------------------------
-		
-local modelnumber32 = CreateProp("prop_dynamic", Vector(4487.027, 3194.76, 1002.301), "models/props_bts/truss_1024.mdl", 0)
-modelnumber32.SetAngles(-0.005, 90.01, -89.98)
-modelnumber32.__KeyValueFromString("solid", "6")
-modelnumber32.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber33 = CreateProp("prop_dynamic", Vector(4309.685, 3848.971, 934.872), "models/props_bts/hanging_walkway_32a.mdl", 0)
-modelnumber33.SetAngles(0, -179.967, 0)
-modelnumber33.__KeyValueFromString("solid", "6")
-modelnumber33.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber34 = CreateProp("prop_dynamic", Vector(4309.694, 3801.083, 934.972), "models/props_bts/hanging_walkway_64a.mdl", 0)
-modelnumber34.SetAngles(-0, 0.01, 360)
-modelnumber34.__KeyValueFromString("solid", "6")
-modelnumber34.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber35 = CreateProp("prop_dynamic", Vector(4486.305, 3194.931, -1043.699), "models/props_bts/truss_1024.mdl", 0)
-modelnumber35.SetAngles(-0.005, 90.01, -89.98)
-modelnumber35.__KeyValueFromString("solid", "6")
-modelnumber35.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber36 = CreateProp("prop_dynamic", Vector(2872.21, 3923.146, 7.151), "models/props_bts/lab_pod_b.mdl", 0)
-modelnumber36.SetAngles(0, -180, -0.02)
-modelnumber36.__KeyValueFromString("solid", "6")
-modelnumber36.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber37 = CreateProp("prop_dynamic", Vector(4485.943, 3195.016, -2066.699), "models/props_bts/truss_1024.mdl", 0)
-modelnumber37.SetAngles(-0.005, 90.01, -89.98)
-modelnumber37.__KeyValueFromString("solid", "6")
-modelnumber37.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber38 = CreateProp("prop_dynamic", Vector(4310.044, 3193.698, 934.97), "models/props_bts/hanging_walkway_128c.mdl", 0)
-modelnumber38.SetAngles(0.001, -0.017, -0.001)
-modelnumber38.__KeyValueFromString("solid", "6")
-modelnumber38.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber39 = CreateProp("prop_dynamic", Vector(4437.298, 3928.935, 934.958), "models/props_bts/hanging_walkway_512a.mdl", 0)
-modelnumber39.SetAngles(-0, -89.97, -0)
-modelnumber39.__KeyValueFromString("solid", "6")
-modelnumber39.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber40 = CreateProp("prop_dynamic", Vector(4341.034, 3275.196, -512.599), "models/props_bts/push_button_stand.mdl", 0)
-modelnumber40.SetAngles(-0, 179.993, 0)
-modelnumber40.__KeyValueFromString("solid", "6")
-modelnumber40.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber41 = CreateProp("prop_dynamic", Vector(4486.666, 3194.845, -20.699), "models/props_bts/truss_1024.mdl", 0)
-modelnumber41.SetAngles(-0.005, 90.01, -89.98)
-modelnumber41.__KeyValueFromString("solid", "6")
-modelnumber41.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber42 = CreateProp("prop_dynamic", Vector(4410.122, 3194.875, 934.979), "models/props_gameplay/industrial_elevator_a.mdl", 0)
-modelnumber42.SetAngles(-0, 179.994, 0)
-modelnumber42.__KeyValueFromString("solid", "6")
-modelnumber42.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber43 = CreateProp("prop_dynamic", Vector(4309.675, 3928.877, 935), "models/props_bts/hanging_walkway_l.mdl", 0)
-modelnumber43.SetAngles(-0, 0.016, 0)
-modelnumber43.__KeyValueFromString("solid", "6")
-modelnumber43.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber44 = CreateProp("prop_dynamic", Vector(5028.534, 3929.192, 934.891), "models/props_bts/hanging_walkway_end_a.mdl", 0)
-modelnumber44.SetAngles(0, -90.014, 0)
-modelnumber44.__KeyValueFromString("solid", "6")
-modelnumber44.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber45 = CreateProp("prop_dynamic", Vector(4340.937, 3255.135, 935.63), "models/props_bts/push_button_stand.mdl", 0)
-modelnumber45.SetAngles(-0, 179.993, 0)
-modelnumber45.__KeyValueFromString("solid", "6")
-modelnumber45.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber46 = CreateProp("prop_dynamic", Vector(4309.954, 3114.19, 934.914), "models/props_bts/hanging_walkway_end_a.mdl", 0)
-modelnumber46.SetAngles(0, 179.982, -0)
-modelnumber46.__KeyValueFromString("solid", "6")
-modelnumber46.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber47 = CreateProp("prop_dynamic", Vector(4409.51, 3194.552, -511.907), "models/props_gameplay/industrial_elevator_a.mdl", 0)
-modelnumber47.SetAngles(0, 179.986, 0)
-modelnumber47.__KeyValueFromString("solid", "6")
-modelnumber47.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber48 = CreateProp("prop_dynamic", Vector(4948.96, 3929.215, 934.902), "models/props_bts/hanging_walkway_128a.mdl", 0)
-modelnumber48.SetAngles(-0, -90, 0)
-modelnumber48.__KeyValueFromString("solid", "6")
-modelnumber48.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber49 = CreateProp("prop_dynamic", Vector(4309.712, 3705.754, 934.622), "models/props_bts/hanging_walkway_512a.mdl", 0)
-modelnumber49.SetAngles(0, -180, -0.059)
-modelnumber49.__KeyValueFromString("solid", "6")
-modelnumber49.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber50 = CreateProp("prop_dynamic", Vector(2858.858, 4243.747, 7.767), "models/props_bts/lab_pod_b.mdl", 0)
-modelnumber50.SetAngles(0.02, -0.001, 0.103)
-modelnumber50.__KeyValueFromString("solid", "6")
-modelnumber50.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber51 = CreateProp("prop_dynamic", Vector(2866.799, 4066.008, 218.565), "models/car_int_dest/car_int_dest.mdl", 0)
-modelnumber51.SetAngles(-0, 90.007, 0)
-modelnumber51.__KeyValueFromString("solid", "6")
-modelnumber51.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber52 = CreateProp("prop_dynamic", Vector(4341.25, 3275.277, -466.676), "models/props_gameplay/push_button.mdl", 0)
-modelnumber52.SetAngles(-0, 179.979, 0)
-modelnumber52.__KeyValueFromString("solid", "6")
-modelnumber52.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber53 = CreateProp("prop_dynamic", Vector(4128.767, 2912.642, 415.118), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
-modelnumber53.SetAngles(-0, 0.017, 45)
-modelnumber53.__KeyValueFromString("solid", "6")
-modelnumber53.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber54 = CreateProp("prop_dynamic", Vector(4465.81, 3194.289, -443.653), "models/props_gameplay/push_button_mp.mdl", 0)
-modelnumber54.SetAngles(-0, 178.691, 0)
-modelnumber54.__KeyValueFromString("solid", "6")
-modelnumber54.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber55 = CreateProp("prop_dynamic", Vector(4128.767, 2912.642, 415.118), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
-modelnumber55.SetAngles(-0, 0.017, 45)
-modelnumber55.__KeyValueFromString("solid", "6")
-modelnumber55.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber56 = CreateProp("prop_dynamic", Vector(4471.268, 3994.334, 999.099), "models/anim_wp/tv_wallpanel.mdl", 0)
-modelnumber56.SetAngles(-0, 179.982, 0)
-modelnumber56.__KeyValueFromString("solid", "6")
-modelnumber56.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber57 = CreateProp("prop_dynamic", Vector(4922.204, 3995.095, 999.885), "models/anim_wp/tv_wallpanel.mdl", 0)
-modelnumber57.SetAngles(-0, -179.974, 0)
-modelnumber57.__KeyValueFromString("solid", "6")
-modelnumber57.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber58 = CreateProp("prop_dynamic", Vector(4703.146, 3995.308, 999.202), "models/anim_wp/tv_wallpanel.mdl", 0)
-modelnumber58.SetAngles(-0, 179.97, 0)
-modelnumber58.__KeyValueFromString("solid", "6")
-modelnumber58.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber59 = CreateProp("prop_button", Vector(4341.152, 3255.216, 981.554), "models/props_gameplay/push_button.mdl", 0)
-modelnumber59.SetAngles(-0, 179.979, 0)
-modelnumber59.__KeyValueFromString("solid", "6")
-modelnumber59.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber60 = CreateProp("prop_dynamic", Vector(4383.452, 2913.066, 415.833), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
-modelnumber60.SetAngles(0, -0.02, 45.008)
-modelnumber60.__KeyValueFromString("solid", "6")
-modelnumber60.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber61 = CreateProp("prop_dynamic", Vector(4383.452, 2913.066, 415.833), "models/a4_destruction/wallpanel_256_cdest.mdl", 0)
-modelnumber61.SetAngles(0, -0.02, 45.008)
-modelnumber61.__KeyValueFromString("solid", "6")
-modelnumber61.__KeyValueFromString("targetname", "genericcustomprop")
-
-local modelnumber62 = CreateProp("prop_dynamic", Vector(5058.416, 2553.027, 235.856), "models/a4_destruction/fin3_fgwallsmash_stat.mdl", 0)
-modelnumber62.SetAngles(-0, 179.902, 90.019)
-modelnumber62.__KeyValueFromString("solid", "6")
-modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
-
-
-
-        }
+        //Cache Props
+        CreatePropsForLevel(true, false)
     }
 
     // general one time run
@@ -933,6 +720,8 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
 
         HasSpawned <- true
 
+        SendToConsole("hud_saytext_time 12")
+
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             if (p.GetTeam()==2) {
@@ -940,7 +729,15 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
             }
         }
 
-        MapOneTimeRun()
+        try {
+            if (OrangeOldPlayerPos) { }
+        } catch(exeption) {
+            printl("OrangeOldPlayerPos Not Set (Blue Probably Moved Before Orange Could Load in) Setting OrangeOldPlayerPos To BlueOldPlayerPos")
+            OrangeOldPlayerPos <- OldPlayerPos
+        }
+
+        //Create Props After Cache
+        CreatePropsForLevel(false, true)
 
         SingleplayerOnFirstSpawn()
 
@@ -977,7 +774,7 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         if (GetMapName() == "mp_coop_separation_1") {
             mp_coop_separation_1FIXONETIME()
         }
-        
+
     }
 
     //run all required map loops every tick
@@ -1396,7 +1193,7 @@ modelnumber62.__KeyValueFromString("targetname", "genericcustomprop")
         "Vista | Reverse Engineering, Plugin Dev",
         "Bumpy | Scripting + Script Theory",
         "Wolƒe Strider Shoσter | Scripting",
-        "Enator18 | Python" 
+        "Enator18 | Python"
         "Nanoman2525 | Mapping + Entity and Command Help",
         "--------------------------",
         "Multiplayer Mod: Contributers",
@@ -1572,7 +1369,7 @@ function Singleplayer() {
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByName(null, "door_1-close_door_rl").Destroy()
     }
-    
+
 }
 
 //-----------------------------------
@@ -1704,7 +1501,7 @@ function SingleplayerLoop() {
         // make Wheatley look at player
         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
         EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-    
+
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
         } catch(exception) {}
@@ -1774,7 +1571,7 @@ function SingleplayerLoop() {
         /////////
         //LINES//
         /////////
-        
+
         if(Entities.FindByName(null, "playline1")) {
             Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows01.wav")
             Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows02.wav")
@@ -1855,7 +1652,7 @@ function SingleplayerLoop() {
                 printl("Seq2 Done")
 
                 EntFire("@glados", "runscriptcode", "sp_a1_intro7_HoboTurretScene()", 0, null)
-            
+
                 EntFire("myexplode2", "addoutput", "targetname playline8", 0.00, null)
                 EntFire("playline8", "addoutput", "targetname myexplode2", 0.11, null)
 
@@ -1892,7 +1689,7 @@ function SingleplayerLoop() {
             SendToConsole("commentary 1")
             SendToConsole("changelevel sp_a2_laser_stairs")
         }
-        
+
     }
 
     //sp_a2_laser_stairs
@@ -1906,7 +1703,7 @@ function SingleplayerLoop() {
             SendToConsole("commentary 1")
             SendToConsole("changelevel sp_a2_dual_lasers")
         }
-        
+
     }
 
 }
@@ -1955,7 +1752,7 @@ function SPSkipPanel() {
     EntFire("myexplode", "explode", "", 2.5, null)
     EntFire("myexplode2", "explode", "", 2.5, null)
     EntFire("myexplode2", "explode", "", 3.0, null)
-    
+
     Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
     local mysphere = Entities.FindByName(null, "@spheredummy")
 
@@ -2036,3 +1833,185 @@ try {
     EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
 } catch(exception) {}
 */
+
+
+
+
+// ╔═╗╦═╗╔═╗╔═╗  ╔═╗╦═╗╔═╗╔═╗╔╦╗╦╔═╗╔╗╔  ╔═╗╔═╗╔╦╗╔═╗
+// ╠═╝╠╦╝║ ║╠═╝  ║  ╠╦╝║╣ ╠═╣ ║ ║║ ║║║║  ║  ║ ║ ║║║╣
+// ╩  ╩╚═╚═╝╩    ╚═╝╩╚═╚═╝╩ ╩ ╩ ╩╚═╝╝╚╝  ╚═╝╚═╝═╩╝╚═╝
+// ╦╔╦╗╔═╗╔═╗╦═╗╔╦╗╔═╗╔╦╗  ╔═╗╦═╗╔═╗╔╦╗  ╔═╗╔╦╗╔═╗╔╦╗
+// ║║║║╠═╝║ ║╠╦╝ ║ ║╣  ║║  ╠╣ ╠╦╝║ ║║║║  ║ ╦║║║║ ║ ║║
+// ╩╩ ╩╩  ╚═╝╩╚═ ╩ ╚═╝═╩╝  ╚  ╩╚═╚═╝╩ ╩  ╚═╝╩ ╩╚═╝═╩╝
+
+function CreatePropsForLevel(CacheTime, CreateTime) {
+
+//==================================//
+//CREATE OBJECTS FOR mp_coop_lobby_3//
+//==================================//
+
+//===============//
+//mp_coop_lobby_3//
+//===============//
+
+if (GetMapName() == "mp_coop_lobby_3") {
+    if (CacheTime==true) {
+        // Cache Objects
+
+        CacheModel("car_wrecked_dest/car_wrecked_b.mdl")
+
+        CacheModel("cara_dest/telephone_pole008.mdl")
+
+        CacheModel("cara_dest/monstercar_cara.mdl")
+
+        CacheModel("catwalk_destruction/catwalk_fx_e2.mdl")
+
+        CacheModel("br_debris/deb_mil_helmet.mdl")
+
+        CacheModel("br_debris/deb_dave_crate_broken_body_01.mdl")
+
+        CacheModel("br_debris/deb_s8_cube.mdl")
+
+        CacheModel("elevator/elevator_coop_main_scaled.mdl")
+
+        CacheModel("elevator/elevator_escape.mdl")
+
+        CacheModel("elevator/tube_blockage_static.mdl")
+
+        CacheModel("elevator/elevator.mdl")
+
+        CacheModel("elevator/elevator_entrance.mdl")
+
+        CacheModel("container_ride/finedebris_part13.mdl")
+
+        CacheModel("gibs/hgibs.mdl")
+
+        CacheModel("gibs/glass_shard03.mdl")
+
+        CacheModel("gibs/glass_shard02.mdl")
+
+        DoneCacheing <- true
+    }
+
+
+    if (CreateTime==true) {
+        // Create Objects
+
+        local mp_coop_lobby_3_custom_prop_255 = CreateProp("prop_dynamic", Vector(5697.837890625, 4350.8642578125, -249.93496704102), "models/car_wrecked_dest/car_wrecked_b.mdl", 0)
+        mp_coop_lobby_3_custom_prop_255.SetAngles(-10.014186859131, 1.7351580858231, -16.789367675781)
+        mp_coop_lobby_3_custom_prop_255.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_255.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_257 = CreateProp("prop_dynamic", Vector(5309.2446289062, 4548.9306640625, -120.29009246826), "models/cara_dest/telephone_pole008.mdl", 0)
+        mp_coop_lobby_3_custom_prop_257.SetAngles(-41.998928070068, -78.32300567627, -11.947875976562)
+        mp_coop_lobby_3_custom_prop_257.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_257.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_259 = CreateProp("prop_dynamic", Vector(5804.8598632812, 4228.4125976562, -100.606300354), "models/cara_dest/monstercar_cara.mdl", 0)
+        mp_coop_lobby_3_custom_prop_259.SetAngles(-1.3249614238739, 96.168907165527, 19.924423217773)
+        mp_coop_lobby_3_custom_prop_259.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_259.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_261 = CreateProp("prop_dynamic", Vector(5103.4038085938, 3668.560546875, -11.125910758972), "models/catwalk_destruction/catwalk_fx_e2.mdl", 0)
+        mp_coop_lobby_3_custom_prop_261.SetAngles(-5.5505475432885e-13, -159.97924804688, 1.52587890625e-05)
+        mp_coop_lobby_3_custom_prop_261.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_261.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_262 = CreateProp("prop_physics", Vector(4186.6640625, 3457.2153320312, -511.50018310547), "models/br_debris/deb_mil_helmet.mdl", 0)
+        mp_coop_lobby_3_custom_prop_262.SetAngles(-2.9452914986905e-06, 81.715278625488, 0)
+        mp_coop_lobby_3_custom_prop_262.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_262.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_263 = CreateProp("prop_physics", Vector(3772.8239746094, 3553.2785644531, -511.52615356445), "models/br_debris/deb_mil_helmet.mdl", 0)
+        mp_coop_lobby_3_custom_prop_263.SetAngles(0.213324457407, 22.355848312378, -0.043548583984375)
+        mp_coop_lobby_3_custom_prop_263.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_263.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_264 = CreateProp("prop_dynamic", Vector(4249.1333007812, 3533.1843261719, -470.103515625), "models/br_debris/deb_mil_helmet.mdl", 0)
+        mp_coop_lobby_3_custom_prop_264.SetAngles(0.21069057285786, 64.303619384766, 0.25454711914062)
+        mp_coop_lobby_3_custom_prop_264.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_264.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_265 = CreateProp("prop_physics", Vector(4342.03515625, 3296.7541503906, -511.50018310547), "models/br_debris/deb_mil_helmet.mdl", 0)
+        mp_coop_lobby_3_custom_prop_265.SetAngles(-1.9938413515774e-06, 61.807231903076, 0)
+        mp_coop_lobby_3_custom_prop_265.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_265.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_266 = CreateProp("prop_physics", Vector(4131.4223632812, 3309.0163574219, -491.25018310547), "models/br_debris/deb_dave_crate_broken_body_01.mdl", 0)
+        mp_coop_lobby_3_custom_prop_266.SetAngles(89.999992370605, -99.707992553711, 180)
+        mp_coop_lobby_3_custom_prop_266.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_266.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_267 = CreateProp("prop_physics", Vector(4561.0327148438, 3583.1374511719, -509.52142333984), "models/br_debris/deb_s8_cube.mdl", 0)
+        mp_coop_lobby_3_custom_prop_267.SetAngles(3.9636429391976e-06, 27.243974685669, 90)
+        mp_coop_lobby_3_custom_prop_267.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_267.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_269 = CreateProp("prop_dynamic", Vector(5122.7875976562, 4576.0424804688, -334.4753112793), "models/elevator/elevator_coop_main_scaled.mdl", 0)
+        mp_coop_lobby_3_custom_prop_269.SetAngles(45, -1.1452740409368e-06, 90.000007629395)
+        mp_coop_lobby_3_custom_prop_269.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_269.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_270 = CreateProp("prop_dynamic", Vector(4100.1318359375, 3665.4995117188, -371.34384155273), "models/elevator/elevator_escape.mdl", 0)
+        mp_coop_lobby_3_custom_prop_270.SetAngles(0, 0, 0)
+        mp_coop_lobby_3_custom_prop_270.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_270.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_272 = CreateProp("prop_dynamic", Vector(4271.2412109375, 3666.189453125, -508.541015625), "models/elevator/tube_blockage_static.mdl", 0)
+        mp_coop_lobby_3_custom_prop_272.SetAngles(1.1421397924423, -157.93530273438, 0.37503051757812)
+        mp_coop_lobby_3_custom_prop_272.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_272.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_273 = CreateProp("prop_dynamic", Vector(4538.0307617188, 3514.9213867188, -527.90795898438), "models/elevator/elevator.mdl", 0)
+        mp_coop_lobby_3_custom_prop_273.SetAngles(0, 0, 0)
+        mp_coop_lobby_3_custom_prop_273.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_273.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_274 = CreateProp("prop_physics", Vector(4994.3505859375, 3625.0190429688, -511.50277709961), "models/elevator/elevator_entrance.mdl", 0)
+        mp_coop_lobby_3_custom_prop_274.SetAngles(-0.0016599468654022, -171.58477783203, 0.0001068115234375)
+        mp_coop_lobby_3_custom_prop_274.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_274.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_276 = CreateProp("prop_dynamic", Vector(5097.8125, 3734.2758789062, -508.96875), "models/container_ride/finedebris_part13.mdl", 0)
+        mp_coop_lobby_3_custom_prop_276.SetAngles(0, -101.40315246582, 0)
+        mp_coop_lobby_3_custom_prop_276.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_276.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_277 = CreateProp("prop_physics", Vector(5136.6953125, 3731.8889160156, -508.98815917969), "models/gibs/hgibs.mdl", 0)
+        mp_coop_lobby_3_custom_prop_277.SetAngles(3.3942544460297, -69.736701965332, 0.34799194335938)
+        mp_coop_lobby_3_custom_prop_277.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_277.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_278 = CreateProp("prop_physics", Vector(5145.3520507812, 3772.736328125, -511.53521728516), "models/gibs/glass_shard03.mdl", 0)
+        mp_coop_lobby_3_custom_prop_278.SetAngles(0.7915221452713, 155.86926269531, -0.60748291015625)
+        mp_coop_lobby_3_custom_prop_278.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_278.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_279 = CreateProp("prop_physics", Vector(5166.216796875, 3825.5148925781, -511.51773071289), "models/gibs/glass_shard03.mdl", 0)
+        mp_coop_lobby_3_custom_prop_279.SetAngles(0.025005146861076, 67.648399353027, -0.1934814453125)
+        mp_coop_lobby_3_custom_prop_279.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_279.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_280 = CreateProp("prop_physics", Vector(5135.6147460938, 3799.234375, -511.5778503418), "models/gibs/glass_shard02.mdl", 0)
+        mp_coop_lobby_3_custom_prop_280.SetAngles(0.38938099145889, -65.165519714355, -0.2987060546875)
+        mp_coop_lobby_3_custom_prop_280.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_280.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_281 = CreateProp("prop_physics", Vector(5102.6733398438, 3796.8793945312, -511.53375244141), "models/gibs/glass_shard02.mdl", 0)
+        mp_coop_lobby_3_custom_prop_281.SetAngles(0.21821263432503, -47.219535827637, -0.0780029296875)
+        mp_coop_lobby_3_custom_prop_281.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_281.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_282 = CreateProp("prop_physics", Vector(5161.8452148438, 3813.1823730469, -511.59915161133), "models/gibs/glass_shard02.mdl", 0)
+        mp_coop_lobby_3_custom_prop_282.SetAngles(0.078982934355736, -85.180198669434, 0.010223388671875)
+        mp_coop_lobby_3_custom_prop_282.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_282.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_283 = CreateProp("prop_physics", Vector(5148.0717773438, 3793.2922363281, -511.52108764648), "models/gibs/glass_shard02.mdl", 0)
+        mp_coop_lobby_3_custom_prop_283.SetAngles(-0.0014004034455866, -63.919612884521, -0.04608154296875)
+        mp_coop_lobby_3_custom_prop_283.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_283.__KeyValueFromString("targetname", "genericcustomprop")
+
+    }
+}
+}
