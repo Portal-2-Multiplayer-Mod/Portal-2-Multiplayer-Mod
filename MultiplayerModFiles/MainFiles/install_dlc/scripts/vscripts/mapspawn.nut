@@ -417,6 +417,8 @@ OnPlayerJoin <- function() {
 
         AllMapsLoopCode() // run map loops
 
+        CreatePropsForLevel(false, false, true)
+
         // local player = null
         // while (player=Entities.FindByClassname(player, "player")) {
         //     local traceend = TraceDir(player.EyePosition(), player.GetAngles(), 100, null).Hit
@@ -711,7 +713,7 @@ OnPlayerJoin <- function() {
         } catch(exception) {}
 
         //Cache Props
-        CreatePropsForLevel(true, false)
+        CreatePropsForLevel(true, false, false)
     }
 
     // general one time run
@@ -737,7 +739,7 @@ OnPlayerJoin <- function() {
         }
 
         //Create Props After Cache
-        CreatePropsForLevel(false, true)
+        CreatePropsForLevel(false, true, false)
 
         SingleplayerOnFirstSpawn()
 
@@ -1844,31 +1846,6 @@ try {
 // ║║║║╠═╝║ ║╠╦╝ ║ ║╣  ║║  ╠╣ ╠╦╝║ ║║║║  ║ ╦║║║║ ║ ║║
 // ╩╩ ╩╩  ╚═╝╩╚═ ╩ ╚═╝═╩╝  ╚  ╩╚═╚═╝╩ ╩  ╚═╝╩ ╩╚═╝═╩╝
 
-function CreatePropsForLevel(CacheTime, CreateTime) {
-
-//==================================//
-//CREATE OBJECTS FOR mp_coop_lobby_3//
-//==================================//
-
-if (GetMapName() == "mp_coop_lobby_3") {
-    if (CacheTime==true) {
-        // Cache Objects
-
-        CacheModel("props_underground/aperture_sign_1940_01.mdl")
-
-        DoneCacheing <- true
-    }
-
-
-    if (CreateTime==true) {
-        // Create Objects
-
-        local mp_coop_lobby_3_custom_prop_255 = CreateProp("prop_dynamic", Vector(5243.9135742188, 4098.4013671875, 77.893005371094), "models/props_underground/aperture_sign_1940_01.mdl", 0)
-        mp_coop_lobby_3_custom_prop_255.SetAngles(1.1753302307461e-36, -179.99998474121, 0)
-        mp_coop_lobby_3_custom_prop_255.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_255.__KeyValueFromString("targetname", "genericcustomprop")
-
-    }
-}
+function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 }

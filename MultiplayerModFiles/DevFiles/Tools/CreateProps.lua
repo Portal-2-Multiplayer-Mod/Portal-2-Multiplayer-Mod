@@ -121,7 +121,7 @@ while (Loop == true) do
                         if (prop:GetColor() == prop2:GetColor()) then
                             for i=0, prop:GetBoneCount() do
                                 AvragingOperation1 = prop:GetManipulateBoneScale(i).x + prop:GetManipulateBoneScale(i).y + prop:GetManipulateBoneScale(i).z
-                                AvragedScale = AvragingOperation1 / 3 * 16
+                                AvragedScale = AvragingOperation1 / 3 * 10
 
                             end
                             GenerateLine("     local p = null")
