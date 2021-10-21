@@ -68,6 +68,7 @@ while (Loop == true) do
             ContinueModelCache = true
             PropCollisionNumber = 6
             PropEnableDraw = true
+            AvragedScale = 16
 
             if (prop:GetCollisionGroup() == 20) then
                 PropCollisionNumber = 0
@@ -118,8 +119,13 @@ while (Loop == true) do
                 if (PropModel=="models/maxofs2d/hover_rings.mdl") then
                     for k, prop2 in ipairs( ents.FindByModel( "models/maxofs2d/hover_basic.mdl" ) ) do
                         if (prop:GetColor() == prop2:GetColor()) then
+                            for i=0, prop:GetBoneCount() do
+                                AvragingOperation1 = prop:GetManipulateBoneScale(i).x + prop:GetManipulateBoneScale(i).y + prop:GetManipulateBoneScale(i).z
+                                AvragedScale = AvragingOperation1 / 3 * 16
+
+                            end
                             GenerateLine("     local p = null")
-                            GenerateLine('     while (p = Entities.FindByClassnameWithin(p, "player", Vector(' .. PropCords.x .. ", " .. PropCords.y .. ", " .. PropCords.z .. '), 16)) {')
+                            GenerateLine('     while (p = Entities.FindByClassnameWithin(p, "player", Vector(' .. PropCords.x .. ", " .. PropCords.y .. ", " .. PropCords.z .. '), ' .. AvragedScale .. ')) {')
                             GenerateLine("         p.SetOrigin(Vector(" .. prop2:GetPos().x .. ", " .. prop2:GetPos().y .. ", " .. prop2:GetPos().z .. "))")
                             GenerateLine("     }")
                         end
@@ -146,5 +152,3 @@ while (Loop == true) do
 end
 
 GenerateLine("}")
-
--- models/maxofs2d/hover_rings.mdl
