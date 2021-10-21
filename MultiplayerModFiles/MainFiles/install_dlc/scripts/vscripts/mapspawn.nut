@@ -1846,7 +1846,6 @@ try {
 
 function CreatePropsForLevel(CacheTime, CreateTime) {
 
-
 //==================================//
 //CREATE OBJECTS FOR mp_coop_lobby_3//
 //==================================//
@@ -1855,17 +1854,7 @@ if (GetMapName() == "mp_coop_lobby_3") {
     if (CacheTime==true) {
         // Cache Objects
 
-        CacheModel("br_debris/deb_dave_crate_broken_body_01.mdl")
-
-        CacheModel("br_debris/deb_dave_crate.mdl")
-
-        CacheModel("car_int_dest/car_int_dest.mdl")
-
-        CacheModel("props_animsigns/signage_num00_dirty.mdl")
-
-        CacheModel("props_animsigns/signage_num19.mdl")
-
-        CacheModel("props/door_02.mdl")
+        CacheModel("props_underground/aperture_sign_1940_01.mdl")
 
         DoneCacheing <- true
     }
@@ -1874,74 +1863,10 @@ if (GetMapName() == "mp_coop_lobby_3") {
     if (CreateTime==true) {
         // Create Objects
 
-        local mp_coop_lobby_3_custom_prop_251 = CreateProp("prop_dynamic", Vector(5085.0415039062, 3671.9423828125, -490.58395385742), "models/br_debris/deb_dave_crate_broken_body_01.mdl", 0)
-        mp_coop_lobby_3_custom_prop_251.SetAngles(2.8720257887471e-06, -138.53570556641, 0.053237915039062)
-        mp_coop_lobby_3_custom_prop_251.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_251.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local mp_coop_lobby_3_custom_prop_252 = CreateProp("prop_dynamic", Vector(5119.2514648438, 3586.3967285156, -489.9866027832), "models/br_debris/deb_dave_crate.mdl", 0)
-        mp_coop_lobby_3_custom_prop_252.SetAngles(0.061423946171999, -179.8265838623, 0.0053558349609375)
-        mp_coop_lobby_3_custom_prop_252.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_252.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local mp_coop_lobby_3_custom_prop_254 = CreateProp("prop_dynamic", Vector(5320.1142578125, 3789.9660644531, -506.48934936523), "models/car_int_dest/car_int_dest.mdl", 0)
-        mp_coop_lobby_3_custom_prop_254.SetAngles(-2.1379859688198e-13, -90, 0)
-        mp_coop_lobby_3_custom_prop_254.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_254.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local mp_coop_lobby_3_custom_prop_255 = CreateProp("prop_dynamic", Vector(5325.501953125, 3535.6809082031, -516.02972412109), "models/props_animsigns/signage_num00_dirty.mdl", 0)
-        mp_coop_lobby_3_custom_prop_255.SetAngles(-89.998672485352, -89.999931335449, 180)
+        local mp_coop_lobby_3_custom_prop_255 = CreateProp("prop_dynamic", Vector(5243.9135742188, 4098.4013671875, 77.893005371094), "models/props_underground/aperture_sign_1940_01.mdl", 0)
+        mp_coop_lobby_3_custom_prop_255.SetAngles(1.1753302307461e-36, -179.99998474121, 0)
         mp_coop_lobby_3_custom_prop_255.__KeyValueFromString("solid", "6")
         mp_coop_lobby_3_custom_prop_255.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_255, "disabledraw", "", 0, null, null)
-
-        local mp_coop_lobby_3_custom_prop_256 = CreateProp("prop_dynamic", Vector(5319.96875, 3728.1528320312, -514.89239501953), "models/props_animsigns/signage_num19.mdl", 0)
-        mp_coop_lobby_3_custom_prop_256.SetAngles(-89.958450317383, 89.987464904785, 180)
-        mp_coop_lobby_3_custom_prop_256.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_256.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_256, "disabledraw", "", 0, null, null)
-
-        local mp_coop_lobby_3_custom_prop_257 = CreateProp("prop_dynamic", Vector(5325.1318359375, 3920.5610351562, -516.59448242188), "models/props_animsigns/signage_num19.mdl", 0)
-        mp_coop_lobby_3_custom_prop_257.SetAngles(-89.710906982422, 21.118795394897, -111.18826293945)
-        mp_coop_lobby_3_custom_prop_257.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_257.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_257, "disabledraw", "", 0, null, null)
-
-        local mp_coop_lobby_3_custom_prop_258 = CreateProp("prop_dynamic", Vector(5321.5595703125, 4017.0283203125, -519.36791992188), "models/props/door_02.mdl", 0)
-        mp_coop_lobby_3_custom_prop_258.SetAngles(-89.650482177734, -108.40106201172, 18.347686767578)
-        mp_coop_lobby_3_custom_prop_258.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_258.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_258, "disabledraw", "", 0, null, null)
-
-        local mp_coop_lobby_3_custom_prop_259 = CreateProp("prop_dynamic", Vector(5384.9038085938, 4041.0173339844, -446.11322021484), "models/props_animsigns/signage_num19.mdl", 0)
-        mp_coop_lobby_3_custom_prop_259.SetAngles(1.147864615858e-11, 179.74656677246, 90.000015258789)
-        mp_coop_lobby_3_custom_prop_259.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_259.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_259, "disabledraw", "", 0, null, null)
-
-        local mp_coop_lobby_3_custom_prop_260 = CreateProp("prop_dynamic", Vector(5382.5170898438, 3837.5727539062, -444.49188232422), "models/props_animsigns/signage_num19.mdl", 0)
-        mp_coop_lobby_3_custom_prop_260.SetAngles(1.2354466137187e-13, 179.45088195801, -90)
-        mp_coop_lobby_3_custom_prop_260.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_260.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_260, "disabledraw", "", 0, null, null)
-
-        local mp_coop_lobby_3_custom_prop_261 = CreateProp("prop_dynamic", Vector(5384.712890625, 3645.1340332031, -445.34759521484), "models/props_animsigns/signage_num19.mdl", 0)
-        mp_coop_lobby_3_custom_prop_261.SetAngles(0.0014235069975257, -179.93650817871, 89.99878692627)
-        mp_coop_lobby_3_custom_prop_261.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_261.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_261, "disabledraw", "", 0, null, null)
-
-        local mp_coop_lobby_3_custom_prop_262 = CreateProp("prop_dynamic", Vector(5381.916015625, 3484.7150878906, -514.75048828125), "models/props/door_02.mdl", 0)
-        mp_coop_lobby_3_custom_prop_262.SetAngles(0.252466827631, -179.59127807617, -0.00372314453125)
-        mp_coop_lobby_3_custom_prop_262.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_262.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_262, "disabledraw", "", 0, null, null)
-
-        local mp_coop_lobby_3_custom_prop_263 = CreateProp("prop_dynamic", Vector(5325.8227539062, 4143.8393554688, -509.18896484375), "models/props/door_02.mdl", 0)
-        mp_coop_lobby_3_custom_prop_263.SetAngles(0.0037109239492565, -90.41316986084, -0.00018310546875)
-        mp_coop_lobby_3_custom_prop_263.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_263.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(mp_coop_lobby_3_custom_prop_263, "disabledraw", "", 0, null, null)
 
     }
 }
