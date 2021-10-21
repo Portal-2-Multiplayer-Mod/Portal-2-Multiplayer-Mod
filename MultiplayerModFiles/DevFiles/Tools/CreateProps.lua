@@ -6,6 +6,9 @@ function GenerateLine(StringDataInput)
     file.Append("GeneratedPortal2ObjectOutput.txt", "\n" .. StringDataInput )
 end
 
+TeleportInputNode = "models/hunter/blocks/cube1x1x1.mdl"
+TeleportOutputNode = "models/maxofs2d/hover_basic.mdl"
+
 PropType = ""
 PropCords = Vector (0, 0, 0)
 PropAngles = Vector (0, 0, 0)
@@ -32,7 +35,7 @@ GenerateLine("")
 
 GenerateLine('if (GetMapName() == "' .. MapName .. '") {')
 
-while (Loop == true) do 
+while (Loop == true) do
 
     if (LoopAmount == 0) then
         GenerateLine("    if (CacheTime==true) {")
@@ -58,7 +61,7 @@ while (Loop == true) do
 
     for k, prop in ipairs( ents.FindByClass( "prop_*" ) ) do
         if (!prop:CreatedByMap() && prop:GetClass() ~= "prop_effect" && prop:GetMaterial() ~= "phoenix_storms/stripes") then
-        
+
             -- reset varibles
             PropType = "prop_dynamic"
             PropCords = prop:GetPos()
@@ -68,12 +71,23 @@ while (Loop == true) do
             ContinueModelCache = true
             PropCollisionNumber = 6
             PropEnableDraw = true
-            AvragedScale = 16
+            AvragedScale = 1
+            AvragingOperation1 = 1
+            OutputScale = 1
+            PropColor = tostring(prop:GetColor())
 
+            -- store the size of the prop
+            for i=0, prop:GetBoneCount() do
+                AvragingOperation1 = prop:GetManipulateBoneScale(i).x + prop:GetManipulateBoneScale(i).y + prop:GetManipulateBoneScale(i).z
+                AvragedScale = AvragingOperation1 / 3
+                OutputScale = AvragedScale
+            end
+
+            -- if the prop has no collision store that
             if (prop:GetCollisionGroup() == 20) then
                 PropCollisionNumber = 0
             end
-            
+
             -- if the prop is no drawed store that
             if(prop:GetMaterial() == "models/wireframe") then
                 PropEnableDraw = false
@@ -85,7 +99,7 @@ while (Loop == true) do
             end
 
             -- print out generated code
-            if (PropModel~="models/maxofs2d/hover_rings.mdl" && PropModel~="models/maxofs2d/hover_basic.mdl") then
+            if (PropModel~=TeleportInputNode && PropModel~=TeleportOutputNode) then
                 -- cache code
                 -- if the current model has been cached do not continue
                 if (LoopAmount == 0) then
@@ -94,7 +108,7 @@ while (Loop == true) do
                             ContinueModelCache = false
                         end
                     end
-                    
+
                     -- if uncached cache model
                     if (ContinueModelCache == true) then
                         table.insert(CachedModels, PropModel)
@@ -111,21 +125,22 @@ while (Loop == true) do
                     if (PropEnableDraw == false) then
                         GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "disabledraw", "", 0, null, null)')
                     end
+                    if (OutputScale ~= 1) then
+                        GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "addoutput", "modelscale ' .. OutputScale .. '", 0, null, null)')
+                    end
+                    if (PropColor ~= "255 255 255 255") then
+                        GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "color", "' .. PropColor .. '", 0, null, null)')
+                    end
                     GenerateLine("")
                 end
             end
 
             if (LoopAmount == 2) then
-                if (PropModel=="models/maxofs2d/hover_rings.mdl") then
-                    for k, prop2 in ipairs( ents.FindByModel( "models/maxofs2d/hover_basic.mdl" ) ) do
+                if (PropModel==TeleportInputNode) then
+                    for k, prop2 in ipairs( ents.FindByModel( TeleportOutputNode ) ) do
                         if (prop:GetColor() == prop2:GetColor()) then
-                            for i=0, prop:GetBoneCount() do
-                                AvragingOperation1 = prop:GetManipulateBoneScale(i).x + prop:GetManipulateBoneScale(i).y + prop:GetManipulateBoneScale(i).z
-                                AvragedScale = AvragingOperation1 / 3 * 10
-
-                            end
                             GenerateLine("     local p = null")
-                            GenerateLine('     while (p = Entities.FindByClassnameWithin(p, "player", Vector(' .. PropCords.x .. ", " .. PropCords.y .. ", " .. PropCords.z .. '), ' .. AvragedScale .. ')) {')
+                            GenerateLine('     while (p = Entities.FindByClassnameWithin(p, "player", Vector(' .. PropCords.x .. ", " .. PropCords.y .. ", " .. PropCords.z .. '), ' .. OutputScale * 20 .. ')) {')
                             GenerateLine("         p.SetOrigin(Vector(" .. prop2:GetPos().x .. ", " .. prop2:GetPos().y .. ", " .. prop2:GetPos().z .. "))")
                             GenerateLine("     }")
                         end
