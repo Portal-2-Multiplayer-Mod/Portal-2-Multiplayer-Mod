@@ -1,6 +1,6 @@
 //-----------------------------------
 //             COPYRIGHT
-//2020 Portal 2: Multiplayer Mod Team
+//2021 Portal 2: Multiplayer Mod Team
 //     under a GNU GPLv3 license
 //-----------------------------------
 
