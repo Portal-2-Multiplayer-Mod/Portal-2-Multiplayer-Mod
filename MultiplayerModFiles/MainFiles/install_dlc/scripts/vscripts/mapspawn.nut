@@ -258,18 +258,19 @@ try {
             }
         }
 
-        AllMapsCode(true, false, false) // run map loops
+        AllMapsCode(true, false, false, false) // run map loops
 
         CreatePropsForLevel(false, false, true) // create the gmod generated props in the level
 
         // cache original spawn position
         if (WFPDisplayDisabled == 0) {
-                    try {
-            if (copp == 0) {
-                OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-                copp <- 1
-            }
-        } catch(exception) {}
+            try {
+                if (copp == 0) {
+                    OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+                    copp <- 1
+                } 
+            } catch(exception) {}
+        }
 
         // display waiting for players until player exits spawn zone
         try {
@@ -295,7 +296,7 @@ try {
                         ent.Destroy()
                     }
                 }
-                }
+            }
         }
         if (canclearcache==true) {
             foreach (index, CustomGameModel in CachedModels)  {
@@ -527,7 +528,7 @@ script_scope.Colored <- true
 EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
 
 if (PlayerID==1) {
-    AllMapsCode(false, false, true)
+    AllMapsCode(false, false, true, false)
 }
 
 return
@@ -1774,7 +1775,6 @@ try {
 function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 }
-
 
 
 
