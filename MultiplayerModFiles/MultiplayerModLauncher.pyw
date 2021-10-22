@@ -79,6 +79,11 @@ try:
             pass
     else:
         try:
+            os.rename(owd + "\\bin\linux32\disabledengine.dll", owd + "/bin/linux32/engine.so")
+            print("found engine.so just renamed to engine.so (python probably crashed last session)")
+        except:
+            pass
+        try:
             os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
             print("found disabledserver.dll just renamed to server.dll (python probably crashed last session)")
         except:
@@ -197,7 +202,18 @@ if (iow):
     # except:
     #     print("Failed To Patch engine.dll")
 else:
-    print("Running Linux Skipping engine.dll Patch")
+    f = open(owd + "/bin/linux32/engine.so", 'rb')
+    data = f.read()
+    f.close()
+
+    #remove valve_reject_hidden_game commentary
+    data = data.replace(bytes.fromhex("84 C0 0f 84 f5 fc ff ff 8b 06 8d 93 ae 66 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 11 5e 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 97 5c 2a 00 5a ff b4 24"), bytes.fromhex("a8 00 0f 84 f5 fc ff ff 8b 06 8d 93 ae 66 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 11 5e 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 97 5c 2a 00 5a ff b4 24"))
+
+    #write changes into a new toplevel engine.dll
+    f2 = open("engine.so", 'wb')
+    f2.write(data)
+    f2.close()
+    print("Patched engine.so")
 
 ##################################
 #         END OF PATCHING        #
@@ -225,6 +241,7 @@ if (iow):
     os.rename(owd + "\portal2\\bin\server.dll", owd + "\portal2\\bin\disabledserver.dll")
     os.rename(owd + "\\bin\engine.dll", owd + "\\bin\disabledengine.dll")
 else:
+    os.rename(owd + "/bin/linux32/engine.so", owd + "\\bin\linux32\disabledengine.so")
     os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
     os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
 
@@ -250,6 +267,7 @@ def RemoveMultiplayerFiles():
             os.remove(owd + "\server.dll")
             os.remove(owd + "\engine.dll")
         else:
+            os.remove(owd + "/engine.so")
             os.remove(owd + "/server.dll")
             os.remove(owd + "/server.so")
         print("Removed Modded server.so/server.dll")
@@ -276,6 +294,11 @@ def RemoveMultiplayerFiles():
             except:
                 pass
         else:
+            try:
+                os.rename(owd + "\\bin\linux32\disabledengine.so", owd + "/bin/linux32/engine.so")
+                print("Enabled engine.so")
+            except:
+                pass
             try:
                 os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
                 print("Enabled server.dll")

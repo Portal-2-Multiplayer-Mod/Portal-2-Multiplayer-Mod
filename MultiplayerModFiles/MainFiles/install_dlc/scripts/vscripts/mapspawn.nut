@@ -1783,6 +1783,80 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             }
         }
     }
+
+    //## sp_a2_dual_lasers ##//
+    if (GetMapName()=="sp_a2_dual_lasers") {
+        if (SSInstantRun==true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(640, 224, 936), 1024).Destroy()
+            Entities.FindByClassnameNearest("trigger_multiple", Vector(488, 216, 960), 1024).Destroy()
+        }
+
+        if (SSLoop==true) {
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1063, 210, 277), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_laser_over_goo")
+            }
+
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+    }
+
+        //## sp_a2_laser_over_goo ##//
+    if (GetMapName()=="sp_a2_laser_over_goo") {
+        if (SSInstantRun==true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "@repair_wall_kill_all").Destroy()
+            Entities.FindByName(null, "door_1-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2552, -1056, 142.82), 1024).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2432, -1056, 72), 1024).Destroy()
+        }
+
+        if (SSLoop==true) {
+            
+            // elevator code
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_catapult_intro")
+            }
+
+            // light fill
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+    }
+
+    //## sp_a2_catapult_intro ##//
+    if (GetMapName()=="sp_a2_catapult_intro") {
+        if (SSInstantRun==true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            // destroy objects
+            Entities.FindByName(null, "door_1-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-56, -1576, -384), 1024).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-64, -1696, -408), 1024).Destroy()
+        }
+
+        if (SSLoop==true) {
+            
+            // elevator code
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-80, -2106, -805), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_trust_fling")
+            }
+
+            // light fill
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+    }
 }
 
 //-----------------------------------
@@ -1805,9 +1879,20 @@ function DevHacks() {
     if (GetMapName()=="MAPNAME") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            // destroy objects
+            //Entities.FindByName(null, "NAME").Destroy()
         }
 
         if (SSLoop==true) {
+            
+            // elevator code
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel LEVELNAME")
+            }
+
+            // light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
