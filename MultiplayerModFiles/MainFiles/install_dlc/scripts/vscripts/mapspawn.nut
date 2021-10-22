@@ -1488,91 +1488,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
     }
 
-    function SingleplayerOnFirstSpawn() {
-        if (GetMapName() == "sp_a1_intro6") {
-
-        }
-    }
-
-    //SINGLEPLAYER FUNCTIONS
-    function disablewheatleyplayerpickup() {
-        printl("Player Picked Up Wheatley. Disabling Pickup!")
-        EntFire("@sphere", "disablepickup", "", 0, null)
-        EntFire("@sphereDummy", "enablepickup", "", 0, null)
-    }
-    function enablewheatleyplayerpickup() {
-        printl("Player Picked Up Wheatley. Enabling Pickup!")
-        EntFire("@sphere", "enablepickup", "", 0, null)
-        EntFire("@sphereDummy", "enablepickup", "", 0, null)
-    }
-
-    function wheatleyhitground() {
-        EntFire("@sphere", "disablepickup", "", 1.05, null)
-        EntFire("@sphere", "enablepickup", "", 8, null)
-        EntFire("spherebot_1_top_swivel_1", "deactivate", "", 1.01, null)
-    }
-
-    function SPSkipPanel() {
-        printl("message")
-        EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
-        myexplode2 <- Entities.CreateByClassname("npc_personality_core")
-        myexplode2.__KeyValueFromString("targetname", "myexplode2")
-        myexplode2.SetOrigin(Vector(-822, -523, 1269))
-
-        myexplode <- Entities.CreateByClassname("env_ar2explosion")
-        myexplode.__KeyValueFromString("targetname", "myexplode")
-        myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
-        myexplode.SetOrigin(Vector(-822, -523, 1269))
-        EntFire("myexplode", "explode", "", 2.5, null)
-        EntFire("myexplode2", "explode", "", 2.5, null)
-        EntFire("myexplode2", "explode", "", 3.0, null)
-
-        Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
-        local mysphere = Entities.FindByName(null, "@spheredummy")
-
-        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows01" )
-        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows02" )
-        self.PrecacheSoundScript( "sphere03.sphere_flashlight_tour67" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking09" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking12" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking10" )
-        self.PrecacheSoundScript( "sphere03.bw_finale4_hackworked01" )
-        self.PrecacheSoundScript( "Portal.elevator_chime" )
-        self.PrecacheSoundScript( "sphere03.GloriousFreedom03" )
-        self.PrecacheSoundScript( "sphere03.bw_fire_lift03" )
-
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret01" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret08" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret07" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret05" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret06" )
-
-        EntFire("myexplode2", "addoutput", "targetname playline1", 2.65, null)
-        EntFire("playline1", "addoutput", "targetname myexplode2", 2.76, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline2", 6.55, null)
-        EntFire("playline2", "addoutput", "targetname myexplode2", 6.66, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline3", 12.75, null)
-        EntFire("playline3", "addoutput", "targetname myexplode2", 12.86, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline4", 16.75, null)
-        EntFire("playline4", "addoutput", "targetname myexplode2", 16.86, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline5", 18.00, null)
-        EntFire("playline5", "addoutput", "targetname myexplode2", 18.11, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline6", 24.00, null)
-        EntFire("playline6", "addoutput", "targetname myexplode2", 24.11, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline7", 25.50, null)
-        EntFire("playline7", "addoutput", "targetname myexplode2", 25.61, null)
-
-        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50, null)
-
-    }
-
-
     if (SSInstantRun == true) {
         // Support for the map sp_a1_intro2
         if (GetMapName() == "sp_a1_intro2") {
@@ -2062,7 +1977,83 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 }
 
+    //SINGLEPLAYER FUNCTIONS
+    function disablewheatleyplayerpickup() {
+        printl("Player Picked Up Wheatley. Disabling Pickup!")
+        EntFire("@sphere", "disablepickup", "", 0, null)
+        EntFire("@sphereDummy", "enablepickup", "", 0, null)
+    }
+    function enablewheatleyplayerpickup() {
+        printl("Player Picked Up Wheatley. Enabling Pickup!")
+        EntFire("@sphere", "enablepickup", "", 0, null)
+        EntFire("@sphereDummy", "enablepickup", "", 0, null)
+    }
 
+    function wheatleyhitground() {
+        EntFire("@sphere", "disablepickup", "", 1.05, null)
+        EntFire("@sphere", "enablepickup", "", 8, null)
+        EntFire("spherebot_1_top_swivel_1", "deactivate", "", 1.01, null)
+    }
+
+    function SPSkipPanel() {
+        printl("message")
+        EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
+        myexplode2 <- Entities.CreateByClassname("npc_personality_core")
+        myexplode2.__KeyValueFromString("targetname", "myexplode2")
+        myexplode2.SetOrigin(Vector(-822, -523, 1269))
+
+        myexplode <- Entities.CreateByClassname("env_ar2explosion")
+        myexplode.__KeyValueFromString("targetname", "myexplode")
+        myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
+        myexplode.SetOrigin(Vector(-822, -523, 1269))
+        EntFire("myexplode", "explode", "", 2.5, null)
+        EntFire("myexplode2", "explode", "", 2.5, null)
+        EntFire("myexplode2", "explode", "", 3.0, null)
+
+        Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
+        local mysphere = Entities.FindByName(null, "@spheredummy")
+
+        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows01" )
+        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows02" )
+        self.PrecacheSoundScript( "sphere03.sphere_flashlight_tour67" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking09" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking12" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking10" )
+        self.PrecacheSoundScript( "sphere03.bw_finale4_hackworked01" )
+        self.PrecacheSoundScript( "Portal.elevator_chime" )
+        self.PrecacheSoundScript( "sphere03.GloriousFreedom03" )
+        self.PrecacheSoundScript( "sphere03.bw_fire_lift03" )
+
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret01" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret08" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret07" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret05" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret06" )
+
+        EntFire("myexplode2", "addoutput", "targetname playline1", 2.65, null)
+        EntFire("playline1", "addoutput", "targetname myexplode2", 2.76, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline2", 6.55, null)
+        EntFire("playline2", "addoutput", "targetname myexplode2", 6.66, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline3", 12.75, null)
+        EntFire("playline3", "addoutput", "targetname myexplode2", 12.86, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline4", 16.75, null)
+        EntFire("playline4", "addoutput", "targetname myexplode2", 16.86, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline5", 18.00, null)
+        EntFire("playline5", "addoutput", "targetname myexplode2", 18.11, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline6", 24.00, null)
+        EntFire("playline6", "addoutput", "targetname myexplode2", 24.11, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline7", 25.50, null)
+        EntFire("playline7", "addoutput", "targetname myexplode2", 25.61, null)
+
+        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50, null)
+
+    }
 
 // Run mapspawn.nut
 try {
