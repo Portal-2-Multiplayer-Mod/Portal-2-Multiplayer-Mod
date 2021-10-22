@@ -79,13 +79,75 @@ TryGelocity <- 1
 TryGelocity2 <- 1
 TryGelocity3 <- 1
 copp <- 0
-WFPDisplayDisabled <- 0
+DoneWaiting <- false
 IsSingleplayerMap <- false
 LoadPlugin <- false
 PluginLoaded <- false
 if (UsePlugin==true) {
     PluginLoaded <- true
 }
+
+// add names to credits
+MPMCoopCreditNames <- [
+"",
+"",
+"",
+"",
+"Portal 2 Multiplayer Mod: Credits",
+"",
+"--------------------------",
+"Multiplayer Mod: Team",
+"--------------------------",
+"kyleraykbs | Scripting + Team Lead",
+"Vista | Reverse Engineering, Plugin Dev",
+"Bumpy | Scripting + Script Theory",
+"Wolƒe Strider Shoσter | Scripting",
+"Enator18 | Python"
+"Nanoman2525 | Mapping + Entity and Command Help",
+"--------------------------",
+"Multiplayer Mod: Contributers",
+"--------------------------",
+"Darnias | Jumpstarter Code",
+"Mellow | stole all of Python"
+"The Pineapple | Hamachi support",
+"actu | Remote File Downloads",
+"Blub/Vecc | Code Cleanup + Commenting",
+"AngelPuzzle | Translations",
+"SuperSpeed | spedrun da test",
+"--------------------------",
+"Multiplayer Mod: Beta Testers",
+"--------------------------",
+"sear",
+"Trico_Everfire",
+"Brawler",
+"iambread",
+"hulkstar",
+"neck",
+"soulfur",
+"brawler",
+"Sheuron",
+"portalboy",
+"charity",
+"Souper Marilogi",
+"fluffys",
+"JDWMGB",
+"ALIEN GOD",
+"mono",
+"mp_emerald",
+"Funky Kong",
+"MicrosoftWindows",
+"dactam",
+"wol",
+"kitsune",
+"--------------------------",
+"Thank you all so so much!!!",
+"--------------------------"
+"",
+"",
+"--------------------------",
+"Valve: Credits",
+"--------------------------",
+]
 
 // █ █▄░█ █ ▀█▀
 // █ █░▀█ █ ░█░
@@ -95,7 +157,7 @@ function init() {
     // run singleplayer code
     if (GetMapName().slice(0, 7) != "mp_coop") {
         IsSingleplayerMap <- true
-        Singleplayer()
+        SingleplayerSupport(true, false)
     }
 
     // enable fast download
@@ -263,23 +325,21 @@ try {
         CreatePropsForLevel(false, false, true) // create the gmod generated props in the level
 
         // cache original spawn position
-        if (WFPDisplayDisabled == 0) {
-            try {
-                if (copp == 0) {
-                    OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-                    copp <- 1
-                } 
-            } catch(exception) {}
-        }
+            if (copp == 0 && Entities.FindByClassname(null, "player")) {
+                OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+                copp <- 1
+            } 
 
         // display waiting for players until player exits spawn zone
         try {
-            // Check if client is in spawn zone
-            if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 35)) {
-                DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
-            } else {
-                WFPDisplayDisabled <- 1
-                GeneralOneTime()
+            if (DoneWaiting == false) {
+                // Check if client is in spawn zone
+                if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 35)) {
+                    DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+                } else {
+                    DoneWaiting <- true
+                    GeneralOneTime()
+                }
             }
         } catch(exception) {}
 
@@ -398,7 +458,7 @@ try {
 
         //singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
-            SingleplayerLoop()
+            SingleplayerSupport(false, true)
         }
 
         // run dedicated server code
@@ -437,7 +497,10 @@ try {
 // █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-// Runs When A Player Joins
+/////////////////////////////
+// Runs When A Player Joins//
+/////////////////////////////
+
 function OnPlayerJoin(p, script_scope) {
 // get player's index and store it
 PlayerID <- p.GetRootMoveParent()
@@ -534,8 +597,12 @@ if (PlayerID==1) {
 return
 }
 
-// general one time run
+////////////////////////////////////
+// Runs Once On Fist Global Spawn //
+////////////////////////////////////
+
 function GeneralOneTime() {
+
     canclearcache <- true
 
     HasSpawned <- true
@@ -558,6 +625,8 @@ function GeneralOneTime() {
 
     //Create Props After Cache
     CreatePropsForLevel(false, true, false)
+    
+    AllMapsCode(false, true, false, false)
 
     SingleplayerOnFirstSpawn()
 }
@@ -695,71 +764,6 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             foreach (value in AnimationsAL) {
                 CRAnimationTypesAL <- CRAnimationTypesAL + 1
             }
-
-            // add team names to credits
-            MPMCoopCreditNames <- [
-            "",
-            "",
-            "",
-            "",
-            "Portal 2 Multiplayer Mod: Credits",
-            "",
-            "--------------------------",
-            "Multiplayer Mod: Team",
-            "--------------------------",
-            "kyleraykbs | Scripting + Team Lead",
-            "Vista | Reverse Engineering, Plugin Dev",
-            "Bumpy | Scripting + Script Theory",
-            "Wolƒe Strider Shoσter | Scripting",
-            "Enator18 | Python"
-            "Nanoman2525 | Mapping + Entity and Command Help",
-            "--------------------------",
-            "Multiplayer Mod: Contributers",
-            "--------------------------",
-            "Darnias | Jumpstarter Code",
-            "Mellow | stole all of Python"
-            "The Pineapple | Hamachi support",
-            "actu | Remote File Downloads",
-            "Blub/Vecc | Code Cleanup + Commenting",
-            "AngelPuzzle | Translations",
-            "SuperSpeed | spedrun da test",
-            "--------------------------",
-            "Multiplayer Mod: Beta Testers",
-            "--------------------------",
-            "sear",
-            "Trico_Everfire",
-            "Brawler",
-            "iambread",
-            "hulkstar",
-            "neck",
-            "soulfur",
-            "brawler",
-            "Sheuron",
-            "portalboy",
-            "charity",
-            "Souper Marilogi",
-            "fluffys",
-            "JDWMGB",
-            "ALIEN GOD",
-            "mono",
-            "mp_emerald",
-            "Funky Kong",
-            "MicrosoftWindows",
-            "dactam",
-            "wol",
-            "kitsune",
-            "charzar",
-            "NintenDude",
-            "SlingEXE",
-            "--------------------------",
-            "Thank you all so so much!!!",
-            "--------------------------"
-            "",
-            "",
-            "--------------------------",
-            "Valve: Credits",
-            "--------------------------",
-            ]
 
             // set the amount of credits
             MPModCreditNumber <- -1
@@ -925,6 +929,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         //
         if (GetMapName() == "mp_coop_wall_5") {
             TeleportPlayerWithinDistance(Vector(1224, -1984, 565), 100, Vector(1208, -1989, 315))
+            EntFire("portal_close_second_puzzle", "open", "", 0, null)
         }
 
         if (GetMapName() == "mp_coop_2paints_1bridge") {
@@ -967,30 +972,32 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             }
         }
 
-        //## 
-        EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopMapStart()", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(1)", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(2)", 0, null, null)
+        //## MP_COOP_SEPARATION_1 ##//
+        if (GetMapName() == "mp_coop_separation_1") {
+            EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopMapStart()", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(1)", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(2)", 0, null, null)
 
-        local ent = null
-        while(ent = Entities.FindByName(ent, "split_exit_arms")) {
-            EntFireByHandle(ent, "setanimation", "90up", 0, null, null)
-        }
+            local ent = null
+            while(ent = Entities.FindByName(ent, "split_exit_arms")) {
+                EntFireByHandle(ent, "setanimation", "90up", 0, null, null)
+            }
 
-        local ent = null
-        while(ent = Entities.FindByName(ent, "split_entrance_arms")) {
-            EntFireByHandle(ent, "setanimation", "90down", 0, null, null)
-        }
+            local ent = null
+            while(ent = Entities.FindByName(ent, "split_entrance_arms")) {
+                EntFireByHandle(ent, "setanimation", "90down", 0, null, null)
+            }
 
-        local ent = null
-        while (ent = Entities.FindByClassnameWithin(ent, "func_areaportalwindow", OldPlayerPos, 5000)) {
-            EntFireByHandle(ent, "SetFadeEndDistance", "10000", 0, null, null)
-        }
+            local ent = null
+            while (ent = Entities.FindByClassnameWithin(ent, "func_areaportalwindow", OldPlayerPos, 5000)) {
+                EntFireByHandle(ent, "SetFadeEndDistance", "10000", 0, null, null)
+            }
 
-        local loopTimes = 0
-        while (loopTimes <= 0) {
-            Entities.FindByName(null, "split_exit_fake_collision").Destroy()
-            local loopTimes = loopTimes + 1
+            local loopTimes = 0
+            while (loopTimes <= 0) {
+                Entities.FindByName(null, "split_exit_fake_collision").Destroy()
+                local loopTimes = loopTimes + 1
+            }
         }
 
         //## MP_COOP_LOBBY_3 ONE TIME RUN ##//
@@ -1197,113 +1204,494 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         }
     }
 
-//-----------------------------------
-// Singleplayer Support Code
-//-----------------------------------
+// █▀ █ █▄░█ █▀▀ █░░ █▀▀ █▀█ █░░ ▄▀█ █▄█ █▀▀ █▀█  
+// ▄█ █ █░▀█ █▄█ █▄▄ ██▄ █▀▀ █▄▄ █▀█ ░█░ ██▄ █▀▄  
 
-function Singleplayer() {
-    // Support for the map sp_a1_intro2
-    if (GetMapName() == "sp_a1_intro2") {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        SendToConsole("commentary 0")
-        Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
-        Entities.FindByName(null, "@exit_door-door_close_relay").Destroy()
-        Entities.FindByName(null, "Fizzle_Trigger").Destroy()
+// █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
+// ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
+
+
+function SingleplayerSupport(SSInstantRun, SSLoop) {
+
+    if (SSLoop) {
+            // sp_a1_intro2
+        if (GetMapName() == "sp_a1_intro2") {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            local portalgun = null
+            while ( portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
+                portalgun.Destroy()
+            }
+
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a1_intro3")
+            }
+
+            try {
+                Entities.FindByName(null, "block_boxes").Destroy()
+            } catch(exception) {}
+        }
+
+        // sp_a1_intro3
+        if (GetMapName() == "sp_a1_intro3") {
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 45)) {
+            SendToConsole("commentary 1")
+            SendToConsole("changelevel sp_a1_intro4")
+            }
+
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // remove portalgun
+            if (hasgotportalgunSPMP == 0) {
+                local portalgun = null
+                while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
+                    portalgun.Destroy()
+                }
+            }
+
+            if (!Entities.FindByName(null, "portalgun")) {
+                local p = null
+                if (timeout != 25) {
+                    timeout <- timeout + 1
+                    hasgotportalgunSPMP <- 1
+
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        EntFireByHandle(clientcommand, "Command", "hud_saytext_time 0", 0, p, p)
+                        EntFireByHandle(clientcommand, "Command", "give weapon_portalgun", 0, p, p)
+                        EntFireByHandle(clientcommand, "Command", "upgrade_portalgun", 0, p, p)
+                        EntFireByHandle(clientcommand, "Command", "sv_cheats 1", 0, p, p)
+                    }
+                } else {
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        EntFireByHandle(clientcommand, "Command", "hud_saytext_time 12", 0, p, p)
+                    }
+                    EntFireByHandle(clientcommand, "Command", "sv_cheats 0", 0, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
+                }
+            }
+
+            // make Wheatley look at player
+            local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+            EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+
+        // sp_a1_intro4
+        if (GetMapName() == "sp_a1_intro4") {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(806, -528, 64), 150)) {
+                EntFire("projected_texture_03", "TurnOn", "", 0, null)
+            }
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector( 2151, -527, -499), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a1_intro5")
+            }
+        }
+
+        //sp_a1_intro5
+        if (GetMapName() == "sp_a1_intro5") {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-67, 1319, -102), 60)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a1_intro6")
+            }
+        }
+
+        //sp_a1_intro6
+        if (GetMapName() == "sp_a1_intro6") {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(3015, -174, -125), 60)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a1_intro7")
+            }
+        }
+
+        WheatleySeq1 <- false
+
+        //sp_a1_intro7
+        if (GetMapName() == "sp_a1_intro7") {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+            // make Wheatley look at player
+            local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+            EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "spherebot_1_top_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+            //make Wheatley non stealable
+            try {
+            Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
+            Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
+            //disable sentaint arm and disable pickup until spchill is over
+            Entities.FindByName(null, "sphere_impact_trigger").ConnectOutput("OnStartTouch","wheatleyhitground")
+            //skip panel bit
+            Entities.FindByName(null, "@plug_open_rl").ConnectOutput("OnTrigger","SPSkipPanel")
+            } catch(exception) { }
+
+            /////////
+            //LINES//
+            /////////
+
+            if(Entities.FindByName(null, "playline1")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows01.wav")
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows02.wav")
+                printl("played line1")
+            }
+
+            if(Entities.FindByName(null, "playline2")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sphere_flashlight_tour67.wav")
+                printl("played line2")
+            }
+
+            if(Entities.FindByName(null, "playline3")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking09.wav")
+                printl("played line3")
+            }
+
+            if(Entities.FindByName(null, "playline4")) {
+                Entities.FindByName(null, "InstanceAuto9-sphere_socket").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking12.wav")
+                printl("played line4")
+            }
+
+            if(Entities.FindByName(null, "playline5")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking10.wav")
+                printl("played line5")
+            }
+
+            if(Entities.FindByName(null, "playline6")) {
+                Entities.FindByName(null, "InstanceAuto9-sphere_socket").EmitSound("ambient\\alarms\\portal_elevator_chime.wav")
+                printl("played line6")
+            }
+
+            if(Entities.FindByName(null, "playline7")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\bw_finale4_hackworked01.wav")
+                printl("played line7")
+            }
+
+
+
+            if(Entities.FindByName(null, "playline8")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret01.wav")
+                printl("played line8")
+            }
+
+            if(Entities.FindByName(null, "playline9")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret08.wav")
+                printl("played line9")
+            }
+
+            if(Entities.FindByName(null, "playline10")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret07.wav")
+                printl("played line10")
+            }
+
+            if(Entities.FindByName(null, "playline11")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret05.wav")
+                printl("played line11")
+            }
+
+            if(Entities.FindByName(null, "playline12")) {
+                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret06.wav")
+                printl("played line12")
+            }
+
+            if (!Entities.FindByName(null, "seq1finished")) {
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1117, -416, 1280), 100)) {
+                    Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "seq1finished")
+                    printl("Seq1 Done")
+                    Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\gloriousfreedom03.wav")
+                    EntFire("offrails_airlock_door_1_open_rl", "trigger", "", 0, null)
+                }
+            }
+
+            if (!Entities.FindByName(null, "seq2finished")) {
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-2692, -404, 1280), 100)) {
+                    Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "seq2finished")
+                    printl("Seq2 Done")
+
+                    EntFire("@glados", "runscriptcode", "sp_a1_intro7_HoboTurretScene()", 0, null)
+
+                    EntFire("myexplode2", "addoutput", "targetname playline8", 0.00, null)
+                    EntFire("playline8", "addoutput", "targetname myexplode2", 0.11, null)
+
+                    EntFire("myexplode2", "addoutput", "targetname playline9", 1.50, null)
+                    EntFire("playline9", "addoutput", "targetname myexplode2", 1.51, null)
+
+                    EntFire("myexplode2", "addoutput", "targetname playline10", 3.10, null)
+                    EntFire("playline10", "addoutput", "targetname myexplode2", 3.11, null)
+
+                    EntFire("myexplode2", "addoutput", "targetname playline11", 4.80, null)
+                    EntFire("playline11", "addoutput", "targetname myexplode2", 4.81, null)
+
+                    EntFire("myexplode2", "addoutput", "targetname playline12", 7.20, null)
+                    EntFire("playline12", "addoutput", "targetname myexplode2", 7.25, null)
+                }
+            }
+
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2207, 384, 1280), 200)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a1_wakeup")
+            }
+
+        }
+
+        //sp_a2_laser_intro
+        if (GetMapName() == "sp_a2_laser_intro") {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_laser_stairs")
+            }
+
+        }
+
+        //sp_a2_laser_stairs
+        if (GetMapName() == "sp_a2_laser_stairs") {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_dual_lasers")
+            }
+
+        }
 
     }
 
-    // Support for the map sp_a1_intro3
-    if (GetMapName() == "sp_a1_intro3") {
-        Entities.FindByName(null, "door_0-door_close_relay").Destroy()
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        Entities.FindByName(null, "player_clips").Destroy()
-        // destroy pusher x4
-        Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
-        Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
-        Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
-        Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
-        Entities.FindByName(null, "door_3-door_close_relay").Destroy()
-        Entities.FindByName(null, "portal_orange_2").Destroy()
-        Entities.FindByName(null, "emitter_orange_2").Destroy()
-        Entities.FindByName(null, "backtrack_brush").Destroy()
-        Entities.FindByName(null, "portal_orange_mtg").Destroy()
-        Entities.FindByName(null, "emitter_orange_mtg").Destroy()
-        hasgotportalgunSPMP <- 0
-        timeout <- 1
+    function SingleplayerOnFirstSpawn() {
+        if (GetMapName() == "sp_a1_intro6") {
+
+        }
     }
 
-    // Support for the map sp_a1_intro4
-    if (GetMapName() == "sp_a1_intro4") {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        Entities.FindByName(null, "door_0-door_close_relay").Destroy()
-        Entities.FindByClassnameNearest("trigger_once", Vector(464, 136, 72), 1024).Destroy()
-        EntFireByHandle(Entities.FindByName(null, "glass_pane_intact_model"), "kill", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "glass_pane_fractured_model"), "enable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "glass_pane_1_door_1"), "open", "", 0, null, null)
-        Entities.FindByName(null, "glass_pane_1_door_1_blocker").Destroy()
-        Entities.FindByClassnameNearest("trigger_once", Vector(878, -528, 137), 1024).Destroy()
-        Entities.FindByName(null, "glass_shard").Destroy()
-        Entities.FindByName(null, "section_2_trigger_portal_spawn_a2_rm3a").Destroy()
-        Entities.FindByName(null, "portal_a_lvl3").Destroy()
-        Entities.FindByName(null, "section_2_portal_a1_rm3a").Destroy()
-        Entities.FindByName(null, "section_2_portal_a2_rm3a").Destroy()
-        Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
-        Entities.FindByName(null, "room_2_portal_activate_rl").Destroy()
-        Entities.FindByName(null, "room_3_portal_activate_rl").Destroy()
-        Entities.FindByName(null, "door_2-close_door_rl").Destroy()
+    //SINGLEPLAYER FUNCTIONS
+    function disablewheatleyplayerpickup() {
+        printl("Player Picked Up Wheatley. Disabling Pickup!")
+        EntFire("@sphere", "disablepickup", "", 0, null)
+        EntFire("@sphereDummy", "enablepickup", "", 0, null)
+    }
+    function enablewheatleyplayerpickup() {
+        printl("Player Picked Up Wheatley. Enabling Pickup!")
+        EntFire("@sphere", "enablepickup", "", 0, null)
+        EntFire("@sphereDummy", "enablepickup", "", 0, null)
     }
 
-    // Support for the map sp_a1_intro5
-    if (GetMapName() == "sp_a1_intro5") {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
-        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        Entities.FindByClassnameNearest("trigger_multiple", Vector(-64, 824, 320), 1024).Destroy()
+    function wheatleyhitground() {
+        EntFire("@sphere", "disablepickup", "", 1.05, null)
+        EntFire("@sphere", "enablepickup", "", 8, null)
+        EntFire("spherebot_1_top_swivel_1", "deactivate", "", 1.01, null)
     }
 
-    // Support for the map sp_a1_intro6
-    if (GetMapName() == "sp_a1_intro6") {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        Entities.FindByName(null, "room_1_entry_door-close_door_rl").Destroy()
-        Entities.FindByName(null, "room_1_fling_portal_activate_rl").Destroy()
-        Entities.FindByName(null, "fling_safety_catapult").Destroy()
-        Entities.FindByName(null, "room_1_fling_portal_emitter").Destroy()
-        Entities.FindByName(null, "room_2_fling_portal_activate_rl").Destroy()
-        Entities.FindByClassnameNearest("trigger_once", Vector(648, 0, 176), 1024).Destroy()
-        Entities.FindByClassnameNearest("trigger_once", Vector(1200, -136, 188), 1024).Destroy()
-        Entities.FindByClassnameNearest("trigger_once", Vector(2504, -160, 448), 1024).Destroy()
-        local fallenautoportal = CreateProp("prop_dynamic", Vector(-325, 24, 0), "models/props/portal_emitter.mdl", 0)
-        fallenautoportal.SetAngles(-90, 69, 0)
+    function SPSkipPanel() {
+        printl("message")
+        EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
+        myexplode2 <- Entities.CreateByClassname("npc_personality_core")
+        myexplode2.__KeyValueFromString("targetname", "myexplode2")
+        myexplode2.SetOrigin(Vector(-822, -523, 1269))
+
+        myexplode <- Entities.CreateByClassname("env_ar2explosion")
+        myexplode.__KeyValueFromString("targetname", "myexplode")
+        myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
+        myexplode.SetOrigin(Vector(-822, -523, 1269))
+        EntFire("myexplode", "explode", "", 2.5, null)
+        EntFire("myexplode2", "explode", "", 2.5, null)
+        EntFire("myexplode2", "explode", "", 3.0, null)
+
+        Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
+        local mysphere = Entities.FindByName(null, "@spheredummy")
+
+        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows01" )
+        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows02" )
+        self.PrecacheSoundScript( "sphere03.sphere_flashlight_tour67" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking09" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking12" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking10" )
+        self.PrecacheSoundScript( "sphere03.bw_finale4_hackworked01" )
+        self.PrecacheSoundScript( "Portal.elevator_chime" )
+        self.PrecacheSoundScript( "sphere03.GloriousFreedom03" )
+        self.PrecacheSoundScript( "sphere03.bw_fire_lift03" )
+
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret01" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret08" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret07" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret05" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret06" )
+
+        EntFire("myexplode2", "addoutput", "targetname playline1", 2.65, null)
+        EntFire("playline1", "addoutput", "targetname myexplode2", 2.76, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline2", 6.55, null)
+        EntFire("playline2", "addoutput", "targetname myexplode2", 6.66, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline3", 12.75, null)
+        EntFire("playline3", "addoutput", "targetname myexplode2", 12.86, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline4", 16.75, null)
+        EntFire("playline4", "addoutput", "targetname myexplode2", 16.86, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline5", 18.00, null)
+        EntFire("playline5", "addoutput", "targetname myexplode2", 18.11, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline6", 24.00, null)
+        EntFire("playline6", "addoutput", "targetname myexplode2", 24.11, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline7", 25.50, null)
+        EntFire("playline7", "addoutput", "targetname myexplode2", 25.61, null)
+
+        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50, null)
+
     }
 
-    // Support for the map sp_a1_intro7
-    if (GetMapName() == "sp_a1_intro7") {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-open"), "trigger", "", 0, null, null)
-        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
-        Entities.FindByName(null, "InstanceAuto9-socket_trigger").Destroy()
-        Entities.FindByName(null, "bts_panel_door-LR_heavydoor_close").Destroy()
-        Entities.FindByName(null, "heavy_door_backtrack_clip").Destroy()
-        Entities.FindByName(null, "bts_panel_door-heavydoor_open_clip").Destroy()
-        Entities.FindByName(null, "transition_airlock_door_close_rl").Destroy()
-        Entities.FindByName(null, "transition_trigger").Destroy()
-        Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
+
+    if (SSInstantRun == true) {
+        // Support for the map sp_a1_intro2
+        if (GetMapName() == "sp_a1_intro2") {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            SendToConsole("commentary 0")
+            Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
+            Entities.FindByName(null, "@exit_door-door_close_relay").Destroy()
+            Entities.FindByName(null, "Fizzle_Trigger").Destroy()
+
+        }
+
+        // Support for the map sp_a1_intro3
+        if (GetMapName() == "sp_a1_intro3") {
+            Entities.FindByName(null, "door_0-door_close_relay").Destroy()
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "player_clips").Destroy()
+            // destroy pusher x4
+            Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
+            Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
+            Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
+            Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
+            Entities.FindByName(null, "door_3-door_close_relay").Destroy()
+            Entities.FindByName(null, "portal_orange_2").Destroy()
+            Entities.FindByName(null, "emitter_orange_2").Destroy()
+            Entities.FindByName(null, "backtrack_brush").Destroy()
+            Entities.FindByName(null, "portal_orange_mtg").Destroy()
+            Entities.FindByName(null, "emitter_orange_mtg").Destroy()
+            hasgotportalgunSPMP <- 0
+            timeout <- 1
+        }
+
+        // Support for the map sp_a1_intro4
+        if (GetMapName() == "sp_a1_intro4") {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "door_0-door_close_relay").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(464, 136, 72), 1024).Destroy()
+            EntFireByHandle(Entities.FindByName(null, "glass_pane_intact_model"), "kill", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "glass_pane_fractured_model"), "enable", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "glass_pane_1_door_1"), "open", "", 0, null, null)
+            Entities.FindByName(null, "glass_pane_1_door_1_blocker").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(878, -528, 137), 1024).Destroy()
+            Entities.FindByName(null, "glass_shard").Destroy()
+            Entities.FindByName(null, "section_2_trigger_portal_spawn_a2_rm3a").Destroy()
+            Entities.FindByName(null, "portal_a_lvl3").Destroy()
+            Entities.FindByName(null, "section_2_portal_a1_rm3a").Destroy()
+            Entities.FindByName(null, "section_2_portal_a2_rm3a").Destroy()
+            Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
+            Entities.FindByName(null, "room_2_portal_activate_rl").Destroy()
+            Entities.FindByName(null, "room_3_portal_activate_rl").Destroy()
+            Entities.FindByName(null, "door_2-close_door_rl").Destroy()
+        }
+
+        // Support for the map sp_a1_intro5
+        if (GetMapName() == "sp_a1_intro5") {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_multiple", Vector(-64, 824, 320), 1024).Destroy()
+        }
+
+        // Support for the map sp_a1_intro6
+        if (GetMapName() == "sp_a1_intro6") {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "room_1_entry_door-close_door_rl").Destroy()
+            Entities.FindByName(null, "room_1_fling_portal_activate_rl").Destroy()
+            Entities.FindByName(null, "fling_safety_catapult").Destroy()
+            Entities.FindByName(null, "room_1_fling_portal_emitter").Destroy()
+            Entities.FindByName(null, "room_2_fling_portal_activate_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(648, 0, 176), 1024).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(1200, -136, 188), 1024).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2504, -160, 448), 1024).Destroy()
+            local fallenautoportal = CreateProp("prop_dynamic", Vector(-325, 24, 0), "models/props/portal_emitter.mdl", 0)
+            fallenautoportal.SetAngles(-90, 69, 0)
+        }
+
+        // Support for the map sp_a1_intro7
+        if (GetMapName() == "sp_a1_intro7") {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-open"), "trigger", "", 0, null, null)
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
+            Entities.FindByName(null, "InstanceAuto9-socket_trigger").Destroy()
+            Entities.FindByName(null, "bts_panel_door-LR_heavydoor_close").Destroy()
+            Entities.FindByName(null, "heavy_door_backtrack_clip").Destroy()
+            Entities.FindByName(null, "bts_panel_door-heavydoor_open_clip").Destroy()
+            Entities.FindByName(null, "transition_airlock_door_close_rl").Destroy()
+            Entities.FindByName(null, "transition_trigger").Destroy()
+            Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
+        }
+
+        // Support for the map sp_a2_laser_intro
+        if (GetMapName() == "sp_a2_laser_intro") {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
+        }
+
+        // Support for the map sp_a2_laser_stairs
+        if (GetMapName() == "sp_a2_laser_stairs") {
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "door_1-close_door_rl").Destroy()
+        }
     }
 
-    // Support for the map sp_a2_laser_intro
-    if (GetMapName() == "sp_a2_laser_intro") {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
-    }
 
-    // Support for the map sp_a2_laser_stairs
-    if (GetMapName() == "sp_a2_laser_stairs") {
-        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        Entities.FindByName(null, "door_1-close_door_rl").Destroy()
-    }
 
+
+
+
+    //## sp_a2_intro ##//
+    if (GetMapName()=="sp_a2_intro") {
+        if (SSInstantRun==true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "incinerator_death_fade").Destroy()
+            Entities.FindByName(null, "camera_ghostAnim").Destroy()
+        }
+
+        if (SSLoop==true) {
+
+        }
+    }
 }
 
 //-----------------------------------
@@ -1311,418 +1699,6 @@ function Singleplayer() {
 //-----------------------------------
 
 function DevHacks() {
-//     if (GetMapName()=="mp_coop_paint_longjump_intro") {
-//         //airlockexit teleport
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector(80, -7567, 960), 200)) {
-//             ent.SetOrigin(Vector(243, -7037, 960))
-//         }
-
-//         //teleportfromexit to gel
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 80, -7087, 960), 90)) {
-//             ent.SetOrigin(Vector(198, -6553, 960))
-//         }
-
-//         //yeet to brig
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 220, -5829, 807), 350)) {
-//             ent.SetOrigin(Vector(257, -5352, 960))
-//         }
-
-
-//         //orang brig
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -437, -1541, 448), 80)) {
-//             ent.SetOrigin(Vector(-453, -1541, 942))
-//         }
-
-//         //speee juhmp
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -1, 406, 104), 80)) {
-//             ent.SetOrigin(Vector(-136, 58, 1027))
-//         }
-
-//         //speee juhmp minr
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 431, -2127, 448), 80)) {
-//             ent.SetOrigin(Vector(-136, 58, 1027))
-//         }
-
-//         //speee oragneuntp
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( -448, -1543, 758), 80)) {
-//             ent.SetOrigin(Vector(-471, -1722, 975))
-//         }
-
-//         //tp tu vaulht
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 390, -4977, 960), 80)) {
-//             ent.SetOrigin(Vector(-171, -1663, 960))
-//         }
-
-//         //tp tu vaulht
-//         local ent = null
-//         while(ent = Entities.FindByNameWithin(ent, "blue", Vector( 751, -6575, 960), 100)) {
-//             ent.SetOrigin(Vector(7, 841, 1216))
-//         }
-//     }
-}
-
-function SingleplayerLoop() {
-    // sp_a1_intro2
-    if (GetMapName() == "sp_a1_intro2") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-
-        local portalgun = null
-        while ( portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
-            portalgun.Destroy()
-        }
-
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 45)) {
-            SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a1_intro3")
-        }
-
-        try {
-            Entities.FindByName(null, "block_boxes").Destroy()
-        } catch(exception) {}
-    }
-
-    // sp_a1_intro3
-    if (GetMapName() == "sp_a1_intro3") {
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 45)) {
-           SendToConsole("commentary 1")
-           SendToConsole("changelevel sp_a1_intro4")
-        }
-
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-
-        // remove portalgun
-        if (hasgotportalgunSPMP == 0) {
-            local portalgun = null
-            while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
-                portalgun.Destroy()
-            }
-        }
-
-        if (!Entities.FindByName(null, "portalgun")) {
-            local p = null
-            if (timeout != 25) {
-                timeout <- timeout + 1
-                hasgotportalgunSPMP <- 1
-
-                while (p = Entities.FindByClassname(p, "player")) {
-                    EntFireByHandle(clientcommand, "Command", "hud_saytext_time 0", 0, p, p)
-                    EntFireByHandle(clientcommand, "Command", "give weapon_portalgun", 0, p, p)
-                    EntFireByHandle(clientcommand, "Command", "upgrade_portalgun", 0, p, p)
-                    EntFireByHandle(clientcommand, "Command", "sv_cheats 1", 0, p, p)
-                }
-            } else {
-                while (p = Entities.FindByClassname(p, "player")) {
-                    EntFireByHandle(clientcommand, "Command", "hud_saytext_time 12", 0, p, p)
-                }
-                EntFireByHandle(clientcommand, "Command", "sv_cheats 0", 0, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
-            }
-        }
-
-        // make Wheatley look at player
-        local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-        EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-    }
-
-    // sp_a1_intro4
-    if (GetMapName() == "sp_a1_intro4") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(806, -528, 64), 150)) {
-            EntFire("projected_texture_03", "TurnOn", "", 0, null)
-        }
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector( 2151, -527, -499), 45)) {
-            SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a1_intro5")
-        }
-    }
-
-    //sp_a1_intro5
-    if (GetMapName() == "sp_a1_intro5") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-67, 1319, -102), 60)) {
-            SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a1_intro6")
-        }
-    }
-
-    //sp_a1_intro6
-    if (GetMapName() == "sp_a1_intro6") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(3015, -174, -125), 60)) {
-            SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a1_intro7")
-        }
-    }
-
-    WheatleySeq1 <- false
-
-    //sp_a1_intro7
-    if (GetMapName() == "sp_a1_intro7") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-        // make Wheatley look at player
-        local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-        EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "spherebot_1_top_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-        //make Wheatley non stealable
-        try {
-        Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
-        Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
-        //disable sentaint arm and disable pickup until spchill is over
-        Entities.FindByName(null, "sphere_impact_trigger").ConnectOutput("OnStartTouch","wheatleyhitground")
-        //skip panel bit
-        Entities.FindByName(null, "@plug_open_rl").ConnectOutput("OnTrigger","SPSkipPanel")
-        } catch(exception) { }
-
-        /////////
-        //LINES//
-        /////////
-
-        if(Entities.FindByName(null, "playline1")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows01.wav")
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows02.wav")
-            printl("played line1")
-        }
-
-        if(Entities.FindByName(null, "playline2")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sphere_flashlight_tour67.wav")
-            printl("played line2")
-        }
-
-        if(Entities.FindByName(null, "playline3")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking09.wav")
-            printl("played line3")
-        }
-
-        if(Entities.FindByName(null, "playline4")) {
-            Entities.FindByName(null, "InstanceAuto9-sphere_socket").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking12.wav")
-            printl("played line4")
-        }
-
-        if(Entities.FindByName(null, "playline5")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking10.wav")
-            printl("played line5")
-        }
-
-        if(Entities.FindByName(null, "playline6")) {
-            Entities.FindByName(null, "InstanceAuto9-sphere_socket").EmitSound("ambient\\alarms\\portal_elevator_chime.wav")
-            printl("played line6")
-        }
-
-        if(Entities.FindByName(null, "playline7")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\bw_finale4_hackworked01.wav")
-            printl("played line7")
-        }
-
-
-
-        if(Entities.FindByName(null, "playline8")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret01.wav")
-            printl("played line8")
-        }
-
-        if(Entities.FindByName(null, "playline9")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret08.wav")
-            printl("played line9")
-        }
-
-        if(Entities.FindByName(null, "playline10")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret07.wav")
-            printl("played line10")
-        }
-
-        if(Entities.FindByName(null, "playline11")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret05.wav")
-            printl("played line11")
-        }
-
-        if(Entities.FindByName(null, "playline12")) {
-            Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret06.wav")
-            printl("played line12")
-        }
-
-        if (!Entities.FindByName(null, "seq1finished")) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1117, -416, 1280), 100)) {
-                Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "seq1finished")
-                printl("Seq1 Done")
-                Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\gloriousfreedom03.wav")
-                EntFire("offrails_airlock_door_1_open_rl", "trigger", "", 0, null)
-            }
-        }
-
-        if (!Entities.FindByName(null, "seq2finished")) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-2692, -404, 1280), 100)) {
-                Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "seq2finished")
-                printl("Seq2 Done")
-
-                EntFire("@glados", "runscriptcode", "sp_a1_intro7_HoboTurretScene()", 0, null)
-
-                EntFire("myexplode2", "addoutput", "targetname playline8", 0.00, null)
-                EntFire("playline8", "addoutput", "targetname myexplode2", 0.11, null)
-
-                EntFire("myexplode2", "addoutput", "targetname playline9", 1.50, null)
-                EntFire("playline9", "addoutput", "targetname myexplode2", 1.51, null)
-
-                EntFire("myexplode2", "addoutput", "targetname playline10", 3.10, null)
-                EntFire("playline10", "addoutput", "targetname myexplode2", 3.11, null)
-
-                EntFire("myexplode2", "addoutput", "targetname playline11", 4.80, null)
-                EntFire("playline11", "addoutput", "targetname myexplode2", 4.81, null)
-
-                EntFire("myexplode2", "addoutput", "targetname playline12", 7.20, null)
-                EntFire("playline12", "addoutput", "targetname myexplode2", 7.25, null)
-            }
-        }
-
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2207, 384, 1280), 200)) {
-            SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a1_wakeup")
-        }
-
-    }
-
-    //sp_a2_laser_intro
-    if (GetMapName() == "sp_a2_laser_intro") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 45)) {
-            SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a2_laser_stairs")
-        }
-
-    }
-
-    //sp_a2_laser_stairs
-    if (GetMapName() == "sp_a2_laser_stairs") {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 45)) {
-            SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a2_dual_lasers")
-        }
-
-    }
-
-}
-
-function SingleplayerOnFirstSpawn() {
-    if (GetMapName() == "sp_a1_intro6") {
-
-    }
-}
-
-//SINGLEPLAYER FUNCTIONS
-function disablewheatleyplayerpickup() {
-    printl("Player Picked Up Wheatley. Disabling Pickup!")
-    EntFire("@sphere", "disablepickup", "", 0, null)
-    EntFire("@sphereDummy", "enablepickup", "", 0, null)
-}
-function enablewheatleyplayerpickup() {
-    printl("Player Picked Up Wheatley. Enabling Pickup!")
-    EntFire("@sphere", "enablepickup", "", 0, null)
-    EntFire("@sphereDummy", "enablepickup", "", 0, null)
-}
-
-function wheatleyhitground() {
-    EntFire("@sphere", "disablepickup", "", 1.05, null)
-    EntFire("@sphere", "enablepickup", "", 8, null)
-    EntFire("spherebot_1_top_swivel_1", "deactivate", "", 1.01, null)
-}
-
-function SPSkipPanel() {
-    printl("message")
-    EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
-    myexplode2 <- Entities.CreateByClassname("npc_personality_core")
-    myexplode2.__KeyValueFromString("targetname", "myexplode2")
-    myexplode2.SetOrigin(Vector(-822, -523, 1269))
-
-    myexplode <- Entities.CreateByClassname("env_ar2explosion")
-    myexplode.__KeyValueFromString("targetname", "myexplode")
-    myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
-    myexplode.SetOrigin(Vector(-822, -523, 1269))
-    EntFire("myexplode", "explode", "", 2.5, null)
-    EntFire("myexplode2", "explode", "", 2.5, null)
-    EntFire("myexplode2", "explode", "", 3.0, null)
-
-    Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
-    local mysphere = Entities.FindByName(null, "@spheredummy")
-
-	self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows01" )
-    self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows02" )
-    self.PrecacheSoundScript( "sphere03.sphere_flashlight_tour67" )
-    self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking09" )
-    self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking12" )
-    self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking10" )
-    self.PrecacheSoundScript( "sphere03.bw_finale4_hackworked01" )
-    self.PrecacheSoundScript( "Portal.elevator_chime" )
-    self.PrecacheSoundScript( "sphere03.GloriousFreedom03" )
-    self.PrecacheSoundScript( "sphere03.bw_fire_lift03" )
-
-    self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret01" )
-    self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret08" )
-    self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret07" )
-    self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret05" )
-    self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret06" )
-
-    EntFire("myexplode2", "addoutput", "targetname playline1", 2.65, null)
-    EntFire("playline1", "addoutput", "targetname myexplode2", 2.76, null)
-
-    EntFire("myexplode2", "addoutput", "targetname playline2", 6.55, null)
-    EntFire("playline2", "addoutput", "targetname myexplode2", 6.66, null)
-
-    EntFire("myexplode2", "addoutput", "targetname playline3", 12.75, null)
-    EntFire("playline3", "addoutput", "targetname myexplode2", 12.86, null)
-
-    EntFire("myexplode2", "addoutput", "targetname playline4", 16.75, null)
-    EntFire("playline4", "addoutput", "targetname myexplode2", 16.86, null)
-
-    EntFire("myexplode2", "addoutput", "targetname playline5", 18.00, null)
-    EntFire("playline5", "addoutput", "targetname myexplode2", 18.11, null)
-
-    EntFire("myexplode2", "addoutput", "targetname playline6", 24.00, null)
-    EntFire("playline6", "addoutput", "targetname myexplode2", 24.11, null)
-
-    EntFire("myexplode2", "addoutput", "targetname playline7", 25.50, null)
-    EntFire("playline7", "addoutput", "targetname myexplode2", 25.61, null)
-
-    EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50, null)
 
 }
 
@@ -1732,6 +1708,22 @@ function SPSkipPanel() {
 *****************/
 
 /*
+
+
+    //## MAPNAME ##//
+    if (GetMapName()=="MAPNAME") {
+        if (SSInstantRun==true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+        }
+
+        if (SSLoop==true) {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+    }
+
+
 
 Entities.FindByClassnameNearest("trigger_once", Vector(878, -528, 137), 1024).Destroy()
 
