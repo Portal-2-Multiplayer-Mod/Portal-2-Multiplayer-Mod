@@ -154,40 +154,8 @@ function init() {
         PluginLoaded <- false
     }
 
-//-----------------------------------
-// Run map support code
-//-----------------------------------
-
-    // run lobby code
-    if (GetMapName() == "mp_coop_lobby_3") {
-        LobbyOneTimeRun()
-    }
-
-    // run mp_coop_tripleaxis code
-    if (GetMapName() == "mp_coop_tripleaxis") {
-        mp_coop_tripleaxisFIX()
-    }
-
-    // run mp_coop_separation_1 code
-    if (GetMapName() == "mp_coop_separation_1") {
-        mp_coop_separation_1FIX()
-    }
-
-    // run mp_coop_paint_conversion code
-    if (GetMapName() == "mp_coop_paint_conversion") {
-        mp_coop_paint_conversionFIX()
-    }
-
-    // run gelocity code
-    if (TryGelocity == 1) {
-        try {
-            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_1_v02") {
-                Gelocity()
-            }
-        } catch(exception) {
-            TryGelocity <- 0
-        }
-    }
+    // run instant map code
+    AllMapsCode(false, false, false, true)
 
     // run gelocity 2 code
     if (TryGelocity2 == 1) {
@@ -211,69 +179,10 @@ function init() {
         }
     }
 }
-//END OF INIT CODE
 
 
-/*******************
-********************
-* global functions *
-********************
-*******************/
-
-//-----------------------------------
-// Trace Helpers
-//-----------------------------------
-class TraceInfo
-{
-	constructor(h,d)
-	{
-		Hit = h;
-		Dist = d;
-	}
-
-	Hit = null;
-	Dist = null;
-}
-//Returns the hit position of a trace between two points.
-function TraceVec(start, end, filter)
-{
-	local dir = (end-start);
-	local frac = TraceLine(start,end,filter);
-	//return start+(dir*frac);
-	return TraceInfo(start+(dir*frac),dir.Length());
-}
-//Returns the hit position of a trace along a normalized direction vector.
-function TraceDir(orig, dir, maxd, filter)
-{
-	local frac = TraceLine(orig,orig+dir*maxd,filter);
-	if(frac == 1.0) { return TraceInfo(orig+(dir*maxd),0.0);}
-	return TraceInfo(orig+(dir*(maxd*frac)),maxd*frac);
-}
-
-//-----------------------------------
-// Trace Help END
-//-----------------------------------
-
-//Returns the hit position of a trace between two points.
-function TraceVec(start, end, filter)
-{
-	local dir = (end-start);
-	local frac = TraceLine(start,end,filter);
-	//return start+(dir*frac);
-	return TraceInfo(start+(dir*frac),dir.Length());
-}
-//Returns the hit position of a trace along a normalized direction vector.
-function TraceDir(orig, dir, maxd, filter)
-{
-	local frac = TraceLine(orig,orig+dir*maxd,filter);
-	if(frac == 1.0) { return TraceInfo(orig+(dir*maxd),0.0);}
-	return TraceInfo(orig+(dir*(maxd*frac)),maxd*frac);
-}
-
-//-----------------------------------
-// END OF TRACE
-//-----------------------------------
-
+// █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
+// █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
 //Teleport Players Within A Distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
@@ -330,132 +239,48 @@ try {
     GBIsMultiplayer <- 0
 }
 
-OnPlayerJoin <- function() {
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        if (p.ValidateScriptScope()) {
-            local script_scope = p.GetScriptScope()
-            if (!("Colored" in script_scope)) {
-
-                // get player's index and store it
-                PlayerID <- p.GetRootMoveParent()
-                PlayerID <- PlayerID.entindex()
-
-                // set viewmodel names
-                local ent = null
-                while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
-                    EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
-                    printl("renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
-                    // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
-                    // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
-                }
-
-                // load plugin
-                if (UsePlugin==true) {
-                    if (LoadPlugin==true) {
-                        EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
-                        EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
-                        LoadPlugin <- false
-                    }
-                }
-
-                // Set some cvars on every client
-                SendToConsole("sv_timeout 3")
-                SendToConsole("gameinstructor_enable 1")
-                EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
-                EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
-
-                // say join message on HUD
-                if (PluginLoaded==true) {
-                    JoinMessage <- getPlayerName(PlayerID-1) + " Joined The Game"
-                } else {
-                    JoinMessage <- "Player " + PlayerID + " Joined The Game"
-                }
-                JoinMessage = JoinMessage.tostring()
-                joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
-                EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
-                if (PlayerID >= 2) {
-                    onscreendisplay.__KeyValueFromString("y", "0.075")
-                }
-                // assign every client a targetname keyvalue
-                if (PlayerID >= 3) {
-
-                    p.__KeyValueFromString("targetname", "player" + PlayerID)
-                }
-
-                // set a random color for clients that join after 16 have joined
-                if (PlayerID != 1) {
-                    R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
-                    ReadyCheatsOff <- 1
-                }
-
-                // create an entity to display player color at the bottom left of every clients' screen
-                colordisplay <- Entities.CreateByClassname("game_text")
-                colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
-                colordisplay.__KeyValueFromString("x", "0")
-                colordisplay.__KeyValueFromString("holdtime", "100000")
-                colordisplay.__KeyValueFromString("fadeout", "0")
-                colordisplay.__KeyValueFromString("fadein", "0")
-                colordisplay.__KeyValueFromString("channel", "0")
-                colordisplay.__KeyValueFromString("y", "1")
-
-                // set preset colors for up to 16 clients
-                switch (PlayerID) {
-                    case 1 : R <- 255; G <- 255; B <- 255; break;
-                    case 2 : R <- 180, G <- 255, B <- 180; break;
-                    case 3 : R <- 120, G <- 140, B <- 255; break;
-                    case 4 : R <- 255, G <- 170, B <- 120; break;
-                    case 5 : R <- 255, G <- 100, B <- 100; break;
-                    case 6 : R <- 255, G <- 180, B <- 255; break;
-                    case 7 : R <- 255, G <- 255, B <- 180; break;
-                    case 8 : R <-   0, G <- 255, B <- 240; break;
-                    case 9 : R <-  75, G <-  75, B <-  75; break;
-                    case 10: R <- 100, G <-  80, B <-   0; break;
-                    case 11: R <-   0, G <-  80, B <- 100; break;
-                    case 12: R <- 120, G <- 155, B <-  25; break;
-                    case 13: R <-   0, G <-   0, B <- 100; break;
-                    case 14: R <-  80, G <-   0, B <-   0; break;
-                    case 15: R <-   0, G <-  75, B <-   0; break;
-                    case 16: R <-   0, G <-  75, B <-  75; break;
-                }
-
-                script_scope.Colored <- true
-                EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
-
-                if (PlayerID==1) {
-                    WorldInitalSpawn()
-                }
-
-                return
-                }
-            }
-        }
-    }
-
-//-----------------------------------
-// Loop Code
-//-----------------------------------
+//------------------------------------------------------//
+// ░█▀▄▀█ ─█▀▀█ ▀█▀ ░█▄─░█    ░█─── ░█▀▀▀█ ░█▀▀▀█ ░█▀▀█ //
+// ░█░█░█ ░█▄▄█ ░█─ ░█░█░█    ░█─── ░█──░█ ░█──░█ ░█▄▄█ //
+// ░█──░█ ░█─░█ ▄█▄ ░█──▀█    ░█▄▄█ ░█▄▄▄█ ░█▄▄▄█ ░█─── //
+//------------------------------------------------------//
 
     function loop() {
 
-        OnPlayerJoin() // run player join code
+        // run player join code when a player joins
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            if (p.ValidateScriptScope()) {
+                local script_scope = p.GetScriptScope()
+                if (!("Colored" in script_scope)) {
+                    OnPlayerJoin(p, script_scope)
+                }
+            }
+        }
 
-        General() // run general code
+        AllMapsCode(true, false, false) // run map loops
 
-        AllMapsLoopCode() // run map loops
+        CreatePropsForLevel(false, false, true) // create the gmod generated props in the level
 
-        CreatePropsForLevel(false, false, true)
+        // cache original spawn position
+        if (WFPDisplayDisabled == 0) {
+                    try {
+            if (copp == 0) {
+                OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+                copp <- 1
+            }
+        } catch(exception) {}
 
-        // local player = null
-        // while (player=Entities.FindByClassname(player, "player")) {
-        //     local traceend = TraceDir(player.EyePosition(), player.GetAngles(), 100, null).Hit
-        //     local pos = TraceVec(player.EyePosition(), traceend,player).Hit
-        //     DebugDrawLine(player.EyePosition(), pos, 255, 255, 255, false, -1)
-        //     DebugDrawBox(pos, Vector(-2,-2,-2), Vector(2,2,2), 255, 0, 0, 0, 0.1)
-        // }
+        // display waiting for players until player exits spawn zone
+        try {
+            // Check if client is in spawn zone
+            if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 35)) {
+                DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+            } else {
+                WFPDisplayDisabled <- 1
+                GeneralOneTime()
+            }
+        } catch(exception) {}
 
         // delete all cached models
         if (DoneCacheing==true) {
@@ -602,177 +427,521 @@ OnPlayerJoin <- function() {
         }
     }
 
-//-----------------------------------
-// END OF LOOP CODE
-//-----------------------------------
+//---------------------------------------------------------------//
+// ░█▀▀▀ ░█▄─░█ ░█▀▀▄   ░█▀▀▀█ ░█▀▀▀   ░█─── ░█▀▀▀█ ░█▀▀▀█ ░█▀▀█ //
+// ░█▀▀▀ ░█░█░█ ░█─░█   ░█──░█ ░█▀▀▀   ░█─── ░█──░█ ░█──░█ ░█▄▄█ //
+// ░█▄▄▄ ░█──▀█ ░█▄▄▀   ░█▄▄▄█ ░█───   ░█▄▄█ ░█▄▄▄█ ░█▄▄▄█ ░█─── //
+//---------------------------------------------------------------//
 
-    // lobby setup code
-    function LobbyOneTimeRun() {
+// █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
+// █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-        //Purpose: Enable the hub entirely
-        try {
-            // enable team building course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
+// Runs When A Player Joins
+function OnPlayerJoin(p, script_scope) {
+// get player's index and store it
+PlayerID <- p.GetRootMoveParent()
+PlayerID <- PlayerID.entindex()
 
-            // enable tbeam course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
+// set viewmodel names
+local ent = null
+while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
+    EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
+    printl("renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
+    // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
+    // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
+}
 
-            // enable paint course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
+// load plugin
+if (UsePlugin==true) {
+    if (LoadPlugin==true) {
+        EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+        EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
+        LoadPlugin <- false
+    }
+}
 
-            // enable fling course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
+// Set some cvars on every client
+SendToConsole("sv_timeout 3")
+SendToConsole("gameinstructor_enable 1")
+EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
+EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
+EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
+EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
+EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
 
-            // enable extra course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
+// say join message on HUD
+if (PluginLoaded==true) {
+    JoinMessage <- getPlayerName(PlayerID-1) + " Joined The Game"
+} else {
+    JoinMessage <- "Player " + PlayerID + " Joined The Game"
+}
+JoinMessage = JoinMessage.tostring()
+joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
+EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+if (PlayerID >= 2) {
+    onscreendisplay.__KeyValueFromString("y", "0.075")
+}
+// assign every client a targetname keyvalue
+if (PlayerID >= 3) {
 
-            // enable all finished course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
+    p.__KeyValueFromString("targetname", "player" + PlayerID)
+}
 
-            // enable music
-            DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
-            // Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
-            // Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
-        } catch(exception) {}
+// set a random color for clients that join after 16 have joined
+if (PlayerID != 1) {
+    R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
+    ReadyCheatsOff <- 1
+}
 
-//-----------------------------------
-// Remove useless entities so that
-// the entity limit does not crash
-// the game
-//-----------------------------------
+// create an entity to display player color at the bottom left of every clients' screen
+colordisplay <- Entities.CreateByClassname("game_text")
+colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
+colordisplay.__KeyValueFromString("x", "0")
+colordisplay.__KeyValueFromString("holdtime", "100000")
+colordisplay.__KeyValueFromString("fadeout", "0")
+colordisplay.__KeyValueFromString("fadein", "0")
+colordisplay.__KeyValueFromString("channel", "0")
+colordisplay.__KeyValueFromString("y", "1")
 
-	// Remove func_portal_bumper's from the map
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
-            ent.Destroy() // 165 entities removed
+// set preset colors for up to 16 clients
+switch (PlayerID) {
+    case 1 : R <- 255; G <- 255; B <- 255; break;
+    case 2 : R <- 180, G <- 255, B <- 180; break;
+    case 3 : R <- 120, G <- 140, B <- 255; break;
+    case 4 : R <- 255, G <- 170, B <- 120; break;
+    case 5 : R <- 255, G <- 100, B <- 100; break;
+    case 6 : R <- 255, G <- 180, B <- 255; break;
+    case 7 : R <- 255, G <- 255, B <- 180; break;
+    case 8 : R <-   0, G <- 255, B <- 240; break;
+    case 9 : R <-  75, G <-  75, B <-  75; break;
+    case 10: R <- 100, G <-  80, B <-   0; break;
+    case 11: R <-   0, G <-  80, B <- 100; break;
+    case 12: R <- 120, G <- 155, B <-  25; break;
+    case 13: R <-   0, G <-   0, B <- 100; break;
+    case 14: R <-  80, G <-   0, B <-   0; break;
+    case 15: R <-   0, G <-  75, B <-   0; break;
+    case 16: R <-   0, G <-  75, B <-  75; break;
+}
+
+script_scope.Colored <- true
+EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
+
+if (PlayerID==1) {
+    AllMapsCode(false, false, true)
+}
+
+return
+}
+
+// general one time run
+function GeneralOneTime() {
+    canclearcache <- true
+
+    HasSpawned <- true
+
+    SendToConsole("hud_saytext_time 12")
+
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        if (p.GetTeam()==2) {
+            OrangeOldPlayerPos <- p.GetOrigin()
         }
-	// Remove env_sprite's from the map
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "env_sprite")) {
-            ent.Destroy() // 31 entities removed
-        }
-
-        // fix art therapy tube glitches
-        Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()
-        Entities.FindByName(null, "dlc_room_fall_push_left").Destroy()
-
-        // fix track 5
-        // entry door fix
-        Entities.FindByName(null, "track5-door_paint-trigger_hurt_door").Destroy()
-        Entities.FindByName(null, "track5-door_paint-collide_door").Destroy()
-
-        // light fix
-        Entities.FindByName(null, "@light_shadowed_paintroom").Destroy()
-
-        // remove orange exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit")) {
-            ent.Destroy()
-        }
-
-        Entities.FindByName(null, "track5-orangeescape_elevator_clip").Destroy()
-
-        // remove blue exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit")) {
-            ent.Destroy()
-        }
-
-        Entities.FindByName(null, "track5-escape_elevator_clip").Destroy()
     }
 
-//-----------------------------------
-// General Map Support Code
-//-----------------------------------
+    try {
+        if (OrangeOldPlayerPos) { }
+    } catch(exeption) {
+        printl("OrangeOldPlayerPos Not Set (Blue Probably Moved Before Orange Could Load in) Setting OrangeOldPlayerPos To BlueOldPlayerPos")
+        OrangeOldPlayerPos <- OldPlayerPos
+    }
 
-    // general fixes for all maps
-    function General() {
+    //Create Props After Cache
+    CreatePropsForLevel(false, true, false)
 
-            // display waiting for players and run nessacary code after spawn
-            if (WFPDisplayDisabled == 0) {
-                        try {
-                if (copp == 0) {
-                    OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-                    copp <- 1
-                }
-            } catch(exception) {}
+    SingleplayerOnFirstSpawn()
+}
 
-            try {
-                // Check if client is in spawn zone
-                if (Entities.FindByNameWithin(null, "blue", OldPlayerPos, 35)) {
-                    DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
-                } else {
-                    WFPDisplayDisabled <- 1
-                    GeneralOneTime()
-                }
-            } catch(exception) {}
-        }
+// █▀▄▀█ ▄▀█ █▀█   █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
+// █░▀░█ █▀█ █▀▀   ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
 
-//-----------------------------------
-// Course 5 Map Support Code
-//-----------------------------------
+// run all required map code
+function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 
-        // Remove the bottom of droppers in Course 5
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+
+    /////////////////
+    // INSTANT RUN //
+    /////////////////
+
+
+    if (AMCInstantRun == true) {
+
+        //## MP_COOP_CREDITS INSTANT RUN ##//
+        if (GetMapName() == "mp_coop_credits") {
+
+                // remove selected pods
+        function CreditsRemovePod() {
             local ent = null
-            while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500)) {
-                if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
-                    EntFireByHandle(ent, "SetAnimation", "open_idle", 0.0, null, null)
-                }
+            while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
+                ent.Destroy()
+            }
 
-                if (ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
-                    EntFireByHandle(ent, "SetAnimation", "item_dropper_idle", 0.0, null, null)
+            while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
+                ent.Destroy()
+            }
+        }
+
+        // fix void camera glitch
+        function FixCreditsCameras() {
+            // disable useless cameras
+            EntFireByHandle(Entities.FindByName(null, "camera_SP"), "disable", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "camera_O"), "disable", "", 0, null, null)
+
+            // reload main camera with new params
+            Entities.FindByName(null, "camera").__KeyValueFromString("target_team", "-1")
+            EntFireByHandle(Entities.FindByName(null, "camera"), "disable", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "camera"), "enable", "", 0, null, null)
+        }
+
+        // replace females with P-body's
+        function CreditsSetModelPB(ent) {
+            FixCreditsCameras()
+
+            // count how many credits come on screen to change to humans
+            MPMCredits <- MPMCredits + 1
+
+            // preset animation
+            local RandomAnimation = RandomInt(0, CRAnimationTypesPB)
+
+            // remove pod if needed
+            HasRemovedPod <- 0
+            foreach (anim in NOTubeAnimsPB) {
+                if (AnimationsPB[RandomAnimation] == anim && HasRemovedPod == 0) {
+                    HasRemovedPod <- 1
+                    CreditsRemovePod()
                 }
             }
+
+            // set model
+            ent.SetModel("models/player/eggbot/eggbot.mdl")
+
+            // set color
+            EntFireByHandle(ent, "Color", (RandomInt(0, 255) + " " + RandomInt(0, 255) + " " + RandomInt(0, 255)), 0, null, null)
+
+            // set position
+            ent.SetOrigin(Vector(0, 0, 7.5))
+
+            // set animation
+            EntFireByHandle(ent, "setanimation", AnimationsPB[RandomAnimation], 0, null, null)
+        }
+
+        // replace males with Atlas's
+        function CreditsSetModelAL(ent) {
+            FixCreditsCameras()
+
+            // count how many credits come on screen to change to humans
+            MPMCredits <- MPMCredits + 1
+
+            // preset animation
+            local RandomAnimation = RandomInt(0, CRAnimationTypesAL)
+
+            // set model
+            ent.SetModel("models/player/ballbot/ballbot.mdl")
+
+            // set color
+            EntFireByHandle(ent, "Color", (RandomInt(0, 255) + " " + RandomInt(0, 255) + " " + RandomInt(0, 255)), 0, null, null)
+
+            // set position
+            ent.SetOrigin(Vector(-10, 0, 25.5))
+
+            // set animation
+            EntFireByHandle(ent, "setanimation", AnimationsAL[RandomAnimation], 0, null, null)
+
+            // remove pod if needed
+            HasRemovedPod <- 0
+            foreach (anim in NOTubeAnimsAL) {
+                if (AnimationsAL[RandomAnimation] == anim && HasRemovedPod == 0) {
+                    HasRemovedPod <- 1
+                    CreditsRemovePod()
+                    ent.SetOrigin(Vector(0, 0, 7.5))
+                }
+            }
+        }
+
+        // set credits animations
+            // pbody animations
+            AnimationsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "noGun_airwalk", "portalgun_drowning", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
+
+            // atlas animations
+            AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "noGun_airwalk", "noGun_airwalk"]
+
+            // pbody animations out of tube
+            NOTubeAnimsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
+
+            // atlas animations out of tube
+            NOTubeAnimsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "noGun_crouch_idle"]
+
+            // credit run counter
+            MPMCredits <- 0
+
+            // set the amount of pbody animations
+            CRAnimationTypesPB <- -1
+            foreach (value in AnimationsPB) {
+                CRAnimationTypesPB <- CRAnimationTypesPB + 1
+            }
+
+            // set the amount of atlas animations
+            CRAnimationTypesAL <- -1
+            foreach (value in AnimationsAL) {
+                CRAnimationTypesAL <- CRAnimationTypesAL + 1
+            }
+
+            // add team names to credits
+            MPMCoopCreditNames <- [
+            "",
+            "",
+            "",
+            "",
+            "Portal 2 Multiplayer Mod: Credits",
+            "",
+            "--------------------------",
+            "Multiplayer Mod: Team",
+            "--------------------------",
+            "kyleraykbs | Scripting + Team Lead",
+            "Vista | Reverse Engineering, Plugin Dev",
+            "Bumpy | Scripting + Script Theory",
+            "Wolƒe Strider Shoσter | Scripting",
+            "Enator18 | Python"
+            "Nanoman2525 | Mapping + Entity and Command Help",
+            "--------------------------",
+            "Multiplayer Mod: Contributers",
+            "--------------------------",
+            "Darnias | Jumpstarter Code",
+            "Mellow | stole all of Python"
+            "The Pineapple | Hamachi support",
+            "actu | Remote File Downloads",
+            "Blub/Vecc | Code Cleanup + Commenting",
+            "AngelPuzzle | Translations",
+            "SuperSpeed | spedrun da test",
+            "--------------------------",
+            "Multiplayer Mod: Beta Testers",
+            "--------------------------",
+            "sear",
+            "Trico_Everfire",
+            "Brawler",
+            "iambread",
+            "hulkstar",
+            "neck",
+            "soulfur",
+            "brawler",
+            "Sheuron",
+            "portalboy",
+            "charity",
+            "Souper Marilogi",
+            "fluffys",
+            "JDWMGB",
+            "ALIEN GOD",
+            "mono",
+            "mp_emerald",
+            "Funky Kong",
+            "MicrosoftWindows",
+            "dactam",
+            "wol",
+            "kitsune",
+            "charzar",
+            "NintenDude",
+            "SlingEXE",
+            "--------------------------",
+            "Thank you all so so much!!!",
+            "--------------------------"
+            "",
+            "",
+            "--------------------------",
+            "Valve: Credits",
+            "--------------------------",
+            ]
+
+            // set the amount of credits
+            MPModCreditNumber <- -1
+            foreach (value in MPMCoopCreditNames) {
+                MPModCreditNumber <- MPModCreditNumber + 1
+            }
+
+            // mount list of credits to credits
+            foreach (Name in MPMCoopCreditNames) {
+                AddCoopCreditsName(Name)
+            }
+        }
+
+        //## GELOCITY 1 INSTANT RUN##//
+        try {
+            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_1_v02") {
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player2"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player1"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "start_clip_1"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "start_clip_2"))
+
+                local ent = null
+                while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
+                    ent.Destroy() // 20 entities removed
+                }
+
+                while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
+                    ent.Destroy() // 85 entities removed
+                }
+            }
+        } catch(exception) { }
+
+        //## MP_COOP_PAINT_CONVERSION INSTANT RUN ##//
+        if (GetMapName() == "mp_coop_paint_conversion") {
+            Entities.FindByName(null, "disassembler_1_door_blocker").Destroy()
+            Entities.FindByName(null, "disassembler_2_door_blocker").Destroy()
+
+            Entities.FindByName(null, "disassembler_1_door_2").Destroy()
+            Entities.FindByName(null, "disassembler_1_door_1").Destroy()
+
+            Entities.FindByName(null, "disassembler_2_door_2").Destroy()
+            Entities.FindByName(null, "disassembler_2_door_1").Destroy()
+        }
+
+        //## MP_COOP_TRIPLEAXIS INSTANT RUN ##//
+        if (GetMapName() == "mp_coop_tripleaxis") {
+            Entities.FindByName(null, "outro_math_counter").Destroy()
+        }
+
+        //## MP_COOP_SEPARATION_1 INSTANT RUN ##//
+        if (GetMapName() == "mp_coop_separation_1") {
+            EntFireByHandle(Entities.FindByName(null, "left_1st_room_spawn-initial_blue_spawn"), "SetAsActiveSpawn", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "right_1st_room_spawn-initial_orange_spawn"), "SetAsActiveSpawn", "", 0, null, null)
+            Entities.FindByName(null, "split_counter").Destroy()
         }
     }
 
-    // Run code when the map spawns
-    function WorldInitalSpawn() {
-        try {
-            if (IsSingleplayerMap==true) {
-                WorldInitalSpawnSingleplayer()
-            }
-        } catch(exception) {}
 
-        //Cache Props
-        CreatePropsForLevel(true, false, false)
+    ///////////
+    // LOOPS //
+    ///////////
+
+
+    if(AMCLoop == true) {
+        if (GetMapName() == "mp_coop_lobby_3") {
+            local PLent = null
+            while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
+                local APLent = null
+                while(APLent = Entities.FindByClassname(APLent, "player")) {
+                    APLent.SetOrigin(Vector(2495, -7451, 410))
+                }
+            }
+
+            // art therapy left chute enabler
+            local vectorEEL
+            vectorEEL = Vector(5727, 3336, -441)
+            local EELent = null
+            while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) {
+                local LCatEn = null
+                while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
+                    DoEntFire("!self", "enable", "", 0.0, null, LCatEn)
+                    DoEntFire("!self", "trigger", "", 0.0, null, LCatEn)
+                }
+            }
+
+            // art therapy left chute teleporter
+            TeleportPlayerWithinDistance(Vector(5729, 3336, 1005), 30, Vector(3194, -1069, 1676))
+
+            // art therapy right chute enabler
+            local vectorEER
+            vectorEER = Vector(5727, 3192, -441)
+            local EERent = null
+            while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) {
+                local RCatEn = null
+                while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
+                    DoEntFire("!self", "enable", "", 0.0, null, RCatEn)
+                    DoEntFire("!self", "trigger", "", 0.0, null, RCatEn)
+                }
+            }
+
+            // art therapy right chute teleporter
+            TeleportPlayerWithinDistance(Vector(5727, 3180, 1005), 30, Vector(3191, -1228, 1682))
+
+            // disable art therapy chutes
+            local vectorE
+            vectorE = Vector(3201, -1152, 1272)
+            local Aent = null
+            while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) {
+                local LCatDis = null
+                while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
+                    DoEntFire("!self", "enable", "", 0.0, null, LCatDis)
+                    DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
+                }
+                local RCatDis = null
+                while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
+                    DoEntFire("!self", "enable", "", 0.0, null, RCatDis)
+                    DoEntFire("!self", "trigger", "", 0.0, null, RCatDis)
+                }
+            }
+
+            // teleport exiting player out of art therapy
+            TeleportPlayerWithinDistance(Vector(3584, -1669, 466), 30, Vector(3919, 3352, 158))
+        }
+
+    //## MP_COOP_CREDITS LOOP ##//
+        if (GetMapName() == "mp_coop_credits") {
+            // if mod credits aren't finished change humans to robots
+        if (MPMCredits <= MPModCreditNumber) {
+            // change males to atlases
+            local ent = null
+            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male.mdl")) {
+                CreditsSetModelAL(ent)
+            }
+
+            local ent = null
+            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male01.mdl")) {
+                CreditsSetModelAL(ent)
+            }
+
+            local ent = null
+            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male_02.mdl")) {
+                CreditsSetModelAL(ent)
+            }
+
+            // change females to pbodys
+            local ent = null
+            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_01.mdl")) {
+                CreditsSetModelPB(ent)
+            }
+
+            local ent = null
+            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_02.mdl")) {
+                CreditsSetModelPB(ent)
+            }
+
+            local ent = null
+            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_03.mdl")) {
+                CreditsSetModelPB(ent)
+            }
+        }
+        }
+
+        //
+        if (GetMapName() == "mp_coop_wall_5") {
+            TeleportPlayerWithinDistance(Vector(1224, -1984, 565), 100, Vector(1208, -1989, 315))
+        }
+
+        if (GetMapName() == "mp_coop_2paints_1bridge") {
+            EntFireByHandle(Entities.FindByName(null, "bridge_2"), "enable", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "bridge_1"), "enable", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "paint_sprayer_blue_1"), "start", "", 0, null, null)
+        }
     }
 
-    // general one time run
-    function GeneralOneTime() {
-        canclearcache <- true
 
-        HasSpawned <- true
+    ////////////////
+    // ONETIMERUN //
+    ////////////////
 
-        SendToConsole("hud_saytext_time 12")
 
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.GetTeam()==2) {
-                OrangeOldPlayerPos <- p.GetOrigin()
-            }
-        }
+    if (AMCOneTimeRun == true) {
 
-        try {
-            if (OrangeOldPlayerPos) { }
-        } catch(exeption) {
-            printl("OrangeOldPlayerPos Not Set (Blue Probably Moved Before Orange Could Load in) Setting OrangeOldPlayerPos To BlueOldPlayerPos")
-            OrangeOldPlayerPos <- OldPlayerPos
-        }
-
-        //Create Props After Cache
-        CreatePropsForLevel(false, true, false)
-
-        SingleplayerOnFirstSpawn()
-
+        //## GENERAL ONE TIME RUN ##//
         local DoorEntities = [
             "airlock_1-door1-airlock_entry_door_close_rl",
             "airlock_2-door1-airlock_entry_door_close_rl",
@@ -797,131 +966,7 @@ OnPlayerJoin <- function() {
             }
         }
 
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "trigger_playerteam")) {
-            DoEntFire("!self", "starttouch", "", 0.0, null, ent)
-        }
-
-        // map support
-        if (GetMapName() == "mp_coop_separation_1") {
-            mp_coop_separation_1FIXONETIME()
-        }
-
-    }
-
-    //run all required map loops every tick
-    function AllMapsLoopCode() {
-        // run all required loops
-        if (GetMapName() == "mp_coop_lobby_3") {
-            ArtTherapyLobby()
-            }
-
-        // Run custom credits code
-        if (GetMapName() == "mp_coop_credits") {
-            CreditsLoop()
-        }
-	// Run code fix for mp_coop_wall_5
-        if (GetMapName() == "mp_coop_wall_5") {
-            mp_coop_wall_5FIX()
-        }
-	// Run code fix for mp_coop_2paints_1bridge
-        if (GetMapName() == "mp_coop_2paints_1bridge") {
-            mp_coop_2paints_1bridgeFIX()
-        }
-    }
-
-//-----------------------------------
-// Course 6 Map Support Code
-//-----------------------------------
-
-    // art therapy lobby
-    function ArtTherapyLobby() {
-        // TPG
-        local PLent = null
-        while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
-            local APLent = null
-            while(APLent = Entities.FindByClassname(APLent, "player")) {
-                APLent.SetOrigin(Vector(2495, -7451, 410))
-            }
-        }
-
-        // art therapy left chute enabler
-        local vectorEEL
-        vectorEEL = Vector(5727, 3336, -441)
-        local EELent = null
-        while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) {
-            local LCatEn = null
-            while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
-                DoEntFire("!self", "enable", "", 0.0, null, LCatEn)
-                DoEntFire("!self", "trigger", "", 0.0, null, LCatEn)
-            }
-        }
-
-        // art therapy left chute teleporter
-        TeleportPlayerWithinDistance(Vector(5729, 3336, 1005), 30, Vector(3194, -1069, 1676))
-
-        // art therapy right chute enabler
-        local vectorEER
-        vectorEER = Vector(5727, 3192, -441)
-        local EERent = null
-        while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) {
-            local RCatEn = null
-            while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
-                DoEntFire("!self", "enable", "", 0.0, null, RCatEn)
-                DoEntFire("!self", "trigger", "", 0.0, null, RCatEn)
-            }
-        }
-
-        // art therapy right chute teleporter
-        TeleportPlayerWithinDistance(Vector(5727, 3180, 1005), 30, Vector(3191, -1228, 1682))
-
-        // disable art therapy chutes
-        local vectorE
-        vectorE = Vector(3201, -1152, 1272)
-        local Aent = null
-        while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) {
-            local LCatDis = null
-            while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
-                DoEntFire("!self", "enable", "", 0.0, null, LCatDis)
-                DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
-            }
-            local RCatDis = null
-            while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
-                DoEntFire("!self", "enable", "", 0.0, null, RCatDis)
-                DoEntFire("!self", "trigger", "", 0.0, null, RCatDis)
-            }
-        }
-
-        // teleport exiting player out of art therapy
-        TeleportPlayerWithinDistance(Vector(3584, -1669, 466), 30, Vector(3919, 3352, 158))
-    }
-
-    // fix mp_coop_2paints_1bridge
-    function mp_coop_2paints_1bridgeFIX() {
-        EntFireByHandle(Entities.FindByName(null, "bridge_2"), "enable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "bridge_1"), "enable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "paint_sprayer_blue_1"), "start", "", 0, null, null)
-    }
-
-    // mp_coop_tripleaxis fix
-    function mp_coop_tripleaxisFIX() {
-        Entities.FindByName(null, "outro_math_counter").Destroy()
-    }
-
-    //mp_coop_wall_5
-    function mp_coop_wall_5FIX() {
-        TeleportPlayerWithinDistance(Vector(1224, -1984, 565), 100, Vector(1208, -1989, 315))
-    }
-
-    // mp_coop_separation_1 fix
-    function mp_coop_separation_1FIX() {
-        EntFireByHandle(Entities.FindByName(null, "left_1st_room_spawn-initial_blue_spawn"), "SetAsActiveSpawn", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "right_1st_room_spawn-initial_orange_spawn"), "SetAsActiveSpawn", "", 0, null, null)
-        Entities.FindByName(null, "split_counter").Destroy()
-    }
-
-    // mp_coop_separation_1 fix onetime
-    function mp_coop_separation_1FIXONETIME() {
+        //## 
         EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopMapStart()", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(1)", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(2)", 0, null, null)
@@ -946,40 +991,141 @@ OnPlayerJoin <- function() {
             Entities.FindByName(null, "split_exit_fake_collision").Destroy()
             local loopTimes = loopTimes + 1
         }
+
+        //## MP_COOP_LOBBY_3 ONE TIME RUN ##//
+        if (GetMapName() == "mp_coop_lobby_3") {
+            //enable the hub entirely
+            try {
+                // enable team building course
+                DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
+                DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
+
+                // enable tbeam course
+                DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
+                DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
+
+                // enable paint course
+                DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
+                DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
+
+                // enable fling course
+                DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
+                DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
+
+                // enable extra course
+                DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
+                DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
+
+                // enable all finished course
+                DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
+                DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
+
+                // enable music
+                DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
+                // Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
+                // Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
+            } catch(exception) {}
+
+            // Remove useless entities so that
+            // the entity limit does not crash
+            // the game
+
+            // Remove func_portal_bumper's from the map
+            local ent = null
+            while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
+                ent.Destroy() // 165 entities removed
+            }
+            // Remove env_sprite's from the map
+            local ent = null
+            while(ent = Entities.FindByClassname(ent, "env_sprite")) {
+                ent.Destroy() // 31 entities removed
+            }
+
+            // fix art therapy tube glitches
+            Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()
+            Entities.FindByName(null, "dlc_room_fall_push_left").Destroy()
+
+            // fix track 5
+            // entry door fix
+            Entities.FindByName(null, "track5-door_paint-trigger_hurt_door").Destroy()
+            Entities.FindByName(null, "track5-door_paint-collide_door").Destroy()
+
+            // light fix
+            Entities.FindByName(null, "@light_shadowed_paintroom").Destroy()
+
+            // remove orange exit door
+            local ent = null
+            while(ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit")) {
+                ent.Destroy()
+            }
+
+            Entities.FindByName(null, "track5-orangeescape_elevator_clip").Destroy()
+
+            // remove blue exit door
+            local ent = null
+            while(ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit")) {
+                ent.Destroy()
+            }
+
+            Entities.FindByName(null, "track5-escape_elevator_clip").Destroy()
+
+            // Remove the bottom of droppers in Course 5
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                local ent = null
+                while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500)) {
+                    if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
+                        EntFireByHandle(ent, "SetAnimation", "open_idle", 0.0, null, null)
+                    }
+
+                    if (ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
+                        EntFireByHandle(ent, "SetAnimation", "item_dropper_idle", 0.0, null, null)
+                    }
+                }
+            }
+        }
+
+        //## MP_COOP_SEPARATION_1 ONETIME ##//
+        if (GetMapName() == "mp_coop_separation_1") {
+                EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopMapStart()", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(1)", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(2)", 0, null, null)
+
+            local ent = null
+            while(ent = Entities.FindByName(ent, "split_exit_arms")) {
+                EntFireByHandle(ent, "setanimation", "90up", 0, null, null)
+            }
+
+            local ent = null
+            while(ent = Entities.FindByName(ent, "split_entrance_arms")) {
+                EntFireByHandle(ent, "setanimation", "90down", 0, null, null)
+            }
+
+            local ent = null
+            while (ent = Entities.FindByClassnameWithin(ent, "func_areaportalwindow", OldPlayerPos, 5000)) {
+                EntFireByHandle(ent, "SetFadeEndDistance", "10000", 0, null, null)
+            }
+
+            local loopTimes = 0
+            while (loopTimes <= 0) {
+                Entities.FindByName(null, "split_exit_fake_collision").Destroy()
+                local loopTimes = loopTimes + 1
+            }
+        }
     }
 
-    // mp_coop_paint_conversion fix
-    function mp_coop_paint_conversionFIX() {
-        Entities.FindByName(null, "disassembler_1_door_blocker").Destroy()
-        Entities.FindByName(null, "disassembler_2_door_blocker").Destroy()
-
-        Entities.FindByName(null, "disassembler_1_door_2").Destroy()
-        Entities.FindByName(null, "disassembler_1_door_1").Destroy()
-
-        Entities.FindByName(null, "disassembler_2_door_2").Destroy()
-        Entities.FindByName(null, "disassembler_2_door_1").Destroy()
+    /////////////
+    //Post Init//
+    /////////////
+    if (AMCPostInit==true) {
+        //Cache Props
+        CreatePropsForLevel(true, false, false)
     }
+}
 
 //-----------------------------------
 // Custom Map Support Code
 //-----------------------------------
-
-    // Gelocity 1 code
-    function Gelocity() {
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player2"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player1"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "start_clip_1"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "start_clip_2"))
-
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
-            ent.Destroy() // 20 entities removed
-        }
-
-        while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
-            ent.Destroy() // 85 entities removed
-        }
-    }
 
     // Gelocity 2 code
     function Gelocity2() {
@@ -1049,251 +1195,6 @@ OnPlayerJoin <- function() {
             }
         }
     }
-
-//-----------------------------------
-// Custom Credits Code
-//-----------------------------------
-
-    // remove selected pods
-    function CreditsRemovePod() {
-        local ent = null
-        while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
-            ent.Destroy()
-        }
-
-        while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
-            ent.Destroy()
-        }
-    }
-
-    // fix void camera glitch
-    function FixCreditsCameras() {
-        // disable useless cameras
-        EntFireByHandle(Entities.FindByName(null, "camera_SP"), "disable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "camera_O"), "disable", "", 0, null, null)
-
-        // reload main camera with new params
-        Entities.FindByName(null, "camera").__KeyValueFromString("target_team", "-1")
-        EntFireByHandle(Entities.FindByName(null, "camera"), "disable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "camera"), "enable", "", 0, null, null)
-    }
-
-    // replace females with P-body's
-    function CreditsSetModelPB(ent) {
-        FixCreditsCameras()
-
-        // count how many credits come on screen to change to humans
-        MPMCredits <- MPMCredits + 1
-
-        // preset animation
-        local RandomAnimation = RandomInt(0, CRAnimationTypesPB)
-
-        // remove pod if needed
-        HasRemovedPod <- 0
-        foreach (anim in NOTubeAnimsPB) {
-            if (AnimationsPB[RandomAnimation] == anim && HasRemovedPod == 0) {
-                HasRemovedPod <- 1
-                CreditsRemovePod()
-            }
-        }
-
-        // set model
-        ent.SetModel("models/player/eggbot/eggbot.mdl")
-
-        // set color
-        EntFireByHandle(ent, "Color", (RandomInt(0, 255) + " " + RandomInt(0, 255) + " " + RandomInt(0, 255)), 0, null, null)
-
-        // set position
-        ent.SetOrigin(Vector(0, 0, 7.5))
-
-        // set animation
-        EntFireByHandle(ent, "setanimation", AnimationsPB[RandomAnimation], 0, null, null)
-    }
-
-    // replace males with Atlas's
-    function CreditsSetModelAL(ent) {
-        FixCreditsCameras()
-
-        // count how many credits come on screen to change to humans
-        MPMCredits <- MPMCredits + 1
-
-        // preset animation
-        local RandomAnimation = RandomInt(0, CRAnimationTypesAL)
-
-        // set model
-        ent.SetModel("models/player/ballbot/ballbot.mdl")
-
-        // set color
-        EntFireByHandle(ent, "Color", (RandomInt(0, 255) + " " + RandomInt(0, 255) + " " + RandomInt(0, 255)), 0, null, null)
-
-        // set position
-        ent.SetOrigin(Vector(-10, 0, 25.5))
-
-        // set animation
-        EntFireByHandle(ent, "setanimation", AnimationsAL[RandomAnimation], 0, null, null)
-
-        // remove pod if needed
-        HasRemovedPod <- 0
-        foreach (anim in NOTubeAnimsAL) {
-            if (AnimationsAL[RandomAnimation] == anim && HasRemovedPod == 0) {
-                HasRemovedPod <- 1
-                CreditsRemovePod()
-                ent.SetOrigin(Vector(0, 0, 7.5))
-            }
-        }
-    }
-
-    function CreditsLoop() {
-        // if mod credits aren't finished change humans to robots
-        if (MPMCredits <= MPModCreditNumber) {
-            // change males to atlases
-            local ent = null
-            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male.mdl")) {
-                CreditsSetModelAL(ent)
-            }
-
-            local ent = null
-            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male01.mdl")) {
-                CreditsSetModelAL(ent)
-            }
-
-            local ent = null
-            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male_02.mdl")) {
-                CreditsSetModelAL(ent)
-            }
-
-            // change females to pbodys
-            local ent = null
-            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_01.mdl")) {
-                CreditsSetModelPB(ent)
-            }
-
-            local ent = null
-            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_02.mdl")) {
-                CreditsSetModelPB(ent)
-            }
-
-            local ent = null
-            while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_03.mdl")) {
-                CreditsSetModelPB(ent)
-            }
-        }
-    }
-
-    // credits one time run code
-    if (GetMapName() == "mp_coop_credits") {
-        // set credits animations
-        // pbody animations
-        AnimationsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "noGun_airwalk", "portalgun_drowning", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
-
-        // atlas animations
-        AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "noGun_airwalk", "noGun_airwalk"]
-
-        // pbody animations out of tube
-        NOTubeAnimsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
-
-        // atlas animations out of tube
-        NOTubeAnimsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "noGun_crouch_idle"]
-
-        // credit run counter
-        MPMCredits <- 0
-
-        // set the amount of pbody animations
-        CRAnimationTypesPB <- -1
-        foreach (value in AnimationsPB) {
-            CRAnimationTypesPB <- CRAnimationTypesPB + 1
-        }
-
-        // set the amount of atlas animations
-        CRAnimationTypesAL <- -1
-        foreach (value in AnimationsAL) {
-            CRAnimationTypesAL <- CRAnimationTypesAL + 1
-        }
-
-        // add team names to credits
-        MPMCoopCreditNames <- [
-        "",
-        "",
-        "",
-        "",
-        "Portal 2 Multiplayer Mod: Credits",
-        "",
-        "--------------------------",
-        "Multiplayer Mod: Team",
-        "--------------------------",
-        "kyleraykbs | Scripting + Team Lead",
-        "Vista | Reverse Engineering, Plugin Dev",
-        "Bumpy | Scripting + Script Theory",
-        "Wolƒe Strider Shoσter | Scripting",
-        "Enator18 | Python"
-        "Nanoman2525 | Mapping + Entity and Command Help",
-        "--------------------------",
-        "Multiplayer Mod: Contributers",
-        "--------------------------",
-        "Darnias | Jumpstarter Code",
-        "Mellow | stole all of Python"
-        "The Pineapple | Hamachi support",
-        "actu | Remote File Downloads",
-        "Blub/Vecc | Code Cleanup + Commenting",
-        "AngelPuzzle | Translations",
-        "SuperSpeed | spedrun da test",
-        "--------------------------",
-        "Multiplayer Mod: Beta Testers",
-        "--------------------------",
-        "sear",
-        "Trico_Everfire",
-        "Brawler",
-        "iambread",
-        "hulkstar",
-        "neck",
-        "soulfur",
-        "brawler",
-        "Sheuron",
-        "portalboy",
-        "charity",
-        "Souper Marilogi",
-        "fluffys",
-        "JDWMGB",
-        "ALIEN GOD",
-        "mono",
-        "mp_emerald",
-        "Funky Kong",
-        "MicrosoftWindows",
-        "dactam",
-        "wol",
-        "kitsune",
-        "charzar",
-        "NintenDude",
-        "SlingEXE",
-        "--------------------------",
-        "Thank you all so so much!!!",
-        "--------------------------"
-        "",
-        "",
-        "--------------------------",
-        "Valve: Credits",
-        "--------------------------",
-        ]
-
-        // set the amount of credits
-        MPModCreditNumber <- -1
-        foreach (value in MPMCoopCreditNames) {
-            MPModCreditNumber <- MPModCreditNumber + 1
-        }
-
-        // mount list of credits to credits
-        foreach (Name in MPMCoopCreditNames) {
-            AddCoopCreditsName(Name)
-        }
-    }
-
-    // run init code
-    try {
-    Entities.First().ConnectOutput("OnUser1", "init")
-    } catch(exception) {}
-    try {
-    DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
-    } catch(exception) {}
 
 //-----------------------------------
 // Singleplayer Support Code
@@ -1740,12 +1641,6 @@ function SingleplayerLoop() {
 
 }
 
-function WorldInitalSpawnSingleplayer() {
-    if (GetMapName() == "sp_a1_intro6") {
-
-    }
-}
-
 function SingleplayerOnFirstSpawn() {
     if (GetMapName() == "sp_a1_intro6") {
 
@@ -1879,3 +1774,14 @@ try {
 function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 }
+
+
+
+
+// Run mapspawn.nut
+try {
+Entities.First().ConnectOutput("OnUser1", "init")
+} catch(exception) {}
+try {
+DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
+} catch(exception) {}
