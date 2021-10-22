@@ -1686,9 +1686,51 @@ function SingleplayerSupport(SSInstantRun, SSLoop) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "incinerator_death_fade").Destroy()
             Entities.FindByName(null, "camera_ghostAnim").Destroy()
+            Entities.FindByName(null, "incinerator_window_brush").Destroy()
+            Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("FadeStartDist", "1750")
+            Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("FadeDist", "1950")
+            Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("targetname", "incinerator_portal_custom")
         }
 
         if (SSLoop==true) {
+            EntFire("shaft_areaportal_1", "open", "", 0, null)
+            EntFire("shaft_areaportal_2", "open", "", 0, null)
+
+
+            // remove player portalgun
+            if (Entities.FindByName(null, "player_near_portalgun")) {
+                local ent = null
+                while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+                    ent.Destroy()
+                }
+            }
+
+            //Give Player PortalGun
+            if (!Entities.FindByName(null, "player_near_portalgun")) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    if (Entities.FindByName(null, "CustomPortalGun")) {
+                    } else {
+                        PortalGunGiveContinue <- true
+                        local ent = null
+                        while (ent = Entities.FindByClassnameWithin(ent, "weapon_portalgun", p.GetOrigin(), 2)) {
+                            PortalGunGiveContinue <- false
+                        }
+                        if (PortalGunGiveContinue==true) {
+                        portalgun <- Entities.CreateByClassname("weapon_portalgun")
+                        portalgun.__KeyValueFromString("StartingTeamNum", "0")
+                        portalgun.__KeyValueFromString("targetname", "CustomPortalGun")
+                        portalgun.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, p.GetOrigin().z))
+                        EntFireByHandle(portalgun, "use", "", 0.25, p, p)
+                        EntFireByHandle(portalgun, "kill", "", 1.25, p, p)
+                        }
+                    }
+                }
+            }
+
+
+
+
 
         }
     }
