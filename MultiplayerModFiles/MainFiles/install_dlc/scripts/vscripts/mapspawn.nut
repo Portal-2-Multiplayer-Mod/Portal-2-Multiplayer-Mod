@@ -157,7 +157,7 @@ function init() {
     // run singleplayer code
     if (GetMapName().slice(0, 7) != "mp_coop") {
         IsSingleplayerMap <- true
-        SingleplayerSupport(true, false)
+        SingleplayerSupport(true, false, false)
     }
 
     // enable fast download
@@ -458,7 +458,7 @@ try {
 
         //singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
-            SingleplayerSupport(false, true)
+            SingleplayerSupport(false, true, false)
         }
 
         // run dedicated server code
@@ -627,6 +627,8 @@ function GeneralOneTime() {
     CreatePropsForLevel(false, true, false)
     
     AllMapsCode(false, true, false, false)
+
+    SingleplayerSupport(false, false, true)
 
     SingleplayerOnFirstSpawn()
 }
@@ -1211,7 +1213,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 // ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
 
 
-function SingleplayerSupport(SSInstantRun, SSLoop) {
+function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
     if (SSLoop) {
             // sp_a1_intro2
@@ -1670,6 +1672,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop) {
 
         // Support for the map sp_a2_laser_stairs
         if (GetMapName() == "sp_a2_laser_stairs") {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "door_1-close_door_rl").Destroy()
         }
@@ -1682,20 +1685,71 @@ function SingleplayerSupport(SSInstantRun, SSLoop) {
 
     //## sp_a2_intro ##//
     if (GetMapName()=="sp_a2_intro") {
+        
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "incinerator_death_fade").Destroy()
             Entities.FindByName(null, "camera_ghostAnim").Destroy()
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "incinerator_window_brush").Destroy()
             Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("FadeStartDist", "1750")
             Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("FadeDist", "1950")
             Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("targetname", "incinerator_portal_custom")
+            EntFire("@enable_arms", "trigger", "", 0, null)
+            Entities.FindByName(null, "InstanceAuto13-dangle_ceiling-disable_arms").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2704, -1260, 112), 1024).Destroy()
+            NoContinueFallCamera <- true
+        }
+        
+        if (SSOneTimeRun==true) {
+            printl("RAN")
+            bruh <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+            bruh.__KeyValueFromString("targetname", "bruh")
+            bruh.__KeyValueFromString("target_team", "-1")
+            bruh.SetOrigin(Entities.FindByName(null, "ghostAnim").GetOrigin())
+            EntFire("bruh", "setparent", "ghostAnim", 0, null)
+            EntFire("bruh", "setparentattachment", "attach_1", 0, null)
+            EntFire("bruh", "enable", "", 0, null)
+            EntFire("bruhTele", "disable", "", 20.75, null)
+            EntFire("bruh", "addoutput", "targetname bruhTele", 0.25, null)
+            EntFire("bruhTele", "addoutput", "targetname bruhDone", 20.80, null)
+            self.PrecacheSoundScript( "ScriptedSequence.IncineratorFall" )
+            local TempEnt = Entities.CreateByClassname("prop_dynamic")
+            TempEnt.__KeyValueFromString("targetname", "TempEnt")
+            EntFire("TempEnt", "addoutput", "targetname PlayFallSound", 0, null)
+            EntFire("PlayFallSound", "kill", "", 0.11, null)
         }
 
         if (SSLoop==true) {
+
+            if (Entities.FindByName(null, "PlayFallSound")) {
+            Entities.FindByName(null, "blue").EmitSound("playonce\\scripted_sequences\\incinerator_fall_01.wav")
+            }
+            
+            if (Entities.FindByName(null, "bruhTele")) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(2704, -1260, 92))
+                }
+            } 
+            
+            if (Entities.FindByName(null, "bruhDone")) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-3308, 536, -10737))
+                    p.SetAngles(0 0 0)
+                }
+                EntFire("bruhDone", "addoutput", "targetname bruhFinished", 0.15, null)
+            }
+
             EntFire("shaft_areaportal_1", "open", "", 0, null)
             EntFire("shaft_areaportal_2", "open", "", 0, null)
-
+            
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-736, 1594, -11038), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_laser_intro")
+            }
 
             // remove player portalgun
             if (Entities.FindByName(null, "player_near_portalgun")) {
@@ -1720,18 +1774,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop) {
                         portalgun <- Entities.CreateByClassname("weapon_portalgun")
                         portalgun.__KeyValueFromString("StartingTeamNum", "0")
                         portalgun.__KeyValueFromString("targetname", "CustomPortalGun")
-                        portalgun.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, p.GetOrigin().z))
+                        portalgun.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, p.GetOrigin().z+20))
                         EntFireByHandle(portalgun, "use", "", 0.25, p, p)
                         EntFireByHandle(portalgun, "kill", "", 1.25, p, p)
                         }
                     }
                 }
             }
-
-
-
-
-
         }
     }
 }
