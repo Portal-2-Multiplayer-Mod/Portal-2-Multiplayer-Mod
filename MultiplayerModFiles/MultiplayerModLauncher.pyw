@@ -3,7 +3,17 @@ import shutil
 import subprocess
 import mmap
 import time
-import psutil
+# pip install psutil if psutil doesnt exist
+try:
+    import psutil
+except:
+    try:
+        if(not os.path.exists("psutil")):
+            print("psutil not found, installing...")
+            os.system("pip install psutil")
+    except:
+        print("failed to install psutil")
+
 
 #Is On Windows
 iow = False

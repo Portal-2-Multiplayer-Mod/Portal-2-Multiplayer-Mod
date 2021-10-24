@@ -51,7 +51,7 @@ foreach (line in ConsoleAscii) {
 //-----------------------------------
 DevMode <- true
 //-----------------------------------
-UsePlugin <- true
+UsePlugin <- false
 //-----------------------------------
 DedicatedServer <- 0
 //-----------------------------------
@@ -427,7 +427,7 @@ try {
                 if (CanTag==true) {
                         RGB <- "255 255 255"; COLORMESSAGE <- "Random Color";
                         switch (p.GetRootMoveParent().entindex()) {
-			    //These are the names of the colors in order of the clients that join (up to 16)
+                            // these are the colors of the players
                             case 1 : RGB <- "255 255 255"; COLORMESSAGE <- "White"     ; break;
                             case 2 : RGB <- "120 255 120"; COLORMESSAGE <- "Green"     ; break;
                             case 3 : RGB <- "120 140 255"; COLORMESSAGE <- "Blue"      ; break;
@@ -451,13 +451,14 @@ try {
                         } catch(exception) {
 
                         }
-                        // Cache player color
+                        // cache player color
                         EntFireByHandle(Entities.FindByName(null, "colordisplay" + currentnametag), "display", "", 0.0, p, p)
                         PlayerColorCached.push(currentnametag);
                 }
             }
         }
         } catch(exception) {
+            // if there is an error set the players position to the original position
             printl("Death Detection Screwed Up (Player Probably Crashed) (Setting OrangeOldPlayerPos To BlueOldPlayerPos To Remedy The Issue)")
             OrangeOldPlayerPos <- OldPlayerPos
         }
@@ -1271,26 +1272,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 }
             }
 
-            if (!Entities.FindByName(null, "portalgun")) {
-                local p = null
-                if (timeout != 25) {
-                    timeout <- timeout + 1
-                    hasgotportalgunSPMP <- 1
-
-                    while (p = Entities.FindByClassname(p, "player")) {
-                        EntFireByHandle(clientcommand, "Command", "hud_saytext_time 0", 0, p, p)
-                        EntFireByHandle(clientcommand, "Command", "give weapon_portalgun", 0, p, p)
-                        EntFireByHandle(clientcommand, "Command", "upgrade_portalgun", 0, p, p)
-                        EntFireByHandle(clientcommand, "Command", "sv_cheats 1", 0, p, p)
-                    }
-                } else {
-                    while (p = Entities.FindByClassname(p, "player")) {
-                        EntFireByHandle(clientcommand, "Command", "hud_saytext_time 12", 0, p, p)
-                    }
-                    EntFireByHandle(clientcommand, "Command", "sv_cheats 0", 0, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
-                }
-            }
-
             // make Wheatley look at player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
@@ -1989,7 +1970,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
-                SendToConsole("changelevel LEVELNAME")
+                SendToConsole("changelevel sp_a2_gamer_time")
             }
 
             // light fill
@@ -2085,6 +2066,10 @@ try {
 function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 }
+
+
+
+
 
     //SINGLEPLAYER FUNCTIONS
     function disablewheatleyplayerpickup() {
