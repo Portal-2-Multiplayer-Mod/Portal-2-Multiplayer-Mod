@@ -76,28 +76,35 @@ for number in NumList:
 
 #undo the patch dll renames so we can patch the server.dll again
 try:
+    # if on windows
     if (iow):
+        # rename serverdisabled.dll to server.dll
         try:
             os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
             print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
         except:
             pass
+        # rename disabledengine.dll to engine.dll
         try:
             os.rename(owd + "\\bin\disabledengine.dll", owd + "\\bin\engine.dll")
             print("found engine.dll just renamed to engine.dll (python probably crashed last session)")
         except:
             pass
+    # if on linux
     else:
+        # rename disabledengine.so to engine.so
         try:
             os.rename(owd + "\\bin\linux32\disabledengine.dll", owd + "/bin/linux32/engine.so")
             print("found engine.so just renamed to engine.so (python probably crashed last session)")
         except:
             pass
+        # rename disabledserver.dll to server.dll
         try:
             os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
             print("found disabledserver.dll just renamed to server.dll (python probably crashed last session)")
         except:
             pass
+        # rename disabledserver.so to server.so
         try:
             os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
             print("found disabledserver.so just renamed to server.so (python probably crashed last session)")
