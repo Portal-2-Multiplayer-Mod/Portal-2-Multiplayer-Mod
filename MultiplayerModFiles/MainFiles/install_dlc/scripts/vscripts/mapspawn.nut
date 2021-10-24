@@ -314,7 +314,9 @@ try {
         while (p = Entities.FindByClassname(p, "player")) {
             if (p.ValidateScriptScope()) {
                 local script_scope = p.GetScriptScope()
+                //if player hasn't joined yet / hasn't been spawned/colored yet
                 if (!("Colored" in script_scope)) {
+                    // run player join code
                     OnPlayerJoin(p, script_scope)
                 }
             }
@@ -326,6 +328,7 @@ try {
 
         // cache original spawn position
             if (copp == 0 && Entities.FindByClassname(null, "player")) {
+                // OldPlayerPos = the blues inital spawn position
                 OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
                 copp <- 1
             }
@@ -345,10 +348,13 @@ try {
 
         // delete all cached models
         if (DoneCacheing==true) {
+            // if model has cached successfully delete it from the level
             foreach (index, CustomGameModel in CachedModels)  {
+                // find all entities with the model name
                 local ent = null
                 while (ent = Entities.FindByModel(ent, CustomGameModel)) {
                     try {
+                        // if it's a prop_dynamic_create entity delete it
                     if (ent.GetName().slice(0, 17)!="genericcustomprop") {
                         ent.Destroy()
                     }
@@ -405,14 +411,18 @@ try {
 
         //display the current player color in the bottom right of their screen upon spawning
         if (HasSpawned==true) {
+            // Find all players
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
+                // Check if client had the message put on there screen
                 CanTag <- true
+                // Check if client's color is cached
                 foreach (Name in PlayerColorCached) {
                     if (Name==p.GetRootMoveParent().entindex().tostring()) {
                         CanTag <- false
                     }
                 }
+                // Show player color
                 currentnametag <- p.GetRootMoveParent().entindex().tostring()
                 if (CanTag==true) {
                         RGB <- "255 255 255"; COLORMESSAGE <- "Random Color";
@@ -441,6 +451,7 @@ try {
                         } catch(exception) {
 
                         }
+                        // Cache player color
                         EntFireByHandle(Entities.FindByName(null, "colordisplay" + currentnametag), "display", "", 0.0, p, p)
                         PlayerColorCached.push(currentnametag);
                 }
@@ -473,16 +484,6 @@ try {
         //EntFire("player", "addoutput", j + 4)
         EntFire("player", "addoutput", k + 2)
 
-        // turn cheats off if ready (sv_cheats 0)
-        if (ReadyCheatsOff == 1) {
-            if (CheatsOff == 0) {
-                if (GetMapName() == "mp_coop_lobby_3") {
-                    //SendToConsole("sv_cheats 0")
-                }
-                CheatsOff <- 1
-            }
-        }
-
         if (DevMode==true) {
             DevHacks()
         }
@@ -506,7 +507,7 @@ function OnPlayerJoin(p, script_scope) {
 PlayerID <- p.GetRootMoveParent()
 PlayerID <- PlayerID.entindex()
 
-// set viewmodel names
+// set viewmodel targetnames so we can tell them apart
 local ent = null
 while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
@@ -518,6 +519,7 @@ while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
 // load plugin
 if (UsePlugin==true) {
     if (LoadPlugin==true) {
+        printl("Loading Plugin... Restarting Map")
         EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
         EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
         LoadPlugin <- false
@@ -539,6 +541,7 @@ if (PluginLoaded==true) {
 } else {
     JoinMessage <- "Player " + PlayerID + " Joined The Game"
 }
+// set join message to player name
 JoinMessage = JoinMessage.tostring()
 joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
 EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
@@ -559,13 +562,18 @@ if (PlayerID != 1) {
 
 // create an entity to display player color at the bottom left of every clients' screen
 colordisplay <- Entities.CreateByClassname("game_text")
+    // set the entity's targetname to colordisplay + player's index
 colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
+    // set the entity's origin to the bottom left of the screen
 colordisplay.__KeyValueFromString("x", "0")
+colordisplay.__KeyValueFromString("y", "1")
+    // set the entity's holdtime to infinity
 colordisplay.__KeyValueFromString("holdtime", "100000")
+    // set the fade time to none
 colordisplay.__KeyValueFromString("fadeout", "0")
 colordisplay.__KeyValueFromString("fadein", "0")
+    // set the channel to top
 colordisplay.__KeyValueFromString("channel", "0")
-colordisplay.__KeyValueFromString("y", "1")
 
 // set preset colors for up to 16 clients
 switch (PlayerID) {
@@ -1967,6 +1975,29 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
     }
 
+    //## sp_a2_laser_relays ##//
+    if (GetMapName()=="sp_a2_laser_relays") {
+        if (SSInstantRun==true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            // destroy objects
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+        }
+
+        if (SSLoop==true) {
+
+            // elevator code
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel LEVELNAME")
+            }
+
+            // light fill
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+    }
 }
 
 //-----------------------------------
