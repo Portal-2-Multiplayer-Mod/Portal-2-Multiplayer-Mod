@@ -1937,6 +1937,31 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
         }
     }
+
+    //## sp_a2_bridge_the_gap ##//
+    if (GetMapName()=="sp_a2_bridge_the_gap") {
+        if (SSInstantRun==true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            // destroy objects
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+        }
+
+        if (SSLoop==true) {
+
+            // elevator code
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_laser_relays")
+            }
+
+            // light fill
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+    }
+
 }
 
 //-----------------------------------
