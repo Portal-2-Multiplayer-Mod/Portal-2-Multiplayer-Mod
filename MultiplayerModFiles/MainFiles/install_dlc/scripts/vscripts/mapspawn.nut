@@ -587,9 +587,11 @@ switch (PlayerID) {
     case 16: R <-   0, G <-  75, B <-  75; break;
 }
 
+// set color of player's in-game model
 script_scope.Colored <- true
 EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
 
+// Run general map code after a player loads into the game
 if (PlayerID==1) {
     AllMapsCode(false, false, true, false)
 }
