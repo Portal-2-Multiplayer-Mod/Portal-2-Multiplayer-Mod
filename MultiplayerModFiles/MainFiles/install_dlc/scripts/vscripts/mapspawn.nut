@@ -609,6 +609,9 @@ function GeneralOneTime() {
 
     SendToConsole("hud_saytext_time 12")
 
+    // Inform user that we changed hud_saytext_time to 12
+    SendToConsole("echo Changed Hud Saytext Time For Now")
+
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.GetTeam()==2) {
