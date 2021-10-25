@@ -219,26 +219,6 @@ function init() {
     // Run instant map code
     AllMapsCode(false, false, false, true)
 
-    // Run Gelocity 2 code
-    if (TryGelocity2 == 1) {
-        try {
-            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_2_v01") {
-                Gelocity2()
-            }
-        } catch(exception) {
-            TryGelocity2 <- 0
-        }
-    }
-
-    // Run Gelocity 3 code
-    if (TryGelocity3 == 1) {
-        try {
-            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_3_v02") {
-                Gelocity3()
-            }
-        } catch(exception) {
-            TryGelocity3 <- 0
-        }
     }
 }
 
@@ -660,21 +640,101 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 
 
     if (AMCInstantRun == true) {
+        //## GELOCITY 1 INSTANT RUN ##//
+        try {
+            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_1_v02") {
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_2"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_1"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_2"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_1"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "red_dropper-door_eixt"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "blue_dropper-item_door"))
 
-        //## MP_COOP_CREDITS INSTANT RUN ##//
-        if (GetMapName() == "mp_coop_credits") {
+                local ent = null
+                while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
+                    ent.Destroy() // 20 entities removed
+                }
+
+                while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
+                    ent.Destroy() // 85 entities removed
+                }
+            }
+        } catch(exeption) { }
+
+        //## GELOCITY 2 INSTANT RUN##//
+        try {
+            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_2_v01") {
+                // set the gelocity 2 map
+                local ent = null
+                while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
+                    ent.Destroy() // 20 entities removed
+                }
+
+                while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
+                    ent.Destroy() // 85 entities removed
+                }
+
+                while(ent = Entities.FindByClassname(ent, "env_glow")) {
+                    ent.Destroy() // 85 entities removed
+                }
+
+                while(ent = Entities.FindByClassname(ent, "light_spot")) {
+                    ent.Destroy() // 85 entities removed
+                }
+
+                while(ent = Entities.FindByClassname(ent, "keyframe_rope")) {
+                    ent.Destroy() // 85 entities removed
+                }
+
+                while(ent = Entities.FindByClassname(ent, "move_rope")) {
+                    ent.Destroy() // 85 entities removed
+                }
+
+                while(ent = Entities.FindByClassname(ent, "info_overlay")) {
+                    ent.Destroy() // 85 entities removed
+                }
+            }
+        } catch(exeption) { }
+
+        //## GELOCITY 3 INSTANT RUN ##//
+        try {
+            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_3_v02") {
+            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_2"))
+            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_1"))
+            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_2"))
+            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_1"))
+            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start"))
+            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "red_dropper-door_eixt"))
+            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "blue_dropper-item_door"))
 
                 // Remove selected pods
         function CreditsRemovePod() {
             local ent = null
-            while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
-                ent.Destroy()
+            while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
+                ent.Destroy() // 20 entities removed
             }
 
-            while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
-                ent.Destroy()
+            while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
+                ent.Destroy() // 85 entities removed
             }
-        }
+                }
+            } catch(exeption) { }
+
+            //## MP_COOP_CREDITS INSTANT RUN ##//
+            if (GetMapName() == "mp_coop_credits") {
+
+                    // remove selected pods
+            function CreditsRemovePod() {
+                local ent = null
+                while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
+                    ent.Destroy()
+                }
+
+                while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
+                    ent.Destroy()
+            }
+        } catch(exeption) { }
 
         // Fix void camera glitch
         function FixCreditsCameras() {
@@ -792,25 +852,6 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 AddCoopCreditsName(Name)
             }
         }
-
-        //## GELOCITY 1 INSTANT RUN ##//
-        try {
-            if (GetMapName().slice(28, 50) == "mp_coop_gelocity_1_v02") {
-                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player2"))
-                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player1"))
-                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "start_clip_1"))
-                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "start_clip_2"))
-
-                local ent = null
-                while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
-                    ent.Destroy() // 20 entities removed
-                }
-
-                while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
-                    ent.Destroy() // 85 entities removed
-                }
-            }
-        } catch(exception) { }
 
         //## MP_COOP_PAINT_CONVERSION INSTANT RUN ##//
         if (GetMapName() == "mp_coop_paint_conversion") {
@@ -1146,62 +1187,6 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         CreatePropsForLevel(true, false, false)
     }
 }
-
-//-----------------------------------
-// Custom Map Support Code
-//-----------------------------------
-
-    // Gelocity 2 code
-    function Gelocity2() {
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
-            ent.Destroy() // 20 entities removed
-        }
-
-        while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
-            ent.Destroy() // 85 entities removed
-        }
-
-        while(ent = Entities.FindByClassname(ent, "env_glow")) {
-            ent.Destroy() // 85 entities removed
-        }
-
-        while(ent = Entities.FindByClassname(ent, "light_spot")) {
-            ent.Destroy() // 85 entities removed
-        }
-
-        while(ent = Entities.FindByClassname(ent, "keyframe_rope")) {
-            ent.Destroy() // 85 entities removed
-        }
-
-        while(ent = Entities.FindByClassname(ent, "move_rope")) {
-            ent.Destroy() // 85 entities removed
-        }
-
-        while(ent = Entities.FindByClassname(ent, "info_overlay")) {
-            ent.Destroy() // 85 entities removed
-        }
-    }
-
-    // Gelocity 3 code
-    function Gelocity3() {
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_2"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_1"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_2"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_1"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "red_dropper-door_eixt"))
-        DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "blue_dropper-item_door"))
-
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
-            ent.Destroy() // 20 entities removed
-        }
-
-        while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
-            ent.Destroy() // 85 entities removed
-        }
-    }
 
 //-----------------------------------
 // Dedicated Server Code
