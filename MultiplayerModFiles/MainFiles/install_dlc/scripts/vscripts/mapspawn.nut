@@ -894,7 +894,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 }
             }
 
-            // art therapy left chute enabler
+            // Art therapy left chute enabler
             local vectorEEL
             vectorEEL = Vector(5727, 3336, -441)
             local EELent = null
@@ -906,10 +906,10 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 }
             }
 
-            // art therapy left chute teleporter
+            // Art therapy left chute teleporter
             TeleportPlayerWithinDistance(Vector(5729, 3336, 1005), 30, Vector(3194, -1069, 1676))
 
-            // art therapy right chute enabler
+            // Art therapy right chute enabler
             local vectorEER
             vectorEER = Vector(5727, 3192, -441)
             local EERent = null
@@ -921,10 +921,10 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 }
             }
 
-            // art therapy right chute teleporter
+            // Art therapy right chute teleporter
             TeleportPlayerWithinDistance(Vector(5727, 3180, 1005), 30, Vector(3191, -1228, 1682))
 
-            // disable art therapy chutes
+            // Disable art therapy chutes
             local vectorE
             vectorE = Vector(3201, -1152, 1272)
             local Aent = null
@@ -941,15 +941,15 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 }
             }
 
-            // teleport exiting player out of art therapy
+            // Teleport exiting player out of art therapy
             TeleportPlayerWithinDistance(Vector(3584, -1669, 466), 30, Vector(3919, 3352, 158))
         }
 
     //## MP_COOP_CREDITS LOOP ##//
         if (GetMapName() == "mp_coop_credits") {
-            // if mod credits aren't finished change humans to robots
+            // If mod credits aren't finished change humans to robots
         if (MPMCredits <= MPModCreditNumber) {
-            // change males to atlases
+            // Change males to Atlases
             local ent = null
             while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_male.mdl")) {
                 CreditsSetModelAL(ent)
@@ -965,7 +965,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 CreditsSetModelAL(ent)
             }
 
-            // change females to pbodys
+            // Change females to Pbodys
             local ent = null
             while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_01.mdl")) {
                 CreditsSetModelPB(ent)
@@ -983,12 +983,14 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         }
         }
 
-        //
+        //## MP_COOP_WALL_5 ##//
         if (GetMapName() == "mp_coop_wall_5") {
             TeleportPlayerWithinDistance(Vector(1224, -1984, 565), 100, Vector(1208, -1989, 315))
+            // Open areaportal
             EntFire("portal_close_second_puzzle", "open", "", 0, null)
         }
 
+        //## MP_COOP_2PAINTS_1BRIDGE ##//
         if (GetMapName() == "mp_coop_2paints_1bridge") {
             EntFireByHandle(Entities.FindByName(null, "bridge_2"), "enable", "", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "bridge_1"), "enable", "", 0, null, null)
@@ -997,9 +999,9 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
     }
 
 
-    ////////////////
-    // ONETIMERUN //
-    ////////////////
+    //////////////////
+    // ONE TIME RUN //
+    //////////////////
 
 
     if (AMCOneTimeRun == true) {
@@ -1059,33 +1061,33 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 
         //## MP_COOP_LOBBY_3 ONE TIME RUN ##//
         if (GetMapName() == "mp_coop_lobby_3") {
-            //enable the hub entirely
+            // Enable the hub entirely
             try {
-                // enable team building course
+                // Enable team building course
                 DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
                 DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
 
-                // enable tbeam course
+                // Enable tbeam course
                 DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
                 DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
 
-                // enable paint course
+                // Enable paint course
                 DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
                 DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
 
-                // enable fling course
+                // Enable fling course
                 DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
                 DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
 
-                // enable extra course
+                // Enable extra course
                 DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
                 DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
 
-                // enable all finished course
+                // Enable all finished course
                 DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
                 DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
 
-                // enable music
+                // Enable music
                 DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
                 // Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
                 // Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
@@ -1106,7 +1108,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 ent.Destroy() // 31 entities removed
             }
 
-            // fix art therapy tube glitches
+            // Fix art therapy tube glitches
             Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()
             Entities.FindByName(null, "dlc_room_fall_push_left").Destroy()
 
