@@ -708,8 +708,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "red_dropper-door_eixt"))
                 DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "blue_dropper-item_door"))
 
-                    // Remove selected pods
-            function CreditsRemovePod() {
+
                 local ent = null
                 while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
                     ent.Destroy() // 20 entities removed
@@ -718,24 +717,26 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
                     ent.Destroy() // 85 entities removed
                 }
-                    }
             }
          } catch(exeption) { }
 
-            //## MP_COOP_CREDITS INSTANT RUN ##//
-            if (GetMapName() == "mp_coop_credits") {
-
-                    // remove selected pods
+        //## MP_COOP_CREDITS INSTANT RUN ##//
+        if (GetMapName() == "mp_coop_credits") {
+            // remove selected pods
             function CreditsRemovePod() {
-                local ent = null
-                while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
-                    ent.Destroy()
-                }
+                try {
+                    local ent = null
+                    while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
+                        ent.Destroy()
+                    }
+                } catch(exeption) { }
 
+                try {
                 while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
                     ent.Destroy()
+                } catch(exeption) { }
             }
-        } catch(exeption) { }
+        }
 
         // Fix void camera glitch
         function FixCreditsCameras() {
