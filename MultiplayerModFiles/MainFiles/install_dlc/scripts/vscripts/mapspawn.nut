@@ -53,7 +53,7 @@ DevMode <- true
 //-----------------------------------
 UsePlugin <- false
 //-----------------------------------
-DedicatedServer <- 0
+DedicatedServer <- false
 //-----------------------------------
 
 
@@ -74,7 +74,6 @@ ReadyCheatsOff <- 0
 PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
-DedicatedServerOneTimeRun <- 1
 TryGelocity <- 1
 TryGelocity2 <- 1
 TryGelocity3 <- 1
@@ -218,8 +217,6 @@ function init() {
 
     // Run instant map code
     AllMapsCode(false, false, false, true)
-
-    }
 }
 
 
@@ -453,11 +450,6 @@ try {
             SingleplayerSupport(false, true, false)
         }
 
-        // Run dedicated server code
-        if (DedicatedServer == 1) {
-            DedicatedServerFunc()
-        }
-
         // Make every clients' collision more elastic
         //local j = "solid "
         local k = "CollisionGroup "
@@ -466,7 +458,7 @@ try {
         EntFire("player", "addoutput", k + 2)
 
         if (DevMode==true) {
-            DevHacks()
+
         }
     }
 
@@ -732,8 +724,9 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 } catch(exeption) { }
 
                 try {
-                while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
-                    ent.Destroy()
+                    while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
+                        ent.Destroy()
+                    }
                 } catch(exeption) { }
             }
         }
@@ -853,7 +846,6 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             foreach (Name in MPMCoopCreditNames) {
                 AddCoopCreditsName(Name)
             }
-        }
 
         //## MP_COOP_PAINT_CONVERSION INSTANT RUN ##//
         if (GetMapName() == "mp_coop_paint_conversion") {
@@ -1192,29 +1184,104 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
     }
 }
 
-//-----------------------------------
-// Dedicated Server code
-//-----------------------------------
-
-    function DedicatedServerFunc() {
-        if (DedicatedServerOneTimeRun == 1) {print()}
-
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.entindex() == 1) {
-                EntFireByHandle(clientcommand, "Command", "exec DedicatedServerCommands", 0, p, p)
-                // Set size to 0
-                EntFireByHandle(p, "AddOutput", "ModelScale 0", 0, null, null)
-            }
-        }
-    }
-
 // █▀ █ █▄░█ █▀▀ █░░ █▀▀ █▀█ █░░ ▄▀█ █▄█ █▀▀ █▀█ 
 // ▄█ █ █░▀█ █▄█ █▄▄ ██▄ █▀▀ █▄▄ █▀█ ░█░ ██▄ █▀▄ 
 
 // █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
 // ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
 
+//////////////////////////
+//SINGLEPLAYER FUNCTIONS//
+//////////////////////////
+
+    function disablewheatleyplayerpickup() {
+        printl("Player Picked Up Wheatley. Disabling Pickup!")
+        EntFire("@sphere", "disablepickup", "", 0, null)
+        EntFire("@sphereDummy", "enablepickup", "", 0, null)
+    }
+    function enablewheatleyplayerpickup() {
+        printl("Player Picked Up Wheatley. Enabling Pickup!")
+        EntFire("@sphere", "enablepickup", "", 0, null)
+        EntFire("@sphereDummy", "enablepickup", "", 0, null)
+    }
+
+    function wheatleyhitground() {
+        EntFire("@sphere", "disablepickup", "", 1.05, null)
+        EntFire("@sphere", "enablepickup", "", 8, null)
+        EntFire("spherebot_1_top_swivel_1", "deactivate", "", 1.01, null)
+    }
+
+    function SPSkipPanel() {
+        printl("message")
+        EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
+        myexplode2 <- Entities.CreateByClassname("npc_personality_core")
+        myexplode2.__KeyValueFromString("targetname", "myexplode2")
+        myexplode2.SetOrigin(Vector(-822, -523, 1269))
+
+        myexplode <- Entities.CreateByClassname("env_ar2explosion")
+        myexplode.__KeyValueFromString("targetname", "myexplode")
+        myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
+        myexplode.SetOrigin(Vector(-822, -523, 1269))
+        EntFire("myexplode", "explode", "", 2.5, null)
+        EntFire("myexplode2", "explode", "", 2.5, null)
+        EntFire("myexplode2", "explode", "", 3.0, null)
+
+        Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
+        local mysphere = Entities.FindByName(null, "@spheredummy")
+
+        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows01" )
+        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows02" )
+        self.PrecacheSoundScript( "sphere03.sphere_flashlight_tour67" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking09" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking12" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking10" )
+        self.PrecacheSoundScript( "sphere03.bw_finale4_hackworked01" )
+        self.PrecacheSoundScript( "Portal.elevator_chime" )
+        self.PrecacheSoundScript( "sphere03.GloriousFreedom03" )
+        self.PrecacheSoundScript( "sphere03.bw_fire_lift03" )
+
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret01" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret08" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret07" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret05" )
+        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret06" )
+
+        EntFire("myexplode2", "addoutput", "targetname playline1", 2.65, null)
+        EntFire("playline1", "addoutput", "targetname myexplode2", 2.76, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline2", 6.55, null)
+        EntFire("playline2", "addoutput", "targetname myexplode2", 6.66, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline3", 12.75, null)
+        EntFire("playline3", "addoutput", "targetname myexplode2", 12.86, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline4", 16.75, null)
+        EntFire("playline4", "addoutput", "targetname myexplode2", 16.86, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline5", 18.00, null)
+        EntFire("playline5", "addoutput", "targetname myexplode2", 18.11, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline6", 24.00, null)
+        EntFire("playline6", "addoutput", "targetname myexplode2", 24.11, null)
+
+        EntFire("myexplode2", "addoutput", "targetname playline7", 25.50, null)
+        EntFire("playline7", "addoutput", "targetname myexplode2", 25.61, null)
+
+        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50, null)
+
+    }
+
+// Run mapspawn.nut
+try {
+Entities.First().ConnectOutput("OnUser1", "init")
+} catch(exception) {}
+try {
+DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
+} catch(exception) {}
+
+/////////////////////////////////
+//SINGLEPLAYER MAP SUPPORT CODE//
+/////////////////////////////////
 
 function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
@@ -1965,15 +2032,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
     }
 }
 
-//-----------------------------------
-// Developer hacks code
-//-----------------------------------
-
-function DevHacks() {
-
-}
-
-
 ///////////////////////
 // Copy & paste code //
 ///////////////////////
@@ -2050,93 +2108,3 @@ try {
 function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 }
-
-
-
-
-
-    //SINGLEPLAYER FUNCTIONS
-    function disablewheatleyplayerpickup() {
-        printl("Player Picked Up Wheatley. Disabling Pickup!")
-        EntFire("@sphere", "disablepickup", "", 0, null)
-        EntFire("@sphereDummy", "enablepickup", "", 0, null)
-    }
-    function enablewheatleyplayerpickup() {
-        printl("Player Picked Up Wheatley. Enabling Pickup!")
-        EntFire("@sphere", "enablepickup", "", 0, null)
-        EntFire("@sphereDummy", "enablepickup", "", 0, null)
-    }
-
-    function wheatleyhitground() {
-        EntFire("@sphere", "disablepickup", "", 1.05, null)
-        EntFire("@sphere", "enablepickup", "", 8, null)
-        EntFire("spherebot_1_top_swivel_1", "deactivate", "", 1.01, null)
-    }
-
-    function SPSkipPanel() {
-        printl("message")
-        EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
-        myexplode2 <- Entities.CreateByClassname("npc_personality_core")
-        myexplode2.__KeyValueFromString("targetname", "myexplode2")
-        myexplode2.SetOrigin(Vector(-822, -523, 1269))
-
-        myexplode <- Entities.CreateByClassname("env_ar2explosion")
-        myexplode.__KeyValueFromString("targetname", "myexplode")
-        myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
-        myexplode.SetOrigin(Vector(-822, -523, 1269))
-        EntFire("myexplode", "explode", "", 2.5, null)
-        EntFire("myexplode2", "explode", "", 2.5, null)
-        EntFire("myexplode2", "explode", "", 3.0, null)
-
-        Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
-        local mysphere = Entities.FindByName(null, "@spheredummy")
-
-        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows01" )
-        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows02" )
-        self.PrecacheSoundScript( "sphere03.sphere_flashlight_tour67" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking09" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking12" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking10" )
-        self.PrecacheSoundScript( "sphere03.bw_finale4_hackworked01" )
-        self.PrecacheSoundScript( "Portal.elevator_chime" )
-        self.PrecacheSoundScript( "sphere03.GloriousFreedom03" )
-        self.PrecacheSoundScript( "sphere03.bw_fire_lift03" )
-
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret01" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret08" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret07" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret05" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret06" )
-
-        EntFire("myexplode2", "addoutput", "targetname playline1", 2.65, null)
-        EntFire("playline1", "addoutput", "targetname myexplode2", 2.76, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline2", 6.55, null)
-        EntFire("playline2", "addoutput", "targetname myexplode2", 6.66, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline3", 12.75, null)
-        EntFire("playline3", "addoutput", "targetname myexplode2", 12.86, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline4", 16.75, null)
-        EntFire("playline4", "addoutput", "targetname myexplode2", 16.86, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline5", 18.00, null)
-        EntFire("playline5", "addoutput", "targetname myexplode2", 18.11, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline6", 24.00, null)
-        EntFire("playline6", "addoutput", "targetname myexplode2", 24.11, null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline7", 25.50, null)
-        EntFire("playline7", "addoutput", "targetname myexplode2", 25.61, null)
-
-        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50, null)
-
-    }
-
-// Run mapspawn.nut
-try {
-Entities.First().ConnectOutput("OnUser1", "init")
-} catch(exception) {}
-try {
-DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
-} catch(exception) {}
