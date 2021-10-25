@@ -458,7 +458,7 @@ try {
         EntFire("player", "addoutput", k + 2)
 
         if (DevMode==true) {
-            DevHacks()
+
         }
     }
 
@@ -2060,15 +2060,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
     }
 }
-
-//-----------------------------------
-// Developer Hacks Code
-//-----------------------------------
-
-function DevHacks() {
-
-}
-
 
 /********** *******
 * cut paste code *
