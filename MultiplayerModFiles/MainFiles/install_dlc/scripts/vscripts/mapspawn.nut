@@ -1656,13 +1656,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
     }
 
-
-
-
-    /////////////////////////////////////
-    //          AFTER THEMES           //
-    /////////////////////////////////////
-
     //## SP_A2_INTRO ##//
     if (GetMapName()=="sp_a2_intro") {
 
