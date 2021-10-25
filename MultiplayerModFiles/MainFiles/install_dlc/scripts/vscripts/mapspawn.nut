@@ -726,7 +726,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 
         //## MP_COOP_CREDITS INSTANT RUN ##//
         if (GetMapName() == "mp_coop_credits") {
-            // remove selected pods
+            // Remove selected pods
             function CreditsRemovePod() {
                 try {
                     local ent = null
@@ -1683,16 +1683,16 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSOneTimeRun==true) {
             printl("RAN")
-            bruh <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-            bruh.__KeyValueFromString("targetname", "bruh")
-            bruh.__KeyValueFromString("target_team", "-1")
-            bruh.SetOrigin(Entities.FindByName(null, "ghostAnim").GetOrigin())
-            EntFire("bruh", "setparent", "ghostAnim", 0, null)
-            EntFire("bruh", "setparentattachment", "attach_1", 0, null)
-            EntFire("bruh", "enable", "", 0, null)
-            EntFire("bruhTele", "disable", "", 20.75, null)
-            EntFire("bruh", "addoutput", "targetname bruhTele", 0.25, null)
-            EntFire("bruhTele", "addoutput", "targetname bruhDone", 20.80, null)
+            Intro2Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+            Intro2Viewcontrol.__KeyValueFromString("targetname", "Intro2Viewcontrol")
+            Intro2Viewcontrol.__KeyValueFromString("target_team", "-1")
+            Intro2Viewcontrol.SetOrigin(Entities.FindByName(null, "ghostAnim").GetOrigin())
+            EntFire("Intro2Viewcontrol", "setparent", "ghostAnim", 0, null)
+            EntFire("Intro2Viewcontrol", "setparentattachment", "attach_1", 0, null)
+            EntFire("Intro2Viewcontrol", "enable", "", 0, null)
+            EntFire("Intro2ViewcontrolTele", "disable", "", 20.75, null)
+            EntFire("Intro2Viewcontrol", "addoutput", "targetname Intro2ViewcontrolTele", 0.25, null)
+            EntFire("Intro2ViewcontrolTele", "addoutput", "targetname Intro2ViewcontrolDone", 20.80, null)
             self.PrecacheSoundScript( "ScriptedSequence.IncineratorFall" )
             local TempEnt = Entities.CreateByClassname("prop_dynamic")
             TempEnt.__KeyValueFromString("targetname", "TempEnt")
@@ -1706,20 +1706,20 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "blue").EmitSound("playonce\\scripted_sequences\\incinerator_fall_01.wav")
             }
 
-            if (Entities.FindByName(null, "bruhTele")) {
+            if (Entities.FindByName(null, "Intro2ViewcontrolTele")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(2704, -1260, 92))
                 }
             }
 
-            if (Entities.FindByName(null, "bruhDone")) {
+            if (Entities.FindByName(null, "Intro2ViewcontrolDone")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(-3308, 536, -10737))
                     p.SetAngles(0 0 0)
                 }
-                EntFire("bruhDone", "addoutput", "targetname bruhFinished", 0.15, null)
+                EntFire("Intro2ViewcontrolDone", "addoutput", "targetname Intro2ViewcontrolFinished", 0.15, null)
             }
 
             EntFire("shaft_areaportal_1", "open", "", 0, null)
