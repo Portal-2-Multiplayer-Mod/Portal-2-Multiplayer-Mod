@@ -28,3 +28,5 @@ ReShade.ini
 server.dll
 server.so
 *.cache-3
+cfg/autoexec.cfg
+vpk_override/BEE2_README.txt
