@@ -730,8 +730,9 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 } catch(exeption) { }
 
                 try {
-                while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
-                    ent.Destroy()
+                    while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
+                        ent.Destroy()
+                    }
                 } catch(exeption) { }
             }
         }
@@ -851,7 +852,6 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             foreach (Name in MPMCoopCreditNames) {
                 AddCoopCreditsName(Name)
             }
-        }
 
         //## MP_COOP_PAINT_CONVERSION INSTANT RUN ##//
         if (GetMapName() == "mp_coop_paint_conversion") {
