@@ -53,7 +53,7 @@ DevMode <- true
 //-----------------------------------
 UsePlugin <- false
 //-----------------------------------
-DedicatedServer <- 0
+DedicatedServer <- false
 //-----------------------------------
 
 
@@ -74,7 +74,6 @@ ReadyCheatsOff <- 0
 PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
-DedicatedServerOneTimeRun <- 1
 TryGelocity <- 1
 TryGelocity2 <- 1
 TryGelocity3 <- 1
@@ -449,11 +448,6 @@ try {
         // Singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
             SingleplayerSupport(false, true, false)
-        }
-
-        // Run dedicated server code
-        if (DedicatedServer == 1) {
-            DedicatedServerFunc()
         }
 
         // Make every clients' collision more elastic
@@ -1189,22 +1183,6 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         CreatePropsForLevel(true, false, false)
     }
 }
-
-// █▀▄ █▀▀ █▀▄ █ █▀▀ ▄▀█ ▀█▀ █▀▀ █▀▄   █▀ █▀▀ █▀█ █░█ █▀▀ █▀█   █▀▀ █▀█ █▀▄ █▀▀
-// █▄▀ ██▄ █▄▀ █ █▄▄ █▀█ ░█░ ██▄ █▄▀   ▄█ ██▄ █▀▄ ▀▄▀ ██▄ █▀▄   █▄▄ █▄█ █▄▀ ██▄
-
-    function DedicatedServerFunc() {
-        if (DedicatedServerOneTimeRun == 1) {print()}
-
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.entindex() == 1) {
-                EntFireByHandle(clientcommand, "Command", "exec DedicatedServerCommands", 0, p, p)
-                // set size to 0
-                EntFireByHandle(p, "AddOutput", "ModelScale 0", 0, null, null)
-            }
-        }
-    }
 
 // █▀ █ █▄░█ █▀▀ █░░ █▀▀ █▀█ █░░ ▄▀█ █▄█ █▀▀ █▀█ 
 // ▄█ █ █░▀█ █▄█ █▄▄ ██▄ █▀▀ █▄▄ █▀█ ░█░ ██▄ █▀▄ 
