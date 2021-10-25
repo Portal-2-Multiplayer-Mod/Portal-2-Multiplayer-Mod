@@ -700,26 +700,27 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         //## GELOCITY 3 INSTANT RUN ##//
         try {
             if (GetMapName().slice(28, 50) == "mp_coop_gelocity_3_v02") {
-            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_2"))
-            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_1"))
-            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_2"))
-            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_1"))
-            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start"))
-            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "red_dropper-door_eixt"))
-            DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "blue_dropper-item_door"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_2"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_2_1"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_2"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start_1_1"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door_start"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "red_dropper-door_eixt"))
+                DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "blue_dropper-item_door"))
 
-                // Remove selected pods
-        function CreditsRemovePod() {
-            local ent = null
-            while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
-                ent.Destroy() // 20 entities removed
-            }
-
-            while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
-                ent.Destroy() // 85 entities removed
-            }
+                    // Remove selected pods
+            function CreditsRemovePod() {
+                local ent = null
+                while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
+                    ent.Destroy() // 20 entities removed
                 }
-            } catch(exeption) { }
+
+                while(ent = Entities.FindByClassname(ent, "beam_spotlight")) {
+                    ent.Destroy() // 85 entities removed
+                }
+                    }
+            }
+         } catch(exeption) { }
 
             //## MP_COOP_CREDITS INSTANT RUN ##//
             if (GetMapName() == "mp_coop_credits") {
