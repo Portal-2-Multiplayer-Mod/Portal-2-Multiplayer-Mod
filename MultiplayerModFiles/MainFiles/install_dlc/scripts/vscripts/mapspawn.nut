@@ -218,8 +218,6 @@ function init() {
 
     // Run instant map code
     AllMapsCode(false, false, false, true)
-
-    }
 }
 
 
