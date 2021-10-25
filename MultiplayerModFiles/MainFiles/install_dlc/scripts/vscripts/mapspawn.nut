@@ -521,7 +521,9 @@ while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
 if (UsePlugin==true) {
     if (LoadPlugin==true) {
         printl("Loading Plugin... Restarting Map")
+        // load plugin
         EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+        // wait for plugin to load and then restart map
         EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
         LoadPlugin <- false
     }
@@ -643,8 +645,6 @@ function GeneralOneTime() {
     AllMapsCode(false, true, false, false)
 
     SingleplayerSupport(false, false, true)
-
-    SingleplayerOnFirstSpawn()
 }
 
 // █▀▄▀█ ▄▀█ █▀█   █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
@@ -793,7 +793,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             }
         }
 
-        //## GELOCITY 1 INSTANT RUN##//
+        //## GELOCITY 1 INSTANT RUN ##//
         try {
             if (GetMapName().slice(28, 50) == "mp_coop_gelocity_1_v02") {
                 DoEntFire("!self", "kill", "", 0.0, null, Entities.FindByName(null, "door2_player2"))
@@ -1971,6 +1971,30 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_gamer_time")
+            }
+
+            // light fill
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+    }
+
+    //## sp_a2_gamer_time ##//
+    if (GetMapName()=="sp_a2_gamer_time") {
+        if (SSInstantRun==true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            // destroy objects
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+        }
+
+        if (SSLoop==true) {
+
+            // elevator code
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_turret_intro")
             }
 
             // light fill
