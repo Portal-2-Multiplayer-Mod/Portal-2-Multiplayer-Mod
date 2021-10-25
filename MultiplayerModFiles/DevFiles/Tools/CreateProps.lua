@@ -1,9 +1,9 @@
-file.Delete( "GeneratedPortal2ObjectOutput.txt" )
-file.Write( "GeneratedPortal2ObjectOutput.txt", "" )
+file.Delete("GeneratedPortal2ObjectOutput.txt")
+file.Write("GeneratedPortal2ObjectOutput.txt", "")
 
 function GenerateLine(StringDataInput)
     print(StringDataInput)
-    file.Append("GeneratedPortal2ObjectOutput.txt", "\n" .. StringDataInput )
+    file.Append("GeneratedPortal2ObjectOutput.txt", "\n" .. StringDataInput)
 end
 
 TeleportInputNode = "models/hunter/blocks/cube1x1x1.mdl"
@@ -59,7 +59,7 @@ while (Loop == true) do
         GenerateLine("")
     end
 
-    for k, prop in ipairs( ents.FindByClass( "prop_*" ) ) do
+    for k, prop in ipairs(ents.FindByClass("prop_*")) do
         if (!prop:CreatedByMap() && prop:GetClass() ~= "prop_effect" && prop:GetMaterial() ~= "phoenix_storms/stripes") then
 
             -- reset varibles
@@ -103,7 +103,7 @@ while (Loop == true) do
                 -- cache code
                 -- if the current model has been cached do not continue
                 if (LoopAmount == 0) then
-                    for k, Model in ipairs( CachedModels ) do
+                    for k, Model in ipairs(CachedModels) do
                         if (Model==PropModel) then
                             ContinueModelCache = false
                         end
@@ -122,12 +122,15 @@ while (Loop == true) do
                     GenerateLine("        " .. PropOutputName .. ".SetAngles(" .. PropAngles.x .. ", " .. PropAngles.y .. ", " .. PropAngles.z .. ")")
                     GenerateLine("        " .. PropOutputName .. '.__KeyValueFromString("solid", "'..PropCollisionNumber..'")')
                     GenerateLine("        " .. PropOutputName .. '.__KeyValueFromString("targetname", "genericcustomprop")')
+                    -- if the prop is not drawed disable it
                     if (PropEnableDraw == false) then
                         GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "disabledraw", "", 0, null, null)')
                     end
+                    -- if the prop has a scale then scale it
                     if (OutputScale ~= 1) then
                         GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "addoutput", "modelscale ' .. OutputScale .. '", 0, null, null)')
                     end
+                    -- if the prop has a stored color then apply it
                     if (PropColor ~= "255 255 255 255") then
                         GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "color", "' .. PropColor .. '", 0, null, null)')
                     end
@@ -136,9 +139,14 @@ while (Loop == true) do
             end
 
             if (LoopAmount == 2) then
+
+
+                -- make teleport nodes and output nodes
                 if (PropModel==TeleportInputNode) then
-                    for k, prop2 in ipairs( ents.FindByModel( TeleportOutputNode ) ) do
+                    -- create teleport node if model is a teleport node
+                    for k, prop2 in ipairs(ents.FindByModel(TeleportOutputNode)) do
                         if (prop:GetColor() == prop2:GetColor()) then
+                            -- write out mixed premade code with teleport node properties
                             GenerateLine("     local p = null")
                             GenerateLine('     while (p = Entities.FindByClassnameWithin(p, "player", Vector(' .. PropCords.x .. ", " .. PropCords.y .. ", " .. PropCords.z .. '), ' .. OutputScale * 20 .. ')) {')
                             GenerateLine("         p.SetOrigin(Vector(" .. prop2:GetPos().x .. ", " .. prop2:GetPos().y .. ", " .. prop2:GetPos().z .. "))")
@@ -147,7 +155,6 @@ while (Loop == true) do
                     end
                 end
             end
-
         end
     end
 
