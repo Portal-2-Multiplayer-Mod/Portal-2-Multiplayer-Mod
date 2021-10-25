@@ -1114,15 +1114,15 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()
             Entities.FindByName(null, "dlc_room_fall_push_left").Destroy()
 
-            // fix track 5
-            // entry door fix
+            // Fix track 5
+            // Entry door fix
             Entities.FindByName(null, "track5-door_paint-trigger_hurt_door").Destroy()
             Entities.FindByName(null, "track5-door_paint-collide_door").Destroy()
 
-            // light fix
+            // Light fix
             Entities.FindByName(null, "@light_shadowed_paintroom").Destroy()
 
-            // remove orange exit door
+            // Remove orange exit door
             local ent = null
             while(ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit")) {
                 ent.Destroy()
@@ -1130,7 +1130,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 
             Entities.FindByName(null, "track5-orangeescape_elevator_clip").Destroy()
 
-            // remove blue exit door
+            // Remove blue exit door
             local ent = null
             while(ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit")) {
                 ent.Destroy()
@@ -1183,17 +1183,17 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         }
     }
 
-    /////////////
-    //Post Init//
-    /////////////
+    ///////////////
+    // Post Init //
+    ///////////////
     if (AMCPostInit==true) {
-        //Cache Props
+        // Cache Props
         CreatePropsForLevel(true, false, false)
     }
 }
 
 //-----------------------------------
-// Dedicated Server Code
+// Dedicated Server code
 //-----------------------------------
 
     function DedicatedServerFunc() {
@@ -1203,7 +1203,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         while (p = Entities.FindByClassname(p, "player")) {
             if (p.entindex() == 1) {
                 EntFireByHandle(clientcommand, "Command", "exec DedicatedServerCommands", 0, p, p)
-                // set size to 0
+                // Set size to 0
                 EntFireByHandle(p, "AddOutput", "ModelScale 0", 0, null, null)
             }
         }
@@ -1219,7 +1219,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
     if (SSLoop) {
-            // sp_a1_intro2
+            //## SP_A1_INTRO2 ##//
         if (GetMapName() == "sp_a1_intro2") {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
@@ -1241,7 +1241,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
         }
 
-        // sp_a1_intro3
+        //## SP_A1_INTRO3 ##//
         if (GetMapName() == "sp_a1_intro3") {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 45)) {
@@ -1253,7 +1253,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
 
-            // remove portalgun
+            // Remove Portal Gun
             if (hasgotportalgunSPMP == 0) {
                 local portalgun = null
                 while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
@@ -1261,7 +1261,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 }
             }
 
-            // make Wheatley look at player
+            // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
@@ -1270,7 +1270,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
         }
 
-        // sp_a1_intro4
+        //## SP_A1_INTRO4 ##//
         if (GetMapName() == "sp_a1_intro4") {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
@@ -1286,7 +1286,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             }
         }
 
-        //sp_a1_intro5
+        //## SP_A1_INTRO5 ##//
         if (GetMapName() == "sp_a1_intro5") {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
@@ -1298,7 +1298,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             }
         }
 
-        //sp_a1_intro6
+        //## SP_A1_INTRO6 ##//
         if (GetMapName() == "sp_a1_intro6") {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
@@ -1312,29 +1312,26 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         WheatleySeq1 <- false
 
-        //sp_a1_intro7
+        //## SP_A1_INTRO7 ##//
         if (GetMapName() == "sp_a1_intro7") {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
-            // make Wheatley look at player
+            // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_top_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            //make Wheatley non stealable
+            // Make Wheatley non stealable
             try {
             Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
             Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
-            //disable sentaint arm and disable pickup until spchill is over
+            // Disable sentaint arm and disable pickup until spchill is over
             Entities.FindByName(null, "sphere_impact_trigger").ConnectOutput("OnStartTouch","wheatleyhitground")
-            //skip panel bit
+            // Skip panel bit
             Entities.FindByName(null, "@plug_open_rl").ConnectOutput("OnTrigger","SPSkipPanel")
             } catch(exception) { }
 
-            /////////
-            //LINES//
-            /////////
-
+            // Voice Lines
             if(Entities.FindByName(null, "playline1")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows01.wav")
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows02.wav")
@@ -1370,8 +1367,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\bw_finale4_hackworked01.wav")
                 printl("played line7")
             }
-
-
 
             if(Entities.FindByName(null, "playline8")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret01.wav")
@@ -1441,7 +1436,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         }
 
-        //sp_a2_laser_intro
+        //## SP_A2_LASER_INTRO ##//
         if (GetMapName() == "sp_a2_laser_intro") {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
@@ -1455,7 +1450,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         }
 
-        //sp_a2_laser_stairs
+        //## SP_A2_LASER_STAIRS ##//
         if (GetMapName() == "sp_a2_laser_stairs") {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
@@ -1472,7 +1467,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
     }
 
     if (SSInstantRun == true) {
-        // Support for the map sp_a1_intro2
+        //## SP_A1_INTRO2 ##//
         if (GetMapName() == "sp_a1_intro2") {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             SendToConsole("commentary 0")
@@ -1482,12 +1477,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         }
 
-        // Support for the map sp_a1_intro3
+        //## SP_A1_INTRO3 ##//
         if (GetMapName() == "sp_a1_intro3") {
             Entities.FindByName(null, "door_0-door_close_relay").Destroy()
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "player_clips").Destroy()
-            // destroy pusher x4
+            // Destroy pusher x4
             Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
             Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
             Entities.FindByName(null, "podium_collapse_push_brush").Destroy()
@@ -1502,7 +1497,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             timeout <- 1
         }
 
-        // Support for the map sp_a1_intro4
+        //## SP_A1_INTRO4 ##//
         if (GetMapName() == "sp_a1_intro4") {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-door_close_relay").Destroy()
@@ -1523,7 +1518,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "door_2-close_door_rl").Destroy()
         }
 
-        // Support for the map sp_a1_intro5
+        //## SP_A1_INTRO5 ##//
         if (GetMapName() == "sp_a1_intro5") {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
@@ -1531,7 +1526,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_multiple", Vector(-64, 824, 320), 1024).Destroy()
         }
 
-        // Support for the map sp_a1_intro6
+        //## SP_A1_INTRO6 ##//
         if (GetMapName() == "sp_a1_intro6") {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "room_1_entry_door-close_door_rl").Destroy()
@@ -1546,7 +1541,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             fallenautoportal.SetAngles(-90, 69, 0)
         }
 
-        // Support for the map sp_a1_intro7
+        //## SP_A1_INTRO7 ##//
         if (GetMapName() == "sp_a1_intro7") {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-open"), "trigger", "", 0, null, null)
@@ -1561,14 +1556,14 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
         }
 
-        // Support for the map sp_a2_laser_intro
+        //## SP_A2_LASER_INTRO ##//
         if (GetMapName() == "sp_a2_laser_intro") {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
         }
 
-        // Support for the map sp_a2_laser_stairs
+        //## SP_A2_LASER_STAIRS ##//
         if (GetMapName() == "sp_a2_laser_stairs") {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -1581,7 +1576,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
 
 
-    //## sp_a2_intro ##//
+    //## SP_A2_INTRO ##//
     if (GetMapName()=="sp_a2_intro") {
 
         if (SSInstantRun==true) {
@@ -1649,7 +1644,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_laser_intro")
             }
 
-            // remove player portalgun
+            // Remove the player's Portal Gun
             if (Entities.FindByName(null, "player_near_portalgun")) {
                 local ent = null
                 while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
@@ -1657,7 +1652,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 }
             }
 
-            //Give Player PortalGun
+            // Give the player a Portal Gun
             if (!Entities.FindByName(null, "player_near_portalgun")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -1682,7 +1677,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
     }
 
-    //## sp_a2_dual_lasers ##//
+    //## SP_A2_DUAL_LASERS ##//
     if (GetMapName()=="sp_a2_dual_lasers") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
@@ -1692,7 +1687,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
 
         if (SSLoop==true) {
-            // make Wheatley look at player
+            // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
@@ -1708,7 +1703,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
     }
 
-        //## sp_a2_laser_over_goo ##//
+        //## SP_A2_LASER_OVER_GOO ##//
     if (GetMapName()=="sp_a2_laser_over_goo") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
@@ -1720,25 +1715,25 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_catapult_intro")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
 
-    //## sp_a2_catapult_intro ##//
+    //## SP_A2_CATAPULT_INTRO ##//
     if (GetMapName()=="sp_a2_catapult_intro") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_1-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-56, -1576, -384), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-64, -1696, -408), 1024).Destroy()
@@ -1746,24 +1741,24 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-80, -2106, -805), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_trust_fling")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
-    //## sp_a2_trust_fling ##//
+    //## SP_A2_TRUST_FLING ##//
     if (GetMapName()=="sp_a2_trust_fling") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-1152, 1616, 120), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-1152, 1680, 40), 1024).Destroy()
@@ -1771,32 +1766,32 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1151, 2087, -319), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_pit_flings")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
 
-    //## sp_a2_pit_flings ##//
+    //## SP_A2_PIT_FLINGS ##//
     if (GetMapName()=="sp_a2_pit_flings") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "walltunnel_1_Cover_clip").Destroy()
             Entities.FindByName(null, "exit_door_lock_counter").Destroy()
         }
 
         if (SSLoop==true) {
-            // cube ramp disabler
+            // Cube ramp disabler
             local ent = null
             while (ent = Entities.FindByClassnameWithin(ent, "prop_weighted_cube", Vector(-448, -416, -104), 32)) {
                 try {
@@ -1805,25 +1800,25 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 } catch(exception) { }
             }
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-893, 1223, -362), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_fizzler_intro")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
 
-    //## sp_a2_fizzler_intro ##//
+    //## SP_A2_FIZZLER_INTRO ##//
     if (GetMapName()=="sp_a2_fizzler_intro") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(872, -64, -8), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(928, -64, -24), 1024).Destroy()
@@ -1831,162 +1826,138 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_sphere_peek")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
 
-        //## sp_a2_sphere_peek ##//
+        //## SP_A2_SPHERE_PEEK ##//
     if (GetMapName()=="sp_a2_sphere_peek") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
         if (SSLoop==true) {
 
-            // make Wheatley look at player
+            // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
 
-    //## sp_a2_turret_intro ##//
+    //## SP_A2_TURRET_INTRO ##//
     if (GetMapName()=="sp_a2_turret_intro") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_column_blocker")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
 
-    //## sp_a2_column_blocker ##//
+    //## SP_A2_COLUMN_BLOCKER ##//
     if (GetMapName()=="sp_a2_column_blocker") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bridge_the_gap")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
 
-    //## sp_a2_bridge_the_gap ##//
+    //## SP_A2_BRIDGE_THE_GAP ##//
     if (GetMapName()=="sp_a2_bridge_the_gap") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_relays")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
         }
     }
 
-    //## sp_a2_laser_relays ##//
+    //## SP_A2_LASER_RELAYS ##//
     if (GetMapName()=="sp_a2_laser_relays") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_gamer_time")
             }
 
-            // light fill
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-        }
-    }
-
-    //## sp_a2_gamer_time ##//
-    if (GetMapName()=="sp_a2_gamer_time") {
-        if (SSInstantRun==true) {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        }
-
-        if (SSLoop==true) {
-
-            // elevator code
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_turret_intro")
-            }
-
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1995,7 +1966,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 }
 
 //-----------------------------------
-// Developer Hacks Code
+// Developer hacks code
 //-----------------------------------
 
 function DevHacks() {
@@ -2003,9 +1974,9 @@ function DevHacks() {
 }
 
 
-/********** *******
-* cut paste code *
-*****************/
+///////////////////////
+// Copy & paste code //
+///////////////////////
 
 /*
 
@@ -2014,20 +1985,20 @@ function DevHacks() {
     if (GetMapName()=="MAPNAME") {
         if (SSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // destroy objects
+            // Destroy objects
             //Entities.FindByName(null, "NAME").Destroy()
         }
 
         if (SSLoop==true) {
 
-            // elevator code
+            // Elevator code
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
 
-            // light fill
+            // Light fill
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -2051,7 +2022,7 @@ while ( ent = Entities.FindByClassname(ent, "CLASSNAME")) {
     ent.Destroy()
 }
 
-// make Wheatley look at player
+// Make Wheatley look at nearest player
 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
 EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
