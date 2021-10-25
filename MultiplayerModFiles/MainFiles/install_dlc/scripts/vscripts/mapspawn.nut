@@ -154,18 +154,18 @@ MPMCoopCreditNames <- [
 
 function init() {
 
-    // run singleplayer code
+    // Run singleplayer code
     if (GetMapName().slice(0, 7) != "mp_coop") {
         IsSingleplayerMap <- true
         SingleplayerSupport(true, false, false)
     }
 
-    // enable fast download
+    // Enable fast download
     SendToConsole("sv_downloadurl https://github.com/kyleraykbs/gilbert/raw/main/portal2")
     SendToConsole("sv_allowdownload 1")
     SendToConsole("sv_allowupload 1")
 
-    // create an on screen text message entity
+    // Create an on screen text message entity
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod")
     onscreendisplay.__KeyValueFromString("message", "Waiting For Players...")
@@ -178,7 +178,7 @@ function init() {
     //onscreendisplay.__KeyValueFromString("x", "-1.1")
     //onscreendisplay.__KeyValueFromString("y", "-1.1")
 
-    // create a join message entity
+    // Create a join message entity
     joinmessagedisplay <- Entities.CreateByClassname("game_text")
     joinmessagedisplay.__KeyValueFromString("targetname", "joinmessagedisplaympmod")
     joinmessagedisplay.__KeyValueFromString("holdtime", "3")
@@ -190,7 +190,7 @@ function init() {
     //joinmessagedisplay.__KeyValueFromString("x", "0.1")
     //joinmessagedisplay.__KeyValueFromString("y", "0.1")
 
-    // create entity to run loop() every 0.1 seconds
+    // Create entity to run loop() every 0.1 seconds
     timer <- Entities.CreateByClassname("logic_timer")
     timer.__KeyValueFromString("targetname", "timer")
     EntFireByHandle(timer, "AddOutput", "RefireTime 0.1", 0, null, null)
@@ -198,7 +198,7 @@ function init() {
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
 
-    // create an entity that sends a client command
+    // Create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
 
     // load plugin
@@ -216,10 +216,10 @@ function init() {
         PluginLoaded <- false
     }
 
-    // run instant map code
+    // Run instant map code
     AllMapsCode(false, false, false, true)
 
-    // run gelocity 2 code
+    // Run Gelocity 2 code
     if (TryGelocity2 == 1) {
         try {
             if (GetMapName().slice(28, 50) == "mp_coop_gelocity_2_v01") {
@@ -230,7 +230,7 @@ function init() {
         }
     }
 
-    // run gelocity 3 code
+    // Run Gelocity 3 code
     if (TryGelocity3 == 1) {
         try {
             if (GetMapName().slice(28, 50) == "mp_coop_gelocity_3_v02") {
@@ -246,7 +246,7 @@ function init() {
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-//Teleport Players Within A Distance
+//Teleport players within a distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
     local ent = null
     while(ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis)) {
@@ -275,7 +275,7 @@ function CacheModel(ModelName) {
                 printl("servercommand exists")
             }
         } catch(exception) {
-            // server an entity that sends a client command
+            // Create an entity that sends a server command
             servercommand <- Entities.CreateByClassname("point_servercommand")
         }
         EntFireByHandle(servercommand, "command", "hud_saytext_time 0", 0, null, null)
@@ -289,10 +289,10 @@ function CacheModel(ModelName) {
 }
 
 //-----------------------------------
-// Multiplayer Support Code
+// Multiplayer support code
 //-----------------------------------
 
-// set GBIsMultiplayer if game is multiplayer
+// Set GBIsMultiplayer if game is multiplayer
 try {
     if (::IsMultiplayer()) {
         GBIsMultiplayer <- 1
@@ -309,31 +309,31 @@ try {
 
     function loop() {
 
-        // run player join code when a player joins
+        // Run player join code when a player joins
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             if (p.ValidateScriptScope()) {
                 local script_scope = p.GetScriptScope()
-                //if player hasn't joined yet / hasn't been spawned/colored yet
+                // If player hasn't joined yet / hasn't been spawned / colored yet
                 if (!("Colored" in script_scope)) {
-                    // run player join code
+                    // Run player join code
                     OnPlayerJoin(p, script_scope)
                 }
             }
         }
 
-        AllMapsCode(true, false, false, false) // run map loops
+        AllMapsCode(true, false, false, false) // Run map loops
 
-        CreatePropsForLevel(false, false, true) // create the gmod generated props in the level
+        CreatePropsForLevel(false, false, true) // Create the gmod generated props in the level
 
-        // cache original spawn position
+        // Cache original spawn position
             if (copp == 0 && Entities.FindByClassname(null, "player")) {
                 // OldPlayerPos = the blues inital spawn position
                 OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
                 copp <- 1
             }
 
-        // display waiting for players until player exits spawn zone
+        // Display waiting for players until player exits spawn zone
         try {
             if (DoneWaiting == false) {
                 // Check if client is in spawn zone
@@ -346,15 +346,15 @@ try {
             }
         } catch(exception) {}
 
-        // delete all cached models
+        // Delete all cached models
         if (DoneCacheing==true) {
-            // if model has cached successfully delete it from the level
+            // If model has cached successfully delete it from the level
             foreach (index, CustomGameModel in CachedModels)  {
-                // find all entities with the model name
+                // Find all entities with the model name
                 local ent = null
                 while (ent = Entities.FindByModel(ent, CustomGameModel)) {
                     try {
-                        // if it's a prop_dynamic_create entity delete it
+                        // If it's a prop_dynamic_create entity delete it
                     if (ent.GetName().slice(0, 17)!="genericcustomprop") {
                         ent.Destroy()
                     }
@@ -371,7 +371,7 @@ try {
         }
 
         try {
-        //detect death
+        // Detect death
         if (HasSpawned==true) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -392,24 +392,24 @@ try {
 
             if (ContinueDeathCode==true) {
                 if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 45) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 45)) {
-                    //ON DEATH
+                    // ON DEATH
                     if(PluginLoaded==true) {
                         printl("Player " + getPlayerName(p.entindex()-1) + " Has Respawned")
                     }
-                    //show player color again
+                    // Show player color again
                     foreach (index, item in PlayerColorCached)  {
                         if (item == p.GetRootMoveParent().entindex().tostring())  {
                             PlayerColorCached.remove(index)
                         }
                     }
-                    //END OF ON DEATH
+                    // END OF ON DEATH
                     IsInSpawnZone.push(p.GetRootMoveParent().entindex().tostring())
                     }
                 }
             }
         }
 
-        //display the current player color in the bottom right of their screen upon spawning
+        // Display the current player color in the bottom right of their screen upon spawning
         if (HasSpawned==true) {
             // Find all players
             local p = null
@@ -427,7 +427,7 @@ try {
                 if (CanTag==true) {
                         RGB <- "255 255 255"; COLORMESSAGE <- "Random Color";
                         switch (p.GetRootMoveParent().entindex()) {
-                            // these are the colors of the players
+                            // These are the colors of the players
                             case 1 : RGB <- "255 255 255"; COLORMESSAGE <- "White"     ; break;
                             case 2 : RGB <- "120 255 120"; COLORMESSAGE <- "Green"     ; break;
                             case 3 : RGB <- "120 140 255"; COLORMESSAGE <- "Blue"      ; break;
@@ -451,29 +451,29 @@ try {
                         } catch(exception) {
 
                         }
-                        // cache player color
+                        // Cache player color
                         EntFireByHandle(Entities.FindByName(null, "colordisplay" + currentnametag), "display", "", 0.0, p, p)
                         PlayerColorCached.push(currentnametag);
                 }
             }
         }
         } catch(exception) {
-            // if there is an error set the players position to the original position
+            // If there is an error set the players position to the original position
             printl("Death Detection Screwed Up (Player Probably Crashed) (Setting OrangeOldPlayerPos To BlueOldPlayerPos To Remedy The Issue)")
             OrangeOldPlayerPos <- OldPlayerPos
         }
 
-        //disconnect player if trying to play singleplayer
+        // Disconnect player if trying to play singleplayer
         if (GBIsMultiplayer==0) {
             SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
         }
 
-        //singleplayer loop
+        // Singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
             SingleplayerSupport(false, true, false)
         }
 
-        // run dedicated server code
+        // Run dedicated server code
         if (DedicatedServer == 1) {
             DedicatedServerFunc()
         }
@@ -499,16 +499,16 @@ try {
 // █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-/////////////////////////////
-// Runs When A Player Joins//
-/////////////////////////////
+//////////////////////////////
+// Runs When A Player Joins //
+//////////////////////////////
 
 function OnPlayerJoin(p, script_scope) {
-// get player's index and store it
+// Get player's index and store it
 PlayerID <- p.GetRootMoveParent()
 PlayerID <- PlayerID.entindex()
 
-// set viewmodel targetnames so we can tell them apart
+// Set viewmodel targetnames so we can tell them apart
 local ent = null
 while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
@@ -523,7 +523,7 @@ if (UsePlugin==true) {
         printl("Loading Plugin... Restarting Map")
         // load plugin
         EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
-        // wait for plugin to load and then restart map
+        // Wait for plugin to load and then restart map
         EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
         LoadPlugin <- false
     }
@@ -538,47 +538,47 @@ EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
 
-// say join message on HUD
+// Say join message on HUD
 if (PluginLoaded==true) {
     JoinMessage <- getPlayerName(PlayerID-1) + " Joined The Game"
 } else {
     JoinMessage <- "Player " + PlayerID + " Joined The Game"
 }
-// set join message to player name
+// Set join message to player name
 JoinMessage = JoinMessage.tostring()
 joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
 EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
 if (PlayerID >= 2) {
     onscreendisplay.__KeyValueFromString("y", "0.075")
 }
-// assign every client a targetname keyvalue
+// Assign every client a targetname keyvalue
 if (PlayerID >= 3) {
 
     p.__KeyValueFromString("targetname", "player" + PlayerID)
 }
 
-// set a random color for clients that join after 16 have joined
+// Set a random color for clients that join after 16 have joined
 if (PlayerID != 1) {
     R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
     ReadyCheatsOff <- 1
 }
 
-// create an entity to display player color at the bottom left of every clients' screen
+// Create an entity to display player color at the bottom left of every clients' screen
 colordisplay <- Entities.CreateByClassname("game_text")
-    // set the entity's targetname to colordisplay + player's index
+    // Set the entity's targetname to colordisplay + player's index
 colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
-    // set the entity's origin to the bottom left of the screen
+    // Set the entity's origin to the bottom left of the screen
 colordisplay.__KeyValueFromString("x", "0")
 colordisplay.__KeyValueFromString("y", "1")
-    // set the entity's holdtime to infinity
+    // Set the entity's holdtime to infinity
 colordisplay.__KeyValueFromString("holdtime", "100000")
-    // set the fade time to none
+    // Set the fade time to none
 colordisplay.__KeyValueFromString("fadeout", "0")
 colordisplay.__KeyValueFromString("fadein", "0")
-    // set the channel to top
+    // Set the channel to top
 colordisplay.__KeyValueFromString("channel", "0")
 
-// set preset colors for up to 16 clients
+// Set preset colors for up to 16 clients
 switch (PlayerID) {
     case 1 : R <- 255; G <- 255; B <- 255; break;
     case 2 : R <- 180, G <- 255, B <- 180; break;
@@ -598,7 +598,7 @@ switch (PlayerID) {
     case 16: R <-   0, G <-  75, B <-  75; break;
 }
 
-// set color of player's in-game model
+// Set color of player's in-game model
 script_scope.Colored <- true
 EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
 
@@ -611,7 +611,7 @@ return
 }
 
 ////////////////////////////////////
-// Runs Once On Fist Global Spawn //
+// Runs once on fist global spawn //
 ////////////////////////////////////
 
 function GeneralOneTime() {
@@ -639,7 +639,7 @@ function GeneralOneTime() {
         OrangeOldPlayerPos <- OldPlayerPos
     }
 
-    //Create Props After Cache
+    // Create props after cache
     CreatePropsForLevel(false, true, false)
 
     AllMapsCode(false, true, false, false)
@@ -650,7 +650,7 @@ function GeneralOneTime() {
 // █▀▄▀█ ▄▀█ █▀█   █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
 // █░▀░█ █▀█ █▀▀   ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
 
-// run all required map code
+// Run all required map code
 function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 
 
@@ -664,7 +664,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         //## MP_COOP_CREDITS INSTANT RUN ##//
         if (GetMapName() == "mp_coop_credits") {
 
-                // remove selected pods
+                // Remove selected pods
         function CreditsRemovePod() {
             local ent = null
             while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
@@ -676,29 +676,29 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             }
         }
 
-        // fix void camera glitch
+        // Fix void camera glitch
         function FixCreditsCameras() {
-            // disable useless cameras
+            // Disable useless cameras
             EntFireByHandle(Entities.FindByName(null, "camera_SP"), "disable", "", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "camera_O"), "disable", "", 0, null, null)
 
-            // reload main camera with new params
+            // Reload main camera with new params
             Entities.FindByName(null, "camera").__KeyValueFromString("target_team", "-1")
             EntFireByHandle(Entities.FindByName(null, "camera"), "disable", "", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "camera"), "enable", "", 0, null, null)
         }
 
-        // replace females with P-body's
+        // Replace females with P-body's
         function CreditsSetModelPB(ent) {
             FixCreditsCameras()
 
-            // count how many credits come on screen to change to humans
+            // Count how many credits come on screen to change to humans
             MPMCredits <- MPMCredits + 1
 
-            // preset animation
+            // Preset animation
             local RandomAnimation = RandomInt(0, CRAnimationTypesPB)
 
-            // remove pod if needed
+            // Remove pod if needed
             HasRemovedPod <- 0
             foreach (anim in NOTubeAnimsPB) {
                 if (AnimationsPB[RandomAnimation] == anim && HasRemovedPod == 0) {
@@ -707,42 +707,42 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 }
             }
 
-            // set model
+            // Set model
             ent.SetModel("models/player/eggbot/eggbot.mdl")
 
-            // set color
+            // Set color
             EntFireByHandle(ent, "Color", (RandomInt(0, 255) + " " + RandomInt(0, 255) + " " + RandomInt(0, 255)), 0, null, null)
 
-            // set position
+            // Set position
             ent.SetOrigin(Vector(0, 0, 7.5))
 
-            // set animation
+            // Set animation
             EntFireByHandle(ent, "setanimation", AnimationsPB[RandomAnimation], 0, null, null)
         }
 
-        // replace males with Atlas's
+        // Replace males with Atlas's
         function CreditsSetModelAL(ent) {
             FixCreditsCameras()
 
-            // count how many credits come on screen to change to humans
+            // Count how many credits come on screen to change to humans
             MPMCredits <- MPMCredits + 1
 
-            // preset animation
+            // Preset animation
             local RandomAnimation = RandomInt(0, CRAnimationTypesAL)
 
-            // set model
+            // Set model
             ent.SetModel("models/player/ballbot/ballbot.mdl")
 
-            // set color
+            // Set color
             EntFireByHandle(ent, "Color", (RandomInt(0, 255) + " " + RandomInt(0, 255) + " " + RandomInt(0, 255)), 0, null, null)
 
-            // set position
+            // Set position
             ent.SetOrigin(Vector(-10, 0, 25.5))
 
-            // set animation
+            // Set animation
             EntFireByHandle(ent, "setanimation", AnimationsAL[RandomAnimation], 0, null, null)
 
-            // remove pod if needed
+            // Remove pod if needed
             HasRemovedPod <- 0
             foreach (anim in NOTubeAnimsAL) {
                 if (AnimationsAL[RandomAnimation] == anim && HasRemovedPod == 0) {
@@ -753,41 +753,41 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             }
         }
 
-        // set credits animations
-            // pbody animations
+        // Set credits animations
+            // Pbody animations
             AnimationsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "noGun_airwalk", "portalgun_drowning", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
 
-            // atlas animations
+            // Atlas animations
             AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "noGun_airwalk", "noGun_airwalk"]
 
-            // pbody animations out of tube
+            // Pbody animations out of tube
             NOTubeAnimsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
 
-            // atlas animations out of tube
+            // Atlas animations out of tube
             NOTubeAnimsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "noGun_crouch_idle"]
 
-            // credit run counter
+            // Credit run counter
             MPMCredits <- 0
 
-            // set the amount of pbody animations
+            // Set the amount of pbody animations
             CRAnimationTypesPB <- -1
             foreach (value in AnimationsPB) {
                 CRAnimationTypesPB <- CRAnimationTypesPB + 1
             }
 
-            // set the amount of atlas animations
+            // Set the amount of atlas animations
             CRAnimationTypesAL <- -1
             foreach (value in AnimationsAL) {
                 CRAnimationTypesAL <- CRAnimationTypesAL + 1
             }
 
-            // set the amount of credits
+            // Set the amount of credits
             MPModCreditNumber <- -1
             foreach (value in MPMCoopCreditNames) {
                 MPModCreditNumber <- MPModCreditNumber + 1
             }
 
-            // mount list of credits to credits
+            // Mount list of credits to credits
             foreach (Name in MPMCoopCreditNames) {
                 AddCoopCreditsName(Name)
             }
