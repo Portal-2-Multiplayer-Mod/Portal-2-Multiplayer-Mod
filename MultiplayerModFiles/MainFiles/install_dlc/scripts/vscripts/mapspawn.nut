@@ -74,15 +74,9 @@ CachedModels <- []
 IsInSpawnZone <- []
 HasSpawned <- false
 PlayerColorCached <- []
-CheatsOff <- 0
-ReadyCheatsOff <- 0
-PlayerJoined <- 0
 PlayerID <- 0
 GBIsMultiplayer <- 0
-TryGelocity <- 1
-TryGelocity2 <- 1
-TryGelocity3 <- 1
-copp <- 0
+cacheoriginalplayerposition <- 0
 DoneWaiting <- false
 IsSingleplayerMap <- false
 LoadPlugin <- false
@@ -317,10 +311,10 @@ try {
         CreatePropsForLevel(false, false, true) // Create the gmod generated props in the level
 
         // Cache original spawn position
-            if (copp == 0 && Entities.FindByClassname(null, "player")) {
+            if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
                 // OldPlayerPos = the blues inital spawn position
                 OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-                copp <- 1
+                cacheoriginalplayerposition <- 1
             }
 
         // Display waiting for players until player exits spawn zone
@@ -548,7 +542,6 @@ if (PlayerID >= 3) {
 // Set a random color for clients that join after 16 have joined
 if (PlayerID != 1) {
     R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
-    ReadyCheatsOff <- 1
 }
 
 // Create an entity to display player color at the bottom left of every clients' screen
