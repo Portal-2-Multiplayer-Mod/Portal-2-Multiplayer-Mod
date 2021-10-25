@@ -726,7 +726,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 
         //## MP_COOP_CREDITS INSTANT RUN ##//
         if (GetMapName() == "mp_coop_credits") {
-            // remove selected pods
+            // Remove selected pods
             function CreditsRemovePod() {
                 try {
                     local ent = null
