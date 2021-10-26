@@ -1789,7 +1789,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 45)) {
                 SendToConsole("commentary 1")
@@ -1815,7 +1815,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-80, -2106, -805), 45)) {
                 SendToConsole("commentary 1")
@@ -1840,7 +1840,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1151, 2087, -319), 45)) {
                 SendToConsole("commentary 1")
@@ -1874,7 +1874,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 } catch(exception) { }
             }
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-893, 1223, -362), 45)) {
                 SendToConsole("commentary 1")
@@ -1900,7 +1900,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
@@ -1928,7 +1928,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
                 SendToConsole("commentary 1")
@@ -1952,7 +1952,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
@@ -1976,7 +1976,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
@@ -2000,7 +2000,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
@@ -2024,7 +2024,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
@@ -2056,7 +2056,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator code
+            // Elevator arrival
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
                 SendToConsole("commentary 1")
