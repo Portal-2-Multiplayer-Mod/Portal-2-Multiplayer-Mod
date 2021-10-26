@@ -488,11 +488,11 @@ while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
     // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
 }
 
-// load plugin
+// Load plugin
 if (UsePlugin==true) {
     if (LoadPlugin==true) {
         printl("Loading Plugin... Restarting Map")
-        // load plugin
+        // Load plugin
         EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
         // Wait for plugin to load and then restart map
         EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
@@ -671,7 +671,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         //## GELOCITY 2 INSTANT RUN##//
         try {
             if (GetMapName().slice(28, 50) == "mp_coop_gelocity_2_v01") {
-                // Set the gelocity 2 map
+                // Set the Gelocity 2 map
                 local ent = null
                 while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
                     ent.Destroy() // 20 entities removed
