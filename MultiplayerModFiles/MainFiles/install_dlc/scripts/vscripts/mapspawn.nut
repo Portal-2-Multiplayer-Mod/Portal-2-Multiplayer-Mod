@@ -80,7 +80,7 @@ if (UsePlugin==true) {
     PluginLoaded <- true
 }
 
-// add names to credits
+// Add names to credits
 MPMCoopCreditNames <- [
 "",
 "",
@@ -217,7 +217,7 @@ function init() {
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-//Teleport players within a distance
+// Teleport players within a distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
     local ent = null
     while(ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis)) {
@@ -489,11 +489,11 @@ while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
     // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
 }
 
-// load plugin
+// Load plugin
 if (UsePlugin==true) {
     if (LoadPlugin==true) {
         printl("Loading Plugin... Restarting Map")
-        // load plugin
+        // Load plugin
         EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
         // Wait for plugin to load and then restart map
         EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
@@ -672,7 +672,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         //## GELOCITY 2 INSTANT RUN##//
         try {
             if (GetMapName().slice(28, 50) == "mp_coop_gelocity_2_v01") {
-                // set the gelocity 2 map
+                // Set the Gelocity 2 map
                 local ent = null
                 while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
                     ent.Destroy() // 20 entities removed
@@ -1798,7 +1798,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator arrival
+            // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 45)) {
                 SendToConsole("commentary 1")
@@ -1824,7 +1824,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator arrival
+            // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-80, -2106, -805), 45)) {
                 SendToConsole("commentary 1")
@@ -1849,7 +1849,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator arrival
+            // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1151, 2087, -319), 45)) {
                 SendToConsole("commentary 1")
@@ -1883,7 +1883,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 } catch(exception) { }
             }
 
-            // Elevator arrival
+            // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-893, 1223, -362), 45)) {
                 SendToConsole("commentary 1")
@@ -1909,7 +1909,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator arrival
+            // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
                 SendToConsole("commentary 1")
@@ -1937,107 +1937,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
-            // Elevator arrival
+            // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
-            }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-        }
-    }
-
-    //## SP_A2_TURRET_INTRO ##//
-    if (GetMapName()=="sp_a2_turret_intro") {
-        if (SSInstantRun==true) {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        }
-
-        if (SSLoop==true) {
-
-            // Elevator arrival
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_column_blocker")
-            }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-        }
-    }
-
-    //## SP_A2_COLUMN_BLOCKER ##//
-    if (GetMapName()=="sp_a2_column_blocker") {
-        if (SSInstantRun==true) {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        }
-
-        if (SSLoop==true) {
-
-            // Elevator arrival
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_bridge_the_gap")
-            }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-        }
-    }
-
-    //## SP_A2_BRIDGE_THE_GAP ##//
-    if (GetMapName()=="sp_a2_bridge_the_gap") {
-        if (SSInstantRun==true) {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        }
-
-        if (SSLoop==true) {
-
-            // Elevator arrival
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_laser_relays")
-            }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-        }
-    }
-
-    //## SP_A2_LASER_RELAYS ##//
-    if (GetMapName()=="sp_a2_laser_relays") {
-        if (SSInstantRun==true) {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        }
-
-        if (SSLoop==true) {
-
-            // Elevator arrival
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_gamer_time")
             }
 
             // Elevator env_projectedtexture
@@ -2065,7 +1969,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator arrival
+            // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
                 SendToConsole("commentary 1")
