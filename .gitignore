@@ -34,4 +34,4 @@ cfg/
 vpk_override/
 *.so
 !MultiplayerModFiles/
-!WebFiles/
+!WebFiles/FastDL/portal2/
