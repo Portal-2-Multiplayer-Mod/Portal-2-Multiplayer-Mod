@@ -651,7 +651,7 @@ function GeneralOneTime() {
         radius <- 100
 
         if (OrangeCacheFailed==true) {
-            radius <- 1025
+            radius <- 350
         }
 
         local ent = null
@@ -669,7 +669,6 @@ function GeneralOneTime() {
         printl("Orange dropper not found")
     }
     radius <- null
-
 
     // Create props after cache
     CreatePropsForLevel(false, true, false)
