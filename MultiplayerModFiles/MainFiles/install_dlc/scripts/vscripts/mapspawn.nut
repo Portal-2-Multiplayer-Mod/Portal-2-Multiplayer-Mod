@@ -208,11 +208,11 @@ function init() {
     // Load plugin
     if("getPlayerName" in this) {
         printl("=================================")
-        printl("Plugin Already Loaded Skipping...")
+        printl("Plugin already loaded skipping...")
         printl("=================================")
     } else {
         printl("============================")
-        printl("Plugin Not Loaded Loading...")
+        printl("Plugin not loaded loading...")
         printl("============================")
         pluginloadcommand <- Entities.CreateByClassname("point_servercommand")
         // SendToConsole("plugin_load pl")
@@ -252,7 +252,7 @@ function DeleteModels(ModelName) {
 
 function CacheModel(ModelName) {
     if (Entities.FindByModel(null, "models/"+ModelName)) {
-            printl("Model " + ModelName + " is already cached!")
+            printl("Model: " + ModelName + " is already cached!")
         } else {
         try {
             if (servercommand) {
@@ -268,7 +268,7 @@ function CacheModel(ModelName) {
         EntFireByHandle(servercommand, "command", "sv_cheats 0", 0, null, null)
         CachedModels.push("models/"+ModelName)
 
-        printl("Model " + ModelName + " has been cached sucessfully!")
+        printl("Model: " + ModelName + " has been cached sucessfully!")
     }
 }
 
@@ -382,7 +382,7 @@ try {
                 if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 45) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 45)) {
                     // ON DEATH
                     if(PluginLoaded==true) {
-                        printl("Player " + getPlayerName(p.entindex()-1) + " Has Respawned")
+                        printl("Player: " + getPlayerName(p.entindex()-1) + " has respawned")
                     }
                     // Show player color again
                     foreach (index, item in PlayerColorCached)  {
@@ -447,7 +447,7 @@ try {
         }
         } catch(exception) {
             // If there is an error set the players position to the original position
-            printl("Death Detection Screwed Up (Player Probably Crashed) (Setting OrangeOldPlayerPos To BlueOldPlayerPos To Remedy The Issue)")
+            printl("Death detection screwed up, player probably crashed. Setting OrangeOldPlayerPos to BlueOldPlayerPos to remedy the issue")
             OrangeOldPlayerPos <- OldPlayerPos
         }
 
@@ -498,7 +498,7 @@ PlayerID <- PlayerID.entindex()
 // local ent = null
 // while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
 //     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
-//     printl("renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
+//     printl("Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
 //     // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
 //     // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
 // }
@@ -573,7 +573,7 @@ if (p.GetTeam() == 2) {
 }
 
 // Print the players team
-printl("Player " + PlayerID + " is on team " + p.GetTeam())
+printl("Player: " + PlayerID + " is on team " + p.GetTeam())
 
 return
 }
@@ -586,7 +586,7 @@ function PostMapLoad() {
     // Load plugin
     if (UsePlugin==true) {
         if (LoadPlugin==true) {
-            printl("Loading Plugin... Restarting Map")
+            printl("Loading plugin... Restarting map")
             // Load plugin
             EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
             // Wait for plugin to load and then restart map
@@ -1261,12 +1261,12 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 ////////////////////////////
 
     function disablewheatleyplayerpickup() {
-        printl("Player Picked Up Wheatley. Disabling Pickup!")
+        printl("Player picked up Wheatley. Disabling pickup!")
         EntFire("@sphere", "disablepickup", "", 0, null)
         EntFire("@sphereDummy", "enablepickup", "", 0, null)
     }
     function enablewheatleyplayerpickup() {
-        printl("Player Picked Up Wheatley. Enabling Pickup!")
+        printl("Player picked up Wheatley. Enabling pickup!")
         EntFire("@sphere", "enablepickup", "", 0, null)
         EntFire("@sphereDummy", "enablepickup", "", 0, null)
     }
@@ -1278,7 +1278,6 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
     }
 
     function SPSkipPanel() {
-        printl("message")
         EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
         myexplode2 <- Entities.CreateByClassname("npc_personality_core")
         myexplode2.__KeyValueFromString("targetname", "myexplode2")
@@ -1295,22 +1294,22 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
         local mysphere = Entities.FindByName(null, "@spheredummy")
 
-        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows01" )
-        self.PrecacheSoundScript( "sphere03.sp_a2_wheatley_ows02" )
-        self.PrecacheSoundScript( "sphere03.sphere_flashlight_tour67" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking09" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking12" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_wakeup_hacking10" )
-        self.PrecacheSoundScript( "sphere03.bw_finale4_hackworked01" )
-        self.PrecacheSoundScript( "Portal.elevator_chime" )
-        self.PrecacheSoundScript( "sphere03.GloriousFreedom03" )
-        self.PrecacheSoundScript( "sphere03.bw_fire_lift03" )
+        self.PrecacheSoundScript("sphere03.sp_a2_wheatley_ows01")
+        self.PrecacheSoundScript("sphere03.sp_a2_wheatley_ows02")
+        self.PrecacheSoundScript("sphere03.sphere_flashlight_tour67")
+        self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking09")
+        self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking12")
+        self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking10")
+        self.PrecacheSoundScript("sphere03.bw_finale4_hackworked01")
+        self.PrecacheSoundScript("Portal.elevator_chime")
+        self.PrecacheSoundScript("sphere03.GloriousFreedom03")
+        self.PrecacheSoundScript("sphere03.bw_fire_lift03")
 
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret01" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret08" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret07" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret05" )
-        self.PrecacheSoundScript( "sphere03.sp_a1_intro7_hoboturret06" )
+        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret01")
+        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret08")
+        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret07")
+        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret05")
+        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret06")
 
         EntFire("myexplode2", "addoutput", "targetname playline1", 2.65, null)
         EntFire("playline1", "addoutput", "targetname myexplode2", 2.76, null)
@@ -1367,7 +1366,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
 
             local portalgun = null
-            while ( portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
+            while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
                 portalgun.Destroy()
             }
 
@@ -1465,7 +1464,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 EntFire("projected_texture_03", "TurnOn", "", 0, null)
             }
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector( 2151, -527, -499), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2151, -527, -499), 45)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a1_intro5")
             }
@@ -1564,69 +1563,69 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             if(Entities.FindByName(null, "playline1")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows01.wav")
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows02.wav")
-                printl("played line1")
+                printl("Played line 1")
             }
 
             if(Entities.FindByName(null, "playline2")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sphere_flashlight_tour67.wav")
-                printl("played line2")
+                printl("Played line 2")
             }
 
             if(Entities.FindByName(null, "playline3")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking09.wav")
-                printl("played line3")
+                printl("Played line 3")
             }
 
             if(Entities.FindByName(null, "playline4")) {
                 Entities.FindByName(null, "InstanceAuto9-sphere_socket").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking12.wav")
-                printl("played line4")
+                printl("Played line 4")
             }
 
             if(Entities.FindByName(null, "playline5")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking10.wav")
-                printl("played line5")
+                printl("Played line 5")
             }
 
             if(Entities.FindByName(null, "playline6")) {
                 Entities.FindByName(null, "InstanceAuto9-sphere_socket").EmitSound("ambient\\alarms\\portal_elevator_chime.wav")
-                printl("played line6")
+                printl("Played line 6")
             }
 
             if(Entities.FindByName(null, "playline7")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\bw_finale4_hackworked01.wav")
-                printl("played line7")
+                printl("Played line 7")
             }
 
             if(Entities.FindByName(null, "playline8")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret01.wav")
-                printl("played line8")
+                printl("Played line 8")
             }
 
             if(Entities.FindByName(null, "playline9")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret08.wav")
-                printl("played line9")
+                printl("Played line 9")
             }
 
             if(Entities.FindByName(null, "playline10")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret07.wav")
-                printl("played line10")
+                printl("Played line 10")
             }
 
             if(Entities.FindByName(null, "playline11")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret05.wav")
-                printl("played line11")
+                printl("Played line 11")
             }
 
             if(Entities.FindByName(null, "playline12")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret06.wav")
-                printl("played line12")
+                printl("Played line 12")
             }
 
             if (!Entities.FindByName(null, "seq1finished")) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1117, -416, 1280), 100)) {
                     Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "seq1finished")
-                    printl("Seq1 Done")
+                    printl("Sequence 1 done")
                     Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\gloriousfreedom03.wav")
                     EntFire("offrails_airlock_door_1_open_rl", "trigger", "", 0, null)
                 }
@@ -1636,7 +1635,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-2692, -404, 1280), 100)) {
                     Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "seq2finished")
-                    printl("Seq2 Done")
+                    printl("Sequence 2 done")
 
                     EntFire("@glados", "runscriptcode", "sp_a1_intro7_HoboTurretScene()", 0, null)
 
@@ -1726,7 +1725,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
 
         if (SSOneTimeRun==true) {
-            printl("RAN")
+            printl("Ran")
             Intro2Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
             Intro2Viewcontrol.__KeyValueFromString("targetname", "Intro2Viewcontrol")
             Intro2Viewcontrol.__KeyValueFromString("target_team", "-1")
@@ -1737,7 +1736,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             EntFire("Intro2ViewcontrolTele", "disable", "", 20.75, null)
             EntFire("Intro2Viewcontrol", "addoutput", "targetname Intro2ViewcontrolTele", 0.25, null)
             EntFire("Intro2ViewcontrolTele", "addoutput", "targetname Intro2ViewcontrolDone", 20.80, null)
-            self.PrecacheSoundScript( "ScriptedSequence.IncineratorFall" )
+            self.PrecacheSoundScript("ScriptedSequence.IncineratorFall")
             local TempEnt = Entities.CreateByClassname("prop_dynamic")
             TempEnt.__KeyValueFromString("targetname", "TempEnt")
             EntFire("TempEnt", "addoutput", "targetname PlayFallSound", 0, null)
@@ -2044,7 +2043,7 @@ while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
 }
 
 local ent = null
-while ( ent = Entities.FindByClassname(ent, "CLASSNAME")) {
+while (ent = Entities.FindByClassname(ent, "CLASSNAME")) {
     ent.Destroy()
 }
 
