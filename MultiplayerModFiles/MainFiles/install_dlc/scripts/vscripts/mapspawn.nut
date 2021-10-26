@@ -205,7 +205,7 @@ function init() {
     // Create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
 
-    // load plugin
+    // Load plugin
     if("getPlayerName" in this) {
         printl("=================================")
         printl("Plugin Already Loaded Skipping...")
@@ -485,9 +485,9 @@ try {
 // █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-////////////////////////////////
-// 𝗥𝘂𝗻𝘀 𝗪𝗵𝗲𝗻 𝗔 𝗣𝗹𝗮𝘆𝗲𝗿 𝗝𝗼𝗶𝗻𝘀 //
-////////////////////////////////
+//////////////////////////////
+// Runs when a player joins //
+//////////////////////////////
 
 function OnPlayerJoin(p, script_scope) {
 // Get player's index and store it
@@ -578,9 +578,9 @@ printl("Player " + PlayerID + " is on team " + p.GetTeam())
 return
 }
 
-////////////////////////////////////////////
-// 𝗣𝗢𝗦𝗧 𝗠𝗔𝗣 𝗟𝗢𝗔𝗗𝗜𝗡𝗚 𝗙𝗨𝗡𝗖𝗧𝗜𝗢𝗡𝗦 𝗛𝗘𝗥𝗘 //
-////////////////////////////////////////////
+/////////////////////////////////////
+// POST MAP LOADING FUNCTIONS HERE //
+/////////////////////////////////////
 
 function PostMapLoad() {
     // Load plugin
@@ -604,7 +604,7 @@ function PostMapLoad() {
 }
 
 /////////////////////////////////////
-// 𝗥𝘂𝗻𝘀 𝗼𝗻𝗰𝗲 𝗼𝗻 𝗳𝗶𝘀𝘁 𝗴𝗹𝗼𝗯𝗮𝗹 𝘀𝗽𝗮𝘄𝗻 //
+// Runs once on first global spawn //
 /////////////////////////////////////
 
 function GeneralOneTime() {
@@ -616,7 +616,7 @@ function GeneralOneTime() {
     SendToConsole("hud_saytext_time 12")
 
     // Inform user that we changed hud_saytext_time to 12
-    SendToConsole("echo Changed Hud Saytext Time For Now")
+    SendToConsole("echo Changed hud saytext time for now")
 
     // Cache orange players original position
     local p = null
@@ -628,12 +628,12 @@ function GeneralOneTime() {
     try {
         if (OrangeOldPlayerPos) { }
     } catch(exeption) {
-        printl("OrangeOldPlayerPos Not Set (Blue Probably Moved Before Orange Could Load in) Setting OrangeOldPlayerPos To BlueOldPlayerPos")
+        printl("OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
         OrangeOldPlayerPos <- OldPlayerPos
         OrangeCacheFailed <- true
     }
 
-    //Force Open The Blue Player Droppers
+    // Force open the blue player droppers
     try {
         local ent = null
         while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OldPlayerPos.x, OldPlayerPos.y, OldPlayerPos.z-300), 100)) {
@@ -643,10 +643,10 @@ function GeneralOneTime() {
             }
         }
     } catch(exeption) {
-        printl("Blue Dropper Not Found")
+        printl("Blue dropper not found")
     }
 
-    //Force Open The Orange Player Droppers
+    // Force open the orange player droppers
     try {
         radius <- 100
 
@@ -662,7 +662,7 @@ function GeneralOneTime() {
             }
         }
     } catch(exeption) {
-        printl("Orange Dropper Not Found")
+        printl("Orange dropper not found")
     }
     radius <- null
 
@@ -801,7 +801,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             EntFireByHandle(Entities.FindByName(null, "camera"), "enable", "", 0, null, null)
         }
 
-        // Replace females with P-body's
+        // Replace females with P-bodys
         function CreditsSetModelPB(ent) {
             FixCreditsCameras()
 
@@ -833,7 +833,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             EntFireByHandle(ent, "setanimation", AnimationsPB[RandomAnimation], 0, null, null)
         }
 
-        // Replace males with Atlas's
+        // Replace males with Atlass
         function CreditsSetModelAL(ent) {
             FixCreditsCameras()
 
@@ -867,13 +867,13 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         }
 
         // Set credits animations
-            // Pbody animations
+            // P-body animations
             AnimationsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "noGun_airwalk", "noGun_airwalk", "portalgun_drowning", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
 
             // Atlas animations
             AnimationsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "portalgun_jump_spring", "portalgun_thrash_fall", "noGun_crouch_idle", "noGun_airwalk", "noGun_airwalk"]
 
-            // Pbody animations out of tube
+            // P-body animations out of tube
             NOTubeAnimsPB <- ["taunt_laugh", "taunt_teamhug_idle", "noGun_crouch_idle", "taunt_face_palm", "taunt_selfspin", "taunt_pretzelwave", "layer_taunt_noGun_small_wave", "taunt_highFive_idle"]
 
             // Atlas animations out of tube
@@ -882,13 +882,13 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             // Credit run counter
             MPMCredits <- 0
 
-            // Set the amount of pbody animations
+            // Set the amount of P-body animations
             CRAnimationTypesPB <- -1
             foreach (value in AnimationsPB) {
                 CRAnimationTypesPB <- CRAnimationTypesPB + 1
             }
 
-            // Set the amount of atlas animations
+            // Set the amount of Atlas animations
             CRAnimationTypesAL <- -1
             foreach (value in AnimationsAL) {
                 CRAnimationTypesAL <- CRAnimationTypesAL + 1
@@ -1017,7 +1017,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 CreditsSetModelAL(ent)
             }
 
-            // Change females to Pbodys
+            // Change females to P-bodys
             local ent = null
             while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_01.mdl")) {
                 CreditsSetModelPB(ent)
@@ -1340,9 +1340,9 @@ try {
 DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
 } catch(exception) {}
 
-/////////////////////////////////
-//SINGLEPLAYER MAP SUPPORT CODE//
-/////////////////////////////////
+///////////////////////////////////
+// SINGLEPLAYER MAP SUPPORT CODE //
+///////////////////////////////////
 
 function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
