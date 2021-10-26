@@ -1,21 +1,24 @@
 # ***Created by kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
 
-# Mod Features
-1. Custom Wait Screen
-2. Player Cap Of 33
-3. Flexible Player Collision
-4. Custom Player Colors
-5. Custom Join Message
-6. Player Disconnect Message
-7. Removed Game Breaking Commands
-8. Full Cooperative Campaign Support
-9. Support For Linux Users
-10. Support For Windows 11, 10, 8.1, 8, 7, Vista, and XP
+# Mod features
+1. Custom wait screen
+2. Maximum player cap of 33
+3. Elastic player collision
+4. Custom player colors
+5. Custom join message
+6. Player disconnect message
+7. Removed game breaking commands
+8. Full cooperative campaign support
+9. Support for Linux
+10. Support for Windows 11, 10, 8.1, 8, 7, Vista, and XP
+11. Full singleplayer campaign support (Coming soon!)
+12. Nametags (Coming soon!)
+13. Player specific colored portals (Coming soon!)
 
-# Installation & Use
+# Installation & use
 
-- Latest Version Download: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
-- Steam Guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
+- Latest version download: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
+- Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
   - ***The Steam guide goes over everything you need to know in order to get the mod working, but just in case, we have also prepared a supplementary video if you get stuck.***
 - Video: https://www.youtube.com/watch?v=AOh6qela-uI&t=18s
 
