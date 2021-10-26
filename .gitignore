@@ -28,3 +28,7 @@ sixense_deriv_log_file.txt
 sixense_log_file.txt
 srctools.vdf
 srctools_sndscript_data.vdf
+bee2/
+*.mdmp
+cfg/
+vpk_override/
