@@ -52,9 +52,10 @@ cacheoriginalplayerposition <- 0
 DoneWaiting <- false
 IsSingleplayerMap <- false
 LoadPlugin <- false
+RunPluginLoad <- false
 PluginLoaded <- false
 if (UsePlugin==true) {
-    PluginLoaded <- true
+    LoadPlugin <- true
 }
 
 ConsoleAscii <- [
@@ -206,18 +207,20 @@ function init() {
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
 
     // Load plugin
-    if("GetPlayerName" in this) {
-        printl("=================================")
-        printl("Plugin already loaded skipping...")
-        printl("=================================")
-    } else {
-        printl("============================")
-        printl("Plugin not loaded loading...")
-        printl("============================")
-        pluginloadcommand <- Entities.CreateByClassname("point_servercommand")
-        // SendToConsole("plugin_load pl")
-        LoadPlugin <- true
-        PluginLoaded <- false
+    if (LoadPlugin==true) {
+        if("GetPlayerName" in this) {
+            printl("=================================")
+            printl("Plugin already loaded skipping...")
+            printl("=================================")
+            PluginLoaded <- true
+        } else {
+            printl("============================")
+            printl("Plugin not loaded loading...")
+            printl("============================")
+            pluginloadcommand <- Entities.CreateByClassname("point_servercommand")
+            RunPluginLoad <- true
+            // SendToConsole("plugin_load pl")
+        }
     }
 
     // Run instant map code
@@ -485,6 +488,19 @@ try {
 // █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
+////////////////////////////////////////////
+// Runs When A Player Sends A Chat Message//
+////////////////////////////////////////////
+
+
+function ChatHook(id, message) {
+    printl("say id is: " + id + " and message is: " + message)
+}
+
+if (PluginLoaded==true) {
+    AddChatCallback("ChatHook")
+}
+
 //////////////////////////////
 // Runs when a player joins //
 //////////////////////////////
@@ -514,7 +530,7 @@ EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, 
 
 // Say join message on HUD
 if (PluginLoaded==true) {
-    JoinMessage <- GetPlayerName(PlayerID-1) + " Joined The Game"
+    JoinMessage <- GetPlayerName(PlayerID) + " Joined The Game"
 } else {
     JoinMessage <- "Player " + PlayerID + " Joined The Game"
 }
@@ -597,16 +613,13 @@ function PostMapLoad() {
 
 function GeneralOneTime() {
 
-    // Load plugin
-    if (UsePlugin==true) {
-        if (LoadPlugin==true) {
-            printl("Loading plugin... Restarting map")
-            // Load plugin
-            EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
-            // Wait for plugin to load and then restart map
-            EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
-            LoadPlugin <- false
-        }
+    if (RunPluginLoad==true) {
+        printl("Loading plugin... Restarting map")
+        // Load plugin
+        EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+        // Wait for plugin to load and then restart map
+        EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
+        LoadPlugin <- false
     }
 
     CanClearCache <- true
