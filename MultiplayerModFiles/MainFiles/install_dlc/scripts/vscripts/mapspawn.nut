@@ -1796,7 +1796,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_catapult_intro")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1822,7 +1822,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_trust_fling")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1847,7 +1847,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_pit_flings")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1881,7 +1881,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_fizzler_intro")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1907,7 +1907,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_sphere_peek")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1935,7 +1935,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel LEVELNAME")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1959,7 +1959,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_column_blocker")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1983,7 +1983,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_bridge_the_gap")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -2007,7 +2007,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_laser_relays")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -2031,7 +2031,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel sp_a2_gamer_time")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -2063,7 +2063,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("changelevel LEVELNAME")
             }
 
-            // Light fill
+            // Elevator light
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
