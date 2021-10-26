@@ -89,7 +89,7 @@ try:
             pass
     else:
         try:
-            os.rename(owd + "\\bin\linux32\disabledengine.dll", owd + "/bin/linux32/engine.so")
+            os.rename(owd + "\\bin\linux32\disabledengine.so", owd + "/bin/linux32/engine.so")
             print("found engine.so just renamed to engine.so (python probably crashed last session)")
         except:
             pass
@@ -132,7 +132,7 @@ try:
     data = data.replace(b'disconnect "Partner disconnected"', b'script_execute playerdisconnected')
 
     #command patch edit
-    data = data.replace(b'restart_level', b'portal2mprslv')
+    data = data.replace(b'rstart_level', b'portal2mprslv')
     data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
     data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
     data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')

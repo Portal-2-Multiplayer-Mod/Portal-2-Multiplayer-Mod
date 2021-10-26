@@ -197,7 +197,7 @@ function init() {
     // Create entity to run loop() every 0.1 seconds
     timer <- Entities.CreateByClassname("logic_timer")
     timer.__KeyValueFromString("targetname", "timer")
-    EntFireByHandle(timer, "AddOutput", "RefireTime 0.01", 0, null, null)
+    EntFireByHandle(timer, "AddOutput", "RefireTime 0.1", 0, null, null)
     EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
@@ -206,7 +206,7 @@ function init() {
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
 
     // Load plugin
-    if("getPlayerName" in this) {
+    if("GetPlayerName" in this) {
         printl("=================================")
         printl("Plugin already loaded skipping...")
         printl("=================================")
@@ -382,7 +382,7 @@ try {
                 if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 45) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 45)) {
                     // ON DEATH
                     if(PluginLoaded==true) {
-                        printl("Player: " + getPlayerName(p.entindex()-1) + " has respawned")
+                        printl("Player: " + GetPlayerName(p.entindex()) + " has respawned")
                     }
                     // Show player color again
                     foreach (index, item in PlayerColorCached)  {
@@ -514,7 +514,7 @@ EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, 
 
 // Say join message on HUD
 if (PluginLoaded==true) {
-    JoinMessage <- getPlayerName(PlayerID-1) + " Joined The Game"
+    JoinMessage <- GetPlayerName(PlayerID-1) + " Joined The Game"
 } else {
     JoinMessage <- "Player " + PlayerID + " Joined The Game"
 }
@@ -583,18 +583,6 @@ return
 /////////////////////////////////////
 
 function PostMapLoad() {
-    // Load plugin
-    if (UsePlugin==true) {
-        if (LoadPlugin==true) {
-            printl("Loading plugin... Restarting map")
-            // Load plugin
-            EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
-            // Wait for plugin to load and then restart map
-            EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
-            LoadPlugin <- false
-        }
-    }
-
     AllMapsCode(false, false, true, false)
     // Enable fast download
     SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
@@ -608,6 +596,18 @@ function PostMapLoad() {
 /////////////////////////////////////
 
 function GeneralOneTime() {
+
+    // Load plugin
+    if (UsePlugin==true) {
+        if (LoadPlugin==true) {
+            printl("Loading plugin... Restarting map")
+            // Load plugin
+            EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+            // Wait for plugin to load and then restart map
+            EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
+            LoadPlugin <- false
+        }
+    }
 
     CanClearCache <- true
 
