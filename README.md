@@ -1,4 +1,4 @@
-# ***Created by kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
+# Created by: ***kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
 
 # Mod features
 1. Custom wait screen
