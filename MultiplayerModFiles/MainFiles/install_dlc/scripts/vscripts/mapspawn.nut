@@ -636,6 +636,9 @@ function GeneralOneTime() {
         while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OldPlayerPos.x, OldPlayerPos.y, OldPlayerPos.z-300), 100)) {
             if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl" || ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
                 EntFireByHandle(ent, "setanimation", "open", 0, null, null)
+                if (ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
+                    EntFireByHandle(ent, "setanimation", "item_dropper_open", 0, null, null)
+                }
                 ent.__KeyValueFromString("targetname", "BlueDropperForcedOpenMPMOD")
             }
         }
@@ -648,13 +651,17 @@ function GeneralOneTime() {
         radius <- 100
 
         if (OrangeCacheFailed==true) {
-            radius <- 325
+            radius <- 1025
         }
 
         local ent = null
         while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OrangeOldPlayerPos.x, OrangeOldPlayerPos.y, OrangeOldPlayerPos.z-300), radius)) {
             if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl" || ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
                 EntFireByHandle(ent, "setanimation", "open", 0, null, null)
+                if (ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
+                    EntFireByHandle(ent, "setanimation", "item_dropper_open", 0, null, null)
+                }
+                EntFireByHandle(ent, "setanimation", "item_dropper_open", 0, null, null)
                 ent.__KeyValueFromString("targetname", "OrangeDropperForcedOpenMPMOD")
             }
         }
