@@ -39,6 +39,8 @@ DedicatedServer <- false
 // █▀ █▀▀ ▀█▀ █░█ █▀█   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 // ▄█ ██▄ ░█░ █▄█ █▀▀   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
+BundgeeHookID <- "none"
+BundgeeHookMessage <- "none"
 OrangeCacheFailed <- false
 CanClearCache <- false
 DoneCacheing <- false
@@ -174,9 +176,9 @@ function init() {
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod")
     onscreendisplay.__KeyValueFromString("message", "Waiting For Players...")
-    onscreendisplay.__KeyValueFromString("holdtime", "0.2")
-    onscreendisplay.__KeyValueFromString("fadeout", "0.2")
-    onscreendisplay.__KeyValueFromString("fadein", "0.2")
+    onscreendisplay.__KeyValueFromString("holdtime", "0.02")
+    onscreendisplay.__KeyValueFromString("fadeout", "0.02")
+    onscreendisplay.__KeyValueFromString("fadein", "0.02")
     onscreendisplay.__KeyValueFromString("spawnflags", "1")
     onscreendisplay.__KeyValueFromString("color", "60 200 60")
     onscreendisplay.__KeyValueFromString("channel", "1")
@@ -198,7 +200,7 @@ function init() {
     // Create entity to run loop() every 0.1 seconds
     timer <- Entities.CreateByClassname("logic_timer")
     timer.__KeyValueFromString("targetname", "timer")
-    EntFireByHandle(timer, "AddOutput", "RefireTime 0.1", 0, null, null)
+    EntFireByHandle(timer, "AddOutput", "RefireTime 0.01", 0, null, null)
     EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
@@ -275,6 +277,17 @@ function CacheModel(ModelName) {
     }
 }
 
+//Find Player By Index
+
+function FindByIndex(id)  {
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        if (ent.entindex()==id) {
+            return ent
+        }
+    }
+}
+
 //-----------------------------------
 // Multiplayer support code
 //-----------------------------------
@@ -318,7 +331,7 @@ try {
 
         // Cache original spawn position
             if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
-                // OldPlayerPos = Blue's inital spawn position
+                // OldPlayerPos = the blues inital spawn position
                 OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
                 OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
                 cacheoriginalplayerposition <- 1
@@ -474,6 +487,17 @@ try {
         if (DevMode==true) {
 
         }
+
+
+
+        // █▀▀ █░█ ▄▀█ ▀█▀   █▀▀ █▀█ █▀▄▀█ █▀▄▀█ ▄▀█ █▄░█ █▀▄ █▀
+        // █▄▄ █▀█ █▀█ ░█░   █▄▄ █▄█ █░▀░█ █░▀░█ █▀█ █░▀█ █▄▀ ▄█
+
+        ChatCommands()
+
+        if (PLEASE == true) {
+            printl("REEEEEEEEEEEEEEEEEEEEE")
+        }
     }
 
 //---------------------------------------------------------------//
@@ -488,17 +512,34 @@ try {
 // █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-////////////////////////////////////////////
-// Runs When A Player Sends A Chat Message//
-////////////////////////////////////////////
-
-
-function ChatHook(id, message) {
-    printl("say id is: " + id + " and message is: " + message)
-}
+////////////////////////////////////////////////////////////////////
+// Runs When A Player Sends A Chat Message (BUGGY NO ENTITYS WORK)//
+////////////////////////////////////////////////////////////////////
 
 if (PluginLoaded==true) {
     AddChatCallback("ChatHook")
+}
+
+PLEASE <- false
+
+function ChatHook(id, message) {
+    BundgeeHookID <- id
+    BundgeeHookMessage <- message
+    PLEASE <- true
+}
+
+function ChatCommands() {
+    if (BundgeeHookID != "none" && BundgeeHookMessage != "none") {
+        //Setup Local Varibles
+        local message = BundgeeHookMessage.slice(1)
+        local id = BundgeeHookID
+
+        printl("TEST")
+
+        //Reset Bundgee's
+        BundgeeHookID <- "none"
+        BundgeeHookMessage <- "none"
+    }
 }
 
 //////////////////////////////
