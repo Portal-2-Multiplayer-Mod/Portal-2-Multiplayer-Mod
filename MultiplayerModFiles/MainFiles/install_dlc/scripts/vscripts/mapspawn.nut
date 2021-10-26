@@ -79,7 +79,7 @@ if (UsePlugin==true) {
     PluginLoaded <- true
 }
 
-// add names to credits
+// Add names to credits
 MPMCoopCreditNames <- [
 "",
 "",
@@ -216,7 +216,7 @@ function init() {
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-//Teleport players within a distance
+// Teleport players within a distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
     local ent = null
     while(ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis)) {
@@ -671,7 +671,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
         //## GELOCITY 2 INSTANT RUN##//
         try {
             if (GetMapName().slice(28, 50) == "mp_coop_gelocity_2_v01") {
-                // set the gelocity 2 map
+                // Set the gelocity 2 map
                 local ent = null
                 while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
                     ent.Destroy() // 20 entities removed
