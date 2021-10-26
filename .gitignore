@@ -32,3 +32,4 @@ bee2/
 *.mdmp
 cfg/
 vpk_override/
+*.so
