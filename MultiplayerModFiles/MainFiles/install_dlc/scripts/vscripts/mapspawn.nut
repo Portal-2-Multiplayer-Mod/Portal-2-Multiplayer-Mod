@@ -416,7 +416,7 @@ try {
                 // Show player color
                 currentnametag <- p.GetRootMoveParent().entindex().tostring()
                 if (CanTag==true) {
-                        RGB <- "255 255 255"; COLORMESSAGE <- "Random Color";
+                        RGB <- "255 255 255"; COLORMESSAGE <- "Random color";
                         switch (p.GetRootMoveParent().entindex()) {
                             // These are the colors of the players
                             case 1 : RGB <- "255 255 255"; COLORMESSAGE <- "White"     ; break;
@@ -437,7 +437,7 @@ try {
                             case 16: RGB <- "0 75 75"    ; COLORMESSAGE <- "Dark Aqua" ; break;
                         }
                         try {
-                        Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("message", "Player Color: " + COLORMESSAGE)
+                        Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("message", "Player color: " + COLORMESSAGE)
                         Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("color", RGB)
                         } catch(exception) {
 
@@ -523,7 +523,6 @@ PlayerID <- PlayerID.entindex()
 SendToConsole("sv_timeout 3")
 SendToConsole("gameinstructor_enable 1")
 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
-// EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
@@ -850,7 +849,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
             EntFireByHandle(ent, "setanimation", AnimationsPB[RandomAnimation], 0, null, null)
         }
 
-        // Replace males with Atlass
+        // Replace males with Atlases
         function CreditsSetModelAL(ent) {
             FixCreditsCameras()
 
@@ -1162,9 +1161,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
                 // Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
             } catch(exception) {}
 
-            // Remove useless entities so that
-            // the entity limit does not crash
-            // the game
+            // Remove useless entities so that the entity limit does not crash the game
 
             // Remove func_portal_bumper's from the map
             local ent = null
@@ -1223,7 +1220,7 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 
         //## MP_COOP_SEPARATION_1 ONETIME ##//
         if (GetMapName() == "mp_coop_separation_1") {
-                EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopMapStart()", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopMapStart()", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(1)", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(2)", 0, null, null)
 
@@ -1251,10 +1248,10 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
     }
 
     ///////////////
-    // Post Init //
+    // Post init //
     ///////////////
     if (AMCPostInit==true) {
-        // Cache Props
+        // Cache props
         CreatePropsForLevel(true, false, false)
     }
 }
