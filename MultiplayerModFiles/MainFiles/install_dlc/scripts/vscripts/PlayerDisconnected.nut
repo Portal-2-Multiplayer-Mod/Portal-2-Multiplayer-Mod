@@ -15,7 +15,7 @@ try {
     disconnectmessagedisplay.__KeyValueFromString("spawnflags", "1")
     disconnectmessagedisplay.__KeyValueFromString("color", "140 40 40")
     disconnectmessagedisplay.__KeyValueFromString("channel", "3")
-    disconnectmessagedisplay.__KeyValueFromString("message", "Player Disconnected")
+    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected")
     EntFireByHandle(disconnectmessagedisplay, "display", "", 0.0, null, null)
     //disconnectmessagedisplay.__KeyValueFromString("x", "0.1")
     //disconnectmessagedisplay.__KeyValueFromString("y", "0.1")
