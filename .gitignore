@@ -32,3 +32,6 @@ bee2/
 *.mdmp
 cfg/
 vpk_override/
+*.so
+!MultiplayerModFiles/
+!WebFiles/FastDL/portal2/
