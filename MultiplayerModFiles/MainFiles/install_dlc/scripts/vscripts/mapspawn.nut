@@ -588,7 +588,7 @@ function PostMapLoad() {
     AllMapsCode(false, false, true, false)
     // Enable fast download
     SendToConsole("sv_downloadurl www.github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2")
-    SendToConsole("svlowdownload 1")
+    SendToConsole("sv_allowdownload 1")
     SendToConsole("sv_allowupload 1")
     SendToConsole("max_filesize 0")
 }
