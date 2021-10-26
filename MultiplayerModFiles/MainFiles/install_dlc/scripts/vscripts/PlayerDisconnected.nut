@@ -1,13 +1,13 @@
 try {
     if (dismessage) {
-        printl("Disconnect Message Entity Already Exists Handling");
+        printl("Disconnect message entity already exists handling");
     }
 } catch(exception) {
     disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
-    printl("Created Disconnect Message Entity");
+    printl("Created disconnect message entity");
     dismessage <- true
-} // disconnect hud manager
-// create a join message entity
+} // Disconnect hud manager
+// Create a join message entity
     disconnectmessagedisplay.__KeyValueFromString("targetname", "disconnectmessagedisplaympmod")
     disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
     disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
