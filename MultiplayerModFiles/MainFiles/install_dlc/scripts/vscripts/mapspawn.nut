@@ -318,7 +318,7 @@ try {
 
         // Cache original spawn position
             if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
-                // OldPlayerPos = the blues inital spawn position
+                // OldPlayerPos = Blue's inital spawn position
                 OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
                 OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
                 cacheoriginalplayerposition <- 1
