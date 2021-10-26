@@ -1256,9 +1256,9 @@ function AllMapsCode(AMCLoop, AMCOneTimeRun, AMCPostInit, AMCInstantRun) {
 // █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
 // ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
 
-//////////////////////////
-//SINGLEPLAYER FUNCTIONS//
-//////////////////////////
+////////////////////////////
+// SINGLEPLAYER FUNCTIONS //
+////////////////////////////
 
     function disablewheatleyplayerpickup() {
         printl("Player Picked Up Wheatley. Disabling Pickup!")
