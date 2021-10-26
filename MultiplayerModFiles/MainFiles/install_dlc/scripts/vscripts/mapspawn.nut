@@ -649,7 +649,7 @@ function GeneralOneTime() {
         radius <- 100
 
         if (OrangeCacheFailed==true) {
-            radius <- 225
+            radius <- 325
         }
 
         local ent = null
