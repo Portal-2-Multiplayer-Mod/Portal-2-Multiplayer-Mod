@@ -197,7 +197,7 @@ function init() {
     // Create entity to run loop() every 0.1 seconds
     timer <- Entities.CreateByClassname("logic_timer")
     timer.__KeyValueFromString("targetname", "timer")
-    EntFireByHandle(timer, "AddOutput", "RefireTime 0.1", 0, null, null)
+    EntFireByHandle(timer, "AddOutput", "RefireTime 0.01", 0, null, null)
     EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
@@ -615,9 +615,6 @@ function GeneralOneTime() {
 
     SendToConsole("hud_saytext_time 12")
 
-    // Inform user that we changed hud_saytext_time to 12
-    SendToConsole("echo Changed hud saytext time for now")
-
     // Cache orange players original position
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
@@ -637,7 +634,7 @@ function GeneralOneTime() {
     try {
         local ent = null
         while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OldPlayerPos.x, OldPlayerPos.y, OldPlayerPos.z-300), 100)) {
-            if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
+            if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl" || ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
                 EntFireByHandle(ent, "setanimation", "open", 0, null, null)
                 ent.__KeyValueFromString("targetname", "BlueDropperForcedOpenMPMOD")
             }
@@ -651,12 +648,12 @@ function GeneralOneTime() {
         radius <- 100
 
         if (OrangeCacheFailed==true) {
-            radius <- 225
+            radius <- 325
         }
 
         local ent = null
         while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OrangeOldPlayerPos.x, OrangeOldPlayerPos.y, OrangeOldPlayerPos.z-300), radius)) {
-            if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
+            if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl" || ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
                 EntFireByHandle(ent, "setanimation", "open", 0, null, null)
                 ent.__KeyValueFromString("targetname", "OrangeDropperForcedOpenMPMOD")
             }
@@ -665,6 +662,7 @@ function GeneralOneTime() {
         printl("Orange dropper not found")
     }
     radius <- null
+
 
     // Create props after cache
     CreatePropsForLevel(false, true, false)
