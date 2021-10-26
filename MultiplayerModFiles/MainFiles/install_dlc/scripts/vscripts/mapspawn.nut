@@ -464,7 +464,7 @@ try {
             SingleplayerSupport(false, true, false)
         }
 
-        // Make every clients' collision more elastic
+        // Make every clients' collision elastic
         //local j = "solid "
         local k = "CollisionGroup "
 
@@ -519,7 +519,7 @@ PlayerID <- PlayerID.entindex()
 //     // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
 // }
 
-// Set cvars on joining players client
+// Set cvars on joining players' client
 SendToConsole("sv_timeout 3")
 SendToConsole("gameinstructor_enable 1")
 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
@@ -588,7 +588,7 @@ if (p.GetTeam() == 2) {
     }
 }
 
-// Print the players team
+// Print the players' team
 printl("Player: " + PlayerID + " is on team " + p.GetTeam())
 
 return
