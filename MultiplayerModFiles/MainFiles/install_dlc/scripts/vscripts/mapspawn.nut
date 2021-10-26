@@ -39,7 +39,8 @@ DedicatedServer <- false
 // █▀ █▀▀ ▀█▀ █░█ █▀█   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 // ▄█ ██▄ ░█░ █▄█ █▀▀   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
-canclearcache <- false
+OrangeCacheFailed <- false
+CanClearCache <- false
 DoneCacheing <- false
 CachedModels <- []
 IsInSpawnZone <- []
@@ -152,6 +153,21 @@ function init() {
         IsSingleplayerMap <- true
         SingleplayerSupport(true, false, false)
     }
+
+    // Create an entity to display player color at the bottom left of every clients' screen
+    colordisplay <- Entities.CreateByClassname("game_text")
+        // Set the entity's targetname to colordisplay + player's index
+    colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
+        // Set the entity's origin to the bottom left of the screen
+    colordisplay.__KeyValueFromString("x", "0")
+    colordisplay.__KeyValueFromString("y", "1")
+        // Set the entity's holdtime to infinity
+    colordisplay.__KeyValueFromString("holdtime", "100000")
+        // Set the fade time to none
+    colordisplay.__KeyValueFromString("fadeout", "0")
+    colordisplay.__KeyValueFromString("fadein", "0")
+        // Set the channel to top
+    colordisplay.__KeyValueFromString("channel", "0")
 
     // Create an on screen text message entity
     onscreendisplay <- Entities.CreateByClassname("game_text")
@@ -301,6 +317,7 @@ try {
             if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
                 // OldPlayerPos = the blues inital spawn position
                 OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+                OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
                 cacheoriginalplayerposition <- 1
             }
 
@@ -335,7 +352,7 @@ try {
                 }
             }
         }
-        if (canclearcache==true) {
+        if (CanClearCache==true) {
             foreach (index, CustomGameModel in CachedModels)  {
                 CachedModels.remove(index)
             }
@@ -468,41 +485,29 @@ try {
 // █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
-//////////////////////////////
-// Runs When A Player Joins //
-//////////////////////////////
+////////////////////////////////
+// 𝗥𝘂𝗻𝘀 𝗪𝗵𝗲𝗻 𝗔 𝗣𝗹𝗮𝘆𝗲𝗿 𝗝𝗼𝗶𝗻𝘀 //
+////////////////////////////////
 
 function OnPlayerJoin(p, script_scope) {
 // Get player's index and store it
 PlayerID <- p.GetRootMoveParent()
 PlayerID <- PlayerID.entindex()
 
-// Set viewmodel targetnames so we can tell them apart
-local ent = null
-while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
-    EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
-    printl("renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
-    // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
-    // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
-}
+// // Set viewmodel targetnames so we can tell them apart
+// local ent = null
+// while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
+//     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
+//     printl("renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
+//     // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
+//     // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
+// }
 
-// Load plugin
-if (UsePlugin==true) {
-    if (LoadPlugin==true) {
-        printl("Loading Plugin... Restarting Map")
-        // Load plugin
-        EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
-        // Wait for plugin to load and then restart map
-        EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
-        LoadPlugin <- false
-    }
-}
-
-// Set some cvars on every client
+// Set cvars on joining players client
 SendToConsole("sv_timeout 3")
 SendToConsole("gameinstructor_enable 1")
 EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
-EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
+// EntFireByHandle(clientcommand, "Command", "bind tab +score", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
@@ -520,9 +525,8 @@ EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
 if (PlayerID >= 2) {
     onscreendisplay.__KeyValueFromString("y", "0.075")
 }
-// Assign every client a targetname keyvalue
+// Assign every new targetname to the player after blue and red are used
 if (PlayerID >= 3) {
-
     p.__KeyValueFromString("targetname", "player" + PlayerID)
 }
 
@@ -530,21 +534,6 @@ if (PlayerID >= 3) {
 if (PlayerID != 1) {
     R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
 }
-
-// Create an entity to display player color at the bottom left of every clients' screen
-colordisplay <- Entities.CreateByClassname("game_text")
-    // Set the entity's targetname to colordisplay + player's index
-colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
-    // Set the entity's origin to the bottom left of the screen
-colordisplay.__KeyValueFromString("x", "0")
-colordisplay.__KeyValueFromString("y", "1")
-    // Set the entity's holdtime to infinity
-colordisplay.__KeyValueFromString("holdtime", "100000")
-    // Set the fade time to none
-colordisplay.__KeyValueFromString("fadeout", "0")
-colordisplay.__KeyValueFromString("fadein", "0")
-    // Set the channel to top
-colordisplay.__KeyValueFromString("channel", "0")
 
 // Set preset colors for up to 16 clients
 switch (PlayerID) {
@@ -571,18 +560,41 @@ script_scope.Colored <- true
 EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
 
 // Run general map code after a player loads into the game
-if (PlayerID==1) {
+if (PlayerID == 1) {
     PostMapLoad()
 }
+
+// If the player is the first player to join, Fix OrangeOldPlayerPos
+if (p.GetTeam() == 2) {
+    if (OrangeCacheFailed==true) {
+        OrangeOldPlayerPos <- p.GetOrigin()
+        OrangeCacheFailed <- false
+    }
+}
+
+// Print the players team
+printl("Player " + PlayerID + " is on team " + p.GetTeam())
 
 return
 }
 
-/////////////////////////////////////
-// POST-MAP LOADING FUNCTIONS HERE //
-/////////////////////////////////////
+////////////////////////////////////////////
+// 𝗣𝗢𝗦𝗧 𝗠𝗔𝗣 𝗟𝗢𝗔𝗗𝗜𝗡𝗚 𝗙𝗨𝗡𝗖𝗧𝗜𝗢𝗡𝗦 𝗛𝗘𝗥𝗘 //
+////////////////////////////////////////////
 
 function PostMapLoad() {
+    // Load plugin
+    if (UsePlugin==true) {
+        if (LoadPlugin==true) {
+            printl("Loading Plugin... Restarting Map")
+            // Load plugin
+            EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+            // Wait for plugin to load and then restart map
+            EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
+            LoadPlugin <- false
+        }
+    }
+
     AllMapsCode(false, false, true, false)
     // Enable fast download
     SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
@@ -591,13 +603,13 @@ function PostMapLoad() {
     SendToConsole("max_filesize 0")
 }
 
-////////////////////////////////////
-// Runs once on fist global spawn //
-////////////////////////////////////
+/////////////////////////////////////
+// 𝗥𝘂𝗻𝘀 𝗼𝗻𝗰𝗲 𝗼𝗻 𝗳𝗶𝘀𝘁 𝗴𝗹𝗼𝗯𝗮𝗹 𝘀𝗽𝗮𝘄𝗻 //
+/////////////////////////////////////
 
 function GeneralOneTime() {
 
-    canclearcache <- true
+    CanClearCache <- true
 
     HasSpawned <- true
 
@@ -606,19 +618,53 @@ function GeneralOneTime() {
     // Inform user that we changed hud_saytext_time to 12
     SendToConsole("echo Changed Hud Saytext Time For Now")
 
+    // Cache orange players original position
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.GetTeam()==2) {
             OrangeOldPlayerPos <- p.GetOrigin()
         }
     }
-
     try {
         if (OrangeOldPlayerPos) { }
     } catch(exeption) {
         printl("OrangeOldPlayerPos Not Set (Blue Probably Moved Before Orange Could Load in) Setting OrangeOldPlayerPos To BlueOldPlayerPos")
         OrangeOldPlayerPos <- OldPlayerPos
+        OrangeCacheFailed <- true
     }
+
+    //Force Open The Blue Player Droppers
+    try {
+        local ent = null
+        while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OldPlayerPos.x, OldPlayerPos.y, OldPlayerPos.z-300), 100)) {
+            if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
+                EntFireByHandle(ent, "setanimation", "open", 0, null, null)
+                ent.__KeyValueFromString("targetname", "BlueDropperForcedOpenMPMOD")
+            }
+        }
+    } catch(exeption) {
+        printl("Blue Dropper Not Found")
+    }
+
+    //Force Open The Orange Player Droppers
+    try {
+        radius <- 100
+
+        if (OrangeCacheFailed==true) {
+            radius <- 225
+        }
+
+        local ent = null
+        while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OrangeOldPlayerPos.x, OrangeOldPlayerPos.y, OrangeOldPlayerPos.z-300), radius)) {
+            if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
+                EntFireByHandle(ent, "setanimation", "open", 0, null, null)
+                ent.__KeyValueFromString("targetname", "OrangeDropperForcedOpenMPMOD")
+            }
+        }
+    } catch(exeption) {
+        printl("Orange Dropper Not Found")
+    }
+    radius <- null
 
     // Create props after cache
     CreatePropsForLevel(false, true, false)
