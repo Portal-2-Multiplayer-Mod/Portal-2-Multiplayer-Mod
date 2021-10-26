@@ -3,7 +3,7 @@ bin/
 platform/
 portal2_dlc*/
 *.dll
-# .vscode/
+.vscode/
 sdk_content/
 Soundtrack/
 update/
@@ -17,3 +17,14 @@ installscript_osx.vdf
 thirdpartylegalnotices.doc
 game_actions_620.vdf
 fontconfig/
+crash_reports/
+portal2_sixense/
+client_classes.txt
+game.cvars
+portal2.cmd
+portal2_sixense.cmd
+sdk_tools/
+sixense_deriv_log_file.txt
+sixense_log_file.txt
+srctools.vdf
+srctools_sndscript_data.vdf
