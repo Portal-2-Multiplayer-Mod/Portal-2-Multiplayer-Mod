@@ -33,3 +33,5 @@ bee2/
 cfg/
 vpk_override/
 *.so
+!MultiplayerModFiles/
+!WebFiles/
