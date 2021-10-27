@@ -2383,7 +2383,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop==true) {
 
-            // Elevator changelevel
+            // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
                 SendToConsole("commentary 1")
