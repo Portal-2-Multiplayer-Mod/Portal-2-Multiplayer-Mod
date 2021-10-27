@@ -307,8 +307,11 @@ else:
     try:
         os.rename(owd + "/bin/linux32/engine.so", owd + "\\bin\linux32\disabledengine.so")
     except:
-        print("Failed to rename engine.so trying to rename engine.dll")
-        os.rename(owd + "/bin/engine.dll", owd + "/bin/disabledengine.dll")
+        try:
+            print("Failed to rename engine.so trying to rename engine.dll")
+            os.rename(owd + "/bin/engine.dll", owd + "/bin/disabledengine.dll")
+        except:
+            print("Failed to rename engine.dll")
     os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
     try:
         os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
