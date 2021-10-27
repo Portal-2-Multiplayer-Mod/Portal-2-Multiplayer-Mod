@@ -7,6 +7,9 @@ import time
 # Is on Windows
 iow = False
 
+# Is on proton
+IsOnProton = False
+
 if os.name == 'nt':
     print("(Probably running Windows)")
     iow = True
@@ -238,6 +241,7 @@ else:
         f2.close()
         print("Patched engine.so")
     except:
+        IsOnProton = True
         try:
             print("Failed to open engine.so trying to patch server.dll")
             # Open engine.dll into binary
@@ -256,6 +260,7 @@ else:
             print("Patched engine.dll")
         except:
             print("Failed to patch engine.dll")
+            IsOnProton = False
 
 ##################################
 #         END OF PATCHING        #
@@ -294,7 +299,8 @@ else:
 
     # Edit mapspawn file
         # Change UsePlugin <- false to true if running Linux
-    data = data.replace("UsePlugin <- false", "UsePlugin <- true")
+    if (IsOnProton == False):
+        data = data.replace("UsePlugin <- false", "UsePlugin <- true")
 
     # Remove old mapspawn.nut file
     os.remove(owd + dlcname + "/scripts/vscripts/mapspawn.nut")
@@ -400,12 +406,14 @@ if (iow):
     # Wait for portal2.exe to close
     RemoveMultiplayerFiles()
 else:
-    time.sleep(10)
+    time.sleep(2)
     while True:
         # Check if any Portal 2 process is running
         if checkIfProcessRunning('ortal'):
             pass
         else:
+            if (IsOnProton==True):
+                time.sleep(12)
             print('Portal 2 not found closing')
             print("=======Game Closed=======")
             RemoveMultiplayerFiles()
