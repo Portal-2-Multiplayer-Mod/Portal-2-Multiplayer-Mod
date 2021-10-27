@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import mmap
 import time
+import psutil
 
 # Is on Windows
 iow = False
