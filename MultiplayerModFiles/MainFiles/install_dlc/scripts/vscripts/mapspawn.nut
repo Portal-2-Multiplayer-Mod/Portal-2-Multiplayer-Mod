@@ -1714,48 +1714,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
     }
 
-    //## SP_A2_LASER_INTRO ##//
-    if (GetMapName() == "sp_a2_laser_intro") {
-        if (SSInstantRun == true) {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-            Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
-        }
-
-        if (SSLoop == true) {
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 45)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_laser_stairs")
-            }
-        }
-    }
-
-    //## SP_A2_LASER_STAIRS ##//
-    if (GetMapName() == "sp_a2_laser_stairs") {
-        if (SSInstantRun == true) {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-            Entities.FindByName(null, "door_1-close_door_rl").Destroy()
-        }
-
-        if (SSLoop) {
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 45)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_dual_lasers")
-            }
-        }
-    }
-
     //## SP_A2_INTRO ##//
     if (GetMapName()=="sp_a2_intro") {
 
@@ -1853,6 +1811,50 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    //## SP_A2_LASER_INTRO ##//
+    if (GetMapName() == "sp_a2_laser_intro") {
+        if (SSInstantRun == true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
+        }
+
+        if (SSOneTimeRun==true) {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+
+        if (SSLoop == true) {
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_laser_stairs")
+            }
+        }
+    }
+
+    //## SP_A2_LASER_STAIRS ##//
+    if (GetMapName() == "sp_a2_laser_stairs") {
+        if (SSInstantRun == true) {
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "door_1-close_door_rl").Destroy()
+        }
+
+        if (SSLoop) {
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 45)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_dual_lasers")
             }
         }
     }
