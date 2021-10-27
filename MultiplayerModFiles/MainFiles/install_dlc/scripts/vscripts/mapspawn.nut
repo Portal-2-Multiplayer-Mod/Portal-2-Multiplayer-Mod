@@ -379,7 +379,7 @@ try {
         if (HasSpawned==true) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                if (!Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 45) && !Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 45))  {
+                if (!Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 50) && !Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 50))  {
                     foreach (index, item in IsInSpawnZone)  {
                         if (item == p.GetRootMoveParent().entindex().tostring())  {
                             IsInSpawnZone.remove(index)
@@ -395,7 +395,7 @@ try {
             }
 
             if (ContinueDeathCode==true) {
-                if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 45) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 45)) {
+                if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 50) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 50)) {
                     // ON DEATH
                     if(PluginLoaded==true) {
                         printl("Player: " + GetPlayerName(p.entindex()) + " has respawned")
@@ -1421,7 +1421,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             }
 
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a1_intro3")
             }
@@ -1455,7 +1455,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop) {
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 50)) {
             SendToConsole("commentary 1")
             SendToConsole("changelevel sp_a1_intro4")
             }
@@ -1514,7 +1514,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 EntFire("projected_texture_03", "TurnOn", "", 0, null)
             }
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2151, -527, -499), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2151, -527, -499), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a1_intro5")
             }
@@ -1831,7 +1831,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
         if (SSLoop == true) {
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_stairs")
             }
@@ -1852,7 +1852,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
 
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_dual_lasers")
             }
@@ -1874,7 +1874,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1063, 210, 277), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1063, 210, 277), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_over_goo")
             }
@@ -1899,7 +1899,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_catapult_intro")
             }
@@ -1925,7 +1925,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-80, -2106, -805), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-80, -2106, -805), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_trust_fling")
             }
@@ -1950,7 +1950,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1151, 2087, -319), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1151, 2087, -319), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_pit_flings")
             }
@@ -1984,7 +1984,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-893, 1223, -362), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-893, 1223, -362), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_fizzler_intro")
             }
@@ -2010,7 +2010,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_sphere_peek")
             }
@@ -2040,7 +2040,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-544, 573, 254), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-544, 573, 254), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_ricochet")
             }
@@ -2066,7 +2066,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(4478, 1158, -674), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(4478, 1158, -674), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bridge_intro")
             }
@@ -2096,7 +2096,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(0, 1255, -197), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(0, 1255, -197), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bridge_the_gap")
             }
@@ -2128,7 +2128,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(321, 1374, 661), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(321, 1374, 661), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_turret_intro")
             }
@@ -2195,7 +2195,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-318, -1790, -167), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-318, -1790, -167), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_turret_blocker")
             }
@@ -2217,7 +2217,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -165), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -165), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_vs_turret")
             }
@@ -2243,7 +2243,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1075, 382, 92), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1075, 382, 92), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_pull_the_rug")
             }
@@ -2270,7 +2270,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(64, 1311, -100), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(64, 1311, -100), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_column_blocker")
             }
@@ -2307,7 +2307,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1469, 265, -2870), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1469, 265, -2870), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_chaining")
             }
@@ -2333,7 +2333,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1500, 352, 87), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1500, 352, 87), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_triple_laser")
             }
@@ -2360,7 +2360,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -173), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -173), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bts1")
             }
@@ -2385,7 +2385,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
@@ -2417,7 +2417,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
@@ -2436,7 +2436,7 @@ Entities.FindByName(null, "NAME").Destroy()
 Entities.FindByClassnameNearest("CLASS", Vector(1, 2, 3), 1).Destroy()
 
 local p = null
-while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 45)) {
+while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
     SendToConsole("commentary 1")
     SendToConsole("changelevel LEVELNAME")
 }
