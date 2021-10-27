@@ -3,41 +3,47 @@ import shutil
 import subprocess
 import mmap
 import time
-# pip install psutil if psutil doesnt exist
-try:
-    import psutil
-except:
-    try:
-        if(not os.path.exists("psutil")):
-            print("psutil not found, installing...")
-            os.system("pip install psutil")
-    except:
-        print("failed to install psutil")
-
 
 #Is On Windows
 iow = False
-
-NumList = []
-lastnumber = 0
-owd = os.getcwd()
-
-def checkIfProcessRunning(processName):
-#Iterate over the all the running process
-    for proc in psutil.process_iter():
-        try:
-            # Check if process name contains the given name string.
-            if processName.lower() in proc.name().lower():
-                return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
-    return False
 
 if os.name == 'nt':
     print("(Probably Running Windows)")
     iow = True
 else:
     print("(Probably On Linux)")
+
+# pip install psutil if psutil doesnt exist
+if (iow):
+    print("Skipped psutil")
+else:
+    try:
+        import psutil
+    except:
+        try:
+            if(not os.path.exists("psutil")):
+                print("psutil not found, installing...")
+                os.system("pip install psutil")
+        except:
+            print("failed to install psutil")
+
+NumList = []
+lastnumber = 0
+owd = os.getcwd()
+
+if (iow):
+    print("Skipped psutil function")
+else:
+    def checkIfProcessRunning(processName):
+    #Iterate over the all the running process
+        for proc in psutil.process_iter():
+            try:
+                # Check if process name contains the given name string.
+                if processName.lower() in proc.name().lower():
+                    return True
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                pass
+        return False
 
 #get current directory
 if (iow):
@@ -362,16 +368,20 @@ print("=========================================================================
 print("WARNING: DO NOT CLOSE THIS PYTHON WINDOW!!! WAITING FOR PORTAL 2 TO CLOSE")
 print("=========================================================================")
 time.sleep(2)
-while True:
-    #check if any portal 2 process is running
-    if checkIfProcessRunning('ortal'):
-        pass
-    else:
-        print('Portal 2 Not Found Closing')
-        print("=======Game Closed=======")
-        RemoveMultiplayerFiles()
-        break
-    time.sleep(1)
+if (iow):
+    # wait for portal2.exe to close
+    print("Waiting for portal2.exe to close")
+else:
+    while True:
+        #check if any portal 2 process is running
+        if checkIfProcessRunning('ortal'):
+            RemoveMultiplayerFiles()
+        else:
+            print('Portal 2 Not Found Closing')
+            print("=======Game Closed=======")
+            RemoveMultiplayerFiles()
+            break
+        time.sleep(1)
 
 
 print("")
