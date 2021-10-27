@@ -244,8 +244,9 @@ else:
     shutil.copytree(owd + "/MultiplayerModFiles/MainFiles/install_dlc", owd + dlcname)
 print("Copied \MultiplayerModFiles to " + dlcname)
 
-# # edit mapspawn file in the new dlc
-# if (iow):
+# edit mapspawn file in the new dlc
+if (iow):
+    print("Skipped map spawn editing")
 #     # if on windows
 #     f = open(owd + dlcname + "\scripts\\vscripts\mapspawn.nut", 'r')
 #     data = f.read()
@@ -260,30 +261,21 @@ print("Copied \MultiplayerModFiles to " + dlcname)
 #     f2 = open(owd + dlcname + "\scripts\\vscripts\mapspawn.nut", 'w')
 #     f2.write(data)
 #     f2.close()
-# else:
-#     # if on linux
-#     f = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'r')
-#     data = f.read()
-#     f.close()
+else:
+    # if on linux
+    f = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'r')
+    data = f.read()
+    f.close()
 
-#     #edit mapspawn file
-#         # change UsePlugin <- false to true if on linux
-#     data = data.replace("UsePlugin <- false", "UsePlugin <- true")
+    #edit mapspawn file
+        # change UsePlugin <- false to true if on linux
+    data = data.replace("UsePlugin <- false", "UsePlugin <- true")
 
-#     # remove old mapspawn file
-#     os.remove(owd + dlcname + "/scripts/vscripts/mapspawn.nut")
-#     f2 = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'w')
-#     f2.write(data)
-#     f2.close()
-
-try:
-    #copy multiplayermod engine files into gamedir
-    if (iow):
-        shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\gamedir", owd, dirs_exist_ok=True)
-
-    print("Copied \MultiplayerModFiles\MainFiles\gamedir\MultiplayerModFiles to \Portal 2")
-except:
-    print("gamedir Copy Failed")
+    # remove old mapspawn file
+    os.remove(owd + dlcname + "/scripts/vscripts/mapspawn.nut")
+    f2 = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'w')
+    f2.write(data)
+    f2.close()
 
 #rename server.dll to disabledserver.dll so our newly patched server.dll runs
 if (iow):
