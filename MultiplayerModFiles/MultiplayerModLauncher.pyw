@@ -244,37 +244,37 @@ else:
     shutil.copytree(owd + "/MultiplayerModFiles/MainFiles/install_dlc", owd + dlcname)
 print("Copied \MultiplayerModFiles to " + dlcname)
 
-# edit mapspawn file in the new dlc
-if (iow):
-    # if on windows
-    f = open(owd + dlcname + "\scripts\\vscripts\mapspawn.nut", 'r')
-    data = f.read()
-    f.close()
+# # edit mapspawn file in the new dlc
+# if (iow):
+#     # if on windows
+#     f = open(owd + dlcname + "\scripts\\vscripts\mapspawn.nut", 'r')
+#     data = f.read()
+#     f.close()
 
-    #edit mapspawn file
-        # change UsePlugin <- true to false if on windows
-    data = data.replace("UsePlugin <- true", "UsePlugin <- false")
+#     #edit mapspawn file
+#         # change UsePlugin <- true to false if on windows
+#     data = data.replace("UsePlugin <- true", "UsePlugin <- false")
 
-    # remove old mapspawn file
-    os.remove(owd + dlcname + "\scripts\\vscripts\mapspawn.nut")
-    f2 = open(owd + dlcname + "\scripts\\vscripts\mapspawn.nut", 'w')
-    f2.write(data)
-    f2.close()
-else:
-    # if on linux
-    f = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'r')
-    data = f.read()
-    f.close()
+#     # remove old mapspawn file
+#     os.remove(owd + dlcname + "\scripts\\vscripts\mapspawn.nut")
+#     f2 = open(owd + dlcname + "\scripts\\vscripts\mapspawn.nut", 'w')
+#     f2.write(data)
+#     f2.close()
+# else:
+#     # if on linux
+#     f = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'r')
+#     data = f.read()
+#     f.close()
 
-    #edit mapspawn file
-        # change UsePlugin <- false to true if on linux
-    data = data.replace("UsePlugin <- false", "UsePlugin <- true")
+#     #edit mapspawn file
+#         # change UsePlugin <- false to true if on linux
+#     data = data.replace("UsePlugin <- false", "UsePlugin <- true")
 
-    # remove old mapspawn file
-    os.remove(owd + dlcname + "/scripts/vscripts/mapspawn.nut")
-    f2 = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'w')
-    f2.write(data)
-    f2.close()
+#     # remove old mapspawn file
+#     os.remove(owd + dlcname + "/scripts/vscripts/mapspawn.nut")
+#     f2 = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'w')
+#     f2.write(data)
+#     f2.close()
 
 try:
     #copy multiplayermod engine files into gamedir
