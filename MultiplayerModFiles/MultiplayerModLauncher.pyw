@@ -7,7 +7,7 @@ import time
 # Is on Windows
 iow = False
 
-# Is on proton
+# Is on Proton
 IsOnProton = False
 
 if os.name == 'nt':
