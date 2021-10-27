@@ -1,4 +1,4 @@
-# Created by: ***kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
+# Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, and Wolƒe Strider Shoσter***
 
 # Mod features
 1. Custom wait screen
@@ -11,16 +11,18 @@
 8. Full cooperative campaign support
 9. Support for Linux
 10. Support for Windows 11, 10, 8.1, 8, 7, Vista, and XP
-11. Full singleplayer campaign support (Coming soon!)
-12. Nametags (Coming soon!)
-13. Player specific colored portals (Coming soon!)
+
+# Planned features
+1. Full singleplayer campaign support (Coming soon!)
+2. Nametags (Coming soon!)
+3. Player specific colored portals (Coming soon!)
 
 # Installation & use
 
 - Latest version download: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
 - Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
   - ***The Steam guide goes over everything you need to know in order to get the mod working, but just in case, we have also prepared a supplementary video if you get stuck.***
-- Video: https://www.youtube.com/watch?v=AOh6qela-uI&t=18s
+- Video: https://www.youtube.com/watch?v=AOh6qela-uI
 
 # Discord
 
