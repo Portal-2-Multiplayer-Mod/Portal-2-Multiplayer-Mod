@@ -2,7 +2,7 @@
 //                                                             COPYRIGHT                                                                //
 //                                                 2021 Portal 2: Multiplayer Mod Team                                                  //
 //                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                  //
-// (in the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
+// (In the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
 //  ____               __             ___           ___       __         __       ___
@@ -177,7 +177,7 @@ function init() {
     // Create an on screen text message entity
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod")
-    onscreendisplay.__KeyValueFromString("message", "Waiting For Players...")
+    onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
     onscreendisplay.__KeyValueFromString("holdtime", "0.02")
     onscreendisplay.__KeyValueFromString("fadeout", "0.02")
     onscreendisplay.__KeyValueFromString("fadein", "0.02")
