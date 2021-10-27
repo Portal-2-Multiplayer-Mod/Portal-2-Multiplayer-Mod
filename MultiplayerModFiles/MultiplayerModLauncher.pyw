@@ -95,18 +95,23 @@ try:
             pass
     else:
         try:
-            os.rename(owd + "\\bin\linux32\disabledengine.so", owd + "/bin/linux32/engine.so")
-            print("Found engine.so just renamed to engine.so (Python probably crashed last session)")
+            os.rename(owd + "/bin/linux32/disabledengine.so", owd + "/bin/linux32/engine.so")
+            print("Enabled engine.so")
+        except:
+            pass
+        try:
+            os.rename(owd + "/bin/disabledengine.dll", owd + "/bin/engine.dll")
+            print("Enabled engine.so")
         except:
             pass
         try:
             os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
-            print("Found disabledserver.dll just renamed to server.dll (Python probably crashed last session)")
+            print("Enabled server.dll")
         except:
             pass
         try:
             os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
-            print("Found disabledserver.so just renamed to server.so (Python probably crashed last session)")
+            print("Enabled server.so")
         except:
             pass
 except:
@@ -363,7 +368,12 @@ def RemoveMultiplayerFiles():
                 pass
         else:
             try:
-                os.rename(owd + "\\bin\linux32\disabledengine.so", owd + "/bin/linux32/engine.so")
+                os.rename(owd + "/bin/linux32/disabledengine.so", owd + "/bin/linux32/engine.so")
+                print("Enabled engine.so")
+            except:
+                pass
+            try:
+                os.rename(owd + "/bin/disabledengine.dll", owd + "/bin/engine.dll")
                 print("Enabled engine.so")
             except:
                 pass
@@ -386,14 +396,14 @@ def RemoveMultiplayerFiles():
 print("=========================================================================")
 print("WARNING: DO NOT CLOSE THIS PYTHON WINDOW!!! WAITING FOR PORTAL 2 TO CLOSE")
 print("=========================================================================")
-time.sleep(2)
 if (iow):
     # Wait for portal2.exe to close
     RemoveMultiplayerFiles()
 else:
+    time.sleep(10)
     while True:
         # Check if any Portal 2 process is running
-        if checkIfProcessRunning('ortal2'):
+        if checkIfProcessRunning('ortal'):
             pass
         else:
             print('Portal 2 not found closing')
