@@ -1,4 +1,4 @@
-# Created by ***kyleraykbs, Nanoman2525, Vista, BumpyAHK, and Wolƒe Strider Shoσter***
+# Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, and Wolƒe Strider Shoσter***
 
 # Mod features
 1. Custom wait screen
@@ -11,9 +11,11 @@
 8. Full cooperative campaign support
 9. Support for Linux
 10. Support for Windows 11, 10, 8.1, 8, 7, Vista, and XP
-11. Full singleplayer campaign support (Coming soon!)
-12. Nametags (Coming soon!)
-13. Player specific colored portals (Coming soon!)
+
+# Planned features
+1. Full singleplayer campaign support (Coming soon!)
+2. Nametags (Coming soon!)
+3. Player specific colored portals (Coming soon!)
 
 # Installation & use
 
