@@ -3,7 +3,6 @@ import shutil
 import subprocess
 import mmap
 import time
-import psutil
 
 # Is on Windows
 iow = False
@@ -16,6 +15,11 @@ if os.name == 'nt':
     iow = True
 else:
     print("(Probably running Linux)")
+
+if (iow):
+    print("skipping psutil")
+else:
+    import psutil
 
 NumList = []
 lastnumber = 0
@@ -228,8 +232,8 @@ else:
         f2.close()
         print("Patched engine.so")
     except:
-        IsOnProton = True
         try:
+            IsOnProton = True
             print("Failed to open engine.so trying to patch server.dll")
             # Open engine.dll into binary
             f = open(owd + "/bin/engine.dll", 'rb')
@@ -394,13 +398,13 @@ if (iow):
     RemoveMultiplayerFiles()
 else:
     time.sleep(2)
+    if (IsOnProton==True):
+        time.sleep(12)
     while True:
         # Check if any Portal 2 process is running
         if checkIfProcessRunning('ortal'):
             pass
         else:
-            if (IsOnProton==True):
-                time.sleep(12)
             print('Portal 2 not found closing')
             print("=======Game Closed=======")
             RemoveMultiplayerFiles()
