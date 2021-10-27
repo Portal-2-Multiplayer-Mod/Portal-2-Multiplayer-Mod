@@ -370,12 +370,12 @@ print("=========================================================================
 time.sleep(2)
 if (iow):
     # wait for portal2.exe to close
-    print("Waiting for portal2.exe to close")
+    RemoveMultiplayerFiles()
 else:
     while True:
         #check if any portal 2 process is running
         if checkIfProcessRunning('ortal'):
-            RemoveMultiplayerFiles()
+            pass
         else:
             print('Portal 2 Not Found Closing')
             print("=======Game Closed=======")
