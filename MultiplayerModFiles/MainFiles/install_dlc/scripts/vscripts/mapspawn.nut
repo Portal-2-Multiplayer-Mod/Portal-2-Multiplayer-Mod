@@ -2156,7 +2156,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Make our own changelevel trigger
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-452, 196, -192), 500)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-452, 196, -192), 200)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_relays")
             }
@@ -2376,6 +2376,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "chamber_door-close_door_rl").Destroy()
+			// We will need to teleport all players to the second part of the map either all to the same place or making 33 different teleport points (Moja)
         }
 
         if (SSLoop==true) {
