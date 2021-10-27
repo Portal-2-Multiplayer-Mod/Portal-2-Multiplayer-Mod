@@ -28,7 +28,7 @@ UsePlugin <- false
 //-----------------------------------
 DedicatedServer <- false
 //-----------------------------------
-RandomTurrets <- false
+RandomTurretModels <- false
 //-----------------------------------
 
 
