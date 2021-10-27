@@ -22,13 +22,13 @@
 //  ██████  ██████  ██   ████ ██      ██  ██████
 
 //-----------------------------------
-DevMode <- true
+DevMode <- true // Set to true if your a developer
 //-----------------------------------
-UsePlugin <- false
+UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
-DedicatedServer <- false
+DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
-RandomTurretModels <- false
+RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
 
 
