@@ -219,18 +219,38 @@ if (iow):
     # Except:
     #     print("Failed to patch engine.dll")
 else:
-    f = open(owd + "/bin/linux32/engine.so", 'rb')
-    data = f.read()
-    f.close()
+    try:
+        f = open(owd + "/bin/linux32/engine.so", 'rb')
+        data = f.read()
+        f.close()
 
-    # Remove valve_reject_hidden_game commentary check
-    data = data.replace(bytes.fromhex("84 C0 0f 84 f5 fc ff ff 8b 06 8d 93 ae 66 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 11 5e 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 97 5c 2a 00 5a ff b4 24"), bytes.fromhex("a8 00 0f 84 f5 fc ff ff 8b 06 8d 93 ae 66 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 11 5e 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 97 5c 2a 00 5a ff b4 24"))
+        # Remove valve_reject_hidden_game commentary check
+        data = data.replace(bytes.fromhex("84 C0 0f 84 f5 fc ff ff 8b 06 8d 93 ae 66 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 11 5e 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 97 5c 2a 00 5a ff b4 24"), bytes.fromhex("a8 00 0f 84 f5 fc ff ff 8b 06 8d 93 ae 66 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 11 5e 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 97 5c 2a 00 5a ff b4 24"))
 
-    # Write changes into a new toplevel engine.dll
-    f2 = open("engine.so", 'wb')
-    f2.write(data)
-    f2.close()
-    print("Patched engine.so")
+        # Write changes into a new toplevel engine.dll
+        f2 = open("engine.so", 'wb')
+        f2.write(data)
+        f2.close()
+        print("Patched engine.so")
+    except:
+        try:
+            print("Failed to open engine.so trying to patch server.dll")
+            # Open engine.dll into binary
+            f = open(owd + "/bin/engine.dll", 'rb')
+            data = f.read()
+            f.close()
+
+            # Remove Steam validation
+            data = data.replace(b't}\x8b\x17\x8b\x82\xcc\x00\x00', b'\xeb}\x8b\x17\x8b\x82\xcc\x00\x00')
+            data = data.replace(bytes.fromhex("84 C0 74 1f 8b 16 8b 82 cc 00 00 00 68 00 8f 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b 06 68 e8 8e 37 10 e9 cf fe ff ff 8b 45 1c 8b 16 8b 92 f4 00 00 00 57 50 53 8b"), bytes.fromhex("a8 00 74 1f 8b 16 8b 82 cc 00 00 00 68 00 8f 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b 06 68 e8 8e 37 10 e9 cf fe ff ff 8b 45 1c 8b 16 8b 92 f4 00 00 00 57 50 53 8b"))
+
+            # Write changes into a new toplevel engine.dll
+            f2 = open("engine.dll", 'wb')
+            f2.write(data)
+            f2.close()
+            print("Patched engine.dll")
+        except:
+            print("Failed to patch engine.dll")
 
 ##################################
 #         END OF PATCHING        #
@@ -282,9 +302,16 @@ if (iow):
     os.rename(owd + "\portal2\\bin\server.dll", owd + "\portal2\\bin\disabledserver.dll")
     os.rename(owd + "\\bin\engine.dll", owd + "\\bin\disabledengine.dll")
 else:
-    os.rename(owd + "/bin/linux32/engine.so", owd + "\\bin\linux32\disabledengine.so")
+    try:
+        os.rename(owd + "/bin/linux32/engine.so", owd + "\\bin\linux32\disabledengine.so")
+    except:
+        print("Failed to rename engine.so trying to rename engine.dll")
+        os.rename(owd + "/bin/engine.dll", owd + "/bin/disabledengine.dll")
     os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
-    os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
+    try:
+        os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
+    except:
+        print("Failed to rename server.so")
 
 
 
