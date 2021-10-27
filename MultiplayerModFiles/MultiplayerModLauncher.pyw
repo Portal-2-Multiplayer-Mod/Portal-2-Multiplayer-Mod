@@ -16,20 +16,6 @@ if os.name == 'nt':
 else:
     print("(Probably running Linux)")
 
-# pip install psutil if psutil doesnt exist
-if (iow):
-    print("Skipped psutil")
-else:
-    try:
-        import psutil
-    except:
-        try:
-            if(not os.path.exists("psutil")):
-                print("psutil not found, installing...")
-                os.system("pip install psutil")
-        except:
-            print("Failed to install psutil")
-
 NumList = []
 lastnumber = 0
 owd = os.getcwd()
