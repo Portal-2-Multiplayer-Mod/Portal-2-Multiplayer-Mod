@@ -62,7 +62,7 @@ if (UsePlugin==true) {
     LoadPlugin <- true
 }
 
-ConsoleAscii <- [
+ConsoleAsciiArt <- [
 ""
 "██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░██████╗░"
 "██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░╚════██╗"
@@ -79,7 +79,7 @@ ConsoleAscii <- [
 ""
 ]
 
-foreach (line in ConsoleAscii) {
+foreach (line in ConsoleAsciiArt) {
     printl(line)
 }
 
