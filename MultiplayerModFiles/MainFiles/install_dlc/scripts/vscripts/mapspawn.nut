@@ -2,7 +2,7 @@
 //                                                             COPYRIGHT                                                                //
 //                                                 2021 Portal 2: Multiplayer Mod Team                                                  //
 //                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                  //
-// (In the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
+// (in the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
 //  ____               __             ___           ___       __         __       ___
@@ -64,7 +64,7 @@ if (UsePlugin==true) {
     LoadPlugin <- true
 }
 
-ConsoleAsciiArt <- [
+ConsoleAscii <- [
 ""
 "██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░██████╗░"
 "██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░╚════██╗"
@@ -81,7 +81,7 @@ ConsoleAsciiArt <- [
 ""
 ]
 
-foreach (line in ConsoleAsciiArt) {
+foreach (line in ConsoleAscii) {
     printl(line)
 }
 
@@ -179,7 +179,7 @@ function init() {
     // Create an on screen text message entity
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod")
-    onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
+    onscreendisplay.__KeyValueFromString("message", "Waiting For Players...")
     onscreendisplay.__KeyValueFromString("holdtime", "0.02")
     onscreendisplay.__KeyValueFromString("fadeout", "0.02")
     onscreendisplay.__KeyValueFromString("fadein", "0.02")
@@ -317,6 +317,7 @@ try {
     function loop() {
         //Count Ticks
         tick <- tick + 1
+
         // Run player join code when a player joins
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -392,9 +393,6 @@ try {
         if (tick == lasttick50 + 50) {
         // Reset Tick Time
         lasttick50 <- tick
-
-                printl(Entities.FindByModel(null, "models/weapons/v_portalgun.mdl").GetAngles())
-
 
         EntFire("player", "addoutput", "CollisionGroup 2")
         }
@@ -482,9 +480,9 @@ EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, 
 
 // Say join message on HUD
 if (PluginLoaded==true) {
-    JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
+    JoinMessage <- GetPlayerName(PlayerID) + " Joined The Game"
 } else {
-    JoinMessage <- "Player " + PlayerID + " joined the game"
+    JoinMessage <- "Player " + PlayerID + " Joined The Game"
 }
 // Set join message to player name
 JoinMessage = JoinMessage.tostring()
