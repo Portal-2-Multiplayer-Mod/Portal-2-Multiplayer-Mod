@@ -179,7 +179,7 @@ function init() {
     // Create an on screen text message entity
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod")
-    onscreendisplay.__KeyValueFromString("message", "Waiting For Players...")
+    onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
     onscreendisplay.__KeyValueFromString("holdtime", "0.02")
     onscreendisplay.__KeyValueFromString("fadeout", "0.02")
     onscreendisplay.__KeyValueFromString("fadein", "0.02")
