@@ -24,7 +24,7 @@
 //-----------------------------------
 DevMode <- true // Set to true if your a developer
 //-----------------------------------
-UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -41,6 +41,7 @@ RandomTurretModels <- false // Set to true if you want to randomize the turret m
 // █▀ █▀▀ ▀█▀ █░█ █▀█   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 // ▄█ ██▄ ░█░ █▄█ █▀▀   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
+tick <- 0
 BundgeeHookID <- "none"
 BundgeeHookMessage <- "none"
 OrangeCacheFailed <- false
@@ -58,6 +59,7 @@ IsSingleplayerMap <- false
 LoadPlugin <- false
 RunPluginLoad <- false
 PluginLoaded <- false
+lasttick50 <- 0
 if (UsePlugin==true) {
     LoadPlugin <- true
 }
@@ -94,10 +96,10 @@ MPMCoopCreditNames <- [
 "--------------------------",
 "Multiplayer Mod: Team",
 "--------------------------",
-"kyleraykbs | Scripting + Team Lead",
+"kyleraykbs | Scripting + Team Lead + Reverse Engineering",
 "Vista | Reverse Engineering, Plugin Dev",
-"Bumpy | Scripting + Script Theory",
-"Wolƒe Strider Shoσter | Scripting",
+"Bumpy | Script Theory",
+"Wolƒe Strider Shoσter | Scripting + Script Theory",
 "Enator18 | Python"
 "Nanoman2525 | Mapping + Entity and Command Help",
 "--------------------------",
@@ -313,7 +315,8 @@ try {
 //------------------------------------------------------//
 
     function loop() {
-
+        //Count Ticks
+        tick <- tick + 1
         // Run player join code when a player joins
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -376,99 +379,6 @@ try {
             }
         }
 
-        try {
-        // Detect death
-        if (HasSpawned==true) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                if (!Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 50) && !Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 50))  {
-                    foreach (index, item in IsInSpawnZone)  {
-                        if (item == p.GetRootMoveParent().entindex().tostring())  {
-                            IsInSpawnZone.remove(index)
-                        }
-                    }
-                }
-
-            ContinueDeathCode <- true
-            foreach (Name in IsInSpawnZone) {
-                if (Name==p.GetRootMoveParent().entindex().tostring()) {
-                    ContinueDeathCode <- false
-                }
-            }
-
-            if (ContinueDeathCode==true) {
-                if (Entities.FindByNameWithin(null, p.GetName(), OldPlayerPos, 50) || Entities.FindByNameWithin(null, p.GetName(), OrangeOldPlayerPos, 50)) {
-                    // ON DEATH
-                    if(PluginLoaded==true) {
-                        printl("Player: " + GetPlayerName(p.entindex()) + " has respawned")
-                    }
-                    // Show player color again
-                    foreach (index, item in PlayerColorCached)  {
-                        if (item == p.GetRootMoveParent().entindex().tostring())  {
-                            PlayerColorCached.remove(index)
-                        }
-                    }
-                    // END OF ON DEATH
-                    IsInSpawnZone.push(p.GetRootMoveParent().entindex().tostring())
-                    }
-                }
-            }
-        }
-
-        // Display the current player color in the bottom right of their screen upon spawning
-        if (HasSpawned==true) {
-            // Find all players
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                // Check if client had the message put on there screen
-                CanTag <- true
-                // Check if client's color is cached
-                foreach (Name in PlayerColorCached) {
-                    if (Name==p.GetRootMoveParent().entindex().tostring()) {
-                        CanTag <- false
-                    }
-                }
-                // Show player color
-                currentnametag <- p.GetRootMoveParent().entindex().tostring()
-                if (CanTag==true) {
-                        RGB <- "255 255 255"; COLORMESSAGE <- "Random color";
-                        switch (p.GetRootMoveParent().entindex()) {
-                            // These are the colors of the players
-                            case 1 : RGB <- "255 255 255"; COLORMESSAGE <- "White"     ; break;
-                            case 2 : RGB <- "120 255 120"; COLORMESSAGE <- "Green"     ; break;
-                            case 3 : RGB <- "120 140 255"; COLORMESSAGE <- "Blue"      ; break;
-                            case 4 : RGB <- "255 170 120"; COLORMESSAGE <- "Orange"    ; break;
-                            case 5 : RGB <- "255 100 100"; COLORMESSAGE <- "Red"       ; break;
-                            case 6 : RGB <- "255 110 255"; COLORMESSAGE <- "Pink"      ; break;
-                            case 7 : RGB <- "255 255 180"; COLORMESSAGE <- "Yellow"    ; break;
-                            case 8 : RGB <- "0 255 240"  ; COLORMESSAGE <- "Aqua"      ; break;
-                            case 9 : RGB <- "75 75 75"   ; COLORMESSAGE <- "Black"     ; break;
-                            case 10: RGB <- "100 80 0"   ; COLORMESSAGE <- "Brown"     ; break;
-                            case 11: RGB <- "0 80 100"   ; COLORMESSAGE <- "Dark Cyan" ; break;
-                            case 12: RGB <- "120 155 25" ; COLORMESSAGE <- "Dark Lime" ; break;
-                            case 13: RGB <- "0 0 100"    ; COLORMESSAGE <- "Dark Blue" ; break;
-                            case 14: RGB <- "80 0 0"     ; COLORMESSAGE <- "Dark Red"  ; break;
-                            case 15: RGB <- "0 75 0"     ; COLORMESSAGE <- "Dark Green"; break;
-                            case 16: RGB <- "0 75 75"    ; COLORMESSAGE <- "Dark Aqua" ; break;
-                        }
-                        try {
-                        Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("message", "Player color: " + COLORMESSAGE)
-                        Entities.FindByName(null, "colordisplay" + currentnametag).__KeyValueFromString("color", RGB)
-                        } catch(exception) {
-
-                        }
-                        // Cache player color
-                        EntFireByHandle(Entities.FindByName(null, "colordisplay" + currentnametag), "display", "", 0.0, p, p)
-                        PlayerColorCached.push(currentnametag);
-                }
-            }
-        }
-        } catch(exception) {
-            // If there is an error set the players position to the original position
-            printl("Death detection screwed up, player probably crashed. Setting OrangeOldPlayerPos to BlueOldPlayerPos to remedy the issue")
-            OrangeOldPlayerPos <- OldPlayerPos
-        }
-
         // Disconnect player if trying to play singleplayer
         if (GBIsMultiplayer==0) {
             SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
@@ -479,12 +389,15 @@ try {
             SingleplayerSupport(false, true, false)
         }
 
-        // Make every clients' collision elastic
-        //local j = "solid "
-        local k = "CollisionGroup "
+        if (tick == lasttick50 + 50) {
+        // Reset Tick Time
+        lasttick50 <- tick
 
-        //EntFire("player", "addoutput", j + 4)
-        EntFire("player", "addoutput", k + 2)
+                printl(Entities.FindByModel(null, "models/weapons/v_portalgun.mdl").GetAngles())
+
+
+        EntFire("player", "addoutput", "CollisionGroup 2")
+        }
 
         if (DevMode==true) {
 
@@ -497,9 +410,6 @@ try {
 
         ChatCommands()
 
-        if (PLEASE == true) {
-            printl("REEEEEEEEEEEEEEEEEEEEE")
-        }
     }
 
 //---------------------------------------------------------------//
@@ -2032,25 +1942,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-544, 1096, 464), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-544, 992, 488), 1024).Destroy()
+            Cardio <- true
         }
 
-        if (SSLoop==true) {
-
-            // Make Wheatley look at nearest player
-            local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-            EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-
-            // Elevator changelevel
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-544, 573, 254), 50)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_ricochet")
-            }
-
+        if (SSOneTimeRun==true) {
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1259.1446533203, 1557.3728027344, 455.14566040039), 280)) {
+                Cardio <- false
+            }
+
+            // Find every player within 600 units of -1953 1570 575
+            if (Cardio == true) {
+                local p = null
+                while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1953, 1570, 575), 600)) {
+                    local p2 = Entities.FindByClassnameNearest("player", Vector(-1953, 1570, 575), 10620)
+                    if (p != p2) {
+                        p.SetOrigin(Vector(-2230, 1725, -90))
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                }
+            }
+            // Make Wheatley look at nearest player
+            local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+            EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-544, 573, 154), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_ricochet")
+            }
         }
     }
 
@@ -2064,19 +1991,21 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_once", Vector(4064, 1152, -472), 1024).Destroy()
         }
 
-        if (SSLoop==true) {
-
-            // Elevator changelevel
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(4478, 1158, -674), 50)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_bridge_intro")
-            }
-
+        if (SSOneTimeRun==true) {
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
+
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(4478, 1158, -774), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_bridge_intro")
+            }
         }
     }
 
@@ -2090,6 +2019,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_once", Vector(0, 832, 40), 1024).Destroy()
         }
 
+        if (SSOneTimeRun==true) {
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Make Wheatley look at nearest player
@@ -2098,15 +2034,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(0, 1255, -197), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(0, 1255, -297), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bridge_the_gap")
             }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
         }
     }
 
@@ -2120,6 +2051,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             // Destroy objects
             Entities.FindByClassnameNearest("trigger_once", Vector(320, 624, 960), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(320, 960, 936), 1024).Destroy()
+            // Fix func_portal_detectors
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
+                ent.__KeyValueFromString("CheckAllIDs", "1")
+            }
+        }
+
+        if (SSOneTimeRun==true) {
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
@@ -2130,15 +2073,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(321, 1374, 661), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(321, 1374, 561), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_turret_intro")
             }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
         }
     }
 
@@ -2154,21 +2092,54 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_multiple", Vector(-174.19, 392.03, -160), 1024).Destroy()
             //Kill the changelevel trigger
             Entities.FindByName(null, "transition_trigger").Destroy()
+            // Set the door logic
+            TurretIntroOpenDoor <- false
+            TurretIntroDoorOpened <- false
+            Entities.FindByName(null, "@exit_door-testchamber_door").__KeyValueFromString("targetname", "MpModDoorOverride")
+            Entities.FindByName(null, "@exit_door-door_player_clip").__KeyValueFromString("targetname", "MpModDoorClipOverride")
         }
 
-        if (SSLoop==true) {
-
-            // Make our own changelevel trigger
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-452, 196, -192), 200)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_laser_relays")
-            }
-
+        if (SSOneTimeRun==true) {
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
+            // Find all prop_weighted_cube entities within 24 units of 704, -512 16
+            TurretIntroOpenDoor <- false
+            local ent = null
+            while (ent = Entities.FindByClassnameWithin(ent, "prop_weighted_cube", Vector(704, -512, 8, 24), 28)) {
+                TurretIntroOpenDoor <- true
+            }
+
+            local ent = null
+            while (ent = Entities.FindByClassnameWithin(ent, "player", Vector(704, -512, 8, 24), 24)) {
+                TurretIntroOpenDoor <- true
+            }
+
+            if (TurretIntroOpenDoor==true) {
+                if (TurretIntroDoorOpened==false) {
+                    // Open the door
+                    EntFireByHandle(Entities.FindByName(null, "MpModDoorOverride"), "open", "", 0, null, null)
+                    EntFireByHandle(Entities.FindByName(null, "MpModDoorClipOverride"), "disable", "", 0, null, null)
+                    TurretIntroDoorOpened <- true
+                }
+            } else {
+                if (TurretIntroDoorOpened==true) {
+                    EntFireByHandle(Entities.FindByName(null, "MpModDoorOverride"), "close", "", 0, null, null)
+                    EntFireByHandle(Entities.FindByName(null, "MpModDoorClipOverride"), "enable", "", 0, null, null)
+                    TurretIntroDoorOpened <- false
+                }
+            }
+
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-452, 196, -292), 200)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_laser_relays")
+            }
         }
     }
 
@@ -2192,6 +2163,14 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_once", Vector(-320, -1376, 40), 1024).Destroy()
             // What to do about the elevator that can trap players below? (Moja)
         }
+
+        if (SSOneTimeRun==true) {
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+
 
         if (SSLoop==true) {
 
@@ -2413,6 +2392,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             //Entities.FindByName(null, "NAME").Destroy()
+        }
+
+        if (SSOneTimeRun==true) {
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
