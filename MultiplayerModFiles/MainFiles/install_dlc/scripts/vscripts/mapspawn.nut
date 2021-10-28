@@ -572,9 +572,9 @@ EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, 
 
 // Say join message on HUD
 if (PluginLoaded==true) {
-    JoinMessage <- GetPlayerName(PlayerID) + " Joined The Game"
+    JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
 } else {
-    JoinMessage <- "Player " + PlayerID + " Joined The Game"
+    JoinMessage <- "Player " + PlayerID + " joined the game"
 }
 // Set join message to player name
 JoinMessage = JoinMessage.tostring()
