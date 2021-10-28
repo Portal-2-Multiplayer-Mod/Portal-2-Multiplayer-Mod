@@ -74,11 +74,11 @@ for number in NumList:
 
 
 
-# Undo the patch dll renames so we can patch the server.dll again
+# Undo the patch dll renames so we can patch the server_sixense.dll again
 try:
     if (iow):
         try:
-            os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
+            os.rename(owd + "\portal2_sixense\\bin\disabledserver_sixense.dll", owd + "\portal2_sixense\\bin\server_sixense.dll")
             print("Found disabledserver.so just renamed to server.so (Python probably crashed last session)")
         except:
             pass
@@ -99,8 +99,8 @@ try:
         except:
             pass
         try:
-            os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
-            print("Enabled server.dll")
+            os.rename(owd + "/portal2_sixense/bin/disabledserver_sixense.dll", owd + "/portal2_sixense/bin/server_sixense.dll")
+            print("Enabled server_sixense.dll")
         except:
             pass
         try:
@@ -117,21 +117,21 @@ except:
 #        START OF PATCHING       #
 ##################################
 
-# server.dll patch
+# server_sixense.dll patch
 try:
-    # Open server.dll into binary
+    # Open server_sixense.dll into binary
     if (iow):
-        f = open(owd + "\portal2\\bin\server.dll", 'rb')
+        f = open(owd + "\portal2_sixense\\bin\server_sixense.dll", 'rb')
     else:
-        f = open(owd + "/portal2/bin/server.dll", 'rb')
+        f = open(owd + "/portal2_sixense/bin/server_sixense.dll", 'rb')
     data = f.read()
     f.close()
 
-    # 33 player cap edit
-    data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15', b'\x8bM\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
-    data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]', b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0 \x89\x01]')
-    data = data.replace(b'\xff\xd0\x85\xc0t\x05\xbe\x03\x00\x00\x00\x8b', b'\xff\xd0\x85\xc0t\x05\xbe\x21\x00\x00\x00\x8b')
-    data = data.replace(b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x01_^', b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x20_^')
+    # 33 player cap edit (First row: two bytes changed; Second row; one byte changed; third row: one byte changed; Fourth row: one byte changed)
+    data = data.replace(b'\x4D\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15', b'\x4D\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
+    data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]', b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x20\x89\x01]')
+    data = data.replace(b'\xff\x84\x05\x38\x94\x7c\x10\x75\x1d\x09\x05\x38', b'\xff\x84\x05\x38\x94\x7c\x10\x75\x1d\x09\x05\x90')
+    data = data.replace(b'\xff\xd0\x85\xc0\x74\x05\xbe\x03\x00\x00\x00\x56', b'\xff\xd0\x85\xc0\x74\x05\xbe\x21\x00\x00\x00\x56')
 
     # Partner disconnect edit
     data = data.replace(b'disconnect "Partner disconnected"', b'script_execute playerdisconnected')
@@ -150,12 +150,12 @@ try:
     data = data.replace(b'mp_select_level', b'portal2mpmpsell')
     data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
-    # Write changes into a new toplevel server.dll
-    f2 = open("server.dll", 'wb')
+    # Write changes into a new toplevel server_sixense.dll
+    f2 = open("server_sixense.dll", 'wb')
     f2.write(data)
     f2.close()
 except:
-    print("Failed to patch server.dll")
+    print("Failed to patch server_sixense.dll")
 
 # server.so patch
 if (iow):
@@ -234,7 +234,7 @@ else:
     except:
         try:
             IsOnProton = True
-            print("Failed to open engine.so trying to patch server.dll")
+            print("Failed to open engine.so trying to patch server_sixense.dll")
             # Open engine.dll into binary
             f = open(owd + "/bin/engine.dll", 'rb')
             data = f.read()
@@ -299,9 +299,9 @@ else:
     f2.write(data)
     f2.close()
 
-# Rename server.dll to disabledserver.dll so our newly patched server.dll runs
+# Rename server_sixense.dll to disabledserver_sixense.dll so our newly patched server_sixense.dll runs
 if (iow):
-    os.rename(owd + "\portal2\\bin\server.dll", owd + "\portal2\\bin\disabledserver.dll")
+    os.rename(owd + "\portal2_sixense\\bin\server_sixense.dll", owd + "\portal2_sixense\\bin\disabledserver_sixense.dll")
     os.rename(owd + "\\bin\engine.dll", owd + "\\bin\disabledengine.dll")
 else:
     try:
@@ -312,7 +312,7 @@ else:
             os.rename(owd + "/bin/engine.dll", owd + "/bin/disabledengine.dll")
         except:
             print("Failed to rename engine.dll")
-    os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
+    os.rename(owd + "/portal2_sixense/bin/server_sixense.dll", owd + "/portal2_sixense/bin/disabledserver_sixense.dll")
     try:
         os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
     except:
@@ -324,9 +324,9 @@ else:
 print("=======Game Launch=======")
 try:
     if (iow):
-        subprocess.run(["portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3"])
+        subprocess.run(["portal2.exe", "-novid", "-allowspectators", "+map mp_coop_lobby_3"])
     else:
-        os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3")
+        os.system("steam -applaunch 620 -novid -allowspectators +map mp_coop_lobby_3")
         print("Ran game")
 except:
     print("Failed to launch Portal 2")
@@ -337,15 +337,15 @@ def RemoveMultiplayerFiles():
     # Remove multiplayer mod files
     try:
         if(iow):
-            os.remove(owd + "\server.dll")
+            os.remove(owd + "\server_sixense.dll")
             os.remove(owd + "\engine.dll")
         else:
             os.remove(owd + "/engine.so")
-            os.remove(owd + "/server.dll")
+            os.remove(owd + "/server_sixense.dll")
             os.remove(owd + "/server.so")
-        print("Removed modded server.so/server.dll")
+        print("Removed modded server.so/server_sixense.dll")
     except:
-        print("Failed to remove modded server.dll")
+        print("Failed to remove modded server_sixense.dll")
 
     try:
         shutil.rmtree(owd + dlcname)
@@ -353,12 +353,12 @@ def RemoveMultiplayerFiles():
     except:
         print("Failed to remove Multiplayer Mod DLCs")
 
-    # Rename main server.dll back to server.dll
+    # Rename main server_sixense.dll back to server_sixense.dll
     try:
         if (iow):
             try:
-                os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
-                print("Enabled disabledserver.dll")
+                os.rename(owd + "\portal2_sixense\\bin\disabledserver_sixense.dll", owd + "\portal2_sixense\\bin\server_sixense.dll")
+                print("Enabled disabledserver_sixense.dll")
             except:
                 pass
             try:
@@ -378,8 +378,8 @@ def RemoveMultiplayerFiles():
             except:
                 pass
             try:
-                os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
-                print("Enabled server.dll")
+                os.rename(owd + "/portal2_sixense/bin/disabledserver_sixense.dll", owd + "/portal2_sixense/bin/server_sixense.dll")
+                print("Enabled server_sixense.dll")
             except:
                 pass
             try:
