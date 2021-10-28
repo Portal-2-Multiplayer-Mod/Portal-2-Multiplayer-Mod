@@ -2,7 +2,7 @@
 //                                                             COPYRIGHT                                                                //
 //                                                 2021 Portal 2: Multiplayer Mod Team                                                  //
 //                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                  //
-// (in the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
+// (In the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
 //  ____               __             ___           ___       __         __       ___
@@ -64,7 +64,7 @@ if (UsePlugin==true) {
     LoadPlugin <- true
 }
 
-ConsoleAscii <- [
+ConsoleAsciiArt <- [
 ""
 "██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░██████╗░"
 "██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░╚════██╗"
@@ -81,7 +81,7 @@ ConsoleAscii <- [
 ""
 ]
 
-foreach (line in ConsoleAscii) {
+foreach (line in ConsoleAsciiArt) {
     printl(line)
 }
 
@@ -179,7 +179,7 @@ function init() {
     // Create an on screen text message entity
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod")
-    onscreendisplay.__KeyValueFromString("message", "Waiting For Players...")
+    onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
     onscreendisplay.__KeyValueFromString("holdtime", "0.02")
     onscreendisplay.__KeyValueFromString("fadeout", "0.02")
     onscreendisplay.__KeyValueFromString("fadein", "0.02")
@@ -482,9 +482,9 @@ EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, 
 
 // Say join message on HUD
 if (PluginLoaded==true) {
-    JoinMessage <- GetPlayerName(PlayerID) + " Joined The Game"
+    JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
 } else {
-    JoinMessage <- "Player " + PlayerID + " Joined The Game"
+    JoinMessage <- "Player " + PlayerID + " joined the game"
 }
 // Set join message to player name
 JoinMessage = JoinMessage.tostring()

@@ -1,21 +1,21 @@
 # Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, and Wolƒe Strider Shoσter***
 
 # Mod features
-1. Custom wait screen
-2. Maximum player cap of 33
-3. Elastic player collision
-4. Custom player colors
-5. Custom join message
-6. Player disconnect message
-7. Removed game breaking commands
-8. Full cooperative campaign support
-9. Support for Linux
-10. Support for Windows 11, 10, 8.1, 8, 7, Vista, and XP
+1. Maximum player cap of 33
+2. Elastic player collision
+3. Custom player colors
+4. Player join message
+5. Player disconnect message
+6. Removed game breaking commands
+7. Full cooperative campaign support
+8. Support for Linux
+9. Support for Windows 11, 10, 8.1, 8, 7, Vista, and XP
 
 # Planned features
 1. Full singleplayer campaign support (Coming soon!)
 2. Nametags (Coming soon!)
-3. Player specific colored portals (Coming soon!)
+3. Sixense support (Coming eventually)
+4. Player specific colored portals (Coming eventually)
 
 # Installation & use
 
