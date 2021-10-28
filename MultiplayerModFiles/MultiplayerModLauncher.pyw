@@ -69,7 +69,7 @@ def Launch():
     for number in NumList:
                 if number-1 == lastnumber:
                     lastnumber = number
-                    # set the new temp dlc name
+                    # Set the new temp dlc name
                     if (iow):
                         dlcname = "\portal2_dlc" + str(number + 1)
                     else:
