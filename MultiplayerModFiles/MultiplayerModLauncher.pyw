@@ -402,7 +402,7 @@ if (iow):
 else:
     time.sleep(2)
     if (IsOnProton==True):
-        time.sleep(12)
+        time.sleep(24)
     while True:
         # Check if any Portal 2 process is running
         if checkIfProcessRunning('ortal'):
