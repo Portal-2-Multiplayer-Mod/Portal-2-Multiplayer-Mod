@@ -492,23 +492,51 @@ import tkinter as tk
 from tkinter import ttk
 
 
-# Create GUI with a launch button
-def CreateGUI():
-    # Create window
-    root = tk.Tk()
-    root.title("Multiplayer Mod Launcher")
-    root.geometry("300x100")
+# Create GUI window and set title
+root = tk.Tk()
 
-    # Create label
-    label = ttk.Label(root, text="Multiplayer Mod Launcher")
-    label.pack()
+# Get Screen Size
+h = root.winfo_screenheight()
+h = h * 1
 
-    # Create button
-    button = ttk.Button(root, text="Launch", command=Launch)
-    button.pack()
+print(str(int(h/2)) + "x" + str(int(h/2.8)))
 
-    # Start GUI
-    root.mainloop()
+root.title("Multiplayer Mod Launcher")
+# make it 1280x720
+root.geometry(str(int(h/1.75)) + "x" + str(int(h/3)))
+# make the background  #22202a
+root.configure(background="#131215")
+# make the window none resizable
+root.resizable(width=False, height=False)
 
-# show the gui
-CreateGUI()
+
+# make a black canvas
+canvas = tk.Canvas(root, width=int(h/2), height=int(h/4), bg="#131215")
+canvas.pack()
+canvas.place(x=int(h/150), y=int(h/150))
+
+# make a start button
+# make a button to launch the game
+launchButton = tk.Button(root, text="Start", command=Launch)
+launchButton.pack()
+
+# make it 0 255 0
+launchButton.configure(background='#131215')
+# give it a font
+launchButton.configure(font=("FreeSans", int(h/75)))
+# make the text green
+launchButton.configure(foreground='#48da6c')
+# make it have a black highlight
+launchButton.configure(highlightbackground='#48da6c')
+# make the highlight be a little bigger
+launchButton.configure(highlightthickness=1.5)
+# make it have a black border
+launchButton.configure(borderwidth=0)
+# put it to 10 pixels the left of the window
+launchButton.place(x=int(h/120), y=int(h/120))
+# Make to 100 x 100
+launchButton.configure(width=9, height=2)
+
+
+#show the window
+root.mainloop()
