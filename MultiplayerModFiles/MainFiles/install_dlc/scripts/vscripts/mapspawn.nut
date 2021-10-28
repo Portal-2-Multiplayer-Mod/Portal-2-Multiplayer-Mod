@@ -24,7 +24,7 @@
 //-----------------------------------
 DevMode <- true // Set to true if your a developer
 //-----------------------------------
-UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
