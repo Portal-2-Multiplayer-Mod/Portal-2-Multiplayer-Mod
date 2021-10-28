@@ -531,7 +531,7 @@ launchButton.configure(highlightbackground='#48da6c')
 # make the highlight be a little bigger
 launchButton.configure(highlightthickness=h/550)
 # make it have a black border
-launchButton.configure(borderwidth=0)
+launchButton.configure(borderwidth=2)
 # put it to 10 pixels the left of the window
 launchButton.place(x=int(h/120), y=int(h/120))
 # Make to 100 x 100
