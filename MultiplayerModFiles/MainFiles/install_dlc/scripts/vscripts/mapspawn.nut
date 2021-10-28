@@ -281,7 +281,7 @@ function CacheModel(ModelName) {
     }
 }
 
-//Find Player By Index
+// Find player by index
 
 function FindByIndex(id)  {
     local p = null
@@ -480,9 +480,9 @@ EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, 
 
 // Say join message on HUD
 if (PluginLoaded==true) {
-    JoinMessage <- GetPlayerName(PlayerID) + " Joined The Game"
+    JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
 } else {
-    JoinMessage <- "Player " + PlayerID + " Joined The Game"
+    JoinMessage <- "Player " + PlayerID + " joined the game"
 }
 // Set join message to player name
 JoinMessage = JoinMessage.tostring()
@@ -2347,6 +2347,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+                //testy
+                //Entities.FindByName(null, "arrival_elevator-source_elevator_door_open_trigger").__KeyValueFromString("spawnflags", "5196")
             } catch(exception) {}
         }
     }
