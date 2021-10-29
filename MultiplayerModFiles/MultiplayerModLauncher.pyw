@@ -492,6 +492,7 @@ import tkinter as tk
 from tkinter import ttk
 #import highlight
 from tkinter import *
+import math
 
 
 # Create GUI window and set title
@@ -501,25 +502,25 @@ root = tk.Tk()
 h = root.winfo_screenheight()
 h = h * 1
 
-print(str(int(h/2)) + "x" + str(int(h/2.8)))
-
 root.title("Multiplayer Mod Launcher")
 # make it 1280x720
 root.geometry(str(int(h/1.75)) + "x" + str(int(h/3)))
 # make the background  #22202a
-root.configure(background="#131215")
+root.configure(background="#111215")
 # make the window none resizable
 root.resizable(width=False, height=False)
 
 
 # make a black canvas
-canvas = tk.Canvas(root, width=int(h/2), height=int(h/4), bg="#131215")
+canvas = tk.Canvas(root, width=int(h/8), height=int(h/3.15), bg="#0f1013")
 canvas.pack()
-canvas.place(x=int(h/150), y=int(h/150))
+canvas.place(x=int(h/250), y=int(h/250))
+canvas.configure(highlightbackground='#0c0d10')
+canvas.config(highlightthickness=h/900)
 
 # make a start button
 # make a button to launch the game
-launchButton = tk.Button(root, text="Start", command=Launch)
+launchButton = tk.Button(root, text="Start", width=8, height=int(2) ,command=Launch)
 launchButton.pack()
 
 # make it 0 255 0
@@ -531,13 +532,11 @@ launchButton.configure(foreground='#48da6c')
 # make it have a black highlight
 launchButton.configure(highlightbackground='#48da6c')
 # make the highlight be a little bigger
-launchButton.configure(highlightthickness=h/850)
+launchButton.configure(highlightthickness=h/1850)
 # make it have a black border
 launchButton.configure(borderwidth=0)
 # put it to 10 pixels the left of the window
-launchButton.place(x=int(h/120), y=int(h/120))
-# Make to 100 x 100
-launchButton.configure(width=9, height=2)
+launchButton.place(x=int(h/80), y=int(h/120))
 # change the hover color
 launchButton.configure(activebackground='#48da6c')
 
