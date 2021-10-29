@@ -30,6 +30,8 @@ DedicatedServer <- false // Set to true if you want to run the server as a dedic
 //-----------------------------------
 RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
+TickSpeed <- 0.01 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01 TO 0.5) (lower numbers can cause lag on slow computers/connections)
+//-----------------------------------
 
 
 //  ██████  ██████  ██████  ███████
@@ -41,6 +43,7 @@ RandomTurretModels <- false // Set to true if you want to randomize the turret m
 // █▀ █▀▀ ▀█▀ █░█ █▀█   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 // ▄█ ██▄ ░█░ █▄█ █▀▀   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
+HasRanGeneralOneTime <- true
 tick <- 0
 BundgeeHookID <- "none"
 BundgeeHookMessage <- "none"
@@ -204,7 +207,7 @@ function init() {
     // Create entity to run loop() every 0.1 seconds
     timer <- Entities.CreateByClassname("logic_timer")
     timer.__KeyValueFromString("targetname", "timer")
-    EntFireByHandle(timer, "AddOutput", "RefireTime 0.01", 0, null, null)
+    EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
     EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
@@ -345,13 +348,20 @@ try {
 
         // Display waiting for players until player exits spawn zone
         try {
+            if (HasRanGeneralOneTime == true) {
+                if (Entities.FindByName(null, "HasSpawnedMPMod")) {
+                    GeneralOneTime()
+                    HasRanGeneralOneTime <- false
+                }
+            }
             if (DoneWaiting == false) {
                 // Check if client is in spawn zone
                 if (Entities.FindByName(null, "blue").GetVelocity().z == 0) {
                     DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
                 } else {
                     DoneWaiting <- true
-                    GeneralOneTime()
+                    Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "HasSpawnedPreMPMod")
+                    EntFire("HasSpawnedPreMPMod", "addoutput", "targetname HasSpawnedMPMod", 1, null)
                 }
             }
         } catch(exception) {}
@@ -1221,7 +1231,7 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 // SINGLEPLAYER FUNCTIONS //
 ////////////////////////////
 
-    function NewApertureStartElevatorFixes() {
+    function             NewApertureStartElevatorFixes() {
         // Elevator light_spot
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
@@ -1306,28 +1316,28 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
         self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret05")
         self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret06")
 
-        EntFire("myexplode2", "addoutput", "targetname playline1", 2.65, null)
-        EntFire("playline1", "addoutput", "targetname myexplode2", 2.76, null)
+        EntFire("myexplode2", "addoutput", "targetname playline1", 2.65-0.1 + (TickSpeed * 2), null)
+        EntFire("playline1", "addoutput", "targetname myexplode2", 2.76-0.1 + (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline2", 6.55, null)
-        EntFire("playline2", "addoutput", "targetname myexplode2", 6.66, null)
+        EntFire("myexplode2", "addoutput", "targetname playline2", 6.55-0.1 + (TickSpeed * 2), null)
+        EntFire("playline2", "addoutput", "targetname myexplode2", 6.66-0.1 + (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline3", 12.75, null)
-        EntFire("playline3", "addoutput", "targetname myexplode2", 12.86, null)
+        EntFire("myexplode2", "addoutput", "targetname playline3", 12.75-0.1 + (TickSpeed * 2), null)
+        EntFire("playline3", "addoutput", "targetname myexplode2", 12.86-0.1 + (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline4", 16.75, null)
-        EntFire("playline4", "addoutput", "targetname myexplode2", 16.86, null)
+        EntFire("myexplode2", "addoutput", "targetname playline4", 16.75-0.1 + (TickSpeed * 2), null)
+        EntFire("playline4", "addoutput", "targetname myexplode2", 16.86-0.1 + (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline5", 18.00, null)
-        EntFire("playline5", "addoutput", "targetname myexplode2", 18.11, null)
+        EntFire("myexplode2", "addoutput", "targetname playline5", 18.00-0.1 + (TickSpeed * 2), null)
+        EntFire("playline5", "addoutput", "targetname myexplode2", 18.11-0.1 + (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline6", 24.00, null)
-        EntFire("playline6", "addoutput", "targetname myexplode2", 24.11, null)
+        EntFire("myexplode2", "addoutput", "targetname playline6", 24.00-0.1 + (TickSpeed * 2), null)
+        EntFire("playline6", "addoutput", "targetname myexplode2", 24.11-0.1 + (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline7", 25.50, null)
-        EntFire("playline7", "addoutput", "targetname myexplode2", 25.61, null)
+        EntFire("myexplode2", "addoutput", "targetname playline7", 25.50-0.1 + (TickSpeed * 2), null)
+        EntFire("playline7", "addoutput", "targetname myexplode2", 25.61-0.1 + (TickSpeed * 2), null)
 
-        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50, null)
+        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50-0.1 + (TickSpeed * 2), null)
 
     }
 
@@ -1356,7 +1366,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
         if (SSLoop==true) {
 
@@ -1400,7 +1410,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -1456,7 +1466,7 @@ NewApertureStartElevatorFixes()
         }
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -1487,7 +1497,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -1520,7 +1530,7 @@ NewApertureStartElevatorFixes()
         }
 
                 if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -1553,7 +1563,7 @@ NewApertureStartElevatorFixes()
         }
 
                 if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -1777,7 +1787,7 @@ NewApertureStartElevatorFixes()
         }
 
         if (SSPostPlayerSpawn==true) {
-            NewApertureStartElevatorFixes()
+                        NewApertureStartElevatorFixes()
             SPA1WakeupPostPlayerSpawn <- false
         }
 
@@ -1940,12 +1950,12 @@ NewApertureStartElevatorFixes()
             local TempEnt = Entities.CreateByClassname("prop_dynamic")
             TempEnt.__KeyValueFromString("targetname", "TempEnt")
             EntFire("TempEnt", "addoutput", "targetname PlayFallSound", 0, null)
-            EntFire("PlayFallSound", "kill", "", 0.11, null)
+            EntFire("PlayFallSound", "kill", "", 0 + (TickSpeed * 2), null)
         }
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2017,11 +2027,12 @@ NewApertureStartElevatorFixes()
         if (SSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-            Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(712, 0, 0), 100).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(816, 0, -8), 100).Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2043,7 +2054,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2070,7 +2081,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2102,7 +2113,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2133,7 +2144,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2163,7 +2174,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2194,7 +2205,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2233,7 +2244,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2272,7 +2283,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2323,7 +2334,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2356,7 +2367,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2400,7 +2411,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2446,7 +2457,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2517,7 +2528,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2544,7 +2555,7 @@ NewApertureStartElevatorFixes()
         }
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
                 if (SSLoop==true) {
@@ -2570,7 +2581,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2602,7 +2613,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2640,7 +2651,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2675,7 +2686,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2707,7 +2718,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2739,7 +2750,7 @@ NewApertureStartElevatorFixes()
 
 
         if (SSPostPlayerSpawn==true) {
-            NewApertureStartElevatorFixes()
+                        NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
@@ -2776,7 +2787,7 @@ NewApertureStartElevatorFixes()
         }
 
         if (SSPostPlayerSpawn==true) {
-            NewApertureStartElevatorFixes()
+                        NewApertureStartElevatorFixes()
         }
 
                 if (SSLoop==true) {
