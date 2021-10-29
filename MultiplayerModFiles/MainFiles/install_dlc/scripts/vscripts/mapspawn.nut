@@ -1320,10 +1320,41 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "Fizzle_Trigger").Destroy()
         }
 
-        if (SSLoop) {
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+        if (SSLoop==true) {
 
             local portalgun = null
             while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
@@ -1363,7 +1394,43 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "emitter_orange_mtg").Destroy()
         }
 
-        if (SSLoop) {
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 50)) {
             SendToConsole("commentary 1")
@@ -1415,7 +1482,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "door_2-close_door_rl").Destroy()
         }
 
-        if (SSLoop) {
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1441,7 +1543,43 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_multiple", Vector(-64, 824, 320), 1024).Destroy()
         }
 
-        if (SSLoop) {
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1470,7 +1608,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             fallenautoportal.SetAngles(-90, 69, 0)
         }
 
-        if (SSLoop == true) {
+                if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1499,7 +1672,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
         }
 
-        if (SSLoop == true) {
+                if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
             WheatleySeq1 <- false
 
             try {
@@ -1661,6 +1869,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             EntFire("PlayFallSound", "kill", "", 0.11, null)
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             if (Entities.FindByName(null, "PlayFallSound")) {
@@ -1734,12 +1978,41 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
 
         if (SSOneTimeRun==true) {
+            // Elevator light_spot
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
         }
 
-        if (SSLoop == true) {
+        if (SSLoop==true) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 50)) {
                 SendToConsole("commentary 1")
@@ -1756,7 +2029,43 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "door_1-close_door_rl").Destroy()
         }
 
-        if (SSLoop) {
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
+        if (SSLoop==true) {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1776,6 +2085,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(640, 224, 936), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_multiple", Vector(488, 216, 960), 1024).Destroy()
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
@@ -1805,6 +2150,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_once", Vector(2432, -1056, 72), 1024).Destroy()
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Elevator changelevel
@@ -1829,6 +2210,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "door_1-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-56, -1576, -384), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-64, -1696, -408), 1024).Destroy()
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
@@ -1856,6 +2273,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_once", Vector(-1152, 1680, 40), 1024).Destroy()
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Elevator changelevel
@@ -1880,6 +2333,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "walltunnel_1_Cover_clip").Destroy()
             Entities.FindByName(null, "exit_door_lock_counter").Destroy()
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
@@ -1916,6 +2405,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_once", Vector(928, -64, -24), 1024).Destroy()
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Elevator changelevel
@@ -1947,6 +2472,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
             } catch(exception) {}
         }
 
@@ -1996,6 +2557,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Elevator changelevel
@@ -2021,6 +2618,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
             } catch(exception) {}
         }
 
@@ -2063,6 +2696,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Make Wheatley look at nearest player
@@ -2101,6 +2770,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
             } catch(exception) {}
         }
 
@@ -2170,6 +2875,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
         }
 
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Elevator changelevel
@@ -2228,7 +2969,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
         }
 
-        if (SSLoop==true) {
+                if (SSLoop==true) {
 
             // Elevator changelevel
             local p = null
@@ -2247,6 +2988,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-631, 377, 322), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-672, 384, 296), 1024).Destroy()
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
@@ -2274,6 +3051,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByName(null, "prevent_ratman_backtrack").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 896, 104), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 888, 96), 1024).Destroy()
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
@@ -2309,6 +3122,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             // Ironically we might want to teleport all players into the elevator? (Moja)
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Make Wheatley look at nearest player
@@ -2339,6 +3188,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_once", Vector(1088, 352, 296), 1024).Destroy()
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Elevator changelevel
@@ -2366,6 +3251,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             Entities.FindByClassnameNearest("trigger_once", Vector(6912, -5376, 40), 1024).Destroy()
         }
 
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
+        }
+
         if (SSLoop==true) {
 
             // Elevator changelevel
@@ -2391,6 +3312,42 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             // Destroy objects
             Entities.FindByName(null, "chamber_door-close_door_rl").Destroy()
 			// We will need to teleport all players to the second part of the map either all to the same place or making 33 different teleport points (Moja)
+        }
+
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
@@ -2461,7 +3418,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
             } catch(exception) {}
         }
 
-        if (SSLoop==true) {
+                if (SSLoop==true) {
 
             // Elevator changelevel
             local p = null
