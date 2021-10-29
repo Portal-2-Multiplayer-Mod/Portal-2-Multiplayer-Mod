@@ -24,7 +24,7 @@
 //-----------------------------------
 DevMode <- true // Set to true if your a developer
 //-----------------------------------
-UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -2184,12 +2184,48 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
     //## SP_A2_TURRET_BLOCKER ##//
     if (GetMapName()=="sp_a2_turret_blocker") {
         if (SSInstantRun==true) {
+            // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             // We may need to do something about the singleplayer stuck spot (Moja)
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 1704, 64), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 1776, 40), 1024).Destroy()
+        }
+
+        if (SSOneTimeRun==true) {
+            // Elevator light_spot
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
+            } catch(exception) {}
         }
 
         if (SSLoop==true) {
@@ -2200,11 +2236,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_vs_turret")
             }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
         }
     }
 
@@ -2387,17 +2418,46 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
 
 
     //## MAPNAME ##//
-    if (GetMapName()=="MAPNAME") {
+    if (GetMapName()=="LEVELNAME") {
         if (SSInstantRun==true) {
+            // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
-            //Entities.FindByName(null, "NAME").Destroy()
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
         if (SSOneTimeRun==true) {
-            // Elevator env_projectedtexture
+            // Elevator light_spot
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Elevator env_projectedtexture
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_dynamic"), "TurnOn", "", 0, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Tube
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
+            } catch(exception) {}
+
+            // Open Elevator Door
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
+            } catch(exception) {}
+
+            // Start fan soundscape
+            try {
+                local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
+                Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+                Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            } catch(exception) {}
+            // Enable vgui displays
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+                Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
             } catch(exception) {}
         }
 
@@ -2409,13 +2469,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSOneTimeRun) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
         }
     }
+
+
+
+
 
 Entities.FindByClassnameNearest("trigger_once", Vector(1, 2, 3), 1024).Destroy()
 
