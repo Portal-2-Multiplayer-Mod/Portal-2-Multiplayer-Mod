@@ -1,3 +1,14 @@
+# # # # # # # # # # # # # # # # # #
+#
+# Purpose: Launch Portal 2: MM
+#
+# Methods: Rename existing server
+# and engine binaries, and create
+# new DLC mod directories to allow
+# our content to override defaults
+#
+# # # # # # # # # # # # # # # # # #
+
 # LAUNCHER
 def Launch():
 
@@ -7,20 +18,21 @@ def Launch():
     import mmap
     import time
 
-    # Is on Windows
+    # Is on Windows (By default, we are on Linux)
     iow = False
 
-    # Is on Proton
+    # Is on Proton (Linux running Windows applications)
     IsOnProton = False
 
     if os.name == 'nt':
-        print("(Probably running Windows)")
+        print("(System should be running Windows)")
         iow = True
     else:
-        print("(Probably running Linux)")
+        print("(System should be running Linux)")
 
+    # Attempt to load psutil if on Linux
     if (iow):
-        print("Skipping psutil")
+        print("Skipping psutil because we are on Windows")
     else:
         import psutil
 
@@ -29,7 +41,7 @@ def Launch():
     owd = os.getcwd()
 
     if (iow):
-        print("Skipped psutil function")
+        print("Skipped pthe sutil function")
     else:
         def checkIfProcessRunning(processName):
         # Iterate over the all the running process
@@ -42,9 +54,10 @@ def Launch():
                     pass
             return False
 
-    # Get current directory
+    # Get current directory if on Windows
     if (iow):
         os.chdir(owd.replace("\\MultiplayerModFiles", ""))
+    # Get current directory if on Linux
     else:
         os.chdir(owd.replace("/MultiplayerModFiles", ""))
     owd = os.getcwd()
@@ -103,9 +116,10 @@ def Launch():
                 os.remove(owd + "/server.so")
             except:
                 pass
-        print("Removed modded files (Game Probably Crashed Last Session)")
+        print("Removed modded files (Game likely crashed last session!)")
     except:
-        print("Failed to remove modded files (somehow?????)")
+        # We should never encounter this exception...
+        print("Failed to remove modded files")
 
     # Undo the patch dll renames so we can patch the server.dll again
     # Rename main server.dll back to server.dll
@@ -148,9 +162,9 @@ def Launch():
             pass
 
 
-    ##################################
-    #        START OF PATCHING       #
-    ##################################
+    # # # # # # # # # # # # # # # # #
+    #       START OF PATCHING       #
+    # # # # # # # # # # # # # # # # #
 
     # server.dll patch
     try:
@@ -288,9 +302,9 @@ def Launch():
                 print("Failed to patch engine.dll")
                 IsOnProton = False
 
-    ##################################
-    #         END OF PATCHING        #
-    ##################################
+    # # # # # # # # # # # # # # # # #
+    #        END OF PATCHING        #
+    # # # # # # # # # # # # # # # # #
 
 
     # Copy the multiplayermod files into the new dlc using the dlc name
@@ -362,7 +376,7 @@ def Launch():
             subprocess.run(["portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3"])
         else:
             os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3")
-            print("Ran game")
+            print("Running game")
     except:
         print("Failed to launch Portal 2")
 
