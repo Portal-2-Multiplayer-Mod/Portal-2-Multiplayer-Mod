@@ -20,7 +20,7 @@ def Launch():
         print("(Probably running Linux)")
 
     if (iow):
-        print("skipping psutil")
+        print("Skipping psutil")
     else:
         import psutil
 
