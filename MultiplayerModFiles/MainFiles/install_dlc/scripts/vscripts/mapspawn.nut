@@ -2705,8 +2705,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "ColumServerCommand")
                     EntFire("@sphere", "RunScriptCode", "ElevatorThereYouAre()", OnlyOnceColumBlockerGlobalTime, null)
                     EntFire("departure_elevator-//spherebot_train_1_chassis_1", "MoveToPathNode", "spherebot_train_1_path_2", OnlyOnceColumBlockerGlobalTime, null)
-                    EntFire("ColumServerCommand", "command", "echo Changing Level...", OnlyOnceColumBlockerGlobalTime + 32, null)
-                    EntFire("ColumServerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceColumBlockerGlobalTime + 32, null)
+                    EntFire("ColumServerCommand", "command", "echo Changing Level...", OnlyOnceColumBlockerGlobalTime + 31, null)
+                    EntFire("ColumServerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceColumBlockerGlobalTime + 31, null)
 
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
