@@ -502,58 +502,25 @@ def Launch():
 
 
 # GUI
+# make a gui with a start button
 import tkinter as tk
-from tkinter import ttk
-#import highlight
-from tkinter import *
-import math
+from requests import get
 
+ip = get('https://api.ipify.org').text
 
-# Create GUI window and set title
-root = tk.Tk()
+# make a window
+window = tk.Tk()
+window.title("Portal 2 Multiplayer Mod Launcher")
+window.geometry("400x200")
 
-# Get Screen Size
-h = root.winfo_screenheight()
-h = h * 1
+# put a button on the window
+button = tk.Button(window, text="Start", command=Launch)
+button.pack()
 
-root.title("Multiplayer Mod Launcher")
-# make it 1280x720
-root.geometry(str(int(h/1.75)) + "x" + str(int(h/3)))
-# make the background  #22202a
-root.configure(background="#111215")
-# make the window none resizable
-root.resizable(width=False, height=False)
+# make selectable text that says "Select a mod"
+text = tk.Text(window, height=30, width=60)
+text.insert(tk.END, "Generated HyperLink:" + "\n" + "steam://run/620//+connect%20" + ip + ":27015")
+text.pack()
 
-
-# make a black canvas
-canvas = tk.Canvas(root, width=int(h/8), height=int(h/3.15), bg="#0f1013")
-canvas.pack()
-canvas.place(x=int(h/250), y=int(h/250))
-canvas.configure(highlightbackground='#0c0d10')
-canvas.config(highlightthickness=h/900)
-
-# make a start button
-# make a button to launch the game
-launchButton = tk.Button(root, text="Start", width=8, height=int(2) ,command=Launch)
-launchButton.pack()
-
-# make it 0 255 0
-launchButton.configure(background='#131215')
-# give it a font
-launchButton.configure(font=("FreeSans", int(h/75)))
-# make the text green
-launchButton.configure(foreground='#48da6c')
-# make it have a black highlight
-launchButton.configure(highlightbackground='#48da6c')
-# make the highlight be a little bigger
-launchButton.configure(highlightthickness=h/1850)
-# make it have a black border
-launchButton.configure(borderwidth=0)
-# put it to 10 pixels the left of the window
-launchButton.place(x=int(h/80), y=int(h/120))
-# change the hover color
-launchButton.configure(activebackground='#48da6c')
-
-
-#show the window
-root.mainloop()
+# show the window
+window.mainloop()
