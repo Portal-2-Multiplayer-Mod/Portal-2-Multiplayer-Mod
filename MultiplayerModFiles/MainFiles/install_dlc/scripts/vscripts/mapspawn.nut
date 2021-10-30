@@ -1783,7 +1783,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-                        NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
             SPA1WakeupPostPlayerSpawn <- false
         }
 
@@ -2114,10 +2114,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("changelevel sp_a2_catapult_intro")
             }
 
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
     }
 
@@ -2145,10 +2142,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("changelevel sp_a2_trust_fling")
             }
 
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
     }
     //## SP_A2_TRUST_FLING ##//
@@ -2175,10 +2169,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("changelevel sp_a2_pit_flings")
             }
 
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
     }
 
@@ -2214,10 +2205,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("changelevel sp_a2_fizzler_intro")
             }
 
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
     }
 
@@ -2245,10 +2233,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("changelevel sp_a2_sphere_peek")
             }
 
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
     }
 
@@ -2264,10 +2249,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
 
 
@@ -2315,10 +2297,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
 
 
@@ -2348,10 +2327,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
 
 
@@ -2392,10 +2368,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
 
 
@@ -2438,10 +2411,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
 
 
@@ -2624,10 +2594,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("changelevel sp_a2_pull_the_rug")
             }
 
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
+
         }
     }
 
@@ -2773,15 +2740,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1500, 352, 87), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1500, 352, -13), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_triple_laser")
             }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
         }
     }
 
@@ -2805,7 +2767,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -173), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -273), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bts1")
             }
@@ -2825,27 +2787,86 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "chamber_door-close_door_rl").Destroy()
-			// We will need to teleport all players to the second part of the map either all to the same place or making 33 different teleport points (Moja)
+            Entities.FindByName(null, "jailbreak_chamber_unlit-toxin_death_fade").Destroy()
+            Entities.FindByName(null, "jailbreak_chamber_unlit-toxin_death_trigger").Destroy()
+            Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damage", "15")
+            Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damagecap", "15")
+            Entities.FindByName(null, "pre_solved_chamber-toxin_fade").Destroy()
+            Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_row_6_close_logic").Destroy()
+            Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_row_5_close_logic").Destroy()
+            Entities.FindByName(null, "transition_trigger").Destroy()
+
+            Entities.FindByClassnameNearest("trigger_once", Vector(-2816, -1576, 32), 1024).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(864, -1488, -16), 1024).Destroy()
+
+            Entities.FindByName(null, "pre_solved_chamber-chamber_bridge").__KeyValueFromString("targetname", "MPModBridgeOverride")
+            EntFire("MPModBridgeOverride", "enable", "", 3, null)
+
+            OnceTwiceMpModBts1 <- true
+            OneTimeRunBts1 <- true
         }
 
 
         if (SSPostPlayerSpawn==true) {
-                        NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
 
-            // Make our own changelevel trigger
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel LEVELNAME")
+            // Bridge drop trigger
+            if (OnceTwiceMpModBts1==true) {
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(836.91394042969, -1589.0966796875, -30.565340042114), 104.79999542236)) {
+                    EntFire("@glados", "RunScriptCode", "JailbreakBridgeDisappear()", 0, null)
+                    EntFire("MPModBridgeOverride", "disable", "", 0, null)
+                    OnceTwiceMpModBts1 <- false
+                }
             }
 
-            // Elevator env_projectedtexture
+            // Exit Test Trigger
+            if (OneTimeRunBts1==true) {
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-3004.51953125, -1652.0881347656, 58.625823974609), 72.800002098083)) {
+                    EntFire("jailbreak_chamber_unlit-jailbreak_flashlight", "TurnOff", "", 1, null)
+                    EntFire("@sphere", "DisableFlashlight", "", 0, null)
+                    EntFire("@glados", "RunScriptCode", "JailbreakWheatleyCloseChamber()", 0, null)
+                    OneTimeRunBts1 <- false
+                }
+            }
+
+            // Make Wheatley look at nearest player
             try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+                EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
             } catch(exception) {}
+
+            // Teleport bois to spawn
+            if (Entities.FindByName(null, "jailbreak_chamber_lit-jailbreak_trigger")) {
+                local p = null
+                while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3792, -1128, 142), 350)) {
+                    if (p.GetTeam()==2) {
+                        p.SetOrigin(Vector(-10066, -2281, 0))
+                    } else {
+                        p.SetOrigin(Vector(-10066, -2581, 0))
+                    }
+                }
+            } else {
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-9915.5029296875, -2433.4301757812, -34.047546386719), 369.50420379639)) {
+                    p.SetOrigin(Vector(-3482.0803222656, -2117.7331542969, 20.649803161621))
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-9241.060546875, -2418.1635742188, 104.73459625244), 200)) {
+                    p.SetOrigin(Vector(-3481.3332519531, -2119.4982910156, 20.3405418396))
+                }
+            }
+
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1253.4089355469, -1319.4395751953, -320.2317199707), 104.79999542236)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_bts2")
+            }
         }
     }
 }
@@ -2867,11 +2888,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-                        NewApertureStartElevatorFixes()
+            NewApertureStartElevatorFixes()
         }
 
-                if (SSLoop==true) {
-
+        if (SSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
