@@ -2667,25 +2667,83 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             // Kill the point_teleport so we aren't teleporting 33 players to the exact same place
             Entities.FindByName(null, "blackout_teleport_player_to_surprise").Destroy()
-            // Possibly kill env_fades? (Moja)
-            //Entities.FindByName(null, "blackout_lights_off_fade").Destroy()
-            //Entities.FindByName(null, "blackout_lights_on_fade").Destroy()
             // Office door doesn't have a close relay and / or a dedicated close trigger so we can't keep it open (Moja)
             Entities.FindByClassnameNearest("trigger_once", Vector(-976, 256, 32), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-1056, 256, 40.25), 1024).Destroy()
-            // Ironically we might want to teleport all players into the elevator? (Moja)
+            OnlyOnceColumBlocker <- true
+            OnlyOnceColumBlocker1 <- true
+            OnlyOnceColumBlocker2 <- true
         }
 
 
         if (SSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-1394, 108, -1906), 1024).__KeyValueFromString("spawnflags", "4161")
+            Entities.FindByClassnameNearest("trigger_once", Vector(-1472, 256, -2591.75), 1024).__KeyValueFromString("spawnflags", "4161")
         }
 
         if (SSLoop==true) {
+            if (OnlyOnceColumBlocker2==true) {
+                if (!Entities.FindByClassnameNearest("trigger_once", Vector(-1486, 256, -139.75), 10)) {
+                    printl("Elevator Viewcontrol Activated")
+
+                    // Elevator viewcontrol
+                    ColumBlockerViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+                    ColumBlockerViewcontrol.__KeyValueFromString("target_team", "-1")
+                    ColumBlockerViewcontrol.__KeyValueFromString("fov", "100")
+                    ColumBlockerViewcontrol.__KeyValueFromString("targetname", "ColumBlockerViewcontrol")
+                    ColumBlockerViewcontrol.SetOrigin(Vector(-1475, 256, -90))
+                    EntFire("ColumBlockerViewcontrol", "setparent", "departure_elevator-elevator_1", 0, null)
+                    ColumBlockerViewcontrol.SetAngles(0, 0, 0)
+                    EntFire("ColumBlockerViewcontrol", "enable", "", 0, null)
+
+                    EntFire("global_ents-proxy", "OnProxyRelay2", "", 6.2, null)
+                    EntFire("departure_elevator-bts_shadowed_light_01", "TurnOn", "", 6.2, null)
+                    EntFire("departure_elevator-elevator_1", "SetSpeedReal", "50", 6.2, null)
+
+                    OnlyOnceColumBlockerGlobalTime <- 9
+                    Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "ColumServerCommand")
+                    EntFire("@sphere", "RunScriptCode", "ElevatorThereYouAre()", OnlyOnceColumBlockerGlobalTime, null)
+                    EntFire("departure_elevator-//spherebot_train_1_chassis_1", "MoveToPathNode", "spherebot_train_1_path_2", OnlyOnceColumBlockerGlobalTime, null)
+                    EntFire("ColumServerCommand", "command", "echo Changing Level...", OnlyOnceColumBlockerGlobalTime + 32, null)
+                    EntFire("ColumServerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceColumBlockerGlobalTime + 32, null)
+
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        p.SetOrigin(Vector(-1964, 331, -2479))
+                    }
+
+                    OnlyOnceColumBlocker2 <- false
+                }
+            }
+
+            // Delete office door after walking through it
+            if (OnlyOnceColumBlocker1==true) {
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-63, -780, 320), 40)) {
+                    Entities.FindByName(null, "officedoor_1").Destroy()
+                    OnlyOnceColumBlocker1 <- false
+                }
+            }
+
+            // Teleport Players After Blackout
+            if (OnlyOnceColumBlocker==true) {
+                if (!Entities.FindByClassnameNearest("trigger_once", Vector(-76, -1040, 311.5), 3)) {
+                    // Find All Players
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        p.SetOrigin(Vector(-64, -1088, 256))
+                        p.SetAngles(0, 90, 0)
+                    }
+                    OnlyOnceColumBlocker <- false
+                }
+            }
 
             // Make Wheatley look at nearest player
+            try {
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-            EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", "ColumBlockerViewcontrol", 0, null, null)
+            } catch(exception) {}
 
             // Elevator changelevel
             local p = null
@@ -2693,11 +2751,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_chaining")
             }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
         }
     }
 
