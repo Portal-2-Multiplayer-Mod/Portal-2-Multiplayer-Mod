@@ -161,7 +161,7 @@ function init() {
     // Run singleplayer code
     if (GetMapName().slice(0, 7) != "mp_coop") {
         IsSingleplayerMap <- true
-        SingleplayerSupport(true, false, false, false)
+        SingleplayerSupport(true, false, false, false, false)
     }
 
     // Create an entity to display player color at the bottom left of every clients' screen
@@ -397,7 +397,7 @@ try {
 
         // Singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
-            SingleplayerSupport(false, true, false, false)
+            SingleplayerSupport(false, true, false, false, false)
         }
 
         if (tick == lasttick50 + 50) {
@@ -487,6 +487,7 @@ EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+SingleplayerSupport(false, false, false, false, true)
 
 // Say join message on HUD
 if (PluginLoaded==true) {
@@ -559,7 +560,7 @@ return
 /////////////////////////////////////
 
 function PostMapLoad() {
-    SingleplayerSupport(false, false, false, true)
+    SingleplayerSupport(false, false, false, true, false)
     AllMapsCode(false, false, true, false)
     // Enable fast download
     SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
@@ -649,7 +650,7 @@ function GeneralOneTime() {
 
     AllMapsCode(false, true, false, false)
 
-    SingleplayerSupport(false, false, true, false)
+    SingleplayerSupport(false, false, true, false, false)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1231,7 +1232,7 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 // SINGLEPLAYER FUNCTIONS //
 ////////////////////////////
 
-    function             NewApertureStartElevatorFixes() {
+    function NewApertureStartElevatorFixes() {
         // Elevator light_spot
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
@@ -1316,28 +1317,28 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
         self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret05")
         self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret06")
 
-        EntFire("myexplode2", "addoutput", "targetname playline1", 2.65-0.1 + (TickSpeed * 2), null)
-        EntFire("playline1", "addoutput", "targetname myexplode2", 2.76-0.1 + (TickSpeed * 2), null)
+        EntFire("myexplode2", "addoutput", "targetname playline1", 2, null)
+        EntFire("playline1", "addoutput", "targetname myexplode2", 2+ (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline2", 6.55-0.1 + (TickSpeed * 2), null)
-        EntFire("playline2", "addoutput", "targetname myexplode2", 6.66-0.1 + (TickSpeed * 2), null)
+        EntFire("myexplode2", "addoutput", "targetname playline2", 6, null)
+        EntFire("playline2", "addoutput", "targetname myexplode2", 6+ (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline3", 12.75-0.1 + (TickSpeed * 2), null)
-        EntFire("playline3", "addoutput", "targetname myexplode2", 12.86-0.1 + (TickSpeed * 2), null)
+        EntFire("myexplode2", "addoutput", "targetname playline3", 12, null)
+        EntFire("playline3", "addoutput", "targetname myexplode2", 12+ (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline4", 16.75-0.1 + (TickSpeed * 2), null)
-        EntFire("playline4", "addoutput", "targetname myexplode2", 16.86-0.1 + (TickSpeed * 2), null)
+        EntFire("myexplode2", "addoutput", "targetname playline4", 16, null)
+        EntFire("playline4", "addoutput", "targetname myexplode2", 16+ (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline5", 18.00-0.1 + (TickSpeed * 2), null)
-        EntFire("playline5", "addoutput", "targetname myexplode2", 18.11-0.1 + (TickSpeed * 2), null)
+        EntFire("myexplode2", "addoutput", "targetname playline5", 18, null)
+        EntFire("playline5", "addoutput", "targetname myexplode2", 18+ (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline6", 24.00-0.1 + (TickSpeed * 2), null)
-        EntFire("playline6", "addoutput", "targetname myexplode2", 24.11-0.1 + (TickSpeed * 2), null)
+        EntFire("myexplode2", "addoutput", "targetname playline6", 24, null)
+        EntFire("playline6", "addoutput", "targetname myexplode2", 24+ (TickSpeed * 2), null)
 
-        EntFire("myexplode2", "addoutput", "targetname playline7", 25.50-0.1 + (TickSpeed * 2), null)
-        EntFire("playline7", "addoutput", "targetname myexplode2", 25.61-0.1 + (TickSpeed * 2), null)
+        EntFire("myexplode2", "addoutput", "targetname playline7", 25, null)
+        EntFire("playline7", "addoutput", "targetname myexplode2", 25+ (TickSpeed * 2), null)
 
-        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25.50-0.1 + (TickSpeed * 2), null)
+        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25+ (TickSpeed * 2), null)
 
     }
 
@@ -1353,7 +1354,7 @@ DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
 // SINGLEPLAYER MAP SUPPORT CODE //
 ///////////////////////////////////
 
-function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapSpawn) {
+function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapSpawn, SSOnPlayerJoin) {
 
     //## SP_A1_INTRO2 ##//
     if (GetMapName() == "sp_a1_intro2") {
@@ -1529,7 +1530,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             fallenautoportal.SetAngles(-90, 69, 0)
         }
 
-                if (SSPostPlayerSpawn==true) {
+        if (SSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
@@ -1550,7 +1551,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
         if (SSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-open"), "trigger", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
             Entities.FindByName(null, "InstanceAuto9-socket_trigger").Destroy()
@@ -1562,16 +1562,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
         }
 
-                if (SSPostPlayerSpawn==true) {
+        if (SSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
         if (SSLoop==true) {
             WheatleySeq1 <- false
-
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
             // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
@@ -1666,20 +1662,20 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
                     EntFire("@glados", "runscriptcode", "sp_a1_intro7_HoboTurretScene()", 0, null)
 
-                    EntFire("myexplode2", "addoutput", "targetname playline8", 0.00, null)
-                    EntFire("playline8", "addoutput", "targetname myexplode2", 0.11, null)
+                    EntFire("myexplode2", "addoutput", "targetname playline8", 0, null)
+                    EntFire("playline8", "addoutput", "targetname myexplode2", 0+ (TickSpeed * 2), null)
 
                     EntFire("myexplode2", "addoutput", "targetname playline9", 1.50, null)
-                    EntFire("playline9", "addoutput", "targetname myexplode2", 1.51, null)
+                    EntFire("playline9", "addoutput", "targetname myexplode2", 1.50+ (TickSpeed * 2), null)
 
-                    EntFire("myexplode2", "addoutput", "targetname playline10", 3.10, null)
-                    EntFire("playline10", "addoutput", "targetname myexplode2", 3.11, null)
+                    EntFire("myexplode2", "addoutput", "targetname playline10", 3, null)
+                    EntFire("playline10", "addoutput", "targetname myexplode2", 3+ (TickSpeed * 2), null)
 
-                    EntFire("myexplode2", "addoutput", "targetname playline11", 4.80, null)
-                    EntFire("playline11", "addoutput", "targetname myexplode2", 4.81, null)
+                    EntFire("myexplode2", "addoutput", "targetname playline11", 5, null)
+                    EntFire("playline11", "addoutput", "targetname myexplode2", 5+ (TickSpeed * 2), null)
 
-                    EntFire("myexplode2", "addoutput", "targetname playline12", 7.20, null)
-                    EntFire("playline12", "addoutput", "targetname myexplode2", 7.25, null)
+                    EntFire("myexplode2", "addoutput", "targetname playline12", 8, null)
+                    EntFire("playline12", "addoutput", "targetname myexplode2", 8+ (TickSpeed * 2), null)
                 }
             }
 
@@ -1990,7 +1986,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
 
             // Remove the player's Portal Gun
-            if (Entities.FindByName(null, "player_near_portalgun")) {
+            if (Entities.FindByName(null, "portalgun")) {
                 local ent = null
                 while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
                     ent.Destroy()
@@ -1998,7 +1994,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
 
             // Give the player a Portal Gun
-            if (!Entities.FindByName(null, "player_near_portalgun")) {
+            if (!Entities.FindByName(null, "portalgun")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     if (Entities.FindByName(null, "CustomPortalGun")) {
@@ -2049,7 +2045,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         if (SSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-            Entities.FindByName(null, "door_1-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_multiple", Vector(144, 600, 94.82), 1024).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(144, 704, 72), 1024).Destroy()
         }
 
 
@@ -2058,10 +2055,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 50)) {
                 SendToConsole("commentary 1")
@@ -2094,10 +2087,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_over_goo")
             }
-
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
         }
     }
 
@@ -2516,26 +2505,58 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Kill the end door close trigger even though it probably isn't linked to the door relay
             Entities.FindByClassnameNearest("trigger_once", Vector(-320, -1376, 40), 1024).Destroy()
             // What to do about the elevator that can trap players below? (Moja)
+            SingleplayerOneTimeTrigger1 <- true
         }
-
-        if (SSPostPlayerSpawn==true) {
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
-        }
-
-
 
         if (SSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
+        if (SSOnPlayerJoin==true) {
+            // Find all players
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+                EntFireByHandle(p, "setfogcontroller", "@environment_mines_fog", 0, null, null)
+            }
+        }
+
         if (SSLoop==true) {
+            if (SingleplayerOneTimeTrigger1 == true) {
+                if (!Entities.FindByClassnameNearest("trigger_once", Vector(-468, -704, -63), 10)) {
+                    // Find all players
+                    local p = null
+                    while(p = Entities.FindByClassname(p, "player")) {
+                        // Teleport them to the elevator
+                        p.SetOrigin(Vector(-449, -704, -55))
+                        p.SetAngles(0, 0, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                    Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "TPUpLaserRelaysDIS")
+                    EntFire("TPUpLaserRelaysDIS", "addoutput", "targetname TPUpLaserRelays", 12, null)
+                    SingleplayerOneTimeTrigger1 <- false
+                }
+            }
+
+            if (Entities.FindByName(null, "TPUpLaserRelays")) {
+                local p = null
+                while(p = Entities.FindByClassname(p, "player")) {
+                    if (p.GetOrigin().z <= -30) {
+                        p.SetOrigin(Vector(-256, -189, 28))
+                        p.SetAngles(0, -90, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                }
+            }
 
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-318, -1790, -167), 50)) {
+                // Reset r_flashlightbrightness
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 0.25", 0, p, p)
+                }
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_turret_blocker")
             }
