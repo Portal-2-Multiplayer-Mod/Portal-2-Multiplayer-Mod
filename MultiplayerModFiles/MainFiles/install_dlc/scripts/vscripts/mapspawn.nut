@@ -2619,7 +2619,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1075, 382, 92), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1075, 382, -8), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_pull_the_rug")
             }
@@ -2640,6 +2640,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "prevent_ratman_backtrack").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 896, 104), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 888, 96), 1024).Destroy()
+            Entities.FindByClassnameNearest("prop_dynamic", Vector(80, -755, 256), 1024).SetOrigin(Vector(72, -777, 192))
         }
 
 
@@ -2651,15 +2652,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(64, 1311, -100), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(64, 1311, -200), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_column_blocker")
             }
-
-            // Elevator env_projectedtexture
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch(exception) {}
         }
     }
 
