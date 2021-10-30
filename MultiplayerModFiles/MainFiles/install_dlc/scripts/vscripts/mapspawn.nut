@@ -2541,17 +2541,26 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             if (Entities.FindByName(null, "TPUpLaserRelays")) {
                 local p = null
                 while(p = Entities.FindByClassname(p, "player")) {
-                    if (p.GetOrigin().z <= -30) {
-                        p.SetOrigin(Vector(-256, -189, 28))
-                        p.SetAngles(0, -90, 0)
-                        p.SetVelocity(Vector(0, 0, 0))
+                    SKIPLaserRelays <- false
+                    local p2 = null
+                    while (p2 = Entities.FindByClassnameWithin(p2, "player", Vector(-319.15093994141, -1782.7447509766, -17.6354637146), 380.50416564941)) {
+                        if (p2==p) {
+                            SKIPLaserRelays <- true
+                        }
+                    }
+                    if (SKIPLaserRelays == false) {
+                        if (p.GetOrigin().z <= -50) {
+                            p.SetOrigin(Vector(-256, -189, 28))
+                            p.SetAngles(0, -90, 0)
+                            p.SetVelocity(Vector(0, 0, 0))
+                        }
                     }
                 }
             }
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-318, -1790, -167), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-318, -1790, -267), 50)) {
                 // Reset r_flashlightbrightness
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
