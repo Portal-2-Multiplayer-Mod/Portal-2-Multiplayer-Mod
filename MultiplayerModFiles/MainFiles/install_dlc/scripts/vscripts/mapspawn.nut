@@ -24,7 +24,7 @@
 //-----------------------------------
 DevMode <- true // Set to true if your a developer
 //-----------------------------------
-UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -2792,8 +2792,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damage", "15")
             Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damagecap", "15")
             Entities.FindByName(null, "pre_solved_chamber-toxin_fade").Destroy()
-            Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_row_6_close_logic").Destroy()
             Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_row_5_close_logic").Destroy()
+            Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_row_6_close_logic").Destroy()
             Entities.FindByName(null, "transition_trigger").Destroy()
 
             Entities.FindByClassnameNearest("trigger_once", Vector(-2816, -1576, 32), 1024).Destroy()
@@ -2869,6 +2869,40 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
     }
+
+    //## SP_A2_BTS2 ##//
+    if (GetMapName()=="sp_a2_bts2") {
+        if (SSInstantRun==true) {
+            // Here if we need to ent_fire something
+            //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+            // Destroy objects
+            Entities.FindByName(null, "sealin_36-arm_2").Destroy()
+            Entities.FindByName(null, "sealin_36-panel_2").Destroy()
+            Entities.FindByName(null, "player_clip").Destroy()
+            Entities.FindByName(null, "player_died_relay").Destroy()
+            Entities.FindByName(null, "transition_trigger").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+
+            // Make Wheatley look at nearest player
+            try {
+                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+                EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+            } catch(exception) {}
+
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel LEVELNAME")
+            }
+        }
+    }
 }
 
 //////////////////////
@@ -2877,6 +2911,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
 /*
 
+    // Use with new Aperture maps //
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
@@ -2901,16 +2936,39 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
+    // Use with maps without entrance or exit elevators //
+
+    //## MAPNAME ##//
+    if (GetMapName()=="LEVELNAME") {
+        if (SSInstantRun==true) {
+            // Here if we need to ent_fire something
+            EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+            // Destroy objects
+            Entities.FindByName(null, "NAME").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel LEVELNAME")
+            }
+        }
+    }
 
 
-
-
-Entities.FindByClassnameNearest("trigger_once", Vector(1, 2, 3), 1024).Destroy()
-
+// Destroy object using FindByName
 Entities.FindByName(null, "NAME").Destroy()
 
+// Find and destroy object using FindByClassnameNearest within 1 unit of given vector
 Entities.FindByClassnameNearest("CLASS", Vector(1, 2, 3), 1).Destroy()
 
+// Changelevel trigger
 local p = null
 while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
     SendToConsole("commentary 1")
@@ -2930,8 +2988,10 @@ if (GetMapName() == "MAPNAME") {
     SendToConsole("commentary 0")
 }
 
+// ent_fire an object
 EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
 
+// Pretty sure this is unified in the NewAperture function use find to delete unused entrys (Moja)
 try {
     EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
 } catch(exception) {}
