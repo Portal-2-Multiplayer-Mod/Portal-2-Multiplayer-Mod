@@ -2579,6 +2579,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "blast_door").Destroy()
             // We may need to do something about the singleplayer stuck spot (Moja)
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 1704, 64), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 1776, 40), 1024).Destroy()
@@ -2592,7 +2593,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -165), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -265), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_laser_vs_turret")
             }
