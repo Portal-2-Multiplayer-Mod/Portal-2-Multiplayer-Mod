@@ -9,9 +9,29 @@ else:
 
 CheckingPath = ""
 
+import winreg as wr
+
+aKey = r"SOFTWARE\Valve\Steam"
+print(aKey)
+aReg = wr.ConnectRegistry(None, wr.HKEY_LOCAL_MACHINE)
+
+print(r"*** Reading from %s ***" % aKey)
+
+aKey = wr.OpenKey(aReg, aKey)
+for i in range(1024):
+    try:
+        asubkey_name = wr.EnumKey(aKey, i)
+        asubkey = wr.OpenKey(aKey, asubkey_name)
+        val = wr.QueryValueEx(asubkey, "InstallPath")
+        print("STEAMPATH:" + val)
+    except EnvironmentError:
+        break
+
+
+
 if (iow):
     print("(System is running Windows)")
-    owd = "D:\Program Files (x86)\Steam\steamapps"
+    owd = val
 
     # open libraryfolders.vdf
     with open(owd + "\libraryfolders.vdf", "r") as f:
