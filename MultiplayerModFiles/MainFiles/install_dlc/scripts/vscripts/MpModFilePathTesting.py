@@ -14,9 +14,10 @@ if (iow):
 
     import winreg as wr
 
-    aKey = r"SOFTWARE\Valve\\Steam"
+    aKey = r"SOFTWARE\\Valve\\Steam"
     print(aKey)
     aReg = wr.ConnectRegistry(None, wr.HKEY_LOCAL_MACHINE)
+    print(aReg)
 
     print(r"*** Reading from %s ***" % aKey)
 
