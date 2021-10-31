@@ -93,10 +93,13 @@ def Launch():
         if(iow):
             try:
                 os.remove(owd + "\server.dll")
+                print("Did not fail to remove server.dll!")
             except:
                 pass
             try:
                 os.remove(owd + "\engine.dll")
+                print("Did not fail to remove engine.dll!")
+
             except:
                 pass
         else:
@@ -250,8 +253,7 @@ def Launch():
     if (iow):
         # Try:
             # Open engine.dll into binary
-        if (iow):
-            f = open(owd + "\\bin\engine.dll", 'rb')
+        f = open(owd + "\\bin\engine.dll", 'rb')
         data = f.read()
         f.close()
 
