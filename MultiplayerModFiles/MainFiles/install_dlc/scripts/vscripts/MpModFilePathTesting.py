@@ -11,16 +11,16 @@ CheckingPath = ""
 
 if (iow):
     print("(System is running Windows)")
-    owd = "C:\Program Files(x86)\Steam\steamapps"
+    owd = "D:\Program Files (x86)\Steam\steamapps"
 
     # open libraryfolders.vdf
     with open(owd + "\libraryfolders.vdf", "r") as f:
         s = f.readlines()
-        s = s.replace(" ", "")
 
         # ittarate through the lines
         for line in s:
             print(line)
+            line = line.replace(" ", "")
             if line.startswith('"path"'):
                 CheckingPath = line[6:]
                 CheckingPath = CheckingPath.replace('"', "")
