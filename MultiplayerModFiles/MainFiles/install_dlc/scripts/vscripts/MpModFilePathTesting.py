@@ -21,11 +21,13 @@ if (iow):
         for line in s:
             print(line)
             line = line.replace(" ", "")
+            listyboi = line.split()
+            line = "".join(listyboi)
             if line.startswith('"path"'):
                 CheckingPath = line[6:]
                 CheckingPath = CheckingPath.replace('"', "")
                 print("VAR SET" + CheckingPath)
-            if (line == '"620""13432591147"'):
+            if (line == '"620"'):
                 print("FOUND GAME")
                 FinalPath = CheckingPath + "\\steamapps\\common\\Portal 2"
                 print(FinalPath)
