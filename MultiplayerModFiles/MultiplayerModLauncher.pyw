@@ -521,7 +521,7 @@ button.pack()
 
 # make selectable text that says "Select a mod"
 text = tk.Text(window, height=30, width=60)
-text.insert(tk.END, "Generated HyperLink:" + "\n" + "steam://run/620//+connect%20" + ip + ":27015")
+text.insert(tk.END, "Generated HyperLink:" + "\n" + "steam://run/620//+connect%20" + ip)
 text.pack()
 
 # show the window
