@@ -39,6 +39,7 @@ def Launch():
     NumList = []
     lastnumber = 0
     owd = os.getcwd()
+    print(owd)
 
     if (iow):
         print("Skipped pthe sutil function")
@@ -352,8 +353,14 @@ def Launch():
 
     # Rename server.dll to disabledserver.dll so our newly patched server.dll runs
     if (iow):
-        os.rename(owd + "\portal2\\bin\server.dll", owd + "\portal2\\bin\disabledserver.dll")
-        os.rename(owd + "\\bin\engine.dll", owd + "\\bin\disabledengine.dll")
+        try:
+            os.rename(owd + "\portal2\\bin\server.dll", owd + "\portal2\\bin\disabledserver.dll")
+        except:
+            print("Failed to disable server.dll!")
+        try:
+            os.rename(owd + "\\bin\engine.dll", owd + "\\bin\disabledengine.dll")
+        except:
+            print("Failed to disable engine.dll!")
     else:
         try:
             os.rename(owd + "/bin/linux32/engine.so", owd + "/bin/linux32/disabledengine.so")
