@@ -30,7 +30,7 @@ DedicatedServer <- false // Set to true if you want to run the server as a dedic
 //-----------------------------------
 RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
-TickSpeed <- 0.01 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01 TO 0.5) (lower numbers can cause lag on slow computers/connections)
+TickSpeed <- 0.1 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
 
 
@@ -183,9 +183,9 @@ function init() {
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod")
     onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
-    onscreendisplay.__KeyValueFromString("holdtime", "0.02")
-    onscreendisplay.__KeyValueFromString("fadeout", "0.02")
-    onscreendisplay.__KeyValueFromString("fadein", "0.02")
+    onscreendisplay.__KeyValueFromString("holdtime", (TickSpeed * 2).tostring())
+    onscreendisplay.__KeyValueFromString("fadeout", (TickSpeed * 2).tostring())
+    onscreendisplay.__KeyValueFromString("fadein", (TickSpeed * 2).tostring())
     onscreendisplay.__KeyValueFromString("spawnflags", "1")
     onscreendisplay.__KeyValueFromString("color", "60 200 60")
     onscreendisplay.__KeyValueFromString("channel", "1")

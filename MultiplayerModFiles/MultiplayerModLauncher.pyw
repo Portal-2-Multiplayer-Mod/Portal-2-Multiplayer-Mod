@@ -9,26 +9,118 @@
 #
 # # # # # # # # # # # # # # # # # #
 
+# GLOBAL DEFINITIONS
+import os
+import shutil
+import subprocess
+import mmap
+import time
+
+# Is on Windows (By default, we are on Linux)
+iow = False
+
+if os.name == 'nt':
+    print("(System should be running Windows)")
+    iow = True
+else:
+    print("(System should be running Linux)")
+
+owd = os.getcwd()
+
+# Get current directory if on Windows
+if (iow):
+    os.chdir(owd.replace("\\MultiplayerModFiles", ""))
+# Get current directory if on Linux
+else:
+    os.chdir(owd.replace("/MultiplayerModFiles", ""))
+owd = os.getcwd()
+print(os.getcwd())
+
+
+
+
+# CONFIG FILE
+
+# default config file
+configdefaults = [
+    "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
+    "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
+    "",
+    "  cfgvariant = 1 # DO NOT CHANGE",
+    "",
+    "# DISCLAIMER : We recommend you edit this though the gui as this",
+    "#              config file has some unstable / exparamental that",
+    "#              will in all most likely break the game if edited!",
+    "",
+    "#-----------------------------------",
+    "DevMode = true # Set to true if your a developer",
+    "#-----------------------------------",
+    "UsePlugin = true # Set to true if you want to use the plugin (LINUX ONLY)",
+    "#-----------------------------------",
+    "DedicatedServer = false # Set to true if you want to run the server as a dedicated server (INDEV)",
+    "#-----------------------------------",
+    "RandomTurretModels = false # Set to true if you want to randomize the turret models (INDEV)",
+    "#-----------------------------------",
+    "TickSpeed = 0.1 # Set to the tick speed of the server (DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING)(UNSTABLE - ONLY DO 0.02 TO 0.5) (lower numbers can cause lag on slow computers/connections)",
+    "#-----------------------------------"
+]
+
+configdefaults = configdefaults
+
+if (iow):
+    configpath = "MultiplayerModFiles\\mpmod.cfg"
+else:
+    configpath = "MultiplayerModFiles/mpmod.cfg"
+
+# create a config file if it doesn't exist
+
+if not os.path.exists(configpath):
+    # create a config file
+    f = open(configpath, "w")
+    # write the default values
+    for line in configdefaults:
+        print(line, file=f)
+    f.close()
+
+
+
+# CONFIG FILE READ
+
+# open file for reading
+f = open(configpath, "r")
+# read the file
+lines = f.readlines()
+# close the file
+f.close()
+
+outputconfig = []
+editedconfigdata = []
+
+# get raw config data from file
+for line in lines:
+    line = line.strip()
+    line = line.replace(" ", "")
+    if (line != ""):
+        if (line.find("#") != -1):
+            line = line[ : line.find("#")]
+            if (line != ""):
+                outputconfig.append(line)
+        else:
+            outputconfig.append(line)
+
+# edit config data
+for line in outputconfig:
+    line = line.replace("=", " <- ")
+    if (line.find("cfgvariant") != -1):
+        print("Config Version: " + line.split(" <- ")[1])
+    else:
+        editedconfigdata.append(line)
+
 # LAUNCHER
 def Launch():
 
-    import os
-    import shutil
-    import subprocess
-    import mmap
-    import time
-
-    # Is on Windows (By default, we are on Linux)
-    iow = False
-
     # Is on Proton (Linux running Windows applications)
     IsOnProton = False
-
-    if os.name == 'nt':
-        print("(System should be running Windows)")
-        iow = True
-    else:
-        print("(System should be running Linux)")
 
     # Attempt to load psutil if on Linux
     if (iow):
@@ -38,7 +130,7 @@ def Launch():
 
     NumList = []
     lastnumber = 0
-    owd = os.getcwd()
+
 
     if (iow):
         print("Skipped pthe sutil function")
@@ -53,15 +145,6 @@ def Launch():
                 except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                     pass
             return False
-
-    # Get current directory if on Windows
-    if (iow):
-        os.chdir(owd.replace("\\MultiplayerModFiles", ""))
-    # Get current directory if on Linux
-    else:
-        os.chdir(owd.replace("/MultiplayerModFiles", ""))
-    owd = os.getcwd()
-    print(os.getcwd())
 
     # Get a number list of all the dlcs
     for filename in os.listdir():
@@ -99,7 +182,6 @@ def Launch():
             try:
                 os.remove(owd + "\engine.dll")
                 print("Did not fail to remove engine.dll!")
-
             except:
                 pass
         else:
@@ -318,36 +400,46 @@ def Launch():
 
     # Edit mapspawn file in the new dlc
     if (iow):
-        print("Skipped map spawn editing")
-    #     # If on Windows
-    #     f = open(owd + dlcname + "\scripts\\vscripts\mapspawn.nut", 'r')
-    #     data = f.read()
-    #     f.close()
+        # If running windows
+        f = open(owd + dlcname + "\\scripts\\vscripts\\mapspawn.nut", 'r')
+        data = f.readlines()
+        f.close()
+        os.remove(owd + dlcname + "\\scripts\\vscripts\\mapspawn.nut")
 
-    #     # Edit mapspawn.nut file
-    #         # Change UsePlugin <- true to false if on Windows
-    #     data = data.replace("UsePlugin <- true", "UsePlugin <- false")
+        # Edit mapspawn file
+        f2 = open(owd + dlcname + "\\scripts\\vscripts\\mapspawn.nut", 'w')
 
-    #     # Remove old mapspawn.nut file
-    #     os.remove(owd + dlcname + "\scripts\\vscripts\mapspawn.nut")
-    #     f2 = open(owd + dlcname + "\scripts\\vscripts\mapspawn.nut", 'w')
-    #     f2.write(data)
-    #     f2.close()
+        # write config data
+        for origline in data:
+            for line in editedconfigdata:
+                if (line.strip()[ : line.strip().find("<-")] == origline.strip()[ : origline.strip().find("<-")]):
+                    outputline = line + origline[origline.find("<-") : ].replace("<- ", "<-").replace(" <-", "<-").replace("<- ", "<-")[origline[origline.find("<-") : ].replace("<- ", "<-").replace(" <-", "<-").replace("<- ", "<-").find(" ") : ]
+                    break
+                else:
+                    outputline = origline
+            f2.write(outputline)
+        # Remove old mapspawn.nut file
+        f2.close()
     else:
         # If running Linux
         f = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'r')
-        data = f.read()
+        data = f.readlines()
         f.close()
+        os.remove(owd + dlcname + "/scripts/vscripts/mapspawn.nut")
 
         # Edit mapspawn file
-            # Change UsePlugin <- false to true if running Linux
-        if (IsOnProton == False):
-            data = data.replace("UsePlugin <- false", "UsePlugin <- true")
-
-        # Remove old mapspawn.nut file
-        os.remove(owd + dlcname + "/scripts/vscripts/mapspawn.nut")
         f2 = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'w')
-        f2.write(data)
+
+        # write config data
+        for origline in data:
+            for line in editedconfigdata:
+                if (line.strip()[ : line.strip().find("<-")] == origline.strip()[ : origline.strip().find("<-")]):
+                    outputline = line + origline[origline.find("<-") : ].replace("<- ", "<-").replace(" <-", "<-").replace("<- ", "<-")[origline[origline.find("<-") : ].replace("<- ", "<-").replace(" <-", "<-").replace("<- ", "<-").find(" ") : ]
+                    break
+                else:
+                    outputline = origline
+            f2.write(outputline)
+        # Remove old mapspawn.nut file
         f2.close()
 
     # Rename server.dll to disabledserver.dll so our newly patched server.dll runs
@@ -363,7 +455,12 @@ def Launch():
                 os.rename(owd + "/bin/engine.dll", owd + "/bin/disabledengine.dll")
             except:
                 print("Failed to rename engine.dll")
-        os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
+            try:
+
+        try:
+            os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
+        except:
+            print("Failed to rename server.dll")
         try:
             os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
         except:
