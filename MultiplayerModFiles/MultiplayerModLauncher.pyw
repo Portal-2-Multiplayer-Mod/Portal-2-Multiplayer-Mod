@@ -79,7 +79,7 @@ if not os.path.exists(configpath):
     f = open(configpath, "w")
     # write the default values
     for line in configdefaults:
-        print(line, file=f)
+        f.write(line + "\n")
     f.close()
 
 
