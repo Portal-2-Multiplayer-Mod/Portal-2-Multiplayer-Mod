@@ -400,13 +400,13 @@ def Launch():
     # Edit mapspawn file in the new dlc
     if (iow):
         # If running windows
-        f = open(owd + dlcname + "\\scripts\\vscripts\\mapspawn.nut", 'r')
+        f = open(owd + dlcname + "\\scripts\\vscripts\\mapspawn.nut", 'r', encoding="utf-8")
         data = f.readlines()
         f.close()
         os.remove(owd + dlcname + "\\scripts\\vscripts\\mapspawn.nut")
 
         # Edit mapspawn file
-        f2 = open(owd + dlcname + "\\scripts\\vscripts\\mapspawn.nut", 'w')
+        f2 = open(owd + dlcname + "\\scripts\\vscripts\\mapspawn.nut", 'w', encoding="utf-8")
 
         # write config data
         for origline in data:
