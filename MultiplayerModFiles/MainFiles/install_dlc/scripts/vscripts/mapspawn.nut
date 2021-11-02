@@ -22,9 +22,9 @@
 //  ██████  ██████  ██   ████ ██      ██  ██████
 
 //-----------------------------------
-DevMode <- true // Set to true if you're a developer
+DevMode <- false // Set to true if you're a developer
 //-----------------------------------
-UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -3136,18 +3136,29 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     //## SP_A3_00 ##//
     if (GetMapName()=="sp_a3_00") {
         if (SSInstantRun==true) {
+            printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
+            Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
+            Entities.FindByName(null, "@environment_bottomless_pit_falling_fog").__KeyValueFromString("farz", "0")
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
-            //Entities.FindByName(null, "NAME").Destroy()
+            Entities.FindByClassnameNearest("logic_auto", Vector(144, -4048, 64), 20).Destroy()
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "trigger_push")) {
+                ent.Destroy()
+            }
         }
 
         if (SSPostPlayerSpawn==true) {
-
+            EntFireByHandle(Entities.FindByName(null, "tube_main_prop_1"), "SetAnimation", "bts6_A5", 0, null, null)
         }
 
         if (SSLoop==true) {
-
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                p.SetVelocity(Vector(0, 0, 0))
+                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 20))
+            }
         }
     }
 }
