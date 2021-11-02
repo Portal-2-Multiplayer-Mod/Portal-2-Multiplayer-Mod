@@ -46,7 +46,7 @@ configdefaults = [
     "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
     "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
     "",
-    "  cfgvariant = 2 # DO NOT CHANGE",
+    "  cfgvariant = 3 # DO NOT CHANGE",
     "",
     "# DISCLAIMER : We recommend you edit this though the gui as this",
     "#              config file has some unstable / exparamental that",
@@ -62,7 +62,8 @@ configdefaults = [
     "RandomTurretModels = false # Set to true if you want to randomize the turret models (INDEV)",
     "#-----------------------------------",
     "TickSpeed = 0.1 # Set to the tick speed of the server (DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING)(UNSTABLE - ONLY DO 0.02 TO 0.5) (lower numbers can cause lag on slow computers/connections)",
-    "#-----------------------------------"
+    "#-----------------------------------",
+    "Bruh = 69420 #bruhhhhhh"
 ]
 
 configdefaults = configdefaults
@@ -98,6 +99,83 @@ lines = f.readlines()
 # close the file
 f.close()
 
+# check if there is an update to the config file
+for line in lines:
+    if (line.find("cfgvariant") != -1):
+        curconfigver = line.split(" = ")[1]
+        # replace everything that isnt a number with a nothing
+        curconfigver = curconfigver.replace("[^0-9]", "")
+        # convert to int
+        curconfigver = curconfigver[0 : 1]
+        curconfigver = int(curconfigver)
+
+        print("Current Config Version: " + str(curconfigver))
+
+for line in configdefaults:
+    if (line.find("cfgvariant") != -1):
+        newconfigver = line.split(" = ")[1]
+        # replace everything that isnt a number with a nothing
+        newconfigver = newconfigver.replace("[^0-9]", "")
+        # convert to int
+        newconfigver = newconfigver[0 : 1]
+        newconfigver = int(newconfigver)
+
+        print("New Config Version: " + str(newconfigver))
+
+# update config file if needed
+# read old config data
+f = open(configpath, "r", encoding="utf-8")
+data = f.readlines()
+f.close()
+os.remove(configpath)
+
+f = open(configpath, "w", encoding="utf-8")
+for mainline in configdefaults:
+    line = mainline.strip()
+    line = line.replace(" ", "")
+    if (line != ""):
+        if (line.find("#") != -1):
+            line = line[ : line.find("#")]
+            if (line != ""):
+                outputline = line
+            else:
+                f.write(mainline + "\n")
+                print(mainline)
+                outputline = "DO NOT WRITE"
+        else:
+            outputline = line
+    else:
+        # skip blank lines
+        f.write(mainline + "\n")
+        print(mainline)
+        outputline = "DO NOT WRITE"
+
+    for maindefline in data:
+        line = maindefline.strip()
+        line = line.replace(" ", "")
+        if (line != ""):
+            if (line.find("#") != -1):
+                line = line[ : line.find("#")]
+                if (line != ""):
+                    defoutputline = line
+                else:
+                    defoutputline = "DO NOT WRITE"
+            else:
+                defoutputline = line
+        else:
+            defoutputline = "DO NOT WRITE"
+
+    if (defoutputline != "DO NOT WRITE"):
+        if (outputline != defoutputline):
+            if (outputline[ : outputline.find("=")] == defoutputline[ : defoutputline.find("=")]):
+                if (outputline[outputline.find("=") : ] != defoutputline[defoutputline.find("=") : ]):
+                    mainline = mainline.replace(defoutputline, outputline)
+                    print("Replaced: " + outputline + " with " + defoutputline)
+    if (outputline != "DO NOT WRITE"):
+        f.write(mainline + "\n")
+        print(mainline)
+f.close()
+
 outputconfig = []
 editedconfigdata = []
 
@@ -113,7 +191,7 @@ for line in lines:
         else:
             outputconfig.append(line)
 
-# edit config data
+# edit config data for vscript
 for line in outputconfig:
     line = line.replace("=", " <- ")
     if (line.find("cfgvariant") != -1):
