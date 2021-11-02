@@ -46,7 +46,7 @@ configdefaults = [
     "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
     "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
     "",
-    "  cfgvariant = 4 # DO NOT CHANGE",
+    "cfgvariant = 5 # DO NOT CHANGE",
     "",
     "# DISCLAIMER : I recommend you edit this through the gui as this",
     "#              config file has some unstable / exparamental that",
