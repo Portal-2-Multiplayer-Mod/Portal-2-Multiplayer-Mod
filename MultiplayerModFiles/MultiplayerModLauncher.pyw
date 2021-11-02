@@ -76,7 +76,7 @@ else:
 
 if not os.path.exists(configpath):
     # create a config file
-    f = open(configpath, "w")
+    f = open(configpath, "w", encoding="utf-8")
     # write the default values
     for line in configdefaults:
         f.write(line + "\n")
