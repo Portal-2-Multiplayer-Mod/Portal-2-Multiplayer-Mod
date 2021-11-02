@@ -429,11 +429,21 @@ def Launch():
         # Edit mapspawn file
         f2 = open(owd + dlcname + "/scripts/vscripts/mapspawn.nut", 'w')
 
+        ReplacedLines = ["Raw Nothing Data",]
+
         # write config data
         for origline in data:
             for line in editedconfigdata:
                 if (line.strip()[ : line.strip().find("<-")] == origline.strip()[ : origline.strip().find("<-")]):
-                    outputline = line + origline[origline.find("<-") : ].replace("<- ", "<-").replace(" <-", "<-").replace("<- ", "<-")[origline[origline.find("<-") : ].replace("<- ", "<-").replace(" <-", "<-").replace("<- ", "<-").find(" ") : ]
+                    tryOutputline = line + origline[origline.find("<-") : ].replace("<- ", "<-").replace(" <-", "<-").replace("<- ", "<-")[origline[origline.find("<-") : ].replace("<- ", "<-").replace(" <-", "<-").replace("<- ", "<-").find(" ") : ]
+                    for line2 in ReplacedLines:
+                        if (line2.strip() == line.strip()):
+                            tryOutputline = "DO NOT WRITE THIS LINE"
+                    if (tryOutputline != "DO NOT WRITE THIS LINE"):
+                        ReplacedLines.append(line)
+                        outputline = tryOutputline
+                    else:
+                        outputline = origline
                     break
                 else:
                     outputline = origline
