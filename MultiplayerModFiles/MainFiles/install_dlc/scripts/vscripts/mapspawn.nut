@@ -2892,12 +2892,15 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(800, -2896, 7224), 20).Destroy()
             // We need to recreate this trigger because it destroys portals and sets up the next area (Moja)
             Entities.FindByClassnameNearest("trigger_once", Vector(2192, -6295.99, 6704), 20).Destroy()
+            // Delete these because they close doors and delete parts of the map
             Entities.FindByClassnameNearest("trigger_once", Vector(-768, -7372, 6784), 20).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-4080, -7232, 6328), 20).Destroy()
+            // Fix dummy room door closing
+            local ent = Entities.FindByName(null, "dummy_shoot_entry_door").__KeyValueFromString("targetname", "moja")
+            EntFire("moja", "setanimation", "open", 2, null)
         }
 
         if (SSPostPlayerSpawn==true) {
-            Entities.FindByName(null, "dummy_shoot_entry_door").__KeyValueFromString("targetname", "moja")
             EntFireByHandle(Entities.FindByName(null, "@transition_script"), "RunScriptCode", "OnPostTransition()", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "entry_airlock_door-proxy"), "OnProxyRelay1", "", 1.5, null, null)
         }
@@ -2957,7 +2960,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     BTS5Viewcontrol.SetAngles(0, 180, 0)
                     EntFire("BTS5Viewcontrol", "enable", "", 0, null)
 
-                    tube_path1 <- Entities.CreateByClassname("path_track")
+                    local tube_path1 = Entities.CreateByClassname("path_track")
                     tube_path1.__KeyValueFromString("targetname", "tube_path1")
                     tube_path1.__KeyValueFromString("target", "tube_path2")
                     tube_path1.__KeyValueFromString("orientationtype", "0")
@@ -3063,7 +3066,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
         if (SSLoop==true) {
             if (OnlyOnceCore==true) {
-                if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {   //setang 88.901573 -90.620140 0.000000
+                if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {
                     printl("Elevator viewcontrol activated")
                     // Elevator viewcontrol
                     CoreViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
@@ -3076,7 +3079,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     EntFire("CoreViewcontrol", "disable", "", 144.8, null)
 
                     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "CoreServerCommand")
-                    EntFireByHandle(Entities.FindByName(null, "rv_trap_floor_down_door_1"), "kill", "", 145, null, null)
+                    EntFireByHandle(Entities.FindByName(null, "rv_trap_floor_down_door_1"), "addoutput", "targetname MpModSecondElevatorTP", 145, null, null)
                     EntFire("CoreServerCommand", "command", "echo Changing level...", 150.8, null)
                     EntFire("CoreServerCommand", "command", "changelevel sp_a3_00", 150.8, null)
 
@@ -3093,7 +3096,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Second teleport into the elevator
             if (TPCore==true) {
-                if (!Entities.FindByName(null, "rv_trap_floor_down_door_1")) {
+                if (!Entities.FindByName(null, "MpModSecondElevatorTP")) {
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(0, 290, -200))
