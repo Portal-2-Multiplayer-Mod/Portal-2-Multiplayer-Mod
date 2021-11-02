@@ -86,6 +86,11 @@ if not os.path.exists(configpath):
 
 # CONFIG FILE READ
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+# DISCLAIMER : make sure to put all of your config values                     #
+# above all the other values that are set using that same name in mapspawn.nut#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+
 # open file for reading
 f = open(configpath, "r")
 # read the file
