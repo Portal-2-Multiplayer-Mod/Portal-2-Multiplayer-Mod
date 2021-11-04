@@ -3437,6 +3437,29 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         if (SSLoop==true) {
             // Elevator changelevel
             local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(396, 1152, 656), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_portal_intro")
+            }
+        }
+    }
+
+    //## SP_A3_PORTAL_INTRO ##//
+    if (GetMapName()=="sp_a3_portal_intro") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "abyss_loadsaved").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
