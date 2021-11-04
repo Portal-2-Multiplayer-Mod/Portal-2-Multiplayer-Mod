@@ -43,6 +43,7 @@ TickSpeed <- 0.1 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01
 // █▀ █▀▀ ▀█▀ █░█ █▀█   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 // ▄█ ██▄ ░█░ █▄█ █▀▀   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
+PreviousTimeDeath <- 0
 HasRanGeneralOneTime <- true
 tick <- 0
 BundgeeHookID <- "none"
@@ -54,6 +55,7 @@ CachedModels <- []
 IsInSpawnZone <- []
 HasSpawned <- false
 PlayerColorCached <- []
+CurrentlyDead <- []
 PlayerID <- 0
 GBIsMultiplayer <- 0
 cacheoriginalplayerposition <- 0
@@ -62,7 +64,7 @@ IsSingleplayerMap <- false
 LoadPlugin <- false
 RunPluginLoad <- false
 PluginLoaded <- false
-lasttick50 <- 0
+PreviousTime1Sec <- 0
 if (UsePlugin==true) {
     LoadPlugin <- true
 }
@@ -339,12 +341,31 @@ try {
         CreatePropsForLevel(false, false, true) // Create the gmod generated props in the level
 
         // Cache original spawn position
-            if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
-                // OldPlayerPos = the blues inital spawn position
-                OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-                OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
-                cacheoriginalplayerposition <- 1
+        if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
+            // OldPlayerPos = the blues inital spawn position
+            OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+            OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
+            cacheoriginalplayerposition <- 1
+        }
+
+        // Detect death
+        local progress = true
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            // If player is dead
+            if (p.GetHealth() == 0) {
+                // Put dead players in the dead players array
+                foreach (player in CurrentlyDead) {
+                    if (player == p) {
+                        progress = false
+                    }
+                }
+                if (progress == true) {
+                    CurrentlyDead.push(p)
+                    OnPlayerDeath(p)
+                }
             }
+        }
 
         // Display waiting for players until player exits spawn zone
         try {
@@ -400,24 +421,32 @@ try {
             SingleplayerSupport(false, true, false, false, false)
         }
 
-        if (tick == lasttick50 + 50) {
-        // Reset Tick Time
-        lasttick50 <- tick
+        if (DevMode==true) {}
 
+        /////////////////////////
+        // RUN ON EVERY SECOND //
+        /////////////////////////
+
+        if (Time() >= PreviousTime1Sec + 1) {
+        PreviousTime1Sec <- Time()
+
+        // Detect respawn
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            if (p.GetHealth() >= 1) {
+                // Get the players from the dead players array
+                foreach (index, player in CurrentlyDead) {
+                    if (player == p) {
+                        CurrentlyDead.remove(index)
+                        OnPlayerRespawn(p)
+                    }
+                }
+            }
+        }
+
+        // Remove Player Collision
         EntFire("player", "addoutput", "CollisionGroup 2")
         }
-
-        if (DevMode==true) {
-
-        }
-
-
-
-        // █▀▀ █░█ ▄▀█ ▀█▀   █▀▀ █▀█ █▀▄▀█ █▀▄▀█ ▄▀█ █▄░█ █▀▄ █▀
-        // █▄▄ █▀█ █▀█ ░█░   █▄▄ █▄█ █░▀░█ █░▀░█ █▀█ █░▀█ █▄▀ ▄█
-
-        ChatCommands()
-
     }
 
 //---------------------------------------------------------------//
@@ -431,36 +460,6 @@ try {
 
 // █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
-
-////////////////////////////////////////////////////////////////////
-// Runs When A Player Sends A Chat Message (BUGGY NO ENTITYS WORK)//
-////////////////////////////////////////////////////////////////////
-
-if (PluginLoaded==true) {
-    AddChatCallback("ChatHook")
-}
-
-PLEASE <- false
-
-function ChatHook(id, message) {
-    BundgeeHookID <- id
-    BundgeeHookMessage <- message
-    PLEASE <- true
-}
-
-function ChatCommands() {
-    if (BundgeeHookID != "none" && BundgeeHookMessage != "none") {
-        //Setup Local Varibles
-        local message = BundgeeHookMessage.slice(1)
-        local id = BundgeeHookID
-
-        printl("TEST")
-
-        //Reset Bundgee's
-        BundgeeHookID <- "none"
-        BundgeeHookMessage <- "none"
-    }
-}
 
 //////////////////////////////
 // Runs when a player joins //
@@ -553,6 +552,22 @@ if (p.GetTeam() == 2) {
 printl("Player: " + PlayerID + " is on team " + p.GetTeam())
 
 return
+}
+
+//////////////////////
+// RUNS AFTER DEATH //
+//////////////////////
+
+function OnPlayerDeath(player) {
+    printl("Player Death")
+}
+
+//////////////////////
+// RUNS AFTER RESPAWN //
+//////////////////////
+
+function OnPlayerRespawn(player) {
+    printl("Player Respawn")
 }
 
 /////////////////////////////////////
