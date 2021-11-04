@@ -2709,8 +2709,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-                //testy
-                //Entities.FindByName(null, "arrival_elevator-source_elevator_door_open_trigger").__KeyValueFromString("spawnflags", "5196")
             } catch(exception) {}
         }
     }
@@ -3218,7 +3216,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(-720, -1852, 10))
-                        p.SetAngles(0 90 0)
+                        p.SetAngles(0, 90, 0)
                         Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
                         Entities.FindByName(null, "knockout-portalgun").Destroy()
                     }
@@ -3265,11 +3263,135 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
-            // Make our own changelevel trigger
+            // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3631, 1284, -2100), 100)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a3_jump_intro")
+            }
+        }
+    }
+
+    //## SP_A3_JUMP_INTRO ##//
+    if (GetMapName()=="sp_a3_jump_intro") {
+        if (SSInstantRun==true) {
+            // Here if we need to ent_fire something
+            //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-8880, 2096, -412), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-676, 896, 448), 20).Destroy()
+            OnlyOnceSp_A3_Jump_Intro <- true
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto12-entrance_lift_train"), "StartForward", "", 2, null, null)
+            OnlyOnceSp_A3_Jump_Intro <- false
+        }
+
+        if (SSLoop==true) {
+            if (OnlyOnceSp_A3_Jump_Intro == true) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-8880, 2096, -458))
+                }
+            }
+
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-668, 2080, 2314), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_bomb_flings")
+            }
+        }
+    }
+
+    //## SP_A3_BOMB_FLINGS ##//
+    if (GetMapName()=="sp_a3_bomb_flings") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto8-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-256, 1570, 1288), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_crazy_box")
+            }
+        }
+    }
+
+    //## SP_A3_CRAZY_BOX ##// What do we do if the players vaporize the box?
+    if (GetMapName()=="sp_a3_crazy_box") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto17-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death").Destroy()
+            Entities.FindByName(null, "AutoInstance1-door_close").Destroy()
+            Entities.FindByName(null, "AutoInstance1-door_pushers").Destroy()
+            Entities.FindByName(null, "AutoInstance1-door_pushers").Destroy()
+            // We need to add a trigger to the crazy box test that plays ambient_sp_a3_crazy_box_b2 (Moja)
+            Entities.FindByClassnameNearest("trigger_once", Vector(144, -1280, 1600), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(200, -1272, 1600), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_transition01")
+            }
+        }
+    }
+
+    //## SP_A3_TRANSITION01 ##//
+    if (GetMapName()=="sp_a3_transition01") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto2-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fall_death_fade").Destroy()
+            Entities.FindByName(null, "pumproom_door_bottom_trigger").Destroy()
+            Entities.FindByName(null, "pumproom_door_top_prop").__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "pumproom_portal_top").__KeyValueFromString("targetname", "moja2")
+            // Here if we need to ent_fire something
+            EntFireByHandle(Entities.FindByName(null, "pumproom_door_top_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            Entities.FindByName(null, "officedoor_4").__KeyValueFromString("targetname", "moja3")
+        }
+
+        if (SSOnPlayerJoin==true) {
+            // Find all players
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+                EntFireByHandle(p, "setfogcontroller", "@environment_lake_fog", 0, null, null)
+            }
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2048, -130, -3700), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_speed_ramp")
             }
         }
     }
@@ -3287,7 +3409,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     if (GetMapName()=="LEVELNAME") {
         if (SSInstantRun==true) {
             // Make elevator start moving on level load
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
@@ -3325,6 +3447,31 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel LEVELNAME")
+            }
+        }
+    }
+
+    // Use with old Aperture maps //
+
+    //## MAPNAME ##//
+    if (GetMapName()=="LEVELNAME") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto8-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
