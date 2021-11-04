@@ -3389,9 +3389,57 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         if (SSLoop==true) {
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2048, -130, -3700), 100)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2048, -130, -3750), 100)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a3_speed_ramp")
+            }
+        }
+    }
+
+    //## SP_A3_SPEED_RAMP ##//
+    if (GetMapName()=="sp_a3_speed_ramp") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto20-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+            Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_speed_flings")
+            }
+        }
+    }
+
+    //## SP_A3_SPEED_FLINGS ##//
+    if (GetMapName()=="sp_a3_speed_flings") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto6-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+            Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel LEVELNAME")
             }
         }
     }
