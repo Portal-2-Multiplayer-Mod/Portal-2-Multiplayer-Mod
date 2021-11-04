@@ -1117,6 +1117,10 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
                 DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
                 DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
 
+                // Enable mass and velocity course
+                DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_bridge"))
+                DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_bridge"))
+
                 // Enable paint course
                 DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
                 DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
@@ -1717,24 +1721,24 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 EntFire("@sphere", "AddContext", "socket_name:$socket_context", 1.5, null)
                 EntFire("core_receptacle_socket", "setanimation", "attach", 2, null)
 
-                // Viewcontrols
-                WakeupViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-                WakeupViewcontrol.__KeyValueFromString("targetname", "WakeupViewcontrol")
-                WakeupViewcontrol.__KeyValueFromString("target_team", "-1")
-                WakeupViewcontrol.SetOrigin(Vector(8976, 1119, -412))
-                WakeupViewcontrol.SetAngles(27, -90, 0)
-                EntFire("WakeupViewcontrol", "setparent", "core_receptacle_socket", 0, null)
-                EntFire("WakeupViewcontrol", "enable", "", 0.8, null)
-                EntFire("WakeupViewcontrol", "disable", "", 28, null)
+                // SpA1Wakeup viewcontrols
+                SpA1WakeupViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+                SpA1WakeupViewcontrol.__KeyValueFromString("targetname", "SpA1WakeupViewcontrol")
+                SpA1WakeupViewcontrol.__KeyValueFromString("target_team", "-1")
+                SpA1WakeupViewcontrol.SetOrigin(Vector(8976, 1119, -412))
+                SpA1WakeupViewcontrol.SetAngles(27, -90, 0)
+                EntFire("SpA1WakeupViewcontrol", "setparent", "core_receptacle_socket", 0, null)
+                EntFire("SpA1WakeupViewcontrol", "enable", "", 0.8, null)
+                EntFire("SpA1WakeupViewcontrol", "disable", "", 28, null)
                 EntFire("TPPLAYERS1", "addoutput", "targetname TPPLAYERS2", 27.8, null)
 
-                WakeupViewcontrol2 <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-                WakeupViewcontrol2.__KeyValueFromString("targetname", "WakeupViewcontrol2")
-                WakeupViewcontrol2.__KeyValueFromString("target_team", "-1")
-                WakeupViewcontrol2.SetOrigin(Entities.FindByName(null, "camera_ghostAnim_2").GetOrigin())
-                EntFire("WakeupViewcontrol2", "setparent", "camera_ghostAnim_2", 0.50, null)
-                EntFire("WakeupViewcontrol2", "enable", "", 74, null)
-                EntFire("WakeupViewcontrol2", "disable", "", 108, null)
+                SpA1WakeupViewcontrol2 <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+                SpA1WakeupViewcontrol2.__KeyValueFromString("targetname", "SpA1WakeupViewcontrol2")
+                SpA1WakeupViewcontrol2.__KeyValueFromString("target_team", "-1")
+                SpA1WakeupViewcontrol2.SetOrigin(Entities.FindByName(null, "camera_ghostAnim_2").GetOrigin())
+                EntFire("SpA1WakeupViewcontrol2", "setparent", "camera_ghostAnim_2", 0.50, null)
+                EntFire("SpA1WakeupViewcontrol2", "enable", "", 74, null)
+                EntFire("SpA1WakeupViewcontrol2", "disable", "", 108, null)
                 EntFire("TPPLAYERS2", "addoutput", "targetname TPPLAYERS3", 74, null)
                 EntFire("TPPLAYERS3", "addoutput", "targetname TPPLAYERS4", 108, null)
                 // Ent Fire PIT OF PAIN AND AGONY !!!!!!!
@@ -1771,16 +1775,16 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             Entities.FindByName(null, "basement_breakers_socket_trigger").Destroy()
 
-            SPA1WakeupONCE <- true
-            SPA1WakeupONCE1 <- true
-            SPA1WakeupONCE2 <- true
+            SpA1WakeupONCE1 <- true
+            SpA1WakeupONCE2 <- true
+            SpA1WakeupONCE3 <- true
             NOLLFIX <- true
             TPP1 <- true
             TPP2 <- true
             TPP3 <- true
             TPP4 <- true
 
-            SPA1WakeupPostPlayerSpawn <- true
+            SpA1WakeupPostPlayerSpawn <- true
 
             Entities.FindByName(null, "@basement_entry_portal_black").Destroy()
             Entities.FindByClassnameNearest("func_areaportalwindow", Vector(10364, 1080, -216), 100).__KeyValueFromString("FadeStartDist", "1750")
@@ -1793,7 +1797,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
         if (SSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
-            SPA1WakeupPostPlayerSpawn <- false
+            SpA1WakeupPostPlayerSpawn <- false
         }
 
             if (SSLoop==true) {
@@ -1851,7 +1855,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     }
                 }
 
-                if (SPA1WakeupONCE2 == true) {
+                if (SpA1WakeupONCE3 == true) {
                     local p = null
                     while (p = Entities.FindByClassnameWithin(p, "player", Vector(8976.9541015625, 1085.8822021484, -435.20544433594), 33.199999332428)) {
                         EntFire("@glados", "RunScriptCode", "sp_a1_wakeup_Do_Not_Touch()", 0, null)
@@ -1861,11 +1865,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
                         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "NOLLENTITY")
                         EntFire("NOLLENTITY", "addoutput", "targetname Startelevatorrecreationsp_a1_wakeup", 25, null)
-                        SPA1WakeupONCE2 <- false
+                        SpA1WakeupONCE3 <- false
                     }
                 }
 
-                if (SPA1WakeupONCE1 == true) {
+                if (SpA1WakeupONCE2 == true) {
                     local p = null
                     while (p = Entities.FindByClassnameWithin(p, "player", Vector(9377, 1344, -415), 33.199999332428)) {
                         EntFire("basement_breakers_prop_0", "SetAnimation", "breaker_shaft_open_hatch", 0, null)
@@ -1873,11 +1877,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                         EntFire("basement_breakers_open_wav", "PlaySound", "", 0, null)
                         EntFire("@glados", "RunScriptCode", "sp_a1_wakeup_This_Is_Breaker_Room()", 0, null)
                         EntFire("breaker_bottom_light", "TurnOn", "", 0.10, null)
-                        SPA1WakeupONCE1 <- false
+                        SpA1WakeupONCE2 <- false
                     }
                 }
 
-            if (SPA1WakeupPostPlayerSpawn == true) {
+            if (SpA1WakeupPostPlayerSpawn == true) {
                 try {
                 Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
                 Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
@@ -1889,11 +1893,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Find all players within 100 units of 8032 1216 487
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(8032, 1216, 487), 100)) {
-                if (SPA1WakeupONCE == true) {
+                if (SpA1WakeupONCE1 == true) {
                     printl("Wakeup sequence started")
                     EntFire("@glados", "runscriptcode", "sp_a1_wakeup_gantry_door_open()", 0, null)
                     EntFire("training_door", "open", "", 0, null)
-                    SPA1WakeupONCE <- false
+                    SpA1WakeupONCE1 <- false
                 }
             }
 
@@ -1933,21 +1937,20 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFire("@enable_arms", "trigger", "", 0, null)
             Entities.FindByName(null, "InstanceAuto13-dangle_ceiling-disable_arms").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(2704, -1260, 112), 1024).Destroy()
-            NoContinueFallCamera <- true
         }
 
         if (SSPostPlayerSpawn==true) {
             printl("Ran")
-            Intro2Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-            Intro2Viewcontrol.__KeyValueFromString("targetname", "Intro2Viewcontrol")
-            Intro2Viewcontrol.__KeyValueFromString("target_team", "-1")
-            Intro2Viewcontrol.SetOrigin(Entities.FindByName(null, "ghostAnim").GetOrigin())
-            EntFire("Intro2Viewcontrol", "setparent", "ghostAnim", 0, null)
-            EntFire("Intro2Viewcontrol", "setparentattachment", "attach_1", 0, null)
-            EntFire("Intro2Viewcontrol", "enable", "", 0, null)
-            EntFire("Intro2ViewcontrolTele", "disable", "", 20.75, null)
-            EntFire("Intro2Viewcontrol", "addoutput", "targetname Intro2ViewcontrolTele", 0.25, null)
-            EntFire("Intro2ViewcontrolTele", "addoutput", "targetname Intro2ViewcontrolDone", 20.80, null)
+            SpA2IntroViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+            SpA2IntroViewcontrol.__KeyValueFromString("targetname", "SpA2IntroViewcontrol")
+            SpA2IntroViewcontrol.__KeyValueFromString("target_team", "-1")
+            SpA2IntroViewcontrol.SetOrigin(Entities.FindByName(null, "ghostAnim").GetOrigin())
+            EntFire("SpA2IntroViewcontrol", "setparent", "ghostAnim", 0, null)
+            EntFire("SpA2IntroViewcontrol", "setparentattachment", "attach_1", 0, null)
+            EntFire("SpA2IntroViewcontrol", "enable", "", 0, null)
+            EntFire("SpA2IntroViewcontrolTele", "disable", "", 20.75, null)
+            EntFire("SpA2IntroViewcontrol", "addoutput", "targetname SpA2IntroViewcontrolTele", 0.25, null)
+            EntFire("SpA2IntroViewcontrolTele", "addoutput", "targetname SpA2IntroViewcontrolDone", 20.80, null)
             self.PrecacheSoundScript("ScriptedSequence.IncineratorFall")
             local TempEnt = Entities.CreateByClassname("prop_dynamic")
             TempEnt.__KeyValueFromString("targetname", "TempEnt")
@@ -1961,20 +1964,20 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "blue").EmitSound("playonce\\scripted_sequences\\incinerator_fall_01.wav")
             }
 
-            if (Entities.FindByName(null, "Intro2ViewcontrolTele")) {
+            if (Entities.FindByName(null, "SpA2IntroViewcontrolTele")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(2704, -1260, 92))
                 }
             }
 
-            if (Entities.FindByName(null, "Intro2ViewcontrolDone")) {
+            if (Entities.FindByName(null, "SpA2IntroViewcontrolDone")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(-3308, 536, -10737))
                     p.SetAngles(0 0 0)
                 }
-                EntFire("Intro2ViewcontrolDone", "addoutput", "targetname Intro2ViewcontrolFinished", 0.15, null)
+                EntFire("SpA2IntroViewcontrolDone", "addoutput", "targetname SpA2IntroViewcontrolFinished", 0.15, null)
             }
 
             EntFire("shaft_areaportal_1", "open", "", 0, null)
@@ -2006,12 +2009,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                             PortalGunGiveContinue <- false
                         }
                         if (PortalGunGiveContinue==true) {
-                        portalgun <- Entities.CreateByClassname("weapon_portalgun")
-                        portalgun.__KeyValueFromString("StartingTeamNum", "0")
-                        portalgun.__KeyValueFromString("targetname", "CustomPortalGun")
-                        portalgun.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, p.GetOrigin().z+20))
-                        EntFireByHandle(portalgun, "use", "", 0.25, p, p)
-                        EntFireByHandle(portalgun, "kill", "", 1.25, p, p)
+                        PortalGun <- Entities.CreateByClassname("weapon_portalgun")
+                        PortalGun.__KeyValueFromString("StartingTeamNum", "0")
+                        PortalGun.__KeyValueFromString("targetname", "CustomPortalGun")
+                        PortalGun.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, p.GetOrigin().z+20))
+                        EntFireByHandle(PortalGun, "use", "", 0.25, p, p)
+                        EntFireByHandle(PortalGun, "kill", "", 1.25, p, p)
                         }
                     }
                 }
@@ -2589,9 +2592,9 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "blackout_teleport_player_to_surprise").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-976, 256, 32), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-1056, 256, 40.25), 1024).Destroy()
-            OnlyOnceColumBlocker <- true
-            OnlyOnceColumBlocker1 <- true
+            OnlySpA2ColumBlocker1 <- true
             OnlyOnceColumBlocker2 <- true
+            OnlyOnceColumBlocker3 <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -2601,50 +2604,50 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
-            if (OnlyOnceColumBlocker2==true) {
+            if (OnlyOnceSpA2ColumBlocker3==true) {
                 if (!Entities.FindByClassnameNearest("trigger_once", Vector(-1486, 256, -139.75), 10)) {
                     printl("Elevator viewcontrol activated")
                     // Elevator viewcontrol
-                    ColumBlockerViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-                    ColumBlockerViewcontrol.__KeyValueFromString("target_team", "-1")
-                    ColumBlockerViewcontrol.__KeyValueFromString("fov", "100")
-                    ColumBlockerViewcontrol.__KeyValueFromString("targetname", "ColumBlockerViewcontrol")
-                    ColumBlockerViewcontrol.SetOrigin(Vector(-1475, 256, -90))
-                    EntFire("ColumBlockerViewcontrol", "setparent", "departure_elevator-elevator_1", 0, null)
-                    ColumBlockerViewcontrol.SetAngles(0, 0, 0)
-                    EntFire("ColumBlockerViewcontrol", "enable", "", 0, null)
+                    SpA2ColumBlockerViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+                    SpA2ColumBlockerViewcontrol.__KeyValueFromString("target_team", "-1")
+                    SpA2ColumBlockerViewcontrol.__KeyValueFromString("fov", "100")
+                    SpA2ColumBlockerViewcontrol.__KeyValueFromString("targetname", "SpA2ColumBlockerViewcontrol")
+                    SpA2ColumBlockerViewcontrol.SetOrigin(Vector(-1475, 256, -90))
+                    EntFire("SpA2ColumBlockerViewcontrol", "setparent", "departure_elevator-elevator_1", 0, null)
+                    SpA2ColumBlockerViewcontrol.SetAngles(0, 0, 0)
+                    EntFire("SpA2ColumBlockerViewcontrol", "enable", "", 0, null)
 
                     EntFire("global_ents-proxy", "OnProxyRelay2", "", 6.2, null)
                     EntFire("departure_elevator-bts_shadowed_light_01", "TurnOn", "", 6.2, null)
                     EntFire("departure_elevator-elevator_1", "SetSpeedReal", "50", 6.2, null)
 
-                    OnlyOnceColumBlockerGlobalTime <- 9
-                    Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "ColumServerCommand")
-                    EntFire("@sphere", "RunScriptCode", "ElevatorThereYouAre()", OnlyOnceColumBlockerGlobalTime, null)
-                    EntFire("departure_elevator-//spherebot_train_1_chassis_1", "MoveToPathNode", "spherebot_train_1_path_2", OnlyOnceColumBlockerGlobalTime, null)
-                    EntFire("ColumServerCommand", "command", "echo Changing level...", OnlyOnceColumBlockerGlobalTime + 31, null)
-                    EntFire("ColumServerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceColumBlockerGlobalTime + 31, null)
+                    OnlyOnceSpA2ColumBlockerGlobalTime <- 9
+                    Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "SpA2ColumBlockerCommand")
+                    EntFire("@sphere", "RunScriptCode", "ElevatorThereYouAre()", OnlyOnceSpA2ColumBlockerGlobalTime, null)
+                    EntFire("departure_elevator-//spherebot_train_1_chassis_1", "MoveToPathNode", "spherebot_train_1_path_2", OnlyOnceSpA2ColumBlockerGlobalTime, null)
+                    EntFire("ColumServerCommand", "command", "echo Changing level...", OnlyOnceSpA2ColumBlockerGlobalTime + 31, null)
+                    EntFire("ColumServerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceSpA2ColumBlockerGlobalTime + 31, null)
 
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(-1964, 331, -2479))
                     }
 
-                    OnlyOnceColumBlocker2 <- false
+                    OnlySpA2SpA2ColumBlocker3 <- false
                 }
             }
 
             // Delete office door after walking through it
-            if (OnlyOnceColumBlocker1==true) {
+            if (OnlySpA2ColumBlocker2==true) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-63, -780, 320), 40)) {
                     Entities.FindByName(null, "officedoor_1").Destroy()
-                    OnlyOnceColumBlocker1 <- false
+                    OnlyOnceSpA2ColumBlocker2 <- false
                 }
             }
 
             // Teleport players after blackout
-            if (OnlyOnceColumBlocker==true) {
+            if (OnlyOnceSpA2ColumBlocker1==true) {
                 if (!Entities.FindByClassnameNearest("trigger_once", Vector(-76, -1040, 311.5), 3)) {
                     // Find all players
                     local p = null
@@ -2652,7 +2655,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                         p.SetOrigin(Vector(-64, -1088, 256))
                         p.SetAngles(0, 90, 0)
                     }
-                    OnlyOnceColumBlocker <- false
+                    OnlyOnceSpA2ColumBlocker1 <- false
                 }
             }
 
@@ -2721,8 +2724,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Elevator env_projectedtexture
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-                //testy
-                //Entities.FindByName(null, "arrival_elevator-source_elevator_door_open_trigger").__KeyValueFromString("spawnflags", "5196")
             } catch(exception) {}
         }
     }
@@ -2944,15 +2945,15 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Open the airlock areaportal on mapspawn
             EntFireByHandle(Entities.FindByName(null, "airlock_door_01_areaportal"), "Open", "", 0, null, null)
             // Set sv_allow_mobile_portals to 1 and set up the changelevel command entity
-            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "BTS5ServerCommand")
-            EntFire("BTS5ServerCommand", "command", "sv_allow_mobile_portals 1", 1, null)
+            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_Bts5ServerCommand")
+            EntFire("Sp_A2_Bts5ServerCommand", "command", "sv_allow_mobile_portals 1", 1, null)
             // Set the viewcontrol parent first stop to a our pathtrack
             EntFireByHandle(Entities.FindByName(null, "podtrain_player"), "target", "tube_path1", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "airlock_door_01-close_door_fast").Destroy()
             Entities.FindByName(null, "lock_door_trigger").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(3794.06, -1727.98, 3488), 20).Destroy()
-            OnlyOnceBTS5 <- true
+            OnlyOnceSp_A2_Bts5 <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -2962,33 +2963,33 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
-            if (OnlyOnceBTS5==true) {
+            if (OnlyOnceSp_A2_Bts5==true) {
                 if (!Entities.FindByName(null, "exit_tube_1_exit_trigger")) {
                     printl("Suction viewcontrol activated")
-                    // Suction viewcontrol
-                    BTS5Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-                    BTS5Viewcontrol.__KeyValueFromString("target_team", "-1")
-                    BTS5Viewcontrol.__KeyValueFromString("fov", "100")
-                    BTS5Viewcontrol.__KeyValueFromString("targetname", "BTS5Viewcontrol")
-                    BTS5Viewcontrol.SetOrigin(Vector(2285, 512, 4508))
-                    EntFire("BTS5Viewcontrol", "setparent", "podtrain_player", 0, null)
-                    BTS5Viewcontrol.SetAngles(0, 180, 0)
-                    EntFire("BTS5Viewcontrol", "enable", "", 0, null)
+                    // Sp_A2_Bts5 viewcontrol
+                    Sp_A2_Bts5Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+                    Sp_A2_Bts5Viewcontrol.__KeyValueFromString("target_team", "-1")
+                    Sp_A2_Bts5Viewcontrol.__KeyValueFromString("fov", "100")
+                    Sp_A2_Bts5Viewcontrol.__KeyValueFromString("targetname", "Sp_A2_Bts5Viewcontrol")
+                    Sp_A2_Bts5Viewcontrol.SetOrigin(Vector(2285, 512, 4508))
+                    EntFire("Sp_A2_Bts5Viewcontrol", "setparent", "podtrain_player", 0, null)
+                    Sp_A2_Bts5Viewcontrol.SetAngles(0, 180, 0)
+                    EntFire("Sp_A2_Bts5Viewcontrol", "enable", "", 0, null)
 
                     local tube_path1 = Entities.CreateByClassname("path_track")
                     tube_path1.__KeyValueFromString("targetname", "tube_path1")
                     tube_path1.__KeyValueFromString("target", "tube_path2")
                     tube_path1.__KeyValueFromString("orientationtype", "0")
 
-                    EntFire("BTS5ServerCommand", "command", "echo Changing level...", 2, null)
-                    EntFire("BTS5ServerCommand", "command", "changelevel sp_a2_bts6", 2, null)
+                    EntFire("Sp_A2_Bts5ServerCommand", "command", "echo Changing level...", 2, null)
+                    EntFire("Sp_A2_Bts5ServerCommand", "command", "changelevel sp_a2_bts6", 2, null)
 
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(-1964, 331, -2479))
                     }
 
-                    OnlyOnceBTS5 <- false
+                    OnlyOnceSp_A2_Bts5 <- false
                 }
             }
             // Make Wheatley look at nearest player (We need wheatley to light the way for the player but since he's looking at them on loop he can't) (Moja)
@@ -3003,7 +3004,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     if (GetMapName()=="sp_a2_bts6") {
         if (SSInstantRun==true) {
             // Set up the changelevel command entity
-            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "BTS6ServerCommand")
+            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_Bts6ServerCommand")
             // Destroy objects
             Entities.FindByName(null, "tube_ride_start_relay").Destroy()
         }
@@ -3037,19 +3038,19 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFireByHandle(Entities.FindByName(null, "tube_collision_start"), "Trigger", "", 36.75, null, null)
             EntFireByHandle(Entities.FindByName(null, "shadowed_light_03"), "TurnOn", "", 37, null, null)
 
-            // BTS6 viewcontrol creation
-            BTS6Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-            BTS6Viewcontrol.__KeyValueFromString("targetname", "BTS6Viewcontrol")
-            BTS6Viewcontrol.__KeyValueFromString("target_team", "-1")
-            BTS6Viewcontrol.SetOrigin(Entities.FindByName(null, "tube_ride_chell_proxy").GetOrigin())
-            BTS6Viewcontrol.SetAngles(270, 0, 0)
-            EntFire("BTS6Viewcontrol", "setparent", "tube_ride_chell_proxy", 0, null)
-            EntFire("BTS6Viewcontrol", "setparentattachment", "chell_bts6_attach", 0, null)
-            EntFire("BTS6Viewcontrol", "enable", "", 0, null)
-            EntFire("BTS6Viewcontrol", "disable", "", 50.66, null)
+            // Sp_A2_Bts6 viewcontrol creation
+            Sp_A2_Bts6Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+            Sp_A2_Bts6Viewcontrol.__KeyValueFromString("targetname", "Sp_A2_Bts6Viewcontrol")
+            Sp_A2_Bts6Viewcontrol.__KeyValueFromString("target_team", "-1")
+            Sp_A2_Bts6Viewcontrol.SetOrigin(Entities.FindByName(null, "tube_ride_chell_proxy").GetOrigin())
+            Sp_A2_Bts6Viewcontrol.SetAngles(270, 0, 0)
+            EntFire("Sp_A2_Bts6Viewcontrol", "setparent", "tube_ride_chell_proxy", 0, null)
+            EntFire("Sp_A2_Bts6Viewcontrol", "setparentattachment", "chell_bts6_attach", 0, null)
+            EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0, null)
+            EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 50.66, null)
 
-            EntFire("BTS6ServerCommand", "command", "echo Changing level...", 51, null)
-            EntFire("BTS6ServerCommand", "command", "changelevel sp_a2_core", 51, null)
+            EntFire("Sp_A2_Bts6ServerCommand", "command", "echo Changing level...", 51, null)
+            EntFire("Sp_A2_Bts6ServerCommand", "command", "changelevel sp_a2_core", 51, null)
         }
     }
 
@@ -3062,8 +3063,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "death_fade").Destroy()
             Entities.FindByName(null, "rv_trap_portal_surf_cleanser").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(0, 304, -10438), 20).Destroy()
-            OnlyOnceCore <- true
-            TPCore <- true
+            OnlyOnceSp_A2_Core <- true
+            TPSp_A2_Core <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3080,23 +3081,23 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
-            if (OnlyOnceCore==true) {
+            if (OnlyOnceSp_A2_Core==true) {
                 if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {
                     printl("Elevator viewcontrol activated")
                     // Elevator viewcontrol
-                    CoreViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-                    CoreViewcontrol.__KeyValueFromString("target_team", "-1")
-                    CoreViewcontrol.__KeyValueFromString("targetname", "CoreViewcontrol")
-                    CoreViewcontrol.SetOrigin(Vector(0, 324, 0))
-                    EntFire("CoreViewcontrol", "setparent", "exit_elevator_train", 0, null)
-                    CoreViewcontrol.SetAngles(0, 270, 0)
-                    EntFire("CoreViewcontrol", "enable", "", 0, null)
-                    EntFire("CoreViewcontrol", "disable", "", 144.8, null)
+                    Sp_A2_CoreViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+                    Sp_A2_CoreViewcontrol.__KeyValueFromString("target_team", "-1")
+                    Sp_A2_CoreViewcontrol.__KeyValueFromString("targetname", "Sp_A2_CoreViewcontrol")
+                    Sp_A2_CoreViewcontrol.SetOrigin(Vector(0, 324, 0))
+                    EntFire("Sp_A2_CoreViewcontrol", "setparent", "exit_elevator_train", 0, null)
+                    Sp_A2_CoreViewcontrol.SetAngles(0, 270, 0)
+                    EntFire("Sp_A2_CoreViewcontrol", "enable", "", 0, null)
+                    EntFire("Sp_A2_CoreViewcontrol", "disable", "", 144.8, null)
 
-                    Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "CoreServerCommand")
-                    EntFireByHandle(Entities.FindByName(null, "rv_trap_floor_down_door_1"), "addoutput", "targetname MpModSecondElevatorTP", 145, null, null)
-                    EntFire("CoreServerCommand", "command", "echo Changing level...", 150.8, null)
-                    EntFire("CoreServerCommand", "command", "changelevel sp_a3_00", 150.8, null)
+                    Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_CoreServerCommand")
+                    EntFireByHandle(Entities.FindByName(null, "rv_trap_floor_down_door_1"), "addoutput", "targetname Sp_A2_CoreElevatorSecondTP", 145, null, null)
+                    EntFire("Sp_A2_CoreServerCommand", "command", "echo Changing level...", 150.8, null)
+                    EntFire("Sp_A2_CoreServerCommand", "command", "changelevel sp_a3_00", 150.8, null)
 
                     // First teleport behind the panels so players can't be seen from the elevator
                     local p = null
@@ -3105,20 +3106,20 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                         p.SetVelocity(Vector(0, 0, 0))
                     }
 
-                    OnlyOnceCore <- false
+                    OnlyOnceSp_A2_Core <- false
                 }
             }
 
             // Second teleport into the elevator
-            if (TPCore==true) {
-                if (!Entities.FindByName(null, "MpModSecondElevatorTP")) {
+            if (TPSp_A2_Core==true) {
+                if (!Entities.FindByName(null, "Sp_A2_CoreElevatorSecondTP")) {
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(0, 290, -200))
                         p.SetVelocity(Vector(0, 0, 0))
                         p.SetAngles(80, 270, 0)
                     }
-                    TPCore <- false
+                    TPSp_A2_Core <- false
                 }
             }
 
@@ -3151,11 +3152,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     //## SP_A3_00 ##//
     if (GetMapName()=="sp_a3_00") {
         if (SSInstantRun==true) {
+            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A3_00ServerCommand")
             printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
             Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
             Entities.FindByName(null, "@environment_bottomless_pit_falling_fog").__KeyValueFromString("farz", "0")
-            // Here if we need to ent_fire something
-            //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+            Entities.FindByName(null, "potatos_prop").__KeyValueFromString("solid", "0")
             // Destroy objects
             Entities.FindByClassnameNearest("logic_auto", Vector(144, -4048, 64), 20).Destroy()
             local ent = null
@@ -3165,14 +3166,318 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSPostPlayerSpawn==true) {
-            EntFireByHandle(Entities.FindByName(null, "tube_main_prop_1"), "SetAnimation", "bts6_A5", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "player_looktarget"), "SetParent", "!player", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "potatos_tank"), "SetTargetEntity", "player_looktarget", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "shaft_section_0"), "StartForward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "shaft_section_1"), "StartForward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "lift_mover"), "Open", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "ambient_sp_a3_01_b1"), "PlaySound", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "potatos_relay"), "Trigger", "", 3, null, null)
+            EntFireByHandle(Entities.FindByName(null, "potatos_train"), "StartForward", "", 4, null, null)
+
+            EntFire("Sp_A3_00ServerCommand", "command", "echo Changing level...", 76, null)
+            EntFire("Sp_A3_00ServerCommand", "command", "changelevel sp_a3_01", 76, null)
         }
 
         if (SSLoop==true) {
+            // Make POTATOS tank point at nearest player
+            try {
+                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "potatos_tank").GetOrigin(), 10000)
+                EntFireByHandle(Entities.FindByName(null, "potatos_tank"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+            } catch(exception) {}
+        }
+    }
+
+    //## SP_A3_01 ##//
+    if (GetMapName()=="sp_a3_01") {
+        if (SSInstantRun==true) {
+            // Here if we need to ent_fire something
+            //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+            // Destroy objects
+            Entities.FindByName(null, "transition_trigger").Destroy()
+            Entities.FindByClassnameNearest("logic_auto", Vector(-10304, 2544, 112), 20).Destroy()
+            OnlyOnceSp_A3_01 <- true
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay8", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "knockout_start"), "Trigger", "", 1, null, null)
+
+            printl("Ran")
+            Sp_A3_01Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+            Sp_A3_01Viewcontrol.__KeyValueFromString("targetname", "Sp_A3_01Viewcontrol")
+            Sp_A3_01Viewcontrol.__KeyValueFromString("target_team", "-1")
+            Sp_A3_01Viewcontrol.SetOrigin(Entities.FindByName(null, "knockout-viewcontroller").GetOrigin())
+            Sp_A3_01Viewcontrol.SetAngles(0, 270, 0)
+            EntFire("Sp_A3_01Viewcontrol", "setparent", "knockout-viewcontroller", 0, null)
+            EntFire("Sp_A3_01Viewcontrol", "setparentattachment", "knockout-viewcontroller", 0, null)
+            EntFire("Sp_A3_01Viewcontrol", "enable", "", 0, null)
+            EntFire("Sp_A3_01ViewcontrolTele", "disable", "", 13, null)
+            EntFire("Sp_A3_01Viewcontrol", "addoutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
+            EntFire("Sp_A3_01ViewcontrolTele", "addoutput", "targetname Sp_A3_01ViewcontrolDone", 13.30, null)
+        }
+
+        if (SSLoop==true) {
+
+            if (Entities.FindByName(null, "Sp_A3_01ViewcontrolTele")) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-162, -1966, 20))
+                }
+            }
+
+            if (OnlyOnceSp_A3_01 == true) {
+                if (Entities.FindByName(null, "Sp_A3_01ViewcontrolDone")) {
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        p.SetOrigin(Vector(-720, -1852, 10))
+                        p.SetAngles(0, 90, 0)
+                        Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
+                        Entities.FindByName(null, "knockout-portalgun").Destroy()
+                    }
+                    OnlyOnceSp_A3_01 <- false
+                }
+            }
+
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(6016, 4496, -448), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_03")
+            }
+        }
+    }
+
+    //## SP_A3_03 ##//
+    if (GetMapName()=="sp_a3_03") {
+        if (SSInstantRun==true) {
+            Entities.FindByName(null, "pumproom_door_bottom_prop").__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "pumproom_door_bottom_portal").__KeyValueFromString("targetname", "moja2")
+            // Here if we need to ent_fire something
+            EntFireByHandle(Entities.FindByName(null, "pumproom_door_bottom_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+            Entities.FindByName(null, "main_elevator_bottom_clipbrush").Destroy()
+            Entities.FindByName(null, "silent_fizzler").Destroy()
+            Entities.FindByName(null, "@transition_from_map").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-6080, -2812, -5160), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSOnPlayerJoin==true) {
+            // Find all players
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                p.SetVelocity(Vector(0, 0, 0))
-                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 20))
+                EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+                EntFireByHandle(p, "setfogcontroller", "@environment_lake_fog", 0, null, null)
+            }
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3631, 1284, -2100), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_jump_intro")
+            }
+        }
+    }
+
+    //## SP_A3_JUMP_INTRO ##//
+    if (GetMapName()=="sp_a3_jump_intro") {
+        if (SSInstantRun==true) {
+            // Here if we need to ent_fire something
+            //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-8880, 2096, -412), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-676, 896, 448), 20).Destroy()
+            OnlyOnceSp_A3_Jump_Intro <- true
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto12-entrance_lift_train"), "StartForward", "", 2, null, null)
+            OnlyOnceSp_A3_Jump_Intro <- false
+        }
+
+        if (SSLoop==true) {
+            if (OnlyOnceSp_A3_Jump_Intro == true) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-8880, 2096, -458))
+                }
+            }
+
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-668, 2080, 2314), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_bomb_flings")
+            }
+        }
+    }
+
+    //## SP_A3_BOMB_FLINGS ##//
+    if (GetMapName()=="sp_a3_bomb_flings") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto8-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-256, 1570, 1288), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_crazy_box")
+            }
+        }
+    }
+
+    //## SP_A3_CRAZY_BOX ##// What do we do if the players vaporize the box?
+    if (GetMapName()=="sp_a3_crazy_box") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto17-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death").Destroy()
+            Entities.FindByName(null, "AutoInstance1-door_close").Destroy()
+            Entities.FindByName(null, "AutoInstance1-door_pushers").Destroy()
+            Entities.FindByName(null, "AutoInstance1-door_pushers").Destroy()
+            // We need to add a trigger to the crazy box test that plays ambient_sp_a3_crazy_box_b2 (Moja)
+            Entities.FindByClassnameNearest("trigger_once", Vector(144, -1280, 1600), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(200, -1272, 1600), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_transition01")
+            }
+        }
+    }
+
+    //## SP_A3_TRANSITION01 ##//
+    if (GetMapName()=="sp_a3_transition01") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto2-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fall_death_fade").Destroy()
+            Entities.FindByName(null, "pumproom_door_bottom_trigger").Destroy()
+            Entities.FindByName(null, "pumproom_door_top_prop").__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "pumproom_portal_top").__KeyValueFromString("targetname", "moja2")
+            // Here if we need to ent_fire something
+            EntFireByHandle(Entities.FindByName(null, "pumproom_door_top_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            Entities.FindByName(null, "officedoor_4").__KeyValueFromString("targetname", "moja3")
+        }
+
+        if (SSOnPlayerJoin==true) {
+            // Find all players
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+                EntFireByHandle(p, "setfogcontroller", "@environment_lake_fog", 0, null, null)
+            }
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2048, -130, -3750), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_speed_ramp")
+            }
+        }
+    }
+
+    //## SP_A3_SPEED_RAMP ##//
+    if (GetMapName()=="sp_a3_speed_ramp") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto20-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+            Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_speed_flings")
+            }
+        }
+    }
+
+    //## SP_A3_SPEED_FLINGS ##//
+    if (GetMapName()=="sp_a3_speed_flings") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto6-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+            Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(396, 1152, 656), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_portal_intro")
+            }
+        }
+    }
+
+    //## SP_A3_PORTAL_INTRO ##//
+    if (GetMapName()=="sp_a3_portal_intro") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "abyss_loadsaved").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel LEVELNAME")
             }
         }
     }
@@ -3190,7 +3495,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     if (GetMapName()=="LEVELNAME") {
         if (SSInstantRun==true) {
             // Make elevator start moving on level load
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
@@ -3228,6 +3533,31 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel LEVELNAME")
+            }
+        }
+    }
+
+    // Use with old Aperture maps //
+
+    //## MAPNAME ##//
+    if (GetMapName()=="LEVELNAME") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "InstanceAuto8-entrance_lift_train"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
