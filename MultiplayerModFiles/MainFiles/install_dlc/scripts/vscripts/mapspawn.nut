@@ -3715,6 +3715,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(320, 1080, 928), 1).Destroy() // Keep starting door open
             Entities.FindByClassnameNearest("trigger_once", Vector(624, 448, 960), 1).Destroy() // Keep exit door open
+            Entities.FindByClassnameNearest("trigger_multiple", Vector(-84, 888, -440), 1).Destroy() // Kill fall fade
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3740,6 +3741,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(144, 2112, 128), 1).Destroy() // Keep starting door open
             Entities.FindByClassnameNearest("trigger_once", Vector(864, 960, 168), 1).Destroy() // Keep exit door open
+            Entities.FindByClassnameNearest("trigger_multiple", Vector(-1472, 992, -800), 1).Destroy() // Kill fall fade
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3752,6 +3754,32 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1280, 960, 528), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a4_tb_polarity")
+            }
+        }
+    }
+
+        //## SP_A4_TB_POLARITY ##//
+    if (GetMapName()=="sp_a4_tb_polarity") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-384, 1616, 144.59), 1).Destroy() // Keep starting door open
+            Entities.FindByClassnameNearest("trigger_once", Vector(-128, -208, 288), 1).Destroy() // Keep exit door open
+            Entities.FindByClassnameNearest("trigger_multiple", Vector(-352, 1888, -680), 1).Destroy() // Kill fall fade
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-128, -704, 656), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_tb_catch")
             }
         }
     }
