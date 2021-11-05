@@ -28,7 +28,7 @@ UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
-RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
+RandomTurretModels <- true // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
 TickSpeed <- 0.1 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
@@ -163,7 +163,7 @@ function init() {
     // Run singleplayer code
     if (GetMapName().slice(0, 7) != "mp_coop") {
         IsSingleplayerMap <- true
-        SingleplayerSupport(true, false, false, false, false)
+        SingleplayerSupport(true, false, false, false, false, false, false)
     }
 
     // Create an entity to display player color at the bottom left of every clients' screen
@@ -418,7 +418,7 @@ try {
 
         // Singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
-            SingleplayerSupport(false, true, false, false, false)
+            SingleplayerSupport(false, true, false, false, false, false, false)
         }
 
         if (DevMode==true) {}
@@ -486,7 +486,7 @@ EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
-SingleplayerSupport(false, false, false, false, true)
+SingleplayerSupport(false, false, false, false, true, false, false)
 
 // Say join message on HUD
 if (PluginLoaded==true) {
@@ -560,14 +560,18 @@ return
 
 function OnPlayerDeath(player) {
     printl("Player Death")
+    SingleplayerSupport(false, false, false, false, false, player, false)
+    SingleplayerSupport(false, false, false, false, false, false, false)
 }
 
-//////////////////////
+////////////////////////
 // RUNS AFTER RESPAWN //
-//////////////////////
+////////////////////////
 
 function OnPlayerRespawn(player) {
     printl("Player Respawn")
+    SingleplayerSupport(false, false, false, false, false, false, player)
+    SingleplayerSupport(false, false, false, false, false, false, false)
 }
 
 /////////////////////////////////////
@@ -575,7 +579,7 @@ function OnPlayerRespawn(player) {
 /////////////////////////////////////
 
 function PostMapLoad() {
-    SingleplayerSupport(false, false, false, true, false)
+    SingleplayerSupport(false, false, false, true, false, false, false)
     AllMapsCode(false, false, true, false)
     // Enable fast download
     SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
@@ -665,7 +669,7 @@ function GeneralOneTime() {
 
     AllMapsCode(false, true, false, false)
 
-    SingleplayerSupport(false, false, true, false, false)
+    SingleplayerSupport(false, false, true, false, false, false, false)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1241,11 +1245,20 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // █▀ █ █▄░█ █▀▀ █░░ █▀▀ █▀█ █░░ ▄▀█ █▄█ █▀▀ █▀█ 
 // ▄█ █ █░▀█ █▄█ █▄▄ ██▄ █▀▀ █▄▄ █▀█ ░█░ ██▄ █▀▄ 
 
 // █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
 // ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////
 // SINGLEPLAYER FUNCTIONS //
@@ -1296,71 +1309,6 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
         EntFire("@sphereDummy", "enablepickup", "", 0, null)
     }
 
-    function wheatleyhitground() {
-        EntFire("@sphere", "disablepickup", "", 1.05, null)
-        EntFire("@sphere", "enablepickup", "", 8, null)
-        EntFire("spherebot_1_top_swivel_1", "deactivate", "", 1.01, null)
-    }
-
-    function SPSkipPanel() {
-        EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
-        myexplode2 <- Entities.CreateByClassname("npc_personality_core")
-        myexplode2.__KeyValueFromString("targetname", "myexplode2")
-        myexplode2.SetOrigin(Vector(-822, -523, 1269))
-
-        myexplode <- Entities.CreateByClassname("env_ar2explosion")
-        myexplode.__KeyValueFromString("targetname", "myexplode")
-        myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
-        myexplode.SetOrigin(Vector(-822, -523, 1269))
-        EntFire("myexplode", "explode", "", 2.5, null)
-        EntFire("myexplode2", "explode", "", 2.5, null)
-        EntFire("myexplode2", "explode", "", 3.0, null)
-
-        Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
-        local mysphere = Entities.FindByName(null, "@spheredummy")
-
-        self.PrecacheSoundScript("sphere03.sp_a2_wheatley_ows01")
-        self.PrecacheSoundScript("sphere03.sp_a2_wheatley_ows02")
-        self.PrecacheSoundScript("sphere03.sphere_flashlight_tour67")
-        self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking09")
-        self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking12")
-        self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking10")
-        self.PrecacheSoundScript("sphere03.bw_finale4_hackworked01")
-        self.PrecacheSoundScript("Portal.elevator_chime")
-        self.PrecacheSoundScript("sphere03.GloriousFreedom03")
-        self.PrecacheSoundScript("sphere03.bw_fire_lift03")
-
-        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret01")
-        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret08")
-        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret07")
-        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret05")
-        self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret06")
-
-        EntFire("myexplode2", "addoutput", "targetname playline1", 2, null)
-        EntFire("playline1", "addoutput", "targetname myexplode2", 2+ (TickSpeed * 2), null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline2", 6, null)
-        EntFire("playline2", "addoutput", "targetname myexplode2", 6+ (TickSpeed * 2), null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline3", 12, null)
-        EntFire("playline3", "addoutput", "targetname myexplode2", 12+ (TickSpeed * 2), null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline4", 16, null)
-        EntFire("playline4", "addoutput", "targetname myexplode2", 16+ (TickSpeed * 2), null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline5", 18, null)
-        EntFire("playline5", "addoutput", "targetname myexplode2", 18+ (TickSpeed * 2), null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline6", 24, null)
-        EntFire("playline6", "addoutput", "targetname myexplode2", 24+ (TickSpeed * 2), null)
-
-        EntFire("myexplode2", "addoutput", "targetname playline7", 25, null)
-        EntFire("playline7", "addoutput", "targetname myexplode2", 25+ (TickSpeed * 2), null)
-
-        EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25+ (TickSpeed * 2), null)
-
-    }
-
 // Run mapspawn.nut
 try {
 Entities.First().ConnectOutput("OnUser1", "init")
@@ -1373,7 +1321,7 @@ DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
 // SINGLEPLAYER MAP SUPPORT CODE //
 ///////////////////////////////////
 
-function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapSpawn, SSOnPlayerJoin) {
+function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapSpawn, SSOnPlayerJoin, SSOnDeath, SSOnRespawn) {
 
     //## SP_A1_INTRO2 ##//
     if (GetMapName() == "sp_a1_intro2") {
@@ -1574,6 +1522,71 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "transition_airlock_door_close_rl").Destroy()
             Entities.FindByName(null, "transition_trigger").Destroy()
             Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
+
+            function wheatleyhitground() {
+                EntFire("@sphere", "disablepickup", "", 1.05, null)
+                EntFire("@sphere", "enablepickup", "", 8, null)
+                EntFire("spherebot_1_top_swivel_1", "deactivate", "", 1.01, null)
+            }
+
+            function SPSkipPanel() {
+                EntFire("InstanceAuto9-sphere_socket", "setanimation", "bindpose", 2.7, null)
+                myexplode2 <- Entities.CreateByClassname("npc_personality_core")
+                myexplode2.__KeyValueFromString("targetname", "myexplode2")
+                myexplode2.SetOrigin(Vector(-822, -523, 1269))
+
+                myexplode <- Entities.CreateByClassname("env_ar2explosion")
+                myexplode.__KeyValueFromString("targetname", "myexplode")
+                myexplode.__KeyValueFromString("material", "particle/particle_noisesphere")
+                myexplode.SetOrigin(Vector(-822, -523, 1269))
+                EntFire("myexplode", "explode", "", 2.5, null)
+                EntFire("myexplode2", "explode", "", 2.5, null)
+                EntFire("myexplode2", "explode", "", 3.0, null)
+
+                Entities.FindByName(null, "@sphere").__KeyValueFromString("targetname", "@sphereDummy")
+                local mysphere = Entities.FindByName(null, "@spheredummy")
+
+                self.PrecacheSoundScript("sphere03.sp_a2_wheatley_ows01")
+                self.PrecacheSoundScript("sphere03.sp_a2_wheatley_ows02")
+                self.PrecacheSoundScript("sphere03.sphere_flashlight_tour67")
+                self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking09")
+                self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking12")
+                self.PrecacheSoundScript("sphere03.sp_a1_wakeup_hacking10")
+                self.PrecacheSoundScript("sphere03.bw_finale4_hackworked01")
+                self.PrecacheSoundScript("Portal.elevator_chime")
+                self.PrecacheSoundScript("sphere03.GloriousFreedom03")
+                self.PrecacheSoundScript("sphere03.bw_fire_lift03")
+
+                self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret01")
+                self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret08")
+                self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret07")
+                self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret05")
+                self.PrecacheSoundScript("sphere03.sp_a1_intro7_hoboturret06")
+
+                EntFire("myexplode2", "addoutput", "targetname playline1", 2, null)
+                EntFire("playline1", "addoutput", "targetname myexplode2", 2+ (TickSpeed * 2), null)
+
+                EntFire("myexplode2", "addoutput", "targetname playline2", 6, null)
+                EntFire("playline2", "addoutput", "targetname myexplode2", 6+ (TickSpeed * 2), null)
+
+                EntFire("myexplode2", "addoutput", "targetname playline3", 12, null)
+                EntFire("playline3", "addoutput", "targetname myexplode2", 12+ (TickSpeed * 2), null)
+
+                EntFire("myexplode2", "addoutput", "targetname playline4", 16, null)
+                EntFire("playline4", "addoutput", "targetname myexplode2", 16+ (TickSpeed * 2), null)
+
+                EntFire("myexplode2", "addoutput", "targetname playline5", 18, null)
+                EntFire("playline5", "addoutput", "targetname myexplode2", 18+ (TickSpeed * 2), null)
+
+                EntFire("myexplode2", "addoutput", "targetname playline6", 24, null)
+                EntFire("playline6", "addoutput", "targetname myexplode2", 24+ (TickSpeed * 2), null)
+
+                EntFire("myexplode2", "addoutput", "targetname playline7", 25, null)
+                EntFire("playline7", "addoutput", "targetname myexplode2", 25+ (TickSpeed * 2), null)
+
+                EntFire("bts_panel_door-LR_heavydoor_open", "trigger", "", 25+ (TickSpeed * 2), null)
+
+            }
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -2821,18 +2834,87 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
-            Entities.FindByName(null, "sealin_36-arm_2").Destroy()
-            Entities.FindByName(null, "sealin_36-panel_2").Destroy()
             Entities.FindByName(null, "player_clip").Destroy()
             Entities.FindByName(null, "player_died_relay").Destroy()
             Entities.FindByName(null, "transition_trigger").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(1312, -627, 276), 100).__KeyValueFromString("targetname", "StartDeathEventMPMod")
+            Entities.FindByClassnameNearest("trigger_once", Vector(2208, 1468, 304), 100).__KeyValueFromString("targetname", "EndDeathEventMPMod")
+            OnlyOnceSP_A2_BTS2 <- true
+            PreviousTimeSP_A2_BTS2 <- 0
+            PreviousTimeSP_A2_BTS2Again <- 0
+            NoPlayerMadeItOnlyOnceSP_A2_BTS2 <- true
+            OnlyOnceSP_A2_BTS2AgainV2 <- true
         }
 
         if (SSPostPlayerSpawn==true) {
-
+            local ent = null
+            while (ent = Entities.FindByModel(ent, "models/anim_wp/room_transform/arm_exterior.mdl")) {
+                EntFireByHandle(ent, "setanimation", "block_upper01_drop_idle", 0, null, null)
+                local ent2 = null
+                while (ent2 = Entities.FindByClassnameWithin(ent2, "prop_dynamic", Vector(1490, -4311, 128), 300)) {
+                    if (ent == ent2) {
+                        ent2.Destroy()
+                    }
+                }
+            }
         }
 
         if (SSLoop==true) {
+            // if a player made it teleport everyone into the elevator
+            if (!Entities.FindByName(null, "EndDeathEventMPMod")) {
+                if (OnlyOnceSP_A2_BTS2AgainV2==true) {
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        p.SetOrigin(Vector(2202, 1454, 303))
+                        p.SetAngles(0, -90, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                    OnlyOnceSP_A2_BTS2AgainV2 <- false
+                }
+            }
+
+            // if no player made it, show a message and restart the level
+            if (!Entities.FindByName(null, "StartDeathEventMPMod")) {
+                if (OnlyOnceSP_A2_BTS2 == true) {
+                    PreviousTimeSP_A2_BTS2 <- Time()
+                    OnlyOnceSP_A2_BTS2 <- false
+                }
+                if (PreviousTimeSP_A2_BTS2 + 33 <= Time()) {
+                    if (Entities.FindByName(null, "EndDeathEventMPMod")) {
+                        if (NoPlayerMadeItOnlyOnceSP_A2_BTS2 == true) {
+                            printl("No Player Made It")
+                            PreviousTimeSP_A2_BTS2Again <- Time()
+                            onscreendisplay.__KeyValueFromString("message", "Nobody Escaped...")
+                            onscreendisplay.__KeyValueFromString("holdtime", "3")
+                            onscreendisplay.__KeyValueFromString("fadeout", "2")
+                            onscreendisplay.__KeyValueFromString("fadein", "1.25")
+                            onscreendisplay.__KeyValueFromString("spawnflags", "1")
+                            onscreendisplay.__KeyValueFromString("color", "230 30 30")
+                            onscreendisplay.__KeyValueFromString("channel", "1")
+                            onscreendisplay.__KeyValueFromString("x", "0.425")
+                            onscreendisplay.__KeyValueFromString("y", "-0.2")
+
+                            local envfade = Entities.CreateByClassname("env_fade")
+                            envfade.__KeyValueFromString("duration", "5")
+                            envfade.__KeyValueFromString("holdtime", "10")
+                            envfade.__KeyValueFromString("ReverseFadeDuration", "0")
+                            envfade.__KeyValueFromString("rendercolor", "0 0 0")
+                            envfade.__KeyValueFromString("renderamt", "255")
+                            envfade.__KeyValueFromString("targetname", "FadeyBoi")
+                            DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+                            DoEntFire("FadeyBoi", "fade", "", 0.0, null, null)
+                            NoPlayerMadeItOnlyOnceSP_A2_BTS2 <- false
+                        }
+
+                        if (PreviousTimeSP_A2_BTS2Again + 6.75 <= Time()) {
+                            SendToConsole("commentary 1")
+                            SendToConsole("changelevel sp_a2_bts2")
+                        }
+                    }
+                }
+            }
+
+
             // Make Wheatley look at nearest player
             try {
                 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
@@ -2841,7 +2923,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Make our own changelevel trigger
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 125)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bts3")
             }
@@ -3618,169 +3700,175 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 if (GetMapName() == "sp_a2_bts2") {
     if (CacheTime==true) {
+        // Cache Objects
+
+        CacheModel("props_bts/hanging_walkway_128a.mdl")
+
+        DoneCacheing <- true
   }
 
 
     if (CreateTime==true) {
         // Create Objects
-        local sp_a2_bts2_custom_prop_144 = CreateProp("prop_dynamic", Vector(1863.7722167969, -3195.4938964844, 12.396705627441), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_144.SetAngles(-89.999992370605, 89.999977111816, 180)
-        sp_a2_bts2_custom_prop_144.__KeyValueFromString("solid", "0")
+
+        local sp_a2_bts2_custom_prop_144 = CreateProp("prop_dynamic", Vector(1210.9047851562, -3591.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_144.SetAngles(-89.999946594238, -179.99993896484, 180)
+        sp_a2_bts2_custom_prop_144.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_144.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_144, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_145 = CreateProp("prop_dynamic", Vector(1991.7722167969, -3195.4938964844, 12.396705627441), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_145.SetAngles(-89.999961853027, 89.999984741211, 180)
+        local sp_a2_bts2_custom_prop_145 = CreateProp("prop_dynamic", Vector(1210.9046630859, -3463.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_145.SetAngles(-89.999946594238, -179.99992370605, 180)
         sp_a2_bts2_custom_prop_145.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_145.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_145, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_146 = CreateProp("prop_dynamic", Vector(2119.7722167969, -3195.4938964844, 12.396705627441), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_146.SetAngles(-89.999946594238, 89.999984741211, 180)
+        local sp_a2_bts2_custom_prop_146 = CreateProp("prop_dynamic", Vector(1407.3646240234, -3066.5859375, 10.300641059875), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_146.SetAngles(-89.979080200195, 90.006011962891, 180)
         sp_a2_bts2_custom_prop_146.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_146.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_146, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_147 = CreateProp("prop_dynamic", Vector(2247.7722167969, -3195.4938964844, 12.396705627441), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_147.SetAngles(-89.999946594238, 89.999984741211, 180)
+        local sp_a2_bts2_custom_prop_147 = CreateProp("prop_dynamic", Vector(1733.7668457031, -3890.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_147.SetAngles(-89.999946594238, 9.5622635853942e-05, 180)
         sp_a2_bts2_custom_prop_147.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_147.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_147, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_148 = CreateProp("prop_dynamic", Vector(1210.9050292969, -4103.4584960938, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_148.SetAngles(-89.999992370605, -180, 180)
+        local sp_a2_bts2_custom_prop_148 = CreateProp("prop_dynamic", Vector(1732.4794921875, -3133.6625976562, 10.172374725342), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_148.SetAngles(-89.999984741211, 8.720429832465e-06, 180)
         sp_a2_bts2_custom_prop_148.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_148.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_148, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_149 = CreateProp("prop_dynamic", Vector(2244.6635742188, -3264.9526367188, 13.541909217834), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_149.SetAngles(-89.911949157715, -0.34656950831413, -179.76559448242)
+        local sp_a2_bts2_custom_prop_149 = CreateProp("prop_dynamic", Vector(1210.9049072266, -3719.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_149.SetAngles(-89.999946594238, -179.99995422363, 180)
         sp_a2_bts2_custom_prop_149.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_149.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_149, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_150 = CreateProp("prop_dynamic", Vector(1210.9050292969, -3975.4584960938, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_150.SetAngles(-89.999961853027, 180, 180)
+        local sp_a2_bts2_custom_prop_150 = CreateProp("prop_dynamic", Vector(1210.9050292969, -3847.4582519531, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_150.SetAngles(-89.999946594238, -179.99996948242, 180)
         sp_a2_bts2_custom_prop_150.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_150.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_150, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_151 = CreateProp("prop_dynamic", Vector(1210.9050292969, -3847.4582519531, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_151.SetAngles(-89.999946594238, -179.99998474121, 180)
+        local sp_a2_bts2_custom_prop_151 = CreateProp("prop_dynamic", Vector(1210.9045410156, -3335.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_151.SetAngles(-89.999946594238, -179.99990844727, 180)
         sp_a2_bts2_custom_prop_151.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_151.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_151, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_152 = CreateProp("prop_dynamic", Vector(1210.9049072266, -3719.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_152.SetAngles(-89.999946594238, -179.99996948242, 180)
+        local sp_a2_bts2_custom_prop_152 = CreateProp("prop_dynamic", Vector(1210.904296875, -3207.4577636719, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_152.SetAngles(-89.999946594238, -179.99989318848, 180)
         sp_a2_bts2_custom_prop_152.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_152.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_152, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_153 = CreateProp("prop_dynamic", Vector(1210.9047851562, -3591.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_153.SetAngles(-89.999946594238, -179.99995422363, 180)
+        local sp_a2_bts2_custom_prop_153 = CreateProp("prop_dynamic", Vector(1210.9040527344, -3079.4577636719, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_153.SetAngles(-89.999946594238, -179.99989318848, 180)
         sp_a2_bts2_custom_prop_153.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_153.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_153, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_154 = CreateProp("prop_dynamic", Vector(1210.9046630859, -3463.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_154.SetAngles(-89.999946594238, -179.99993896484, 180)
+        local sp_a2_bts2_custom_prop_154 = CreateProp("prop_dynamic", Vector(1279.3647460938, -3066.5993652344, 10.300641059875), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_154.SetAngles(-89.979103088379, 90.006004333496, 180)
         sp_a2_bts2_custom_prop_154.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_154.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_154, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_155 = CreateProp("prop_dynamic", Vector(1210.9045410156, -3335.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_155.SetAngles(-89.999946594238, -179.99992370605, 180)
+        local sp_a2_bts2_custom_prop_155 = CreateProp("prop_dynamic", Vector(2119.7722167969, -3195.4938964844, 12.396705627441), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_155.SetAngles(-89.999946594238, 89.999984741211, 180)
         sp_a2_bts2_custom_prop_155.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_155.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_155, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_156 = CreateProp("prop_dynamic", Vector(1210.904296875, -3207.4577636719, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_156.SetAngles(-89.999946594238, -179.99990844727, 180)
+        local sp_a2_bts2_custom_prop_156 = CreateProp("prop_dynamic", Vector(2244.1625976562, -3520.9521484375, 13.540298461914), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_156.SetAngles(-89.911918640137, -0.34657052159309, -179.76554870605)
         sp_a2_bts2_custom_prop_156.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_156.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_156, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_157 = CreateProp("prop_dynamic", Vector(1210.9040527344, -3079.4577636719, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_157.SetAngles(-89.999946594238, -179.99989318848, 180)
+        local sp_a2_bts2_custom_prop_157 = CreateProp("prop_dynamic", Vector(1733.7669677734, -4018.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_157.SetAngles(-89.999954223633, 5.4641506721964e-05, 180)
         sp_a2_bts2_custom_prop_157.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_157.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_157, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_158 = CreateProp("prop_dynamic", Vector(1279.3647460938, -3066.5993652344, 10.300641059875), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_158.SetAngles(-89.979110717773, 90.005996704102, 180)
+        local sp_a2_bts2_custom_prop_158 = CreateProp("prop_dynamic", Vector(1733.7672119141, -4146.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_158.SetAngles(-89.999946594238, 9.5622635853942e-05, 180)
         sp_a2_bts2_custom_prop_158.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_158.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_158, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_159 = CreateProp("prop_dynamic", Vector(1407.3646240234, -3066.5859375, 10.300641059875), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_159.SetAngles(-89.979080200195, 90.006011962891, 180)
+        local sp_a2_bts2_custom_prop_159 = CreateProp("prop_dynamic", Vector(2176.3408203125, -3588.1184082031, 10.380084037781), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_159.SetAngles(-89.999984741211, -89.999992370605, 180)
         sp_a2_bts2_custom_prop_159.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_159.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_159, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_160 = CreateProp("prop_dynamic", Vector(1535.3646240234, -3066.572265625, 10.300641059875), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_160.SetAngles(-89.979080200195, 90.00602722168, 180)
+        local sp_a2_bts2_custom_prop_160 = CreateProp("prop_dynamic", Vector(1733.7663574219, -3634.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_160.SetAngles(-89.999946594238, 0.00010928301344393, 180)
         sp_a2_bts2_custom_prop_160.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_160.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_160, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_161 = CreateProp("prop_dynamic", Vector(1663.3646240234, -3066.5588378906, 10.300641059875), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_161.SetAngles(-89.979080200195, 90.006042480469, 180)
+        local sp_a2_bts2_custom_prop_161 = CreateProp("prop_dynamic", Vector(2244.4130859375, -3392.9523925781, 13.541104316711), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_161.SetAngles(-89.911918640137, -0.34657019376755, -179.76554870605)
         sp_a2_bts2_custom_prop_161.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_161.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_161, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_162 = CreateProp("prop_dynamic", Vector(2244.4130859375, -3392.9523925781, 13.541104316711), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_162.SetAngles(-89.911918640137, -0.346569865942, -179.76554870605)
+        local sp_a2_bts2_custom_prop_162 = CreateProp("prop_dynamic", Vector(2247.7722167969, -3195.4938964844, 12.396705627441), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_162.SetAngles(-89.999946594238, 89.999984741211, 180)
         sp_a2_bts2_custom_prop_162.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_162.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_162, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_163 = CreateProp("prop_dynamic", Vector(2244.1625976562, -3520.9521484375, 13.540298461914), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_163.SetAngles(-89.911918640137, -0.34657019376755, -179.76554870605)
+        local sp_a2_bts2_custom_prop_163 = CreateProp("prop_dynamic", Vector(1663.3646240234, -3066.5588378906, 10.300641059875), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_163.SetAngles(-89.979080200195, 90.006042480469, 180)
         sp_a2_bts2_custom_prop_163.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_163.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_163, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_164 = CreateProp("prop_dynamic", Vector(1732.4794921875, -3133.6625976562, 10.172374725342), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_164.SetAngles(-89.999992370605, 3.7114732549526e-06, 180)
+        local sp_a2_bts2_custom_prop_164 = CreateProp("prop_dynamic", Vector(1535.3646240234, -3066.572265625, 10.300641059875), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_164.SetAngles(-89.979080200195, 90.00602722168, 180)
         sp_a2_bts2_custom_prop_164.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_164.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_164, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_165 = CreateProp("prop_dynamic", Vector(2176.3408203125, -3588.1184082031, 10.380084991455), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_165.SetAngles(-89.999992370605, -90, 180)
+        local sp_a2_bts2_custom_prop_165 = CreateProp("prop_dynamic", Vector(1210.9050292969, -4103.4584960938, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_165.SetAngles(-89.999984741211, 180, 180)
         sp_a2_bts2_custom_prop_165.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_165.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_165, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_166 = CreateProp("prop_dynamic", Vector(1733.7669677734, -4018.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_166.SetAngles(-89.999961853027, 4.9632551963441e-05, 180)
+        local sp_a2_bts2_custom_prop_166 = CreateProp("prop_dynamic", Vector(1733.7666015625, -3762.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_166.SetAngles(-89.999946594238, 0.00010928301344393, 180)
         sp_a2_bts2_custom_prop_166.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_166.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_166, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_167 = CreateProp("prop_dynamic", Vector(1733.7672119141, -4146.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_167.SetAngles(-89.999946594238, 9.0613684733398e-05, 180)
+        local sp_a2_bts2_custom_prop_167 = CreateProp("prop_dynamic", Vector(1863.7722167969, -3195.4938964844, 12.396701812744), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_167.SetAngles(-89.999984741211, 89.999984741211, 180)
         sp_a2_bts2_custom_prop_167.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_167.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_167, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_168 = CreateProp("prop_dynamic", Vector(1733.7668457031, -3890.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_168.SetAngles(-89.999946594238, 9.0613684733398e-05, 180)
+        local sp_a2_bts2_custom_prop_168 = CreateProp("prop_dynamic", Vector(1210.9050292969, -3975.4584960938, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_168.SetAngles(-89.999954223633, -179.99998474121, 180)
         sp_a2_bts2_custom_prop_168.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_168.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_168, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_169 = CreateProp("prop_dynamic", Vector(1733.7666015625, -3762.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_169.SetAngles(-89.999946594238, 0.00010427406232338, 180)
+        local sp_a2_bts2_custom_prop_169 = CreateProp("prop_dynamic", Vector(1991.7722167969, -3195.4938964844, 12.396705627441), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_169.SetAngles(-89.999954223633, 89.999984741211, 180)
         sp_a2_bts2_custom_prop_169.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_169.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_169, "disabledraw", "", 0, null, null)
 
-        local sp_a2_bts2_custom_prop_170 = CreateProp("prop_dynamic", Vector(1733.7663574219, -3634.8125, 9.1990060806274), "models/props_bts/hanging_walkway_128a.mdl", 0)
-        sp_a2_bts2_custom_prop_170.SetAngles(-89.999946594238, 0.00010427406232338, 180)
+        local sp_a2_bts2_custom_prop_170 = CreateProp("prop_dynamic", Vector(2244.6635742188, -3264.9526367188, 13.541909217834), "models/props_bts/hanging_walkway_128a.mdl", 0)
+        sp_a2_bts2_custom_prop_170.SetAngles(-89.91194152832, -0.34656989574432, -179.76559448242)
         sp_a2_bts2_custom_prop_170.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_170.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_170, "disabledraw", "", 0, null, null)
@@ -3793,4 +3881,5 @@ if (GetMapName() == "sp_a2_bts2") {
 
   }
 }
+
 }

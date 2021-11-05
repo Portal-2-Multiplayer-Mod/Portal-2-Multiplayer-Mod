@@ -39,3 +39,5 @@ kyle.portal2.gdb.E5rc
 kyle.portal2.gdb.x1ij
 .DS_Store
 MultiplayerModFiles/mpmod.cfg
+*.vmf
+bspsrc.jar
