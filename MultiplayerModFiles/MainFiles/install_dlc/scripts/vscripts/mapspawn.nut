@@ -2837,7 +2837,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "player_clip").Destroy()
             Entities.FindByName(null, "player_died_relay").Destroy()
             Entities.FindByName(null, "transition_trigger").Destroy()
-            Entities.FindByClassnameNearest("trigger_once", Vector(1312, -627, 276), 100).__KeyValueFromString("targetname", "StartDeathEventMPMod")
+            Entities.FindByClassnameNearest("trigger_once", Vector(1332, -250, 296), 100).__KeyValueFromString("targetname", "StartDeathEventMPMod")
             Entities.FindByClassnameNearest("trigger_once", Vector(2208, 1468, 304), 100).__KeyValueFromString("targetname", "EndDeathEventMPMod")
             OnlyOnceSP_A2_BTS2 <- true
             PreviousTimeSP_A2_BTS2 <- 0
@@ -2879,7 +2879,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     PreviousTimeSP_A2_BTS2 <- Time()
                     OnlyOnceSP_A2_BTS2 <- false
                 }
-                if (PreviousTimeSP_A2_BTS2 + 33 <= Time()) {
+                if (PreviousTimeSP_A2_BTS2 + 31 <= Time()) {
                     if (Entities.FindByName(null, "EndDeathEventMPMod")) {
                         if (NoPlayerMadeItOnlyOnceSP_A2_BTS2 == true) {
                             printl("No Player Made It")
@@ -2926,6 +2926,14 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 125)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bts3")
+            }
+
+            // Fix the player's spawn position
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(825, -3756, 240), 25)) {
+                p.SetOrigin(Vector(772, -3780, 64))
+                p.SetAngles(0, -90, 0)
+                p.SetVelocity(Vector(0, -90, 0))
             }
         }
     }
