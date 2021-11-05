@@ -2842,6 +2842,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "pillar_fx_D_start_rl").Destroy()
             Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
             Entities.FindByName(null, "catwalk_fx_E_1").__KeyValueFromString("targetname", "my mom")
+            Entities.FindByName(null, "container_1_catwalk_hurt_2_floor").__KeyValueFromString("targetname", "my dad")
+            container_1_catwalk_hurt_2_floor
             OnlyOnceSP_A2_BTS2 <- true
             PreviousTimeSP_A2_BTS2 <- 0
             PreviousTimeSP_A2_BTS2Again <- 0
@@ -3649,17 +3651,23 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     //## SP_A4_INTRO ##//
     if (GetMapName()=="sp_a4_intro") {
         if (SSInstantRun==true) {
-            Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja01")
+            //Entities.FindByName(null, "turret_bot_monster").__KeyValueFromString("targetname", "moja02")
+            //Entities.FindByName(null, "turret_bot1_monster").__KeyValueFromString("targetname", "moja03")
+            //Entities.FindByName(null, "turret_bot2_monster").__KeyValueFromString("targetname", "moja04")
+            //Entities.FindByName(null, "turret_bot3_monster").__KeyValueFromString("targetname", "moja05")
+            //Entities.FindByName(null, "turret_bot4_monster").__KeyValueFromString("targetname", "moja06")
+            //Entities.FindByName(null, "turret_bot5_monster").__KeyValueFromString("targetname", "moja07")
+            //Entities.FindByName(null, "turret_bot6_monster").__KeyValueFromString("targetname", "moja08")
+            //Entities.FindByName(null, "turret_bot7_monster").__KeyValueFromString("targetname", "moja09")
+            //Entities.FindByName(null, "cube_bot_monster").__KeyValueFromString("targetname", "moja10")
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
-            EntFireByHandle(Entities.FindByName(null, "button_1_pressed"), "addoutput", "OnTrigger moja1:OnProxyRelay2:open", 1, null, null)
-            EntFireByHandle(Entities.FindByName(null, "button_1_unpressed"), "addoutput", "OnTrigger moja1:OnProxyRelay1:close", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "button_1_pressed"), "addoutput", "OnTrigger moja01:OnProxyRelay2:open", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "button_1_unpressed"), "addoutput", "OnTrigger moja01:OnProxyRelay1:close", 1, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "@entrance_door1-close_door_rl").Destroy()
-            Entities.FindByName(null, "cube_bot_model").Destroy()
-            Entities.FindByName(null, "room2_wall_close").Destroy()
-            Entities.FindByName(null, "room2a_wall_close").Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
