@@ -3191,7 +3191,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     EntFire("Sp_A2_CoreViewcontrol", "disable", "", 144.8, null)
 
                     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_CoreServerCommand")
-                    EntFireByHandle(Entities.FindByName(null, "rv_trap_floor_down_door_1"), "addoutput", "targetname Sp_A2_CoreElevatorSecondTP", 145, null, null)
+                    Entities.FindByName(null, "rv_trap_floor_down_door_1").Destroy()
                     EntFire("Sp_A2_CoreServerCommand", "command", "echo Changing level...", 150.8, null)
                     EntFire("Sp_A2_CoreServerCommand", "command", "changelevel sp_a3_00", 150.8, null)
 
@@ -3208,7 +3208,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Second teleport into the elevator
             if (TPSp_A2_Core==true) {
-                if (!Entities.FindByName(null, "Sp_A2_CoreElevatorSecondTP")) {
+                if (!Entities.FindByName(null, "rv_trap_floor_down_door_1")) {
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(0, 290, -200))
