@@ -2866,7 +2866,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
         if (SSLoop==true) {
             // if a player made it teleport everyone into the elevator
-            if (!Entities.FindByName(null, "EndDeathEventMPMod")) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(2207.8967285156, 1452.6505126953, 264.08181762695), 40)) {
                 if (OnlyOnceSP_A2_BTS2AgainV2==true) {
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
