@@ -2841,6 +2841,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(2208, 1468, 304), 100).__KeyValueFromString("targetname", "EndDeathEventMPMod")
             Entities.FindByName(null, "pillar_fx_D_start_rl").Destroy()
             Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
+            Entities.FindByName(null, "catwalk_fx_E_1").__KeyValueFromString("targetname", "my mom")
             OnlyOnceSP_A2_BTS2 <- true
             PreviousTimeSP_A2_BTS2 <- 0
             PreviousTimeSP_A2_BTS2Again <- 0
