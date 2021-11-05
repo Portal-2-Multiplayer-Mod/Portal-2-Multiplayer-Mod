@@ -3684,12 +3684,9 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "door_0-door_close_relay"), "Kill", "", 0, null, null)
-            // Allow starting door to stay open once opened
-            Entities.FindByName(null, "door_0-door_close_relay").Destroy()
             // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 72), 1).Destroy() // Keep starting door open
-            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 64), 1).Destroy() // Keep exit door open
+            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
+            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 64), 1).Destroy() // Keep exit door open (THIS DELETES AN OUTPUT WE DON'T CARE ABOUT)
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3712,8 +3709,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-            Entities.FindByClassnameNearest("trigger_once", Vector(320, 1080, 928), 1).Destroy() // Keep starting door open
+            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
             Entities.FindByClassnameNearest("trigger_once", Vector(624, 448, 960), 1).Destroy() // Keep exit door open
             Entities.FindByClassnameNearest("trigger_multiple", Vector(-84, 888, -440), 1).Destroy() // Kill fall fade
         }
@@ -3733,14 +3729,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     }
 
         //## SP_A4_TB_WALL_BUTTON ##//
+        // Notes: This map has no exit door trigger
     if (GetMapName()=="sp_a4_tb_wall_button") {
         if (SSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(144, 2112, 128), 1).Destroy() // Keep starting door open
-            Entities.FindByClassnameNearest("trigger_once", Vector(864, 960, 168), 1).Destroy() // Keep exit door open
             Entities.FindByClassnameNearest("trigger_multiple", Vector(-1472, 992, -800), 1).Destroy() // Kill fall fade
         }
 
@@ -3764,9 +3759,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-            Entities.FindByClassnameNearest("trigger_once", Vector(-384, 1616, 144.59), 1).Destroy() // Keep starting door open
-            Entities.FindByClassnameNearest("trigger_once", Vector(-128, -208, 288), 1).Destroy() // Keep exit door open
+            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
+            Entities.FindByName(null, "@exit_door-door_close_relay").Destroy() // Keep exit door open (We don't kill the trigger since it is linked to an output to stop music)
             Entities.FindByClassnameNearest("trigger_multiple", Vector(-352, 1888, -680), 1).Destroy() // Kill fall fade
         }
 
@@ -3780,6 +3774,32 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-128, -704, 656), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a4_tb_catch")
+            }
+        }
+    }
+
+        //## SP_A4_TB_CATCH ##//
+        // Notes: The exit door trigger is linked to a dialogue, but we delete it anyways FIXME (it's the one commented out) 
+    if (GetMapName()=="sp_a4_tb_catch") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
+            // Entities.FindByClassnameNearest("trigger_once", Vector(944, 896, 320), 1).Destroy() // Keep exit door open
+            Entities.FindByClassnameNearest("trigger_multiple", Vector(-33.9, -156.52, -360), 1).Destroy() // Kill fall fade
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_stop_the_box")
             }
         }
     }
