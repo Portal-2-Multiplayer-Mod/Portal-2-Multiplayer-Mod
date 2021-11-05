@@ -2843,7 +2843,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
             Entities.FindByName(null, "catwalk_fx_E_1").__KeyValueFromString("targetname", "my mom")
             Entities.FindByName(null, "container_1_catwalk_hurt_2_floor").__KeyValueFromString("targetname", "my dad")
-            container_1_catwalk_hurt_2_floor
             OnlyOnceSP_A2_BTS2 <- true
             PreviousTimeSP_A2_BTS2 <- 0
             PreviousTimeSP_A2_BTS2Again <- 0
