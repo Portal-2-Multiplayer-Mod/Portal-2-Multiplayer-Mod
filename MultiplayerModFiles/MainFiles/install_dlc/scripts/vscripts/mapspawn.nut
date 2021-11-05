@@ -2839,6 +2839,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "transition_trigger").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(1332, -250, 296), 100).__KeyValueFromString("targetname", "StartDeathEventMPMod")
             Entities.FindByClassnameNearest("trigger_once", Vector(2208, 1468, 304), 100).__KeyValueFromString("targetname", "EndDeathEventMPMod")
+            Entities.FindByName(null, "pillar_fx_D_start_rl").Destroy()
+            Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
             OnlyOnceSP_A2_BTS2 <- true
             PreviousTimeSP_A2_BTS2 <- 0
             PreviousTimeSP_A2_BTS2Again <- 0
@@ -2850,6 +2852,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             local ent = null
             while (ent = Entities.FindByModel(ent, "models/anim_wp/room_transform/arm_exterior.mdl")) {
                 EntFireByHandle(ent, "setanimation", "block_upper01_drop_idle", 0, null, null)
+                ent.__KeyValueFromString("DefaultAnim", "block_upper01_drop_idle")
                 local ent2 = null
                 while (ent2 = Entities.FindByClassnameWithin(ent2, "prop_dynamic", Vector(1490, -4311, 128), 300)) {
                     if (ent == ent2) {
@@ -2923,7 +2926,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // Make our own changelevel trigger
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 125)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 150)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a2_bts3")
             }
