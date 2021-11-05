@@ -3686,11 +3686,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFireByHandle(Entities.FindByName(null, "door_0-door_close_relay"), "Kill", "", 0, null, null)
             // Allow starting door to stay open once opened
             Entities.FindByName(null, "door_0-door_close_relay").Destroy()
-            // Find and destroy object using FindByClassnameNearest within 1 unit of given vector
-            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 72), 1).Destroy()
-            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 64), 1).Destroy()
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 72), 1).Destroy() // Keep starting door open
+            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 64), 1).Destroy() // Keep exit door open
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3703,6 +3702,31 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2784, 736, 432), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a4_tb_trust_drop")
+            }
+        }
+    }
+
+        //## SP_A4_TB_TRUST_DROP ##//
+    if (GetMapName()=="sp_a4_tb_trust_drop") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(320, 1080, 928), 1).Destroy() // Keep starting door open
+            Entities.FindByClassnameNearest("trigger_once", Vector(624, 448, 960), 1).Destroy() // Keep exit door open
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1120, 448, 1328), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_tb_wall_button")
             }
         }
     }
