@@ -3544,10 +3544,32 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     //## SP_A3_PORTAL_INTRO ##//
     if (GetMapName()=="sp_a3_portal_intro") {
         if (SSInstantRun==true) {
+            Entities.FindByName(null, "1970s_door1door_lower").__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "1970s_door1door_upper").__KeyValueFromString("targetname", "moja2")
+            Entities.FindByName(null, "1970s_door_1_areaportal").__KeyValueFromString("targetname", "moja3")
+            Entities.FindByName(null, "1970s_door2_door_lower").__KeyValueFromString("targetname", "moja4")
+            Entities.FindByName(null, "1970s_door2_door_upper").__KeyValueFromString("targetname", "moja5")
+            Entities.FindByName(null, "1970s_door_2_areaportal").__KeyValueFromString("targetname", "moja6")
+            Entities.FindByName(null, "bowl_areaportal").__KeyValueFromString("targetname", "moja7")
+            Entities.FindByName(null, "paint_sprayer_2").__KeyValueFromString("targetname", "moja8")
+            // Here if we need to ent_fire something
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2505.95, -48, -2384), 20), "addoutput", "OnTrigger moja4:Open", 1, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2505.95, -48, -2384), 20), "addoutput", "OnTrigger moja5:Open", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "sphere_entrance_lift_train_path_2"), "addoutput", "OnPass moja8:Start", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "moja3"), "Open", "", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "moja6"), "Open", "", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "moja7"), "Open", "", 1, null, null)
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "entrance_lift_train"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "abyss_loadsaved").Destroy()
+            Entities.FindByName(null, "bowl_areaportal_blackbrush").Destroy()
+            Entities.FindByName(null, "damaged_sphere_door_3-door_close").Destroy()
+            Entities.FindByName(null, "damaged_sphere_door_4-door_close").Destroy()
+            Entities.FindByName(null, "liftshaft_entrance_door-door_close").Destroy()
+            Entities.FindByName(null, "transition_trigger").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2400, 1360, -1920), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2416, -128, 640.01), 20).Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3555,9 +3577,93 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(3839.99, 348.8, 5674.67), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a3_end")
+            }
+        }
+    }
+
+    //## SP_A3_END ##//
+    if (GetMapName()=="sp_a3_end") {
+        if (SSInstantRun==true) {
+            Entities.FindByName(null, "entrance_door_prop").__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "paint_trickle_blue_1").__KeyValueFromString("targetname", "moja2")
+            Entities.FindByName(null, "paint_trickle_white_1").__KeyValueFromString("targetname", "moja3")
+            Entities.FindByName(null, "paint_trickle_orange_1").__KeyValueFromString("targetname", "moja4")
+            Entities.FindByName(null, "paint_trickle_blue_2").__KeyValueFromString("targetname", "moja5")
+            Entities.FindByName(null, "paint_trickle_blue_2").__KeyValueFromString("targetname", "moja5")
+            Entities.FindByName(null, "paint_trickle_white_2").__KeyValueFromString("targetname", "moja6")
+            // Here if we need to ent_fire something
+            EntFireByHandle(Entities.FindByName(null, "entrance_door_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja3:Start", 1, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja4:Start", 1, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja5:Start", 1, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-552, 256, -2200), 20), "addoutput", "OnTrigger moja6:Start", 1, null, null)
+            // Fix func_portal_detectors
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
+                ent.__KeyValueFromString("CheckAllIDs", "1")
+            }
+            // Destroy objects
+            Entities.FindByName(null, "fade_to_death").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSOnPlayerJoin==true) {
+            // Find all players
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+                EntFireByHandle(p, "setfogcontroller", "@environment_lake_fog", 0, null, null)
+            }
+        }
+
+        if (SSLoop==true) {
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1540, -830, 3840), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_intro")
+            }
+        }
+    }
+
+    //## SP_A4_INTRO ##//
+    if (GetMapName()=="sp_a4_intro") {
+        if (SSInstantRun==true) {
+            Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja01")
+            //Entities.FindByName(null, "turret_bot_monster").__KeyValueFromString("targetname", "moja02")
+            //Entities.FindByName(null, "turret_bot1_monster").__KeyValueFromString("targetname", "moja03")
+            //Entities.FindByName(null, "turret_bot2_monster").__KeyValueFromString("targetname", "moja04")
+            //Entities.FindByName(null, "turret_bot3_monster").__KeyValueFromString("targetname", "moja05")
+            //Entities.FindByName(null, "turret_bot4_monster").__KeyValueFromString("targetname", "moja06")
+            //Entities.FindByName(null, "turret_bot5_monster").__KeyValueFromString("targetname", "moja07")
+            //Entities.FindByName(null, "turret_bot6_monster").__KeyValueFromString("targetname", "moja08")
+            //Entities.FindByName(null, "turret_bot7_monster").__KeyValueFromString("targetname", "moja09")
+            //Entities.FindByName(null, "cube_bot_monster").__KeyValueFromString("targetname", "moja10")
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "button_1_pressed"), "addoutput", "OnTrigger moja01:OnProxyRelay2:open", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "button_1_unpressed"), "addoutput", "OnTrigger moja01:OnProxyRelay1:close", 1, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "@entrance_door1-close_door_rl").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
