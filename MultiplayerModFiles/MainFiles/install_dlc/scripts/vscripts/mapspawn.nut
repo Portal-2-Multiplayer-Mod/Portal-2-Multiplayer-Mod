@@ -2881,8 +2881,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "pre_solved_chamber-chamber_bridge").__KeyValueFromString("targetname", "MPModBridgeOverride")
             EntFire("MPModBridgeOverride", "enable", "", 3, null)
 
-            OnceTwiceMpModBts1 <- true
-            OneTimeRunBts1 <- true
+            OnceTwiceSp_A2_Bts1 <- true
+            OneTimeRunSp_A2_Bts1 <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -2891,23 +2891,23 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
         if (SSLoop==true) {
             // Bridge drop trigger
-            if (OnceTwiceMpModBts1==true) {
+            if (OnceTwiceSp_A2_Bts1==true) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(836.91394042969, -1589.0966796875, -30.565340042114), 104.79999542236)) {
                     EntFire("@glados", "RunScriptCode", "JailbreakBridgeDisappear()", 0, null)
                     EntFire("MPModBridgeOverride", "disable", "", 0, null)
-                    OnceTwiceMpModBts1 <- false
+                    OnceTwiceSp_A2_Bts1 <- false
                 }
             }
 
             // Exit Test Trigger
-            if (OneTimeRunBts1==true) {
+            if (OneTimeRunSp_A2_Bts1==true) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-3004.51953125, -1652.0881347656, 58.625823974609), 72.800002098083)) {
                     EntFire("jailbreak_chamber_unlit-jailbreak_flashlight", "TurnOff", "", 1, null)
                     EntFire("@sphere", "DisableFlashlight", "", 0, null)
                     EntFire("@glados", "RunScriptCode", "JailbreakWheatleyCloseChamber()", 0, null)
-                    OneTimeRunBts1 <- false
+                    OneTimeRunSp_A2_Bts1 <- false
                 }
             }
 
@@ -2962,11 +2962,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
             Entities.FindByName(null, "catwalk_fx_E_1").__KeyValueFromString("targetname", "my mom")
             Entities.FindByName(null, "container_1_catwalk_hurt_2_floor").__KeyValueFromString("targetname", "my dad")
-            OnlyOnceSP_A2_BTS2 <- true
-            PreviousTimeSP_A2_BTS2 <- 0
-            PreviousTimeSP_A2_BTS2Again <- 0
-            NoPlayerMadeItOnlyOnceSP_A2_BTS2 <- true
-            OnlyOnceSP_A2_BTS2AgainV2 <- true
+            OnlyOnceSp_A2_Bts2 <- true
+            PreviousTimeSp_A2_Bts2 <- 0
+            PreviousTimeSp_A2_Bts2Again <- 0
+            NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- true
+            OnlyOnceSp_A2_Bts2AgainV2 <- true
             WheatleyPlayerLookSP_A2_BTS2 <- true
             DisableLookDisablerSP_A2_BTS2 <- false
         }
@@ -3047,14 +3047,14 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // if a player made it teleport everyone into the elevator
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(2207.8967285156, 1452.6505126953, 264.08181762695), 40)) {
-                if (OnlyOnceSP_A2_BTS2AgainV2==true) {
+                if (OnlyOnceSp_A2_Bts2AgainV2==true) {
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(2202, 1454, 303))
                         p.SetAngles(0, -90, 0)
                         p.SetVelocity(Vector(0, 0, 0))
                     }
-                    OnlyOnceSP_A2_BTS2AgainV2 <- false
+                    OnlyOnceSp_A2_Bts2AgainV2 <- false
                 }
             }
 
@@ -3066,7 +3066,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 }
                 if (PreviousTimeSP_A2_BTS2 + 31 <= Time()) {
                     if (Entities.FindByName(null, "EndDeathEventMPMod")) {
-                        if (NoPlayerMadeItOnlyOnceSP_A2_BTS2 == true) {
+                        if (NoPlayerMadeItOnlyOnceSp_A2_Bts2 == true) {
                             printl("No Player Made It")
                             PreviousTimeSP_A2_BTS2Again <- Time()
                             onscreendisplay.__KeyValueFromString("message", "Nobody Escaped...")
@@ -3088,10 +3088,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                             envfade.__KeyValueFromString("targetname", "FadeyBoi")
                             DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
                             DoEntFire("FadeyBoi", "fade", "", 0.0, null, null)
-                            NoPlayerMadeItOnlyOnceSP_A2_BTS2 <- false
+                            NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- false
                         }
 
-                        if (PreviousTimeSP_A2_BTS2Again + 6.75 <= Time()) {
+                        if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
                             SendToConsole("commentary 1")
                             SendToConsole("changelevel sp_a2_bts2")
                         }
