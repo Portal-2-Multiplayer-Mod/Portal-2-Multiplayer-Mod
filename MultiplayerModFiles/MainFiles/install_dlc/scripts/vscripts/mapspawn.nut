@@ -1394,8 +1394,8 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
             printl(ClosestEnt)
             printl(ClosestCoords)
 
-            // Entities.FindByClassnameNearest("env_soundscape", Vector(FinalVector), 300).__KeyValueFromString("radius", "300")
-            // Entities.FindByClassnameNearest("env_soundscape", Vector(FinalVector), 300).SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+            ClosestEnt.__KeyValueFromString("radius", "300")
+            ClosestEnt.SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
 
             // Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
             // Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
