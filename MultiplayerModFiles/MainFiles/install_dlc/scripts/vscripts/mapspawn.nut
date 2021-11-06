@@ -3797,9 +3797,33 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         if (SSLoop==true) {
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1440, 896, 688), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a4_stop_the_box")
+            }
+        }
+    }
+
+        //## SP_A4_STOP_THE_BOX ##//
+        // Notes: There is no trigger to actually close the exit door
+    if (GetMapName()=="sp_a4_stop_the_box") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(896, -800, 1296), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_laser_catapult")
             }
         }
     }
