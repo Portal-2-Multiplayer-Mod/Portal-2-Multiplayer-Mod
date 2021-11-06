@@ -1370,7 +1370,7 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 
             local ClosestCoords = Vector(0, 0, 0)
             local ClosestEnt = null
-            local BestScore = 0
+            local BestScore = 80000
             local ent = null
             while (ent = Entities.FindByClassname(ent, "env_soundscape")) {
                 printl(ent)
@@ -1378,10 +1378,10 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
                 local yent = UnNegative(ent.GetOrigin().y) - UnNegative(FinalVector.y)
                 local zent = UnNegative(ent.GetOrigin().z) - UnNegative(FinalVector.z)
                 local Score = xent + yent + zent
-                local Score2 = Score
-                if (Score >= 0) {
-                    Score2 = Score * -1
-                }
+                local Score2 = UnNegative(Score)
+                // if (Score >= 0) {
+                //     Score2 = Score * -1
+                // }
                 printl(Score2)
                 if (Score2 <= BestScore) {
                     BestScore = Score2
