@@ -698,25 +698,31 @@ def Launch():
 
 
 # GUI
-# make a gui with a start button
-import tkinter as tk
-from requests import get
+# Create a window
+import kivy # This is needed to run the GUI
+from kivy.app import App # This is needed to run the GUI
+from kivy.uix.label import Label # This is needed to run the GUI
+from kivy.uix.button import Button # This is needed to run the GUI
+from kivy.uix.boxlayout import BoxLayout # This is needed to run the GUI
+from kivy.uix.textinput import TextInput # This is needed to run the GUI
 
-ip = get('https://api.ipify.org').text
+# This is needed to run the GUI
+class MyApp(App):
+    # add a button
+    def build(self):
+        # Create a layout
+        layout = BoxLayout(orientation='vertical')
+        # Make a button
+        layout.add_widget(Button(text='Start', on_press=self.pressed))
 
-# make a window
-window = tk.Tk()
-window.title("Portal 2 Multiplayer Mod Launcher")
-window.geometry("400x200")
+        # make the window title grookey
+        self.title = 'grookey'
+        # Return the layout
+        return layout
 
-# put a button on the window
-button = tk.Button(window, text="Start", command=Launch)
-button.pack()
+    # This is called when the button is pressed
+    def pressed(self, instance):
+        Launch()
 
-# make selectable text that says "Select a mod"
-text = tk.Text(window, height=30, width=60)
-text.insert(tk.END, "Generated HyperLink:" + "\n" + "steam://run/620//+connect%20" + ip)
-text.pack()
-
-# show the window
-window.mainloop()
+# Run the GUI
+MyApp().run()

@@ -22,7 +22,7 @@
 //  ██████  ██████  ██   ████ ██      ██  ██████
 
 //-----------------------------------
-DevMode <- false // Set to true if you're a developer
+DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
@@ -71,12 +71,12 @@ if (UsePlugin==true) {
 
 ConsoleAscii <- [
 ""
-"██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░██████╗░"
-"██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░╚════██╗"
-"██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░███╔═╝"
-"██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░██╔══╝░░"
-"██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░███████╗"
-"╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░╚══════╝"
+"██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░██████╗░"
+"██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░╚════██╗"
+"██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░░░███╔═╝"
+"██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░██╔══╝░░"
+"██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░███████╗"
+"╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░╚══════╝"
 ""
 "███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░"
 "████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗"
@@ -244,6 +244,26 @@ function init() {
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
+function CreateTrigger(x1, y1, z1, x2, y2, z2){
+	if(DevMode == true){
+		DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
+	}
+    local plist = []
+    local p = null
+    local outputp = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local pos = p.GetOrigin()
+        if (pos.z >= z1 && pos.z <= z2){
+            if (pos.y >= y1 && pos.y <= y2) {
+                if (pos.x <= x1 && pos.x >= x2) {
+                    plist.push(p)
+                }
+            }
+        }
+    }
+    return plist
+}
+
 // Teleport players within a distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
     local ent = null
@@ -259,8 +279,7 @@ function PlayerWithinDistance(SearchPos, SearchDis) {
     }
 }
 
-function DeleteModels(ModelName) {
-    local ent = null
+function TriggerOnceHook(TriggerName, FunctionName) {
 
 }
 
@@ -320,6 +339,10 @@ try {
 //------------------------------------------------------//
 
     function loop() {
+        foreach (player in CreateTrigger(4631.953125, 3454.1826171875, -520.72909545898, 4386.2651367188, 3711.8361816406, -430.58023071289)) {
+            printl(player)
+        }
+
         //Count Ticks
         tick <- tick + 1
 
@@ -1265,6 +1288,13 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 // SINGLEPLAYER FUNCTIONS //
 ////////////////////////////
 
+    function UnNegative(num) {
+        if (num <= 0) {
+            num = num * -1
+        }
+        return num
+    }
+
     function NewApertureStartElevatorFixes() {
         // Elevator light_spot
         try {
@@ -1290,15 +1320,103 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
         // Reposition and resize fan soundscape
         try {
             local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
-            Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
-            Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
-        } catch(exception) {}
+            local RelX = 0
+            local RelY = -192
+            local RelZ = 120
+
+            //local MiddleVector = Entities.FindByName(null, "arrival_elevator-elevator_tube_opener").GetOrigin()
+            local MiddleVector = Entities.FindByNameNearest("arrival_elevator-elevator_tube_opener", Entities.FindByName(null, "blue").GetOrigin(), 1000).GetOrigin()
+            local OutsideVector = Entities.FindByName(null, "arrival_elevator-open").GetOrigin()
+
+            printl(MiddleVector)
+
+            local ComputedVector = Vector(MiddleVector.x.tointeger()-OutsideVector.x.tointeger(), MiddleVector.y.tointeger()-OutsideVector.y.tointeger(), 0)
+
+            //Number Sorter
+            local CurrentHighest = 0
+            local AmountOfItterations = 0
+            foreach (Component in ComputedVector) {
+                printl("foreach")
+                AmountOfItterations = AmountOfItterations + 1
+
+                if (Component <= 0) {
+                    Component = Component * -1
+                }
+
+                if (Component >= CurrentHighest) {
+                    CurrentHighest = AmountOfItterations
+                }
+            }
+
+            if (CurrentHighest==1) {
+                CurrentHighest="x"
+            } else {
+                CurrentHighest="y"
+            }
+
+            if (CurrentHighest=="x" && ComputedVector.x <= 0) {
+                CurrentHighest="-x"
+            }
+
+            if (CurrentHighest=="y" && ComputedVector.y <= 0) {
+                CurrentHighest="-y"
+            }
+
+            local FinalVector = Vector(0, 0, 0)
+
+            printl(CurrentHighest)
+
+            if (CurrentHighest=="-y") {
+                printl("-y")
+                FinalVector = Vector(MiddleVector.x+(RelY), MiddleVector.y+RelX, MiddleVector.z+RelZ)
+            }
+            if (CurrentHighest=="y") {
+                FinalVector = Vector(MiddleVector.x+(RelY*-1), MiddleVector.y+RelX, MiddleVector.z+RelZ)
+            }
+            printl("fullx")
+            if (CurrentHighest=="-x") {
+                FinalVector = Vector(MiddleVector.x+RelX, MiddleVector.y+(RelY), MiddleVector.z+RelZ)
+            }
+            if (CurrentHighest=="x") {
+                FinalVector = Vector(MiddleVector.x+RelX, MiddleVector.y+(RelY*-1), MiddleVector.z+RelZ)
+            }
+
+            printl("FinalVector Passed")
+            printl(FinalVector)
+
+            local ClosestCoords = Vector(0, 0, 0)
+            local ClosestEnt = null
+            local BestScore = 80000
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "env_soundscape")) {
+                local xent = UnNegative(ent.GetOrigin().x) - UnNegative(FinalVector.x)
+                local yent = UnNegative(ent.GetOrigin().y) - UnNegative(FinalVector.y)
+                local zent = UnNegative(ent.GetOrigin().z) - UnNegative(FinalVector.z)
+                local Score = xent + yent + zent
+                local Score2 = UnNegative(Score)
+                // if (Score >= 0) {
+                //     Score2 = Score * -1
+                // }
+                if (Score2 <= BestScore) {
+                    BestScore = Score2
+                    ClosestCoords = ent.GetOrigin()
+                    ClosestEnt = ent
+                }
+            }
+
+            ClosestEnt.__KeyValueFromString("radius", "300")
+            ClosestEnt.SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+
+            // Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+            // Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+        } catch(exception) {printl("EXCEPT")}
         // Enable vgui displays
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
             Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
         } catch(exception) {}
     }
+
     function disablewheatleyplayerpickup() {
         printl("Player picked up Wheatley. Disabling pickup!")
         EntFire("@sphere", "disablepickup", "", 0, null)
@@ -2647,12 +2765,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                         p.SetOrigin(Vector(-1964, 331, -2479))
                     }
 
-                    OnlyOnceSpA2SpA2ColumBlocker3 <- false
+                    OnlySpA2SpA2ColumBlocker3 <- false
                 }
             }
 
             // Delete office door after walking through it
-            if (OnlyOnceSpA2ColumBlocker2==true) {
+            if (OnlySpA2ColumBlocker2==true) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-63, -780, 320), 40)) {
                     Entities.FindByName(null, "officedoor_1").Destroy()
@@ -2763,8 +2881,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "pre_solved_chamber-chamber_bridge").__KeyValueFromString("targetname", "MPModBridgeOverride")
             EntFire("MPModBridgeOverride", "enable", "", 3, null)
 
-            OnceTwiceSp_A2_Bts1 <- true
-            OneTimeRunSp_A2_Bts1 <- true
+            OnceTwiceMpModBts1 <- true
+            OneTimeRunBts1 <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -2773,23 +2891,23 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
         if (SSLoop==true) {
             // Bridge drop trigger
-            if (OnceTwiceSp_A2_Bts1==true) {
+            if (OnceTwiceMpModBts1==true) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(836.91394042969, -1589.0966796875, -30.565340042114), 104.79999542236)) {
                     EntFire("@glados", "RunScriptCode", "JailbreakBridgeDisappear()", 0, null)
                     EntFire("MPModBridgeOverride", "disable", "", 0, null)
-                    OnceTwiceSp_A2_Bts1 <- false
+                    OnceTwiceMpModBts1 <- false
                 }
             }
 
             // Exit Test Trigger
-            if (OneTimeRunSp_A2_Bts1==true) {
+            if (OneTimeRunBts1==true) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-3004.51953125, -1652.0881347656, 58.625823974609), 72.800002098083)) {
                     EntFire("jailbreak_chamber_unlit-jailbreak_flashlight", "TurnOff", "", 1, null)
                     EntFire("@sphere", "DisableFlashlight", "", 0, null)
                     EntFire("@glados", "RunScriptCode", "JailbreakWheatleyCloseChamber()", 0, null)
-                    OneTimeRunSp_A2_Bts1 <- false
+                    OneTimeRunBts1 <- false
                 }
             }
 
@@ -2844,11 +2962,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
             Entities.FindByName(null, "catwalk_fx_E_1").__KeyValueFromString("targetname", "my mom")
             Entities.FindByName(null, "container_1_catwalk_hurt_2_floor").__KeyValueFromString("targetname", "my dad")
-            OnlyOnceSp_A2_Bts2 <- true
-            PreviousTimeSp_A2_Bts2 <- 0
-            PreviousTimeSp_A2_Bts2Again <- 0
-            NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- true
-            OnlyOnceSp_A2_Bts2AgainV2 <- true
+            OnlyOnceSP_A2_BTS2 <- true
+            PreviousTimeSP_A2_BTS2 <- 0
+            PreviousTimeSP_A2_BTS2Again <- 0
+            NoPlayerMadeItOnlyOnceSP_A2_BTS2 <- true
+            OnlyOnceSP_A2_BTS2AgainV2 <- true
+            WheatleyPlayerLookSP_A2_BTS2 <- true
+            DisableLookDisablerSP_A2_BTS2 <- false
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -2866,32 +2986,90 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879)) {
+                DisableLookDisablerSP_A2_BTS2 <- true
+            }
+
+            if (DisableLookDisablerSP_A2_BTS2 == false) {
+                // Make a custom trigger to disable player look
+                WheatleyPlayerLookSP_A2_BTS2 <- true
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+            }
+
             // if a player made it teleport everyone into the elevator
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(2207.8967285156, 1452.6505126953, 264.08181762695), 40)) {
-                if (OnlyOnceSp_A2_Bts2AgainV2==true) {
+                if (OnlyOnceSP_A2_BTS2AgainV2==true) {
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(2202, 1454, 303))
                         p.SetAngles(0, -90, 0)
                         p.SetVelocity(Vector(0, 0, 0))
                     }
-                    OnlyOnceSp_A2_Bts2AgainV2 <- false
+                    OnlyOnceSP_A2_BTS2AgainV2 <- false
                 }
             }
 
             // if no player made it, show a message and restart the level
             if (!Entities.FindByName(null, "StartDeathEventMPMod")) {
-                if (OnlyOnceSp_A2_Bts2 == true) {
-                    PreviousTimeSp_A2_Bts2 <- Time()
-                    OnlyOnceSp_A2_Bts2 <- false
+                if (OnlyOnceSP_A2_BTS2 == true) {
+                    PreviousTimeSP_A2_BTS2 <- Time()
+                    OnlyOnceSP_A2_BTS2 <- false
                 }
-                if (PreviousTimeSp_A2_Bts2 + 31 <= Time()) {
+                if (PreviousTimeSP_A2_BTS2 + 31 <= Time()) {
                     if (Entities.FindByName(null, "EndDeathEventMPMod")) {
-                        if (NoPlayerMadeItOnlyOnceSp_A2_Bts2 == true) {
-                            printl("No player made it")
-                            PreviousTimeSp_A2_Bts2Again <- Time()
-                            onscreendisplay.__KeyValueFromString("message", "Nobody escaped...")
+                        if (NoPlayerMadeItOnlyOnceSP_A2_BTS2 == true) {
+                            printl("No Player Made It")
+                            PreviousTimeSP_A2_BTS2Again <- Time()
+                            onscreendisplay.__KeyValueFromString("message", "Nobody Escaped...")
                             onscreendisplay.__KeyValueFromString("holdtime", "3")
                             onscreendisplay.__KeyValueFromString("fadeout", "2")
                             onscreendisplay.__KeyValueFromString("fadein", "1.25")
@@ -2910,10 +3088,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                             envfade.__KeyValueFromString("targetname", "FadeyBoi")
                             DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
                             DoEntFire("FadeyBoi", "fade", "", 0.0, null, null)
-                            NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- false
+                            NoPlayerMadeItOnlyOnceSP_A2_BTS2 <- false
                         }
 
-                        if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
+                        if (PreviousTimeSP_A2_BTS2Again + 6.75 <= Time()) {
                             SendToConsole("commentary 1")
                             SendToConsole("changelevel sp_a2_bts2")
                         }
@@ -2923,10 +3101,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
 
             // Make Wheatley look at nearest player
-            try {
-                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-                EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            } catch(exception) {}
+            if (WheatleyPlayerLookSP_A2_BTS2==true) {
+                try {
+                    local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+                    EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                } catch(exception) {}
+            }
 
             // Make our own changelevel trigger
             local p = null
@@ -2988,7 +3168,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-    //## SP_A2_BTS4 ##//
+//## SP_A2_BTS4 ##//
     if (GetMapName()=="sp_a2_bts4") {
         if (SSInstantRun==true) {
             // Here if we need to ent_fire something
@@ -3011,6 +3191,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Fix dummy room door closing
             local ent = Entities.FindByName(null, "dummy_shoot_entry_door").__KeyValueFromString("targetname", "moja")
             EntFire("moja", "setanimation", "open", 2, null)
+            TriggerOnceSP_A2_BTS4_1 <- true
+            DisableLookDisablerSP_A2_BTS4 <- false
+
+            TestingHackStart <- function() {
+                printl("DOOR HACK START")
+                WheatleyPlayerLookSP_A2_BTS4 <- false
+            }
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3019,11 +3206,82 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            TestingHackStart
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879*1.5)) {
+                DisableLookDisablerSP_A2_BTS4 <- true
+            }
+
+            WheatleyPlayerLookSP_A2_BTS4 <- true
+            if (DisableLookDisablerSP_A2_BTS4 == false) {
+                // Make a custom trigger to disable player look
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+            }
+
+            // On trigger hit, smash the door 18 seconds later
+            if (TriggerOnceSP_A2_BTS4_1==true) {
+                if (!Entities.FindByName(null, "wheatley_scanner_intro_vcd_trigger")) {
+                    printl("Wheatley Sequance Started")
+                    EntFire("wheatley_start_smash_window_relay", "trigger", "", 18, null)
+                    EntFire("@glados", "RunScriptCode", "FactoryControlRoomHackSuccess()", 18, null)
+                    TriggerOnceSP_A2_BTS4_1 <- false
+                }
+            }
+
             // Make Wheatley look at nearest player (We need wheatley to light the way for the player but since he's looking at them on loop he can't) (Moja)
-            try {
-                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-                EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            } catch(exception) {}
+            if (WheatleyPlayerLookSP_A2_BTS4==true) {
+                try {
+                    local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+                    EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                } catch(exception) {}
+            }
 
             // Make our own changelevel trigger
             local p = null
@@ -3051,6 +3309,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "lock_door_trigger").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(3794.06, -1727.98, 3488), 20).Destroy()
             OnlyOnceSp_A2_Bts5 <- true
+            OnlyOnceTPSP_A2_BTS5 <- true
+            LoopEnablerSP_A2_BTS5 <- false
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3060,6 +3320,47 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "npc_portal_turret_floor", Vector(2594.6696777344, 1760.8935546875, 3943.775390625), 400)) {
+                p.SetOrigin(Vector(p.GetOrigin().x, (p.GetOrigin().y-24)*10*TickSpeed, (p.GetOrigin().z-6)*10*TickSpeed))
+            }
+
+            // Find all players within
+            if (LoopEnablerSP_A2_BTS5==false) {
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(2944, 942, 4418), 80)) {
+                    LoopEnablerSP_A2_BTS5 <- true
+                }
+            }
+
+            // Teleport everyone on the ground to the elevator
+            if (LoopEnablerSP_A2_BTS5==true) {
+                // Find all players under the elevator
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    if (p.GetOrigin().z<=4100) {
+                        p.SetOrigin(Vector(2929, 942, 4418))
+                        p.SetAngles(0, 180, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                }
+            }
+
+            // Make the elevator go up with the players in it
+            if (OnlyOnceTPSP_A2_BTS5==true) {
+                if (!Entities.FindByClassnameNearest("trigger_once", Vector(2941.5, 944, 3662), 20)) {
+                    printl("Triggered")
+                    //Find all players
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        p.SetOrigin(Vector(2944, 942, 3700))
+                        p.SetAngles(0, 180, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                    OnlyOnceTPSP_A2_BTS5 <- false
+                }
+            }
+
             if (OnlyOnceSp_A2_Bts5==true) {
                 if (!Entities.FindByName(null, "exit_tube_1_exit_trigger")) {
                     printl("Suction viewcontrol activated")
@@ -3159,9 +3460,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Destroy objects
             Entities.FindByName(null, "death_fade").Destroy()
             Entities.FindByName(null, "rv_trap_portal_surf_cleanser").Destroy()
+            Entities.FindByName(null, "start_rv_scene_trigger").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(0, 304, -10438), 20).Destroy()
+            OnlyOnceSp_A2_Core_2 <- true
             OnlyOnceSp_A2_Core <- true
             TPSp_A2_Core <- true
+            OnlyOnceMoveTeleportSp_A2_Core_2 <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3178,6 +3482,40 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+
+            if (OnlyOnceSp_A2_Core_2==true) {
+                if (!Entities.FindByName(null, "rv_start_moving_trigger")) {
+                    EntFireByHandle(Entities.FindByName(null, "start_rv_scene_rl"), "Trigger", "", 8, null, null)
+                    Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "OnMoveStartOnlyOnceSp_A2_Core_2DIS")
+                    EntFire("OnMoveStartOnlyOnceSp_A2_Core_2DIS", "addoutput", "targetname OnMoveStartOnlyOnceSp_A2_Core_2", 8, null)
+                    OnlyOnceSp_A2_Core_2 <- false
+                }
+            }
+
+            if (OnlyOnceMoveTeleportSp_A2_Core_2 == true) {
+                if (Entities.FindByName(null, "OnMoveStartOnlyOnceSp_A2_Core_2")) {
+                    //Find all players
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        local InsideArea = false
+                        local p2 = null
+                        while (p2 = Entities.FindByClassnameWithin(p2, "player", Vector(-1836.2550048828, -0.81460344791412, -31.667282104492), 151.99999809265)) {
+                            if (p2 == p) {
+                                InsideArea = true
+                            }
+                        }
+
+                        if (InsideArea==false) {
+                            p.SetOrigin(Vector(-1839, 0, 8))
+                            p.SetAngles(0, 0, 0)
+                            p.SetVelocity(Vector(0, 0, 0))
+                        }
+                        EntFireByHandle(p, "setfogcontroller", "@environment_glados", 10, null, null)
+                    }
+                    OnlyOnceMoveTeleportSp_A2_Core_2 <- false
+                }
+            }
+
             if (OnlyOnceSp_A2_Core==true) {
                 if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {
                     printl("Elevator viewcontrol activated")
@@ -4422,5 +4760,4 @@ if (GetMapName() == "sp_a2_bts2") {
 
   }
 }
-
 }

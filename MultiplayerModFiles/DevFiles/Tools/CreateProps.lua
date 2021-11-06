@@ -18,6 +18,7 @@ LoopAmount = 0
 Loop = true
 MapName = game.GetMap()
 CachedModels = {}
+GeneratedTriggers = {}
 ContinueModelCache = true
 
 LineAmount = MapName:len() + 19
@@ -141,6 +142,34 @@ while (Loop == true) do
             if (LoopAmount == 2) then
 
 
+                for _, prop31 in ipairs( ents.FindByClass( "prop_physics" ) ) do
+                    propmodel21 = prop31:GetModel()
+                    if (propmodel21==TeleportInputNode2) then
+                        -- create teleport node if model is a teleport node
+                        for k, prop21 in ipairs(ents.FindByModel(TeleportInputNode2)) do
+                            if (prop21 ~= prop31) then
+                                if (prop31:GetColor() == prop21:GetColor()) then
+                                    GenerateTriggerNext = true
+                                    if (GeneratedTriggers ~= {}) then
+                                        for k, Thing in ipairs(GeneratedTriggers) do
+                                            if (Thing == prop21) || (Thing == prop31) then
+                                                GenerateTriggerNext = false
+                                            end
+                                        end
+                                    end
+                                    if (GenerateTriggerNext==true) then
+                                        GenerateLine("     foreach (player in CreateTrigger("..prop31:GetPos().x..", "..prop31:GetPos().y..", "..prop31:GetPos().z..", "..prop21:GetPos().x..", "..prop21:GetPos().y..", "..prop21:GetPos().z..")) {")
+                                        GenerateLine("         printl(player)")
+                                        GenerateLine("     }")
+                                        table.insert(GeneratedTriggers, prop31)
+                                        table.insert(GeneratedTriggers, prop21)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+
                 -- make teleport nodes and output nodes
                 if (PropModel==TeleportInputNode) then
                     -- create teleport node if model is a teleport node
@@ -174,3 +203,36 @@ while (Loop == true) do
 end
 
 GenerateLine("}")
+
+
+TeleportInputNode2 = "models/hunter/blocks/cube025x025x025.mdl"
+
+// Add a tick hook
+function DrawBox()
+    for _, prop3 in ipairs( ents.FindByClass( "prop_physics" ) ) do
+        propmodel2 = prop3:GetModel()
+        if (propmodel2==TeleportInputNode2) then
+            -- create teleport node if model is a teleport node
+            for k, prop2 in ipairs(ents.FindByModel(TeleportInputNode2)) do
+                if (prop2 ~= prop3) then
+                    if (prop3:GetColor() == prop2:GetColor()) then
+                        -- write out mixed premade code with teleport node properties
+                        debugoverlay.Box( (prop3:GetPos()-prop2:GetPos()) - (prop3:GetPos()-prop2:GetPos()), prop3:GetPos(), prop2:GetPos(), 0, Color( 255, 100, 8, 20) )
+                        debugoverlay.Axis( prop3:GetPos(), prop3:GetAngles(), 40, 0, false )
+                        prop3:SetMaterial("models/wireframe")
+                        prop2:SetMaterial("models/wireframe")
+                        prop2:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
+                        prop3:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
+                        boxsize = 1
+                        debugoverlay.Box(prop2:GetPos(), Vector(boxsize * -1, boxsize * -1, boxsize * -1), Vector(boxsize, boxsize, boxsize), 0, Color( prop2:GetColor().r, prop2:GetColor().g, prop2:GetColor().b, 100) )
+                        debugoverlay.Box(prop3:GetPos(), Vector(boxsize * -1, boxsize * -1, boxsize * -1), Vector(boxsize, boxsize, boxsize), 0, Color( prop2:GetColor().r, prop2:GetColor().g, prop2:GetColor().b, 100) )
+                    end
+                end
+            end
+        end
+    end
+
+    // Draw a box
+
+end
+hook.Add( "Tick", "BoxDrawForPropCreation", DrawBox )
