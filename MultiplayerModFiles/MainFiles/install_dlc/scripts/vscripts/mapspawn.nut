@@ -1263,6 +1263,13 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 // SINGLEPLAYER FUNCTIONS //
 ////////////////////////////
 
+    function UnNegative(num) {
+        if (num <= 0) {
+            num = num * -1
+        }
+        return num
+    }
+
     function NewApertureStartElevatorFixes() {
         // Elevator light_spot
         try {
@@ -1288,15 +1295,118 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
         // Reposition and resize fan soundscape
         try {
             local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()
-            Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
-            Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
-        } catch(exception) {}
+            local RelX = 0
+            local RelY = -192
+            local RelZ = 120
+
+            //local MiddleVector = Entities.FindByName(null, "arrival_elevator-elevator_tube_opener").GetOrigin()
+            local MiddleVector = Entities.FindByNameNearest("arrival_elevator-elevator_tube_opener", Entities.FindByName(null, "blue").GetOrigin(), 1000).GetOrigin()
+            local OutsideVector = Entities.FindByName(null, "arrival_elevator-open").GetOrigin()
+
+            printl(MiddleVector)
+
+            local ComputedVector = Vector(MiddleVector.x.tointeger()-OutsideVector.x.tointeger(), MiddleVector.y.tointeger()-OutsideVector.y.tointeger(), 0)
+
+            printl("locals passed")
+
+            //Number Sorter
+            local CurrentHighest = 0
+            local AmountOfItterations = 0
+            foreach (Component in ComputedVector) {
+                printl("foreach")
+                AmountOfItterations = AmountOfItterations + 1
+
+                if (Component <= 0) {
+                    Component = Component * -1
+                }
+
+                if (Component >= CurrentHighest) {
+                    CurrentHighest = AmountOfItterations
+                }
+            }
+
+            printl("sorter passed")
+
+            if (CurrentHighest==1) {
+                CurrentHighest="x"
+            } else {
+                CurrentHighest="y"
+            }
+
+            if (CurrentHighest=="x" && ComputedVector.x <= 0) {
+                CurrentHighest="-x"
+            }
+
+            if (CurrentHighest=="y" && ComputedVector.y <= 0) {
+                CurrentHighest="-y"
+            }
+
+            printl("xy computes passed")
+
+            local FinalVector = Vector(0, 0, 0)
+
+            printl(CurrentHighest)
+
+            if (CurrentHighest=="-y") {
+                printl("-y")
+                FinalVector = Vector(MiddleVector.x+(RelY), MiddleVector.y+RelX, MiddleVector.z+RelZ)
+            } 
+            if (CurrentHighest=="y") {
+                printl("+y")
+                FinalVector = Vector(MiddleVector.x+(RelY*-1), MiddleVector.y+RelX, MiddleVector.z+RelZ)
+            }
+            printl("fullx")
+            if (CurrentHighest=="-x") {
+                printl("-x")
+                FinalVector = Vector(MiddleVector.x+RelX, MiddleVector.y+(RelY), MiddleVector.z+RelZ)
+            } 
+            if (CurrentHighest=="x") {
+                printl("+x")
+                FinalVector = Vector(MiddleVector.x+RelX, MiddleVector.y+(RelY*-1), MiddleVector.z+RelZ)
+            } 
+
+            printl("FinalVector Passed")
+            printl(FinalVector)
+
+            local ClosestCoords = Vector(0, 0, 0)
+            local ClosestEnt = null
+            local BestScore = 0
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "env_soundscape")) {
+                printl(ent)
+                local xent = UnNegative(ent.GetOrigin().x) - UnNegative(FinalVector.x)
+                local yent = UnNegative(ent.GetOrigin().y) - UnNegative(FinalVector.y)
+                local zent = UnNegative(ent.GetOrigin().z) - UnNegative(FinalVector.z)
+                local Score = xent + yent + zent
+                local Score2 = Score
+                if (Score >= 0) {
+                    Score2 = Score * -1
+                }
+                printl(Score2)
+                if (Score2 <= BestScore) {
+                    BestScore = Score2
+                    ClosestCoords = ent.GetOrigin()
+                    ClosestEnt = ent
+                }
+            }
+            
+            printl("Score: " + BestScore)
+            printl(ClosestEnt)
+            printl(ClosestCoords)
+
+            // Entities.FindByClassnameNearest("env_soundscape", Vector(FinalVector), 300).__KeyValueFromString("radius", "300")
+            // Entities.FindByClassnameNearest("env_soundscape", Vector(FinalVector), 300).SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+
+            // Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
+            // Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
+        } catch(exception) {printl("EXCEPT")}
         // Enable vgui displays
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
             Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
         } catch(exception) {}
     }
+
     function disablewheatleyplayerpickup() {
         printl("Player picked up Wheatley. Disabling pickup!")
         EntFire("@sphere", "disablepickup", "", 0, null)
