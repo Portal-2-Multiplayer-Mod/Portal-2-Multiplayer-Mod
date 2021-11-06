@@ -28,7 +28,7 @@ UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
-RandomTurretModels <- true // Set to true if you want to randomize the turret models (INDEV)
+RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
 TickSpeed <- 0.1 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
@@ -554,9 +554,9 @@ printl("Player: " + PlayerID + " is on team " + p.GetTeam())
 return
 }
 
-//////////////////////
-// RUNS AFTER DEATH //
-//////////////////////
+//-----------------------------------
+// Runs after player death
+//-----------------------------------
 
 function OnPlayerDeath(player) {
     printl("Player Death")
@@ -564,9 +564,9 @@ function OnPlayerDeath(player) {
     SingleplayerSupport(false, false, false, false, false, false, false)
 }
 
-////////////////////////
-// RUNS AFTER RESPAWN //
-////////////////////////
+//-----------------------------------
+// Runs after player respawn
+//-----------------------------------
 
 function OnPlayerRespawn(player) {
     printl("Player Respawn")
@@ -574,9 +574,9 @@ function OnPlayerRespawn(player) {
     SingleplayerSupport(false, false, false, false, false, false, false)
 }
 
-/////////////////////////////////////
-// POST MAP LOADING FUNCTIONS HERE //
-/////////////////////////////////////
+//-----------------------------------
+// Post-map loading functions here
+//-----------------------------------
 
 function PostMapLoad() {
     SingleplayerSupport(false, false, false, true, false, false, false)
@@ -588,9 +588,9 @@ function PostMapLoad() {
     SendToConsole("max_filesize 0")
 }
 
-/////////////////////////////////////
-// Runs once on first global spawn //
-/////////////////////////////////////
+//-----------------------------------
+// Runs once on first global spawn
+//-----------------------------------
 
 function GeneralOneTime() {
 
@@ -682,9 +682,9 @@ function GeneralOneTime() {
 function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 
 
-    /////////////////
-    // INSTANT RUN //
-    /////////////////
+    //-----------------------------------
+    // Instant run
+    //-----------------------------------
 
 
     if (AMCInstantRun == true) {
@@ -1233,9 +1233,9 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
         }
     }
 
-    ///////////////
-    // Post init //
-    ///////////////
+    //-----------------------------------
+    // Post init
+    //-----------------------------------
     if (AMCPostInit==true) {
         // Cache props
         CreatePropsForLevel(true, false, false)
@@ -1260,9 +1260,9 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////
-// SINGLEPLAYER FUNCTIONS //
-////////////////////////////
+//-----------------------------------
+// Singleplayer functions
+//-----------------------------------
 
     function NewApertureStartElevatorFixes() {
         // Elevator light_spot
@@ -1317,9 +1317,9 @@ try {
 DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
 } catch(exception) {}
 
-///////////////////////////////////
-// SINGLEPLAYER MAP SUPPORT CODE //
-///////////////////////////////////
+//-----------------------------------
+// Singleplayer support code
+//-----------------------------------
 
 function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapSpawn, SSOnPlayerJoin, SSOnDeath, SSOnRespawn) {
 
@@ -3827,15 +3827,69 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
     }
+/*
+        //## SP_A4_LASER_CATAPULT ##//
+        // Notes: MP game doesn't start in this map until a very long time. The commentary files do load entities just fine though (FIXME)
+        // "arrival_elevator-open" does not trigger after the elevator tank train reaches it's destination, however once the MP game starts, it triggers (Starting elevator stays closed until then)    
+        // too many errors, just gonna leave this level out until someone fixes it (what is already included below is accurate and works fine)
+    if (GetMapName()=="sp_a4_laser_catapult") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null) // Only causes elevator to reach destination, but not open
+            // Destroy objects
+            Entities.FindByName(null, "@entry_door-door_close_relay").Destroy() // Keep starting door open
+            Entities.FindByName(null, "@exit_door-door_close_relay").Destroy() // Keep exit door open
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1248, -512, 912), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_laser_platform")
+            }
+        }
+    }
+
+        //## SP_A4_LASER_PLATFORM ##//
+        // Notes: Unfinished
+    if (GetMapName()=="sp_a4_laser_platform") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "entrance_door-door_close_relay").Destroy() // Keep starting door open
+            Entities.FindByName(null, "fall_fade").Destroy() // Kill fall fade
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_speed_tb_catch")
+            }
+        }
+    } */
 }
 
-//////////////////////
-// Boilerplate code //
-//////////////////////
+//-----------------------------------
+// Boilerplate code
+//-----------------------------------
 
 /*
 
-    // Use with new Aperture maps //
+//-----------------------------------
+// Use with new Aperture maps
+//-----------------------------------
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
@@ -3860,7 +3914,9 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-    // Use with maps without entrance or exit elevators //
+//-----------------------------------
+// Use with maps without entrance or exit elevators
+//-----------------------------------
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
@@ -3884,8 +3940,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
     }
-
-    // Use with old Aperture maps //
+    
+//-----------------------------------
+// Use with old Aperture maps
+//-----------------------------------
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
@@ -3911,13 +3969,21 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     }
 
 
+//-----------------------------------
 // Destroy object using FindByName
+//-----------------------------------
 Entities.FindByName(null, "NAME").Destroy()
 
+
+//-----------------------------------
 // Find and destroy object using FindByClassnameNearest within 1 unit of given vector
+//-----------------------------------
 Entities.FindByClassnameNearest("CLASS", Vector(1, 2, 3), 1).Destroy()
 
+
+//-----------------------------------
 // Changelevel trigger
+//-----------------------------------
 local p = null
 while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
     SendToConsole("commentary 1")
@@ -3929,7 +3995,10 @@ while (ent = Entities.FindByClassname(ent, "CLASSNAME")) {
     ent.Destroy()
 }
 
+
+//-----------------------------------
 // Make Wheatley look at nearest player
+//-----------------------------------
 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
 EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
@@ -3937,10 +4006,16 @@ if (GetMapName() == "MAPNAME") {
     SendToConsole("commentary 0")
 }
 
+
+//-----------------------------------
 // ent_fire an object
+//-----------------------------------
 EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
 
+
+//-----------------------------------
 // Pretty sure this is unified in the NewAperture function use find to delete unused entrys (Moja)
+//-----------------------------------
 try {
     EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
 } catch(exception) {}
@@ -3958,9 +4033,9 @@ try {
 
 function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
-//=============================//
-//CREATE OBJECTS FOR sp_a2_bts2//
-//=============================//
+//-----------------------------------
+// Create objects for sp_a2_bts2
+//-----------------------------------
 
 if (GetMapName() == "sp_a2_bts2") {
     if (CacheTime==true) {
@@ -3969,12 +4044,11 @@ if (GetMapName() == "sp_a2_bts2") {
         CacheModel("props_bts/hanging_walkway_128a.mdl")
 
         DoneCacheing <- true
-  }
+    }
 
 
     if (CreateTime==true) {
         // Create Objects
-
         local sp_a2_bts2_custom_prop_144 = CreateProp("prop_dynamic", Vector(1210.9047851562, -3591.4580078125, 10.96333694458), "models/props_bts/hanging_walkway_128a.mdl", 0)
         sp_a2_bts2_custom_prop_144.SetAngles(-89.999946594238, -179.99993896484, 180)
         sp_a2_bts2_custom_prop_144.__KeyValueFromString("solid", "6")
@@ -4136,14 +4210,11 @@ if (GetMapName() == "sp_a2_bts2") {
         sp_a2_bts2_custom_prop_170.__KeyValueFromString("solid", "6")
         sp_a2_bts2_custom_prop_170.__KeyValueFromString("targetname", "genericcustomprop")
         EntFireByHandle(sp_a2_bts2_custom_prop_170, "disabledraw", "", 0, null, null)
-
-  }
-
+    }
 
     if (LoopTime==true) {
         // Generated Teleports
-
-  }
+    }
 }
 
 }
