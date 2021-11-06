@@ -28,7 +28,7 @@ UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
-RandomTurretModels <- true // Set to true if you want to randomize the turret models (INDEV)
+RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
 TickSpeed <- 0.1 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
@@ -500,6 +500,7 @@ joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
 EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
 if (PlayerID >= 2) {
     onscreendisplay.__KeyValueFromString("y", "0.075")
+    EntFireByHandle(clientcommand, "Command", "disconnect #Valve_Reject_Server_Full", 0, p, p)
 }
 // Assign every new targetname to the player after blue and red are used
 if (PlayerID >= 3) {
@@ -2605,9 +2606,9 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "blackout_teleport_player_to_surprise").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-976, 256, 32), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(-1056, 256, 40.25), 1024).Destroy()
-            OnlySpA2ColumBlocker1 <- true
-            OnlyOnceColumBlocker2 <- true
-            OnlyOnceColumBlocker3 <- true
+            OnlyOnceSpA2ColumBlocker1 <- true
+            OnlyOnceSpA2ColumBlocker2 <- true
+            OnlyOnceSpA2ColumBlocker3 <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3648,7 +3649,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-    //## SP_A4_INTRO ##//
+    //## SP_A4_INTRO ##// Make prop_dy dizove (Moja)
     if (GetMapName()=="sp_a4_intro") {
         if (SSInstantRun==true) {
             Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja1")
@@ -3659,9 +3660,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "@entrance_door1-close_door_rl").Destroy()
-            Entities.FindByName(null, "cube_bot_model").Destroy()
             Entities.FindByName(null, "room2_wall_close").Destroy()
             Entities.FindByName(null, "room2a_wall_close").Destroy()
+            Entities.FindByName(null, "test2_end_trigger").Destroy()
+            Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
+            OnlyOnceSpA4Intro <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3669,24 +3672,40 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            // Change ClosedBetaTestingBox Names ;)
+            local ent = null
+            while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 400)) {
+                ent.__KeyValueFromString("targetname", "moja2")
+            }
+            if (OnlyOnceSpA4Intro==true) {
+                if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
+                    printl("Elevator viewcontrol activated")
+                    // Elevator viewcontrol
+                    Entities.FindByName(null, "@exit_door2-close_door_rl").__KeyValueFromString("targetname", "moja3")
+
+                    EntFireByHandle(Entities.FindByName(null, "button_2_unpressed"), "addoutput", "OnTrigger moja3:Trigger", 0, null, null)
+
+                    OnlyOnceSpA4Intro <- false
+                }
+            }
             // Elevator changelevel
             local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(3136, -128, 914), 50)) {
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a4_tb_intro")
             }
         }
     }
 
-        //## SP_A4_TB_INTRO ##//
+    //## SP_A4_TB_INTRO ##//
     if (GetMapName()=="sp_a4_tb_intro") {
         if (SSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
-            EntFireByHandle(Entities.FindByName(null, "door_0-door_close_relay"), "Kill", "", 0, null, null)
             // Destroy objects
-            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
-            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 64), 1).Destroy() // Keep exit door open (THIS DELETES AN OUTPUT WE DON'T CARE ABOUT)
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 72), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 64), 20).Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3703,15 +3722,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-        //## SP_A4_TB_TRUST_DROP ##//
+    //## SP_A4_TB_TRUST_DROP ##//
     if (GetMapName()=="sp_a4_tb_trust_drop") {
         if (SSInstantRun==true) {
+            Entities.FindByName(null, "music1").__KeyValueFromString("targetname", "moja")
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(320, 1456, 832), 20), "addoutput", "OnTrigger moja:PlaySound", 0, null, null)
             // Destroy objects
-            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
-            Entities.FindByClassnameNearest("trigger_once", Vector(624, 448, 960), 1).Destroy() // Keep exit door open
-            Entities.FindByClassnameNearest("trigger_multiple", Vector(-84, 888, -440), 1).Destroy() // Kill fall fade
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(624, 448, 960), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(704, 448, 968), 20).Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3728,15 +3750,16 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-        //## SP_A4_TB_WALL_BUTTON ##//
-        // Notes: This map has no exit door trigger
+    //## SP_A4_TB_WALL_BUTTON ##//
     if (GetMapName()=="sp_a4_tb_wall_button") {
         if (SSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
-            Entities.FindByClassnameNearest("trigger_once", Vector(144, 2112, 128), 1).Destroy() // Keep starting door open
-            Entities.FindByClassnameNearest("trigger_multiple", Vector(-1472, 992, -800), 1).Destroy() // Kill fall fade
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByClassnameNearest("trigger_multiple", Vector(736, 960, 160), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(864, 960, 168), 20).Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3753,15 +3776,16 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-        //## SP_A4_TB_POLARITY ##//
+    //## SP_A4_TB_POLARITY ##//
     if (GetMapName()=="sp_a4_tb_polarity") {
         if (SSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
-            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
-            Entities.FindByName(null, "@exit_door-door_close_relay").Destroy() // Keep exit door open (We don't kill the trigger since it is linked to an output to stop music)
-            Entities.FindByClassnameNearest("trigger_multiple", Vector(-352, 1888, -680), 1).Destroy() // Kill fall fade
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-128, -208, 288), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-128, -288, 296), 20).Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3778,16 +3802,21 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-        //## SP_A4_TB_CATCH ##//
-        // Notes: The exit door trigger is linked to a dialogue, but we delete it anyways FIXME (it's the one commented out) 
+    //## SP_A4_TB_CATCH ##//
     if (GetMapName()=="sp_a4_tb_catch") {
         if (SSInstantRun==true) {
+            Entities.FindByName(null, "@exit_door-proxy").__KeyValueFromString("targetname", "moja")
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "music.sp_a4_tb_catch_b0"), "StopSound", "", 0.5, null, null)
+            EntFireByHandle(Entities.FindByName(null, "music.sp_a4_tb_catch_b0"), "PlaySound", "", 1, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(704, 1184, 299), 20), "addoutput", "OnPressed moja:OnProxyRelay2", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(704, 1184, 299), 20), "addoutput", "OnUnPressed moja:OnProxyRelay1", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(704, 1184, 299), 20), "addoutput", "OnPressed @glados:RunScriptCode:PuzzleCompleted()", 0, null, null)
             // Destroy objects
-            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
-            // Entities.FindByClassnameNearest("trigger_once", Vector(944, 896, 320), 1).Destroy() // Keep exit door open
-            Entities.FindByClassnameNearest("trigger_multiple", Vector(-33.9, -156.52, -360), 1).Destroy() // Kill fall fade
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByName(null, "puzzle_completed_relay").Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3804,14 +3833,15 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-        //## SP_A4_STOP_THE_BOX ##//
-        // Notes: There is no trigger to actually close the exit door
+    //## SP_A4_STOP_THE_BOX ##//
     if (GetMapName()=="sp_a4_stop_the_box") {
         if (SSInstantRun==true) {
+            Entities.FindByName(null, "music.sp_a4_stop_the_box_b1").__KeyValueFromString("targetname", "moja")
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "movelinear_light_track"), "addoutput", "OnFullyOpen moja:PlaySound", 0, null, null)
             // Destroy objects
-            Entities.FindByName(null, "door_0-door_close_relay").Destroy() // Keep starting door open
+            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3825,6 +3855,253 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 SendToConsole("commentary 1")
                 SendToConsole("changelevel sp_a4_laser_catapult")
             }
+        }
+    }
+
+    //## SP_A4_LASER_CATAPULT ##//
+    if (GetMapName()=="sp_a4_laser_catapult") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "@entry_door-close_door_rl").Destroy()
+            Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(624, -512, 576), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(1248, -512, 912), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_laser_platform")
+            }
+        }
+    }
+
+    //## SP_A4_LASER_PLATFORM ##//
+    if (GetMapName()=="sp_a4_laser_platform") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "entrance_door-close_door_rl").Destroy()
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(4088, -528, -2080), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(3456, -1056, -2648), 200)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_speed_tb_catch")
+            }
+        }
+    }
+
+    //## SP_A4_SPEED_TB_CATCH ##// Music doesn't play at the end (Moja)
+    if (GetMapName()=="sp_a4_speed_tb_catch") {
+        if (SSInstantRun==true) {
+            // Here if we need to ent_fire something
+            //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+            // Destroy objects
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByName(null, "exit_door-close_door_rl").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-736, 1572, -128), 20).Destroy()
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
+                ent.__KeyValueFromString("CheckAllIDs", "1")
+            }
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2240, -208, 400), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_jump_polarity")
+            }
+        }
+    }
+
+    //## SP_A4_JUMP_POLARITY ##//
+    if (GetMapName()=="sp_a4_jump_polarity") {
+        if (SSInstantRun==true) {
+            Entities.FindByName(null, "antechamber_exit").__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "antechamber_areaportal").__KeyValueFromString("targetname", "moja2")
+            Entities.FindByName(null, "antechamber_door_sound").__KeyValueFromString("targetname", "moja3")
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "moja1"), "SetAnimation", "idleclose", 1, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2336, -64, 192), 20), "addoutput", "OnStartTouch moja1:SetAnimation:Open", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "@entry_door-close_door_rl").Destroy()
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByName(null, "antechamber-proxy").Destroy()
+            // Teleport here, what should we do with players still in the test chamber?
+            Entities.FindByClassnameNearest("trigger_once", Vector(928.01, 2328, 448), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Elevator changelevel
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(2560, -3072, 768), 50)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_finale1")
+            }
+        }
+    }
+
+    //## SP_A4_FINALE1 ##//
+    if (GetMapName()=="sp_a4_finale1") {
+        if (SSInstantRun==true) {
+            // Make elevator start moving on level load
+            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "entrance_door-close_door_rl").Destroy()
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByName(null, "final_door-close_door_fast").Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-10792, -2048.01, 144), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-12832, -3040, -112), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            NewApertureStartElevatorFixes()
+        }
+
+        if (SSLoop==true) {
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-12832, -3040, -112), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_finale2")
+            }
+        }
+    }
+
+    //## SP_A4_FINALE2 ##//
+    if (GetMapName()=="sp_a4_finale2") {
+        if (SSInstantRun==true) {
+            Entities.FindByName(null, "portal_chamber_1").__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "portal_chamber_2").__KeyValueFromString("targetname", "moja2")
+            Entities.FindByName(null, "areaportal_airlock_1").__KeyValueFromString("targetname", "moja3")
+            Entities.FindByName(null, "portal_chamber_3").__KeyValueFromString("targetname", "moja4")
+            Entities.FindByName(null, "portal_chamber_4").__KeyValueFromString("targetname", "moja5")
+            Entities.FindByName(null, "areaportal_bts_door_2").__KeyValueFromString("targetname", "moja6")
+            // Here if we need to ent_fire something
+            EntFireByHandle(Entities.FindByName(null, "brush_movechamber_struts"), "SetParentAttachmentMaintainOffset", "a4_chamber_fx_A_attach1", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "lighting_chamber_struts"), "SetParentAttachmentMaintainOffset", "a4_chamber_fx_A_attach1", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "relay_hatch_release"), "addoutput", "OnTrigger moja1:Open::0.5", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "relay_hatch_release"), "addoutput", "OnTrigger moja2:Open::0.5", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(957.7, 720, -192), 20), "addoutput", "OnTrigger moja3:Open", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(11835.1, 11776, 8543.99), 20), "addoutput", "OnTrigger moja4:Open::0.5", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(11835.1, 11776, 8543.99), 20), "addoutput", "OnTrigger moja5:Open::0.5", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-474.34, -1236.01, -448), 20), "addoutput", "OnTrigger moja6:Open", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "entrance_door-proxy").Destroy()
+            Entities.FindByName(null, "fall_fade").Destroy()
+            Entities.FindByName(null, "bts_door_1-close_door_fast").Destroy()
+            Entities.FindByName(null, "bts_door_2-close_door_fast").Destroy()
+            Entities.FindByClassnameNearest("logic_auto", Vector(3903, 902, -55), 20).Destroy()
+            Entities.FindByClassnameNearest("trigger_once", Vector(-3152, -1928, -240), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            EntFireByHandle(Entities.FindByName(null, "entrance_door-open_door"), "Trigger", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "music01"), "PlaySound", "", 0, null, null)
+        }
+
+        if (SSLoop==true) {
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3152, -1928, -240), 100)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_finale3")
+            }
+        }
+    }
+
+    //## SP_A4_FINALE3 ##// Wheatley crusher glitch (Moja)
+    if (GetMapName()=="sp_a4_finale3") {
+        if (SSInstantRun==true) {
+            Entities.FindByClassnameNearest("prop_dynamic", Vector(736, -1832, 185), 20).__KeyValueFromString("targetname", "moja1")
+            Entities.FindByName(null, "airlock_door2").__KeyValueFromString("targetname", "moja2")
+            Entities.FindByName(null, "airlock_door2_brush").__KeyValueFromString("targetname", "moja3")
+            Entities.FindByName(null, "airlock_door2_areaportal").__KeyValueFromString("targetname", "moja4")
+            Entities.FindByName(null, "practice_bomb_timer").__KeyValueFromString("targetname", "moja5")
+            Entities.FindByName(null, "areaportal_1").__KeyValueFromString("targetname", "moja6")
+            Entities.FindByName(null, "light_shadowed_02").__KeyValueFromString("targetname", "moja7")
+            // Here if we need to ent_fire something
+            EntFireByHandle(Entities.FindByName(null, "light_dynamic_2nd_office"), "TurnOn", "", 1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay16", "", 1, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-32, -1032, 32), 20), "addoutput", "OnTrigger moja2:SetAnimation:vert_door_opening", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-32, -1032, 32), 20), "addoutput", "OnTrigger moja3:Disable", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-32, -1032, 32), 20), "addoutput", "OnTrigger moja4:Open", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "bomb_1_down_counter"), "addoutput", "OnHitMax moja5:Disable", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "bomb_1_button_relay"), "addoutput", "OnTrigger moja5:Disable", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "bomb_1_divert_down_relay"), "addoutput", "OnTrigger moja5:Enable::4.5", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "bomb_1_divert_up_relay"), "addoutput", "OnTrigger moja5:Enable::4.5", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "push_paint_platform"), "addoutput", "OnStartTouch moja7:TurnOn", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(-960, 416, -256), 20), "addoutput", "OnStartTouch moja7:TurnOn", 0, null, null)
+            // Destroy objects
+            Entities.FindByName(null, "death_fade").Destroy()
+            Entities.FindByName(null, "door_lair-close_door_fast").Destroy()
+            Entities.FindByName(null, "transition_trigger").Destroy()
+            Entities.FindByClassnameNearest("logic_auto", Vector(720, -2048, 152), 20).Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+            EntFireByHandle(Entities.FindByName(null, "entry_door-proxy"), "OnProxyRelay1", "", 0, null, null)
+        }
+
+        if (SSLoop==true) {
+            // Make Wheatley look at nearest player
+            try {
+                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "wheatley_screen-screen_tank").GetOrigin(), 10000)
+                EntFireByHandle(Entities.FindByName(null, "wheatley_screen-screen_tank"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+            } catch(exception) {}
+
+            // Make our own changelevel trigger
+            local p = null
+            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-616, 5376, 720), 200)) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a4_finale4")
+            }
+        }
+    }
+
+    //## SP_A4_FINALE4 ##//
+    if (GetMapName()=="sp_a4_finale4") {
+        if (SSInstantRun==true) {
+            // Here if we need to ent_fire something
+            //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+            // Destroy objects
+            //Entities.FindByName(null, "NAME").Destroy()
+        }
+
+        if (SSPostPlayerSpawn==true) {
+
+        }
+
+        if (SSLoop==true) {
+
         }
     }
 }
