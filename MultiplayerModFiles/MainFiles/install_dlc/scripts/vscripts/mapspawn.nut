@@ -71,12 +71,12 @@ if (UsePlugin==true) {
 
 ConsoleAscii <- [
 ""
-"██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░██████╗░"
-"██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░╚════██╗"
-"██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░███╔═╝"
-"██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░██╔══╝░░"
-"██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░███████╗"
-"╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░╚══════╝"
+"██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░██████╗░"
+"██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░╚════██╗"
+"██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░░░███╔═╝"
+"██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░██╔══╝░░"
+"██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░███████╗"
+"╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░╚══════╝"
 ""
 "███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░"
 "████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗"
@@ -259,8 +259,7 @@ function PlayerWithinDistance(SearchPos, SearchDis) {
     }
 }
 
-function DeleteModels(ModelName) {
-    local ent = null
+function TriggerOnceHook(TriggerName, FunctionName) {
 
 }
 
@@ -2848,6 +2847,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             PreviousTimeSP_A2_BTS2Again <- 0
             NoPlayerMadeItOnlyOnceSP_A2_BTS2 <- true
             OnlyOnceSP_A2_BTS2AgainV2 <- true
+            WheatleyPlayerLookSP_A2_BTS2 <- true
+            DisableLookDisablerSP_A2_BTS2 <- false
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -2865,6 +2866,64 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879)) {
+                DisableLookDisablerSP_A2_BTS2 <- true
+            }
+
+            if (DisableLookDisablerSP_A2_BTS2 == false) {
+                // Make a custom trigger to disable player look
+                WheatleyPlayerLookSP_A2_BTS2 <- true
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+                    WheatleyPlayerLookSP_A2_BTS2 <- false
+                }
+            }
+
             // if a player made it teleport everyone into the elevator
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(2207.8967285156, 1452.6505126953, 264.08181762695), 40)) {
@@ -2922,10 +2981,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
 
             // Make Wheatley look at nearest player
-            try {
-                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-                EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            } catch(exception) {}
+            if (WheatleyPlayerLookSP_A2_BTS2==true) {
+                try {
+                    local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+                    EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                } catch(exception) {}
+            }
 
             // Make our own changelevel trigger
             local p = null
@@ -2987,7 +3048,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
-    //## SP_A2_BTS4 ##//
+//## SP_A2_BTS4 ##//
     if (GetMapName()=="sp_a2_bts4") {
         if (SSInstantRun==true) {
             // Here if we need to ent_fire something
@@ -3010,6 +3071,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Fix dummy room door closing
             local ent = Entities.FindByName(null, "dummy_shoot_entry_door").__KeyValueFromString("targetname", "moja")
             EntFire("moja", "setanimation", "open", 2, null)
+            TriggerOnceSP_A2_BTS4_1 <- true
+            DisableLookDisablerSP_A2_BTS4 <- false
+
+            TestingHackStart <- function() {
+                printl("DOOR HACK START")
+                WheatleyPlayerLookSP_A2_BTS4 <- false
+            }
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3018,11 +3086,82 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            TestingHackStart
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879*1.5)) {
+                DisableLookDisablerSP_A2_BTS4 <- true
+            }
+
+            WheatleyPlayerLookSP_A2_BTS4 <- true
+            if (DisableLookDisablerSP_A2_BTS4 == false) {
+                // Make a custom trigger to disable player look
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824*1.5)) {
+                    WheatleyPlayerLookSP_A2_BTS4 <- false
+                }
+            }
+
+            // On trigger hit, smash the door 18 seconds later
+            if (TriggerOnceSP_A2_BTS4_1==true) {
+                if (!Entities.FindByName(null, "wheatley_scanner_intro_vcd_trigger")) {
+                    printl("Wheatley Sequance Started")
+                    EntFire("wheatley_start_smash_window_relay", "trigger", "", 18, null)
+                    EntFire("@glados", "RunScriptCode", "FactoryControlRoomHackSuccess()", 18, null)
+                    TriggerOnceSP_A2_BTS4_1 <- false
+                }
+            }
+
             // Make Wheatley look at nearest player (We need wheatley to light the way for the player but since he's looking at them on loop he can't) (Moja)
-            try {
-                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-                EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            } catch(exception) {}
+            if (WheatleyPlayerLookSP_A2_BTS4==true) {
+                try {
+                    local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+                    EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                } catch(exception) {}
+            }
 
             // Make our own changelevel trigger
             local p = null
@@ -3678,6 +3817,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 //////////////////////
 // Boilerplate code //
