@@ -22,7 +22,7 @@
 //  ██████  ██████  ██   ████ ██      ██  ██████
 
 //-----------------------------------
-DevMode <- false // Set to true if you're a developer
+DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
@@ -244,6 +244,26 @@ function init() {
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
+function CreateTrigger(x1, y1, z1, x2, y2, z2){
+	if(DevMode == true){
+		DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
+	}
+    local plist = []
+    local p = null
+    local outputp = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local pos = p.GetOrigin()
+        if (pos.z >= z1 && pos.z <= z2){
+            if (pos.y >= y1 && pos.y <= y2) {
+                if (pos.x <= x1 && pos.x >= x2) {
+                    plist.push(p)
+                }
+            }
+        }
+    }
+    return plist
+}
+
 // Teleport players within a distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
     local ent = null
@@ -319,6 +339,10 @@ try {
 //------------------------------------------------------//
 
     function loop() {
+        foreach (player in CreateTrigger(4631.953125, 3454.1826171875, -520.72909545898, 4386.2651367188, 3711.8361816406, -430.58023071289)) {
+            printl(player)
+        }
+
         //Count Ticks
         tick <- tick + 1
 
@@ -1307,8 +1331,6 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
 
             local ComputedVector = Vector(MiddleVector.x.tointeger()-OutsideVector.x.tointeger(), MiddleVector.y.tointeger()-OutsideVector.y.tointeger(), 0)
 
-            printl("locals passed")
-
             //Number Sorter
             local CurrentHighest = 0
             local AmountOfItterations = 0
@@ -1325,8 +1347,6 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
                 }
             }
 
-            printl("sorter passed")
-
             if (CurrentHighest==1) {
                 CurrentHighest="x"
             } else {
@@ -1341,8 +1361,6 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
                 CurrentHighest="-y"
             }
 
-            printl("xy computes passed")
-
             local FinalVector = Vector(0, 0, 0)
 
             printl(CurrentHighest)
@@ -1350,20 +1368,17 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
             if (CurrentHighest=="-y") {
                 printl("-y")
                 FinalVector = Vector(MiddleVector.x+(RelY), MiddleVector.y+RelX, MiddleVector.z+RelZ)
-            } 
+            }
             if (CurrentHighest=="y") {
-                printl("+y")
                 FinalVector = Vector(MiddleVector.x+(RelY*-1), MiddleVector.y+RelX, MiddleVector.z+RelZ)
             }
             printl("fullx")
             if (CurrentHighest=="-x") {
-                printl("-x")
                 FinalVector = Vector(MiddleVector.x+RelX, MiddleVector.y+(RelY), MiddleVector.z+RelZ)
-            } 
+            }
             if (CurrentHighest=="x") {
-                printl("+x")
                 FinalVector = Vector(MiddleVector.x+RelX, MiddleVector.y+(RelY*-1), MiddleVector.z+RelZ)
-            } 
+            }
 
             printl("FinalVector Passed")
             printl(FinalVector)
@@ -1373,7 +1388,6 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
             local BestScore = 80000
             local ent = null
             while (ent = Entities.FindByClassname(ent, "env_soundscape")) {
-                printl(ent)
                 local xent = UnNegative(ent.GetOrigin().x) - UnNegative(FinalVector.x)
                 local yent = UnNegative(ent.GetOrigin().y) - UnNegative(FinalVector.y)
                 local zent = UnNegative(ent.GetOrigin().z) - UnNegative(FinalVector.z)
@@ -1382,17 +1396,12 @@ function AllMapsCode(AMCLoop, AMCPostPlayerSpawn, AMCPostInit, AMCInstantRun) {
                 // if (Score >= 0) {
                 //     Score2 = Score * -1
                 // }
-                printl(Score2)
                 if (Score2 <= BestScore) {
                     BestScore = Score2
                     ClosestCoords = ent.GetOrigin()
                     ClosestEnt = ent
                 }
             }
-            
-            printl("Score: " + BestScore)
-            printl(ClosestEnt)
-            printl(ClosestCoords)
 
             ClosestEnt.__KeyValueFromString("radius", "300")
             ClosestEnt.SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
@@ -3299,6 +3308,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "lock_door_trigger").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(3794.06, -1727.98, 3488), 20).Destroy()
             OnlyOnceSp_A2_Bts5 <- true
+            OnlyOnceTPSP_A2_BTS5 <- true
+            LoopEnablerSP_A2_BTS5 <- false
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3308,6 +3319,47 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "npc_portal_turret_floor", Vector(2594.6696777344, 1760.8935546875, 3943.775390625), 400)) {
+                p.SetOrigin(Vector(p.GetOrigin().x, (p.GetOrigin().y-24)*10*TickSpeed, (p.GetOrigin().z-6)*10*TickSpeed))
+            }
+
+            // Find all players within
+            if (LoopEnablerSP_A2_BTS5==false) {
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(2944, 942, 4418), 80)) {
+                    LoopEnablerSP_A2_BTS5 <- true
+                }
+            }
+
+            // Teleport everyone on the ground to the elevator
+            if (LoopEnablerSP_A2_BTS5==true) {
+                // Find all players under the elevator
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    if (p.GetOrigin().z<=4100) {
+                        p.SetOrigin(Vector(2929, 942, 4418))
+                        p.SetAngles(0, 180, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                }
+            }
+
+            // Make the elevator go up with the players in it
+            if (OnlyOnceTPSP_A2_BTS5==true) {
+                if (!Entities.FindByClassnameNearest("trigger_once", Vector(2941.5, 944, 3662), 20)) {
+                    printl("Triggered")
+                    //Find all players
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        p.SetOrigin(Vector(2944, 942, 3700))
+                        p.SetAngles(0, 180, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                    OnlyOnceTPSP_A2_BTS5 <- false
+                }
+            }
+
             if (OnlyOnceSp_A2_Bts5==true) {
                 if (!Entities.FindByName(null, "exit_tube_1_exit_trigger")) {
                     printl("Suction viewcontrol activated")
@@ -3407,9 +3459,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             // Destroy objects
             Entities.FindByName(null, "death_fade").Destroy()
             Entities.FindByName(null, "rv_trap_portal_surf_cleanser").Destroy()
+            Entities.FindByName(null, "start_rv_scene_trigger").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(0, 304, -10438), 20).Destroy()
+            OnlyOnceSp_A2_Core_2 <- true
             OnlyOnceSp_A2_Core <- true
             TPSp_A2_Core <- true
+            OnlyOnceMoveTeleportSp_A2_Core_2 <- true
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3426,6 +3481,40 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+
+            if (OnlyOnceSp_A2_Core_2==true) {
+                if (!Entities.FindByName(null, "rv_start_moving_trigger")) {
+                    EntFireByHandle(Entities.FindByName(null, "start_rv_scene_rl"), "Trigger", "", 8, null, null)
+                    Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "OnMoveStartOnlyOnceSp_A2_Core_2DIS")
+                    EntFire("OnMoveStartOnlyOnceSp_A2_Core_2DIS", "addoutput", "targetname OnMoveStartOnlyOnceSp_A2_Core_2", 8, null)
+                    OnlyOnceSp_A2_Core_2 <- false
+                }
+            }
+
+            if (OnlyOnceMoveTeleportSp_A2_Core_2 == true) {
+                if (Entities.FindByName(null, "OnMoveStartOnlyOnceSp_A2_Core_2")) {
+                    //Find all players
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        local InsideArea = false
+                        local p2 = null
+                        while (p2 = Entities.FindByClassnameWithin(p2, "player", Vector(-1836.2550048828, -0.81460344791412, -31.667282104492), 151.99999809265)) {
+                            if (p2 == p) {
+                                InsideArea = true
+                            }
+                        }
+
+                        if (InsideArea==false) {
+                            p.SetOrigin(Vector(-1839, 0, 8))
+                            p.SetAngles(0, 0, 0)
+                            p.SetVelocity(Vector(0, 0, 0))
+                        }
+                        EntFireByHandle(p, "setfogcontroller", "@environment_glados", 10, null, null)
+                    }
+                    OnlyOnceMoveTeleportSp_A2_Core_2 <- false
+                }
+            }
+
             if (OnlyOnceSp_A2_Core==true) {
                 if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {
                     printl("Elevator viewcontrol activated")
@@ -4256,5 +4345,4 @@ if (GetMapName() == "sp_a2_bts2") {
 
   }
 }
-
 }
