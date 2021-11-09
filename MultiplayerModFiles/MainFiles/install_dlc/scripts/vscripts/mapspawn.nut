@@ -3626,16 +3626,15 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     Entities.FindByName(null, "statemate_double_arm_01").__KeyValueFromString("targetname", "statemate_double_arm_01DIS")
                     Entities.FindByName(null, "statemate_double_arm_02").__KeyValueFromString("targetname", "statemate_double_arm_02DIS")
                     Entities.FindByName(null, "statemate_double_arm_03").__KeyValueFromString("targetname", "statemate_double_arm_03DIS")
-                    RoomLookAtPlayerSp_A2_Core <- false
-                    EntFire("core_receptacle_pointer_1", "SetTargetEntity", "lookat_glados_bullseye", 0, null)
-                    EntFire("glados_pointer", "SetTargetEntity", "lookat_receptacle_bullseye", 0, null)
                     StalemateButtonSp_A2_Core_2 <- true
                 }
             }
 
             if (StalemateRoomExitSp_A2_Core_2==false) {
                 if (!Entities.FindByName(null, "player_inside_stalemate_room_trigger")) {
-
+                    RoomLookAtPlayerSp_A2_Core <- false
+                    EntFire("core_receptacle_pointer_1", "SetTargetEntity", "lookat_glados_bullseye", 0, null)
+                    EntFire("glados_pointer", "SetTargetEntity", "lookat_receptacle_bullseye", 0, null)
                     StalemateRoomExitSp_A2_Core_2 <- true
                 }
             }
