@@ -163,7 +163,7 @@ function init() {
     // Run singleplayer code
     if (GetMapName().slice(0, 7) != "mp_coop") {
         IsSingleplayerMap <- true
-        SingleplayerSupport(true, false, false, false, false, false, false)
+        MapSupport(true, false, false, false, false, false, false)
     }
 
     // Create an entity to display player color at the bottom left of every clients' screen
@@ -460,7 +460,7 @@ try {
 
         // Singleplayer loop
         if (GetMapName().slice(0, 7) != "mp_coop") {
-            SingleplayerSupport(false, true, false, false, false, false, false)
+            MapSupport(false, true, false, false, false, false, false)
         }
 
         if (DevMode==true) {}
@@ -535,7 +535,7 @@ EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
 EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
-SingleplayerSupport(false, false, false, false, true, false, false)
+MapSupport(false, false, false, false, true, false, false)
 
 // Say join message on HUD
 if (PluginLoaded==true) {
@@ -610,8 +610,7 @@ return
 
 function OnPlayerDeath(player) {
     printl("Player Death")
-    SingleplayerSupport(false, false, false, false, false, player, false)
-    SingleplayerSupport(false, false, false, false, false, false, false)
+    MapSupport(false, false, false, false, false, player, false)
 }
 
 ////////////////////////
@@ -620,8 +619,7 @@ function OnPlayerDeath(player) {
 
 function OnPlayerRespawn(player) {
     printl("Player Respawn")
-    SingleplayerSupport(false, false, false, false, false, false, player)
-    SingleplayerSupport(false, false, false, false, false, false, false)
+    MapSupport(false, false, false, false, false, false, player)
 }
 
 /////////////////////////////////////
@@ -629,7 +627,7 @@ function OnPlayerRespawn(player) {
 /////////////////////////////////////
 
 function PostMapLoad() {
-    SingleplayerSupport(false, false, false, true, false, false, false)
+    MapSupport(false, false, false, true, false, false, false)
     AllMapsCode(false, false, true, false)
     // Enable fast download
     SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
@@ -722,7 +720,7 @@ function GeneralOneTime() {
 
     AllMapsCode(false, true, false, false)
 
-    SingleplayerSupport(false, false, true, false, false, false, false)
+    MapSupport(false, false, true, false, false, false, false)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1469,11 +1467,13 @@ DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
 // SINGLEPLAYER MAP SUPPORT CODE //
 ///////////////////////////////////
 
-function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapSpawn, SSOnPlayerJoin, SSOnDeath, SSOnRespawn) {
+IncludeScript("mapsupport/" + GetMapName() + ".nut")
+
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
 
     //## SP_A1_INTRO2 ##//
     if (GetMapName() == "sp_a1_intro2") {
-        if (SSInstantRun == true) {
+        if (MSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             SendToConsole("commentary 0")
             Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
@@ -1481,11 +1481,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "Fizzle_Trigger").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
 
             local portalgun = null
             while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
@@ -1508,7 +1508,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     //## SP_A1_INTRO3 ##//
     if (GetMapName() == "sp_a1_intro3") {
 
-        if (SSInstantRun == true) {
+        if (MSInstantRun == true) {
             Entities.FindByName(null, "door_0-door_close_relay").Destroy()
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "player_clips").Destroy()
@@ -1525,11 +1525,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "emitter_orange_mtg").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 50)) {
             SendToConsole("commentary 1")
@@ -1560,7 +1560,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A1_INTRO4 ##//
     if (GetMapName() == "sp_a1_intro4") {
-        if (SSInstantRun == true) {
+        if (MSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-door_close_relay").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(464, 136, 72), 1024).Destroy()
@@ -1580,11 +1580,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "door_2-close_door_rl").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1602,18 +1602,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A1_INTRO5 ##//
     if (GetMapName() == "sp_a1_intro5") {
-        if (SSInstantRun == true) {
+        if (MSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_multiple", Vector(-64, 824, 320), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1627,7 +1627,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A1_INTRO6 ##//
     if (GetMapName() == "sp_a1_intro6") {
-        if (SSInstantRun == true) {
+        if (MSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "room_1_entry_door-close_door_rl").Destroy()
             Entities.FindByName(null, "room_1_fling_portal_activate_rl").Destroy()
@@ -1641,11 +1641,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             fallenautoportal.SetAngles(-90, 69, 0)
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             try {
                 EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
             } catch(exception) {}
@@ -1659,7 +1659,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A1_INTRO7 ##//
     if (GetMapName() == "sp_a1_intro7") {
-        if (SSInstantRun == true) {
+        if (MSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
@@ -1737,11 +1737,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             WheatleySeq1 <- false
             // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
@@ -1864,7 +1864,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A1_WAKEUP ##//
     if (GetMapName()=="sp_a1_wakeup") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "basement_breakers_entrance_door").Destroy()
             Entities.FindByName(null, "basement_breakers_entrance_blocker").Destroy()
             Entities.FindByName(null, "basement_breakers_entrance_blocker_trigger").Destroy()
@@ -1953,15 +1953,15 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("func_areaportalwindow", Vector(10364, 1080, -216), 100).__KeyValueFromString("targetname", "incinerator_portal_custom")
         }
 
-        if (SSPostMapSpawn==true) {
+        if (MSPostMapSpawn==true) {
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
             SpA1WakeupPostPlayerSpawn <- false
         }
 
-            if (SSLoop==true) {
+            if (MSLoop==true) {
                 if (TPP1==true) {
                     if (Entities.FindByName(null, "TPPLAYERS1")) {
                         local p = null
@@ -2087,7 +2087,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_INTRO ##//
     if (GetMapName()=="sp_a2_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "incinerator_death_fade").Destroy()
             Entities.FindByName(null, "camera_ghostAnim").Destroy()
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2100,7 +2100,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(2704, -1260, 112), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             printl("Ran")
             SpA2IntroViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
             SpA2IntroViewcontrol.__KeyValueFromString("targetname", "SpA2IntroViewcontrol")
@@ -2119,7 +2119,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFire("PlayFallSound", "kill", "", 0 + (TickSpeed * 2), null)
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
 
             if (Entities.FindByName(null, "PlayFallSound")) {
             Entities.FindByName(null, "blue").EmitSound("playonce\\scripted_sequences\\incinerator_fall_01.wav")
@@ -2185,18 +2185,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_LASER_INTRO ##//
     if (GetMapName() == "sp_a2_laser_intro") {
-        if (SSInstantRun == true) {
+        if (MSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(712, 0, 0), 100).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(816, 0, -8), 100).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 50)) {
                 SendToConsole("commentary 1")
@@ -2207,18 +2207,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_LASER_STAIRS ##//
     if (GetMapName() == "sp_a2_laser_stairs") {
-        if (SSInstantRun == true) {
+        if (MSInstantRun == true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_multiple", Vector(144, 600, 94.82), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(144, 704, 72), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 50)) {
                 SendToConsole("commentary 1")
@@ -2229,18 +2229,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_DUAL_LASERS ##//
     if (GetMapName()=="sp_a2_dual_lasers") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(640, 224, 936), 1024).Destroy()
             Entities.FindByClassnameNearest("trigger_multiple", Vector(488, 216, 960), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
@@ -2255,7 +2255,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_LASER_OVER_GOO ##//
     if (GetMapName()=="sp_a2_laser_over_goo") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             Entities.FindByName(null, "@repair_wall_kill_all").Destroy()
             Entities.FindByName(null, "door_1-close_door_rl").Destroy()
@@ -2263,11 +2263,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(2432, -1056, 72), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 50)) {
@@ -2281,7 +2281,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_CATAPULT_INTRO ##//
     if (GetMapName()=="sp_a2_catapult_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_1-close_door_rl").Destroy()
@@ -2289,11 +2289,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(-64, -1696, -408), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-80, -2106, -805), 50)) {
@@ -2306,7 +2306,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     }
     //## SP_A2_TRUST_FLING ##//
     if (GetMapName()=="sp_a2_trust_fling") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2314,11 +2314,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(-1152, 1680, 40), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1151, 2087, -319), 50)) {
@@ -2332,7 +2332,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_PIT_FLINGS ##//
     if (GetMapName()=="sp_a2_pit_flings") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2340,11 +2340,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "exit_door_lock_counter").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Cube ramp disabler
             local ent = null
             while (ent = Entities.FindByClassnameWithin(ent, "prop_weighted_cube", Vector(-448, -416, -104), 32)) {
@@ -2367,7 +2367,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_FIZZLER_INTRO ##//
     if (GetMapName()=="sp_a2_fizzler_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2375,11 +2375,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(928, -64, -24), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 50)) {
@@ -2393,7 +2393,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_SPHERE_PEEK ##//
     if (GetMapName()=="sp_a2_sphere_peek") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2402,11 +2402,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Cardio <- true
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1259.1446533203, 1557.3728027344, 455.14566040039), 280)) {
                 Cardio <- false
@@ -2437,7 +2437,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_RICOCHET ##//
     if (GetMapName()=="sp_a2_ricochet") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2445,11 +2445,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(4064, 1152, -472), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(4478, 1158, -774), 50)) {
@@ -2461,7 +2461,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_BRIDGE_INTRO ##//
     if (GetMapName()=="sp_a2_bridge_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_52-close_door_rl").Destroy()
@@ -2469,11 +2469,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(0, 832, 40), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
@@ -2489,7 +2489,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_BRIDGE_THE_GAP ##//
     if (GetMapName()=="sp_a2_bridge_the_gap") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy beginning door triggers
             Entities.FindByClassnameNearest("trigger_once", Vector(-1296, -640, 1280), 1024).Destroy()
@@ -2504,11 +2504,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "@sphere_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "@sphere_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
@@ -2524,7 +2524,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_TURRET_INTRO ##//
     if (GetMapName()=="sp_a2_turret_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2539,11 +2539,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "@exit_door-door_player_clip").__KeyValueFromString("targetname", "MpModDoorClipOverride")
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Find all prop_weighted_cube entities within 24 units of 704, -512 16
             TurretIntroOpenDoor <- false
             local ent = null
@@ -2582,7 +2582,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_LASER_RELAYS ##//
     if (GetMapName()=="sp_a2_laser_relays") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Kill the beginning door close trigger
             Entities.FindByClassnameNearest("trigger_once", Vector(1224, -704, 32), 1024).Destroy()
@@ -2601,11 +2601,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             SingleplayerOneTimeTrigger1 <- true
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSOnPlayerJoin==true) {
+        if (MSOnPlayerJoin==true) {
             // Find all players
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -2614,7 +2614,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             if (SingleplayerOneTimeTrigger1 == true) {
                 if (!Entities.FindByClassnameNearest("trigger_once", Vector(-468, -704, -63), 10)) {
                     // Find all players
@@ -2667,7 +2667,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_TURRET_BLOCKER ##//
     if (GetMapName()=="sp_a2_turret_blocker") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
@@ -2677,11 +2677,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(64, 1776, 40), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-            if (SSLoop==true) {
+            if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -265), 50)) {
@@ -2693,7 +2693,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_LASER_VS_TURRET ##//
     if (GetMapName()=="sp_a2_laser_vs_turret") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2701,11 +2701,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(-672, 384, 296), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1075, 382, -8), 50)) {
@@ -2719,7 +2719,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_PULL_THE_RUG ##//
     if (GetMapName()=="sp_a2_pull_the_rug") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2729,11 +2729,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("prop_dynamic", Vector(80, -755, 256), 1024).SetOrigin(Vector(72, -777, 192))
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(64, 1311, -200), 50)) {
@@ -2745,7 +2745,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_COLUMN_BLOCKER ##//
     if (GetMapName()=="sp_a2_column_blocker") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2758,13 +2758,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             OnlyOnceSpA2ColumBlocker3 <- true
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
             Entities.FindByClassnameNearest("trigger_once", Vector(-1394, 108, -1906), 1024).__KeyValueFromString("spawnflags", "4161")
             Entities.FindByClassnameNearest("trigger_once", Vector(-1472, 256, -2591.75), 1024).__KeyValueFromString("spawnflags", "4161")
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             if (OnlyOnceSpA2ColumBlocker3==true) {
                 if (!Entities.FindByClassnameNearest("trigger_once", Vector(-1486, 256, -139.75), 10)) {
                     printl("Elevator viewcontrol activated")
@@ -2833,7 +2833,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_LASER_CHAINING ##//
     if (GetMapName()=="sp_a2_laser_chaining") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2841,11 +2841,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(1088, 352, 296), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1500, 352, -13), 50)) {
@@ -2857,7 +2857,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_TRIPLE_LASER ##//
     if (GetMapName()=="sp_a2_triple_laser") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -2866,11 +2866,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(6912, -5376, 40), 1024).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -273), 50)) {
@@ -2887,7 +2887,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_BTS1 ##//
     if (GetMapName()=="sp_a2_bts1") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "chamber_door-close_door_rl").Destroy()
@@ -2910,11 +2910,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             OneTimeRunSp_A2_Bts1 <- true
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Bridge drop trigger
             if (OnceTwiceSp_A2_Bts1==true) {
                 local p = null
@@ -2974,7 +2974,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_BTS2 ##//
     if (GetMapName()=="sp_a2_bts2") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
@@ -2996,7 +2996,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             DisableLookDisablerSP_A2_BTS2 <- false
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             local ent = null
             while (ent = Entities.FindByModel(ent, "models/anim_wp/room_transform/arm_exterior.mdl")) {
                 EntFireByHandle(ent, "setanimation", "block_upper01_drop_idle", 0, null, null)
@@ -3010,7 +3010,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879)) {
                 DisableLookDisablerSP_A2_BTS2 <- true
@@ -3152,7 +3152,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_BTS3 ##//
     if (GetMapName()=="sp_a2_bts3") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Destroy objects
             Entities.FindByName(null, "death_fade").Destroy()
             Entities.FindByName(null, "death_fade").Destroy()
@@ -3169,7 +3169,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "blindness_detector").__KeyValueFromString("CheckAllIDs", "1")
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             EntFireByHandle(Entities.FindByName(null, "entry_canyon_global_impact_sound"), "PlaySound", "", 1.8, null, null)
             EntFireByHandle(Entities.FindByName(null, "entry_canyon_shake"), "StartShake", "", 1.8, null, null)
             EntFireByHandle(Entities.FindByName(null, "security_door_2_door_spark_1"), "StartSpark", "", 3, null, null)
@@ -3177,7 +3177,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFireByHandle(Entities.FindByName(null, "entry_container_impact_relay"), "Trigger", "", 5, null, null)
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make Wheatley look at nearest player (We need wheatley to light the way for the player but since he's looking at them on loop he can't) (Moja)
             try {
                 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
@@ -3195,7 +3195,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
 //## SP_A2_BTS4 ##//
     if (GetMapName()=="sp_a2_bts4") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
@@ -3225,12 +3225,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             EntFireByHandle(Entities.FindByName(null, "@transition_script"), "RunScriptCode", "OnPostTransition()", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "entry_airlock_door-proxy"), "OnProxyRelay1", "", 1.5, null, null)
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             TestingHackStart
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879*1.5)) {
@@ -3321,7 +3321,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
     // We need to do something with the elevator or use teleports so all players can get up (Moja)
     // We also need to polish the point_viewcontrol somehow to better funnel the players into the vactube (Moja)
     if (GetMapName()=="sp_a2_bts5") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Open the airlock areaportal on mapspawn
             EntFireByHandle(Entities.FindByName(null, "airlock_door_01_areaportal"), "Open", "", 0, null, null)
             // Set sv_allow_mobile_portals to 1 and set up the changelevel command entity
@@ -3338,13 +3338,13 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             LoopEnablerSP_A2_BTS5 <- false
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             Entities.FindByName(null, "airlock_door_01_areaportal").__KeyValueFromString("targetname", "moja")
             EntFireByHandle(Entities.FindByName(null, "@transition_script"), "RunScriptCode", "OnPostTransition()", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "exit_airlock_door-proxy"), "OnProxyRelay1", "", 0.5, null, null)
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "npc_portal_turret_floor", Vector(2594.6696777344, 1760.8935546875, 3943.775390625), 400)) {
                 p.SetOrigin(Vector(p.GetOrigin().x, (p.GetOrigin().y-24)*10*TickSpeed, (p.GetOrigin().z-6)*10*TickSpeed))
@@ -3425,14 +3425,14 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_BTS6 ##//
     if (GetMapName()=="sp_a2_bts6") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Set up the changelevel command entity
             Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_Bts6ServerCommand")
             // Destroy objects
             Entities.FindByName(null, "tube_ride_start_relay").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             printl("Ran")
             // Fire every single event in the map
             EntFireByHandle(Entities.FindByName(null, "tube_main_prop_1"), "SetAnimation", "bts6_A5", 0, null, null)
@@ -3480,7 +3480,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A2_CORE ##//
     if (GetMapName()=="sp_a2_core") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
@@ -3547,11 +3547,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSOnPlayerJoin==true) {
+        if (MSOnPlayerJoin==true) {
             // Find all players
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -3560,7 +3560,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             if (TeleportOutInSp_A2_Core==false) {
                 foreach (player in CreateTrigger(293.857941, 313.969910, -126.097076, -610.639771, -467.855042, 133.613190)) {
                     TeleportOutInSp_A2_Core <- true
@@ -3757,7 +3757,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_00 ##//
     if (GetMapName()=="sp_a3_00") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A3_00ServerCommand")
             printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
             Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
@@ -3771,7 +3771,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             EntFireByHandle(Entities.FindByName(null, "player_looktarget"), "SetParent", "!player", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "potatos_tank"), "SetTargetEntity", "player_looktarget", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "shaft_section_0"), "StartForward", "", 0, null, null)
@@ -3785,7 +3785,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFire("Sp_A3_00ServerCommand", "command", "changelevel sp_a3_01", 76, null)
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make POTATOS tank point at nearest player
             try {
                 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "potatos_tank").GetOrigin(), 10000)
@@ -3796,7 +3796,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_01 ##//
     if (GetMapName()=="sp_a3_01") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
@@ -3805,7 +3805,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             OnlyOnceSp_A3_01 <- true
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay8", "", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "knockout_start"), "Trigger", "", 1, null, null)
 
@@ -3823,7 +3823,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFire("Sp_A3_01ViewcontrolTele", "addoutput", "targetname Sp_A3_01ViewcontrolDone", 13.30, null)
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
 
             if (Entities.FindByName(null, "Sp_A3_01ViewcontrolTele")) {
                 local p = null
@@ -3856,7 +3856,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_03 ##//
     if (GetMapName()=="sp_a3_03") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "pumproom_door_bottom_prop").__KeyValueFromString("targetname", "moja1")
             Entities.FindByName(null, "pumproom_door_bottom_portal").__KeyValueFromString("targetname", "moja2")
             // Here if we need to ent_fire something
@@ -3870,11 +3870,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(-6080, -2812, -5160), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSOnPlayerJoin==true) {
+        if (MSOnPlayerJoin==true) {
             // Find all players
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -3883,7 +3883,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3631, 1284, -2100), 100)) {
@@ -3895,7 +3895,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_JUMP_INTRO ##//
     if (GetMapName()=="sp_a3_jump_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
@@ -3905,12 +3905,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             OnlyOnceSp_A3_Jump_Intro <- true
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             EntFireByHandle(Entities.FindByName(null, "InstanceAuto12-entrance_lift_train"), "StartForward", "", 2, null, null)
             OnlyOnceSp_A3_Jump_Intro <- false
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             if (OnlyOnceSp_A3_Jump_Intro == true) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -3929,18 +3929,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_BOMB_FLINGS ##//
     if (GetMapName()=="sp_a3_bomb_flings") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "InstanceAuto8-entrance_lift_train"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "fade_to_death-proxy").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-256, 1570, 1288), 100)) {
@@ -3952,7 +3952,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_CRAZY_BOX ##// What do we do if the players vaporize the box?
     if (GetMapName()=="sp_a3_crazy_box") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "InstanceAuto17-entrance_lift_train"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -3965,11 +3965,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(200, -1272, 1600), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100)) {
@@ -3981,7 +3981,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_TRANSITION01 ##//
     if (GetMapName()=="sp_a3_transition01") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "InstanceAuto2-entrance_lift_train"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -3994,11 +3994,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             Entities.FindByName(null, "officedoor_4").__KeyValueFromString("targetname", "moja3")
         }
 
-        if (SSOnPlayerJoin==true) {
+        if (MSOnPlayerJoin==true) {
             // Find all players
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -4007,7 +4007,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2048, -130, -3750), 100)) {
@@ -4019,7 +4019,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_SPEED_RAMP ##//
     if (GetMapName()=="sp_a3_speed_ramp") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "InstanceAuto20-entrance_lift_train"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -4027,11 +4027,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100)) {
@@ -4043,7 +4043,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_SPEED_FLINGS ##//
     if (GetMapName()=="sp_a3_speed_flings") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "InstanceAuto6-entrance_lift_train"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -4051,11 +4051,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(396, 1152, 656), 100)) {
@@ -4067,7 +4067,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_PORTAL_INTRO ##//
     if (GetMapName()=="sp_a3_portal_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "1970s_door1door_lower").__KeyValueFromString("targetname", "moja1")
             Entities.FindByName(null, "1970s_door1door_upper").__KeyValueFromString("targetname", "moja2")
             Entities.FindByName(null, "1970s_door_1_areaportal").__KeyValueFromString("targetname", "moja3")
@@ -4096,11 +4096,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(2416, -128, 640.01), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(3839.99, 348.8, 5674.67), 50)) {
@@ -4112,7 +4112,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A3_END ##//
     if (GetMapName()=="sp_a3_end") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "entrance_door_prop").__KeyValueFromString("targetname", "moja1")
             Entities.FindByName(null, "paint_trickle_blue_1").__KeyValueFromString("targetname", "moja2")
             Entities.FindByName(null, "paint_trickle_white_1").__KeyValueFromString("targetname", "moja3")
@@ -4135,11 +4135,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "fade_to_death").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSOnPlayerJoin==true) {
+        if (MSOnPlayerJoin==true) {
             // Find all players
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -4148,7 +4148,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1540, -830, 3840), 50)) {
@@ -4160,7 +4160,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_INTRO ##// Make prop_dy dizove (Moja)
     if (GetMapName()=="sp_a4_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja1")
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
@@ -4176,11 +4176,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             OnlyOnceSpA4Intro <- true
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Change ClosedBetaTestingBox Names ;)
             local ent = null
             while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 400)) {
@@ -4208,7 +4208,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_TB_INTRO ##//
     if (GetMapName()=="sp_a4_tb_intro") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -4217,11 +4217,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(2368, 736, 64), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2784, 736, 432), 50)) {
@@ -4233,7 +4233,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_TB_TRUST_DROP ##//
     if (GetMapName()=="sp_a4_tb_trust_drop") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "music1").__KeyValueFromString("targetname", "moja")
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
@@ -4245,11 +4245,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(704, 448, 968), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1120, 448, 1328), 50)) {
@@ -4261,7 +4261,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_TB_WALL_BUTTON ##//
     if (GetMapName()=="sp_a4_tb_wall_button") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -4271,11 +4271,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(864, 960, 168), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1280, 960, 528), 50)) {
@@ -4287,7 +4287,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_TB_POLARITY ##//
     if (GetMapName()=="sp_a4_tb_polarity") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -4297,11 +4297,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(-128, -288, 296), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-128, -704, 656), 50)) {
@@ -4313,7 +4313,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_TB_CATCH ##//
     if (GetMapName()=="sp_a4_tb_catch") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "@exit_door-proxy").__KeyValueFromString("targetname", "moja")
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
@@ -4328,11 +4328,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "puzzle_completed_relay").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1440, 896, 688), 50)) {
@@ -4344,7 +4344,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_STOP_THE_BOX ##//
     if (GetMapName()=="sp_a4_stop_the_box") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "music.sp_a4_stop_the_box_b1").__KeyValueFromString("targetname", "moja")
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
@@ -4353,11 +4353,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(896, -800, 1296), 50)) {
@@ -4369,7 +4369,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_LASER_CATAPULT ##//
     if (GetMapName()=="sp_a4_laser_catapult") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -4378,11 +4378,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(624, -512, 576), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1248, -512, 912), 50)) {
@@ -4394,7 +4394,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_LASER_PLATFORM ##//
     if (GetMapName()=="sp_a4_laser_platform") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -4403,11 +4403,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(4088, -528, -2080), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(3456, -1056, -2648), 200)) {
@@ -4419,7 +4419,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_SPEED_TB_CATCH ##// Music doesn't play at the end (Moja)
     if (GetMapName()=="sp_a4_speed_tb_catch") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
@@ -4432,11 +4432,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             }
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2240, -208, 400), 50)) {
@@ -4448,7 +4448,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_JUMP_POLARITY ##//
     if (GetMapName()=="sp_a4_jump_polarity") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "antechamber_exit").__KeyValueFromString("targetname", "moja1")
             Entities.FindByName(null, "antechamber_areaportal").__KeyValueFromString("targetname", "moja2")
             Entities.FindByName(null, "antechamber_door_sound").__KeyValueFromString("targetname", "moja3")
@@ -4464,11 +4464,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(928.01, 2328, 448), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2560, -3072, 768), 50)) {
@@ -4480,7 +4480,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_FINALE1 ##//
     if (GetMapName()=="sp_a4_finale1") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
@@ -4491,11 +4491,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(-12832, -3040, -112), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-12832, -3040, -112), 100)) {
@@ -4507,7 +4507,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_FINALE2 ##//
     if (GetMapName()=="sp_a4_finale2") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByName(null, "portal_chamber_1").__KeyValueFromString("targetname", "moja1")
             Entities.FindByName(null, "portal_chamber_2").__KeyValueFromString("targetname", "moja2")
             Entities.FindByName(null, "areaportal_airlock_1").__KeyValueFromString("targetname", "moja3")
@@ -4532,12 +4532,12 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("trigger_once", Vector(-3152, -1928, -240), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             EntFireByHandle(Entities.FindByName(null, "entrance_door-open_door"), "Trigger", "", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "music01"), "PlaySound", "", 0, null, null)
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3152, -1928, -240), 100)) {
@@ -4549,7 +4549,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_FINALE3 ##// Wheatley crusher glitch (Moja)
     if (GetMapName()=="sp_a4_finale3") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             Entities.FindByClassnameNearest("prop_dynamic", Vector(736, -1832, 185), 20).__KeyValueFromString("targetname", "moja1")
             Entities.FindByName(null, "airlock_door2").__KeyValueFromString("targetname", "moja2")
             Entities.FindByName(null, "airlock_door2_brush").__KeyValueFromString("targetname", "moja3")
@@ -4576,11 +4576,11 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.FindByClassnameNearest("logic_auto", Vector(720, -2048, 152), 20).Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             EntFireByHandle(Entities.FindByName(null, "entry_door-proxy"), "OnProxyRelay1", "", 0, null, null)
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make Wheatley look at nearest player
             try {
                 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "wheatley_screen-screen_tank").GetOrigin(), 10000)
@@ -4598,18 +4598,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## SP_A4_FINALE4 ##//
     if (GetMapName()=="sp_a4_finale4") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
             //Entities.FindByName(null, "NAME").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
 
         }
     }
@@ -4625,18 +4625,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
             NewApertureStartElevatorFixes()
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
@@ -4650,18 +4650,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Here if we need to ent_fire something
             EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
             Entities.FindByName(null, "NAME").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
@@ -4675,18 +4675,18 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
-        if (SSInstantRun==true) {
+        if (MSInstantRun==true) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "InstanceAuto8-entrance_lift_train"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "fade_to_death-proxy").Destroy()
         }
 
-        if (SSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn==true) {
 
         }
 
-        if (SSLoop==true) {
+        if (MSLoop==true) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {
