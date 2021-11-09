@@ -1,5 +1,4 @@
 //--------------------------------------------------------------------------------------------------------------------------------------//
-//                                                             COPYRIGHT                                                                //
 //                                                  © 2021 Portal 2: Multiplayer Mod                                                    //
 //                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                  //
 // (in the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
@@ -248,14 +247,36 @@ function CreateTrigger(x1, y1, z1, x2, y2, z2){
 	if(DevMode == true){
 		DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
 	}
+
+    local TransitionVarible = 0
+    if (x1 >= x2) {
+        TransitionVarible = x2
+        x2 = x1
+        x1 = TransitionVarible
+    }
+
+    local TransitionVarible = 0
+    if (y1 >= y2) {
+        TransitionVarible = y2
+        y2 = y1
+        y1 = TransitionVarible
+    }
+
+    local TransitionVarible = 0
+    if (z1 >= z2) {
+        TransitionVarible = z2
+        z2 = z1
+        z1 = TransitionVarible
+    }
+
     local plist = []
     local p = null
     local outputp = null
     while (p = Entities.FindByClassname(p, "player")) {
         local pos = p.GetOrigin()
-        if (pos.z >= z1 && pos.z <= z2){
-            if (pos.y >= y1 && pos.y <= y2) {
-                if (pos.x <= x1 && pos.x >= x2) {
+        if (pos.x >= x1 && pos.x <= x2){
+            if (pos.y >= y1 && pos.y <= y2){
+                if (pos.z >= z1 && pos.z <= z2){
                     plist.push(p)
                 }
             }
@@ -339,9 +360,6 @@ try {
 //------------------------------------------------------//
 
     function loop() {
-        foreach (player in CreateTrigger(4631.953125, 3454.1826171875, -520.72909545898, 4386.2651367188, 3711.8361816406, -430.58023071289)) {
-            printl(player)
-        }
 
         //Count Ticks
         tick <- tick + 1
@@ -470,6 +488,13 @@ try {
         // Remove Player Collision
         EntFire("player", "addoutput", "CollisionGroup 2")
         }
+
+        // Change Dev Mode
+        if (GetDeveloperLevel() == 0) {
+            DevMode <- false
+        } else {
+            DevMode <- true
+        }
     }
 
 //---------------------------------------------------------------//
@@ -523,7 +548,7 @@ joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
 EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
 if (PlayerID >= 2) {
     onscreendisplay.__KeyValueFromString("y", "0.075")
-    EntFireByHandle(clientcommand, "Command", "disconnect #Valve_Reject_Server_Full", 0, p, p)
+    // EntFireByHandle(clientcommand, "Command", "disconnect #Valve_Reject_Server_Full", 0, p, p)
 }
 // Assign every new targetname to the player after blue and red are used
 if (PlayerID >= 3) {
@@ -610,6 +635,9 @@ function PostMapLoad() {
     SendToConsole("sv_allowdownload 1")
     SendToConsole("sv_allowupload 1")
     SendToConsole("max_filesize 0")
+    if (DevMode==true) {
+        SendToConsole("developer 1")
+    }
 }
 
 /////////////////////////////////////
@@ -2749,6 +2777,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     SpA2ColumBlockerViewcontrol.SetAngles(0, 0, 0)
                     EntFire("SpA2ColumBlockerViewcontrol", "enable", "", 0, null)
 
+                    EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", "SpA2ColumBlockerViewcontrol", 0, null, null)
+
                     EntFire("global_ents-proxy", "OnProxyRelay2", "", 6.2, null)
                     EntFire("departure_elevator-bts_shadowed_light_01", "TurnOn", "", 6.2, null)
                     EntFire("departure_elevator-elevator_1", "SetSpeedReal", "50", 6.2, null)
@@ -2757,20 +2787,20 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "SpA2ColumBlockerCommand")
                     EntFire("@sphere", "RunScriptCode", "ElevatorThereYouAre()", OnlyOnceSpA2ColumBlockerGlobalTime, null)
                     EntFire("departure_elevator-//spherebot_train_1_chassis_1", "MoveToPathNode", "spherebot_train_1_path_2", OnlyOnceSpA2ColumBlockerGlobalTime, null)
-                    EntFire("ColumServerCommand", "command", "echo Changing level...", OnlyOnceSpA2ColumBlockerGlobalTime + 31, null)
-                    EntFire("ColumServerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceSpA2ColumBlockerGlobalTime + 31, null)
+                    EntFire("ColumServerCommand", "command", "echo Changing level...", OnlyOnceSpA2ColumBlockerGlobalTime + 29, null)
+                    EntFire("ColumServerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceSpA2ColumBlockerGlobalTime + 29, null)
 
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(-1964, 331, -2479))
                     }
 
-                    OnlySpA2SpA2ColumBlocker3 <- false
+                    OnlyOnceSpA2ColumBlocker3 <- false
                 }
             }
 
             // Delete office door after walking through it
-            if (OnlySpA2ColumBlocker2==true) {
+            if (OnlyOnceSpA2ColumBlocker2==true) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-63, -780, 320), 40)) {
                     Entities.FindByName(null, "officedoor_1").Destroy()
@@ -2790,12 +2820,6 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     OnlyOnceSpA2ColumBlocker1 <- false
                 }
             }
-
-            // Make Wheatley look at nearest player
-            try {
-            local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-            EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", "ColumBlockerViewcontrol", 0, null, null)
-            } catch(exception) {}
 
             // Elevator changelevel
             local p = null
@@ -3060,9 +3084,9 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
             // if no player made it, show a message and restart the level
             if (!Entities.FindByName(null, "StartDeathEventMPMod")) {
-                if (OnlyOnceSP_A2_BTS2 == true) {
+                if (OnlyOnceSp_A2_Bts2 == true) {
                     PreviousTimeSP_A2_BTS2 <- Time()
-                    OnlyOnceSP_A2_BTS2 <- false
+                    OnlyOnceSp_A2_Bts2 <- false
                 }
                 if (PreviousTimeSP_A2_BTS2 + 31 <= Time()) {
                     if (Entities.FindByName(null, "EndDeathEventMPMod")) {
@@ -3452,20 +3476,71 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
     }
 
+
     //## SP_A2_CORE ##//
     if (GetMapName()=="sp_a2_core") {
         if (SSInstantRun==true) {
             // Here if we need to ent_fire something
             //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
+            Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "RedFogKillTriggerMPMOD")
+            EntFireByHandle(Entities.FindByName(null, "red_light_pit_open_relay"), "addoutput", "OnTrigger RedFogKillTriggerMPMOD:kill", 1, null, null)
+
+            Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "WhiteFogKillTriggerMPMOD")
+            EntFireByHandle(Entities.FindByName(null, "wheatly_takes_over_relay"), "addoutput", "OnTrigger WhiteFogKillTriggerMPMOD:kill", 1, null, null)
+
+            Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "EvilFogKillTriggerMPMOD")
+            EntFireByHandle(Entities.FindByName(null, "wheatly_turns_evil_relay"), "addoutput", "OnTrigger EvilFogKillTriggerMPMOD:kill", 1, null, null)
+
+            Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "StaleMateButtonKillTrigger")
+            EntFireByHandle(Entities.FindByName(null, "StaleMateButtonKillTriggetr"), "addoutput", "OnPressed StaleMateButtonKillTrigger:kill", 1, null, null)
+
             Entities.FindByName(null, "death_fade").Destroy()
             Entities.FindByName(null, "rv_trap_portal_surf_cleanser").Destroy()
+            Entities.FindByName(null, "swap_stalemate_panels_rl").Destroy()
+            Entities.FindByName(null, "globe_panel_visibility_disable").Destroy()
             Entities.FindByName(null, "start_rv_scene_trigger").Destroy()
+            Entities.FindByName(null, "stalemate_room_close").Destroy()
+            Entities.FindByName(null, "close_stalemate_room_doors_relay").Destroy()
             Entities.FindByClassnameNearest("trigger_once", Vector(0, 304, -10438), 20).Destroy()
+            Entities.FindByName(null, "music_sp_a2_core_b3_2").__KeyValueFromString("targetname", "MUSICOVERRIDEMPMOD")
+
             OnlyOnceSp_A2_Core_2 <- true
             OnlyOnceSp_A2_Core <- true
             TPSp_A2_Core <- true
             OnlyOnceMoveTeleportSp_A2_Core_2 <- true
+            TeleportOutInSp_A2_Core <- false
+            ONETIMEFOGCHANGESp_A2_Core_2 <- false
+            ONETIMEFOGCHANGESp_A2_Core_2_white <- false
+            ONETIMEFOGCHANGESp_A2_Core_2_evil <- false
+            StalemateRoomExitSp_A2_Core_2 <- false
+            StalemateButtonSp_A2_Core_2 <- false
+            RoomLookAtPlayerSp_A2_Core <- true
+
+
+            // Create Env Globals
+            env_global01 <- Entities.CreateByClassname("env_global")
+            env_global01.__KeyValueFromString("targetname", "env_global01")
+            env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+
+            env_global02 <- Entities.CreateByClassname("env_global")
+            env_global02.__KeyValueFromString("targetname", "env_global02")
+            env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+            env_global03 <- Entities.CreateByClassname("env_global")
+            env_global03.__KeyValueFromString("targetname", "env_global03")
+            env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+
+            env_global04 <- Entities.CreateByClassname("env_global")
+            env_global04.__KeyValueFromString("targetname", "env_global04")
+            env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+            EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+            EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+            EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+            EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
         }
 
         if (SSPostPlayerSpawn==true) {
@@ -3482,13 +3557,86 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
         }
 
         if (SSLoop==true) {
+            if (TeleportOutInSp_A2_Core==false) {
+                foreach (player in CreateTrigger(293.857941, 313.969910, -126.097076, -610.639771, -467.855042, 133.613190)) {
+                    TeleportOutInSp_A2_Core <- true
+                }
+            }
+
+            if (TeleportOutInSp_A2_Core==true) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    local DisableTeleport = false
+                    foreach (player in CreateTrigger(-857.83013916016, -1769.8682861328, 1200.1546630859, 828.51452636719, 904.61602783203,  -11763)) {
+                        if (p == player) {
+                            DisableTeleport = true
+                        }
+                    }
+                    if (DisableTeleport==false) {
+                        p.SetOrigin(Vector(-482, 0, 52))
+                        p.SetAngles(0, 0, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                    }
+                }
+            }
 
             if (OnlyOnceSp_A2_Core_2==true) {
                 if (!Entities.FindByName(null, "rv_start_moving_trigger")) {
                     EntFireByHandle(Entities.FindByName(null, "start_rv_scene_rl"), "Trigger", "", 8, null, null)
+                    EntFireByHandle(Entities.FindByName(null, "MUSICOVERRIDEMPMOD"), "PlaySound", "", 8, null, null)
                     Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "OnMoveStartOnlyOnceSp_A2_Core_2DIS")
                     EntFire("OnMoveStartOnlyOnceSp_A2_Core_2DIS", "addoutput", "targetname OnMoveStartOnlyOnceSp_A2_Core_2", 8, null)
                     OnlyOnceSp_A2_Core_2 <- false
+                }
+            }
+
+            if (ONETIMEFOGCHANGESp_A2_Core_2==false) {
+                if (!Entities.FindByName(null, "RedFogKillTriggerMPMOD")) {
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        EntFireByHandle(p, "setfogcontroller", "@environment_red_state", 0, null, null)
+                    }
+                    ONETIMEFOGCHANGESp_A2_Core_2 <- true
+                }
+            }
+
+            if (ONETIMEFOGCHANGESp_A2_Core_2_white==false) {
+                if (!Entities.FindByName(null, "WhiteFogKillTriggerMPMOD")) {
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        EntFireByHandle(p, "setfogcontroller", "@environment_wheatly_state_01", 0, null, null)
+                    }
+                    RoomLookAtPlayerSp_A2_Core <- true
+                    ONETIMEFOGCHANGESp_A2_Core_2_white <- true
+                }
+            }
+
+            if (ONETIMEFOGCHANGESp_A2_Core_2_evil==false) {
+                if (!Entities.FindByName(null, "EvilFogKillTriggerMPMOD")) {
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        EntFireByHandle(p, "setfogcontroller", "@environment_wheatly_state_02", 0, null, null)
+                    }
+                    ONETIMEFOGCHANGESp_A2_Core_2_evil <- true
+                }
+            }
+
+            if (StalemateButtonSp_A2_Core_2==false) {
+                if (!Entities.FindByName(null, "StaleMateButtonKillTrigger")) {
+                    Entities.FindByName(null, "statemate_double_arm_01").__KeyValueFromString("targetname", "statemate_double_arm_01DIS")
+                    Entities.FindByName(null, "statemate_double_arm_02").__KeyValueFromString("targetname", "statemate_double_arm_02DIS")
+                    Entities.FindByName(null, "statemate_double_arm_03").__KeyValueFromString("targetname", "statemate_double_arm_03DIS")
+                    RoomLookAtPlayerSp_A2_Core <- false
+                    EntFire("core_receptacle_pointer_1", "SetTargetEntity", "lookat_glados_bullseye", 0, null)
+                    EntFire("glados_pointer", "SetTargetEntity", "lookat_receptacle_bullseye", 0, null)
+                    StalemateButtonSp_A2_Core_2 <- true
+                }
+            }
+
+            if (StalemateRoomExitSp_A2_Core_2==false) {
+                if (!Entities.FindByName(null, "player_inside_stalemate_room_trigger")) {
+
+                    StalemateRoomExitSp_A2_Core_2 <- true
                 }
             }
 
@@ -3534,14 +3682,24 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     EntFire("Sp_A2_CoreServerCommand", "command", "echo Changing level...", 150.8, null)
                     EntFire("Sp_A2_CoreServerCommand", "command", "changelevel sp_a3_00", 150.8, null)
 
-                    // First teleport behind the panels so players can't be seen from the elevator
-                    local p = null
-                    while (p = Entities.FindByClassname(p, "player")) {
-                        p.SetOrigin(Vector(0, 768, 64))
-                        p.SetVelocity(Vector(0, 0, 0))
-                    }
-
                     OnlyOnceSp_A2_Core <- false
+                    RoomLookAtPlayerSp_A2_Core <- false
+
+                    EntFire("glados_pointer", "SetTargetEntity", "lookat_exit_elevator_bullseye", 0, null)
+
+                    EntFireByHandle(env_global01, "turnon", "", 0.1, null, null)
+                    EntFireByHandle(env_global02, "turnon", "", 0.1, null, null)
+                    EntFireByHandle(env_global03, "turnon", "", 0.1, null, null)
+                    EntFireByHandle(env_global04, "turnon", "", 0.1, null, null)
+                }
+            }
+
+            if (TPSp_A2_Core==false && !Entities.FindByName(null, "rv_trap_floor_down_door_1")) {
+                // First teleport behind the panels so players can't be seen from the elevator
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(0, 495, 37))
+                    p.SetVelocity(Vector(0, 0, 0))
                 }
             }
 
@@ -3558,29 +3716,36 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 }
             }
 
-            // Make central core point at nearest player (We need it to stop pointing at the player when core transfer begins) (Moja)
             try {
-                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "glados_pointer").GetOrigin(), 10000)
-                EntFireByHandle(Entities.FindByName(null, "glados_pointer"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            } catch(exception) {}
+            Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
+            Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
+            } catch(exception) { }
 
-            // Make core receptacle point at nearest player (We need it to stop pointing at the player when core transfer begins) (Moja)
-            try {
-                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "core_receptacle_pointer_1").GetOrigin(), 10000)
-                EntFireByHandle(Entities.FindByName(null, "core_receptacle_pointer_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            } catch(exception) {}
+            if (RoomLookAtPlayerSp_A2_Core==true) {
+                // Make central core point at nearest player (We need it to stop pointing at the player when core transfer begins) (Moja)
+                try {
+                    local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "glados_pointer").GetOrigin(), 10000)
+                    EntFireByHandle(Entities.FindByName(null, "glados_pointer"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                } catch(exception) {}
 
-            // Make primary panel pointer target the nearest player
-            try {
-                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "shield_1_pointer_1").GetOrigin(), 10000)
-                EntFireByHandle(Entities.FindByName(null, "shield_1_pointer_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            } catch(exception) {}
+                // Make core receptacle point at nearest player (We need it to stop pointing at the player when core transfer begins) (Moja)
+                try {
+                    local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "core_receptacle_pointer_1").GetOrigin(), 10000)
+                    EntFireByHandle(Entities.FindByName(null, "core_receptacle_pointer_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                } catch(exception) {}
 
-            // Make secondary panel pointer target the nearest player
-            try {
-                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "shield_1_pointer_2").GetOrigin(), 10000)
-                EntFireByHandle(Entities.FindByName(null, "shield_1_pointer_2"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            } catch(exception) {}
+                // Make primary panel pointer target the nearest player
+                try {
+                    local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "shield_1_pointer_1").GetOrigin(), 10000)
+                    EntFireByHandle(Entities.FindByName(null, "shield_1_pointer_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                } catch(exception) {}
+
+                // Make secondary panel pointer target the nearest player
+                try {
+                    local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "shield_1_pointer_2").GetOrigin(), 10000)
+                    EntFireByHandle(Entities.FindByName(null, "shield_1_pointer_2"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                } catch(exception) {}
+            }
         }
     }
 
@@ -4551,6 +4716,15 @@ EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTa
 if (GetMapName() == "MAPNAME") {
     SendToConsole("commentary 0")
 }
+
+
+
+
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-32, -1032, 32), 20), "addoutput", "OnTrigger moja2:SetAnimation:vert_door_opening", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-32, -1032, 32), 20), "addoutput", "OnTrigger moja3:Disable", 0, null, null)
+
+
+
 
 // ent_fire an object
 EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
