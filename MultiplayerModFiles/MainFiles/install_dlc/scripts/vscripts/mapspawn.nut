@@ -1,5 +1,5 @@
 //--------------------------------------------------------------------------------------------------------------------------------------//
-//                                                  © 2021 Portal 2: Multiplayer Mod                                                    //
+//                                                    2021 Portal 2: Multiplayer Mod                                                    //
 //                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                  //
 // (in the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
 //--------------------------------------------------------------------------------------------------------------------------------------//
@@ -3495,6 +3495,8 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "StaleMateButtonKillTrigger")
             EntFireByHandle(Entities.FindByName(null, "StaleMateButtonKillTriggetr"), "addoutput", "OnPressed StaleMateButtonKillTrigger:kill", 1, null, null)
 
+            Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "TPSp_A2_CoreForSure")
+
             Entities.FindByName(null, "death_fade").Destroy()
             Entities.FindByName(null, "rv_trap_portal_surf_cleanser").Destroy()
             Entities.FindByName(null, "swap_stalemate_panels_rl").Destroy()
@@ -3508,6 +3510,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
             OnlyOnceSp_A2_Core_2 <- true
             OnlyOnceSp_A2_Core <- true
             TPSp_A2_Core <- true
+            EnableMeSp_A2_Core <- false
             OnlyOnceMoveTeleportSp_A2_Core_2 <- true
             TeleportOutInSp_A2_Core <- false
             ONETIMEFOGCHANGESp_A2_Core_2 <- false
@@ -3675,6 +3678,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                     Sp_A2_CoreViewcontrol.SetAngles(0, 270, 0)
                     EntFire("Sp_A2_CoreViewcontrol", "enable", "", 0, null)
                     EntFire("Sp_A2_CoreViewcontrol", "disable", "", 144.8, null)
+                    EntFire("TPSp_A2_CoreForSure", "kill", "", 144.8, null)
 
                     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_CoreServerCommand")
                     Entities.FindByName(null, "rv_trap_floor_down_door_1").Destroy()
@@ -3683,6 +3687,7 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
 
                     OnlyOnceSp_A2_Core <- false
                     RoomLookAtPlayerSp_A2_Core <- false
+                    EnableMeSp_A2_Core <- true
 
                     EntFire("glados_pointer", "SetTargetEntity", "lookat_exit_elevator_bullseye", 0, null)
 
@@ -3693,18 +3698,10 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                 }
             }
 
-            if (TPSp_A2_Core==false && !Entities.FindByName(null, "rv_trap_floor_down_door_1")) {
-                // First teleport behind the panels so players can't be seen from the elevator
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
-                    p.SetOrigin(Vector(0, 495, 37))
-                    p.SetVelocity(Vector(0, 0, 0))
-                }
-            }
-
             // Second teleport into the elevator
             if (TPSp_A2_Core==true) {
-                if (!Entities.FindByName(null, "rv_trap_floor_down_door_1")) {
+                if (!Entities.FindByName(null, "TPSp_A2_CoreForSure")) {
+                    EnableMeSp_A2_Core <- false
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
                         p.SetOrigin(Vector(0, 290, -200))
@@ -3712,6 +3709,15 @@ function SingleplayerSupport(SSInstantRun, SSLoop, SSPostPlayerSpawn, SSPostMapS
                         p.SetAngles(80, 270, 0)
                     }
                     TPSp_A2_Core <- false
+                }
+            }
+
+            if (EnableMeSp_A2_Core==true) {
+                // First teleport behind the panels so players can't be seen from the elevator
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(0, 495, 37))
+                    p.SetVelocity(Vector(0, 0, 0))
                 }
             }
 

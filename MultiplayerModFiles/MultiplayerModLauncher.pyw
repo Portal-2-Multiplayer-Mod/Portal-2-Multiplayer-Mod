@@ -170,11 +170,9 @@ for mainline in configdefaults:
                         if (outputline[outputline.find("=") : ] != defoutputline[defoutputline.find("=") : ]):
                             if (line != ""):
                                 mainline = mainline.replace(outputline[outputline.find("=")+1 : ], defoutputline[defoutputline.find("=")+1 : ])
-                                print("Replaced: " + outputline + " with " + defoutputline + " ENDED WITH :" + mainline + " FIND AND REPLACE" + outputline[outputline.find("=")+1 : ] + defoutputline[defoutputline.find("=")+1 : ])
 
 
     f.write(mainline + "\n")
-    print(mainline)
 f.close()
 
 outputconfig = []
@@ -698,31 +696,25 @@ def Launch():
 
 
 # GUI
+import tkinter as tk
+
 # Create a window
-import kivy # This is needed to run the GUI
-from kivy.app import App # This is needed to run the GUI
-from kivy.uix.label import Label # This is needed to run the GUI
-from kivy.uix.button import Button # This is needed to run the GUI
-from kivy.uix.boxlayout import BoxLayout # This is needed to run the GUI
-from kivy.uix.textinput import TextInput # This is needed to run the GUI
+root = tk.Tk()
+root.title("Multiplayer Mod Launcher")
+root.geometry("400x300")
 
-# This is needed to run the GUI
-class MyApp(App):
-    # add a button
-    def build(self):
-        # Create a layout
-        layout = BoxLayout(orientation='vertical')
-        # Make a button
-        layout.add_widget(Button(text='Start', on_press=self.pressed))
+# Make a button
+button = tk.Button(root, text="Launch Multiplayer Mod", command=Launch)
+button.pack()
 
-        # make the window title grookey
-        self.title = 'grookey'
-        # Return the layout
-        return layout
+# make the background red
+root.configure(background='red')
 
-    # This is called when the button is pressed
-    def pressed(self, instance):
-        Launch()
+# make it 1280 x 720
+root.geometry("1280x720")
 
-# Run the GUI
-MyApp().run()
+# make it none resizable
+root.resizable(width=False, height=False)
+
+# run the window
+root.mainloop()
