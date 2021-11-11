@@ -299,6 +299,7 @@ function UnNegative(num) {
         num = num * -1
     }
     return num
+}
 
 // Teleport players within a distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
@@ -362,7 +363,8 @@ try {
         GBIsMultiplayer <- 1
     }
 } catch(exception) {
-    GBIsMultiplayer <- 0
+    printl("NOT PLAYING IN MULTIPLAYER!!! (disconnecting)")
+    SendToConsole("disconnect You cannot play singleplayer with the multiplayer mod loaded please restart your game")
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -374,141 +376,141 @@ try {
 // ░█──░█ ░█─░█ ▄█▄ ░█──▀█    ░█▄▄█ ░█▄▄▄█ ░█▄▄▄█ ░█─── //
 //------------------------------------------------------//
 
-    function loop() {
+function loop() {
 
-        //Count Ticks
-        tick <- tick + 1
+    //Count Ticks
+    tick <- tick + 1
 
-        // Run player join code when a player joins
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.ValidateScriptScope()) {
-                local script_scope = p.GetScriptScope()
-                // If player hasn't joined yet / hasn't been spawned / colored yet
-                if (!("Colored" in script_scope)) {
-                    // Run player join code
-                    OnPlayerJoin(p, script_scope)
-                }
+    // Run player join code when a player joins
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        if (p.ValidateScriptScope()) {
+            local script_scope = p.GetScriptScope()
+            // If player hasn't joined yet / hasn't been spawned / colored yet
+            if (!("Colored" in script_scope)) {
+                // Run player join code
+                OnPlayerJoin(p, script_scope)
             }
-        }
-
-        CreatePropsForLevel(false, false, true) // Create the gmod generated props in the level
-
-        // Cache original spawn position
-        if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
-            // OldPlayerPos = the blues inital spawn position
-            OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-            OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
-            cacheoriginalplayerposition <- 1
-        }
-
-        // Detect death
-        local progress = true
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            // If player is dead
-            if (p.GetHealth() == 0) {
-                // Put dead players in the dead players array
-                foreach (player in CurrentlyDead) {
-                    if (player == p) {
-                        progress = false
-                    }
-                }
-                if (progress == true) {
-                    CurrentlyDead.push(p)
-                    OnPlayerDeath(p)
-                }
-            }
-        }
-
-        // Display waiting for players until player exits spawn zone
-        try {
-            if (HasRanGeneralOneTime == true) {
-                if (Entities.FindByName(null, "HasSpawnedMPMod")) {
-                    GeneralOneTime()
-                    HasRanGeneralOneTime <- false
-                }
-            }
-            if (DoneWaiting == false) {
-                // Check if client is in spawn zone
-                if (Entities.FindByName(null, "blue").GetVelocity().z == 0) {
-                    DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
-                } else {
-                    DoneWaiting <- true
-                    Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "HasSpawnedPreMPMod")
-                    EntFire("HasSpawnedPreMPMod", "addoutput", "targetname HasSpawnedMPMod", 1, null)
-                }
-            }
-        } catch(exception) {}
-
-        // Delete all cached models
-        if (DoneCacheing==true) {
-            // If model has cached successfully delete it from the level
-            foreach (index, CustomGameModel in CachedModels)  {
-                // Find all entities with the model name
-                local ent = null
-                while (ent = Entities.FindByModel(ent, CustomGameModel)) {
-                    try {
-                        // If it's a prop_dynamic_create entity delete it
-                    if (ent.GetName().slice(0, 17)!="genericcustomprop") {
-                        ent.Destroy()
-                    }
-                    } catch(exception) {
-                        ent.Destroy()
-                    }
-                }
-            }
-        }
-        if (CanClearCache==true) {
-            foreach (index, CustomGameModel in CachedModels)  {
-                CachedModels.remove(index)
-            }
-        }
-
-        // Disconnect player if trying to play singleplayer
-        if (GBIsMultiplayer==0) {
-            SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
-        }
-
-        // Singleplayer loop
-        if (GetMapName().slice(0, 7) != "mp_coop") {
-            MapSupport(false, true, false, false, false, false, false)
-        }
-
-        if (DevMode==true) {}
-
-        /////////////////////////
-        // RUN ON EVERY SECOND //
-        /////////////////////////
-
-        if (Time() >= PreviousTime1Sec + 1) {
-        PreviousTime1Sec <- Time()
-
-        // Detect respawn
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.GetHealth() >= 1) {
-                // Get the players from the dead players array
-                foreach (index, player in CurrentlyDead) {
-                    if (player == p) {
-                        CurrentlyDead.remove(index)
-                        OnPlayerRespawn(p)
-                    }
-                }
-            }
-        }
-
-        // Remove Player Collision
-        EntFire("player", "addoutput", "CollisionGroup 2")
-        }
-
-        // Change Dev Mode
-        if (GetDeveloperLevel() == 0) {
-            DevMode <- false
-        } else {
-            DevMode <- true
         }
     }
+
+    CreatePropsForLevel(false, false, true) // Create the gmod generated props in the level
+
+    // Cache original spawn position
+    if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
+        // OldPlayerPos = the blues inital spawn position
+        OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+        OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
+        cacheoriginalplayerposition <- 1
+    }
+
+    // Detect death
+    local progress = true
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        // If player is dead
+        if (p.GetHealth() == 0) {
+            // Put dead players in the dead players array
+            foreach (player in CurrentlyDead) {
+                if (player == p) {
+                    progress = false
+                }
+            }
+            if (progress == true) {
+                CurrentlyDead.push(p)
+                OnPlayerDeath(p)
+            }
+        }
+    }
+
+    // Display waiting for players until player exits spawn zone
+    try {
+        if (HasRanGeneralOneTime == true) {
+            if (Entities.FindByName(null, "HasSpawnedMPMod")) {
+                GeneralOneTime()
+                HasRanGeneralOneTime <- false
+            }
+        }
+        if (DoneWaiting == false) {
+            // Check if client is in spawn zone
+            if (Entities.FindByName(null, "blue").GetVelocity().z == 0) {
+                DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+            } else {
+                DoneWaiting <- true
+                Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "HasSpawnedPreMPMod")
+                EntFire("HasSpawnedPreMPMod", "addoutput", "targetname HasSpawnedMPMod", 1, null)
+            }
+        }
+    } catch(exception) {}
+
+    // Delete all cached models
+    if (DoneCacheing==true) {
+        // If model has cached successfully delete it from the level
+        foreach (index, CustomGameModel in CachedModels)  {
+            // Find all entities with the model name
+            local ent = null
+            while (ent = Entities.FindByModel(ent, CustomGameModel)) {
+                try {
+                    // If it's a prop_dynamic_create entity delete it
+                if (ent.GetName().slice(0, 17)!="genericcustomprop") {
+                    ent.Destroy()
+                }
+                } catch(exception) {
+                    ent.Destroy()
+                }
+            }
+        }
+    }
+    if (CanClearCache==true) {
+        foreach (index, CustomGameModel in CachedModels)  {
+            CachedModels.remove(index)
+        }
+    }
+
+    // Disconnect player if trying to play singleplayer
+    if (GBIsMultiplayer==0) {
+        SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
+    }
+
+    // Singleplayer loop
+    if (GetMapName().slice(0, 7) != "mp_coop") {
+        MapSupport(false, true, false, false, false, false, false)
+    }
+
+    if (DevMode==true) {}
+
+    /////////////////////////
+    // RUN ON EVERY SECOND //
+    /////////////////////////
+
+    if (Time() >= PreviousTime1Sec + 1) {
+    PreviousTime1Sec <- Time()
+
+    // Detect respawn
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        if (p.GetHealth() >= 1) {
+            // Get the players from the dead players array
+            foreach (index, player in CurrentlyDead) {
+                if (player == p) {
+                    CurrentlyDead.remove(index)
+                    OnPlayerRespawn(p)
+                }
+            }
+        }
+    }
+
+    // Remove Player Collision
+    EntFire("player", "addoutput", "CollisionGroup 2")
+    }
+
+    // Change Dev Mode
+    if (GetDeveloperLevel() == 0) {
+        DevMode <- false
+    } else {
+        DevMode <- true
+    }
+}
 
 //---------------------------------------------------------------//
 // ░█▀▀▀ ░█▄─░█ ░█▀▀▄   ░█▀▀▀█ ░█▀▀▀   ░█─── ░█▀▀▀█ ░█▀▀▀█ ░█▀▀█ //
@@ -527,93 +529,93 @@ try {
 //////////////////////////////
 
 function OnPlayerJoin(p, script_scope) {
-// Get player's index and store it
-PlayerID <- p.GetRootMoveParent()
-PlayerID <- PlayerID.entindex()
+    // Get player's index and store it
+    PlayerID <- p.GetRootMoveParent()
+    PlayerID <- PlayerID.entindex()
 
-// // Set viewmodel targetnames so we can tell them apart
-// local ent = null
-// while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
-//     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
-//     printl("Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
-//     // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
-//     // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
-// }
+    // // Set viewmodel targetnames so we can tell them apart
+    // local ent = null
+    // while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
+    //     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
+    //     printl("Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
+    //     // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
+    //     // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
+    // }
 
-// Set cvars on joining players' client
-SendToConsole("sv_timeout 3")
-SendToConsole("gameinstructor_enable 1")
-EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
-EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
-EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
-EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
-MapSupport(false, false, false, false, true, false, false)
+    // Set cvars on joining players' client
+    SendToConsole("sv_timeout 3")
+    SendToConsole("gameinstructor_enable 1")
+    EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
+    EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
+    EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
+    EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+    MapSupport(false, false, false, false, true, false, false)
 
-// Say join message on HUD
-if (PluginLoaded==true) {
-    JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
-} else {
-    JoinMessage <- "Player " + PlayerID + " joined the game"
-}
-// Set join message to player name
-JoinMessage = JoinMessage.tostring()
-joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
-EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
-if (PlayerID >= 2) {
-    onscreendisplay.__KeyValueFromString("y", "0.075")
-    // EntFireByHandle(clientcommand, "Command", "disconnect #Valve_Reject_Server_Full", 0, p, p)
-}
-// Assign every new targetname to the player after blue and red are used
-if (PlayerID >= 3) {
-    p.__KeyValueFromString("targetname", "player" + PlayerID)
-}
-
-// Set a random color for clients that join after 16 have joined
-if (PlayerID != 1) {
-    R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
-}
-
-// Set preset colors for up to 16 clients
-switch (PlayerID) {
-    case 1 : R <- 255; G <- 255; B <- 255; break;
-    case 2 : R <- 180, G <- 255, B <- 180; break;
-    case 3 : R <- 120, G <- 140, B <- 255; break;
-    case 4 : R <- 255, G <- 170, B <- 120; break;
-    case 5 : R <- 255, G <- 100, B <- 100; break;
-    case 6 : R <- 255, G <- 180, B <- 255; break;
-    case 7 : R <- 255, G <- 255, B <- 180; break;
-    case 8 : R <-   0, G <- 255, B <- 240; break;
-    case 9 : R <-  75, G <-  75, B <-  75; break;
-    case 10: R <- 100, G <-  80, B <-   0; break;
-    case 11: R <-   0, G <-  80, B <- 100; break;
-    case 12: R <- 120, G <- 155, B <-  25; break;
-    case 13: R <-   0, G <-   0, B <- 100; break;
-    case 14: R <-  80, G <-   0, B <-   0; break;
-    case 15: R <-   0, G <-  75, B <-   0; break;
-    case 16: R <-   0, G <-  75, B <-  75; break;
-}
-
-// Set color of player's in-game model
-script_scope.Colored <- true
-EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
-
-// Run general map code after a player loads into the game
-if (PlayerID == 1) {
-    PostMapLoad()
-}
-
-// If the player is the first player to join, Fix OrangeOldPlayerPos
-if (p.GetTeam() == 2) {
-    if (OrangeCacheFailed==true) {
-        OrangeOldPlayerPos <- p.GetOrigin()
-        OrangeCacheFailed <- false
+    // Say join message on HUD
+    if (PluginLoaded==true) {
+        JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
+    } else {
+        JoinMessage <- "Player " + PlayerID + " joined the game"
     }
-}
+    // Set join message to player name
+    JoinMessage = JoinMessage.tostring()
+    joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
+    EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+    if (PlayerID >= 2) {
+        onscreendisplay.__KeyValueFromString("y", "0.075")
+        // EntFireByHandle(clientcommand, "Command", "disconnect #Valve_Reject_Server_Full", 0, p, p)
+    }
+    // Assign every new targetname to the player after blue and red are used
+    if (PlayerID >= 3) {
+        p.__KeyValueFromString("targetname", "player" + PlayerID)
+    }
 
-// Print the players' team
-printl("Player: " + PlayerID + " is on team " + p.GetTeam())
+    // Set a random color for clients that join after 16 have joined
+    if (PlayerID != 1) {
+        R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
+    }
 
-return
+    // Set preset colors for up to 16 clients
+    switch (PlayerID) {
+        case 1 : R <- 255; G <- 255; B <- 255; break;
+        case 2 : R <- 180, G <- 255, B <- 180; break;
+        case 3 : R <- 120, G <- 140, B <- 255; break;
+        case 4 : R <- 255, G <- 170, B <- 120; break;
+        case 5 : R <- 255, G <- 100, B <- 100; break;
+        case 6 : R <- 255, G <- 180, B <- 255; break;
+        case 7 : R <- 255, G <- 255, B <- 180; break;
+        case 8 : R <-   0, G <- 255, B <- 240; break;
+        case 9 : R <-  75, G <-  75, B <-  75; break;
+        case 10: R <- 100, G <-  80, B <-   0; break;
+        case 11: R <-   0, G <-  80, B <- 100; break;
+        case 12: R <- 120, G <- 155, B <-  25; break;
+        case 13: R <-   0, G <-   0, B <- 100; break;
+        case 14: R <-  80, G <-   0, B <-   0; break;
+        case 15: R <-   0, G <-  75, B <-   0; break;
+        case 16: R <-   0, G <-  75, B <-  75; break;
+    }
+
+    // Set color of player's in-game model
+    script_scope.Colored <- true
+    EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
+
+    // Run general map code after a player loads into the game
+    if (PlayerID == 1) {
+        PostMapLoad()
+    }
+
+    // If the player is the first player to join, Fix OrangeOldPlayerPos
+    if (p.GetTeam() == 2) {
+        if (OrangeCacheFailed==true) {
+            OrangeOldPlayerPos <- p.GetOrigin()
+            OrangeCacheFailed <- false
+        }
+    }
+
+    // Print the players' team
+    printl("Player: " + PlayerID + " is on team " + p.GetTeam())
+
+    return
 }
 
 //////////////////////
@@ -761,6 +763,10 @@ function GeneralOneTime() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Run init
+Entities.First().ConnectOutput("OnUser1", "init")
+DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
+
 // █▀▄▀█ ▄▀█ █▀█   █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
 // █░▀░█ █▀█ █▀▀   ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
 
@@ -781,7 +787,3 @@ try {
 
 // █▀ ▀█▀ ▄▀█ █▀█ ▀█▀   ▀█▀ █░█ █▀▀   █▀▄▀█ █▀█ █▀▄ █
 // ▄█ ░█░ █▀█ █▀▄ ░█░   ░█░ █▀█ ██▄   █░▀░█ █▄█ █▄▀ ▄
-
-// Run init
-Entities.First().ConnectOutput("OnUser1", "init")
-DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
