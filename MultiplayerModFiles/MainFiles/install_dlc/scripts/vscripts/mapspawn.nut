@@ -30,7 +30,7 @@ DedicatedServer <- false // Set to true if you want to run the server as a dedic
 //-----------------------------------
 RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
-TickSpeed <- 0.2 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01 TO 0.5) (lower numbers can cause lag on slow computers/connections)
+TickSpeed <- 0 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
 
 
@@ -43,9 +43,9 @@ TickSpeed <- 0.2 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0.01
 // █▀ █▀▀ ▀█▀ █░█ █▀█   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 // ▄█ ██▄ ░█░ █▄█ █▀▀   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
+StartDevModeCheck <- false
 PreviousTimeDeath <- 0
 HasRanGeneralOneTime <- true
-tick <- 0
 BundgeeHookID <- "none"
 BundgeeHookMessage <- "none"
 OrangeCacheFailed <- false
@@ -160,11 +160,7 @@ MPMCoopCreditNames <- [
 
 function init() {
 
-    // Run singleplayer code
-    if (GetMapName().slice(0, 7) != "mp_coop") {
-        IsSingleplayerMap <- true
-        MapSupport(true, false, false, false, false, false, false)
-    }
+    MapSupport(true, false, false, false, false, false, false)
 
     // Create an entity to display player color at the bottom left of every clients' screen
     colordisplay <- Entities.CreateByClassname("game_text")
@@ -353,20 +349,6 @@ function FindByIndex(id)  {
     }
 }
 
-//-----------------------------------
-// Multiplayer support code
-//-----------------------------------
-
-// Set GBIsMultiplayer if game is multiplayer
-try {
-    if (::IsMultiplayer()) {
-        GBIsMultiplayer <- 1
-    }
-} catch(exception) {
-    printl("NOT PLAYING IN MULTIPLAYER!!! (disconnecting)")
-    SendToConsole("disconnect You cannot play singleplayer with the multiplayer mod loaded please restart your game")
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -378,10 +360,7 @@ try {
 
 function loop() {
 
-    //Count Ticks
-    tick <- tick + 1
-
-    // Run player join code when a player joins
+    //## Run Player Join Code When A Player Joins ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.ValidateScriptScope()) {
@@ -394,17 +373,32 @@ function loop() {
         }
     }
 
-    CreatePropsForLevel(false, false, true) // Create the gmod generated props in the level
-
-    // Cache original spawn position
+    //## Cache Original Spawn Position ##//
     if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
         // OldPlayerPos = the blues inital spawn position
-        OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-        OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
+        try {
+            OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+            OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
+        } catch (exception) {
+            try {
+                OldPlayerPos <- Entities.FindByName(null, "info_coop_spawn").GetOrigin()
+                OldPlayerAngles <- Entities.FindByName(null, "info_coop_spawn").GetAngles()
+            } catch (exception) {
+                    try {
+                        OldPlayerPos <- Entities.FindByName(null, "info_player_start").GetOrigin()
+                        OldPlayerAngles <- Entities.FindByName(null, "info_player_start").GetAngles()
+                    } catch(exception) {
+                        OldPlayerPos <- Vector(0, 0, 0)
+                        OldPlayerAngles <- Vector(0, 0, 0)
+                        printl("ERROR : could not cache player pos (catostrophic)")
+                        cacheoriginalplayerposition <- 1
+                    }
+                }
+            }
         cacheoriginalplayerposition <- 1
     }
 
-    // Detect death
+    //## Detect Death ##//
     local progress = true
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
@@ -423,7 +417,7 @@ function loop() {
         }
     }
 
-    // Display waiting for players until player exits spawn zone
+    //## Make A Hook For When All Players Join The Game ##//
     try {
         if (HasRanGeneralOneTime == true) {
             if (Entities.FindByName(null, "HasSpawnedMPMod")) {
@@ -443,7 +437,7 @@ function loop() {
         }
     } catch(exception) {}
 
-    // Delete all cached models
+    //## Delete All Cached Models ##//
     if (DoneCacheing==true) {
         // If model has cached successfully delete it from the level
         foreach (index, CustomGameModel in CachedModels)  {
@@ -467,26 +461,27 @@ function loop() {
         }
     }
 
-    // Disconnect player if trying to play singleplayer
-    if (GBIsMultiplayer==0) {
-        SendToConsole("disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please restart the game from Steam\"")
-    }
 
-    // Singleplayer loop
-    if (GetMapName().slice(0, 7) != "mp_coop") {
-        MapSupport(false, true, false, false, false, false, false)
-    }
+    //## MapSupport loop ##//
+    MapSupport(false, true, false, false, false, false, false)
 
+
+    //## Run All Custom Generated / Prop Related GMod Code ##//
+    CreatePropsForLevel(false, false, true)
+
+
+    //## Dev Mode Loop ##//
     if (DevMode==true) {}
 
-    /////////////////////////
-    // RUN ON EVERY SECOND //
-    /////////////////////////
+
+    ///////////////////////
+    // RUNS EVERY SECOND //
+    ///////////////////////
 
     if (Time() >= PreviousTime1Sec + 1) {
     PreviousTime1Sec <- Time()
 
-    // Detect respawn
+    //## Detect Respawn ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.GetHealth() >= 1) {
@@ -500,16 +495,25 @@ function loop() {
         }
     }
 
-    // Remove Player Collision
+    //## Remove Player Collision ##//
     EntFire("player", "addoutput", "CollisionGroup 2")
     }
 
-    // Change Dev Mode
-    if (GetDeveloperLevel() == 0) {
+    //## Change Dev Mode ##//
+    if (GetDeveloperLevel() == 0 & StartDevModeCheck == true) {
         DevMode <- false
     } else {
         DevMode <- true
     }
+
+    //## If Not In Multiplayer Then Disconnect ##//
+    try {
+        if (Entities.FindByClassname(null, "player").GetName() == "") {
+            printl("NOT PLAYING IN MULTIPLAYER!!! (disconnecting)")
+            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "FORCEDISCONNECTMPMOD")
+            EntFire("FORCEDISCONNECTMPMOD", "command", "disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please close the game and start it from Steam\"", 1, null)
+        }
+    } catch (exception) { }
 }
 
 //---------------------------------------------------------------//
@@ -533,14 +537,14 @@ function OnPlayerJoin(p, script_scope) {
     PlayerID <- p.GetRootMoveParent()
     PlayerID <- PlayerID.entindex()
 
-    // // Set viewmodel targetnames so we can tell them apart
-    // local ent = null
-    // while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
-    //     EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
-    //     printl("Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
-    //     // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
-    //     // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
-    // }
+    // Set viewmodel targetnames so we can tell them apart
+    local ent = null
+    while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
+        EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
+        printl("Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
+        // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
+        // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
+    }
 
     // Set cvars on joining players' client
     SendToConsole("sv_timeout 3")
@@ -563,7 +567,6 @@ function OnPlayerJoin(p, script_scope) {
     EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
     if (PlayerID >= 2) {
         onscreendisplay.__KeyValueFromString("y", "0.075")
-        // EntFireByHandle(clientcommand, "Command", "disconnect #Valve_Reject_Server_Full", 0, p, p)
     }
     // Assign every new targetname to the player after blue and red are used
     if (PlayerID >= 3) {
@@ -650,6 +653,7 @@ function PostMapLoad() {
     SendToConsole("max_filesize 0")
     if (DevMode==true) {
         SendToConsole("developer 1")
+        StartDevModeCheck <- true
     }
 }
 
