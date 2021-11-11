@@ -763,10 +763,6 @@ function GeneralOneTime() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Run init
-Entities.First().ConnectOutput("OnUser1", "init")
-DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
-
 // █▀▄▀█ ▄▀█ █▀█   █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
 // █░▀░█ █▀█ █▀▀   ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
 
@@ -775,15 +771,17 @@ local MapName = FindAndReplace(GetMapName().tostring(), "maps/", "")
 MapName = FindAndReplace(MapName.tostring(), ".bsp", "")
 
 try {
-    IncludeScript("mapsupport/rootfunctions.nut")
+    IncludeScript("mapsupport/#rootfunctions.nut")
+    IncludeScript("mapsupport/#propcreation.nut")
     IncludeScript("mapsupport/" + MapName.tostring() + ".nut")
 } catch (error) {
     print("No map support for " + MapName.tostring())
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
 }
 
-
-
-
 // █▀ ▀█▀ ▄▀█ █▀█ ▀█▀   ▀█▀ █░█ █▀▀   █▀▄▀█ █▀█ █▀▄ █
 // ▄█ ░█░ █▀█ █▀▄ ░█░   ░█░ █▀█ ██▄   █░▀░█ █▄█ █▄▀ ▄
+
+// Run init
+Entities.First().ConnectOutput("OnUser1", "init")
+DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
