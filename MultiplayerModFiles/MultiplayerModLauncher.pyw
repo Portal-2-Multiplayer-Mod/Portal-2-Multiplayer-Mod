@@ -46,7 +46,7 @@ configdefaults = [
     "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
     "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
     "",
-    "cfgvariant = 5 # DO NOT CHANGE",
+    "cfgvariant = 6 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
     "",
     "# DISCLAIMER : I recommend you edit this through the gui as this",
     "#              config file has some unstable / exparamental that",
@@ -61,7 +61,7 @@ configdefaults = [
     "#-----------------------------------",
     "RandomTurretModels = false # Set to true if you want to randomize the turret models (INDEV)",
     "#-----------------------------------",
-    "TickSpeed = 0.1 # Set to the tick speed of the server (DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING)(UNSTABLE - ONLY DO 0.02 TO 0.5) (lower numbers can cause lag on slow computers/connections)",
+    "TickSpeed = 0.1 # Set to the tick speed of the server (DO NOT TOUCH UNLESS YOU KNOW WHAT YOUR DOING)(UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)",
     "#-----------------------------------",
 ]
 
