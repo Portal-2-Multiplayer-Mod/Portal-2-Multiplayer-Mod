@@ -30,7 +30,7 @@ DedicatedServer <- false // Set to true if you want to run the server as a dedic
 //-----------------------------------
 RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
-TickSpeed <- 0 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
+TickSpeed <- 0.2 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
 
 
@@ -43,6 +43,7 @@ TickSpeed <- 0 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0
 // █▀ █▀▀ ▀█▀ █░█ █▀█   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 // ▄█ ██▄ ░█░ █▄█ █▀▀   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
+DevModeConfig <- DevMode
 StartDevModeCheck <- false
 PreviousTimeDeath <- 0
 HasRanGeneralOneTime <- true
@@ -470,8 +471,17 @@ function loop() {
     CreatePropsForLevel(false, false, true)
 
 
-    //## Dev Mode Loop ##//
-    if (DevMode==true) {}
+    //## Config Dev Mode Loop ##//
+    if (DevModeConfig==true) {
+        // Change DevMode varible based on convar "developer"
+        if (GetDeveloperLevel() == 0) {
+            if (StartDevModeCheck == true) {
+                DevMode <- false
+            }
+        } else {
+            DevMode <- true
+        }
+    }
 
 
     ///////////////////////
@@ -497,13 +507,6 @@ function loop() {
 
     //## Remove Player Collision ##//
     EntFire("player", "addoutput", "CollisionGroup 2")
-    }
-
-    //## Change Dev Mode ##//
-    if (GetDeveloperLevel() == 0 & StartDevModeCheck == true) {
-        DevMode <- false
-    } else {
-        DevMode <- true
     }
 
     //## If Not In Multiplayer Then Disconnect ##//
