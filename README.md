@@ -14,8 +14,9 @@
 # Planned features
 1. Full singleplayer campaign support (Coming soon!)
 2. Nametags (Coming soon!)
-3. Sixense support (Coming eventually)
-4. Player specific colored portals (Coming eventually)
+3. Dedicated servers (Coming eventually)
+4. Sixense support (Coming eventually)
+5. Player specific colored portals (Coming eventually)
 
 # Installation & use
 
