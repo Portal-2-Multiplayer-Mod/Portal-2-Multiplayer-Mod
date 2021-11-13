@@ -736,7 +736,7 @@ function GeneralOneTime() {
     }
     radius <- null
 
-    // attempt to fix some general map issues
+    // Attempt to fix some general map issues
         local DoorEntities = [
             "airlock_1-door1-airlock_entry_door_close_rl",
             "airlock_2-door1-airlock_entry_door_close_rl",
@@ -773,7 +773,7 @@ function GeneralOneTime() {
 // █▀▄▀█ ▄▀█ █▀█   █▀ █░█ █▀█ █▀█ █▀█ █▀█ ▀█▀
 // █░▀░█ █▀█ █▀▀   ▄█ █▄█ █▀▀ █▀▀ █▄█ █▀▄ ░█░
 
-//## Import Map Support Code ##//
+//## Import map support code ##//
 local MapName = FindAndReplace(GetMapName().tostring(), "maps/", "")
 MapName = FindAndReplace(MapName.tostring(), ".bsp", "")
 
