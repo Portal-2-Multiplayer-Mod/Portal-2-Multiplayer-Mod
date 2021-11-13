@@ -6,28 +6,26 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════════╝╚═════╝ ╚══════╝ ╚════╝  ╚════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (GetMapName()=="sp_a2_turret_blocker") {
-        if (MSInstantRun==true) {
-            // Make elevator start moving on level load
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-            // Destroy objects
-            Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-            Entities.FindByName(null, "blast_door").Destroy()
-            Entities.FindByClassnameNearest("trigger_once", Vector(64, 1704, 64), 1024).Destroy()
-            Entities.FindByClassnameNearest("trigger_once", Vector(64, 1776, 40), 1024).Destroy()
-        }
+    if (MSInstantRun==true) {
+        // Make elevator start moving on level load
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+        // Destroy objects
+        Entities.FindByName(null, "door_0-close_door_rl").Destroy()
+        Entities.FindByName(null, "blast_door").Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(64, 1704, 64), 1024).Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(64, 1776, 40), 1024).Destroy()
+    }
 
-        if (MSPostPlayerSpawn==true) {
-            NewApertureStartElevatorFixes()
-        }
+    if (MSPostPlayerSpawn==true) {
+        NewApertureStartElevatorFixes()
+    }
 
-            if (MSLoop==true) {
-            // Elevator changelevel
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -265), 50)) {
-                SendToConsole("commentary 1")
-                SendToConsole("changelevel sp_a2_laser_vs_turret")
-            }
+        if (MSLoop==true) {
+        // Elevator changelevel
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -265), 50)) {
+            SendToConsole("commentary 1")
+            SendToConsole("changelevel sp_a2_laser_vs_turret")
         }
     }
 }

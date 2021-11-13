@@ -6,19 +6,17 @@
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═════╝ ╚═════════╝╚══════╝╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝  ╚═════╝ ╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (GetMapName()=="mp_coop_2paints_1bridge") {
-        if (MSInstantRun==true) {
+    if (MSInstantRun==true) {
 
-        }
+    }
 
-        if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn==true) {
 
-        }
+    }
 
-        if (MSLoop==true) {
-            EntFireByHandle(Entities.FindByName(null, "bridge_2"), "enable", "", 0, null, null)
-            EntFireByHandle(Entities.FindByName(null, "bridge_1"), "enable", "", 0, null, null)
-            EntFireByHandle(Entities.FindByName(null, "paint_sprayer_blue_1"), "start", "", 0, null, null)
-        }
+    if (MSLoop==true) {
+        EntFireByHandle(Entities.FindByName(null, "bridge_2"), "enable", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "bridge_1"), "enable", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "paint_sprayer_blue_1"), "start", "", 0, null, null)
     }
 }

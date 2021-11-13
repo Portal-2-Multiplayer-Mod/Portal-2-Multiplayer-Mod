@@ -361,7 +361,7 @@ function FindByIndex(id)  {
 
 function loop() {
 
-    //## Run Player Join Code When A Player Joins ##//
+    //## Run player join code when a player joins ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.ValidateScriptScope()) {
@@ -374,7 +374,7 @@ function loop() {
         }
     }
 
-    //## Cache Original Spawn Position ##//
+    //## Cache original spawn position ##//
     if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
         // OldPlayerPos = the blues inital spawn position
         try {
@@ -399,7 +399,7 @@ function loop() {
         cacheoriginalplayerposition <- 1
     }
 
-    //## Detect Death ##//
+    //## Detect death ##//
     local progress = true
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
@@ -418,7 +418,7 @@ function loop() {
         }
     }
 
-    //## Make A Hook For When All Players Join The Game ##//
+    //## Make a hook for when all players join the game ##//
     try {
         if (HasRanGeneralOneTime == true) {
             if (Entities.FindByName(null, "HasSpawnedMPMod")) {
@@ -438,7 +438,7 @@ function loop() {
         }
     } catch(exception) {}
 
-    //## Delete All Cached Models ##//
+    //## Delete all cached models ##//
     if (DoneCacheing==true) {
         // If model has cached successfully delete it from the level
         foreach (index, CustomGameModel in CachedModels)  {
@@ -467,11 +467,11 @@ function loop() {
     MapSupport(false, true, false, false, false, false, false)
 
 
-    //## Run All Custom Generated / Prop Related GMod Code ##//
+    //## Run all custom generated props / prop related Garry's Mod code ##//
     CreatePropsForLevel(false, false, true)
 
 
-    //## Config Dev Mode Loop ##//
+    //## Config developer mode loop ##//
     if (DevModeConfig==true) {
         // Change DevMode varible based on convar "developer"
         if (GetDeveloperLevel() == 0) {
@@ -491,7 +491,7 @@ function loop() {
     if (Time() >= PreviousTime1Sec + 1) {
     PreviousTime1Sec <- Time()
 
-    //## Detect Respawn ##//
+    //## Detect respawn ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.GetHealth() >= 1) {
@@ -505,11 +505,11 @@ function loop() {
         }
     }
 
-    //## Remove Player Collision ##//
+    //## Make players' collision elastic ##//
     EntFire("player", "addoutput", "CollisionGroup 2")
     }
 
-    //## If Not In Multiplayer Then Disconnect ##//
+    //## If not in multiplayer then disconnect ##//
     try {
         if (Entities.FindByClassname(null, "player").GetName() == "") {
             printl("NOT PLAYING IN MULTIPLAYER!!! (disconnecting)")
