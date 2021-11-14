@@ -629,7 +629,7 @@ function OnPlayerJoin(p, script_scope) {
 //////////////////////
 
 function OnPlayerDeath(player) {
-    printl("Player Death")
+    printl("Player death")
     MapSupport(false, false, false, false, false, player, false)
 }
 
@@ -638,7 +638,7 @@ function OnPlayerDeath(player) {
 ////////////////////////
 
 function OnPlayerRespawn(player) {
-    printl("Player Respawn")
+    printl("Player respawn")
     MapSupport(false, false, false, false, false, false, player)
 }
 
