@@ -6,17 +6,15 @@
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (GetMapName()=="mp_coop_tripleaxis") {
-        if (MSInstantRun==true) {
-            Entities.FindByName(null, "outro_math_counter").Destroy()
-        }
+    if (MSInstantRun==true) {
+        Entities.FindByName(null, "outro_math_counter").Destroy()
+    }
 
-        if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn==true) {
 
-        }
+    }
 
-        if (MSLoop==true) {
+    if (MSLoop==true) {
 
-        }
     }
 }
