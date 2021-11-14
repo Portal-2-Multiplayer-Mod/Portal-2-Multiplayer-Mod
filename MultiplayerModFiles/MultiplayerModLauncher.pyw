@@ -695,26 +695,4 @@ def Launch():
 
 
 
-# GUI
-import tkinter as tk
-
-# Create a window
-root = tk.Tk()
-root.title("Multiplayer Mod Launcher")
-root.geometry("400x300")
-
-# Make a button
-button = tk.Button(root, text="Launch Multiplayer Mod", command=Launch)
-button.pack()
-
-# make the background red
-root.configure(background='red')
-
-# make it 1280 x 720
-root.geometry("1280x720")
-
-# make it none resizable
-root.resizable(width=False, height=False)
-
-# run the window
-root.mainloop()
+Launch()
