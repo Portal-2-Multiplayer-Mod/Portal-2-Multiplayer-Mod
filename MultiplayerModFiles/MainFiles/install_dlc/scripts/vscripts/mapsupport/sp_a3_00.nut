@@ -1,12 +1,38 @@
-// ██████╗██████╗             █████╗ ██████╗             █████╗  █████╗ 
+// ██████╗██████╗             █████╗ ██████╗             █████╗  █████╗
 //██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗██╔══██╗
 //╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║██║  ██║
 // ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║██║  ██║
 //██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝╚█████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝  ╚════╝ 
+//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝  ╚════╝
+
+// should fix fog sometime
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+                // Create Env Globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+
         Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A3_00ServerCommand")
         printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
         Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
@@ -27,14 +53,28 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "shaft_section_1"), "StartForward", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "lift_mover"), "Open", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "ambient_sp_a3_01_b1"), "PlaySound", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "falling_whoosh"), "stopsound", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "falling_whoosh"), "PlaySound", "", 0.1, null, null)
         EntFireByHandle(Entities.FindByName(null, "potatos_relay"), "Trigger", "", 3, null, null)
         EntFireByHandle(Entities.FindByName(null, "potatos_train"), "StartForward", "", 4, null, null)
+
+        EntFireByHandle(env_global01, "turnoff", "", 70, null, null)
+        EntFireByHandle(env_global02, "turnoff", "", 70, null, null)
+        EntFireByHandle(env_global03, "turnoff", "", 70, null, null)
+        EntFireByHandle(env_global04, "turnoff", "", 70, null, null)
 
         EntFire("Sp_A3_00ServerCommand", "command", "echo Changing level...", 76, null)
         EntFire("Sp_A3_00ServerCommand", "command", "changelevel sp_a3_01", 76, null)
     }
 
     if (MSLoop==true) {
+        // Get all players
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 10))
+            p.SetVelocity(Vector(0, 0, 0))
+            EntFireByHandle(p, "addoutput", "movetype 5", 0, null, null)
+        }
         // Make POTATOS tank point at nearest player
         try {
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "potatos_tank").GetOrigin(), 10000)

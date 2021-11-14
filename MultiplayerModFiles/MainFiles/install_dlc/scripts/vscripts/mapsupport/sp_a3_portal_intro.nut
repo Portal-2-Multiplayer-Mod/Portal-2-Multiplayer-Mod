@@ -1,12 +1,13 @@
-// ██████╗██████╗             █████╗ ██████╗            ██████╗  █████╗ ██████╗ ████████╗ █████╗ ██╗                ██╗███╗  ██╗████████╗██████╗  █████╗ 
+// ██████╗██████╗             █████╗ ██████╗            ██████╗  █████╗ ██████╗ ████████╗ █████╗ ██╗                ██╗███╗  ██╗████████╗██████╗  █████╗
 //██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║                ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗
 //╚█████╗ ██████╔╝           ███████║ █████╔╝           ██████╔╝██║  ██║██████╔╝   ██║   ███████║██║                ██║██╔██╗██║   ██║   ██████╔╝██║  ██║
 // ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██╔═══╝ ██║  ██║██╔══██╗   ██║   ██╔══██║██║                ██║██║╚████║   ██║   ██╔══██╗██║  ██║
 //██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗██║     ╚█████╔╝██║  ██║   ██║   ██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚═╝      ╚════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ 
+//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚═╝      ╚════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        OnlyOnceSp_A3_Portal_Intro <- false
         Entities.FindByName(null, "1970s_door1door_lower").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "1970s_door1door_upper").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "1970s_door_1_areaportal").__KeyValueFromString("targetname", "moja3")
@@ -40,6 +41,49 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+        // Make the elevator teleport the players in
+        if (OnlyOnceSp_A3_Portal_Intro==false) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(256, -992, -1104), 100)) {
+                OnlyOnceSp_A3_Portal_Intro <- true
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(256, -992, -1254))
+                    p.SetAngles(0, 90, 0)
+                    p.SetVelocity(Vector(0, 0, 0))
+                }
+
+                EntFire("entrance_lift_train", "kill", "", 10, null)
+            }
+        }
+
+        if (!Entities.FindByName(null, "entrance_lift_train")) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (p.GetOrigin().z <= -1400) {
+                    p.SetOrigin(Vector(406, -561, 224))
+                    p.SetAngles(0, 90, 0)
+                    p.SetVelocity(Vector(0, 0, 0))
+                }
+            }
+        }
+
+        // Goo Damage Code
+        try {
+        if (GooHurtTimerPred) { printl()}
+        } catch (exception) {
+            GooHurtTimerPred <- 0
+        }
+
+        if (GooHurtTimerPred<=Time()) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (p.GetOrigin().z<=-3000) {
+                    EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
+                }
+            }
+            GooHurtTimerPred = Time()+1
+        }
         // Make our own changelevel trigger
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(3839.99, 348.8, 5674.67), 50)) {

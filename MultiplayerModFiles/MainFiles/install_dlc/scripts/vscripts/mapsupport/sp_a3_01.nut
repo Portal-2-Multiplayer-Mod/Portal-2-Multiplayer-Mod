@@ -1,21 +1,25 @@
-// ██████╗██████╗             █████╗ ██████╗             █████╗   ███╗  
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗ ████║  
-//╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║██╔██║  
-// ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║╚═╝██║  
+// ██████╗██████╗             █████╗ ██████╗             █████╗   ███╗
+//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗ ████║
+//╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║██╔██║
+// ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║╚═╝██║
 //██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝███████╗
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        HasStartedSp_A3_01 <- false
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
         Entities.FindByName(null, "transition_trigger").Destroy()
+        Entities.FindByName(null, "AutoInstance1-circuit_breaker_lever").__KeyValueFromString("solid", "0")
         Entities.FindByClassnameNearest("logic_auto", Vector(-10304, 2544, 112), 20).Destroy()
+        Entities.FindByClassnameNearest("trigger_multiple", Vector(-640, -1520, 456), 20).Destroy()
         OnlyOnceSp_A3_01 <- true
     }
 
     if (MSPostPlayerSpawn==true) {
+        HasStartedSp_A3_01 <- true
         EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay8", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "knockout_start"), "Trigger", "", 1, null, null)
 
@@ -30,15 +34,27 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A3_01Viewcontrol", "enable", "", 0, null)
         EntFire("Sp_A3_01ViewcontrolTele", "disable", "", 13, null)
         EntFire("Sp_A3_01Viewcontrol", "addoutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
-        EntFire("Sp_A3_01ViewcontrolTele", "addoutput", "targetname Sp_A3_01ViewcontrolDone", 13.30, null)
+        EntFire("Sp_A3_01ViewcontrolTele", "addoutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)
     }
 
     if (MSLoop==true) {
+        local p = Entities.FindByClassnameWithin(null, "player", Vector(-672.000000, -1871.999878, 51.000008), 10)
+        try {
+            if (p.GetOrigin().z >= 45) {
+                p.SetOrigin(Vector(-720, -1852, 10))
+                p.SetAngles(0, 90, 0)
+            }
+        } catch(exception) {}
+
+        if (HasStartedSp_A3_01 == false) {
+            EntFireByHandle(Entities.FindByName(null, "knockout-fadeout"), "fade", "", 0, null, null)
+        }
 
         if (Entities.FindByName(null, "Sp_A3_01ViewcontrolTele")) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                p.SetOrigin(Vector(-162, -1966, 20))
+                p.SetOrigin(Vector(-162, -1966, 0))
+                p.SetVelocity(Vector(0, 0, 0))
             }
         }
 
@@ -48,9 +64,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(-720, -1852, 10))
                     p.SetAngles(0, 90, 0)
-                    Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
-                    Entities.FindByName(null, "knockout-portalgun").Destroy()
                 }
+                Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
+                Entities.FindByName(null, "knockout-portalgun").Destroy()
                 OnlyOnceSp_A3_01 <- false
             }
         }
