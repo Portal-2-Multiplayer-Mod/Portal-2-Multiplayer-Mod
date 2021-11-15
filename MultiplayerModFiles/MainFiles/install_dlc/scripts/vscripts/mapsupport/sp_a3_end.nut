@@ -1,9 +1,9 @@
-// ██████╗██████╗             █████╗ ██████╗            ███████╗███╗  ██╗██████╗ 
+// ██████╗██████╗             █████╗ ██████╗            ███████╗███╗  ██╗██████╗
 //██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔════╝████╗ ██║██╔══██╗
 //╚█████╗ ██████╔╝           ███████║ █████╔╝           █████╗  ██╔██╗██║██║  ██║
 // ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██╔══╝  ██║╚████║██║  ██║
 //██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗███████╗██║ ╚███║██████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚══════╝╚═╝  ╚══╝╚═════╝ 
+//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚══════╝╚═╝  ╚══╝╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
@@ -20,13 +20,30 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja4:Start", 1, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja5:Start", 1, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-552, 256, -2200), 20), "addoutput", "OnTrigger moja6:Start", 1, null, null)
+        EntFire("big_door_open_relay", "addoutput", "OnTrigger big_door_save:kill::57", 0, 0)
+        EntFire("pumproom_lift_tracktrain", "spawnflags", "3", 0, null)
         // Fix func_portal_detectors
         local ent = null
         while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
             ent.__KeyValueFromString("CheckAllIDs", "1")
         }
+        // Change name of a thing (look moxxie a thing) so we can yell at him
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        Entities.FindByName(null, "achievement_all_gels_entity").__KeyValueFromString("targetname", "look_moxxie_a_thing")
         // Destroy objects
         Entities.FindByName(null, "fade_to_death").Destroy()
+        OnlyOnceSp_A3_End <- false
+        OnlyOnceSp_A3_End_1 <- false
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -34,6 +51,23 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSOnPlayerJoin==true) {
+        // fix collision on the lift
+        local sp_a3_end_custom_prop_44 = CreateProp("prop_dynamic", Vector(-1537.98828125, 320.0397644043, 2935.9768066406), "models/props_underground/walkway_end_a.mdl", 0)
+        sp_a3_end_custom_prop_44.SetAngles(-4.3527151660783e-07, 89.999946594238, 0)
+        sp_a3_end_custom_prop_44.__KeyValueFromString("solid", "6")
+        sp_a3_end_custom_prop_44.__KeyValueFromString("targetname", "genericcustomprop")
+        EntFireByHandle(sp_a3_end_custom_prop_44, "color", "255 0 0 255", 0, null, null)
+        EntFireByHandle(sp_a3_end_custom_prop_44, "setparent", "pumproom_lift_tracktrain", 0.5, null, null)
+        EntFireByHandle(sp_a3_end_custom_prop_44, "disabledraw", "", 0.5, null, null)
+
+        local sp_a3_end_custom_prop_45 = CreateProp("prop_dynamic", Vector(-1458.0981445312, 320.02264404297, 2935.9987792969), "models/props_underground/walkway_128a.mdl", 0)
+        sp_a3_end_custom_prop_45.SetAngles(-1.2119098259655e-11, -89.915504455566, 0)
+        sp_a3_end_custom_prop_45.__KeyValueFromString("solid", "6")
+        sp_a3_end_custom_prop_45.__KeyValueFromString("targetname", "genericcustomprop")
+        EntFireByHandle(sp_a3_end_custom_prop_45, "color", "255 0 0 255", 0, null, null)
+        EntFireByHandle(sp_a3_end_custom_prop_45, "setparent", "pumproom_lift_tracktrain", 0.5, null, null)
+        EntFireByHandle(sp_a3_end_custom_prop_45, "disabledraw", "", 0.5, null, null)
+
         // Find all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -43,6 +77,50 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+
+        if (OnlyOnceSp_A3_End==false) {
+            if (!Entities.FindByName(null, "big_door_save")) {
+                foreach (player in CreateTrigger(-1902.8851318359, 373.5451965332, 810.53570556641, -1751.1909179688, 269.85140991211, 954.68353271484)) {
+                    local p = null
+                    while (p = Entities.FindByClassname(p, "player")) {
+                        p.SetOrigin(Vector(-1833, 317, 870))
+                        p.SetAngles(0, -180, 0)
+                        p.SetVelocity(Vector(0, 0, 0))
+                        EntFire("look_moxxie_a_thing", "kill", "", 25, null)
+                    }
+                    OnlyOnceSp_A3_End <- true
+                }
+            }
+        }
+
+        if (OnlyOnceSp_A3_End_1==false) {
+            if (!Entities.FindByName(null, "look_moxxie_a_thing")) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-1478, 319, 2980))
+                    p.SetAngles(0, 0, 0)
+                    p.SetVelocity(Vector(0, 0, 0))
+                }
+                OnlyOnceSp_A3_End_1 <- true
+            }
+        }
+
+        // Goo Damage Code
+        try {
+        if (GooHurtTimerPred) { printl()}
+        } catch (exception) {
+            GooHurtTimerPred <- 0
+        }
+
+        if (GooHurtTimerPred<=Time()) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (p.GetOrigin().z<=-5100) {
+                    EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
+                }
+            }
+            GooHurtTimerPred = Time()+1
+        }
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1540, -830, 3840), 50)) {

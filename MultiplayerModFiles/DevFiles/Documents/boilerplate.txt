@@ -152,6 +152,7 @@ if (GetMapName() == "MAPNAME") {
 
             EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-32, -1032, 32), 20), "addoutput", "OnTrigger moja2:SetAnimation:vert_door_opening", 0, null, null)
             EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-32, -1032, 32), 20), "addoutput", "OnTrigger moja3:Disable", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-32, -1032, 32), 20), "addoutput", "OnTrigger moja3:Disable::delay:MaxFireTimes-1inf40=40", 0, null, null)
 
 
 
