@@ -1,9 +1,9 @@
-// ██████╗██████╗             █████╗   ██╗██╗           ██╗███╗  ██╗████████╗██████╗  █████╗ 
+// ██████╗██████╗             █████╗   ██╗██╗           ██╗███╗  ██╗████████╗██████╗  █████╗
 //██╔════╝██╔══██╗           ██╔══██╗ ██╔╝██║           ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗
 //╚█████╗ ██████╔╝           ███████║██╔╝ ██║           ██║██╔██╗██║   ██║   ██████╔╝██║  ██║
 // ╚═══██╗██╔═══╝            ██╔══██║███████║           ██║██║╚████║   ██║   ██╔══██╗██║  ██║
 //██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ 
+//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     // Make all box monsters BecomeShortcircuit (Moja)
@@ -22,6 +22,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "room2a_wall_close").Destroy()
         Entities.FindByName(null, "test2_end_trigger").Destroy()
         Entities.FindByName(null, "@exit_door-close_door_rl").Destroy()
+        Entities.FindByName(null, "catwalk_gate1_door_right").Destroy()
+        Entities.FindByName(null, "catwalk_gate1_door_left").Destroy()
+        Entities.FindByName(null, "catwalk_gate2_door_right").Destroy()
+        Entities.FindByName(null, "catwalk_gate2_door_left").Destroy()
+        Entities.FindByName(null, "catwalk_lift_clip").Destroy()
+        Entities.FindByName(null, "catwalk_lift_door").__KeyValueFromString("dmg", "100")
         OnlyOnceSpA4Intro <- true
     }
 
@@ -30,6 +36,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+        // Goo Damage Code
+        try {
+        if (GooHurtTimerPred) { printl()}
+        } catch (exception) {
+            GooHurtTimerPred <- 0
+        }
+
+        if (GooHurtTimerPred<=Time()) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (p.GetOrigin().z<=-150) {
+                    EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
+                }
+            }
+            GooHurtTimerPred = Time()+1
+        }
         // Change ClosedBetaTestingBox Names ;)
         local ent = null
         while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 400)) {
