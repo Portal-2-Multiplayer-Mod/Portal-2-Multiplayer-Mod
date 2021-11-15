@@ -6,7 +6,6 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    // Make all box monsters BecomeShortcircuit (Moja)
     if (MSInstantRun==true) {
         Entities.FindByName(null, "cube_bot_model").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja2")
@@ -28,7 +27,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "catwalk_gate2_door_left").Destroy()
         Entities.FindByName(null, "catwalk_lift_clip").Destroy()
         Entities.FindByName(null, "catwalk_lift_door").__KeyValueFromString("dmg", "100")
+        Entities.FindByName(null, "test_chamber1_platform").__KeyValueFromString("dmg", "100")
+        EntFire("catwalk_lift_door", "addoutput", "OnFullyOpen catwalk_lift_door:close::1.25", 0.25, null)
+        EntFire("button_1_pressed", "addoutput", "OnTrigger moja3:BecomeShortcircuit::11.75", 0.25, null)
         OnlyOnceSpA4Intro <- true
+        OnlyOnceSp_A4_Intro_1 <- true
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -36,6 +39,37 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+        if (!Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20)) {
+            if (OnlyOnceSp_A4_Intro_1==true) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(1053, 380, 185))
+                    p.SetAngles(0, -180, 0)
+                    p.SetVelocity(Vector(0, 0, 0))
+                }
+                OnlyOnceSp_A4_Intro_1 <- false
+            }
+        }
+
+        // Change Spawn
+        if (!Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20)) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (p.GetOrigin().z <= 220) {
+                    local canteleport = true
+                    local p2 = null
+                    while (p2 = Entities.FindByClassnameWithin(p2, "player", Vector(1045, 382, 210), 400)) {
+                        if (p2==p) {
+                            canteleport = false
+                        }
+                    }
+                    if (canteleport==true) {
+                        p.SetOrigin(Vector(1056, 384, 512))
+                    }
+                }
+            }
+        }
+
         // Goo Damage Code
         try {
         if (GooHurtTimerPred) { printl()}
