@@ -25,6 +25,11 @@ function NewApertureStartElevatorFixes() {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1_body"), "setanimation", "dooropen", 0, null, null)
     } catch(exception) {}
 
+    // kill people block exit elevator
+    try {
+        Entities.FindByName(null, "departure_elevator-elevator_1").__KeyValueFromString("dmg", "100")
+    } catch(exception) {}
+
     // Reposition and resize fan soundscape
     try {
         local vec = Entities.FindByName(null, "arrival_elevator-elevator_1").GetOrigin()

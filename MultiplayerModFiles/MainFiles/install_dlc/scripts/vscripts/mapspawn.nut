@@ -30,9 +30,10 @@ DedicatedServer <- false // Set to true if you want to run the server as a dedic
 //-----------------------------------
 RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
-TickSpeed <- 0.2 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
+TickSpeed <- 0.01 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
-
+RandomPortalSize <- false // Set to true if you want to randomize the portal size
+//-----------------------------------
 
 //  ██████  ██████  ██████  ███████
 // ██      ██    ██ ██   ██ ██
@@ -43,6 +44,10 @@ TickSpeed <- 0.2 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO
 // █▀ █▀▀ ▀█▀ █░█ █▀█   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 // ▄█ ██▄ ░█░ █▄█ █▀▀   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
+if (RandomPortalSize==true) {
+    randomportalsize <- 34
+    randomportalsizeh <- 34
+}
 DevModeConfig <- DevMode
 StartDevModeCheck <- false
 PreviousTimeDeath <- 0
@@ -360,7 +365,6 @@ function FindByIndex(id)  {
 //------------------------------------------------------//
 
 function loop() {
-
     //## Run player join code when a player joins ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
@@ -483,13 +487,36 @@ function loop() {
         }
     }
 
-
     ///////////////////////
     // RUNS EVERY SECOND //
     ///////////////////////
 
     if (Time() >= PreviousTime1Sec + 1) {
     PreviousTime1Sec <- Time()
+
+    // Random Portal Sizes
+
+    if (RandomPortalSize == true) {
+        randomportalsize <- RandomInt(1, 100 ).tostring()
+        randomportalsizeh <- RandomInt(1, 100 ).tostring()
+    }
+
+    if (RandomPortalSize == true) {
+        try {
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "prop_portal")) {
+            // printl(ent)
+            // printl(ent.GetOrigin())
+            // printl(ent.GetAngles())
+            // printl("=================")
+            ent.__KeyValueFromString("HalfWidth", randomportalsize)
+            ent.__KeyValueFromString("HalfHeight", randomportalsizeh)
+        }
+        } catch(exception) {
+            // printl("Error: " + exception)
+        }
+        // printl("################################")
+    }
 
     //## Detect respawn ##//
     local p = null
@@ -536,20 +563,39 @@ function loop() {
 //////////////////////////////
 
 function OnPlayerJoin(p, script_scope) {
-    // Get player's index and store it
+
+    //# Get player's index and store it #//
     PlayerID <- p.GetRootMoveParent()
     PlayerID <- PlayerID.entindex()
 
-    // Set viewmodel targetnames so we can tell them apart
+    //# Assign every new targetname to the player after blue and red are used #//
+    if (PlayerID >= 3) {
+        p.__KeyValueFromString("targetname", "player" + PlayerID)
+    }
+
+    //# Set viewmodel targetnames so we can tell them apart #//
     local ent = null
     while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
         EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
-        printl("Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
+        // printl("Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
         // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
         // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
     }
 
-    // Set cvars on joining players' client
+    // If the player is the first player to join, Fix OrangeOldPlayerPos
+    if (p.GetTeam() == 2) {
+        if (OrangeCacheFailed==true) {
+            OrangeOldPlayerPos <- p.GetOrigin()
+            OrangeCacheFailed <- false
+        }
+    }
+
+    // Run general map code after a player loads into the game
+    if (PlayerID == 1) {
+        PostMapLoad()
+    }
+
+    //# Set cvars on joining players' client #//
     SendToConsole("sv_timeout 3")
     SendToConsole("gameinstructor_enable 1")
     EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
@@ -558,7 +604,7 @@ function OnPlayerJoin(p, script_scope) {
     EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
     MapSupport(false, false, false, false, true, false, false)
 
-    // Say join message on HUD
+    //# Say join message on HUD #//
     if (PluginLoaded==true) {
         JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
     } else {
@@ -571,10 +617,8 @@ function OnPlayerJoin(p, script_scope) {
     if (PlayerID >= 2) {
         onscreendisplay.__KeyValueFromString("y", "0.075")
     }
-    // Assign every new targetname to the player after blue and red are used
-    if (PlayerID >= 3) {
-        p.__KeyValueFromString("targetname", "player" + PlayerID)
-    }
+
+    //# Set Player Color #//
 
     // Set a random color for clients that join after 16 have joined
     if (PlayerID != 1) {
@@ -604,24 +648,6 @@ function OnPlayerJoin(p, script_scope) {
     // Set color of player's in-game model
     script_scope.Colored <- true
     EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
-
-    // Run general map code after a player loads into the game
-    if (PlayerID == 1) {
-        PostMapLoad()
-    }
-
-    // If the player is the first player to join, Fix OrangeOldPlayerPos
-    if (p.GetTeam() == 2) {
-        if (OrangeCacheFailed==true) {
-            OrangeOldPlayerPos <- p.GetOrigin()
-            OrangeCacheFailed <- false
-        }
-    }
-
-    // Print the players' team
-    printl("Player: " + PlayerID + " is on team " + p.GetTeam())
-
-    return
 }
 
 //////////////////////
@@ -642,9 +668,9 @@ function OnPlayerRespawn(player) {
     MapSupport(false, false, false, false, false, false, player)
 }
 
-/////////////////////////////////////
-// POST MAP LOADING FUNCTIONS HERE //
-/////////////////////////////////////
+///////////////////////////////////////
+// RUNS AFTER BLUE INITALLY LOADS IN //
+///////////////////////////////////////
 
 function PostMapLoad() {
     MapSupport(false, false, false, true, false, false, false)
@@ -660,12 +686,13 @@ function PostMapLoad() {
     }
 }
 
-/////////////////////////////////////
-// Runs once on first global spawn //
-/////////////////////////////////////
+//////////////////////////////////////
+// RUNS AFTER EVERYONE FIRST SPAWNS //
+//////////////////////////////////////
 
 function GeneralOneTime() {
 
+    // Load the plugin if it's not already loaded
     if (RunPluginLoad==true) {
         printl("Loading plugin... Restarting map")
         // Load plugin
@@ -675,10 +702,13 @@ function GeneralOneTime() {
         LoadPlugin <- false
     }
 
+    // Clear all cached models from our temp cache as they are already cached
     CanClearCache <- true
 
+    // Set a varible to tell the map loaded
     HasSpawned <- true
 
+    // show the chat again
     SendToConsole("hud_saytext_time 12")
 
     // Cache orange players original position
@@ -712,31 +742,33 @@ function GeneralOneTime() {
         printl("Blue dropper not found")
     }
 
-    // Force open the orange player droppers
+    // Force open the red player droppers
+    printl(OrangeOldPlayerPos)
+    printl(OldPlayerPos)
+
+    local radius = 150
+
+    if (OrangeCacheFailed==true) {
+        radius = 350
+    }
+
     try {
-        radius <- 100
-
-        if (OrangeCacheFailed==true) {
-            radius <- 350
-        }
-
         local ent = null
-        while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OrangeOldPlayerPos.x, OrangeOldPlayerPos.y, OrangeOldPlayerPos.z-300), radius)) {
+        while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OrangeOldPlayerPos.x, OrangeOldPlayerPos.y, OldPlayerPos.z-300), radius)) {
             if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl" || ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
                 EntFireByHandle(ent, "setanimation", "open", 0, null, null)
                 if (ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
                     EntFireByHandle(ent, "setanimation", "item_dropper_open", 0, null, null)
                 }
-                EntFireByHandle(ent, "setanimation", "item_dropper_open", 0, null, null)
-                ent.__KeyValueFromString("targetname", "OrangeDropperForcedOpenMPMOD")
+                ent.__KeyValueFromString("targetname", "RedDropperForcedOpenMPMOD")
             }
         }
     } catch(exeption) {
-        printl("Orange dropper not found")
+        printl("Red dropper not found")
     }
-    radius <- null
+    local radius = null
 
-    // Attempt to fix some general map issues
+    //# Attempt to fix some general map issues #//
         local DoorEntities = [
             "airlock_1-door1-airlock_entry_door_close_rl",
             "airlock_2-door1-airlock_entry_door_close_rl",
