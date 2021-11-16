@@ -28,7 +28,7 @@ UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
-RandomTurretModels <- false // Set to true if you want to randomize the turret models (INDEV)
+RandomTurrets <- true // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
 TickSpeed <- 0.01 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
@@ -487,6 +487,151 @@ function loop() {
         }
     }
 
+    // Random turret models
+    if (RandomTurrets == true) {
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "npc_portal_turret_floor")) {
+            local script_scope = ent.GetScriptScope()
+            if (ent.GetTeam() != 69420) {
+                local modelnumber = RandomInt(0, 2)
+                if (modelnumber == 2) {
+                    modelnumber = 4
+                }
+                ent.__KeyValueFromInt("ModelIndex", modelnumber)
+                // Get A Random Color
+                R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
+                local ColorBal = RandomInt(0, 2)
+                // Balance The Color
+                if (ColorBal == 1) {
+                    if (R > G && R > B) {
+                        R <- R * 2
+                        if (R > 255) {
+                            R <- 255
+                        }
+
+                        G <- G / 2
+                        B <- B / 2
+                    } else {
+                        if (G > R && G > B) {
+                            G <- G * 2
+                            if (G > 255) {
+                                G <- 255
+                            }
+
+                            R <- R / 2
+                            G <- G / 2
+                        } else {
+                            if (B > R && B > G) {
+                                B <- B * 2
+                                if (B > 255) {
+                                    B <- 255
+                                }
+
+                                R <- R / 2
+                                G <- G / 2
+                            }
+                        }
+                    }
+                }
+                // Balance The Color
+                if (ColorBal == 2) {
+                    if (R > G && R > B) {
+                        R <- R * 2
+                        if (R > 255) {
+                            R <- 255
+                        }
+
+                        G <- G * 2
+                        if (G > 255) {
+                            G <- 255
+                        }
+                        B <- B / 2
+                    } else {
+                        if (G > R && G > B) {
+                            G <- G * 2
+                            if (G > 255) {
+                                G <- 255
+                            }
+
+                            R <- R * 2
+                            if (R > 255) {
+                                R <- 255
+                            }
+                            G <- G / 2
+                        } else {
+                            if (B > R && B > G) {
+                                B <- B * 2
+                                if (B > 255) {
+                                    B <- 255
+                                }
+
+                                R <- R / 2
+                                G <- G * 2
+                                if (G > 255) {
+                                    G <- 255
+                                }
+                            }
+                        }
+                    }
+                }
+                EntFireByHandle(ent, "Color", (R + " " + G + " " + B), 0, null, null)
+                ent.SetTeam(69420)
+            }
+        }
+    }
+
+    //## "colored portals" ##//
+    if (DevMode == true) {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            local c1 = Entities.FindByName(null, p.GetName() + "_portal-1")
+            local c2 = Entities.FindByName(null, p.GetName() + "_portal-2")
+
+            local pitch = c2.GetAngles().x
+            local yaw = c2.GetAngles().y
+            local roll = c2.GetAngles().z
+
+            local x = pitch*cos(0) - yaw*sin(0)
+            local y = pitch*sin(0) + yaw*cos(0)
+            x = x * 10
+            y = y * 10
+
+            printl(c1.GetName())
+            printl(x)
+            printl(y)
+            printl("========")
+
+            local c2o = c2.GetOrigin()
+            local c1o = c1.GetOrigin()
+
+            // DebugDrawBox(origin, mins, max, r, g, b, alpha, duration)
+            // Set preset colors for up to 16 clients
+            switch (p.entindex()) {
+                case 1 : R <- 255; G <- 0; B <- 0; break;
+                case 2 : R <- 0, G <- 255, B <- 0; break;
+                case 3 : R <- 0, G <- 0, B <- 255; break;
+                case 4 : R <- 255, G <- 0, B <- 0; break;
+                case 5 : R <- 255, G <- 100, B <- 100; break;
+                case 6 : R <- 255, G <- 180, B <- 255; break;
+                case 7 : R <- 255, G <- 255, B <- 180; break;
+                case 8 : R <-   0, G <- 255, B <- 240; break;
+                case 9 : R <-  75, G <-  75, B <-  75; break;
+                case 10: R <- 100, G <-  80, B <-   0; break;
+                case 11: R <-   0, G <-  80, B <- 100; break;
+                case 12: R <- 120, G <- 155, B <-  25; break;
+                case 13: R <-   0, G <-   0, B <- 100; break;
+                case 14: R <-  80, G <-   0, B <-   0; break;
+                case 15: R <-   0, G <-  75, B <-   0; break;
+                case 16: R <-   0, G <-  75, B <-  75; break;
+            }
+            DebugDrawBox(c1o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
+            DebugDrawBox(c2o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
+
+            DebugDrawLine(c1o, p.GetOrigin(), R, G, B, true, 0)
+            DebugDrawLine(c2o, p.GetOrigin(), R, G, B, true, 0)
+        }
+    }
+
     ///////////////////////
     // RUNS EVERY SECOND //
     ///////////////////////
@@ -571,6 +716,28 @@ function OnPlayerJoin(p, script_scope) {
     //# Assign every new targetname to the player after blue and red are used #//
     if (PlayerID >= 3) {
         p.__KeyValueFromString("targetname", "player" + PlayerID)
+    }
+
+    //# Change player portal targetname #//
+    local ent1 = null
+    local ent2 = null
+    local ent = null
+    while (ent = Entities.FindByClassname(ent, "prop_portal")) {
+        if (ent.GetName() == "") {
+            if (ent1 == null) {
+                ent1 = ent
+            } else {
+                ent2 = ent
+            }
+        }
+    }
+
+    if (ent1.entindex() > ent2.entindex()) {
+        ent1.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
+        ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "1")
+    } else {
+        ent1.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "1")
+        ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
     }
 
     //# Set viewmodel targetnames so we can tell them apart #//
