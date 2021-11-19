@@ -851,6 +851,11 @@ function PostMapLoad() {
         SendToConsole("developer 1")
         StartDevModeCheck <- true
     }
+	
+	//gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
+	SendToConsole("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
+	SendToConsole("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
+	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 }
 
 //////////////////////////////////////
