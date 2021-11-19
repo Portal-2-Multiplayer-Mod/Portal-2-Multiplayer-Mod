@@ -2,7 +2,7 @@
 //                                                             COPYRIGHT                                                                //
 //                                                  © 2021 Portal 2: Multiplayer Mod                                                    //
 //                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                  //
-// (in the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
+// (in the case that file does not exist, or doesn't exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
 //  ____               __             ___           ___       __         __       ___
