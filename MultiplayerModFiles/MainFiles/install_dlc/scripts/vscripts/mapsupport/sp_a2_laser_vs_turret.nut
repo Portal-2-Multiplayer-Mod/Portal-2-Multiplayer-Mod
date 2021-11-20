@@ -1,9 +1,9 @@
 // ██████╗██████╗             █████╗ ██████╗            ██╗      █████╗  ██████╗███████╗██████╗            ██╗   ██╗ ██████╗           ████████╗██╗   ██╗██████╗ ██████╗ ███████╗████████╗
 //██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██║     ██╔══██╗██╔════╝██╔════╝██╔══██╗           ██║   ██║██╔════╝           ╚══██╔══╝██║   ██║██╔══██╗██╔══██╗██╔════╝╚══██╔══╝
-//╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██║     ███████║╚█████╗ █████╗  ██████╔╝           ╚██╗ ██╔╝╚█████╗               ██║   ██║   ██║██████╔╝██████╔╝█████╗     ██║   
-// ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██║     ██╔══██║ ╚═══██╗██╔══╝  ██╔══██╗            ╚████╔╝  ╚═══██╗              ██║   ██║   ██║██╔══██╗██╔══██╗██╔══╝     ██║   
-//██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████████╗  ╚██╔╝  ██████╔╝██████████╗   ██║   ╚██████╔╝██║  ██║██║  ██║███████╗   ██║   
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════════╝   ╚═╝   ╚═════╝ ╚═════════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   
+//╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██║     ███████║╚█████╗ █████╗  ██████╔╝           ╚██╗ ██╔╝╚█████╗               ██║   ██║   ██║██████╔╝██████╔╝█████╗     ██║
+// ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██║     ██╔══██║ ╚═══██╗██╔══╝  ██╔══██╗            ╚████╔╝  ╚═══██╗              ██║   ██║   ██║██╔══██╗██╔══██╗██╔══╝     ██║
+//██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████████╗  ╚██╔╝  ██████╔╝██████████╗   ██║   ╚██████╔╝██║  ██║██║  ██║███████╗   ██║
+//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════════╝   ╚═╝   ╚═════╝ ╚═════════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
@@ -12,6 +12,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-631, 377, 322), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-672, 384, 296), 1024).Destroy()
+        // Disable the bumper
+        Entities.FindByClassnameNearest("func_portal_bumper", Vector(288, -316, 296), 1024).__KeyValueFromString("targetname", "mpmodbumperdis")
+        EntFire("mpmodbumperdis", "Deactivate", "", 3, null)
+        // Disable the placement helper
+        Entities.FindByClassnameNearest("info_placement_helper", Vector(288, -320, 280), 1024).__KeyValueFromString("targetname", "mpmodinfoplacementdis")
+        EntFire("mpmodinfoplacementdis", "Disable", "", 3.1, null)
     }
 
     if (MSPostPlayerSpawn==true) {

@@ -587,7 +587,7 @@ function loop() {
                         R <- RandomInt(170, 255)
                 }
 
-                local model = RandomInt(0, 4)
+                local model = RandomInt(0, 2)
 
                 if (model == 1) {
                     ent.SetModel("models/npcs/turret/turret_skeleton.mdl")
@@ -595,13 +595,13 @@ function loop() {
                 if (model == 2) {
                     ent.SetModel("models/npcs/turret/turret_backwards.mdl")
                 }
-                if (model == 3) {
-                    ent.SetModel("models/npcs/turret/turret_boxed.mdl")
-                }
-                // if (model == 4) { }
-                if (model == 4) {
-                    ent.SetModel("models/npcs/turret/turret_fx_laser_gib4.mdl")
-                }
+                // if (model == 3) {
+                //     ent.SetModel("models/npcs/turret/turret_boxed.mdl")
+                // }
+                // // if (model == 4) { }
+                // if (model == 4) {
+                //     ent.SetModel("models/npcs/turret/turret_fx_laser_gib4.mdl")
+                // }
 
 
                 EntFireByHandle(ent, "Color", (R + " " + G + " " + B), 0, null, null)
@@ -889,8 +889,8 @@ function PostMapLoad() {
     if (RandomTurrets==true) {
         CacheModel("npcs/turret/turret_skeleton.mdl")
         CacheModel("npcs/turret/turret_backwards.mdl")
-        CacheModel("npcs/turret/turret_boxed.mdl")
-        CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
+        // CacheModel("npcs/turret/turret_boxed.mdl")
+        // CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
         // CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
     }
 
