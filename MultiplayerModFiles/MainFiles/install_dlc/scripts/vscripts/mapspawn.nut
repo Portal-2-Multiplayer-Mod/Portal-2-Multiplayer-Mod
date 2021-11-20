@@ -30,7 +30,7 @@ DedicatedServer <- false // Set to true if you want to run the server as a dedic
 //-----------------------------------
 RandomTurrets <- true // Set to true if you want to randomize the turret models (INDEV)
 //-----------------------------------
-TickSpeed <- 0.01 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
+TickSpeed <- 0 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
 //-----------------------------------
@@ -488,7 +488,7 @@ function loop() {
     }
 
     // Random turret models
-    if (RandomTurrets == true) {
+    if (RandomTurrets == true && HasSpawned == true) {
         local ent = null
         while (ent = Entities.FindByClassname(ent, "npc_portal_turret_floor")) {
             local script_scope = ent.GetScriptScope()
@@ -545,7 +545,7 @@ function loop() {
                         if (G > 255) {
                             G <- 255
                         }
-                        B <- B / 2
+                        B <- B / 3
                     } else {
                         if (G > R && G > B) {
                             G <- G * 2
@@ -574,6 +574,36 @@ function loop() {
                         }
                     }
                 }
+
+                if (RandomInt(1, 7)==3) {
+                        G <- RandomInt(1, 30)
+                        B <- RandomInt(1, 30)
+                        R <- RandomInt(170, 255)
+                }
+
+                if (RandomInt(1, 9)==4) {
+                        G <- RandomInt(150, 255)
+                        B <- RandomInt(1, 30)
+                        R <- RandomInt(170, 255)
+                }
+
+                local model = RandomInt(0, 4)
+
+                if (model == 1) {
+                    ent.SetModel("models/npcs/turret/turret_skeleton.mdl")
+                }
+                if (model == 2) {
+                    ent.SetModel("models/npcs/turret/turret_backwards.mdl")
+                }
+                if (model == 3) {
+                    ent.SetModel("models/npcs/turret/turret_boxed.mdl")
+                }
+                // if (model == 4) { }
+                if (model == 4) {
+                    ent.SetModel("models/npcs/turret/turret_fx_laser_gib4.mdl")
+                }
+
+
                 EntFireByHandle(ent, "Color", (R + " " + G + " " + B), 0, null, null)
                 ent.SetTeam(69420)
             }
@@ -581,56 +611,56 @@ function loop() {
     }
 
     //## "colored portals" ##//
-    if (DevMode == true) {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local c1 = Entities.FindByName(null, p.GetName() + "_portal-1")
-            local c2 = Entities.FindByName(null, p.GetName() + "_portal-2")
+    // if (DevMode == true) {
+    //     local p = null
+    //     while (p = Entities.FindByClassname(p, "player")) {
+    //         local c1 = Entities.FindByName(null, p.GetName() + "_portal-1")
+    //         local c2 = Entities.FindByName(null, p.GetName() + "_portal-2")
 
-            local pitch = c2.GetAngles().x
-            local yaw = c2.GetAngles().y
-            local roll = c2.GetAngles().z
+    //         local pitch = c2.GetAngles().x
+    //         local yaw = c2.GetAngles().y
+    //         local roll = c2.GetAngles().z
 
-            local x = pitch*cos(0) - yaw*sin(0)
-            local y = pitch*sin(0) + yaw*cos(0)
-            x = x * 10
-            y = y * 10
+    //         local x = pitch*cos(0) - yaw*sin(0)
+    //         local y = pitch*sin(0) + yaw*cos(0)
+    //         x = x * 10
+    //         y = y * 10
 
-            printl(c1.GetName())
-            printl(x)
-            printl(y)
-            printl("========")
+    //         printl(c1.GetName())
+    //         printl(x)
+    //         printl(y)
+    //         printl("========")
 
-            local c2o = c2.GetOrigin()
-            local c1o = c1.GetOrigin()
+    //         local c2o = c2.GetOrigin()
+    //         local c1o = c1.GetOrigin()
 
-            // DebugDrawBox(origin, mins, max, r, g, b, alpha, duration)
-            // Set preset colors for up to 16 clients
-            switch (p.entindex()) {
-                case 1 : R <- 255; G <- 0; B <- 0; break;
-                case 2 : R <- 0, G <- 255, B <- 0; break;
-                case 3 : R <- 0, G <- 0, B <- 255; break;
-                case 4 : R <- 255, G <- 0, B <- 0; break;
-                case 5 : R <- 255, G <- 100, B <- 100; break;
-                case 6 : R <- 255, G <- 180, B <- 255; break;
-                case 7 : R <- 255, G <- 255, B <- 180; break;
-                case 8 : R <-   0, G <- 255, B <- 240; break;
-                case 9 : R <-  75, G <-  75, B <-  75; break;
-                case 10: R <- 100, G <-  80, B <-   0; break;
-                case 11: R <-   0, G <-  80, B <- 100; break;
-                case 12: R <- 120, G <- 155, B <-  25; break;
-                case 13: R <-   0, G <-   0, B <- 100; break;
-                case 14: R <-  80, G <-   0, B <-   0; break;
-                case 15: R <-   0, G <-  75, B <-   0; break;
-                case 16: R <-   0, G <-  75, B <-  75; break;
-            }
-            DebugDrawBox(c1o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
-            DebugDrawBox(c2o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
+    //         // DebugDrawBox(origin, mins, max, r, g, b, alpha, duration)
+    //         // Set preset colors for up to 16 clients
+    //         switch (p.entindex()) {
+    //             case 1 : R <- 255; G <- 0; B <- 0; break;
+    //             case 2 : R <- 0, G <- 255, B <- 0; break;
+    //             case 3 : R <- 0, G <- 0, B <- 255; break;
+    //             case 4 : R <- 255, G <- 0, B <- 0; break;
+    //             case 5 : R <- 255, G <- 100, B <- 100; break;
+    //             case 6 : R <- 255, G <- 180, B <- 255; break;
+    //             case 7 : R <- 255, G <- 255, B <- 180; break;
+    //             case 8 : R <-   0, G <- 255, B <- 240; break;
+    //             case 9 : R <-  75, G <-  75, B <-  75; break;
+    //             case 10: R <- 100, G <-  80, B <-   0; break;
+    //             case 11: R <-   0, G <-  80, B <- 100; break;
+    //             case 12: R <- 120, G <- 155, B <-  25; break;
+    //             case 13: R <-   0, G <-   0, B <- 100; break;
+    //             case 14: R <-  80, G <-   0, B <-   0; break;
+    //             case 15: R <-   0, G <-  75, B <-   0; break;
+    //             case 16: R <-   0, G <-  75, B <-  75; break;
+    //         }
+    //         DebugDrawBox(c1o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
+    //         DebugDrawBox(c2o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
 
-            DebugDrawLine(c1o, p.GetOrigin(), R, G, B, true, 0)
-            DebugDrawLine(c2o, p.GetOrigin(), R, G, B, true, 0)
-        }
-    }
+    //         DebugDrawLine(c1o, p.GetOrigin(), R, G, B, true, 0)
+    //         DebugDrawLine(c2o, p.GetOrigin(), R, G, B, true, 0)
+    //     }
+    // }
 
     ///////////////////////
     // RUNS EVERY SECOND //
@@ -732,12 +762,16 @@ function OnPlayerJoin(p, script_scope) {
         }
     }
 
-    if (ent1.entindex() > ent2.entindex()) {
-        ent1.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
-        ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "1")
-    } else {
-        ent1.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "1")
-        ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
+    try {
+        if (ent1.entindex() > ent2.entindex()) {
+            ent1.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
+            ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "1")
+        } else {
+            ent1.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "1")
+            ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
+        }
+    } catch (exception) {
+        printl("FAILED TO RENAME PORTALS" + exception)
     }
 
     //# Set viewmodel targetnames so we can tell them apart #//
@@ -850,6 +884,13 @@ function PostMapLoad() {
     if (DevMode==true) {
         SendToConsole("developer 1")
         StartDevModeCheck <- true
+    }
+    if (RandomTurrets==true) {
+        CacheModel("npcs/turret/turret_skeleton.mdl")
+        CacheModel("npcs/turret/turret_backwards.mdl")
+        CacheModel("npcs/turret/turret_boxed.mdl")
+        CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
+        // CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
     }
 }
 

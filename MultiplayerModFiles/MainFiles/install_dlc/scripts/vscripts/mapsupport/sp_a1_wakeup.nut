@@ -1,19 +1,46 @@
-// ██████╗██████╗             █████╗   ███╗              ██╗       ██╗ █████╗ ██╗  ██╗███████╗██╗   ██╗██████╗ 
+// ██████╗██████╗             █████╗   ███╗              ██╗       ██╗ █████╗ ██╗  ██╗███████╗██╗   ██╗██████╗
 //██╔════╝██╔══██╗           ██╔══██╗ ████║              ██║  ██╗  ██║██╔══██╗██║ ██╔╝██╔════╝██║   ██║██╔══██╗
 //╚█████╗ ██████╔╝           ███████║██╔██║              ╚██╗████╗██╔╝███████║█████═╝ █████╗  ██║   ██║██████╔╝
-// ╚═══██╗██╔═══╝            ██╔══██║╚═╝██║               ████╔═████║ ██╔══██║██╔═██╗ ██╔══╝  ██║   ██║██╔═══╝ 
-//██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗  ╚██╔╝ ╚██╔╝ ██║  ██║██║ ╚██╗███████╗╚██████╔╝██║     
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝   ╚═╝   ╚═╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝     
+// ╚═══██╗██╔═══╝            ██╔══██║╚═╝██║               ████╔═████║ ██╔══██║██╔═██╗ ██╔══╝  ██║   ██║██╔═══╝
+//██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗  ╚██╔╝ ╚██╔╝ ██║  ██║██║ ╚██╗███████╗╚██████╔╝██║
+//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝   ╚═╝   ╚═╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+
+        // Create Env Globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+
+        Entities.FindByClassnameNearest("trigger_multiple", Vector(6976, 852, 448), 1000).Destroy()
         Entities.FindByName(null, "basement_breakers_entrance_door").Destroy()
         Entities.FindByName(null, "basement_breakers_entrance_blocker").Destroy()
         Entities.FindByName(null, "basement_breakers_entrance_blocker_trigger").Destroy()
+        EntFire("@sphere", "EnableMotion", "", 0, null)
+        EntFire("@sphere", "DisableMotion", "", 0.1, null)
 
         function elevatorrecreationsp_a1_wakeup() {
             printl("Elevator recreationsp_a1_wakeup")
-            EntFire("@sphere", "DisableMotion", "", 0, null)
             Entities.FindByName(null, "@sphere").SetOrigin(Vector(11357, -819, 161))
             // Sphere attach bs
             EntFire("@sphere", "EnableMotion", "", 0.7, null)
@@ -33,7 +60,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFire("SpA1WakeupViewcontrol", "setparent", "core_receptacle_socket", 0, null)
             EntFire("SpA1WakeupViewcontrol", "enable", "", 0.8, null)
             EntFire("SpA1WakeupViewcontrol", "disable", "", 28, null)
-            EntFire("TPPLAYERS1", "addoutput", "targetname TPPLAYERS2", 27.8, null)
+            EntFire("TPPLAYERS1", "addoutput", "targetname TPPLAYERS2", 28.1, null)
 
             SpA1WakeupViewcontrol2 <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
             SpA1WakeupViewcontrol2.__KeyValueFromString("targetname", "SpA1WakeupViewcontrol2")
@@ -65,9 +92,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFire("TPPLAYERS1DIS", "addoutput", "targetname TPPLAYERS1", 1, null)
         }
 
-        // Make elevator start moving on level load
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-
         Entities.FindByClassnameNearest("trigger_once", Vector(8032, 1216, 487), 100).Destroy()
 
         Entities.FindByClassnameNearest("trigger_once", Vector(6144, 3456, 904), 100).Destroy()
@@ -95,9 +119,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("func_areaportalwindow", Vector(10364, 1080, -216), 100).__KeyValueFromString("targetname", "incinerator_portal_custom")
     }
 
-    if (MSPostMapSpawn==true) {
-
+    if (MSOnPlayerJoin!=false) {
+        if (Entities.FindByName(null, "TPPLAYERS1")) {
+            EntFire("SpA1WakeupViewcontrol", "disable", "", 0.5, null)
+            EntFire("SpA1WakeupViewcontrol", "enable", "", 0.6, null)
+        }
+        if (Entities.FindByName(null, "TPPLAYERS3")) {
+            EntFire("SpA1WakeupViewcontrol2", "disable", "", 0.5, null)
+            EntFire("SpA1WakeupViewcontrol2", "enable", "", 0.6, null)
+        }
     }
+
 
     if (MSPostPlayerSpawn==true) {
         NewApertureStartElevatorFixes()
@@ -112,18 +144,28 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         p.SetOrigin(Vector(8548, 1204, 106))
                         p.SetVelocity(Vector(0, 0, 0))
                     }
+                    EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global04, "turnon", "", 1, null, null)
                     TPP1 <- false
+                }
             }
-        }
+
+
 
         if (TPP2==true) {
             if (Entities.FindByName(null, "TPPLAYERS2")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
-                    p.SetOrigin(Vector(8947, 1062, 451))
+                    p.SetOrigin(Vector(8947, 1062, 400))
                     p.SetVelocity(Vector(0, 0, 0))
-                    p.SetAngles(20, 40, 0)
+                    p.SetAngles(0, 45, 0)
                 }
+                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
                 TPP2 <- false
             }
         }
@@ -136,12 +178,20 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(20, 40, 0)
                 }
+                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
                 TPP3 <- false
             }
         }
 
         if (TPP4==true) {
             if (Entities.FindByName(null, "TPPLAYERS4")) {
+                EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(10366, 1215, 486))
@@ -168,6 +218,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFire("basement_breakers_clack", "PlaySound", "", 1.60, null)
 
                     Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "NOLLENTITY")
+                    EntFire("@sphere", "ClearParent", "", 24.94, null)
+                    EntFire("@sphere", "DisableMotion", "", 24.95, null)
+                    EntFire("@sphere", "ClearParent", "", 24.96, null)
                     EntFire("NOLLENTITY", "addoutput", "targetname Startelevatorrecreationsp_a1_wakeup", 25, null)
                     SpA1WakeupONCE3 <- false
                 }
@@ -181,6 +234,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFire("basement_breakers_open_wav", "PlaySound", "", 0, null)
                     EntFire("@glados", "RunScriptCode", "sp_a1_wakeup_This_Is_Breaker_Room()", 0, null)
                     EntFire("breaker_bottom_light", "TurnOn", "", 0.10, null)
+                    Entities.FindByName(null, "@ComeThroughHereTrigger").Destroy()
                     SpA1WakeupONCE2 <- false
                 }
             }
@@ -191,7 +245,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
             } catch(exception) { }
 
-            Entities.FindByName(null, "@sphere").SetOrigin(Vector(6975, 561, 412))
+            Entities.FindByName(null, "@sphere").SetOrigin(Vector(6975, 561, 403))
+            EntFire("@sphere", "DisableMotion", "", 0, null)
         }
 
         // Find all players within 100 units of 8032 1216 487
@@ -200,7 +255,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (SpA1WakeupONCE1 == true) {
                 printl("Wakeup sequence started")
                 EntFire("@glados", "runscriptcode", "sp_a1_wakeup_gantry_door_open()", 0, null)
-                EntFire("training_door", "open", "", 0, null)
+                Entities.FindByName(null, "training_door").__KeyValueFromString("targetname", "training_door_open_dis")
+                EntFire("training_door_open_dis", "open", "", 0.1, null)
                 SpA1WakeupONCE1 <- false
             }
         }
