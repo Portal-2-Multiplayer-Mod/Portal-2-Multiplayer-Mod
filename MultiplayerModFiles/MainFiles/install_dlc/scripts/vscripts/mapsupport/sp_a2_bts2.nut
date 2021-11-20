@@ -1,7 +1,7 @@
-// ██████╗██████╗             █████╗ ██████╗            ██████╗ ████████╗ ██████╗██████╗ 
+// ██████╗██████╗             █████╗ ██████╗            ██████╗ ████████╗ ██████╗██████╗
 //██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚══██╔══╝██╔════╝╚════██╗
 //╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██████╦╝   ██║   ╚█████╗   ███╔═╝
-// ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██╔══██╗   ██║    ╚═══██╗██╔══╝  
+// ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██╔══██╗   ██║    ╚═══██╗██╔══╝
 //██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝███████╗
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚══════╝
 
@@ -10,6 +10,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
+        onscreendisplay69 <- Entities.CreateByClassname("game_text")
         Entities.FindByName(null, "player_clip").Destroy()
         Entities.FindByName(null, "player_died_relay").Destroy()
         Entities.FindByName(null, "transition_trigger").Destroy()
@@ -126,15 +127,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     if (NoPlayerMadeItOnlyOnceSp_A2_Bts2 == true) {
                         printl("No Player Made It")
                         PreviousTimeSP_A2_BTS2Again <- Time()
-                        onscreendisplay.__KeyValueFromString("message", "Nobody Escaped...")
-                        onscreendisplay.__KeyValueFromString("holdtime", "3")
-                        onscreendisplay.__KeyValueFromString("fadeout", "2")
-                        onscreendisplay.__KeyValueFromString("fadein", "1.25")
-                        onscreendisplay.__KeyValueFromString("spawnflags", "1")
-                        onscreendisplay.__KeyValueFromString("color", "230 30 30")
-                        onscreendisplay.__KeyValueFromString("channel", "1")
-                        onscreendisplay.__KeyValueFromString("x", "0.425")
-                        onscreendisplay.__KeyValueFromString("y", "-0.2")
+                        // Create an on screen text message entity
+                        onscreendisplay69.__KeyValueFromString("targetname", "onscreendisplaympmodbts2")
+                        onscreendisplay69.__KeyValueFromString("message", "Nobody Escaped...")
+                        onscreendisplay69.__KeyValueFromString("holdtime", "3")
+                        onscreendisplay69.__KeyValueFromString("fadeout", "2")
+                        onscreendisplay69.__KeyValueFromString("fadein", "1.25")
+                        onscreendisplay69.__KeyValueFromString("spawnflags", "1")
+                        onscreendisplay69.__KeyValueFromString("color", "230 30 30")
+                        onscreendisplay69.__KeyValueFromString("channel", "1")
+                        onscreendisplay69.__KeyValueFromString("x", "0.425")
+                        onscreendisplay69.__KeyValueFromString("y", "-0.2")
 
                         local envfade = Entities.CreateByClassname("env_fade")
                         envfade.__KeyValueFromString("duration", "5")
@@ -143,16 +146,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         envfade.__KeyValueFromString("rendercolor", "0 0 0")
                         envfade.__KeyValueFromString("renderamt", "255")
                         envfade.__KeyValueFromString("targetname", "FadeyBoi")
-                        DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
-                        DoEntFire("FadeyBoi", "fade", "", 0.0, null, null)
+                        DoEntFire("onscreendisplaympmodbts2", "display", "", 0.1, null, null)
+                        DoEntFire("FadeyBoi", "fade", "", 0.1, null, null)
+                        printl("stuff=====================thing")
                         NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- false
-                    }
-
-                    if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
-                        SendToConsole("commentary 1")
-                        SendToConsole("changelevel sp_a2_bts2")
+                        PreviousTimeSp_A2_Bts2Again <- Time()
+                        Entities.FindByName(null, "EndDeathEventMPMod").__KeyValueFromString("targetname", "EndDeathEventMPModDisMain")
                     }
                 }
+            }
+        }
+
+        if (NoPlayerMadeItOnlyOnceSp_A2_Bts2 == false) {
+            if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
+                SendToConsole("commentary 1")
+                SendToConsole("changelevel sp_a2_bts2")
+                printl("stuff=====================")
             }
         }
 
