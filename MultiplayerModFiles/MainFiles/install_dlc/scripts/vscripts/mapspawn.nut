@@ -2,7 +2,7 @@
 //                                                             COPYRIGHT                                                                //
 //                                                  © 2021 Portal 2: Multiplayer Mod                                                    //
 //                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                  //
-// (in the case that file does not exist, or doenst exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
+// (in the case that file does not exist, or doesn't exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
 //--------------------------------------------------------------------------------------------------------------------------------------//
 
 //  ____               __             ___           ___       __         __       ___
@@ -885,6 +885,7 @@ function PostMapLoad() {
         SendToConsole("developer 1")
         StartDevModeCheck <- true
     }
+
     if (RandomTurrets==true) {
         CacheModel("npcs/turret/turret_skeleton.mdl")
         CacheModel("npcs/turret/turret_backwards.mdl")
@@ -892,6 +893,11 @@ function PostMapLoad() {
         CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
         // CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
     }
+
+	//gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
+	SendToConsole("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
+	SendToConsole("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
+	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 }
 
 //////////////////////////////////////
