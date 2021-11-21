@@ -103,7 +103,7 @@ while (Loop == true) do
             if (PropModel~=TeleportInputNode && PropModel~=TeleportOutputNode) then
                 -- cache code
                 -- if the current model has been cached do not continue
-                if (LoopAmount == 0) then
+                if (LoopAmount == 0 && prop:GetModel() ~= "models/hunter/blocks/cube025x025x025.mdl") then
                     for k, Model in ipairs(CachedModels) do
                         if (Model==PropModel) then
                             ContinueModelCache = false
@@ -118,7 +118,7 @@ while (Loop == true) do
                     end
                 end
                 --create code
-                if (LoopAmount == 1) then
+                if (LoopAmount == 1 && prop:GetModel() ~= "models/hunter/blocks/cube025x025x025.mdl") then
                     GenerateLine("        local " .. PropOutputName .. ' = CreateProp("' .. PropType .. '", Vector(' .. PropCords.x .. ", " .. PropCords.y .. ", " .. PropCords.z .. '), "' .. PropModel .. '", 0)')
                     GenerateLine("        " .. PropOutputName .. ".SetAngles(" .. PropAngles.x .. ", " .. PropAngles.y .. ", " .. PropAngles.z .. ")")
                     GenerateLine("        " .. PropOutputName .. '.__KeyValueFromString("solid", "'..PropCollisionNumber..'")')
@@ -158,11 +158,22 @@ while (Loop == true) do
                                         end
                                     end
                                     if (GenerateTriggerNext==true) then
-                                        GenerateLine("     foreach (player in CreateTrigger("..prop31:GetPos().x..", "..prop31:GetPos().y..", "..prop31:GetPos().z..", "..prop21:GetPos().x..", "..prop21:GetPos().y..", "..prop21:GetPos().z..")) {")
-                                        GenerateLine("         printl(player)")
-                                        GenerateLine("     }")
-                                        table.insert(GeneratedTriggers, prop31)
-                                        table.insert(GeneratedTriggers, prop21)
+                                        outputct = "nothingatall"
+                                        for indct, cubetool in ipairs( ents.FindByModel("models/maxofs2d/cube_tool.mdl") ) do
+                                            if (cubetool:GetColor() == prop31:GetColor()) then
+                                                outputct = cubetool:GetAngles() / 180
+                                                print(outputct)
+                                            end
+                                        end
+                                            GenerateLine("     foreach (p in CreateTrigger("..prop31:GetPos().x..", "..prop31:GetPos().y..", "..prop31:GetPos().z..", "..prop21:GetPos().x..", "..prop21:GetPos().y..", "..prop21:GetPos().z..")) {")
+                                            if (outputct ~= "nothingatall") then
+                                                GenerateLine("         p.SetVelocity(Vector("..outputct.x..","..outputct.y..","..outputct.z.."))")
+                                            else
+                                                GenerateLine("         printl(player)")
+                                            end
+                                            GenerateLine("     }")
+                                            table.insert(GeneratedTriggers, prop31)
+                                            table.insert(GeneratedTriggers, prop21)
                                     end
                                 end
                             end
@@ -236,3 +247,4 @@ function DrawBox()
 
 end
 hook.Add( "Tick", "BoxDrawForPropCreation", DrawBox )
+qqqq3
