@@ -1,81 +1,70 @@
-// ██████╗██████╗             █████╗ ██████╗             █████╗   ███╗
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗ ████║
-//╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║██╔██║
-// ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║╚═╝██║
-//██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝███████╗
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚══════╝
+// ██████╗██████╗             █████╗ ██████╗             █████╗ ██████╗
+//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚════██╗
+//╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║ █████╔╝
+// ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║ ╚═══██╗
+//██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝██████╔╝
+//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-        HasStartedSp_A3_01 <- false
+        Entities.FindByName(null, "pumproom_door_bottom_prop").__KeyValueFromString("targetname", "moja1")
+        Entities.FindByName(null, "pumproom_door_bottom_portal").__KeyValueFromString("targetname", "moja2")
         // Here if we need to ent_fire something
-        //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+        EntFireByHandle(Entities.FindByName(null, "pumproom_door_bottom_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
         // Destroy objects
-        Entities.FindByName(null, "transition_trigger").Destroy()
-        Entities.FindByName(null, "AutoInstance1-circuit_breaker_lever").__KeyValueFromString("solid", "0")
-        Entities.FindByClassnameNearest("logic_auto", Vector(-10304, 2544, 112), 20).Destroy()
-        Entities.FindByClassnameNearest("trigger_multiple", Vector(-640, -1520, 456), 20).Destroy()
-        OnlyOnceSp_A3_01 <- true
+        Entities.FindByName(null, "fade_to_death-proxy").Destroy()
+        Entities.FindByName(null, "lift_shaft_gate").Destroy()
+        Entities.FindByName(null, "main_elevator_bottom_clipbrush").Destroy()
+        Entities.FindByName(null, "silent_fizzler").Destroy()
+        Entities.FindByName(null, "@transition_from_map").Destroy()
+        Entities.FindByName(null, "powerup_door_trigger").Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(-6080, -2812, -5160), 20).Destroy()
+        EntFireByHandle(Entities.FindByName(null, "AutoInstance1-push_button_knob"), "addoutput", "OnIn powerup_door_prop:SetAnimation:open", 3, null, null)
+        EntFireByHandle(Entities.FindByName(null, "AutoInstance1-push_button_knob"), "addoutput", "OnIn powerup_door_sprite:ShowSprite", 3, null, null)
     }
 
     if (MSPostPlayerSpawn==true) {
-        HasStartedSp_A3_01 <- true
-        EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay8", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "knockout_start"), "Trigger", "", 1, null, null)
 
-        printl("Ran")
-        Sp_A3_01Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-        Sp_A3_01Viewcontrol.__KeyValueFromString("targetname", "Sp_A3_01Viewcontrol")
-        Sp_A3_01Viewcontrol.__KeyValueFromString("target_team", "-1")
-        Sp_A3_01Viewcontrol.SetOrigin(Entities.FindByName(null, "knockout-viewcontroller").GetOrigin())
-        Sp_A3_01Viewcontrol.SetAngles(0, 270, 0)
-        EntFire("Sp_A3_01Viewcontrol", "setparent", "knockout-viewcontroller", 0, null)
-        EntFire("Sp_A3_01Viewcontrol", "setparentattachment", "knockout-viewcontroller", 0, null)
-        EntFire("Sp_A3_01Viewcontrol", "enable", "", 0, null)
-        EntFire("Sp_A3_01ViewcontrolTele", "disable", "", 13, null)
-        EntFire("Sp_A3_01Viewcontrol", "addoutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
-        EntFire("Sp_A3_01ViewcontrolTele", "addoutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)
+    }
+
+    if (MSOnPlayerJoin==true) {
+        // Find all players
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+            EntFireByHandle(p, "setfogcontroller", "@environment_lake_fog", 0, null, null)
+        }
     }
 
     if (MSLoop==true) {
-        local p = Entities.FindByClassnameWithin(null, "player", Vector(-672.000000, -1871.999878, 51.000008), 10)
+        // Goo Damage Code
         try {
-            if (p.GetOrigin().z >= 45) {
-                p.SetOrigin(Vector(-720, -1852, 10))
-                p.SetAngles(0, 90, 0)
-            }
-        } catch(exception) {}
-
-        if (HasStartedSp_A3_01 == false) {
-            EntFireByHandle(Entities.FindByName(null, "knockout-fadeout"), "fade", "", 0, null, null)
+        if (GooHurtTimerPred) { printl()}
+        } catch (exception) {
+            GooHurtTimerPred <- 0
         }
 
-        if (Entities.FindByName(null, "Sp_A3_01ViewcontrolTele")) {
+        if (GooHurtTimerPred<=Time()) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                p.SetOrigin(Vector(-162, -1966, 0))
-                p.SetVelocity(Vector(0, 0, 0))
+                if (p.GetOrigin().z<=-5290) {
+                    EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
+                }
             }
+            GooHurtTimerPred = Time()+1
         }
 
-        if (OnlyOnceSp_A3_01 == true) {
-            if (Entities.FindByName(null, "Sp_A3_01ViewcontrolDone")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
-                    p.SetOrigin(Vector(-720, -1852, 10))
-                    p.SetAngles(0, 90, 0)
-                }
-                Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
-                Entities.FindByName(null, "knockout-portalgun").Destroy()
-                OnlyOnceSp_A3_01 <- false
-            }
-        }
+        local p = Entities.FindByClassnameNearest("player", Vector(-6400, -2832, -5127), 10)
+        try {
+            p.SetOrigin(Vector(-6400, -2832, -5160))
+        } catch (exception) { }
 
         // Elevator changelevel
         local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(6016, 4496, -448), 100)) {
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3631, 1284, -2100), 100)) {
             SendToConsole("commentary 1")
-            SendToConsole("changelevel sp_a3_03")
+            SendToConsole("changelevel sp_a3_jump_intro")
         }
     }
 }

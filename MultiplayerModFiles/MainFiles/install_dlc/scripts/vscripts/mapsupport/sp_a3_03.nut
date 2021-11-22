@@ -48,8 +48,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (GooHurtTimerPred<=Time()) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                if (p.GetOrigin().z<=-5240) {
-                    EntFireByHandle(p, "sethealth", "-20", 0, null, null)
+                if (p.GetOrigin().z<=-5200) {
+                    EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
                 }
             }
             GooHurtTimerPred = Time()+1
