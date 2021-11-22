@@ -71,7 +71,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
         EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
         EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
-    }=
+    }
 
     if (MSOnPlayerJoin==true) {
         // Find all players
