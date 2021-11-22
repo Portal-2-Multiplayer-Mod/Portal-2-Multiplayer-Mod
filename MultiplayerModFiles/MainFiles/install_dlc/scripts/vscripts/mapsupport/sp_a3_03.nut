@@ -19,6 +19,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "silent_fizzler").Destroy()
         Entities.FindByName(null, "@transition_from_map").Destroy()
         Entities.FindByName(null, "powerup_door_trigger").Destroy()
+        Entities.FindByName(null, "AutoInstance1-circuit_breaker_lever").__KeyValueFromString("solid", "0")
         Entities.FindByClassnameNearest("trigger_once", Vector(-6080, -2812, -5160), 20).Destroy()
         EntFireByHandle(Entities.FindByName(null, "AutoInstance1-push_button_knob"), "addoutput", "OnIn powerup_door_prop:SetAnimation:open", 3, null, null)
         EntFireByHandle(Entities.FindByName(null, "AutoInstance1-push_button_knob"), "addoutput", "OnIn powerup_door_sprite:ShowSprite", 3, null, null)
@@ -48,7 +49,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (GooHurtTimerPred<=Time()) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                if (p.GetOrigin().z<=-5200) {
+                if (p.GetOrigin().z<=-5290) {
                     EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
                 }
             }
