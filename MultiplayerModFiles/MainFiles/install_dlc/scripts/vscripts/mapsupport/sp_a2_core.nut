@@ -89,7 +89,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop==true) {
         if (TeleportOutInSp_A2_Core==false) {
             foreach (player in CreateTrigger(293.857941, 313.969910, -126.097076, -610.639771, -467.855042, 133.613190)) {
-                TeleportOutInSp_A2_Core <- true
+                if (player.GetClassname() == "player") {
+                    TeleportOutInSp_A2_Core <- true
+                }
             }
         }
 
@@ -98,8 +100,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             while (p = Entities.FindByClassname(p, "player")) {
                 local DisableTeleport = false
                 foreach (player in CreateTrigger(-857.83013916016, -1769.8682861328, 1200.1546630859, 828.51452636719, 904.61602783203,  -11763)) {
-                    if (p == player) {
-                        DisableTeleport = true
+                    if (player.GetClassname() == "player") {
+                        if (p == player) {
+                            DisableTeleport = true
+                        }
                     }
                 }
                 if (DisableTeleport==false) {

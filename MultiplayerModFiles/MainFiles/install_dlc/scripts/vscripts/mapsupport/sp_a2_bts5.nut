@@ -1,9 +1,9 @@
 // ██████╗██████╗             █████╗ ██████╗            ██████╗ ████████╗ ██████╗███████╗
 //██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚══██╔══╝██╔════╝██╔════╝
-//╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██████╦╝   ██║   ╚█████╗ ██████╗ 
+//╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██████╦╝   ██║   ╚█████╗ ██████╗
 // ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██╔══██╗   ██║    ╚═══██╗╚════██╗
 //██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝██████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚═════╝ 
+//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     // We need to do something with the elevator or use teleports so all players can get up (Moja)
@@ -23,6 +23,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OnlyOnceSp_A2_Bts5 <- true
         OnlyOnceTPSP_A2_BTS5 <- true
         LoopEnablerSP_A2_BTS5 <- false
+        OldTimeMapSupport <- 0
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -32,10 +33,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "npc_portal_turret_floor", Vector(2594.6696777344, 1760.8935546875, 3943.775390625), 400)) {
-            p.SetOrigin(Vector(p.GetOrigin().x, (p.GetOrigin().y-24)*10*TickSpeed, (p.GetOrigin().z-6)*10*TickSpeed))
+        printl(Time())
+        printl(OldTimeMapSupport + 0.2)
+
+        if (OldTimeMapSupport + 0.1 <= Time()) {
+            foreach (p in CreateTrigger(2022.2529296875, 1891.5144042969, 4128.41015625, 2809.6022949219, 1490.4871826172, 3846.3054199219)) {
+                printl(p)
+                if (p.GetClassname() == "npc_portal_turret_floor") {
+                    printl(p)
+                    if (p.GetOrigin().z > 4000) {
+                        p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y-50, 4020))
+                    } else {
+                        p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y-40, 3890))
+                    }
+                }
+                OldTimeMapSupport <- Time()
+            }
         }
+
 
         // Find all players within
         if (LoopEnablerSP_A2_BTS5==false) {

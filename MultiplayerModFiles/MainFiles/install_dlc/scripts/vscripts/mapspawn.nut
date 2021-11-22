@@ -28,9 +28,9 @@ UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
-RandomTurrets <- true // Set to true if you want to randomize the turret models (INDEV)
+RandomTurrets <- false // Set to true if you want to randomize the turret models
 //-----------------------------------
-TickSpeed <- 0 // Set to the tick speed of the server (UNSTABLE - ONLY DO 0 TO 0.5) (lower numbers can cause lag on slow computers/connections)
+TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
 //-----------------------------------
@@ -272,7 +272,7 @@ function CreateTrigger(x1, y1, z1, x2, y2, z2){
     local plist = []
     local p = null
     local outputp = null
-    while (p = Entities.FindByClassname(p, "player")) {
+    while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 16384)) {
         local pos = p.GetOrigin()
         if (pos.x >= x1 && pos.x <= x2){
             if (pos.y >= y1 && pos.y <= y2){

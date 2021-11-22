@@ -166,11 +166,13 @@ while (Loop == true) do
                                             end
                                         end
                                             GenerateLine("     foreach (p in CreateTrigger("..prop31:GetPos().x..", "..prop31:GetPos().y..", "..prop31:GetPos().z..", "..prop21:GetPos().x..", "..prop21:GetPos().y..", "..prop21:GetPos().z..")) {")
+                                            GenerateLine("         if (p.GetClassname() == \"player\") {")
                                             if (outputct ~= "nothingatall") then
-                                                GenerateLine("         p.SetVelocity(Vector("..outputct.x..","..outputct.y..","..outputct.z.."))")
+                                                GenerateLine("             p.SetVelocity(Vector("..outputct.x..","..outputct.y..","..outputct.z.."))")
                                             else
-                                                GenerateLine("         printl(player)")
+                                                GenerateLine("             printl(p)")
                                             end
+                                            GenerateLine("         }")
                                             GenerateLine("     }")
                                             table.insert(GeneratedTriggers, prop31)
                                             table.insert(GeneratedTriggers, prop21)
@@ -247,4 +249,3 @@ function DrawBox()
 
 end
 hook.Add( "Tick", "BoxDrawForPropCreation", DrawBox )
-qqqq3

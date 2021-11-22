@@ -81,14 +81,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (OnlyOnceSp_A3_End==false) {
             if (!Entities.FindByName(null, "big_door_save")) {
                 foreach (player in CreateTrigger(-1902.8851318359, 373.5451965332, 810.53570556641, -1751.1909179688, 269.85140991211, 954.68353271484)) {
-                    local p = null
-                    while (p = Entities.FindByClassname(p, "player")) {
-                        p.SetOrigin(Vector(-1833, 317, 870))
-                        p.SetAngles(0, -180, 0)
-                        p.SetVelocity(Vector(0, 0, 0))
-                        EntFire("look_moxxie_a_thing", "kill", "", 25, null)
+                    if (player.GetClassname() == "player") {
+                        local p = null
+                        while (p = Entities.FindByClassname(p, "player")) {
+                            p.SetOrigin(Vector(-1833, 317, 870))
+                            p.SetAngles(0, -180, 0)
+                            p.SetVelocity(Vector(0, 0, 0))
+                            EntFire("look_moxxie_a_thing", "kill", "", 25, null)
+                        }
+                        OnlyOnceSp_A3_End <- true
                     }
-                    OnlyOnceSp_A3_End <- true
                 }
             }
         }
