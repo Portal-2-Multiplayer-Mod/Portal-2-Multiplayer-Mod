@@ -7,6 +7,9 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        // Make some blackkkkk
+        inffade <- true
+
         // Set up the changelevel command entity
         Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_Bts6ServerCommand")
         // Destroy objects
@@ -31,16 +34,30 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         env_global04.__KeyValueFromString("targetname", "env_global04")
         env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
 
-        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
     }
 
     if (MSOnPlayerJoin != false) {
         printl("Player Joined (Reseting Viewcontrols)")
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 0.5, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0.6, null)
+        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global01, "turnon", "", 1.1, null, null)
+        EntFireByHandle(env_global02, "turnon", "", 1.1, null, null)
+        EntFireByHandle(env_global03, "turnon", "", 1.1, null, null)
+        EntFireByHandle(env_global04, "turnon", "", 1.1, null, null)
+    }
+
+    if (MSLoop==true) {
+        if (inffade==true) {
+            EntFire("start_ride_fade", "fade", "", 0, null)
+        }
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -96,5 +113,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("Sp_A2_Bts6ServerCommand", "command", "echo Changing level...", 51, null)
         EntFire("Sp_A2_Bts6ServerCommand", "command", "changelevel sp_a2_core", 51, null)
+
+        // Remove some blackkkk
+        inffade <- false
     }
 }
