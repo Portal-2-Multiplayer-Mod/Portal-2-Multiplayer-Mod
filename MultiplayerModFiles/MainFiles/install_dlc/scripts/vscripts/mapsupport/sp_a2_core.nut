@@ -71,11 +71,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
         EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
         EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
-    }
-
-    if (MSPostPlayerSpawn==true) {
-
-    }
+    }=
 
     if (MSOnPlayerJoin==true) {
         // Find all players
@@ -100,10 +96,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             while (p = Entities.FindByClassname(p, "player")) {
                 local DisableTeleport = false
                 foreach (player in CreateTrigger(-857.83013916016, -1769.8682861328, 1200.1546630859, 828.51452636719, 904.61602783203,  -11763)) {
-                    if (player.GetClassname() == "player") {
-                        if (p == player) {
-                            DisableTeleport = true
-                        }
+                    if (p == player) {
+                        DisableTeleport = true
                     }
                 }
                 if (DisableTeleport==false) {
