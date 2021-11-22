@@ -41,6 +41,11 @@ print(os.getcwd())
 
 # CONFIG FILE
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+# DISCLAIMER : make sure to put all of your config values                     #
+# below all the other values that are set using that same name in mapspawn.nut#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+
 # default config file
 configdefaults = [
     "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
@@ -89,11 +94,6 @@ if not os.path.exists(configpath):
 
 
 # CONFIG FILE READ
-
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
-# DISCLAIMER : make sure to put all of your config values                     #
-# above all the other values that are set using that same name in mapspawn.nut#
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
 
 # open file for reading
 f = open(configpath, "r")
@@ -247,15 +247,25 @@ def Launch():
                 NumList[j] = temp
 
     # Find the highest numbered used dlc
-    for number in NumList:
-                if number-1 == lastnumber:
-                    lastnumber = number
+    for number1 in NumList:
+                if number1-1 == lastnumber:
+                    lastnumber = number1
                     # Set the new temp dlc name
                     if (iow):
-                        dlcname = "\portal2_dlc" + str(number + 1)
+                        dlcname = "\portal2_dlc" + str(number1 + 1)
+                        # if there is a file named
+                        if os.path.exists(owd + dlcname + "\\32playermod.identifier"):
+                            print("Found Active P2-32 DLC: " + dlcname + "| Removing...")
+                            # Remove the folder using os
+                            shutil.rmtree(owd + dlcname)
+                            break
                     else:
-                        dlcname = "/portal2_dlc" + str(number + 1)
-
+                        dlcname = "/portal2_dlc" + str(number1 + 1)
+                        if os.path.exists(owd + dlcname + "/32playermod.identifier"):
+                            print("Found Active P2-32 DLC: " + dlcname + "| Removing...")
+                            # Remove the folder using os
+                            shutil.rmtree(owd + dlcname)
+                            break
     # Remove multiplayer mod files so we can repatch
     try:
         if(iow):
