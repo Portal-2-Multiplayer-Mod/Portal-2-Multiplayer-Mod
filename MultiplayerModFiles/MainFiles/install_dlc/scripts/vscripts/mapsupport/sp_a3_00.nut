@@ -9,7 +9,10 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-                // Create Env Globals
+        // Shake the camera when you fall through the wood
+        Entities.FindByName(null, "crash_landing_shake").__KeyValueFromString("spawnflags", "29")
+
+        // Create Env Globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
         env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
