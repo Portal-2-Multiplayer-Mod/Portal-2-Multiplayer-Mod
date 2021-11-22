@@ -1,9 +1,9 @@
-//--------------------------------------------------------------------------------------------------------------------------------------//
-//                                                             COPYRIGHT                                                                //
-//                                                  © 2021 Portal 2: Multiplayer Mod                                                    //
-//                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                  //
-// (in the case that file does not exist, or doesn't exist in the repo this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE) //
-//--------------------------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------------------------------//
+//                                                             COPYRIGHT                                                                     //
+//                                                  © 2021 Portal 2: Multiplayer Mod                                                         //
+//                                 https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                       //
+// In the case that file does not exist, or doesn't exist in the repository this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE //
+//-------------------------------------------------------------------------------------------------------------------------------------------//
 
 //  ____               __             ___           ___       __         __       ___
 // /\  _`\            /\ \__         /\_ \        /'___`\    /\ \      /'__`\   /'___`\
@@ -28,7 +28,7 @@ UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
-RandomTurrets <- false // Set to true if you want to randomize the turret models
+RandomTurrets <- false // Set to true if you want to randomize every Turret's models and colors (for fun lol)
 //-----------------------------------
 TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)
 //-----------------------------------
