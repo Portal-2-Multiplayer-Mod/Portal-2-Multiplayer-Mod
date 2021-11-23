@@ -1,12 +1,16 @@
 try {
     if (dismessage) {
-        printl("Disconnect message entity already exists handling");
+        if (GetDeveloperLevel() == 1) {
+            printl("Disconnect message entity already exists! Handling...");
+        }
     }
-} catch(exception) {
-    disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
-    printl("Created disconnect message entity");
+}   catch(exception) {
+        disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
+        if (GetDeveloperLevel() == 1) {
+            printl("Created disconnect message entity!");
+        }
     dismessage <- true
-} // Disconnect hud manager
+}
 // Create a join message entity
     disconnectmessagedisplay.__KeyValueFromString("targetname", "disconnectmessagedisplaympmod")
     disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
