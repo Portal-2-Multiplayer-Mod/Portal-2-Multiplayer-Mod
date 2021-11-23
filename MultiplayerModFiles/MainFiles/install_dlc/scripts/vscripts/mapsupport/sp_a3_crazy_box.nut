@@ -62,7 +62,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Fizzle the cube
         local DontFizzle = false
-        foreach (p in CreateTrigger(75, -1746.5970458984, 1533.7188720703, 1450.1014404297, -509.52490234375, 2840.5529785156)) {
+        foreach (p in CreateTrigger(75, -1746.5970458984, 1500.7188720703, 1450.1014404297, -509.52490234375, 2840.5529785156)) {
             if (p.GetClassname()=="prop_weighted_cube") {
                 DontFizzle = true
             }
