@@ -44,12 +44,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             GooHurtTimerPred = Time()+1
         }
 
-        if (stayopen == false && isopen==true) {
-            printl("CLOSED")
-            EntFire("genericcustomprop_maindropper", "setanimation", "close")
-            isopen = false
-        }
-
         // Fizzle the cube
         local DontFizzle = false
         foreach (p in CreateTrigger(75, -1746.5970458984, 1500.7188720703, 1450.1014404297, -509.52490234375, 2840.5529785156)) {
@@ -122,6 +116,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
                 stayopen = true
             }
+        }
+
+        if (stayopen == false && isopen==true) {
+            printl("CLOSED")
+            EntFire("genericcustomprop_maindropper", "setanimation", "close")
+            isopen = false
         }
 
         // Elevator changelevel
