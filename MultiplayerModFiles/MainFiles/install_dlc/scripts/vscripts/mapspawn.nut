@@ -324,11 +324,15 @@ function TriggerOnceHook(TriggerName, FunctionName) {
 
 function CacheModel(ModelName) {
     if (Entities.FindByModel(null, "models/"+ModelName)) {
-            printl("Model: " + ModelName + " is already cached!")
+            if (GetDeveloperLevel() == 1) {
+                printl("Model: " + ModelName + " is already cached!")
+            }
         } else {
         try {
             if (servercommand) {
-                printl("servercommand exists")
+                if (GetDeveloperLevel() == 1) {
+                    printl("servercommand exists")
+                }
             }
         } catch(exception) {
             // Create an entity that sends a server command
@@ -340,7 +344,9 @@ function CacheModel(ModelName) {
         EntFireByHandle(servercommand, "command", "sv_cheats 0", 0, null, null)
         CachedModels.push("models/"+ModelName)
 
-        printl("Model: " + ModelName + " has been cached sucessfully!")
+        if (GetDeveloperLevel() == 1) {
+            printl("Model: " + ModelName + " has been cached sucessfully!")
+        }
     }
 }
 
@@ -880,7 +886,6 @@ function PostMapLoad() {
     SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
     SendToConsole("sv_allowdownload 1")
     SendToConsole("sv_allowupload 1")
-    SendToConsole("max_filesize 0")
     if (DevMode==true) {
         SendToConsole("developer 1")
         StartDevModeCheck <- true
