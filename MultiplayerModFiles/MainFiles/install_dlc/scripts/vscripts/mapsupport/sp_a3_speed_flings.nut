@@ -29,12 +29,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (GooHurtTimerPred<=Time()) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                if (p.GetOrigin().z<=-650) {
-                    EntFireByHandle(p, "sethealth", "-20", 0, null, null)
+                if (p.GetOrigin().z<=-750) {
+                    EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
                 }
             }
             GooHurtTimerPred = Time()+1
         }
+
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(396, 1152, 656), 100)) {
