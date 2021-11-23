@@ -6,6 +6,86 @@
 // ╩╩ ╩╩  ╚═╝╩╚═ ╩ ╚═╝═╩╝  ╚  ╩╚═╚═╝╩ ╩  ╚═╝╩ ╩╚═╝═╩╝
 
 function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
+
+//==================================//
+//CREATE OBJECTS FOR sp_a3_crazy_box//
+//==================================//
+
+if (GetMapName() == "sp_a3_crazy_box") {
+    if (CacheTime==true) {
+        // Cache Objects
+
+        CacheModel("props_bts/vactube_128_straight.mdl")
+
+        CacheModel("props_underground/underground_boxdropper.mdl")
+
+        CacheModel("props_underground/underground_boxdropper_cage.mdl")
+
+        CacheModel("props_factory/factory_panel_metal_chopped_top_128x128.mdl")
+
+        DoneCacheing <- true
+  }
+
+
+    if (CreateTime==true) {
+        // Create Objects
+
+        local sp_a3_crazy_box_custom_prop_9 = CreateProp("prop_dynamic", Vector(878.75024414062, -1112.2896728516, 2054.7436523438), "models/props_bts/vactube_128_straight.mdl", 0)
+        sp_a3_crazy_box_custom_prop_9.SetAngles(2.7340308861312e-07, -179.99995422363, 90.000022888184)
+        sp_a3_crazy_box_custom_prop_9.__KeyValueFromString("solid", "6")
+        sp_a3_crazy_box_custom_prop_9.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a3_crazy_box_custom_prop_10 = CreateProp("prop_dynamic", Vector(878.75024414062, -1112.2896728516, 2566.7436523438), "models/props_bts/vactube_128_straight.mdl", 0)
+        sp_a3_crazy_box_custom_prop_10.SetAngles(2.7340277597432e-07, -179.99989318848, 90.000030517578)
+        sp_a3_crazy_box_custom_prop_10.__KeyValueFromString("solid", "6")
+        sp_a3_crazy_box_custom_prop_10.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a3_crazy_box_custom_prop_11 = CreateProp("prop_dynamic", Vector(878.75024414062, -1112.2896728516, 2694.7436523438), "models/props_bts/vactube_128_straight.mdl", 0)
+        sp_a3_crazy_box_custom_prop_11.SetAngles(2.7340274755261e-07, -179.99989318848, 90.000030517578)
+        sp_a3_crazy_box_custom_prop_11.__KeyValueFromString("solid", "6")
+        sp_a3_crazy_box_custom_prop_11.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a3_crazy_box_custom_prop_12 = CreateProp("prop_dynamic", Vector(878.75024414062, -1112.2896728516, 2182.7436523438), "models/props_bts/vactube_128_straight.mdl", 0)
+        sp_a3_crazy_box_custom_prop_12.SetAngles(2.7340297492628e-07, -179.99989318848, 90.000030517578)
+        sp_a3_crazy_box_custom_prop_12.__KeyValueFromString("solid", "6")
+        sp_a3_crazy_box_custom_prop_12.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a3_crazy_box_custom_prop_13 = CreateProp("prop_dynamic", Vector(878.75024414062, -1112.2896728516, 2310.7436523438), "models/props_bts/vactube_128_straight.mdl", 0)
+        sp_a3_crazy_box_custom_prop_13.SetAngles(2.7340294650458e-07, -179.99989318848, 90.000030517578)
+        sp_a3_crazy_box_custom_prop_13.__KeyValueFromString("solid", "6")
+        sp_a3_crazy_box_custom_prop_13.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a3_crazy_box_custom_prop_14 = CreateProp("prop_dynamic", Vector(878.75024414062, -1112.2896728516, 2438.7436523438), "models/props_bts/vactube_128_straight.mdl", 0)
+        sp_a3_crazy_box_custom_prop_14.SetAngles(2.7340283281774e-07, -179.99989318848, 90.000030517578)
+        sp_a3_crazy_box_custom_prop_14.__KeyValueFromString("solid", "6")
+        sp_a3_crazy_box_custom_prop_14.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a3_crazy_box_custom_prop_15 = CreateProp("prop_dynamic", Vector(879.18041992188, -1113.8999023438, 1952.1126708984), "models/props_underground/underground_boxdropper.mdl", 0)
+        sp_a3_crazy_box_custom_prop_15.SetAngles(0, 90, 0)
+        sp_a3_crazy_box_custom_prop_15.__KeyValueFromString("solid", "6")
+        sp_a3_crazy_box_custom_prop_15.__KeyValueFromString("targetname", "genericcustomprop_maindropper")
+
+        local sp_a3_crazy_box_custom_prop_16 = CreateProp("prop_dynamic", Vector(877.94549560547, -1111.8862304688, 1951.9709472656), "models/props_underground/underground_boxdropper_cage.mdl", 0)
+        sp_a3_crazy_box_custom_prop_16.SetAngles(-7.4231045998841e-20, -179.99989318848, 1.52587890625e-05)
+        sp_a3_crazy_box_custom_prop_16.__KeyValueFromString("solid", "6")
+        sp_a3_crazy_box_custom_prop_16.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a3_crazy_box_custom_prop_17 = CreateProp("prop_dynamic", Vector(878.23785400391, -1111.7216796875, 2049.7453613281), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a3_crazy_box_custom_prop_17.SetAngles(89.999992370605, 90, 180)
+        sp_a3_crazy_box_custom_prop_17.__KeyValueFromString("solid", "0")
+        sp_a3_crazy_box_custom_prop_17.__KeyValueFromString("targetname", "genericcustomprop")
+        EntFireByHandle(sp_a3_crazy_box_custom_prop_17, "addoutput", "modelscale 0.8910000026226", 0, null, null)
+        EntFireByHandle(sp_a3_crazy_box_custom_prop_17, "color", "0 0 0 255", 0, null, null)
+
+  }
+
+
+    if (LoopTime==true) {
+        // Generated Teleports
+
+  }
+}
+
 //==================================//
 //CREATE OBJECTS FOR mp_coop_lobby_3//
 //==================================//

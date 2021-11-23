@@ -129,7 +129,7 @@ while (Loop == true) do
                     end
                     -- if the prop has a scale then scale it
                     if (OutputScale ~= 1) then
-                        GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "addoutput", "modelscale ' .. OutputScale .. '", 0, null, null)')
+                        GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "addoutput", "modelscale ' .. OutputScale * 1.1 .. '", 0, null, null)')
                     end
                     -- if the prop has a stored color then apply it
                     if (PropColor ~= "255 255 255 255") then
@@ -166,13 +166,11 @@ while (Loop == true) do
                                             end
                                         end
                                             GenerateLine("     foreach (p in CreateTrigger("..prop31:GetPos().x..", "..prop31:GetPos().y..", "..prop31:GetPos().z..", "..prop21:GetPos().x..", "..prop21:GetPos().y..", "..prop21:GetPos().z..")) {")
-                                            GenerateLine("         if (p.GetClassname() == \"player\") {")
                                             if (outputct ~= "nothingatall") then
-                                                GenerateLine("             p.SetVelocity(Vector("..outputct.x..","..outputct.y..","..outputct.z.."))")
+                                                GenerateLine("         p.SetVelocity(Vector("..outputct.x..","..outputct.y..","..outputct.z.."))")
                                             else
-                                                GenerateLine("             printl(p)")
+                                                GenerateLine("         printl(p)")
                                             end
-                                            GenerateLine("         }")
                                             GenerateLine("     }")
                                             table.insert(GeneratedTriggers, prop31)
                                             table.insert(GeneratedTriggers, prop21)
