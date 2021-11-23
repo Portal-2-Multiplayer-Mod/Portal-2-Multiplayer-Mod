@@ -13,15 +13,20 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "fade_to_death-proxy").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-8880, 2096, -412), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-676, 896, 448), 20).Destroy()
+        Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "tick")
         OnlyOnceSp_A3_Jump_Intro <- true
     }
 
     if (MSPostPlayerSpawn==true) {
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto12-entrance_lift_train"), "StartForward", "", 2, null, null)
-        OnlyOnceSp_A3_Jump_Intro <- false
+        EntFire("tick", "kill", "", 2, null)
     }
 
     if (MSLoop==true) {
+        if (!Entities.FindByName(null, "tick")) {
+            OnlyOnceSp_A3_Jump_Intro <- false
+        }
+
         // Goo Damage Code
         try {
         if (GooHurtTimerPred) { printl()}
