@@ -21,6 +21,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(144, -1280, 1600), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(200, -1272, 1600), 20).Destroy()
         Entities.FindByClassnameNearest("prop_weighted_cube", Vector(576, -1024, 1644), 20).__KeyValueFromString("targetname", "tubecap")
+        Entities.FindByName(null, "AutoInstance1-door_prop").__KeyValueFromString("targetname", "DisableDoorMpMod")
+        EntFire("DisableDoorMpMod", "setanimation", "open", 1, null)
+        //EntFire("room_1_door_open_trigger", "addoutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
     }
 
     if (MSLoop==true) {
