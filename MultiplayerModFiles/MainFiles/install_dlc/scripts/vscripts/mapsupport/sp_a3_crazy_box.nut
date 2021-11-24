@@ -86,7 +86,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Open / Close cube dropper
         local stayopen = false
-        foreach (p in CreateTrigger(934.03686523438, -1169.5228271484, 2253.265625, 817.01788330078, -1055.9055175781, 1955.1036376953)) {
+        foreach (p in CreateTrigger(934.03686523438, -1169.5228271484, 2253.265625, 817.01788330078, -1055.9055175781, 2150.1036376953)) {
             if (p.GetClassname()=="prop_weighted_cube") {
                 if (isopen==false) {
                     isopen = true
@@ -99,7 +99,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (stayopen == false && isopen==true) {
             printl("CLOSED")
-            EntFire("genericcustomprop_maindropper", "setanimation", "close")
+            EntFire("genericcustomprop_maindropper", "setanimation", "close", 2, null)
             isopen = false
         }
 
