@@ -24,6 +24,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "AutoInstance1-door_prop").__KeyValueFromString("targetname", "DisableDoorMpMod")
         EntFire("DisableDoorMpMod", "setanimation", "open", 1, null)
         //EntFire("room_1_door_open_trigger", "addoutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
+        WaitDontFizzleTime <- 0
+        WaitDontFizzle <- false
     }
 
     if (MSLoop==true) {
@@ -44,40 +46,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             GooHurtTimerPred = Time()+1
         }
 
-        // Fizzle the cube
-        local DontFizzle = false
-        foreach (p in CreateTrigger(75, -1746.5970458984, 1500.7188720703, 1450.1014404297, -509.52490234375, 2840.5529785156)) {
-            if (p.GetClassname()=="prop_weighted_cube") {
-                DontFizzle = true
-            }
-        }
-        if (DontFizzle==false) {
-            EntFire("tubecap", "dissolve")
-        }
-
-        foreach (p in CreateTrigger(968.68884277344, -1023.1279296875, 2889.7351074219, 801.07244873047, -1206.5419921875, 2030)) {
-            if (p.GetClassname()=="prop_weighted_cube") {
-                if (rollang >= 160) {
-                    rollang <- -160
-                } else {
-                    if (rollang <= -160) {
-                        rollang <- 160
-                    } else {
-                        rollang <- p.GetAngles().y + 25
-                    }
-                }
-
-                p.SetOrigin(Vector(875, -1112, p.GetOrigin().z - 7))
-                p.SetAngles(rollang, p.GetAngles().y+RandomInt(3, 8), p.GetAngles().z+RandomInt(3, 8))
-            }
-        }
-
         // if nu moved tube cap
         if (movecube==true) {
             if (Entities.FindByName(null, "tubecap")) {
                 local jeff = Entities.FindByName(null, "tubecap")
                 jeff.SetOrigin(Vector(875, -1112, 2720))
-                // jeff.SetVelocity(Vector(10, 0, 0))
+                //OVERRIDE CUBE FIZZLE
+                WaitDontFizzle <- true
+                WaitDontFizzleTime <- Time()+1
                 movecube <- false
             }
         }
@@ -92,6 +68,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 SendToConsole("sv_cheats 1")
                 SendToConsole("ent_create_portal_weighted_antique ")
                 SendToConsole("sv_cheats 0")
+                //OVERRIDE CUBE FIZZLE
+                WaitDontFizzle <- true
+                WaitDontFizzleTime <- Time()+1
             }
         }
 
@@ -122,6 +101,43 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             printl("CLOSED")
             EntFire("genericcustomprop_maindropper", "setanimation", "close")
             isopen = false
+        }
+
+        // Cube Fizzle Override
+        local DontFizzle = false
+        if (WaitDontFizzle==true) {
+            if (Time()>=WaitDontFizzleTime) {
+                WaitDontFizzle <- false
+            } else {
+                DontFizzle = true
+            }
+        }
+
+        // Fizzle the cube
+        foreach (p in CreateTrigger(75, -1746.5970458984, 1500.7188720703, 1450.1014404297, -509.52490234375, 2840.5529785156)) {
+            if (p.GetClassname()=="prop_weighted_cube") {
+                DontFizzle = true
+            }
+        }
+        if (DontFizzle==false) {
+            EntFire("tubecap", "dissolve")
+        }
+
+        foreach (p in CreateTrigger(968.68884277344, -1023.1279296875, 2889.7351074219, 801.07244873047, -1206.5419921875, 2030)) {
+            if (p.GetClassname()=="prop_weighted_cube") {
+                if (rollang >= 160) {
+                    rollang <- -160
+                } else {
+                    if (rollang <= -160) {
+                        rollang <- 160
+                    } else {
+                        rollang <- p.GetAngles().y + 25
+                    }
+                }
+
+                p.SetOrigin(Vector(875, -1112, p.GetOrigin().z - 7))
+                p.SetAngles(rollang, p.GetAngles().y+RandomInt(3, 8), p.GetAngles().z+RandomInt(3, 8))
+            }
         }
 
         // Elevator changelevel
