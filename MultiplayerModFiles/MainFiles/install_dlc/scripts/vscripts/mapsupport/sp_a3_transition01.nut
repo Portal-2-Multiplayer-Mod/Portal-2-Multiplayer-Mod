@@ -9,11 +9,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun==true) {
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto2-entrance_lift_train"), "StartForward", "", 0, null, null)
-        // Destroy objects
+        // Destroy / Edit objects
         Entities.FindByName(null, "fall_death_fade").Destroy()
         Entities.FindByName(null, "pumproom_door_bottom_trigger").Destroy()
         Entities.FindByName(null, "pumproom_door_top_prop").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "pumproom_portal_top").__KeyValueFromString("targetname", "moja2")
+        Entities.FindByName(null, "sphere_entrance_lift_movelinear").__KeyValueFromString("blockdamage", "10")
         // Here if we need to ent_fire something
         EntFireByHandle(Entities.FindByName(null, "pumproom_door_top_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
         EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
