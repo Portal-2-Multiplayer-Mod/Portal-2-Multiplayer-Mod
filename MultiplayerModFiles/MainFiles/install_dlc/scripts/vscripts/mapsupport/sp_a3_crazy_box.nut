@@ -91,7 +91,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 if (isopen==false) {
                     isopen = true
                     printl("OPENED")
-                    EntFire("genericcustomprop_maindropper", "setanimation", "open")
+                    EntFire("genericcustomprop_maindropper", "setanimation", "open", 0.5, null)
                 }
                 stayopen = true
             }
@@ -99,7 +99,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (stayopen == false && isopen==true) {
             printl("CLOSED")
-            EntFire("genericcustomprop_maindropper", "setanimation", "close", 2, null)
+            EntFire("genericcustomprop_maindropper", "setanimation", "close", 2.5, null)
             isopen = false
         }
 
