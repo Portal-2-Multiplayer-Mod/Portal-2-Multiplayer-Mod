@@ -51,12 +51,14 @@ configdefaults = [
     "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
     "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
     "",
-    "cfgvariant = 11 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
+    "cfgvariant = 13 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
     "",
     "# DISCLAIMER : I recommend you edit this through the gui as this",
-    "#              config file has some unstable / exparamental that",
-    "#              will in all most likely break the game if edited!",
+    "#              config file has some unstable objects that may or",
+    "#              can in possibly break the game if edited wrong!!!",
     "",
+    "#-----------------------------------",
+    "UseProton = null # Set to true if your using steams compatibilty layer for linux",
     "#-----------------------------------",
     "DevMode = false # Set to true if your a developer",
     "#-----------------------------------",
@@ -168,7 +170,7 @@ for mainline in configdefaults:
 
         if (defoutputline != "DO NOT WRITE") & (outputline != "DO NOT WRITE"):
             if (outputline.find("cfgvariant") == -1) & (defoutputline.find("cfgvariant") == -1):
-                print("defoutputline: " + defoutputline[ : defoutputline.find("=")] + " outputline: " + outputline[ : outputline.find("=")])
+                #print("defoutputline: " + defoutputline[ : defoutputline.find("=")] + " outputline: " + outputline[ : outputline.find("=")])
                 if (outputline != defoutputline):
                     if (outputline[ : outputline.find("=")] == defoutputline[ : defoutputline.find("=")]):
                         if (outputline[outputline.find("=") : ] != defoutputline[defoutputline.find("=") : ]):
@@ -202,11 +204,84 @@ for line in outputconfig:
     else:
         editedconfigdata.append(line)
 
+
+
+# Proton compatibilty
+
+# default values
+IsOnProtonOUT = False
+
+if (iow):
+    print("Windows does not support Proton (this is a linux only feature) (NOT AN ERROR JUST A MESSAGE)")
+else:
+    for line in outputconfig:
+        if (line == "UseProton=null"):
+            # prompt the user to type y or n
+            HasTypedValidInput = False
+            while (HasTypedValidInput == False):
+                UseProtonTemp = input("Do you want to use Proton? [y/N]: ").lower()
+                if (UseProtonTemp == "y"):
+                    IsOnProtonOUT = True
+                    HasTypedValidInput = True
+                    # get the lines from config file
+                    f = open(configpath, "r", encoding="utf-8")
+                    fcfgf = f.readlines()
+                    f.close()
+                    newconfig = []
+                    # for each line in the config file
+                    for line in fcfgf:
+                        # replace the text "UseProton = null" with "UseProton = true"
+                        line = line.replace("UseProton = null", "UseProton = true")
+                        newconfig.append(line)
+                    # delete the old config file
+                    os.remove(configpath)
+                    # write the new config file
+                    f = open(configpath, "w", encoding="utf-8")
+                    for line in newconfig:
+                        f.write(line)
+                    f.close()
+                else:
+                    if (UseProtonTemp == "n"):
+                        IsOnProtonOUT = False
+                        HasTypedValidInput = True
+                        # get the lines from config file
+                        f = open(configpath, "r", encoding="utf-8")
+                        fcfgf = f.readlines()
+                        f.close()
+                        newconfig = []
+                        # for each line in the config file
+                        for line in fcfgf:
+                            # replace the text "UseProton = null" with "UseProton = true"
+                            line = line.replace("UseProton = null", "UseProton = false")
+                            newconfig.append(line)
+                        # delete the old config file
+                        os.remove(configpath)
+                        # write the new config file
+                        f = open(configpath, "w", encoding="utf-8")
+                        for line in newconfig:
+                            f.write(line)
+                        f.close()
+                    else:
+                        print("Invalid input, please type y or n")
+        # if in the config file,proton is on, then set the variable to true
+        if (line == "UseProton=true"):
+            IsOnProtonOUT = True
+        # if in the config file,proton is off, then set the variable to false
+        if (line == "UseProton=false"):
+            IsOnProtonOUT = False
+
+
 # LAUNCHER
 def Launch():
 
-    # Is on Proton (Linux running Windows applications)
-    IsOnProton = False
+    IsOnProton = IsOnProtonOUT
+
+    # profile
+    print(":====PROFILE====:")
+    print("IsOnProton: " + str(IsOnProton))
+    print("IsOnWindows: " + str(iow))
+    print(":===============:")
+
 
     # Attempt to load psutil if on Linux
     if (iow):
@@ -460,26 +535,29 @@ def Launch():
             f2.close()
             print("Patched engine.so")
         except:
-            try:
-                IsOnProton = True
-                print("Failed to open engine.so trying to patch server.dll")
-                # Open engine.dll into binary
-                f = open(owd + "/bin/engine.dll", 'rb')
-                data = f.read()
-                f.close()
+            print("Failed to patch engine.so")
+            IsOnProton = False
 
-                # Remove Steam validation
-                data = data.replace(b't}\x8b\x17\x8b\x82\xcc\x00\x00', b'\xeb}\x8b\x17\x8b\x82\xcc\x00\x00')
-                data = data.replace(bytes.fromhex("84 C0 74 1f 8b 16 8b 82 cc 00 00 00 68 00 8f 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b 06 68 e8 8e 37 10 e9 cf fe ff ff 8b 45 1c 8b 16 8b 92 f4 00 00 00 57 50 53 8b"), bytes.fromhex("a8 00 74 1f 8b 16 8b 82 cc 00 00 00 68 00 8f 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b 06 68 e8 8e 37 10 e9 cf fe ff ff 8b 45 1c 8b 16 8b 92 f4 00 00 00 57 50 53 8b"))
+        try:
+            IsOnProton = True
+            print("Failed to open engine.so trying to patch server.dll")
+            # Open engine.dll into binary
+            f = open(owd + "/bin/engine.dll", 'rb')
+            data = f.read()
+            f.close()
 
-                # Write changes into a new toplevel engine.dll
-                f2 = open("engine.dll", 'wb')
-                f2.write(data)
-                f2.close()
-                print("Patched engine.dll")
-            except:
-                print("Failed to patch engine.dll")
-                IsOnProton = False
+            # Remove Steam validation
+            data = data.replace(b't}\x8b\x17\x8b\x82\xcc\x00\x00', b'\xeb}\x8b\x17\x8b\x82\xcc\x00\x00')
+            data = data.replace(bytes.fromhex("84 C0 74 1f 8b 16 8b 82 cc 00 00 00 68 00 8f 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b 06 68 e8 8e 37 10 e9 cf fe ff ff 8b 45 1c 8b 16 8b 92 f4 00 00 00 57 50 53 8b"), bytes.fromhex("a8 00 74 1f 8b 16 8b 82 cc 00 00 00 68 00 8f 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b 06 68 e8 8e 37 10 e9 cf fe ff ff 8b 45 1c 8b 16 8b 92 f4 00 00 00 57 50 53 8b"))
+
+            # Write changes into a new toplevel engine.dll
+            f2 = open("engine.dll", 'wb')
+            f2.write(data)
+            f2.close()
+            print("Patched engine.dll")
+        except:
+            print("Failed to patch engine.dll")
+            IsOnProton = False
 
     # # # # # # # # # # # # # # # # #
     #        END OF PATCHING        #
