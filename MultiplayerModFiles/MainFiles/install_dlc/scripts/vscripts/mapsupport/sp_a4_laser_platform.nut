@@ -15,6 +15,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(4088, -528, -2080), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(2267, -603, -142), 200).__KeyValueFromString("targetname", "mpmoddrop")
         Sp_A4_Laser_Platform_1 <- false
+        Entities.FindByClassnameNearest("trigger_multiple", Vector(2656, -696, -1984), 200).__KeyValueFromString("targetname", "doortriggeroverride")
+        EntFire("doortriggeroverride", "addoutput", "OnStartTouch doortriggeroverride:kill::0.01", 1, null)
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -22,20 +24,25 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+
         if (!Entities.FindByName(null, "mpmoddrop")) {
             if (Sp_A4_Laser_Platform_1==false) {
                 local p = null
-                while (p = Entities.FindByClassname(null, "player")) {
+                while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(2318, -600, -142))
                     Sp_A4_Laser_Platform_1 <- true
                 }
             }
+
+            // Set new spawnpoint
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1175, -1248, -78), 600)) {
+                p.SetOrigin(Vector(2385, -600, -88))
+                p.SetAngles(0 0 0)
+            }
+
         }
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "trigger_once")) {
-            printl(ent.GetName())
-        }
-        printl("=============================")
+
         // Make our own changelevel trigger
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(3456, -1056, -2648), 200)) {
