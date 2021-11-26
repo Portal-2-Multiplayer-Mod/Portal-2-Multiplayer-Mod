@@ -24,7 +24,7 @@
 //-----------------------------------
 DevMode <- true // Set to true if you're a developer
 //-----------------------------------
-DevInfo <- true // Set to true if you want to see the developer info
+DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
 UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
@@ -32,7 +32,7 @@ DedicatedServer <- false // Set to true if you want to run the server as a dedic
 //-----------------------------------
 RandomTurrets <- false // Set to true if you want to randomize every Turret's models and colors (for fun lol)
 //-----------------------------------
-TickSpeed <- 0 // Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)
+TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
 //-----------------------------------
@@ -884,6 +884,8 @@ function OnPlayerRespawn(player) {
 ///////////////////////////////////////
 
 function PostMapLoad() {
+    // Force spawn players in map
+    AddBranchLevelName( 1, "" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
     // Enable fast download
