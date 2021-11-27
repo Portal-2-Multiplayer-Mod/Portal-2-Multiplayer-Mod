@@ -808,8 +808,6 @@ function OnPlayerJoin(p, script_scope) {
 
     //# Set cvars on joining players' client #//
     SendToConsole("sv_timeout 3")
-    SendToConsole("gameinstructor_enable 1")
-    EntFireByHandle(clientcommand, "Command", "gameinstructor_enable 1", 0, p, p)
     EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
     EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
     EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
