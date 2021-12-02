@@ -224,14 +224,18 @@ function init() {
     // Load plugin
     if (LoadPlugin==true) {
         if("GetPlayerName" in this) {
-            printl("=================================")
-            printl("Plugin already loaded skipping...")
-            printl("=================================")
+            if (GetDeveloperLevel() == 1) {
+                printl("============================================")
+                printl("P2:MM plugin has already loaded! Handling...")
+                printl("============================================")
+            }
             PluginLoaded <- true
         } else {
-            printl("============================")
-            printl("Plugin not loaded loading...")
-            printl("============================")
+            if (GetDeveloperLevel() == 1) {
+                printl("============================================")
+                printl("P2:MM plugin has not been loaded! Loading...")
+                printl("============================================")
+            }
             pluginloadcommand <- Entities.CreateByClassname("point_servercommand")
             RunPluginLoad <- true
             // SendToConsole("plugin_load pl")
@@ -327,13 +331,13 @@ function TriggerOnceHook(TriggerName, FunctionName) {
 function CacheModel(ModelName) {
     if (Entities.FindByModel(null, "models/"+ModelName)) {
             if (GetDeveloperLevel() == 1) {
-                printl("Model: " + ModelName + " is already cached!")
+                printl("(P2:MM): Model " + ModelName + " is already cached!")
             }
         } else {
         try {
             if (servercommand) {
                 if (GetDeveloperLevel() == 1) {
-                    printl("servercommand exists")
+                    printl("(P2:MM): point_servercommand to cache props already exists!")
                 }
             }
         } catch(exception) {
@@ -347,7 +351,7 @@ function CacheModel(ModelName) {
         CachedModels.push("models/"+ModelName)
 
         if (GetDeveloperLevel() == 1) {
-            printl("Model: " + ModelName + " has been cached sucessfully!")
+            printl("(P2:MM): Model " + ModelName + " has been cached sucessfully!")
         }
     }
 }
@@ -403,7 +407,9 @@ function loop() {
                     } catch(exception) {
                         OldPlayerPos <- Vector(0, 0, 0)
                         OldPlayerAngles <- Vector(0, 0, 0)
-                        printl("ERROR : could not cache player pos (catostrophic)")
+                        if (GetDeveloperLevel() == 1) {
+                            printl("(P2:MM): Error: Could not cache player position. This is catastrophic!")
+                        }
                         cacheoriginalplayerposition <- 1
                     }
                 }
@@ -698,7 +704,7 @@ function loop() {
             ent.__KeyValueFromString("HalfHeight", randomportalsizeh)
         }
         } catch(exception) {
-            // printl("Error: " + exception)
+            // printl("(P2:MM): Error: " + exception)
         }
         // printl("################################")
     }
@@ -724,9 +730,9 @@ function loop() {
     //## If not in multiplayer then disconnect ##//
     try {
         if (Entities.FindByClassname(null, "player").GetName() == "") {
-            printl("NOT PLAYING IN MULTIPLAYER!!! (disconnecting)")
-            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "FORCEDISCONNECTMPMOD")
-            EntFire("FORCEDISCONNECTMPMOD", "command", "disconnect \"You cannot play singleplayer when Portal 2 is launched from the Multiplayer Mod Launcher. Please close the game and start it from Steam\"", 1, null)
+            printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
+            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "forcedisconnectclient")
+            EntFire("forcedisconnectclient", "command", "disconnect \"You cannot play singleplayer games when Portal 2 is launched from the Multiplayer Mod launcher. Please close the game and start it from Steam.\"", 1, null)
         }
     } catch (exception) { }
 }
@@ -781,14 +787,16 @@ function OnPlayerJoin(p, script_scope) {
             ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
         }
     } catch (exception) {
-        printl("FAILED TO RENAME PORTALS" + exception)
+        if (GetDeveloperLevel() == 1) {
+            printl("(P2:MM): Failed to rename portals" + exception)
+        }
     }
 
     //# Set viewmodel targetnames so we can tell them apart #//
     local ent = null
     while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
         EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
-        // printl("Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
+        // printl("(P2:MM): Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
         // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
         // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
     }
@@ -864,8 +872,10 @@ function OnPlayerJoin(p, script_scope) {
 //////////////////////
 
 function OnPlayerDeath(player) {
-    printl("Player death")
-    MapSupport(false, false, false, false, false, player, false)
+   if (GetDeveloperLevel() == 1) {
+        printl("(P2:MM): Player died!")
+        MapSupport(false, false, false, false, false, player, false)
+   }
 }
 
 ////////////////////////
@@ -873,8 +883,10 @@ function OnPlayerDeath(player) {
 ////////////////////////
 
 function OnPlayerRespawn(player) {
-    printl("Player respawn")
-    MapSupport(false, false, false, false, false, false, player)
+    if (GetDeveloperLevel() == 1) {
+        printl("(P2:MM): Player respawned!")
+        MapSupport(false, false, false, false, false, false, player)
+    }
 }
 
 ///////////////////////////////////////
@@ -917,7 +929,7 @@ function GeneralOneTime() {
 
     // Load the plugin if it's not already loaded
     if (RunPluginLoad==true) {
-        printl("Loading plugin... Restarting map")
+        printl("(P2:MM): Loading plugin... Restarting map")
         // Load plugin
         EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
         // Wait for plugin to load and then restart map
@@ -944,7 +956,9 @@ function GeneralOneTime() {
     try {
         if (OrangeOldPlayerPos) { }
     } catch(exeption) {
-        printl("OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
+        if (GetDeveloperLevel() == 1) {
+            printl("(P2:MM): OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
+        }
         OrangeOldPlayerPos <- OldPlayerPos
         OrangeCacheFailed <- true
     }
@@ -962,7 +976,9 @@ function GeneralOneTime() {
             }
         }
     } catch(exeption) {
-        printl("Blue dropper not found")
+        if (GetDeveloperLevel() == 1) {
+            printl("(P2:MM): Blue dropper not found!")
+        }
     }
 
     // Force open the red player droppers
@@ -987,7 +1003,9 @@ function GeneralOneTime() {
             }
         }
     } catch(exeption) {
-        printl("Red dropper not found")
+        if (GetDeveloperLevel() == 1) {
+            printl("(P2:MM): Red dropper not found!")
+        }
     }
     local radius = null
 
