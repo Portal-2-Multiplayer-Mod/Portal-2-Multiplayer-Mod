@@ -963,11 +963,30 @@ def rungui():
                             print("ModPatch not found")
                             dodowloadupdate = True
 
-
                         portal2rootdir = os.getcwd()
                         if (dodowloadupdate==True):
-                            print("Downloading update")
-                            DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatch)
+                            from tkinter import Tk, Label, Button, Toplevel
+                            #Create an instance of Tkinter frame
+                            win = Tk()
+                            #Set the geometry of Tkinter frame
+                            win.geometry("500x250")
+
+                            def yesupdate():
+                                win.destroy()
+                                DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatch)
+
+                            def noupdate():
+                                win.destroy()
+                                print("Update cancelled")
+
+                            Label(win, text="There Are Updates Avalible Do You Want To Download?", font=('Helvetica 14 bold')).pack(pady=20)
+                            Label(win, text="current version: " + str(curmodpatch), font=('Helvetica 14')).place(x=10, y=50)
+                            Label(win, text="new version: " + str(modpatch), font=('Helvetica 14')).place(x=10, y=75)
+                            #Create a button in the main Window to open the popup
+                            ttk.Button(win, text= "yes", command=yesupdate).place(x=160, y=150)
+                            ttk.Button(win, text= "no", command=noupdate).place(x=260, y=150)
+                            # make another button at y=20 x=20
+                            win.mainloop()
                         else:
                             print("No update needed")
                         LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
@@ -1038,24 +1057,5 @@ def DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatchmsg):
         f = open(portal2rootdir + "/MultiplayerModMount/ModPatch", "w")
         f.write(modpatchmsg)
 
-# # POPUP BOX
-# def PopupBoxYN(textinp):
-#     from tkinter import Tk, Label, Button, Toplevel
-#     #Create an instance of Tkinter frame
-#     win = Tk()
-#     #Set the geometry of Tkinter frame
-#     win.geometry("200x100")
-
-#     retT = True
-#     retF = False
-
-#     Label(win, text=textinp, font=('Helvetica 14 bold')).pack(pady=20)
-#     #Create a button in the main Window to open the popup
-#     ttk.Button(win, text= "yes", command= lambda: return True).place(x=20, y=65)
-#     ttk.Button(win, text= "no", command= lambda: return False).place(x=100, y=65)
-#     # make another button at y=20 x=20
-#     win.mainloop()
-
-# print("POPUPOUT" +PopupBoxYN("Do you want to update?"))
 # Run the GUI
 rungui()
