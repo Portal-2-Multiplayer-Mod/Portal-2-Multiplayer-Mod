@@ -948,17 +948,18 @@ def rungui():
                         # if the mod is older than the github repo
                         try:
                             # open /MultiplayerModMount/ModPatch
-                            f = open("MultiplayerModMount/ModPatch", "r")
-                            # read the contents of the file
-                            curmodpatch = f.read()
-                            # close the file
-                            f.close()
-                            # replace all newlines with nothing
-                            curmodpatch = curmodpatch.replace("\n", "")
-                            curmodpatch = curmodpatch.replace(" ", "")
-                            curmodpatch = int(curmodpatch)
-                            if (curmodpatch < int(modpatch.replace("\n", "").replace(" ", ""))):
-                                dodowloadupdate = True
+                            if (os.path.exists("MultiplayerModMount/ModPatch") == True):
+                                f = open("MultiplayerModMount/ModPatch", "r")
+                                # read the contents of the file
+                                curmodpatch = f.read()
+                                # close the file
+                                f.close()
+                                # replace all newlines with nothing
+                                curmodpatch = curmodpatch.replace("\n", "")
+                                curmodpatch = curmodpatch.replace(" ", "")
+                                curmodpatch = int(curmodpatch)
+                                if (curmodpatch < int(modpatch.replace("\n", "").replace(" ", ""))):
+                                    dodowloadupdate = True
                         except:
                             print("ModPatch not found")
                             dodowloadupdate = True
@@ -1042,7 +1043,21 @@ def DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatchmsg):
         DownloadFile(githubrepodownload, portal2rootdir + "/tempinstallmod.zip")
 
     if (iow):
-        print("extracting mod")
+        # remove MultiplayerModMount if it exists
+        if (os.path.exists(portal2rootdir + "\\MultiplayerModMount")):
+            shutil.rmtree(portal2rootdir + "\\MultiplayerModMount")
+        # for each file in tempinstallmod
+        for file in os.listdir(portal2rootdir + "\\tempinstallmod"):
+            # rename file to Memes
+            os.rename(portal2rootdir + "\\tempinstallmod\\" + file, portal2rootdir + "\\tempinstallmod\\" + "multiplayermodtemp")
+        # copy the folder from prepath to the current working directory
+        shutil.copytree(portal2rootdir + "\\tempinstallmod\\" + "multiplayermodtemp\\" + prepath, portal2rootdir + "\\MultiplayerModMount")
+        print(portal2rootdir + "\\MultiplayerModMount")
+        # delete the folder from the current working directory
+        shutil.rmtree(portal2rootdir + "\\tempinstallmod")
+        # write the modpatch to the file
+        f = open(portal2rootdir + "\\MultiplayerModMount\\ModPatch", "w")
+        f.write(modpatchmsg)
     else:
         # remove MultiplayerModMount if it exists
         if (os.path.exists(portal2rootdir + "/MultiplayerModMount")):
