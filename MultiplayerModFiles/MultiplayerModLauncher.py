@@ -918,11 +918,11 @@ def rungui():
                         # Start the game
                         print(SectionConfig("$portal2"))
                         # get current working directory
-                        if (iow):
-                            DownloadFile("https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip", os.getcwd() + "\\tempinstallmod.zip")
-                        else:
-                            DownloadFile("https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip", os.getcwd() + "/tempinstallmod.zip")
-                        #LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
+                        #if (iow):
+                        #    DownloadFile("https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip", os.getcwd() + "\\tempinstallmod.zip")
+                        #else:
+                        #    DownloadFile("https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip", os.getcwd() + "/tempinstallmod.zip")
+                        LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
                     # if proton checkbox is pressed
                     if (iow):
                         continue
