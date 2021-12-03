@@ -962,7 +962,8 @@ def rungui():
                         portal2rootdir = os.getcwd()
                         if (dodowloadupdate==True):
                             DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatch)
-
+                        else:
+                            print("No update needed")
                         #LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
                     # if proton checkbox is pressed
                     if (iow):
@@ -1003,7 +1004,7 @@ def DownloadFile(url, dir):
     os.remove(dir)
 
 # UPDATER
-def DownloadUpdate(prepath, githubrepodownload, portal2rootdir):
+def DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatchmsg):
     # # prepath
     # prepath = "/MultiplayerModFiles/ModFiles/portal2"
     # Start the game
@@ -1029,6 +1030,9 @@ def DownloadUpdate(prepath, githubrepodownload, portal2rootdir):
         print(portal2rootdir + "/MultiplayerModMount")
         # delete the folder from the current working directory
         shutil.rmtree(portal2rootdir + "/tempinstallmod")
+        # write the modpatch to the file
+        f = open(portal2rootdir + "/MultiplayerModMount/ModPatch", "w")
+        f.write(modpatchmsg)
 
 # Run the GUI
 rungui()
