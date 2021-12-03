@@ -25,260 +25,46 @@ if os.name == 'nt':
 else:
     print("(System should be running Linux)")
 
-owd = os.getcwd()
-
-# Get current directory if on Windows
-if (iow):
-    os.chdir(owd.replace("\\MultiplayerModFiles", ""))
-# Get current directory if on Linux
-else:
-    os.chdir(owd.replace("/MultiplayerModFiles", ""))
-owd = os.getcwd()
-print(os.getcwd())
-
-
-
-
-# CONFIG FILE
-
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
-# DISCLAIMER : make sure to put all of your config values                     #
-# below all the other values that are set using that same name in mapspawn.nut#
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
-
-# default config file
-configdefaults = [
-    "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
-    "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
-    "",
-    "cfgvariant = 13 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
-    "",
-    "# DISCLAIMER : I recommend you edit this through the gui as this",
-    "#              config file has some unstable objects that may or",
-    "#              can in possibly break the game if edited wrong!!!",
-    "",
-    "#-----------------------------------",
-    "UseProton = null # Set to true if your using steams compatibilty layer for linux",
-    "#-----------------------------------",
-    "DevMode = false # Set to true if your a developer",
-    "#-----------------------------------",
-    "DevInfo = false # Set to true if your a developer",
-    "#-----------------------------------",
-    "UsePlugin = false # Set to true if you want to use the plugin (LINUX ONLY)",
-    "#-----------------------------------",
-    "DedicatedServer = false # Set to true if you want to run the server as a dedicated server (INDEV)",
-    "#-----------------------------------",
-    "RandomTurretModels = false # Set to true if you want to randomize the turret models (INDEV)",
-    "#-----------------------------------",
-    "TickSpeed = 0.00 # Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)",
-    "#-----------------------------------",
-    "RandomPortalSize = false # Set to true if you want to randomize the portal size",
-    "#-----------------------------------",
-]
-
-configdefaults = configdefaults
-
-if (iow):
-    configpath = "MultiplayerModFiles\\mpmod.cfg"
-else:
-    configpath = "MultiplayerModFiles/mpmod.cfg"
-
-# create a config file if it doesn't exist
-
-if not os.path.exists(configpath):
-    # create a config file
-    f = open(configpath, "w", encoding="utf-8")
-    # write the default values
-    for line in configdefaults:
-        f.write(line + "\n")
-    f.close()
-
-
-
-# CONFIG FILE READ
-
-# open file for reading
-f = open(configpath, "r")
-# read the file
-lines = f.readlines()
-# close the file
-f.close()
-
-# check if there is an update to the config file
-for line in lines:
-    if (line.find("cfgvariant") != -1):
-        curconfigver = line.split(" = ")[1]
-        # replace everything that isnt a number with a nothing
-        curconfigver = curconfigver.replace("[^0-9]", "")
-        # convert to int
-        curconfigver = curconfigver[0 : 1]
-        curconfigver = int(curconfigver)
-
-        print("Current Config Version: " + str(curconfigver))
-
-for line in configdefaults:
-    if (line.find("cfgvariant") != -1):
-        newconfigver = line.split(" = ")[1]
-        # replace everything that isnt a number with a nothing
-        newconfigver = newconfigver.replace("[^0-9]", "")
-        # convert to int
-        newconfigver = newconfigver[0 : 1]
-        newconfigver = int(newconfigver)
-
-        print("New Config Version: " + str(newconfigver))
-
-# update config file if needed
-# read old config data
-f = open(configpath, "r", encoding="utf-8")
-data = f.readlines()
-f.close()
-os.remove(configpath)
-
-f = open(configpath, "w", encoding="utf-8")
-for mainline in configdefaults:
-    line = mainline.strip()
-    line = line.replace(" ", "")
-    if (line != ""):
-        if (line.find("#") != -1):
-            line = line[ : line.find("#")]
-            if (line != ""):
-                outputline = line
-            else:
-                # f.write(mainline + "\n")
-                outputline = "DO NOT WRITE"
-        else:
-            outputline = line
+# Portal 2 LAUNCHER
+def LaunchVanillaPortal2():
+    owd = os.getcwd()
+        # Get current directory if on Windows
+    if (iow):
+        os.chdir(owd.replace("\\MultiplayerModFiles", ""))
+    # Get current directory if on Linux
     else:
-        # skip blank lines
-        # f.write(mainline + "\n")
-        outputline = "DO NOT WRITE"
+        os.chdir(owd.replace("/MultiplayerModFiles", ""))
+    owd = os.getcwd()
+    print(os.getcwd())
 
-    for maindefline in data:
-        line22 = maindefline.strip()
-        line22 = line22.replace(" ", "")
-        if (line22 != ""):
-            if (line22.find("#") != -1):
-                line22 = line22[ : line22.find("#")]
-                if (line22 != ""):
-                    defoutputline = line22
-                else:
-                    defoutputline = "DO NOT WRITE"
+    outputconfig = []
+    editedconfigdata = []
+
+    # get raw config data from file
+    for line in lines:
+        line = line.strip()
+        line = line.replace(" ", "")
+        if (line != ""):
+            if (line.find("#") != -1):
+                line = line[ : line.find("#")]
+                if (line != ""):
+                    outputconfig.append(line)
             else:
-                defoutputline = line22
-        else:
-            defoutputline = "DO NOT WRITE"
-
-        if (defoutputline != "DO NOT WRITE") & (outputline != "DO NOT WRITE"):
-            if (outputline.find("cfgvariant") == -1) & (defoutputline.find("cfgvariant") == -1):
-                #print("defoutputline: " + defoutputline[ : defoutputline.find("=")] + " outputline: " + outputline[ : outputline.find("=")])
-                if (outputline != defoutputline):
-                    if (outputline[ : outputline.find("=")] == defoutputline[ : defoutputline.find("=")]):
-                        if (outputline[outputline.find("=") : ] != defoutputline[defoutputline.find("=") : ]):
-                            if (line != ""):
-                                mainline = mainline.replace(outputline[outputline.find("=")+1 : ], defoutputline[defoutputline.find("=")+1 : ])
-
-
-    f.write(mainline + "\n")
-f.close()
-
-outputconfig = []
-editedconfigdata = []
-
-# get raw config data from file
-for line in lines:
-    line = line.strip()
-    line = line.replace(" ", "")
-    if (line != ""):
-        if (line.find("#") != -1):
-            line = line[ : line.find("#")]
-            if (line != ""):
                 outputconfig.append(line)
-        else:
-            outputconfig.append(line)
 
-# edit config data for vscript
-for line in outputconfig:
-    line = line.replace("=", " <- ")
-    if (line.find("cfgvariant") != -1):
-        print("Config Version: " + line.split(" <- ")[1])
-    else:
-        editedconfigdata.append(line)
-
-
-
-# Proton compatibilty
-
-# default values
-IsOnProtonOUT = False
-
-if (iow):
-    print("Windows does not support Proton (this is a linux only feature) (NOT AN ERROR JUST A MESSAGE)")
-else:
+    # edit config data for vscript
     for line in outputconfig:
-        if (line == "UseProton=null"):
-            # prompt the user to type y or n
-            HasTypedValidInput = False
-            while (HasTypedValidInput == False):
-                UseProtonTemp = input("Do you want to use Proton? [y/N]: ").lower()
-                if (UseProtonTemp == "y"):
-                    IsOnProtonOUT = True
-                    HasTypedValidInput = True
-                    # get the lines from config file
-                    f = open(configpath, "r", encoding="utf-8")
-                    fcfgf = f.readlines()
-                    f.close()
-                    newconfig = []
-                    # for each line in the config file
-                    for line in fcfgf:
-                        # replace the text "UseProton = null" with "UseProton = true"
-                        line = line.replace("UseProton = null", "UseProton = true")
-                        newconfig.append(line)
-                    # delete the old config file
-                    os.remove(configpath)
-                    # write the new config file
-                    f = open(configpath, "w", encoding="utf-8")
-                    for line in newconfig:
-                        f.write(line)
-                    f.close()
-                else:
-                    if (UseProtonTemp == "n"):
-                        IsOnProtonOUT = False
-                        HasTypedValidInput = True
-                        # get the lines from config file
-                        f = open(configpath, "r", encoding="utf-8")
-                        fcfgf = f.readlines()
-                        f.close()
-                        newconfig = []
-                        # for each line in the config file
-                        for line in fcfgf:
-                            # replace the text "UseProton = null" with "UseProton = true"
-                            line = line.replace("UseProton = null", "UseProton = false")
-                            newconfig.append(line)
-                        # delete the old config file
-                        os.remove(configpath)
-                        # write the new config file
-                        f = open(configpath, "w", encoding="utf-8")
-                        for line in newconfig:
-                            f.write(line)
-                        f.close()
-                    else:
-                        print("Invalid input, please type y or n")
-        # if in the config file,proton is on, then set the variable to true
-        if (line == "UseProton=true"):
-            IsOnProtonOUT = True
-        # if in the config file,proton is off, then set the variable to false
-        if (line == "UseProton=false"):
-            IsOnProtonOUT = False
+        line = line.replace("=", " <- ")
+        if (line.find("cfgvariant") != -1):
+            print("Config Version: " + line.split(" <- ")[1])
+        else:
+            editedconfigdata.append(line)
 
-
-# LAUNCHER
-def Launch():
-
-    IsOnProton = IsOnProtonOUT
+    IsOnProtonIn = IsOnProton
 
     # profile
     print(":====PROFILE====:")
-    print("IsOnProton: " + str(IsOnProton))
+    print("IsOnProtonIn: " + str(IsOnProtonIn))
     print("IsOnWindows: " + str(iow))
     print(":===============:")
 
@@ -536,10 +322,10 @@ def Launch():
             print("Patched engine.so")
         except:
             print("Failed to patch engine.so")
-            IsOnProton = False
+            IsOnProtonIn = False
 
         try:
-            IsOnProton = True
+            IsOnProtonIn = True
             print("Failed to open engine.so trying to patch server.dll")
             # Open engine.dll into binary
             f = open(owd + "/bin/engine.dll", 'rb')
@@ -557,7 +343,7 @@ def Launch():
             print("Patched engine.dll")
         except:
             print("Failed to patch engine.dll")
-            IsOnProton = False
+            IsOnProtonIn = False
 
     # # # # # # # # # # # # # # # # #
     #        END OF PATCHING        #
@@ -661,7 +447,10 @@ def Launch():
         if (iow):
             subprocess.run(["portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3"])
         else:
-            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3")
+            from subprocess import Popen
+            #os.spawnlp(os.P_NOWAIT, "steam")
+            #os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3")
+            subprocess.Popen(["steam", "-applaunch", "620", "-novid", "-allowspectators", "-nosixense", "+map", "mp_coop_lobby_3"])
             print("Running game")
     except:
         print("Failed to launch Portal 2")
@@ -752,16 +541,17 @@ def Launch():
 
 
     # Wait for game to close
-    print("=========================================================================")
+    print("=============================================================================")
     print("WARNING: DO NOT CLOSE THIS PYTHON WINDOW!!! WAITING FOR PORTAL 2 TO CLOSE")
-    print("=========================================================================")
+    print("=============================================================================")
     if (iow):
         # Wait for portal2.exe to close
         RemoveMultiplayerFiles()
+        rungui()
     else:
-        time.sleep(2)
-        if (IsOnProton==True):
-            time.sleep(12)
+        time.sleep(20)
+        if (IsOnProtonIn==True):
+            time.sleep(10)
         while True:
             # Check if any Portal 2 process is running
             if checkIfProcessRunning('ortal'):
@@ -770,6 +560,7 @@ def Launch():
                 print('Portal 2 not found closing')
                 print("=======Game Closed=======")
                 RemoveMultiplayerFiles()
+                rungui()
                 break
             time.sleep(1)
 
@@ -783,8 +574,236 @@ def Launch():
 
 
 
+# Config file read
+def config():
+    # CONFIG FILE
+
+        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+        # DISCLAIMER : make sure to put all of your config values                     #
+        # below all the other values that are set using that same name in mapspawn.nut#
+        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+
+        # default config file
+        configdefaults = [
+            "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
+            "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
+            "",
+            "cfgvariant = 14 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
+            "",
+            "# DISCLAIMER : I recommend you edit this through the gui as this",
+            "#              config file has some unstable objects that may or",
+            "#              can in possibly break the game if edited wrong!!!",
+            "",
+            "",
+            "$launcher",
+            "",
+            "#-----------------------------------",
+            "useproton = false",
+            "#-----------------------------------",
+            "",
+            "$portal2",
+            "",
+            "#-----------------------------------",
+            "DevMode = false # Set to true if your a developer",
+            "#-----------------------------------",
+            "DevInfo = false # Set to true if your a developer",
+            "#-----------------------------------",
+            "UsePlugin = false # Set to true if you want to use the plugin (LINUX ONLY)",
+            "#-----------------------------------",
+            "DedicatedServer = false # Set to true if you want to run the server as a dedicated server (INDEV)",
+            "#-----------------------------------",
+            "RandomTurretModels = false # Set to true if you want to randomize the turret models (INDEV)",
+            "#-----------------------------------",
+            "TickSpeed = 0.00 # Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)",
+            "#-----------------------------------",
+            "RandomPortalSize = false # Set to true if you want to randomize the portal size",
+            "#-----------------------------------",
+        ]
+
+        configdefaults = configdefaults
+
+        if (iow):
+            configpath = "MultiplayerModFiles\\mpmod.cfg"
+        else:
+            configpath = os.path.expanduser("~/.config/portal2multiplayermod/multiplayermod.cfg")
+
+        # check if ~/.config/portal2multiplayermod exists
+        if not os.path.exists(os.path.expanduser("~/.config/portal2multiplayermod")):
+            os.makedirs(os.path.expanduser("~/.config/portal2multiplayermod"))
+
+
+        # create a config file if it doesn't exist
+
+        if not os.path.exists(configpath):
+            # create a config file
+            f = open(configpath, "w", encoding="utf-8")
+            # write the default values
+            for line in configdefaults:
+                f.write(line + "\n")
+            f.close()
+
+
+
+        # CONFIG FILE READ
+
+        # open file for reading
+        f = open(configpath, "r")
+        # read the file
+        lines = f.readlines()
+        # close the file
+        f.close()
+
+        # check if there is an update to the config file
+        for line in lines:
+            if (line.find("cfgvariant") != -1):
+                curconfigver = line.split(" = ")[1]
+                # replace everything that isnt a number with a nothing
+                curconfigver = curconfigver.replace("[^0-9]", "")
+                # convert to int
+                curconfigver = curconfigver[0 : 1]
+                curconfigver = int(curconfigver)
+
+                print("Current Config Version: " + str(curconfigver))
+
+        for line in configdefaults:
+            if (line.find("cfgvariant") != -1):
+                newconfigver = line.split(" = ")[1]
+                # replace everything that isnt a number with a nothing
+                newconfigver = newconfigver.replace("[^0-9]", "")
+                # convert to int
+                newconfigver = newconfigver[0 : 1]
+                newconfigver = int(newconfigver)
+
+                print("New Config Version: " + str(newconfigver))
+
+        # update config file if needed
+        # read old config data
+        f = open(configpath, "r", encoding="utf-8")
+        data = f.readlines()
+        f.close()
+        os.remove(configpath)
+
+        f = open(configpath, "w", encoding="utf-8")
+        for mainline in configdefaults:
+            line = mainline.strip()
+            line = line.replace(" ", "")
+            if (line != ""):
+                if (line.find("#") != -1):
+                    line = line[ : line.find("#")]
+                    if (line != ""):
+                        outputline = line
+                    else:
+                        # f.write(mainline + "\n")
+                        outputline = "DO NOT WRITE"
+                else:
+                    outputline = line
+            else:
+                # skip blank lines
+                # f.write(mainline + "\n")
+                outputline = "DO NOT WRITE"
+
+            for maindefline in data:
+                line22 = maindefline.strip()
+                line22 = line22.replace(" ", "")
+                if (line22 != ""):
+                    if (line22.find("#") != -1):
+                        line22 = line22[ : line22.find("#")]
+                        if (line22 != ""):
+                            defoutputline = line22
+                        else:
+                            defoutputline = "DO NOT WRITE"
+                    else:
+                        defoutputline = line22
+                else:
+                    defoutputline = "DO NOT WRITE"
+
+                if (defoutputline != "DO NOT WRITE") & (outputline != "DO NOT WRITE"):
+                    if (outputline.find("cfgvariant") == -1) & (defoutputline.find("cfgvariant") == -1):
+                        #print("defoutputline: " + defoutputline[ : defoutputline.find("=")] + " outputline: " + outputline[ : outputline.find("=")])
+                        if (outputline != defoutputline):
+                            if (outputline[ : outputline.find("=")] == defoutputline[ : defoutputline.find("=")]):
+                                if (outputline[outputline.find("=") : ] != defoutputline[defoutputline.find("=") : ]):
+                                    if (line != ""):
+                                        mainline = mainline.replace(outputline[outputline.find("=")+1 : ], defoutputline[defoutputline.find("=")+1 : ])
+
+
+            f.write(mainline + "\n")
+        f.close()
+
+# Config file read
+config()
 
 
 
 
-Launch()
+# GUI CODE
+def rungui():
+    import pygame
+    import pygame_gui
+
+
+    pygame.init()
+
+    pygame.display.set_caption('Portal 2 Multiplayer Mod | LAUNCHER')
+    window_surface = pygame.display.set_mode((1280, 720))
+
+    background = pygame.Surface((1280, 720))
+    background.fill(pygame.Color('#000000'))
+
+    manager = pygame_gui.UIManager((1280, 720))
+
+    # MAIN CODE
+
+    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (150, 50)),
+                                                text='Start Game',
+                                                manager=manager)
+    if (iow):
+        print("on windows skipping proton-checkbox")
+    else:
+        protoncheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 150), (150, 25)),
+                                                    text='Use Proton | ON',
+                                                    manager=manager)
+
+    clock = pygame.time.Clock()
+    is_running = True
+
+    while is_running:
+        time_delta = clock.tick(60)/1000.0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                is_running = False
+            
+            # EVENT HANDLING
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    # if start button pressed
+                    if event.ui_element == start_button:
+                        # close the window
+                        pygame.quit()
+                        is_running = False
+                        # Start the game
+                        LaunchVanillaPortal2()
+                    # if proton checkbox is pressed
+                    if event.ui_element == protoncheckbox:
+                        print("Proton checkbox pressed")
+                        if (protoncheckbox.text == "Use Proton | ON"):
+                            print("Proton checkbox is ON")
+                            protoncheckbox.set_text("Use Proton | OFF")
+                            IsOnProton = False
+                        else:
+                            print("Proton checkbox is OFF")
+                            protoncheckbox.set_text("Use Proton | ON")
+                            IsOnProton = True
+
+            if (is_running == True):
+                manager.process_events(event)
+        if (is_running == True):
+            manager.update(time_delta)
+
+            window_surface.blit(background, (0, 0))
+            manager.draw_ui(window_surface)
+        
+            pygame.display.update()
+
+# Run the GUI
+rungui()
