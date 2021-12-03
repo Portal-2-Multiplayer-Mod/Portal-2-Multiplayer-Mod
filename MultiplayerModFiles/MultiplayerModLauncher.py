@@ -957,7 +957,7 @@ def rungui():
                             curmodpatch = curmodpatch.replace("\n", "")
                             curmodpatch = curmodpatch.replace(" ", "")
                             curmodpatch = curmodpatch
-                            if (float(curmodpatch.replace("\n", "").replace(" ", "")) < float(modpatch.replace("\n", "").replace(" ", ""))):
+                            if (curmodpatch.replace("\n", "").replace(" ", "") < modpatch.replace("\n", "").replace(" ", "")):
                                 dodowloadupdate = True
                         except:
                             print("ModPatch not found")
