@@ -965,28 +965,31 @@ def rungui():
 
                         portal2rootdir = os.getcwd()
                         if (dodowloadupdate==True):
-                            from tkinter import Tk, Label, Button, Toplevel
-                            #Create an instance of Tkinter frame
-                            win = Tk()
-                            #Set the geometry of Tkinter frame
-                            win.geometry("500x250")
+                            if (os.path.exists("MultiplayerModMount") == True):
+                                from tkinter import Tk, Label, Button, Toplevel
+                                #Create an instance of Tkinter frame
+                                win = Tk()
+                                #Set the geometry of Tkinter frame
+                                win.geometry("500x250")
 
-                            def yesupdate():
-                                win.destroy()
+                                def yesupdate():
+                                    win.destroy()
+                                    DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatch)
+
+                                def noupdate():
+                                    win.destroy()
+                                    print("Update cancelled")
+
+                                Label(win, text="There Are Updates Avalible Do You Want To Download?", font=('Helvetica 14 bold')).pack(pady=20)
+                                Label(win, text="current version: " + str(curmodpatch), font=('Helvetica 14')).place(x=10, y=50)
+                                Label(win, text="new version: " + str(modpatch), font=('Helvetica 14')).place(x=10, y=75)
+                                #Create a button in the main Window to open the popup
+                                ttk.Button(win, text= "yes", command=yesupdate).place(x=160, y=150)
+                                ttk.Button(win, text= "no", command=noupdate).place(x=260, y=150)
+                                # make another button at y=20 x=20
+                                win.mainloop()
+                            else:
                                 DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatch)
-
-                            def noupdate():
-                                win.destroy()
-                                print("Update cancelled")
-
-                            Label(win, text="There Are Updates Avalible Do You Want To Download?", font=('Helvetica 14 bold')).pack(pady=20)
-                            Label(win, text="current version: " + str(curmodpatch), font=('Helvetica 14')).place(x=10, y=50)
-                            Label(win, text="new version: " + str(modpatch), font=('Helvetica 14')).place(x=10, y=75)
-                            #Create a button in the main Window to open the popup
-                            ttk.Button(win, text= "yes", command=yesupdate).place(x=160, y=150)
-                            ttk.Button(win, text= "no", command=noupdate).place(x=260, y=150)
-                            # make another button at y=20 x=20
-                            win.mainloop()
                         else:
                             print("No update needed")
                         LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
