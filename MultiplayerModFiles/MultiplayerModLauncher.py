@@ -16,9 +16,6 @@ import subprocess
 import mmap
 import time
 
-# Set a dummy proton variable so vscode stops complaining
-IsOnProton = False
-
 # Is on Windows (By default, we are on Linux)
 iow = False
 
@@ -29,7 +26,7 @@ else:
     print("(System should be running Linux)")
 
 # Portal 2 LAUNCHER
-def LaunchVanillaPortal2(outputconfig):
+def LaunchVanillaPortal2(outputconfig, IsOnProton):
     owd = os.getcwd()
         # Get current directory if on Windows
     if (iow):
@@ -750,6 +747,7 @@ for line in lines:
 
 
 # CONFIG HELPERS
+# CONFIG FINDER
 def FindInConfig(findstr):
     RawConfigDataINFUNC = RawConfigData
     for line in RawConfigDataINFUNC:
@@ -814,7 +812,7 @@ def rungui():
     window_surface = pygame.display.set_mode((1280, 720))
 
     background = pygame.Surface((1280, 720))
-    background.fill(pygame.Color('#000000'))
+    background.fill(pygame.Color('#171619'))
 
     manager = pygame_gui.UIManager((1280, 720))
 
@@ -848,7 +846,7 @@ def rungui():
                         is_running = False
                         # Start the game
                         print(SectionConfig("$portal2"))
-                        LaunchVanillaPortal2(SectionConfig("$portal2"))
+                        LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
                     # if proton checkbox is pressed
                     if (iow):
                         continue
