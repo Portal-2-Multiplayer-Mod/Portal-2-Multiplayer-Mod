@@ -15,6 +15,8 @@ import shutil
 import subprocess
 import mmap
 import time
+import urllib.request
+import zipfile
 
 # Is on Windows (By default, we are on Linux)
 iow = False
@@ -916,10 +918,50 @@ def rungui():
                         pygame.quit()
                         is_running = False
 
+                        # get the contents of this webpage
+                        website = "https://raw.githubusercontent.com/kyleraykbs/Portal2-32PlayerMod/main/ModIndex"
+                        response = urllib.request.urlopen(website)
+                        html = response.read()
+                        html = html.decode("utf-8")
+
+                        for line in html.split("\n"):
+                            if (line.find("❑portal2dlc❑") != -1):
+                                prepath = line.replace("❑portal2dlc❑", "")
+                                print(prepath)
+                            if (line.find("❑zippedrepo❑") != -1):
+                                githubrepodownload = line.replace("❑zippedrepo❑", "")
+                                print(githubrepodownload)
+                            if (line.find("❑modpatch❑") != -1):
+                                modpatch = line.replace("❑modpatch❑", "")
+                                print(modpatch)
+
+                        dodowloadupdate = False
+
+                        # if MultiplayerModMount doent exist
+                        if (os.path.exists("MultiplayerModMount") == False):
+                            dodowloadupdate = True
+                        # if the mod is older than the github repo
+                        try:
+                            # open /MultiplayerModMount/ModPatch
+                            f = open("MultiplayerModMount/ModPatch", "r")
+                            # read the contents of the file
+                            curmodpatch = f.read()
+                            # close the file
+                            f.close()
+                            # replace all newlines with nothing
+                            curmodpatch = curmodpatch.replace("\n", "")
+                            curmodpatch = curmodpatch.replace(" ", "")
+                            curmodpatch = int(curmodpatch)
+                            if (curmodpatch < int(modpatch.replace("\n", "").replace(" ", ""))):
+                                dodowloadupdate = True
+                        except:
+                            print("ModPatch not found")
+                            dodowloadupdate = True
+
+
                         portal2rootdir = os.getcwd()
-                        githubrepodownload = "https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip"
-                        prepath = "/MultiplayerModFiles/ModFiles/portal2"
-                        DownloadUpdate(prepath, githubrepodownload, portal2rootdir)
+                        if (dodowloadupdate==True):
+                            DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatch)
 
                         #LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
                     # if proton checkbox is pressed
@@ -949,8 +991,6 @@ def rungui():
 
 # FILE DOWNLOADER
 def DownloadFile(url, dir):
-    import urllib.request
-    import zipfile
     urllib.request.urlretrieve(url, dir)
     # make a directory for the files
     # if directory exists
