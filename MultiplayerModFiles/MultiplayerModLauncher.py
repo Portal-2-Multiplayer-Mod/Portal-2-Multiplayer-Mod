@@ -586,6 +586,8 @@ configdefaults = [
     "#-----------------------------------",
     "UseProton = off",
     "#-----------------------------------",
+    "portal2path = undefined",
+    "#-----------------------------------",
     "",
     "$portal2",
     "",
@@ -800,6 +802,10 @@ def SectionConfig(sectionsign):
 
     return sectioncopydata
 
+
+
+
+
 # GUI CODE
 def rungui():
     import pygame
@@ -827,6 +833,10 @@ def rungui():
         protoncheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 150), (150, 25)),
                                                     text='Use Proton | ' + str(FindInConfig("UseProton").upper()),
                                                     manager=manager)
+    if (str(FindInConfig("UseProton") == "off")):
+        IsOnProton = False
+    else:
+        IsOnProton = True
     clock = pygame.time.Clock()
     is_running = True
 
@@ -841,6 +851,45 @@ def rungui():
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     # if start button pressed
                     if event.ui_element == start_button:
+                        if (FindInConfig("portal2path") == "undefined"):
+                            # if ~/.local/share/Steam/steamapps/common/Portal 2 is not found
+                            if (iow):
+                                print("on windows skipping running game")
+                            else:
+                                if os.path.exists(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal692")):
+                                    print("portal 2 installation found")
+                                    # set current system path to portal 2 path
+                                    os.chdir(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2"))
+                                    WriteToConfig("portal2path", "~/.local/share/Steam/steamapps/common/Portalඞ2")
+                                else:
+                                    CorrectPath = False
+                                    while CorrectPath == False:
+                                        installpath = input("Please enter the path to your Portal 2 installation: ")
+                                        if (os.path.exists(os.path.expanduser(installpath))):
+                                            print("portal 2 installation found")
+                                            os.chdir(os.path.expanduser(installpath))
+                                            WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
+                                            CorrectPath = True
+                                        else:
+                                            print("path not found")
+                        else:
+                            installpath = FindInConfig("portal2path").replace("ඞ", " ")
+                            # if installpath exists
+                            if (os.path.exists(os.path.expanduser(installpath))):
+                                print("portal 2 installation found")
+                                os.chdir(os.path.expanduser(installpath))
+                            else:
+                                CorrectPath = False
+                                while CorrectPath == False:
+                                    installpath = input("Please enter the path to your Portal 2 installation: ")
+                                    if (os.path.exists(os.path.expanduser(installpath))):
+                                        print("portal 2 installation found")
+                                        os.chdir(os.path.expanduser(installpath))
+                                        WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
+                                        CorrectPath = True
+                                    else:
+                                        print("path not found")
+                                    
                         # close the window
                         pygame.quit()
                         is_running = False
