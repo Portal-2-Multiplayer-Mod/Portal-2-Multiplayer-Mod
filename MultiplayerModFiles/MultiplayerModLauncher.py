@@ -344,10 +344,10 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
 
     # Copy the multiplayermod files into the new dlc using the dlc name
     if (iow):
-        shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcname)
+        shutil.copytree(owd + "\\MultiplayerModMount\\install_dlc", owd + dlcname)
     else:
-        shutil.copytree(owd + "/MultiplayerModFiles/MainFiles/install_dlc", owd + dlcname)
-    print("Copied \MultiplayerModFiles to " + dlcname)
+        shutil.copytree(owd + "/MultiplayerModMount/install_dlc", owd + dlcname)
+    print("Copied \MultiplayerModMount to " + dlcname)
 
     # Edit mapspawn file in the new dlc
     if (iow):
@@ -919,20 +919,23 @@ def rungui():
                         is_running = False
 
                         # get the contents of this webpage
-                        website = "https://raw.githubusercontent.com/kyleraykbs/Portal2-32PlayerMod/main/ModIndex"
+                        website = "https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/ModIndex"
                         response = urllib.request.urlopen(website)
                         html = response.read()
                         html = html.decode("utf-8")
 
                         for line in html.split("\n"):
                             if (line.find("❑portal2dlc❑") != -1):
-                                prepath = line.replace("❑portal2dlc❑", "")
+                                clinef = "❑portal2dlc❑"
+                                prepath = line[line.find(clinef) + len(clinef) : line.find("</td>")]
                                 print(prepath)
                             if (line.find("❑zippedrepo❑") != -1):
-                                githubrepodownload = line.replace("❑zippedrepo❑", "")
+                                clinef = "❑zippedrepo❑"
+                                githubrepodownload = line[line.find(clinef) + len(clinef) : line.find("</td>")]
                                 print(githubrepodownload)
                             if (line.find("❑modpatch❑") != -1):
-                                modpatch = line.replace("❑modpatch❑", "")
+                                clinef = "❑modpatch❑"
+                                modpatch = line[line.find(clinef) + len(clinef) : line.find("</td>")]
                                 print(modpatch)
 
                         dodowloadupdate = False
@@ -961,10 +964,11 @@ def rungui():
 
                         portal2rootdir = os.getcwd()
                         if (dodowloadupdate==True):
+                            print("Downloading update")
                             DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatch)
                         else:
                             print("No update needed")
-                        #LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
+                        LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
                     # if proton checkbox is pressed
                     if (iow):
                         continue
@@ -1005,8 +1009,6 @@ def DownloadFile(url, dir):
 
 # UPDATER
 def DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatchmsg):
-    # # prepath
-    # prepath = "/MultiplayerModFiles/ModFiles/portal2"
     # Start the game
     print(SectionConfig("$portal2"))
     # get current working directory
