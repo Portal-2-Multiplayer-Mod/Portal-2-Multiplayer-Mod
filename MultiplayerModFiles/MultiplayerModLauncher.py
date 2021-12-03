@@ -40,18 +40,6 @@ def LaunchVanillaPortal2():
     outputconfig = []
     editedconfigdata = []
 
-    # get raw config data from file
-    for line in lines:
-        line = line.strip()
-        line = line.replace(" ", "")
-        if (line != ""):
-            if (line.find("#") != -1):
-                line = line[ : line.find("#")]
-                if (line != ""):
-                    outputconfig.append(line)
-            else:
-                outputconfig.append(line)
-
     # edit config data for vscript
     for line in outputconfig:
         line = line.replace("=", " <- ")
@@ -574,165 +562,215 @@ def LaunchVanillaPortal2():
 
 
 
-# Config file read
-def config():
-    # CONFIG FILE
 
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
-        # DISCLAIMER : make sure to put all of your config values                     #
-        # below all the other values that are set using that same name in mapspawn.nut#
-        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+# CONFIG FILE
 
-        # default config file
-        configdefaults = [
-            "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
-            "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
-            "",
-            "cfgvariant = 14 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
-            "",
-            "# DISCLAIMER : I recommend you edit this through the gui as this",
-            "#              config file has some unstable objects that may or",
-            "#              can in possibly break the game if edited wrong!!!",
-            "",
-            "",
-            "$launcher",
-            "",
-            "#-----------------------------------",
-            "useproton = false",
-            "#-----------------------------------",
-            "",
-            "$portal2",
-            "",
-            "#-----------------------------------",
-            "DevMode = false # Set to true if your a developer",
-            "#-----------------------------------",
-            "DevInfo = false # Set to true if your a developer",
-            "#-----------------------------------",
-            "UsePlugin = false # Set to true if you want to use the plugin (LINUX ONLY)",
-            "#-----------------------------------",
-            "DedicatedServer = false # Set to true if you want to run the server as a dedicated server (INDEV)",
-            "#-----------------------------------",
-            "RandomTurretModels = false # Set to true if you want to randomize the turret models (INDEV)",
-            "#-----------------------------------",
-            "TickSpeed = 0.00 # Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)",
-            "#-----------------------------------",
-            "RandomPortalSize = false # Set to true if you want to randomize the portal size",
-            "#-----------------------------------",
-        ]
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+# DISCLAIMER : make sure to put all of your config values                     #
+# below all the other values that are set using that same name in mapspawn.nut#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
 
-        configdefaults = configdefaults
+# default config file
+configdefaults = [
+    "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
+    "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
+    "",
+    "cfgvariant = 14 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
+    "",
+    "# DISCLAIMER : I recommend you edit this through the gui as this",
+    "#              config file has some unstable objects that may or",
+    "#              can in possibly break the game if edited wrong!!!",
+    "",
+    "",
+    "$launcher",
+    "",
+    "#-----------------------------------",
+    "UseProton = off",
+    "#-----------------------------------",
+    "",
+    "$portal2",
+    "",
+    "#-----------------------------------",
+    "DevMode = false # Set to true if your a developer",
+    "#-----------------------------------",
+    "DevInfo = false # Set to true if your a developer",
+    "#-----------------------------------",
+    "UsePlugin = false # Set to true if you want to use the plugin (LINUX ONLY)",
+    "#-----------------------------------",
+    "DedicatedServer = false # Set to true if you want to run the server as a dedicated server (INDEV)",
+    "#-----------------------------------",
+    "RandomTurretModels = false # Set to true if you want to randomize the turret models (INDEV)",
+    "#-----------------------------------",
+    "TickSpeed = 0.00 # Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)",
+    "#-----------------------------------",
+    "RandomPortalSize = false # Set to true if you want to randomize the portal size",
+    "#-----------------------------------",
+]
 
-        if (iow):
-            configpath = "MultiplayerModFiles\\mpmod.cfg"
-        else:
-            configpath = os.path.expanduser("~/.config/portal2multiplayermod/multiplayermod.cfg")
+configdefaults = configdefaults
 
-        # check if ~/.config/portal2multiplayermod exists
-        if not os.path.exists(os.path.expanduser("~/.config/portal2multiplayermod")):
-            os.makedirs(os.path.expanduser("~/.config/portal2multiplayermod"))
+if (iow):
+    configpath = "MultiplayerModFiles\\mpmod.cfg"
+else:
+    configpath = os.path.expanduser("~/.config/portal2multiplayermod/multiplayermod.cfg")
 
-
-        # create a config file if it doesn't exist
-
-        if not os.path.exists(configpath):
-            # create a config file
-            f = open(configpath, "w", encoding="utf-8")
-            # write the default values
-            for line in configdefaults:
-                f.write(line + "\n")
-            f.close()
+# check if ~/.config/portal2multiplayermod exists
+if not os.path.exists(os.path.expanduser("~/.config/portal2multiplayermod")):
+    os.makedirs(os.path.expanduser("~/.config/portal2multiplayermod"))
 
 
+# create a config file if it doesn't exist
 
-        # CONFIG FILE READ
+if not os.path.exists(configpath):
+    # create a config file
+    f = open(configpath, "w", encoding="utf-8")
+    # write the default values
+    for line in configdefaults:
+        f.write(line + "\n")
+    f.close()
 
-        # open file for reading
-        f = open(configpath, "r")
-        # read the file
-        lines = f.readlines()
-        # close the file
-        f.close()
+# open file for reading
+f = open(configpath, "r")
+# read the file
+lines = f.readlines()
+# close the file
+f.close()
 
-        # check if there is an update to the config file
-        for line in lines:
-            if (line.find("cfgvariant") != -1):
-                curconfigver = line.split(" = ")[1]
-                # replace everything that isnt a number with a nothing
-                curconfigver = curconfigver.replace("[^0-9]", "")
-                # convert to int
-                curconfigver = curconfigver[0 : 1]
-                curconfigver = int(curconfigver)
+# check if there is an update to the config file
+for line in lines:
+    if (line.find("cfgvariant") != -1):
+        curconfigver = line.split(" = ")[1]
+        # replace everything that isnt a number with a nothing
+        curconfigver = curconfigver.replace("[^0-9]", "")
+        # convert to int
+        curconfigver = curconfigver[0 : 1]
+        curconfigver = int(curconfigver)
 
-                print("Current Config Version: " + str(curconfigver))
+        print("Current Config Version: " + str(curconfigver))
 
-        for line in configdefaults:
-            if (line.find("cfgvariant") != -1):
-                newconfigver = line.split(" = ")[1]
-                # replace everything that isnt a number with a nothing
-                newconfigver = newconfigver.replace("[^0-9]", "")
-                # convert to int
-                newconfigver = newconfigver[0 : 1]
-                newconfigver = int(newconfigver)
+for line in configdefaults:
+    if (line.find("cfgvariant") != -1):
+        newconfigver = line.split(" = ")[1]
+        # replace everything that isnt a number with a nothing
+        newconfigver = newconfigver.replace("[^0-9]", "")
+        # convert to int
+        newconfigver = newconfigver[0 : 1]
+        newconfigver = int(newconfigver)
 
-                print("New Config Version: " + str(newconfigver))
+        print("New Config Version: " + str(newconfigver))
 
-        # update config file if needed
-        # read old config data
-        f = open(configpath, "r", encoding="utf-8")
-        data = f.readlines()
-        f.close()
-        os.remove(configpath)
+# update config file if needed
+# read old config data
+f = open(configpath, "r", encoding="utf-8")
+data = f.readlines()
+f.close()
+os.remove(configpath)
 
-        f = open(configpath, "w", encoding="utf-8")
-        for mainline in configdefaults:
-            line = mainline.strip()
-            line = line.replace(" ", "")
+f = open(configpath, "w", encoding="utf-8")
+for mainline in configdefaults:
+    line = mainline.strip()
+    line = line.replace(" ", "")
+    if (line != ""):
+        if (line.find("#") != -1):
+            line = line[ : line.find("#")]
             if (line != ""):
-                if (line.find("#") != -1):
-                    line = line[ : line.find("#")]
-                    if (line != ""):
-                        outputline = line
-                    else:
-                        # f.write(mainline + "\n")
-                        outputline = "DO NOT WRITE"
-                else:
-                    outputline = line
+                outputline = line
             else:
-                # skip blank lines
                 # f.write(mainline + "\n")
                 outputline = "DO NOT WRITE"
+        else:
+            outputline = line
+    else:
+        # skip blank lines
+        # f.write(mainline + "\n")
+        outputline = "DO NOT WRITE"
 
-            for maindefline in data:
-                line22 = maindefline.strip()
-                line22 = line22.replace(" ", "")
+    for maindefline in data:
+        line22 = maindefline.strip()
+        line22 = line22.replace(" ", "")
+        if (line22 != ""):
+            if (line22.find("#") != -1):
+                line22 = line22[ : line22.find("#")]
                 if (line22 != ""):
-                    if (line22.find("#") != -1):
-                        line22 = line22[ : line22.find("#")]
-                        if (line22 != ""):
-                            defoutputline = line22
-                        else:
-                            defoutputline = "DO NOT WRITE"
-                    else:
-                        defoutputline = line22
+                    defoutputline = line22
                 else:
                     defoutputline = "DO NOT WRITE"
+            else:
+                defoutputline = line22
+        else:
+            defoutputline = "DO NOT WRITE"
 
-                if (defoutputline != "DO NOT WRITE") & (outputline != "DO NOT WRITE"):
-                    if (outputline.find("cfgvariant") == -1) & (defoutputline.find("cfgvariant") == -1):
-                        #print("defoutputline: " + defoutputline[ : defoutputline.find("=")] + " outputline: " + outputline[ : outputline.find("=")])
-                        if (outputline != defoutputline):
-                            if (outputline[ : outputline.find("=")] == defoutputline[ : defoutputline.find("=")]):
-                                if (outputline[outputline.find("=") : ] != defoutputline[defoutputline.find("=") : ]):
-                                    if (line != ""):
-                                        mainline = mainline.replace(outputline[outputline.find("=")+1 : ], defoutputline[defoutputline.find("=")+1 : ])
+        if (defoutputline != "DO NOT WRITE") & (outputline != "DO NOT WRITE"):
+            if (outputline.find("cfgvariant") == -1) & (defoutputline.find("cfgvariant") == -1):
+                #print("defoutputline: " + defoutputline[ : defoutputline.find("=")] + " outputline: " + outputline[ : outputline.find("=")])
+                if (outputline != defoutputline):
+                    if (outputline[ : outputline.find("=")] == defoutputline[ : defoutputline.find("=")]):
+                        if (outputline[outputline.find("=") : ] != defoutputline[defoutputline.find("=") : ]):
+                            if (line != ""):
+                                mainline = mainline.replace(outputline[outputline.find("=")+1 : ], defoutputline[defoutputline.find("=")+1 : ])
 
 
-            f.write(mainline + "\n")
-        f.close()
+    f.write(mainline + "\n")
+f.close()
 
-# Config file read
-config()
+ # open file for reading
+f = open(configpath, "r", encoding="utf-8")
+# read the file
+lines = f.readlines()
+# close the file
+f.close()
 
+RawConfigData = []
+
+# get raw config data from file
+for line in lines:
+    line = line.strip()
+    line = line.replace(" ", "")
+    if (line != ""):
+        if (line.find("#") != -1):
+            line = line[ : line.find("#")]
+            if (line != ""):
+                RawConfigData.append(line)
+        else:
+            RawConfigData.append(line)
+
+
+# CONFIG HELPERS
+def FindInConfig(findstr):
+    RawConfigDataINFUNC = RawConfigData
+    for line in RawConfigDataINFUNC:
+        if (line.find(findstr) != -1):
+            CFGHELPERoutputline=line.strip()
+            CFGHELPERoutputline=CFGHELPERoutputline.replace(" ", "")
+            if (CFGHELPERoutputline != ""):
+                if (CFGHELPERoutputline.find("#") == -1):
+                    print("NoHash found for CFGHELPERSTR")
+                else:
+                    CFGHELPERoutputline = CFGHELPERoutputline[ : CFGHELPERoutputline.find("#")]
+            CFGHELPERoutputline=CFGHELPERoutputline[CFGHELPERoutputline.find("=")+1 : ]
+            return CFGHELPERoutputline
+    return ""
+
+# WRITE TO CONFIG
+def WriteToConfig(findstr, writeline):
+    f = open(configpath, "r", encoding="utf-8")
+    fdata = f.readlines()
+    f.close()
+
+    newfiledata = []
+
+    for line in fdata:
+        if (line.find(findstr) != -1):
+            newfiledata.append(findstr + " = " + writeline + "\n")
+        else:
+            newfiledata.append(line)
+
+    os.remove(configpath)
+
+    f = open(configpath, "w", encoding="utf-8")
+    for line in newfiledata:
+        f.write(line)
+    f.close()
 
 
 
@@ -761,9 +799,9 @@ def rungui():
         print("on windows skipping proton-checkbox")
     else:
         protoncheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 150), (150, 25)),
-                                                    text='Use Proton | ON',
+                                                    text='Use Proton | ' + str(FindInConfig("UseProton").upper()),
                                                     manager=manager)
-
+        print(FindInConfig("UseProton"))
     clock = pygame.time.Clock()
     is_running = True
 
@@ -787,12 +825,12 @@ def rungui():
                     if event.ui_element == protoncheckbox:
                         print("Proton checkbox pressed")
                         if (protoncheckbox.text == "Use Proton | ON"):
-                            print("Proton checkbox is ON")
                             protoncheckbox.set_text("Use Proton | OFF")
+                            WriteToConfig("UseProton", "off")
                             IsOnProton = False
                         else:
-                            print("Proton checkbox is OFF")
                             protoncheckbox.set_text("Use Proton | ON")
+                            WriteToConfig("UseProton", "on")
                             IsOnProton = True
 
             if (is_running == True):
