@@ -948,18 +948,17 @@ def rungui():
                         # if the mod is older than the github repo
                         try:
                             # open /MultiplayerModMount/ModPatch
-                            if (os.path.exists("MultiplayerModMount/ModPatch") == True):
-                                f = open("MultiplayerModMount/ModPatch", "r")
-                                # read the contents of the file
-                                curmodpatch = f.read()
-                                # close the file
-                                f.close()
-                                # replace all newlines with nothing
-                                curmodpatch = curmodpatch.replace("\n", "")
-                                curmodpatch = curmodpatch.replace(" ", "")
-                                curmodpatch = int(curmodpatch)
-                                if (curmodpatch.replace("\n", "").replace(" ", "") < modpatch.replace("\n", "").replace(" ", "")):
-                                    dodowloadupdate = True
+                            f = open("MultiplayerModMount/ModPatch", "r")
+                            # read the contents of the file
+                            curmodpatch = f.read()
+                            # close the file
+                            f.close()
+                            # replace all newlines with nothing
+                            curmodpatch = curmodpatch.replace("\n", "")
+                            curmodpatch = curmodpatch.replace(" ", "")
+                            curmodpatch = curmodpatch
+                            if (float(curmodpatch.replace("\n", "").replace(" ", "")) < float(modpatch.replace("\n", "").replace(" ", ""))):
+                                dodowloadupdate = True
                         except:
                             print("ModPatch not found")
                             dodowloadupdate = True
