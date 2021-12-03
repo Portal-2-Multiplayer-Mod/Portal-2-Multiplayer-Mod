@@ -577,7 +577,7 @@ configdefaults = [
     "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
     "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
     "",
-    "cfgvariant = 14 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
+    "cfgvariant = 15 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
     "",
     "# DISCLAIMER : I recommend you edit this through the gui as this",
     "#              config file has some unstable objects that may or",
@@ -606,6 +606,11 @@ configdefaults = [
     "TickSpeed = 0.00 # Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)",
     "#-----------------------------------",
     "RandomPortalSize = false # Set to true if you want to randomize the portal size",
+    "#-----------------------------------",
+    "",
+    "$mel",
+    "",
+    "#-----------------------------------",
     "#-----------------------------------",
 ]
 
@@ -641,22 +646,28 @@ f.close()
 # check if there is an update to the config file
 for line in lines:
     if (line.find("cfgvariant") != -1):
-        curconfigver = line.split(" = ")[1]
-        # replace everything that isnt a number with a nothing
-        curconfigver = curconfigver.replace("[^0-9]", "")
+        curconfigver = line.replace(" ", "")
         # convert to int
-        curconfigver = curconfigver[0 : 1]
+        if (line.find("#") != -1):
+            curconfigver = curconfigver[curconfigver.find("=") : curconfigver.find("#")]
+            curconfigver = curconfigver.replace("=", "")
+            print("Config file version: " + curconfigver)
+        else:
+            curconfigver = curconfigver[curconfigver.find("=") : ].replace("=", "")
         curconfigver = int(curconfigver)
 
         print("Current Config Version: " + str(curconfigver))
 
 for line in configdefaults:
     if (line.find("cfgvariant") != -1):
-        newconfigver = line.split(" = ")[1]
-        # replace everything that isnt a number with a nothing
-        newconfigver = newconfigver.replace("[^0-9]", "")
+        newconfigver = line.replace(" ", "")
         # convert to int
-        newconfigver = newconfigver[0 : 1]
+        if (line.find("#") != -1):
+            newconfigver = newconfigver[newconfigver.find("=") : newconfigver.find("#")]
+            newconfigver = newconfigver.replace("=", "")
+            print("Config file version: " + newconfigver)
+        else:
+            newconfigver = newconfigver[newconfigver.find("=") : ].replace("=", "")
         newconfigver = int(newconfigver)
 
         print("New Config Version: " + str(newconfigver))
@@ -772,7 +783,23 @@ def WriteToConfig(findstr, writeline):
         f.write(line)
     f.close()
 
+# SECTION CONFIG
+def SectionConfig(sectionsign):
+    startsectioncopy = False
+    sectioncopydata = []
+    RawConfigDataINFUNC = RawConfigData
+    for line in RawConfigDataINFUNC:
+        if (line.find("$") != -1):
+            startsectioncopy = False
 
+        if (startsectioncopy == True):
+            print(line)
+            sectioncopydata.append(line)
+
+        if (line.find(sectionsign) != -1):
+            startsectioncopy = True
+
+    return sectioncopydata
 
 # GUI CODE
 def rungui():
@@ -819,7 +846,8 @@ def rungui():
                         pygame.quit()
                         is_running = False
                         # Start the game
-                        LaunchVanillaPortal2(RawConfigData)
+                        print(SectionConfig("$portal2"))
+                        LaunchVanillaPortal2(SectionConfig("$portal2"))
                     # if proton checkbox is pressed
                     if (iow):
                         continue
