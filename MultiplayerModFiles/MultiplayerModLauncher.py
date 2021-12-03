@@ -870,7 +870,7 @@ def rungui():
                                     CorrectPath = False
                                     while CorrectPath == False:
                                         installpath = input("Please enter the path to your Portal 2 installation: ")
-                                        if (os.path.exists(os.path.installpath)):
+                                        if (os.path.exists(installpath)):
                                             print("portal 2 installation found")
                                             os.chdir(installpath)
                                             WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
