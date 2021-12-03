@@ -915,14 +915,13 @@ def rungui():
                         # close the window
                         pygame.quit()
                         is_running = False
-                        # Start the game
-                        print(SectionConfig("$portal2"))
-                        # get current working directory
-                        #if (iow):
-                        #    DownloadFile("https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip", os.getcwd() + "\\tempinstallmod.zip")
-                        #else:
-                        #    DownloadFile("https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip", os.getcwd() + "/tempinstallmod.zip")
-                        LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
+
+                        portal2rootdir = os.getcwd()
+                        githubrepodownload = "https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip"
+                        prepath = "/MultiplayerModFiles/ModFiles/portal2"
+                        DownloadUpdate(prepath, githubrepodownload, portal2rootdir)
+
+                        #LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
                     # if proton checkbox is pressed
                     if (iow):
                         continue
@@ -954,11 +953,42 @@ def DownloadFile(url, dir):
     import zipfile
     urllib.request.urlretrieve(url, dir)
     # make a directory for the files
+    # if directory exists
+    if (os.path.exists(dir.replace(".zip", ""))):
+        shutil.rmtree(dir.replace(".zip", ""))
     os.mkdir(dir.replace(".zip", ""))
     import zipfile
     with zipfile.ZipFile(dir,"r") as zip_ref:
         zip_ref.extractall(dir.replace(".zip", ""))
     os.remove(dir)
+
+# UPDATER
+def DownloadUpdate(prepath, githubrepodownload, portal2rootdir):
+    # # prepath
+    # prepath = "/MultiplayerModFiles/ModFiles/portal2"
+    # Start the game
+    print(SectionConfig("$portal2"))
+    # get current working directory
+    if (iow):
+        DownloadFile(githubrepodownload, portal2rootdir + "\\tempinstallmod.zip")
+    else:
+        DownloadFile(githubrepodownload, portal2rootdir + "/tempinstallmod.zip")
+
+    if (iow):
+        print("extracting mod")
+    else:
+        # remove MultiplayerModMount if it exists
+        if (os.path.exists(portal2rootdir + "/MultiplayerModMount")):
+            shutil.rmtree(portal2rootdir + "/MultiplayerModMount")
+        # for each file in tempinstallmod
+        for file in os.listdir(portal2rootdir + "/tempinstallmod"):
+            # rename file to Memes
+            os.rename(portal2rootdir + "/tempinstallmod/" + file, portal2rootdir + "/tempinstallmod/" + "multiplayermodtemp")
+        # copy the folder from prepath to the current working directory
+        shutil.copytree(portal2rootdir + "/tempinstallmod/" + "multiplayermodtemp/" + prepath, portal2rootdir + "/MultiplayerModMount")
+        print(portal2rootdir + "/MultiplayerModMount")
+        # delete the folder from the current working directory
+        shutil.rmtree(portal2rootdir + "/tempinstallmod")
 
 # Run the GUI
 rungui()
