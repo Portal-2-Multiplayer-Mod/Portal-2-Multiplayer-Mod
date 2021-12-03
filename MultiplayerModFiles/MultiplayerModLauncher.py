@@ -16,6 +16,9 @@ import subprocess
 import mmap
 import time
 
+# Set a dummy proton variable so vscode stops complaining
+IsOnProton = False
+
 # Is on Windows (By default, we are on Linux)
 iow = False
 
@@ -26,7 +29,7 @@ else:
     print("(System should be running Linux)")
 
 # Portal 2 LAUNCHER
-def LaunchVanillaPortal2():
+def LaunchVanillaPortal2(outputconfig):
     owd = os.getcwd()
         # Get current directory if on Windows
     if (iow):
@@ -37,7 +40,6 @@ def LaunchVanillaPortal2():
     owd = os.getcwd()
     print(os.getcwd())
 
-    outputconfig = []
     editedconfigdata = []
 
     # edit config data for vscript
@@ -743,9 +745,7 @@ def FindInConfig(findstr):
             CFGHELPERoutputline=line.strip()
             CFGHELPERoutputline=CFGHELPERoutputline.replace(" ", "")
             if (CFGHELPERoutputline != ""):
-                if (CFGHELPERoutputline.find("#") == -1):
-                    print("NoHash found for CFGHELPERSTR")
-                else:
+                if (CFGHELPERoutputline.find("#") != -1):
                     CFGHELPERoutputline = CFGHELPERoutputline[ : CFGHELPERoutputline.find("#")]
             CFGHELPERoutputline=CFGHELPERoutputline[CFGHELPERoutputline.find("=")+1 : ]
             return CFGHELPERoutputline
@@ -801,7 +801,6 @@ def rungui():
         protoncheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 150), (150, 25)),
                                                     text='Use Proton | ' + str(FindInConfig("UseProton").upper()),
                                                     manager=manager)
-        print(FindInConfig("UseProton"))
     clock = pygame.time.Clock()
     is_running = True
 
@@ -820,18 +819,20 @@ def rungui():
                         pygame.quit()
                         is_running = False
                         # Start the game
-                        LaunchVanillaPortal2()
+                        LaunchVanillaPortal2(RawConfigData)
                     # if proton checkbox is pressed
-                    if event.ui_element == protoncheckbox:
-                        print("Proton checkbox pressed")
-                        if (protoncheckbox.text == "Use Proton | ON"):
-                            protoncheckbox.set_text("Use Proton | OFF")
-                            WriteToConfig("UseProton", "off")
-                            IsOnProton = False
-                        else:
-                            protoncheckbox.set_text("Use Proton | ON")
-                            WriteToConfig("UseProton", "on")
-                            IsOnProton = True
+                    if (iow):
+                        continue
+                    else:
+                        if event.ui_element == protoncheckbox:
+                            if (protoncheckbox.text == "Use Proton | ON"):
+                                protoncheckbox.set_text("Use Proton | OFF")
+                                WriteToConfig("UseProton", "off")
+                                IsOnProton = False
+                            else:
+                                protoncheckbox.set_text("Use Proton | ON")
+                                WriteToConfig("UseProton", "on")
+                                IsOnProton = True
 
             if (is_running == True):
                 manager.process_events(event)
