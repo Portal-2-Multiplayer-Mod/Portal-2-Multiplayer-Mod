@@ -34,6 +34,7 @@ cfg/
 vpk_override/
 *.so
 !MultiplayerModFiles/
+!MultiplayerModFiles/ModFiles/portal2
 !WebFiles/FastDL/portal2/
 kyle.portal2.gdb.E5rc
 kyle.portal2.gdb.x1ij
