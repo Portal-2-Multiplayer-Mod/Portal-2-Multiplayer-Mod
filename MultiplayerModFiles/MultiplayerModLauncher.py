@@ -852,7 +852,7 @@ def rungui():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
-            
+
             # EVENT HANDLING
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
@@ -911,13 +911,18 @@ def rungui():
                                         CorrectPath = True
                                     else:
                                         print("path not found")
-                                    
+
                         # close the window
                         pygame.quit()
                         is_running = False
                         # Start the game
                         print(SectionConfig("$portal2"))
-                        LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
+                        # get current working directory
+                        if (iow):
+                            DownloadFile("https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip", os.getcwd() + "\\tempinstallmod")
+                        else:
+                            DownloadFile("https://github.com/kyleraykbs/Portal2-32PlayerMod/archive/refs/heads/main.zip", os.getcwd() + "/tempinstallmod")
+                        #LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
                     # if proton checkbox is pressed
                     if (iow):
                         continue
@@ -939,8 +944,21 @@ def rungui():
 
             window_surface.blit(background, (0, 0))
             manager.draw_ui(window_surface)
-        
+
             pygame.display.update()
+
+
+# FILE DOWNLOADER
+def DownloadFile(url, dir):
+    import urllib.request
+    import zipfile
+    urllib.request.urlretrieve(url, dir)
+    # make a directory for the files
+    os.mkdir(dir.replace(".zip", ""))
+    import zipfile
+    with zipfile.ZipFile(dir,"r") as zip_ref:
+        zip_ref.extractall(dir.replace(".zip", ""))
+    os.remove(dir)
 
 # Run the GUI
 rungui()
