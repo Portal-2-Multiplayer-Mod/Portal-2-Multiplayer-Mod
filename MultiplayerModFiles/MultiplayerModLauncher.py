@@ -611,6 +611,7 @@ configdefaults = [
     "$mel",
     "",
     "#-----------------------------------",
+    "UseMel = false # Set to true if you want to use mel (just a test varible i swear)",
     "#-----------------------------------",
 ]
 
