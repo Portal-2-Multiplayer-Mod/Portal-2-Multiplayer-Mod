@@ -91,7 +91,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 if (isopen==false) {
                     isopen = true
                     printl("OPENED")
-                    EntFire("genericcustomprop_maindropper", "setanimation", "open", 0.5, null)
+                    EntFire("genericcustomprop_maindropper", "setanimation", "open", 0.4, null)
                 }
                 stayopen = true
             }

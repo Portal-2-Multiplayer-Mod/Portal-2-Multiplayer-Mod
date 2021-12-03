@@ -486,4 +486,112 @@ if (GetMapName() == "sp_a2_bts2") {
 
   }
 }
+
+//==============================//
+//CREATE OBJECTS FOR sp_a4_intro//
+//==============================//
+
+if (GetMapName() == "sp_a4_intro") {
+    if (CacheTime==true) {
+        // Cache Objects
+
+        CacheModel("props_backstage/vacum_flange_a.mdl")
+
+        CacheModel("props_bts/vactube_90deg_04.mdl")
+
+        CacheModel("props_bts/vactube_connector.mdl")
+
+        CacheModel("props_backstage/item_dropper_static_open.mdl")
+
+        CacheModel("props_bts/vactube_90deg_03.mdl")
+
+        CacheModel("props_bts/vactube_128_straight.mdl")
+
+        CacheModel("props_bts/vactube_90deg_06.mdl")
+
+        DoneCacheing <- true
+  }
+
+
+    if (CreateTime==true) {
+        // Create Objects
+
+        local sp_a4_intro_custom_prop_85 = CreateProp("prop_dynamic", Vector(-495.125, -642.375, 1143.5625), "models/props_backstage/vacum_flange_a.mdl", 0)
+        sp_a4_intro_custom_prop_85.SetAngles(59.6875, 60.718757629395, 111.28124237061)
+        sp_a4_intro_custom_prop_85.__KeyValueFromString("solid", "0")
+        sp_a4_intro_custom_prop_85.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_86 = CreateProp("prop_dynamic", Vector(-774.5625, -253.6876373291, 1026.40625), "models/props_bts/vactube_90deg_04.mdl", 0)
+        sp_a4_intro_custom_prop_86.SetAngles(63.843761444092, -159.71875, 66.0625)
+        sp_a4_intro_custom_prop_86.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_86.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_88 = CreateProp("prop_dynamic", Vector(-339.96875, -349.03125, 616.875), "models/props_bts/vactube_connector.mdl", 0)
+        sp_a4_intro_custom_prop_88.SetAngles(-5.25093264514e-06, -20.968757629395, 119.24993896484)
+        sp_a4_intro_custom_prop_88.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_88.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_89 = CreateProp("prop_dynamic", Vector(-320.39205932617, -297.9621887207, 518.37902832031), "models/props_backstage/vacum_flange_a.mdl", 0)
+        sp_a4_intro_custom_prop_89.SetAngles(0.162034496665, -21.449562072754, -60.187835693359)
+        sp_a4_intro_custom_prop_89.__KeyValueFromString("solid", "0")
+        sp_a4_intro_custom_prop_89.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_90 = CreateProp("prop_dynamic", Vector(-762.59375, -616.3125, 1082.21875), "models/props_backstage/vacum_flange_a.mdl", 0)
+        sp_a4_intro_custom_prop_90.SetAngles(58.374984741211, 59.843753814697, -159.5)
+        sp_a4_intro_custom_prop_90.__KeyValueFromString("solid", "0")
+        sp_a4_intro_custom_prop_90.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_92 = CreateProp("prop_dynamic", Vector(-782.25, -262.78125, 1031.75), "models/props_bts/vactube_connector.mdl", 0)
+        sp_a4_intro_custom_prop_92.SetAngles(63.312507629395, -159.18748474121, 65.53125)
+        sp_a4_intro_custom_prop_92.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_92.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_94 = CreateProp("prop_dynamic", Vector(-304.09375, -255.03125, 437.96875), "models/props_backstage/item_dropper.mdl", 0)
+        sp_a4_intro_custom_prop_94.SetAngles(3.4029681046377e-06, -21.125003814697, 29.531248092651)
+        sp_a4_intro_custom_prop_94.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_94.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_95 = CreateProp("prop_dynamic", Vector(-536.125, -270.625, 897.96875), "models/props_bts/vactube_90deg_03.mdl", 0)
+        sp_a4_intro_custom_prop_95.SetAngles(61.15625, -171.15625, 146.25)
+        sp_a4_intro_custom_prop_95.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_95.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_97 = CreateProp("prop_dynamic", Vector(-825.71868896484, -508.4375, 1093.5), "models/props_bts/vactube_connector.mdl", 0)
+        sp_a4_intro_custom_prop_97.SetAngles(-61.281230926514, 21.156240463257, 172.25)
+        sp_a4_intro_custom_prop_97.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_97.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_98 = CreateProp("prop_dynamic", Vector(-315.875, -286.06256103516, 495.71878051758), "models/props_bts/vactube_128_straight.mdl", 0)
+        sp_a4_intro_custom_prop_98.SetAngles(0, -21, 119.28125)
+        sp_a4_intro_custom_prop_98.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_98.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_99 = CreateProp("prop_dynamic", Vector(-504.5, -649.34381103516, 1137.59375), "models/props_bts/vactube_90deg_06.mdl", 0)
+        sp_a4_intro_custom_prop_99.SetAngles(59.968746185303, 61.000003814697, 111.5625)
+        sp_a4_intro_custom_prop_99.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_99.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_100 = CreateProp("prop_dynamic", Vector(-338.125, -344.03137207031, 606.37512207031), "models/props_bts/vactube_90deg_04.mdl", 0)
+        sp_a4_intro_custom_prop_100.SetAngles(-23.937503814697, 32.062507629395, 107.03125)
+        sp_a4_intro_custom_prop_100.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_100.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_101 = CreateProp("prop_dynamic", Vector(-534.65625, -272.0625, 897.93743896484), "models/props_backstage/vacum_flange_a.mdl", 0)
+        sp_a4_intro_custom_prop_101.SetAngles(60.71875, -170.71875, 146.25)
+        sp_a4_intro_custom_prop_101.__KeyValueFromString("solid", "0")
+        sp_a4_intro_custom_prop_101.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a4_intro_custom_prop_102 = CreateProp("prop_dynamic", Vector(-767.5, -610.53131103516, 1084), "models/props_bts/vactube_90deg_03.mdl", 0)
+        sp_a4_intro_custom_prop_102.SetAngles(60.0625, 61.093719482422, -158.37501525879)
+        sp_a4_intro_custom_prop_102.__KeyValueFromString("solid", "6")
+        sp_a4_intro_custom_prop_102.__KeyValueFromString("targetname", "genericcustomprop")
+
+  }
+
+
+    if (LoopTime==true) {
+        // Generated Teleports
+
+  }
+}
 }
