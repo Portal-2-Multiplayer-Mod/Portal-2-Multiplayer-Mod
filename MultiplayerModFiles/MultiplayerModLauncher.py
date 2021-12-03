@@ -25,6 +25,9 @@ if os.name == 'nt':
 else:
     print("(System should be running Linux)")
 
+if (iow == True):
+    user_profile = os.environ['USERPROFILE']
+
 # Portal 2 LAUNCHER
 def LaunchVanillaPortal2(outputconfig, IsOnProton):
     owd = os.getcwd()
@@ -617,13 +620,17 @@ configdefaults = [
 configdefaults = configdefaults
 
 if (iow):
-    configpath = "MultiplayerModFiles\\mpmod.cfg"
+    configpath = user_profile + "\\documents\\portal2multiplayermod\\multiplayermod.cfg"
 else:
     configpath = os.path.expanduser("~/.config/portal2multiplayermod/multiplayermod.cfg")
 
 # check if ~/.config/portal2multiplayermod exists
-if not os.path.exists(os.path.expanduser("~/.config/portal2multiplayermod")):
-    os.makedirs(os.path.expanduser("~/.config/portal2multiplayermod"))
+if (iow):
+    if not (os.path.exists(user_profile + "\\documents\\portal2multiplayermod")):
+        os.mkdir(user_profile + "\\documents\\portal2multiplayermod")
+else:
+    if not os.path.exists(os.path.expanduser("~/.config/portal2multiplayermod")):
+        os.makedirs(os.path.expanduser("~/.config/portal2multiplayermod"))
 
 
 # create a config file if it doesn't exist
@@ -854,9 +861,24 @@ def rungui():
                         if (FindInConfig("portal2path") == "undefined"):
                             # if ~/.local/share/Steam/steamapps/common/Portal 2 is not found
                             if (iow):
-                                print("on windows skipping running game")
+                                if os.path.exists("C:\Program Files (x86)\Steam\steamapps\common\Portal 2"):
+                                    print("portal 2 installation found")
+                                    # set current system path to portal 2 path
+                                    os.chdir("C:\Program Files (x86)\Steam\steamapps\common\Portal 2")
+                                    WriteToConfig("portal2path", "C:\Program Files (x86)\Steam\steamapps\common\Portalඞ2")
+                                else:
+                                    CorrectPath = False
+                                    while CorrectPath == False:
+                                        installpath = input("Please enter the path to your Portal 2 installation: ")
+                                        if (os.path.exists(os.path.installpath)):
+                                            print("portal 2 installation found")
+                                            os.chdir(installpath)
+                                            WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
+                                            CorrectPath = True
+                                        else:
+                                            print("path not found")
                             else:
-                                if os.path.exists(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal692")):
+                                if os.path.exists(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2")):
                                     print("portal 2 installation found")
                                     # set current system path to portal 2 path
                                     os.chdir(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2"))
