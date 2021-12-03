@@ -7,13 +7,17 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-        Entities.FindByName(null, "cube_bot_model").__KeyValueFromString("targetname", "moja1")
-        Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja2")
+        Entities.FindByName(null, "recapture_areaportal1").__KeyValueFromString("FadeStartDist", "1750")
+        Entities.FindByName(null, "recapture_areaportal2").__KeyValueFromString("FadeDist", "1950")
+        Entities.FindByName(null, "observation_areaportal").__KeyValueFromString("targetname", "moja1")
+        Entities.FindByName(null, "cube_bot_model").__KeyValueFromString("targetname", "moja2")
+        Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja3")
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(96, 768, 64), 20), "addoutput", "OnTrigger moja1:FadeAndKill", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "button_1_pressed"), "addoutput", "OnTrigger moja2:OnProxyRelay2:open", 1, null, null)
-        EntFireByHandle(Entities.FindByName(null, "button_1_unpressed"), "addoutput", "OnTrigger moja2:OnProxyRelay1:close", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "@entrance_door1-door_open_relay"), "addoutput", "OnTrigger wheatley_monitor1-relay_disable_screen:Kill::0.5", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(96, 768, 64), 20), "addoutput", "OnTrigger moja2:FadeAndKill", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "button_1_pressed"), "addoutput", "OnTrigger moja3:OnProxyRelay2:open", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "button_1_unpressed"), "addoutput", "OnTrigger moja3:OnProxyRelay1:close", 1, null, null)
         // Destroy objects
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByName(null, "@entrance_door1-close_door_rl").Destroy()
@@ -29,7 +33,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "catwalk_lift_door").__KeyValueFromString("dmg", "100")
         Entities.FindByName(null, "test_chamber1_platform").__KeyValueFromString("dmg", "100")
         EntFire("catwalk_lift_door", "addoutput", "OnFullyOpen catwalk_lift_door:close::1.25", 0.25, null)
-        EntFire("button_1_pressed", "addoutput", "OnTrigger moja3:BecomeShortcircuit::11.75", 0.25, null)
+        EntFire("button_1_pressed", "addoutput", "OnTrigger moja4:BecomeShortcircuit::11.75", 0.25, null)
         OnlyOnceSpA4Intro <- true
         OnlyOnceSp_A4_Intro_1 <- true
     }
@@ -89,15 +93,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Change ClosedBetaTestingBox Names ;)
         local ent = null
         while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 400)) {
-            ent.__KeyValueFromString("targetname", "moja3")
+            ent.__KeyValueFromString("targetname", "moja4")
         }
         if (OnlyOnceSpA4Intro==true) {
             if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
                 printl("Elevator viewcontrol activated")
                 // Elevator viewcontrol
-                Entities.FindByName(null, "@exit_door2-close_door_rl").__KeyValueFromString("targetname", "moja4")
+                Entities.FindByName(null, "@exit_door2-close_door_rl").__KeyValueFromString("targetname", "moja5")
 
-                EntFireByHandle(Entities.FindByName(null, "button_2_unpressed"), "addoutput", "OnTrigger moja4:Trigger", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "button_2_unpressed"), "addoutput", "OnTrigger moja5:Trigger", 0, null, null)
 
                 OnlyOnceSpA4Intro <- false
             }
