@@ -17,6 +17,8 @@ import mmap
 import time
 import urllib.request
 import zipfile
+import tkinter as tk
+from tkinter import ttk
 
 # Is on Windows (By default, we are on Linux)
 iow = False
@@ -1036,5 +1038,24 @@ def DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatchmsg):
         f = open(portal2rootdir + "/MultiplayerModMount/ModPatch", "w")
         f.write(modpatchmsg)
 
+# # POPUP BOX
+# def PopupBoxYN(textinp):
+#     from tkinter import Tk, Label, Button, Toplevel
+#     #Create an instance of Tkinter frame
+#     win = Tk()
+#     #Set the geometry of Tkinter frame
+#     win.geometry("200x100")
+
+#     retT = True
+#     retF = False
+
+#     Label(win, text=textinp, font=('Helvetica 14 bold')).pack(pady=20)
+#     #Create a button in the main Window to open the popup
+#     ttk.Button(win, text= "yes", command= lambda: return True).place(x=20, y=65)
+#     ttk.Button(win, text= "no", command= lambda: return False).place(x=100, y=65)
+#     # make another button at y=20 x=20
+#     win.mainloop()
+
+# print("POPUPOUT" +PopupBoxYN("Do you want to update?"))
 # Run the GUI
 rungui()
