@@ -1043,25 +1043,51 @@ def DownloadFile(url, dir):
 def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
     print ("Downloading Launcher Update")
     launcherpythonpath = Path(__file__).resolve()
-    # remove MultiplayerModMount if it exists
+    launcherpythonpath = str(launcherpythonpath)
+    # find the last slash
+    launcherpythonpathfolder = launcherpythonpath[:launcherpythonpath.rfind("/")]
+    print(launcherpythonpathfolder)
     if (iow):
-        DownloadFile(githubrepodownload, launcherpythonpath + "\\tempinstalllauncher.zip")
+        DownloadFile(githubrepodownload, launcherpythonpathfolder + "\\tempinstalllauncher.zip")
     else:
-        DownloadFile(githubrepodownload, launcherpythonpath + "/tempinstalllauncher.zip")
+        DownloadFile(githubrepodownload, launcherpythonpathfolder + "/tempinstalllauncher.zip")
 
     if (iow):
         print("Launcher Update Downloaded")
     else:
         # for each file in tempinstallmod
-        for file in os.listdir(launcherpythonpath + "/tempinstalllauncher"):
+        for file in os.listdir(launcherpythonpathfolder + "/tempinstalllauncher"):
             # rename file to Memes
-            os.rename(launcherpythonpath + "/tempinstalllauncher/" + file, launcherpythonpath + "/tempinstalllauncher/" + "launchertemp")
+            os.rename(launcherpythonpathfolder + "/tempinstalllauncher/" + file, launcherpythonpathfolder + "/tempinstalllauncher/" + "launchertemp")
+
+            # remove the old launcher
+            os.remove(launcherpythonpath)
 
             # copy the new launcher to the launcher folder
-            shutil.copytree(launcherpythonpath + "/tempinstalllauncher/launchertemp", launcherpythonpath + "/launcher")
+            os.rename(launcherpythonpathfolder + "/tempinstalllauncher/launchertemp" + prepath, launcherpythonpath)
 
-        # copy from
-#DownloadLauncherUpdate()
+            shutil.rmtree(launcherpythonpathfolder + "/tempinstalllauncher")
+
+# get the contents of this webpage
+website = "https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/ModIndex"
+response = urllib.request.urlopen(website)
+html = response.read()
+html = html.decode("utf-8")
+
+for line in html.split("\n"):
+    if (line.find("❑zippedrepo❑") != -1):
+        clinef = "❑zippedrepo❑"
+        githubrepodownloadout = line[line.find(clinef) + len(clinef) : line.find("</td>")]
+        print(githubrepodownloadout)
+    if (line.find("❑launcherpatch❑") != -1):
+        clinef = "❑launcherpatch❑"
+        launcherverpatch = line[line.find(clinef) + len(clinef) : line.find("</td>")]
+        print(launcherverpatch)
+    if (line.find("❑launcher❑") != -1):
+        clinef = "❑launcher❑"
+        launcherpath = line[line.find(clinef) + len(clinef) : line.find("</td>")]
+        print(launcherpath)
+#DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
 
 # MOD UPDATER
 def DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatchmsg):
