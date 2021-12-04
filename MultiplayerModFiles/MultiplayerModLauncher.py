@@ -1146,7 +1146,7 @@ if (os.path.exists(curlauncherverpatchfile)):
             win2.configure(background="#171619")
 
             Label(win2, text="Update Sucessful Please Restart!", font=('Helvetica 14 bold')).pack(pady=20)
-            ttk.Button(win2, text= "okay", command=okay).place(x=165, y=155)
+            ttk.Button(win2, text= "okay", command=okay).place(x=200, y=155)
 
         def noupdate():
             win.destroy()
