@@ -1130,7 +1130,7 @@ if (os.path.exists(curlauncherverpatchfile)):
             
 
             def okay():
-                win.destroy()
+                win2.destroy()
                 # stop the program
                 exit()
 
