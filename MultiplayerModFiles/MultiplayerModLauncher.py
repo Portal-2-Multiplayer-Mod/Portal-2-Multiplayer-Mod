@@ -1125,7 +1125,10 @@ for line in html.split("\n"):
         clinef = "❑launcher❑"
         launcherpath = line[line.find(clinef) + len(clinef) : line.find("</td>")]
 
-curlauncherverpatchfile = os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch")
+if (iow):
+    curlauncherverpatchfile = user_profile + "\\documents\\portal2multiplayermod\\LauncherPatch"
+else:
+    curlauncherverpatchfile = os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch")
 
 if (os.path.exists(curlauncherverpatchfile)):
     f = open(curlauncherverpatchfile, "r")
