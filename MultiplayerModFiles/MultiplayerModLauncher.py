@@ -975,7 +975,7 @@ def rungui():
                                 # lock its size
                                 win.resizable(0,0)
                                 # set the title
-                                win.title("Portal 2 Mod Manager")
+                                win.title("Portal 2: Multiplayer Mod Updater")
                                 # make the background #171619
                                 win.configure(background="#171619")
 
@@ -988,12 +988,12 @@ def rungui():
                                     win.destroy()
                                     print("Update cancelled")
 
-                                Label(win, text="There Are Updates Avalible Do You Want To Download?", font=('Helvetica 14 bold')).pack(pady=20)
+                                Label(win, text="There are updates available. Do you want to download?", font=('Helvetica 14 bold')).pack(pady=20)
                                 Label(win, text="current version: " + str(curmodpatch), font=('Helvetica 14')).place(x=15, y=55)
                                 Label(win, text="new version: " + str(modpatch), font=('Helvetica 14')).place(x=15, y=80)
                                 #Create a button in the main Window to open the popup
-                                ttk.Button(win, text= "yes", command=yesupdate).place(x=165, y=155)
-                                ttk.Button(win, text= "no", command=noupdate).place(x=265, y=155)
+                                ttk.Button(win, text= "Yes", command=yesupdate).place(x=165, y=155)
+                                ttk.Button(win, text= "No", command=noupdate).place(x=265, y=155)
                                 # make another button at y=20 x=20
                                 win.mainloop()
                             else:

@@ -38,6 +38,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("button_1_pressed", "addoutput", "OnTrigger moja4:BecomeShortcircuit::11.75", 0.25, null)
         OnlyOnceSpA4Intro <- true
         OnlyOnceSp_A4_Intro_1 <- true
+        Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "button_1_solved_TURRETNAMECHANGE")
+        EntFire("button_1_solved", "addoutput", "OnTrigger button_1_solved_TURRETNAMECHANGE:kill::17", 0.25, null)
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -93,9 +95,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             GooHurtTimerPred = Time()+1
         }
         // Change ClosedBetaTestingBox Names ;)
-        local ent = null
-        while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 400)) {
-            ent.__KeyValueFromString("targetname", "moja4")
+        if (!Entities.FindByName(null, "button_1_solved_TURRETNAMECHANGE")) {
+            local ent = null
+            while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800)) {
+                ent.__KeyValueFromString("targetname", "button_1_solved_TURRETNAMECHANGE")
+            }
         }
         if (OnlyOnceSpA4Intro==true) {
             if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
