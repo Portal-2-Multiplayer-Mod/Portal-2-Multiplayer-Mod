@@ -1055,6 +1055,30 @@ def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
 
     if (iow):
         print("Launcher Update Downloaded")
+        # for each file in tempinstallmod
+        for file in os.listdir(launcherpythonpathfolder + "\\tempinstalllauncher"):
+            # rename file to Memes
+            os.rename(launcherpythonpathfolder + "\\tempinstalllauncher\\" + file, launcherpythonpathfolder + "\\tempinstalllauncher\\" + "launchertemp")
+
+            # remove the old launcher
+            os.remove(launcherpythonpath)
+
+
+            # copy the new launcher to the launcher folder
+            os.rename(launcherpythonpathfolder + "\\tempinstalllauncher\\launchertemp" + prepath, launcherpythonpath)
+
+            shutil.rmtree(launcherpythonpathfolder + "\\tempinstalllauncher")
+
+            # remove the config file
+            defconffirwin = user_profile + "\\documents\\portal2multiplayermod"
+            if os.path.exists(os.path.expanduser(defconffirwin + "\\LauncherPatch")):
+                os.remove(os.path.expanduser(defconffirwin + "LauncherPatch"))
+
+            # write the new config file
+            # WriteToConfig(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"), modpatchmsg)
+            f = open(os.path.expanduser(defconffirwin + "/LauncherPatch"), "w")
+            f.write(modpatchmsg)
+            f.close()
     else:
         # for each file in tempinstallmod
         for file in os.listdir(launcherpythonpathfolder + "/tempinstalllauncher"):
