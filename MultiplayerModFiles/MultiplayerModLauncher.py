@@ -1047,14 +1047,15 @@ def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
     launcherpythonpath = str(launcherpythonpath)
     # find the last slash
     if (iow):
-        launcherpythonpathfolder = launcherpythonpath[:launcherpythonpath.rfind("/")]
+        launcherpythonpathfolder = launcherpythonpath[:launcherpythonpath.rfind("\\")]
+        launcherpythonpathfolder = launcherpythonpathfolder[:launcherpythonpathfolder.rfind("\\")]
         DownloadFile(githubrepodownload, launcherpythonpathfolder + "\\tempinstalllauncher.zip")
         print(launcherpythonpathfolder)
     else:
         launcherpythonpathfolder = launcherpythonpath[:launcherpythonpath.rfind("/")]
         DownloadFile(githubrepodownload, launcherpythonpathfolder + "/tempinstalllauncher.zip")
         print(launcherpythonpathfolder)
-# hi
+
     if (iow):
         print("Launcher Update Downloaded")
         # for each file in tempinstallmod
