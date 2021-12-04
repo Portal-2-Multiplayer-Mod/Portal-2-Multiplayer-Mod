@@ -19,6 +19,7 @@ import urllib.request
 import zipfile
 import tkinter as tk
 from tkinter import ttk
+from pathlib import Path
 
 # Is on Windows (By default, we are on Linux)
 iow = False
@@ -957,7 +958,7 @@ def rungui():
                             curmodpatch = curmodpatch.replace("\n", "")
                             curmodpatch = curmodpatch.replace(" ", "")
                             curmodpatch = curmodpatch
-                            if (curmodpatch.replace("\n", "").replace(" ", "") < modpatch.replace("\n", "").replace(" ", "")):
+                            if (curmodpatch.replace("\n", "").replace(" ", "") != modpatch.replace("\n", "").replace(" ", "")):
                                 dodowloadupdate = True
                         except:
                             print("ModPatch not found")
@@ -970,7 +971,14 @@ def rungui():
                                 #Create an instance of Tkinter frame
                                 win = Tk()
                                 #Set the geometry of Tkinter frame
-                                win.geometry("500x250")
+                                win.geometry("510x260")
+                                # lock its size
+                                win.resizable(0,0)
+                                # set the title
+                                win.title("Portal 2 Mod Manager")
+                                # make the background #171619
+                                win.configure(background="#171619")
+
 
                                 def yesupdate():
                                     win.destroy()
@@ -981,11 +989,11 @@ def rungui():
                                     print("Update cancelled")
 
                                 Label(win, text="There Are Updates Avalible Do You Want To Download?", font=('Helvetica 14 bold')).pack(pady=20)
-                                Label(win, text="current version: " + str(curmodpatch), font=('Helvetica 14')).place(x=10, y=50)
-                                Label(win, text="new version: " + str(modpatch), font=('Helvetica 14')).place(x=10, y=75)
+                                Label(win, text="current version: " + str(curmodpatch), font=('Helvetica 14')).place(x=15, y=55)
+                                Label(win, text="new version: " + str(modpatch), font=('Helvetica 14')).place(x=15, y=80)
                                 #Create a button in the main Window to open the popup
-                                ttk.Button(win, text= "yes", command=yesupdate).place(x=160, y=150)
-                                ttk.Button(win, text= "no", command=noupdate).place(x=260, y=150)
+                                ttk.Button(win, text= "yes", command=yesupdate).place(x=165, y=155)
+                                ttk.Button(win, text= "no", command=noupdate).place(x=265, y=155)
                                 # make another button at y=20 x=20
                                 win.mainloop()
                             else:
@@ -1031,11 +1039,32 @@ def DownloadFile(url, dir):
         zip_ref.extractall(dir.replace(".zip", ""))
     os.remove(dir)
 
-# UPDATER
+# LAUNCHER UPDATER
+def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
+    print ("Downloading Launcher Update")
+    launcherpythonpath = Path(__file__).resolve()
+    # remove MultiplayerModMount if it exists
+    if (iow):
+        DownloadFile(githubrepodownload, launcherpythonpath + "\\tempinstalllauncher.zip")
+    else:
+        DownloadFile(githubrepodownload, launcherpythonpath + "/tempinstalllauncher.zip")
+
+    if (iow):
+        print("Launcher Update Downloaded")
+    else:
+        # for each file in tempinstallmod
+        for file in os.listdir(launcherpythonpath + "/tempinstalllauncher"):
+            # rename file to Memes
+            os.rename(launcherpythonpath + "/tempinstalllauncher/" + file, launcherpythonpath + "/tempinstalllauncher/" + "launchertemp")
+
+            # copy the new launcher to the launcher folder
+            shutil.copytree(launcherpythonpath + "/tempinstalllauncher/launchertemp", launcherpythonpath + "/launcher")
+
+        # copy from
+#DownloadLauncherUpdate()
+
+# MOD UPDATER
 def DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatchmsg):
-    # Start the game
-    print(SectionConfig("$portal2"))
-    # get current working directory
     if (iow):
         DownloadFile(githubrepodownload, portal2rootdir + "\\tempinstallmod.zip")
     else:
