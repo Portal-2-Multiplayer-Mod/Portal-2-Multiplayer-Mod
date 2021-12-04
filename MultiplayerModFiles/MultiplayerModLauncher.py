@@ -1127,6 +1127,26 @@ if (os.path.exists(curlauncherverpatchfile)):
         def yesupdate():
             win.destroy()
             DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
+            
+
+            def okay():
+                win.destroy()
+                # stop the program
+                exit()
+
+             #Create an instance of Tkinter frame
+            win2 = Tk()
+            #Set the geometry of Tkinter frame
+            win2.geometry("510x260")
+            # lock its size
+            win2.resizable(0,0)
+            # set the title
+            win2.title("Portal 2 Mod Manager")
+            # make the background #171619
+            win2.configure(background="#171619")
+
+            Label(win2, text="Update Sucessful Please Restart!", font=('Helvetica 14 bold')).pack(pady=20)
+            ttk.Button(win, text= "okay", command=okay).place(x=165, y=155)
 
         def noupdate():
             win.destroy()
