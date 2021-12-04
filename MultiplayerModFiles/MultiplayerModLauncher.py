@@ -1111,7 +1111,36 @@ if (os.path.exists(curlauncherverpatchfile)):
         print("Launcher is up to date")
     else:
         print("Launcher is not up to date")
-        DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
+        from tkinter import Tk, Label, Button, Toplevel
+        #Create an instance of Tkinter frame
+        win = Tk()
+        #Set the geometry of Tkinter frame
+        win.geometry("510x260")
+        # lock its size
+        win.resizable(0,0)
+        # set the title
+        win.title("Portal 2 Mod Manager")
+        # make the background #171619
+        win.configure(background="#171619")
+
+
+        def yesupdate():
+            win.destroy()
+            DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
+
+        def noupdate():
+            win.destroy()
+            print("Update cancelled")
+
+        Label(win, text="Launcher is out of date!!! Do you want to update?", font=('Helvetica 14 bold')).pack(pady=20)
+        Label(win, text="current version: " + str(curlauncherverpatchnum), font=('Helvetica 14')).place(x=15, y=55)
+        Label(win, text="new version: " + str(launcherverpatch), font=('Helvetica 14')).place(x=15, y=80)
+        #Create a button in the main Window to open the popup
+        ttk.Button(win, text= "yes", command=yesupdate).place(x=165, y=155)
+        ttk.Button(win, text= "no", command=noupdate).place(x=265, y=155)
+        # make another button at y=20 x=20
+        win.mainloop()
+        
 else:
     DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
 
