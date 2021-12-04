@@ -1070,10 +1070,14 @@ def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
             shutil.rmtree(launcherpythonpathfolder + "/tempinstalllauncher")
 
             # remove the config file
-            os.remove(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"))
+            if os.path.exists(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch")):
+                os.remove(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"))
 
             # write the new config file
-            WriteToConfig(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"), modpatchmsg)
+            # WriteToConfig(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"), modpatchmsg)
+            f = open(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"), "w")
+            f.write(modpatchmsg)
+            f.close()
 
 # get the contents of this webpage
 website = "https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/ModIndex"
