@@ -1046,13 +1046,15 @@ def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
     launcherpythonpath = Path(__file__).resolve()
     launcherpythonpath = str(launcherpythonpath)
     # find the last slash
-    launcherpythonpathfolder = launcherpythonpath[:launcherpythonpath.rfind("/")]
-    print(launcherpythonpathfolder)
     if (iow):
+        launcherpythonpathfolder = launcherpythonpath[:launcherpythonpath.rfind("/")]
         DownloadFile(githubrepodownload, launcherpythonpathfolder + "\\tempinstalllauncher.zip")
+        print(launcherpythonpathfolder)
     else:
+        launcherpythonpathfolder = launcherpythonpath[:launcherpythonpath.rfind("/")]
         DownloadFile(githubrepodownload, launcherpythonpathfolder + "/tempinstalllauncher.zip")
-
+        print(launcherpythonpathfolder)
+# hi
     if (iow):
         print("Launcher Update Downloaded")
         # for each file in tempinstallmod
@@ -1184,7 +1186,6 @@ if (os.path.exists(curlauncherverpatchfile)):
         ttk.Button(win, text= "no", command=noupdate).place(x=265, y=155)
         # make another button at y=20 x=20
         win.mainloop()
-        
 else:
     DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
 
