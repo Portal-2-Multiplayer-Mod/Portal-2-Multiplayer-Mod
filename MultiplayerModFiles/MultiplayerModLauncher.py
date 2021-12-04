@@ -1088,22 +1088,22 @@ for line in html.split("\n"):
         launcherpath = line[line.find(clinef) + len(clinef) : line.find("</td>")]
         print(launcherpath)
 
-    curlauncherverpatchfile = os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch")
+curlauncherverpatchfile = os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch")
 
-    if (os.path.exists(curlauncherverpatchfile)):
-        f = open(curlauncherverpatchfile, "r")
-        # read file
-        curlauncherverpatchnum = f.read()
-        f.close()
-        curlauncherverpatchnum = curlauncherverpatchnum.replace("\n", "")
-        curlauncherverpatchnum = curlauncherverpatchnum.replace(" ", "")
-        if (curlauncherverpatchnum == launcherverpatch.replace(" ", "").replace("\n", "")):
-            print("Launcher is up to date")
-        else:
-            print("Launcher is not up to date")
-            DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
+if (os.path.exists(curlauncherverpatchfile)):
+    f = open(curlauncherverpatchfile, "r")
+    # read file
+    curlauncherverpatchnum = f.read()
+    f.close()
+    curlauncherverpatchnum = curlauncherverpatchnum.replace("\n", "")
+    curlauncherverpatchnum = curlauncherverpatchnum.replace(" ", "")
+    if (curlauncherverpatchnum == launcherverpatch):
+        print("Launcher is up to date")
     else:
+        print("Launcher is not up to date")
         DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
+else:
+    DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
 
 
 
