@@ -975,7 +975,7 @@ def rungui():
                                 # lock its size
                                 win.resizable(0,0)
                                 # set the title
-                                win.title("Portal 2 Mod Manager")
+                                win.title("Portal 2: Multiplayer Mod Updater")
                                 # make the background #171619
                                 win.configure(background="#171619")
 
