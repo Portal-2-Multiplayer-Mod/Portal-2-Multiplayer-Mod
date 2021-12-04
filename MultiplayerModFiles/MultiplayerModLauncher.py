@@ -1087,7 +1087,25 @@ for line in html.split("\n"):
         clinef = "❑launcher❑"
         launcherpath = line[line.find(clinef) + len(clinef) : line.find("</td>")]
         print(launcherpath)
-#DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
+
+    curlauncherverpatchfile = os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch")
+
+    if (os.path.exists(curlauncherverpatchfile)):
+        f = open(curlauncherverpatchfile, "r")
+        # read file
+        curlauncherverpatchnum = f.read()
+        f.close()
+        curlauncherverpatchnum = curlauncherverpatchnum.replace("\n", "")
+        curlauncherverpatchnum = curlauncherverpatchnum.replace(" ", "")
+        if (curlauncherverpatchnum == launcherverpatch.replace(" ", "").replace("\n", "")):
+            print("Launcher is up to date")
+        else:
+            print("Launcher is not up to date")
+            DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
+    else:
+        DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
+
+
 
 # MOD UPDATER
 def DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatchmsg):
