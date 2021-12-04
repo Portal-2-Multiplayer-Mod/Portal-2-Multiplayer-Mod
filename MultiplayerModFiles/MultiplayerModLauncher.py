@@ -1075,7 +1075,7 @@ def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
             # remove the config file
             defconffirwin = user_profile + "\\documents\\portal2multiplayermod"
             if os.path.exists(os.path.expanduser(defconffirwin + "\\LauncherPatch")):
-                os.remove(os.path.expanduser(defconffirwin + "LauncherPatch"))
+                os.remove(os.path.expanduser(defconffirwin + "\\LauncherPatch"))
 
             # write the new config file
             # WriteToConfig(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"), modpatchmsg)
