@@ -1042,6 +1042,7 @@ def DownloadFile(url, dir):
 # LAUNCHER UPDATER
 def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
     print ("Downloading Launcher Update")
+    
     launcherpythonpath = Path(__file__).resolve()
     launcherpythonpath = str(launcherpythonpath)
     # find the last slash
@@ -1068,6 +1069,12 @@ def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
 
             shutil.rmtree(launcherpythonpathfolder + "/tempinstalllauncher")
 
+            # remove the config file
+            os.remove(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"))
+
+            # write the new config file
+            WriteToConfig(os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch"), modpatchmsg)
+
 # get the contents of this webpage
 website = "https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/ModIndex"
 response = urllib.request.urlopen(website)
@@ -1086,7 +1093,6 @@ for line in html.split("\n"):
     if (line.find("❑launcher❑") != -1):
         clinef = "❑launcher❑"
         launcherpath = line[line.find(clinef) + len(clinef) : line.find("</td>")]
-        print(launcherpath)
 
 curlauncherverpatchfile = os.path.expanduser("~/.config/portal2multiplayermod/LauncherPatch")
 
@@ -1094,9 +1100,9 @@ if (os.path.exists(curlauncherverpatchfile)):
     f = open(curlauncherverpatchfile, "r")
     # read file
     curlauncherverpatchnum = f.read()
+    print("sdf" + curlauncherverpatchnum)
+    print("laup " + launcherverpatch)
     f.close()
-    curlauncherverpatchnum = curlauncherverpatchnum.replace("\n", "")
-    curlauncherverpatchnum = curlauncherverpatchnum.replace(" ", "")
     if (curlauncherverpatchnum == launcherverpatch):
         print("Launcher is up to date")
     else:
