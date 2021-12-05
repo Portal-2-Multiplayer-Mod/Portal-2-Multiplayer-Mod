@@ -101,7 +101,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     }
                 }
                 if (DisableTeleport==false) {
-                    p.SetOrigin(Vector(-482, 0, 52))
+                    p.SetOrigin(Vector(-450, 0, 52))
                     p.SetAngles(0, 0, 0)
                     p.SetVelocity(Vector(0, 0, 0))
                 }

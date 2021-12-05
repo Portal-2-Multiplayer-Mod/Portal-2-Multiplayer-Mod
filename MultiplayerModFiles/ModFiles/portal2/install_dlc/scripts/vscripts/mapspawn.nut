@@ -26,7 +26,7 @@ DevMode <- false // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -35,6 +35,8 @@ RandomTurrets <- false // Set to true if you want to randomize every Turret's mo
 TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
+//-----------------------------------
+Admins <- ["vista", "Bumpy"]
 //-----------------------------------
 
 //  ██████  ██████  ██████  ███████
@@ -50,6 +52,7 @@ if (RandomPortalSize==true) {
     randomportalsize <- 34
     randomportalsizeh <- 34
 }
+yes <- ""
 DevModeConfig <- DevMode
 StartDevModeCheck <- false
 PreviousTimeDeath <- 0
@@ -388,6 +391,16 @@ function CreateTrigger(x1, y1, z1, x2, y2, z2){
     return plist
 }
 
+function FindPlayerByName(name) {
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        if (GetPlayerName(p.entindex())==name) {
+            return p
+        }
+    }
+    return null
+}
+
 function FindAndReplace(inputstr, findstr, replacestr) {
     local startstrip = inputstr.find(findstr)
     if (startstrip==null) {
@@ -453,13 +466,24 @@ function CacheModel(ModelName) {
     }
 }
 
-// Find player by index
+function GetAdminLevel(id) {
+  foreach (playername in Admins) {
+    if (playername==GetPlayerName(id)) {
+        return 1
+    }
+  }  
+  if (id == 1) {
+      return 1
+  }
+  return 0
+}
 
+// Find player by index
 function FindByIndex(id)  {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
-        if (ent.entindex()==id) {
-            return ent
+        if (p.entindex()==id) {
+            return p
         }
     }
 }
@@ -763,6 +787,129 @@ function loop() {
 // █░█ █▀█ █▀█ █▄▀   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▀█ █▄█ █▄█ █░█   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
+///////////////////
+// CHAT COMMANDS //
+///////////////////
+
+function ChatCommands(ccuserid, ccmessage) {
+    local p = FindByIndex(ccuserid)
+    local pname = GetPlayerName(ccuserid)
+    local isadmin = GetAdminLevel(ccuserid)
+
+    printl("User: " + pname + " Sent: " + ccmessage)
+
+    //## HELP COMMAND ##//
+    if (ccmessage.find("!help") != null) {
+        Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "chatcommandhelp")
+        EntFire("chatcommandhelp", "command", "say [User Commands]", 1.1, null)
+        EntFire("chatcommandhelp", "command", "say help", 2.1, null)
+        EntFire("chatcommandhelp", "command", "say kill", 3.1, null)
+        EntFire("chatcommandhelp", "command", "say changeteam", 3.1, null)
+        EntFire("chatcommandhelp", "command", "say [Admin Commands]", 4.1, null)
+        EntFire("chatcommandhelp", "command", "say kill (ARGS)", 5.1, null)
+        EntFire("chatcommandhelp", "command", "say noclip", 6.1, null)
+        EntFire("chatcommandhelp", "command", "say [General Help]", 7.1, null)
+        EntFire("chatcommandhelp", "command", "say {COMMAND PREFIX: !}", 8.1, null)
+        EntFire("chatcommandhelp", "kill", "", 9.1, null)
+    }
+
+    //## CHANGETEAM COMMAND ##//
+    if (ccmessage.find("!changeteam") != null) {
+        local args = null
+        try { args = ccmessage.slice(12, ccmessage.len()) } catch(e) { printl(e) }
+
+        local curteam = p.GetTeam()
+        
+        if (args==null) {
+            if (p.GetTeam() >= 3) {
+                p.SetTeam(2)
+                SendToConsole("say Changed " + pname + "'s Team To Red!")
+            } else {
+                p.SetTeam(3)
+                SendToConsole("say Changed " + pname + "'s Team To Blue!")
+            }
+        } else {
+            if (args=="sp") {
+                p.SetTeam(1)
+                SendToConsole("say Changed " + pname + "'s Team To Singleplayer!")
+            } else {
+                if (args=="red") {
+                    p.SetTeam(2)
+                    SendToConsole("say Changed " + pname + "'s Team To Red!")
+                } else {
+                    if (args=="blue") {
+                        p.SetTeam(3)
+                        SendToConsole("say Changed " + pname + "'s Team To Blue!")
+                    } else {
+                        SendToConsole("say " + pname + " ERROR: Args were given but were not [red, blue, sp]")
+                    }
+                }
+            }
+        }
+    }
+
+
+    //## NOCLIP COMMAND ##//
+    if (ccmessage.find("!noclip") != null) {
+        if (isadmin>=1) {
+            local args = "DONTNOCLIP"
+            try { args = ccmessage.slice(8, ccmessage.len()) } catch(e) { printl(e) }
+            if (args=="on") {
+                printl("noclipped: " + pname)
+                EntFireByHandle(p, "addoutput", "MoveType 8", 0, null, null)
+            } else {
+                if (args=="off") {
+                    printl("noclipped: " + pname)
+                    EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
+                } else {
+                    SendToConsole("say " + pname + " ERROR: Invalid Option (please use \"on\" or \"off\")")
+                }
+            }
+        } else {
+            SendToConsole("say " + pname + " [you do not have access to this command]")
+        }
+    }
+    //## KILL COMMAND ##//
+    if (ccmessage.find("!kill") != null) {
+        local killargs = "DONTKILL"
+        try { killargs = ccmessage.slice(6, ccmessage.len()) } catch(e) { printl(e) }
+
+        if (killargs != "DONTKILL") {
+            if (isadmin >= 1) {
+                printl("Killed: " + killargs)
+                local killplayerargs = null
+                killplayerargs = FindPlayerByName(killargs)
+                if (killplayerargs!=null) {
+                    killplayerargs.SetHealth(1)
+                    killplayerargs.SetMaxHealth(1)
+                    EntFireByHandle(killplayerargs, "sethealth", "\"-999\"", 0.01, null, null)
+                    EntFireByHandle(killplayerargs, "sethealth", "\"-999\"", 0.02, null, null)
+                } else {
+                    if (killargs == "all") {
+                        local p2 = null
+                        while (p2 = Entities.FindByClassname(p2, "player")) {
+                            p2.SetHealth(1)
+                            p2.SetMaxHealth(1)
+                            EntFireByHandle(p2, "sethealth", "\"-999\"", 0.01, null, null)
+                            EntFireByHandle(p2, "sethealth", "\"-999\"", 0.02, null, null)
+                        }
+                    } else {
+                        SendToConsole("say" + pname + "ERROR: Player Not Found")
+                    }
+                }
+            } else {
+                SendToConsole("say " + pname + " [you must use !kill without any args as you do not have admin]")
+            }
+        } else {
+            printl("killed: " + pname)
+            p.SetHealth(1)
+            p.SetMaxHealth(1)
+            EntFireByHandle(p, "sethealth", "\"-999\"", 0.01, null, null)
+            EntFireByHandle(p, "sethealth", "\"-999\"", 0.02, null, null)
+        }
+    }
+}
+
 //////////////////////////////
 // Runs when a player joins //
 //////////////////////////////
@@ -908,6 +1055,11 @@ function OnPlayerRespawn(player) {
 ///////////////////////////////////////
 
 function PostMapLoad() {
+    // add a hook to the chat command function
+    if (PluginLoaded==true) {
+        printl("(P2:MM): Plugin Loaded")
+        AddChatCallback("ChatCommands")
+    }
     // Force spawn players in map
     AddBranchLevelName( 1, "" )
     MapSupport(false, false, false, true, false, false, false)
