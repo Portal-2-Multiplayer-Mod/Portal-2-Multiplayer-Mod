@@ -22,7 +22,7 @@
 //  ██████  ██████  ██   ████ ██      ██  ██████
 
 //-----------------------------------
-DevMode <- true // Set to true if you're a developer
+DevMode <- false // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
@@ -248,6 +248,103 @@ function init() {
 
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
+
+function RandomColor() {
+    local rcr = RandomInt(0, 255)
+    local rcg = RandomInt(0, 255)
+    local rcb = RandomInt(0, 255)
+    local ColorBal = RandomInt(0, 2)
+    // Balance The Color
+    if (ColorBal == 1) {
+        if (rcr > rcg && rcr > rcb) {
+            rcr = rcr * 2
+            if (rcr > 255) {
+                rcr = 255
+            }
+
+            rcg = rcg / 2
+            rcb = rcb / 2
+        } else {
+            if (rcg > rcr && rcg > rcb) {
+                rcg = rcg * 2
+                if (rcg > 255) {
+                    rcg = 255
+                }
+
+                rcr = rcr / 2
+                rcg = rcg / 2
+            } else {
+                if (rcb > rcr && rcb > rcg) {
+                    rcb = rcb * 2
+                    if (rcb > 255) {
+                        rcb = 255
+                    }
+
+                    rcr = rcr / 2
+                    rcg = rcg / 2
+                }
+            }
+        }
+    }
+    // Balance The Color
+    if (ColorBal == 2) {
+        if (rcr > rcg && rcr > rcb) {
+            rcr = rcr * 2
+            if (rcr > 255) {
+                rcr = 255
+            }
+
+            rcg = rcg * 2
+            if (rcg > 255) {
+                rcg = 255
+            }
+            rcb = rcb / 3
+        } else {
+            if (rcg > rcr && rcg > rcb) {
+                rcg = rcg * 2
+                if (rcg > 255) {
+                    rcg = 255
+                }
+
+                rcr = rcr * 2
+                if (rcr > 255) {
+                    rcr = 255
+                }
+                rcg = rcg / 2
+            } else {
+                if (rcb > rcr && rcb > rcg) {
+                    rcb = rcb * 2
+                    if (rcb > 255) {
+                        rcb = 255
+                    }
+
+                    rcr = R / 2
+                    rcg = rcg * 2
+                    if (rcg > 255) {
+                        rcg = 255
+                    }
+                }
+            }
+        }
+    }
+    if (RandomInt(1, 7)==3) {
+        rcg = RandomInt(1, 30)
+        rcb = RandomInt(1, 30)
+        rcr = RandomInt(170, 255)
+    }
+    if (RandomInt(1, 9)==4) {
+        rcg = RandomInt(150, 255)
+        rcb = RandomInt(1, 30)
+        rcr = RandomInt(170, 255)
+    }
+
+    class ColorBar {
+        r = rcr
+        g = rcg
+        b = rcb
+    }
+    return ColorBar
+}
 
 function CreateTrigger(x1, y1, z1, x2, y2, z2){
 	if(DevMode == true){
@@ -512,94 +609,11 @@ function loop() {
                     modelnumber = 4
                 }
                 ent.__KeyValueFromInt("ModelIndex", modelnumber)
-                // Get A Random Color
-                R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
-                local ColorBal = RandomInt(0, 2)
-                // Balance The Color
-                if (ColorBal == 1) {
-                    if (R > G && R > B) {
-                        R <- R * 2
-                        if (R > 255) {
-                            R <- 255
-                        }
+                local RTurretColor = RandomColor()
 
-                        G <- G / 2
-                        B <- B / 2
-                    } else {
-                        if (G > R && G > B) {
-                            G <- G * 2
-                            if (G > 255) {
-                                G <- 255
-                            }
-
-                            R <- R / 2
-                            G <- G / 2
-                        } else {
-                            if (B > R && B > G) {
-                                B <- B * 2
-                                if (B > 255) {
-                                    B <- 255
-                                }
-
-                                R <- R / 2
-                                G <- G / 2
-                            }
-                        }
-                    }
-                }
-                // Balance The Color
-                if (ColorBal == 2) {
-                    if (R > G && R > B) {
-                        R <- R * 2
-                        if (R > 255) {
-                            R <- 255
-                        }
-
-                        G <- G * 2
-                        if (G > 255) {
-                            G <- 255
-                        }
-                        B <- B / 3
-                    } else {
-                        if (G > R && G > B) {
-                            G <- G * 2
-                            if (G > 255) {
-                                G <- 255
-                            }
-
-                            R <- R * 2
-                            if (R > 255) {
-                                R <- 255
-                            }
-                            G <- G / 2
-                        } else {
-                            if (B > R && B > G) {
-                                B <- B * 2
-                                if (B > 255) {
-                                    B <- 255
-                                }
-
-                                R <- R / 2
-                                G <- G * 2
-                                if (G > 255) {
-                                    G <- 255
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (RandomInt(1, 7)==3) {
-                        G <- RandomInt(1, 30)
-                        B <- RandomInt(1, 30)
-                        R <- RandomInt(170, 255)
-                }
-
-                if (RandomInt(1, 9)==4) {
-                        G <- RandomInt(150, 255)
-                        B <- RandomInt(1, 30)
-                        R <- RandomInt(170, 255)
-                }
+                b <- RTurretColor.b
+                g <- RTurretColor.g
+                r <- RTurretColor.r
 
                 local model = RandomInt(0, 2)
 
@@ -618,7 +632,7 @@ function loop() {
                 // }
 
 
-                EntFireByHandle(ent, "Color", (R + " " + G + " " + B), 0, null, null)
+                EntFireByHandle(ent, "Color", (R + " " + G + " " + R), 0, null, null)
                 ent.SetTeam(69420)
             }
         }
