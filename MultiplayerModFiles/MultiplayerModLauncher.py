@@ -351,14 +351,14 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
             shutil.copytree(owd + "\\MultiplayerModMount\\install_dlc", owd + dlcname)
             print("Copied MultiplayerModMount/install_dlc to " + dlcname)
         else:
-            shutil.copytree(owd + "\\MultiplayerModFiles\\ModFiles\\portal 2\\install_dlc", owd + dlcname)
+            shutil.copytree(owd + "\\MultiplayerModFiles\\ModFiles\\portal2\\install_dlc", owd + dlcname)
             print("Copied MultiplayerModFiles/ModFiles/install_dlc to " + dlcname + "DEVELOPER MODE")
     else:
         if (FindInConfig("Developer")=="off"):
             shutil.copytree(owd + "/MultiplayerModMount/install_dlc", owd + dlcname)
             print("Copied MultiplayerModMount/install_dlc to " + dlcname)
         else:
-            shutil.copytree(owd + "/MultiplayerModFiles/ModFiles/portal 2/install_dlc", owd + dlcname)
+            shutil.copytree(owd + "/MultiplayerModFiles/ModFiles/portal2/install_dlc", owd + dlcname)
             print("Copied MultiplayerModFiles/ModFiles/install_dlc to " + dlcname + "DEVELOPER MODE")
     print("Copied \MultiplayerModMount to " + dlcname)
 
