@@ -592,7 +592,7 @@ configdefaults = [
     "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
     "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
     "",
-    "cfgvariant = 15 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
+    "cfgvariant = 16 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
     "",
     "# DISCLAIMER : I recommend you edit this through the gui as this",
     "#              config file has some unstable objects that may or",
