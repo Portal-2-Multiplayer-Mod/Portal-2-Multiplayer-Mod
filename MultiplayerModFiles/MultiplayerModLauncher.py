@@ -347,9 +347,19 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
 
     # Copy the multiplayermod files into the new dlc using the dlc name
     if (iow):
-        shutil.copytree(owd + "\\MultiplayerModMount\\install_dlc", owd + dlcname)
+        if (FindInConfig("Developer")=="off"):
+            shutil.copytree(owd + "\\MultiplayerModMount\\install_dlc", owd + dlcname)
+            print("Copied MultiplayerModMount/install_dlc to " + dlcname)
+        else:
+            shutil.copytree(owd + "\\MultiplayerModFiles\\ModFiles\\portal 2\\install_dlc", owd + dlcname)
+            print("Copied MultiplayerModFiles/ModFiles/install_dlc to " + dlcname + "DEVELOPER MODE")
     else:
-        shutil.copytree(owd + "/MultiplayerModMount/install_dlc", owd + dlcname)
+        if (FindInConfig("Developer")=="off"):
+            shutil.copytree(owd + "/MultiplayerModMount/install_dlc", owd + dlcname)
+            print("Copied MultiplayerModMount/install_dlc to " + dlcname)
+        else:
+            shutil.copytree(owd + "/MultiplayerModFiles/ModFiles/portal 2/install_dlc", owd + dlcname)
+            print("Copied MultiplayerModFiles/ModFiles/install_dlc to " + dlcname + "DEVELOPER MODE")
     print("Copied \MultiplayerModMount to " + dlcname)
 
     # Edit mapspawn file in the new dlc
@@ -593,6 +603,8 @@ configdefaults = [
     "",
     "#-----------------------------------",
     "UseProton = off",
+    "#-----------------------------------",
+    "Developer = off",
     "#-----------------------------------",
     "portal2path = undefined",
     "#-----------------------------------",
@@ -845,6 +857,11 @@ def rungui():
         protoncheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 150), (150, 25)),
                                                     text='Use Proton | ' + str(FindInConfig("UseProton").upper()),
                                                     manager=manager)
+
+    developercheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 200), (150, 25)),
+                                                    text='Developer | ' + str(FindInConfig("Developer").upper()),
+                                                    manager=manager)
+
     if (str(FindInConfig("UseProton") == "off")):
         IsOnProton = False
     else:
@@ -1001,7 +1018,7 @@ def rungui():
                         else:
                             print("No update needed")
                         LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
-                    # if proton checkbox is pressed
+                    # PROTON CHECKBOX
                     if (iow):
                         continue
                     else:
@@ -1013,6 +1030,19 @@ def rungui():
                             else:
                                 protoncheckbox.set_text("Use Proton | ON")
                                 WriteToConfig("UseProton", "on")
+                                IsOnProton = True
+
+                    if (iow):
+                        continue
+                    else:
+                        if event.ui_element == developercheckbox:
+                            if (developercheckbox.text == "Developer | ON"):
+                                developercheckbox.set_text("Developer | OFF")
+                                WriteToConfig("Developer", "off")
+                                IsOnProton = False
+                            else:
+                                developercheckbox.set_text("Developer | ON")
+                                WriteToConfig("Developer", "on")
                                 IsOnProton = True
 
             if (is_running == True):
@@ -1042,7 +1072,7 @@ def DownloadFile(url, dir):
 # LAUNCHER UPDATER
 def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
     print ("Downloading Launcher Update")
-    
+
     launcherpythonpath = Path(__file__).resolve()
     launcherpythonpath = str(launcherpythonpath)
     # find the last slash
@@ -1157,7 +1187,7 @@ if (os.path.exists(curlauncherverpatchfile)):
         def yesupdate():
             win.destroy()
             DownloadLauncherUpdate(launcherpath, githubrepodownloadout, launcherverpatch)
-            
+
 
             def okay():
                 win2.destroy()

@@ -945,7 +945,7 @@ function GeneralOneTime() {
     if (RunPluginLoad==true) {
         printl("(P2:MM): Loading plugin... Restarting map")
         // Load plugin
-        EntFireByHandle(pluginloadcommand, "Command", "plugin_load pl", 0, null, null)
+        EntFireByHandle(pluginloadcommand, "Command", "plugin_load 32pmod", 0, null, null)
         // Wait for plugin to load and then restart map
         EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
         LoadPlugin <- false
