@@ -471,7 +471,7 @@ function GetAdminLevel(id) {
     if (playername==GetPlayerName(id)) {
         return 1
     }
-  }  
+  }
   if (id == 1) {
       return 1
   }
@@ -804,13 +804,13 @@ function ChatCommands(ccuserid, ccmessage) {
         EntFire("chatcommandhelp", "command", "say [User Commands]", 1.1, null)
         EntFire("chatcommandhelp", "command", "say help", 2.1, null)
         EntFire("chatcommandhelp", "command", "say kill", 3.1, null)
-        EntFire("chatcommandhelp", "command", "say changeteam", 3.1, null)
-        EntFire("chatcommandhelp", "command", "say [Admin Commands]", 4.1, null)
-        EntFire("chatcommandhelp", "command", "say kill (ARGS)", 5.1, null)
-        EntFire("chatcommandhelp", "command", "say noclip", 6.1, null)
-        EntFire("chatcommandhelp", "command", "say [General Help]", 7.1, null)
-        EntFire("chatcommandhelp", "command", "say {COMMAND PREFIX: !}", 8.1, null)
-        EntFire("chatcommandhelp", "kill", "", 9.1, null)
+        EntFire("chatcommandhelp", "command", "say changeteam", 4.1, null)
+        EntFire("chatcommandhelp", "command", "say [Admin Commands]", 5.1, null)
+        EntFire("chatcommandhelp", "command", "say kill (ARGS)", 6.1, null)
+        EntFire("chatcommandhelp", "command", "say noclip", 7.1, null)
+        EntFire("chatcommandhelp", "command", "say [General Help]", 8.1, null)
+        EntFire("chatcommandhelp", "command", "say {COMMAND PREFIX: !}", 9.1, null)
+        EntFire("chatcommandhelp", "kill", "", 10.1, null)
     }
 
     //## CHANGETEAM COMMAND ##//
@@ -819,7 +819,7 @@ function ChatCommands(ccuserid, ccmessage) {
         try { args = ccmessage.slice(12, ccmessage.len()) } catch(e) { printl(e) }
 
         local curteam = p.GetTeam()
-        
+
         if (args==null) {
             if (p.GetTeam() >= 3) {
                 p.SetTeam(2)
