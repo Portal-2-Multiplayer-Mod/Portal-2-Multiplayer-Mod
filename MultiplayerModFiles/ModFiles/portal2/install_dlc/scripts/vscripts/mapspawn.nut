@@ -829,20 +829,15 @@ function ChatCommands(ccuserid, ccmessage) {
                 SendToConsole("say Changed " + pname + "'s Team To Blue!")
             }
         } else {
-            if (args=="sp") {
-                p.SetTeam(1)
-                SendToConsole("say Changed " + pname + "'s Team To Singleplayer!")
+            if (args=="red") {
+                p.SetTeam(2)
+                SendToConsole("say Changed " + pname + "'s Team To Red!")
             } else {
-                if (args=="red") {
-                    p.SetTeam(2)
-                    SendToConsole("say Changed " + pname + "'s Team To Red!")
+                if (args=="blue") {
+                    p.SetTeam(3)
+                    SendToConsole("say Changed " + pname + "'s Team To Blue!")
                 } else {
-                    if (args=="blue") {
-                        p.SetTeam(3)
-                        SendToConsole("say Changed " + pname + "'s Team To Blue!")
-                    } else {
-                        SendToConsole("say " + pname + " ERROR: Args were given but were not [red, blue, sp]")
-                    }
+                    SendToConsole("say " + pname + " ERROR: Args were given but were not [red, blue]")
                 }
             }
         }
