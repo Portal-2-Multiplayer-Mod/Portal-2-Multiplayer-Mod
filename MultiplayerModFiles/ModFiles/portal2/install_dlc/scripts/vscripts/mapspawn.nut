@@ -36,7 +36,7 @@ TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower num
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
 //-----------------------------------
-Admins <- ["vista", "Bumpy"]
+Admins <- ["vista", "Bumpy", "Nanoman2525", "Wolƒe Strider Shoσter"]
 //-----------------------------------
 
 //  ██████  ██████  ██████  ███████
@@ -808,9 +808,55 @@ function ChatCommands(ccuserid, ccmessage) {
         EntFire("chatcommandhelp", "command", "say [Admin Commands]", 5.1, null)
         EntFire("chatcommandhelp", "command", "say kill (ARGS)", 6.1, null)
         EntFire("chatcommandhelp", "command", "say noclip", 7.1, null)
-        EntFire("chatcommandhelp", "command", "say [General Help]", 8.1, null)
-        EntFire("chatcommandhelp", "command", "say {COMMAND PREFIX: !}", 9.1, null)
-        EntFire("chatcommandhelp", "kill", "", 10.1, null)
+        EntFire("chatcommandhelp", "command", "say rcon", 8.1, null)
+        EntFire("chatcommandhelp", "command", "say changelevel", 9.1, null)
+        EntFire("chatcommandhelp", "command", "say [General Help]", 11.1, null)
+        EntFire("chatcommandhelp", "command", "say {COMMAND PREFIX: !}", 12.1, null)
+        EntFire("chatcommandhelp", "kill", "", 13.1, null)
+    }
+
+    //## GET COLOR ##//
+    local command="!getcolor"
+    if (ccmessage.find("!getcolor") != null) {
+        local args = null
+        try { args = ccmessage.slice(command.len()+1, ccmessage.len()) } catch(e) { printl(e) }
+        if (args != null) {}
+    }
+
+    //## CHANGELEVEL COMMAND ##//
+    local command="!changelevel"
+    if (ccmessage.find(command) != null) {
+        if (isadmin>=1) {
+            local args = null
+            try { args = ccmessage.slice(command.len()+1, ccmessage.len()) } catch(e) { printl(e) }
+
+            if (args!=null) {
+                SendToConsole("changelevel " + args)
+                SendToConsole("say " + pname + " INVALID MAP NAME: " + args)
+            } else {
+                SendToConsole("say " + pname + " ERROR: No arguments provided!")
+            }
+        } else {
+            SendToConsole("say " + pname + " [you do not have access to this command]")
+        }
+    }
+
+    //## RCON COMMAND ##//
+    local command="!rcon"
+    if (ccmessage.find(command) != null) {
+        if (isadmin>=1) {
+            local args = null
+            try { args = ccmessage.slice(command.len()+1, ccmessage.len()) } catch(e) { printl(e) }
+
+            if (args!=null) {
+                SendToConsole(args)
+                SendToConsole("say " + pname + " Executed: " + args)
+            } else {
+                SendToConsole("say " + pname + " ERROR: No arguments provided!")
+            }
+        } else {
+            SendToConsole("say " + pname + " [you do not have access to this command]")
+        }
     }
 
     //## CHANGETEAM COMMAND ##//
@@ -1055,6 +1101,8 @@ function PostMapLoad() {
         printl("(P2:MM): Plugin Loaded")
         AddChatCallback("ChatCommands")
     }
+    // Edit Cvars
+    SendToConsole("mp_allowspectators 0")
     // Force spawn players in map
     AddBranchLevelName( 1, "" )
     MapSupport(false, false, false, true, false, false, false)
