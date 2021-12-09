@@ -823,6 +823,7 @@ function ChatCommands(ccuserid, ccmessage) {
         EntFire("chatcommandhelp", "command", "say changeteam", 0, null)
         EntFire("chatcommandhelp", "command", "say [Admin Commands]", 1, null)
         EntFire("chatcommandhelp", "command", "say kill (ARGS)", 1, null)
+        EntFire("chatcommandhelp", "command", "say teleport", 1, null)
         EntFire("chatcommandhelp", "command", "say noclip", 1, null)
         EntFire("chatcommandhelp", "command", "say rcon", 1, null)
         EntFire("chatcommandhelp", "command", "say changelevel", 1, null)
