@@ -773,6 +773,22 @@ function loop() {
             EntFire("forcedisconnectclient", "command", "disconnect \"You cannot play singleplayer games when Portal 2 is launched from the Multiplayer Mod launcher. Please close the game and start it from Steam.\"", 1, null)
         }
     } catch (exception) { }
+
+
+
+    //## TESTING ##//
+    local cube = null
+    while (cube = Entities.FindByName(cube, "Gerald")) {
+        local desired = Vector(-10, 31, 159)
+        local current = cube.GetOrigin()
+        local moveamo = desired - current
+        moveamo.x = moveamo.x /3
+        moveamo.y = moveamo.y /3
+        moveamo.z = moveamo.z /3
+        printl(moveamo)
+        cube.SetVelocity(Vector(0, 0, 0))
+        cube.SetOrigin(Vector(cube.GetOrigin().x + moveamo.x, cube.GetOrigin().y + moveamo.y, cube.GetOrigin().z + moveamo.z))
+    }
 }
 
 //---------------------------------------------------------------//
@@ -801,18 +817,18 @@ function ChatCommands(ccuserid, ccmessage) {
     //## HELP COMMAND ##//
     if (ccmessage.find("!help") != null) {
         Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "chatcommandhelp")
-        EntFire("chatcommandhelp", "command", "say [User Commands]", 1.1, null)
-        EntFire("chatcommandhelp", "command", "say help", 2.1, null)
-        EntFire("chatcommandhelp", "command", "say kill", 3.1, null)
-        EntFire("chatcommandhelp", "command", "say changeteam", 4.1, null)
-        EntFire("chatcommandhelp", "command", "say [Admin Commands]", 5.1, null)
-        EntFire("chatcommandhelp", "command", "say kill (ARGS)", 6.1, null)
-        EntFire("chatcommandhelp", "command", "say noclip", 7.1, null)
-        EntFire("chatcommandhelp", "command", "say rcon", 8.1, null)
-        EntFire("chatcommandhelp", "command", "say changelevel", 9.1, null)
-        EntFire("chatcommandhelp", "command", "say [General Help]", 11.1, null)
-        EntFire("chatcommandhelp", "command", "say {COMMAND PREFIX: !}", 12.1, null)
-        EntFire("chatcommandhelp", "kill", "", 13.1, null)
+        EntFire("chatcommandhelp", "command", "say [User Commands]", 0, null)
+        EntFire("chatcommandhelp", "command", "say help", 0, null)
+        EntFire("chatcommandhelp", "command", "say kill", 0, null)
+        EntFire("chatcommandhelp", "command", "say changeteam", 0, null)
+        EntFire("chatcommandhelp", "command", "say [Admin Commands]", 1, null)
+        EntFire("chatcommandhelp", "command", "say kill (ARGS)", 1, null)
+        EntFire("chatcommandhelp", "command", "say noclip", 1, null)
+        EntFire("chatcommandhelp", "command", "say rcon", 1, null)
+        EntFire("chatcommandhelp", "command", "say changelevel", 1, null)
+        EntFire("chatcommandhelp", "command", "say [General Help]", 2, null)
+        EntFire("chatcommandhelp", "command", "say {COMMAND PREFIX: !}", 2, null)
+        EntFire("chatcommandhelp", "kill", "", 3, null)
     }
 
     //## GET COLOR ##//
@@ -851,6 +867,29 @@ function ChatCommands(ccuserid, ccmessage) {
             if (args!=null) {
                 SendToConsole(args)
                 SendToConsole("say " + pname + " Executed: " + args)
+            } else {
+                SendToConsole("say " + pname + " ERROR: No arguments provided!")
+            }
+        } else {
+            SendToConsole("say " + pname + " [you do not have access to this command]")
+        }
+    }
+
+    //## TELEPORT COMMAND ##//
+    local command="!teleport"
+    if (ccmessage.find(command) != null) {
+        if (isadmin>=1) {
+            local args = null
+            try { args = ccmessage.slice(command.len()+1, ccmessage.len()) } catch(e) { printl(e) }
+
+            if (args!=null) {
+                local teleporttarget = FindPlayerByName(args)
+                if (teleporttarget != null) {
+                    teleporttarget.SetOrigin(p.GetOrigin())
+                    teleporttarget.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
+                } else {
+                    SendToConsole("say " + pname + " ERROR: Player " + args + " does not exist!")
+                }
             } else {
                 SendToConsole("say " + pname + " ERROR: No arguments provided!")
             }
