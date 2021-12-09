@@ -25,10 +25,10 @@ from pathlib import Path
 iow = False
 
 if os.name == 'nt':
-    print("(System should be running Windows)")
+    print("(System should be running Windows!)")
     iow = True
 else:
-    print("(System should be running Linux)")
+    print("(System should be running Linux!)")
 
 if (iow == True):
     user_profile = os.environ['USERPROFILE']
@@ -36,7 +36,7 @@ if (iow == True):
 # Portal 2 LAUNCHER
 def LaunchVanillaPortal2(outputconfig, IsOnProton):
     owd = os.getcwd()
-        # Get current directory if on Windows
+    # Get current directory if on Windows
     if (iow):
         os.chdir(owd.replace("\\MultiplayerModFiles", ""))
     # Get current directory if on Linux
@@ -47,17 +47,17 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
 
     editedconfigdata = []
 
-    # edit config data for vscript
+    # Edit config data for VScript
     for line in outputconfig:
         line = line.replace("=", " <- ")
         if (line.find("cfgvariant") != -1):
-            print("Config Version: " + line.split(" <- ")[1])
+            print("Config version: " + line.split(" <- ")[1])
         else:
             editedconfigdata.append(line)
 
     IsOnProtonIn = IsOnProton
 
-    # profile
+    # Profile
     print(":====PROFILE====:")
     print("IsOnProtonIn: " + str(IsOnProtonIn))
     print("IsOnWindows: " + str(iow))
@@ -66,7 +66,7 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
 
     # Attempt to load psutil if on Linux
     if (iow):
-        print("Skipping psutil because we are on Windows")
+        print("Skipping psutil because we are on Windows!")
     else:
         import psutil
 
@@ -74,7 +74,7 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
     lastnumber = 0
 
     if (iow):
-        print("Skipped pthe sutil function")
+        print("Skipped pthe sutil function!")
     else:
         def checkIfProcessRunning(processName):
         # Iterate over the all the running process
@@ -111,14 +111,14 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
                         dlcname = "\portal2_dlc" + str(number1 + 1)
                         # if there is a file named
                         if os.path.exists(owd + dlcname + "\\32playermod.identifier"):
-                            print("Found Active P2-32 DLC: " + dlcname + "| Removing...")
+                            print("Found Active P2:MM DLC: " + dlcname + "| Removing...")
                             # Remove the folder using os
                             shutil.rmtree(owd + dlcname)
                             break
                     else:
                         dlcname = "/portal2_dlc" + str(number1 + 1)
                         if os.path.exists(owd + dlcname + "/32playermod.identifier"):
-                            print("Found Active P2-32 DLC: " + dlcname + "| Removing...")
+                            print("Found Active P2:MM DLC: " + dlcname + "| Removing...")
                             # Remove the folder using os
                             shutil.rmtree(owd + dlcname)
                             break
@@ -127,12 +127,12 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
         if(iow):
             try:
                 os.remove(owd + "\server.dll")
-                print("Did not fail to remove server.dll!")
+                print("Removed server.dll successfully!")
             except:
                 pass
             try:
                 os.remove(owd + "\engine.dll")
-                print("Did not fail to remove engine.dll!")
+                print("Removed engine.dll successfully!")
             except:
                 pass
         else:
@@ -152,22 +152,22 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
                 os.remove(owd + "/server.so")
             except:
                 pass
-        print("Removed modded files (Game likely crashed last session!)")
+        print("Removed modded files successfully (Game likely crashed last session!)")
     except:
         # We should never encounter this exception...
-        print("Failed to remove modded files")
+        print("Failed to remove P2:MM modded files!")
 
     # Undo the patch dll renames so we can patch the server.dll again
-    # Rename main server.dll back to server.dll
+    # Rename original server.dll back to server.dll
     if (iow):
         try:
             os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
-            print("Enabled disabledserver.dll")
+            print("Enabled original server.dll!")
         except:
             pass
         try:
             os.rename(owd + "\\bin\disabledengine.dll", owd + "\\bin\engine.dll")
-            print("Enabled engine.dll")
+            print("Enabled original engine.dll")
         except:
             pass
     else:
@@ -240,11 +240,11 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
         f2.write(data)
         f2.close()
     except:
-        print("Failed to patch server.dll")
+        print("Failed to patch server.dll for use with P2:MM!")
 
     # server.so patch
     if (iow):
-        print("Running Windows skipping server.so patch")
+        print("Currently running Windows. Skipping server.so patch!")
     else:
         try:
             # Open server.so into binary
@@ -280,7 +280,7 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
             f2.write(data)
             f2.close()
         except:
-            print("Failed to patch server.so")
+            print("Failed to patch server.so for use with P2:MM!")
 
     # engine.dll patch
     if (iow):
@@ -298,9 +298,7 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
         f2 = open("engine.dll", 'wb')
         f2.write(data)
         f2.close()
-        print("Patched engine.dll")
-        # Except:
-        #     print("Failed to patch engine.dll")
+        print("Patched engine.dll successfully!")
     else:
         try:
             f = open(owd + "/bin/linux32/engine.so", 'rb')
@@ -314,14 +312,14 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
             f2 = open("engine.so", 'wb')
             f2.write(data)
             f2.close()
-            print("Patched engine.so")
+            print("Patched engine.so successfully!")
         except:
-            print("Failed to patch engine.so")
+            print("Failed to patch engine.so for use with P2:MM!")
             IsOnProtonIn = False
 
         try:
             IsOnProtonIn = True
-            print("Failed to open engine.so trying to patch server.dll")
+            print("Failed to open engine.so! Attempting to patch server.dll...")
             # Open engine.dll into binary
             f = open(owd + "/bin/engine.dll", 'rb')
             data = f.read()
@@ -335,9 +333,9 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
             f2 = open("engine.dll", 'wb')
             f2.write(data)
             f2.close()
-            print("Patched engine.dll")
+            print("Patched engine.dll successfully!")
         except:
-            print("Failed to patch engine.dll")
+            print("Failed to patch engine.dll for use with P2:MM!")
             IsOnProtonIn = False
 
     # # # # # # # # # # # # # # # # #
@@ -430,24 +428,24 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
         try:
             os.rename(owd + "/bin/linux32/engine.so", owd + "/bin/linux32/disabledengine.so")
         except:
-            print("Failed to rename engine.so trying to rename engine.dll")
+            print("Failed to rename engine.so. Attempting to rename engine.dll!")
         try:
             os.rename(owd + "/bin/engine.dll", owd + "/bin/disabledengine.dll")
         except:
-            print("Failed to rename engine.dll")
+            print("Failed to rename engine.dll!")
         try:
             os.rename(owd + "/portal2/bin/server.dll", owd + "/portal2/bin/disabledserver.dll")
         except:
-            print("Failed to rename server.dll")
+            print("Failed to rename server.dll!")
         try:
             os.rename(owd + "/portal2/bin/linux32/server.so", owd + "/portal2/bin/linux32/disabledserver.so")
         except:
-            print("Failed to rename server.so")
+            print("Failed to rename server.so!")
 
 
 
     # Start Portal 2 with launch options
-    print("=======Game Launch=======")
+    print("=======Attempting to launch Portal 2...=======")
     try:
         if (iow):
             subprocess.run(["portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3"])
@@ -456,9 +454,9 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
             #os.spawnlp(os.P_NOWAIT, "steam")
             #os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3")
             subprocess.Popen(["steam", "-applaunch", "620", "-novid", "-allowspectators", "-nosixense", "+map", "mp_coop_lobby_3"])
-            print("Running game")
+            print("Game launch successful!")
     except:
-        print("Failed to launch Portal 2")
+        print("Failed to launch Portal 2!")
 
 
     # Remove game files after game exits
@@ -491,64 +489,64 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
                     os.remove(owd + "/server.so")
                 except:
                     pass
-            print("Removed modded files")
+            print("Removed P2:MM modded files!")
         except:
-            print("Failed to remove modded files (somehow?????)")
+            print("Failed to remove P2:MM modded files!")
 
         try:
             shutil.rmtree(owd + dlcname)
             print("Removed " + dlcname)
         except:
-            print("Failed to remove Multiplayer Mod DLCs")
+            print("Failed to remove the P2:MM DLC folder!")
 
         # Rename main files back to original
         try:
             if (iow):
                 try:
                     os.rename(owd + "\portal2\\bin\disabledserver.dll", owd + "\portal2\\bin\server.dll")
-                    print("Enabled disabledserver.dll")
+                    print("Enabled disabledserver.dll!")
                 except:
                     pass
                 try:
                     os.rename(owd + "\\bin\disabledengine.dll", owd + "\\bin\engine.dll")
-                    print("Enabled engine.dll")
+                    print("Enabled engine.dll!")
                 except:
                     pass
             else:
                 try:
                     os.rename(owd + "/bin/disabledengine.dll", owd + "/bin/engine.dll")
-                    print("Enabled engine.dll")
+                    print("Enabled engine.dll!")
                 except:
                     pass
                 try:
                     os.rename(owd + "/bin/linux32/disabledengine.so", owd + "/bin/linux32/engine.so")
-                    print("Enabled engine.so")
+                    print("Enabled engine.so!")
                 except:
                     pass
                 try:
                     os.rename(owd + "/bin/disabledengine.dll", owd + "/bin/engine.dll")
-                    print("Enabled engine.so")
+                    print("Enabled engine.so!")
                 except:
                     pass
                 try:
                     os.rename(owd + "/portal2/bin/disabledserver.dll", owd + "/portal2/bin/server.dll")
-                    print("Enabled server.dll")
+                    print("Enabled server.dll!")
                 except:
                     pass
                 try:
                     os.rename(owd + "/portal2/bin/linux32/disabledserver.so", owd + "/portal2/bin/linux32/server.so")
-                    print("Enabled server.so")
+                    print("Enabled server.so!")
                 except:
                     pass
         except:
-            print("Failed to unrename nessasary files (Somehow???)")
+            print("Failed to rename original necessary files back to normal!")
 
 
 
     # Wait for game to close
-    print("=============================================================================")
-    print("WARNING: DO NOT CLOSE THIS PYTHON WINDOW!!! WAITING FOR PORTAL 2 TO CLOSE")
-    print("=============================================================================")
+    print("============================================================================")
+    print("WARNING: DO NOT CLOSE THIS PYTHON WINDOW!!! WAITING FOR PORTAL 2 TO CLOSE...")
+    print("============================================================================")
     if (iow):
         # Wait for portal2.exe to close
         RemoveMultiplayerFiles()
@@ -562,7 +560,7 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
             if checkIfProcessRunning('ortal'):
                 pass
             else:
-                print('Portal 2 not found closing')
+                print('Portal 2 instance not found! Closing...')
                 print("=======Game Closed=======")
                 RemoveMultiplayerFiles()
                 rungui()
@@ -680,7 +678,7 @@ for line in lines:
             curconfigver = curconfigver[curconfigver.find("=") : ].replace("=", "")
         curconfigver = int(curconfigver)
 
-        print("Current Config Version: " + str(curconfigver))
+        print("Current config version: " + str(curconfigver))
 
 for line in configdefaults:
     if (line.find("cfgvariant") != -1):
@@ -694,7 +692,7 @@ for line in configdefaults:
             newconfigver = newconfigver[newconfigver.find("=") : ].replace("=", "")
         newconfigver = int(newconfigver)
 
-        print("New Config Version: " + str(newconfigver))
+        print("New config version: " + str(newconfigver))
 
 # update config file if needed
 # read old config data
@@ -852,7 +850,7 @@ def rungui():
                                                 text='Start Game',
                                                 manager=manager)
     if (iow):
-        print("on windows skipping proton-checkbox")
+        print("Currently running Windows! Skipping proton-checkbox...")
     else:
         protoncheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 150), (150, 25)),
                                                     text='Use Proton | ' + str(FindInConfig("UseProton").upper()),
@@ -884,7 +882,7 @@ def rungui():
                             # if ~/.local/share/Steam/steamapps/common/Portal 2 is not found
                             if (iow):
                                 if os.path.exists("C:\Program Files (x86)\Steam\steamapps\common\Portal 2"):
-                                    print("portal 2 installation found")
+                                    print("Portal 2 installation located successfully!")
                                     # set current system path to portal 2 path
                                     os.chdir("C:\Program Files (x86)\Steam\steamapps\common\Portal 2")
                                     WriteToConfig("portal2path", "C:\Program Files (x86)\Steam\steamapps\common\Portalඞ2")
@@ -893,15 +891,15 @@ def rungui():
                                     while CorrectPath == False:
                                         installpath = input("Please enter the path to your Portal 2 installation: ")
                                         if (os.path.exists(installpath)):
-                                            print("portal 2 installation found")
+                                            print("Portal 2 installation located successfully!")
                                             os.chdir(installpath)
                                             WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
                                             CorrectPath = True
                                         else:
-                                            print("path not found")
+                                            print("Could not find the Portal 2 installation directory!")
                             else:
                                 if os.path.exists(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2")):
-                                    print("portal 2 installation found")
+                                    print("Portal 2 installation located successfully!")
                                     # set current system path to portal 2 path
                                     os.chdir(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2"))
                                     WriteToConfig("portal2path", "~/.local/share/Steam/steamapps/common/Portalඞ2")
@@ -910,29 +908,29 @@ def rungui():
                                     while CorrectPath == False:
                                         installpath = input("Please enter the path to your Portal 2 installation: ")
                                         if (os.path.exists(os.path.expanduser(installpath))):
-                                            print("portal 2 installation found")
+                                            print("Portal 2 installation located successfully!")
                                             os.chdir(os.path.expanduser(installpath))
                                             WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
                                             CorrectPath = True
                                         else:
-                                            print("path not found")
+                                            print("Could not find the Portal 2 installation directory!")
                         else:
                             installpath = FindInConfig("portal2path").replace("ඞ", " ")
                             # if installpath exists
                             if (os.path.exists(os.path.expanduser(installpath))):
-                                print("portal 2 installation found")
+                                print("Portal 2 installation located successfully!")
                                 os.chdir(os.path.expanduser(installpath))
                             else:
                                 CorrectPath = False
                                 while CorrectPath == False:
                                     installpath = input("Please enter the path to your Portal 2 installation: ")
                                     if (os.path.exists(os.path.expanduser(installpath))):
-                                        print("portal 2 installation found")
+                                        print("Portal 2 installation located successfully!")
                                         os.chdir(os.path.expanduser(installpath))
                                         WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
                                         CorrectPath = True
                                     else:
-                                        print("path not found")
+                                        print("Could not find the Portal 2 installation directory!")
 
                         # close the window
                         pygame.quit()
@@ -978,7 +976,7 @@ def rungui():
                             if (curmodpatch.replace("\n", "").replace(" ", "") != modpatch.replace("\n", "").replace(" ", "")):
                                 dodowloadupdate = True
                         except:
-                            print("ModPatch not found")
+                            print("ModPatch file not found!")
                             dodowloadupdate = True
 
                         portal2rootdir = os.getcwd()
@@ -1003,11 +1001,11 @@ def rungui():
 
                                 def noupdate():
                                     win.destroy()
-                                    print("Update cancelled")
+                                    print("The update has been cancelled!")
 
-                                Label(win, text="There are updates available. Do you want to download?", font=('Helvetica 14 bold')).pack(pady=20)
-                                Label(win, text="current version: " + str(curmodpatch), font=('Helvetica 14')).place(x=15, y=55)
-                                Label(win, text="new version: " + str(modpatch), font=('Helvetica 14')).place(x=15, y=80)
+                                Label(win, text="There are updates available. Would you like to download the latest version?", font=('Helvetica 14 bold')).pack(pady=20)
+                                Label(win, text="Current version: " + str(curmodpatch), font=('Helvetica 14')).place(x=15, y=55)
+                                Label(win, text="New version: " + str(modpatch), font=('Helvetica 14')).place(x=15, y=80)
                                 #Create a button in the main Window to open the popup
                                 ttk.Button(win, text= "Yes", command=yesupdate).place(x=165, y=155)
                                 ttk.Button(win, text= "No", command=noupdate).place(x=265, y=155)
@@ -1016,7 +1014,7 @@ def rungui():
                             else:
                                 DownloadUpdate(prepath, githubrepodownload, portal2rootdir, modpatch)
                         else:
-                            print("No update needed")
+                            print("Launcher is up to date.")
                         LaunchVanillaPortal2(SectionConfig("$portal2"), IsOnProton)
                     # PROTON CHECKBOX
                     if (iow):
@@ -1087,7 +1085,7 @@ def DownloadLauncherUpdate(prepath, githubrepodownload, modpatchmsg):
         print(launcherpythonpathfolder)
 
     if (iow):
-        print("Launcher Update Downloaded")
+        print("Launcher update has been downloaded successfully!")
         # for each file in tempinstallmod
         for file in os.listdir(launcherpythonpathfolder + "\\tempinstalllauncher"):
             # rename file to Memes
@@ -1168,9 +1166,9 @@ if (os.path.exists(curlauncherverpatchfile)):
     print("laup " + launcherverpatch)
     f.close()
     if (curlauncherverpatchnum == launcherverpatch):
-        print("Launcher is up to date")
+        print("Launcher is up to date!")
     else:
-        print("Launcher is not up to date")
+        print("Launcher is not up to date!")
         from tkinter import Tk, Label, Button, Toplevel
         #Create an instance of Tkinter frame
         win = Tk()
@@ -1179,7 +1177,7 @@ if (os.path.exists(curlauncherverpatchfile)):
         # lock its size
         win.resizable(0,0)
         # set the title
-        win.title("Portal 2 Mod Manager")
+        win.title("Portal 2: Multiplayer Mod Manager")
         # make the background #171619
         win.configure(background="#171619")
 
@@ -1201,23 +1199,23 @@ if (os.path.exists(curlauncherverpatchfile)):
             # lock its size
             win2.resizable(0,0)
             # set the title
-            win2.title("Portal 2 Mod Manager")
+            win2.title("Portal 2: Multiplayer Mod Manager")
             # make the background #171619
             win2.configure(background="#171619")
 
-            Label(win2, text="Update Sucessful Please Restart!", font=('Helvetica 14 bold')).pack(pady=20)
+            Label(win2, text="Update sucessful! Please restart the launcher!", font=('Helvetica 14 bold')).pack(pady=20)
             ttk.Button(win2, text= "okay", command=okay).place(x=210, y=155)
 
         def noupdate():
             win.destroy()
-            print("Update cancelled")
+            print("Update cancelled!")
 
-        Label(win, text="Launcher is out of date!!! Do you want to update?", font=('Helvetica 14 bold')).pack(pady=20)
-        Label(win, text="current version: " + str(curlauncherverpatchnum), font=('Helvetica 14')).place(x=15, y=55)
-        Label(win, text="new version: " + str(launcherverpatch), font=('Helvetica 14')).place(x=15, y=80)
+        Label(win, text="The launcher is out of date! Would you like to update it?", font=('Helvetica 14 bold')).pack(pady=20)
+        Label(win, text="Current version: " + str(curlauncherverpatchnum), font=('Helvetica 14')).place(x=15, y=55)
+        Label(win, text="New version: " + str(launcherverpatch), font=('Helvetica 14')).place(x=15, y=80)
         #Create a button in the main Window to open the popup
-        ttk.Button(win, text= "yes", command=yesupdate).place(x=165, y=155)
-        ttk.Button(win, text= "no", command=noupdate).place(x=265, y=155)
+        ttk.Button(win, text= "Yes", command=yesupdate).place(x=165, y=155)
+        ttk.Button(win, text= "No", command=noupdate).place(x=265, y=155)
         # make another button at y=20 x=20
         win.mainloop()
 else:
