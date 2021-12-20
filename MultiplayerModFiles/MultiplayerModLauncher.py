@@ -837,33 +837,45 @@ def rungui():
     pygame.init()
 
     pygame.display.set_caption('Portal 2 Multiplayer Mod | LAUNCHER')
-    window_surface = pygame.display.set_mode((1280, 720))
+    window_surface = pygame.display.set_mode((850, 480))
 
-    background = pygame.Surface((1280, 720))
+    background = pygame.Surface((850, 480))
     background.fill(pygame.Color('#171619'))
 
-    manager = pygame_gui.UIManager((1280, 720))
+    manager = pygame_gui.UIManager((850, 480))
 
     # MAIN CODE
 
-    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 50), (150, 50)),
+    # BACKGROUND STYLING ######################################################################
+
+    panel1 = pygame_gui.elements.UIPanel(relative_rect=pygame.Rect((5, 5), (160, 470)),starting_layer_height=0, manager=manager)
+
+    panel2 = pygame_gui.elements.UIPanel(relative_rect=pygame.Rect((167.5, 5), (678, 470)),starting_layer_height=0, manager=manager)
+
+    ###########################################################################################
+
+
+    # BUTTONS DEFS ############################################################################
+    start_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 10), (150, 50)),
                                                 text='Start Game',
                                                 manager=manager)
     if (iow):
         print("Currently running Windows! Skipping proton-checkbox...")
     else:
-        protoncheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 150), (150, 25)),
+        protoncheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 445), (150, 25)),
                                                     text='Use Proton | ' + str(FindInConfig("UseProton").upper()),
                                                     manager=manager)
 
-    developercheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 200), (150, 25)),
+    developercheckbox = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 80), (150, 25)),
                                                     text='Developer | ' + str(FindInConfig("Developer").upper()),
                                                     manager=manager)
+
 
     if (str(FindInConfig("UseProton") == "off")):
         IsOnProton = False
     else:
         IsOnProton = True
+    ###########################################################################################
     clock = pygame.time.Clock()
     is_running = True
 
