@@ -44,3 +44,6 @@ MultiplayerModFiles/mpmod.cfg
 *.vmf
 bspsrc.jar
 *.lnk
+client_datamap.txt
+server_classes.txt
+server_datamap.txt
