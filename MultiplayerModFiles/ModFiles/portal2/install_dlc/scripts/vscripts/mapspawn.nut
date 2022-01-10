@@ -1175,7 +1175,45 @@ function PostMapLoad() {
 //////////////////////////////////////
 
 function GeneralOneTime() {
+    // Single player maps with chapter titles
+    local CHAPTER_TITLES =
+    [
+        { map = "sp_a1_intro1", title_text = "#portal2_Chapter1_Title", subtitle_text = "#portal2_Chapter1_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
+        { map = "sp_a2_laser_intro", title_text = "#portal2_Chapter2_Title", subtitle_text = "#portal2_Chapter2_Subtitle", displayOnSpawn = true,	displaydelay = 2.5 },
+        { map = "sp_a2_sphere_peek", title_text = "#portal2_Chapter3_Title", subtitle_text = "#portal2_Chapter3_Subtitle", displayOnSpawn = true,	displaydelay = 2.5 },
+        { map = "sp_a2_column_blocker", title_text = "#portal2_Chapter4_Title", subtitle_text = "#portal2_Chapter4_Subtitle", displayOnSpawn = true, displaydelay = 2.5 },
+        { map = "sp_a2_bts3", title_text = "#portal2_Chapter5_Title", subtitle_text = "#portal2_Chapter5_Subtitle", displayOnSpawn = true,			displaydelay = 1.0 },
+        { map = "sp_a3_00", title_text = "#portal2_Chapter6_Title", subtitle_text = "#portal2_Chapter6_Subtitle", displayOnSpawn = true,			displaydelay = 1.5 },
+        { map = "sp_a3_speed_ramp", title_text = "#portal2_Chapter7_Title", subtitle_text = "#portal2_Chapter7_Subtitle", displayOnSpawn = true,	displaydelay = 1.0 },
+        { map = "sp_a4_intro", title_text = "#portal2_Chapter8_Title", subtitle_text = "#portal2_Chapter8_Subtitle", displayOnSpawn = true,			displaydelay = 2.5 },
+        { map = "sp_a4_finale1", title_text = "#portal2_Chapter9_Title", subtitle_text = "#portal2_Chapter9_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
+    ]
 
+    // Attempt to display chapter title
+    foreach (index, level in CHAPTER_TITLES)
+	{
+		if (level.map == GetMapName() && level.displayOnSpawn )
+		{
+            foreach (index, level in CHAPTER_TITLES)
+            {
+                if (level.map == GetMapName() )
+                {
+                    EntFire( "@chapter_title_text", "SetTextColor", "210 210 210 128", 0.0 )
+                    EntFire( "@chapter_title_text", "SetTextColor2", "50 90 116 128", 0.0 )
+                    EntFire( "@chapter_title_text", "SetPosY", "0.32", 0.0 )
+                    EntFire( "@chapter_title_text", "SetText", level.title_text, 0.0 )
+                    EntFire( "@chapter_title_text", "display", "", level.displaydelay )
+
+                    EntFire( "@chapter_subtitle_text", "SetTextColor", "210 210 210 128", 0.0 )
+                    EntFire( "@chapter_subtitle_text", "SetTextColor2", "50 90 116 128", 0.0 )
+                    EntFire( "@chapter_subtitle_text", "SetPosY", "0.35", 0.0 )
+                    EntFire( "@chapter_subtitle_text", "settext", level.subtitle_text, 0.0 )
+                    EntFire( "@chapter_subtitle_text", "display", "", level.displaydelay )
+                }
+            }
+		}
+	}
+    
     // Load the plugin if it's not already loaded
     if (RunPluginLoad==true) {
         printl("(P2:MM): Loading plugin... Restarting map")
