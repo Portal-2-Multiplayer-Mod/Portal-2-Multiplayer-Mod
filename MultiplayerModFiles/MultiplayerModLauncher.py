@@ -828,8 +828,76 @@ def SectionConfig(sectionsign):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 # GUI CODE
 def rungui():
+
+    # CHECK PORTAL 2 PATH
+    if (FindInConfig("portal2path") == "undefined"):
+        # if ~/.local/share/Steam/steamapps/common/Portal 2 is not found
+        if (iow):
+            if os.path.exists("C:\Program Files (x86)\Steam\steamapps\common\Portal 2"):
+                print("Portal 2 installation located successfully!")
+                # set current system path to portal 2 path
+                os.chdir("C:\Program Files (x86)\Steam\steamapps\common\Portal 2")
+                WriteToConfig("portal2path", "C:\Program Files (x86)\Steam\steamapps\common\Portalඞ2")
+            else:
+                CorrectPath = False
+                while CorrectPath == False:
+                    installpath = input("Please enter the path to your Portal 2 installation: ")
+                    if (os.path.exists(installpath)):
+                        print("Portal 2 installation located successfully!")
+                        os.chdir(installpath)
+                        WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
+                        CorrectPath = True
+                    else:
+                        print("Could not find the Portal 2 installation directory!")
+        else:
+            if os.path.exists(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2")):
+                print("Portal 2 installation located successfully!")
+                # set current system path to portal 2 path
+                os.chdir(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2"))
+                WriteToConfig("portal2path", "~/.local/share/Steam/steamapps/common/Portalඞ2")
+            else:
+                CorrectPath = False
+                while CorrectPath == False:
+                    installpath = input("Please enter the path to your Portal 2 installation: ")
+                    if (os.path.exists(os.path.expanduser(installpath))):
+                        print("Portal 2 installation located successfully!")
+                        os.chdir(os.path.expanduser(installpath))
+                        WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
+                        CorrectPath = True
+                    else:
+                        print("Could not find the Portal 2 installation directory!")
+    else:
+        installpath = FindInConfig("portal2path").replace("ඞ", " ")
+        # if installpath exists
+        if (os.path.exists(os.path.expanduser(installpath))):
+            print("Portal 2 installation located successfully!")
+            os.chdir(os.path.expanduser(installpath))
+        else:
+            CorrectPath = False
+            while CorrectPath == False:
+                installpath = input("Please enter the path to your Portal 2 installation: ")
+                if (os.path.exists(os.path.expanduser(installpath))):
+                    print("Portal 2 installation located successfully!")
+                    os.chdir(os.path.expanduser(installpath))
+                    WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
+                    CorrectPath = True
+                else:
+                    print("Could not find the Portal 2 installation directory!")
+
     import pygame
     import pygame_gui
 
@@ -890,59 +958,6 @@ def rungui():
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     # if start button pressed
                     if event.ui_element == start_button:
-                        if (FindInConfig("portal2path") == "undefined"):
-                            # if ~/.local/share/Steam/steamapps/common/Portal 2 is not found
-                            if (iow):
-                                if os.path.exists("C:\Program Files (x86)\Steam\steamapps\common\Portal 2"):
-                                    print("Portal 2 installation located successfully!")
-                                    # set current system path to portal 2 path
-                                    os.chdir("C:\Program Files (x86)\Steam\steamapps\common\Portal 2")
-                                    WriteToConfig("portal2path", "C:\Program Files (x86)\Steam\steamapps\common\Portalඞ2")
-                                else:
-                                    CorrectPath = False
-                                    while CorrectPath == False:
-                                        installpath = input("Please enter the path to your Portal 2 installation: ")
-                                        if (os.path.exists(installpath)):
-                                            print("Portal 2 installation located successfully!")
-                                            os.chdir(installpath)
-                                            WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
-                                            CorrectPath = True
-                                        else:
-                                            print("Could not find the Portal 2 installation directory!")
-                            else:
-                                if os.path.exists(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2")):
-                                    print("Portal 2 installation located successfully!")
-                                    # set current system path to portal 2 path
-                                    os.chdir(os.path.expanduser("~/.local/share/Steam/steamapps/common/Portal 2"))
-                                    WriteToConfig("portal2path", "~/.local/share/Steam/steamapps/common/Portalඞ2")
-                                else:
-                                    CorrectPath = False
-                                    while CorrectPath == False:
-                                        installpath = input("Please enter the path to your Portal 2 installation: ")
-                                        if (os.path.exists(os.path.expanduser(installpath))):
-                                            print("Portal 2 installation located successfully!")
-                                            os.chdir(os.path.expanduser(installpath))
-                                            WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
-                                            CorrectPath = True
-                                        else:
-                                            print("Could not find the Portal 2 installation directory!")
-                        else:
-                            installpath = FindInConfig("portal2path").replace("ඞ", " ")
-                            # if installpath exists
-                            if (os.path.exists(os.path.expanduser(installpath))):
-                                print("Portal 2 installation located successfully!")
-                                os.chdir(os.path.expanduser(installpath))
-                            else:
-                                CorrectPath = False
-                                while CorrectPath == False:
-                                    installpath = input("Please enter the path to your Portal 2 installation: ")
-                                    if (os.path.exists(os.path.expanduser(installpath))):
-                                        print("Portal 2 installation located successfully!")
-                                        os.chdir(os.path.expanduser(installpath))
-                                        WriteToConfig("portal2path", installpath.replace(" ", "ඞ"))
-                                        CorrectPath = True
-                                    else:
-                                        print("Could not find the Portal 2 installation directory!")
 
                         # close the window
                         pygame.quit()

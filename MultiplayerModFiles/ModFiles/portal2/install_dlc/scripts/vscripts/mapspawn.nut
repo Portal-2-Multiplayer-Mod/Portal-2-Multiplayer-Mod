@@ -36,7 +36,7 @@ TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower num
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
 //-----------------------------------
-Admins <- ["vista", "Bumpy", "Nanoman2525", "Wolƒe Strider Shoσter"]
+Admins <- ["vista", "Bumpy", "Nanoman2525", "Wolƒe Strider Shoσter", "CHARITY", "Dreadnox", "!wol"]
 //-----------------------------------
 
 //  ██████  ██████  ██████  ███████
@@ -812,6 +812,19 @@ function ChatCommands(ccuserid, ccmessage) {
     local pname = GetPlayerName(ccuserid)
     local isadmin = GetAdminLevel(ccuserid)
 
+    //:## # OVERRIDE COMMAND ##://
+    if (ccmessage.slice(0, 1) == "$") {
+        printl("(P2:MM): " + pname + " has used the # override.")
+        if (ccmessage.find("!")==null) {
+            SendToConsole("say " + pname + " ERROR: No command provided!")
+        } else {
+            local inpmessage = ccmessage.slice(1, ccmessage.find("!")-1)
+            p = FindPlayerByName(inpmessage)
+            pname = inpmessage
+            printl(inpmessage)
+        }
+    }
+
     printl("User: " + pname + " Sent: " + ccmessage)
 
     //## HELP COMMAND ##//
@@ -823,7 +836,8 @@ function ChatCommands(ccuserid, ccmessage) {
         EntFire("chatcommandhelp", "command", "say changeteam", 0, null)
         EntFire("chatcommandhelp", "command", "say [Admin Commands]", 1, null)
         EntFire("chatcommandhelp", "command", "say kill (ARGS)", 1, null)
-        EntFire("chatcommandhelp", "command", "say teleport", 1, null)
+        EntFire("chatcommandhelp", "command", "say goto", 1, null)
+        EntFire("chatcommandhelp", "command", "say bring", 1, null)
         EntFire("chatcommandhelp", "command", "say noclip", 1, null)
         EntFire("chatcommandhelp", "command", "say rcon", 1, null)
         EntFire("chatcommandhelp", "command", "say changelevel", 1, null)
@@ -876,8 +890,8 @@ function ChatCommands(ccuserid, ccmessage) {
         }
     }
 
-    //## TELEPORT COMMAND ##//
-    local command="!teleport"
+    //## BRING COMMAND ##//
+    local command="!bring"
     if (ccmessage.find(command) != null) {
         if (isadmin>=1) {
             local args = null
@@ -898,6 +912,30 @@ function ChatCommands(ccuserid, ccmessage) {
             SendToConsole("say " + pname + " [you do not have access to this command]")
         }
     }
+
+    //## GOTO COMMAND ##//
+    local command="!goto"
+    if (ccmessage.find(command) != null) {
+        if (isadmin>=1) {
+            local args = null
+            try { args = ccmessage.slice(command.len()+1, ccmessage.len()) } catch(e) { printl(e) }
+
+            if (args!=null) {
+                local teleporttarget = FindPlayerByName(args)
+                if (teleporttarget != null) {
+                    p.SetOrigin(teleporttarget.GetOrigin())
+                    p.SetAngles(teleporttarget.GetAngles().x, teleporttarget.GetAngles().y, teleporttarget.GetAngles().z)
+                } else {
+                    SendToConsole("say " + pname + " ERROR: Player " + args + " does not exist!")
+                }
+            } else {
+                SendToConsole("say " + pname + " ERROR: No arguments provided!")
+            }
+        } else {
+            SendToConsole("say " + pname + " [you do not have access to this command]")
+        }
+    }
+
 
     //## CHANGETEAM COMMAND ##//
     if (ccmessage.find("!changeteam") != null) {
@@ -931,10 +969,11 @@ function ChatCommands(ccuserid, ccmessage) {
 
 
     //## NOCLIP COMMAND ##//
-    if (ccmessage.find("!noclip") != null) {
+    local command="!noclip"
+    if (ccmessage.find(command) != null) {
         if (isadmin>=1) {
             local args = "DONTNOCLIP"
-            try { args = ccmessage.slice(8, ccmessage.len()) } catch(e) { printl(e) }
+            try { args = ccmessage.slice(command.len()+ccmessage.find("!")+1, ccmessage.len()) } catch(e) { printl(e) }
             if (args=="on") {
                 printl("noclipped: " + pname)
                 EntFireByHandle(p, "addoutput", "MoveType 8", 0, null, null)
@@ -950,6 +989,30 @@ function ChatCommands(ccuserid, ccmessage) {
             SendToConsole("say " + pname + " [you do not have access to this command]")
         }
     }
+
+    //## GOD COMMAND ##//
+    local command="!god"
+    if (ccmessage.find(command) != null) {
+        if (isadmin>=1) {
+            local args = null
+            try { args = ccmessage.slice(command.len()+1, ccmessage.len()) } catch(e) { printl(e) }
+            if (args!=null) {
+                if (args=="on") {
+                    p.SetMaxHealth(999999)
+                    p.SetHealth(999999)
+                }
+                if (args=="off") {
+                    p.SetMaxHealth(100)
+                    p.SetHealth(100)
+                }
+            } else {
+                SendToConsole("say " + pname + " ERROR: No arguments provided!")
+            }
+        } else {
+            SendToConsole("say " + pname + " [you do not have access to this command]")
+        }
+    }
+
     //## KILL COMMAND ##//
     if (ccmessage.find("!kill") != null) {
         local killargs = "DONTKILL"
