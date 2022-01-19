@@ -13,8 +13,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //Entities.FindByName(null, "NAME").Destroy()
         Entities.FindByName(null, "transition_portal1").Destroy()
         Entities.FindByName(null, "transition_portal2").Destroy()
+        //Entities.FindByName(null, "@clientcommand").Destroy()
+        Entities.FindByName(null, "credits").Destroy()
+
+        Entities.FindByName(null, "ending_playmovie").__KeyValueFromString("targetname", "ending_playmovie_p2mp_override")
+        EntFire("container_path2", "addoutput", "OnPass ending_playmovie_p2mp_override:playmovieforallplayers::2")
+        memeplaymovie <- Entities.CreateByClassname("logic_playmovie")
+        memeplaymovie.__KeyValueFromString("targetname", "credits_playmovie_p2mp")
+        memeplaymovie.__KeyValueFromString("MovieFilename", "sp_credits_bg")
+        memeplaymovie.__KeyValueFromString("loopvideo", "1")
+        memeplaymovie.__KeyValueFromString("fadeintime", "1")
+        EntFire("container_path2", "addoutput", "OnPass ending_playmovie_p2mp_override:credits_playmovie_p2mp::131")
+        
+
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "notinelevator")
         EntFire("breaker_socket_button", "addoutput", "OnPressed notinelevator:kill", 0, null)
+        
         EntFire("@core01", "addoutput", "OnPlayerPickup @core01:disablepickup", 0, null)
         EntFire("@core01", "addoutput", "OnPlayerDrop @core01:enablepickup", 0, null)
 
@@ -24,9 +38,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("@core03", "addoutput", "OnPlayerPickup @core03:disablepickup", 0, null)
         EntFire("@core03", "addoutput", "OnPlayerDrop @core03:enablepickup", 0, null)
 
+        OneTimeRenableViewControl <- false
+
         local ent = null
         while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
             ent.__KeyValueFromString("CheckAllIDs", "1")
+            //printl("Found func_portal_detector")
+            EntFireByHandle(ent, "addoutput", "OnStartTouchPortal ReEnableViewControl:kill::3", 0, null, null)
         }
 
         Sp_A2_CoreViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
@@ -35,6 +53,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A2_CoreViewcontrol.__KeyValueFromString("fov", "75")
         EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "ending_vehicle", 0.1, null, null)
         EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "eyes", 0.2, null, null)
+
+        Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "DummyObjectWheatlyLook")
+        Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "DummyObjectWheatlyLookOn")
+        Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "ReEnableViewControl")
+        Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "rollcameracontrol")
+
+
+        WatchPlayerWheatley <- true
+        DoDestroyDummy <- true
+        socketnum <- 1
+        EntFire("core_hit_trigger", "addoutput", "OnTrigger DummyObjectWheatlyLook:kill", 0, null)
+        EntFire("wheatley_lookat_player_relay", "addoutput", "OnTrigger DummyObjectWheatlyLookOn:kill", 0, null)
 
         Entities.FindByClassnameNearest("trigger_once", Vector(0, -384, 96), 350).__KeyValueFromString("targetname", "topofelevator")
         Sp_A4_Finale4ElevatorTeleport <- true
@@ -52,15 +82,49 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
-
+        
+        // CUTSCENE
         if (Entities.FindByName(null, "ending_vehicle")) {
+
+            if (!Entities.FindByName(null, "rollcameracontrol")) {
+                if (Entities.FindByName(null, "ReEnableViewControl")) {
+                    local player = null
+                    while (player = Entities.FindByClassname(player, "player")) {
+                        player.SetOrigin(Vector(529, 73, -1))
+                        player.SetAngles(-83.8, 191.2, 0)
+                    }
+                }
+            }
+
+            if (!Entities.FindByName(null, "ReEnableViewControl")) {
+                EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0, null, null)
+                if (OneTimeRenableViewControl == false) {
+                    OneTimeRenableViewControl <- true
+                    EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "chell", 55.15, null, null)
+                    EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 55.25, null, null)
+                }
+            }
+
             if (parentthingerdinger) {
             parentthingerdinger <- false
+                // make players invisible
+                local player = null
+                while (player = Entities.FindByClassname(player, "player")) {
+                    player.__KeyValueFromInt("renderamt", 0)
+                    player.__KeyValueFromInt("renderfx", 0)
+                    EntFireByHandle(player, "disabledraw", "", 0, null, null)
+                }
+                EntFire("rollcameracontrol", "kill", "", 16.1, null)
+                EntFireByHandle(Sp_A2_CoreViewcontrol, "disable", "", 16, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0.3, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "ending_vehicle", 0.1, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 0.2, null, null)
             }
         }
+
+
+
+        //
 
         EntFire("@core01", "addoutput", "OnPlayerPickup @core01:disablepickup", 0, null)
         EntFire("@core01", "addoutput", "OnPlayerDrop @core01:enablepickup", 0, null)
@@ -94,15 +158,56 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }      
             }
         }
-        if (playerpointerfinale4 == null) {
-            local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "wheatley_bottom_swivel").GetOrigin(), 10000)
-            EntFireByHandle(Entities.FindByName(null, "wheatley_bottom_swivel"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-            EntFire("futbol_shooter", "SetTarget", ClosestPlayerMain.GetName(), 0, null)
 
-        } else {
-            EntFireByHandle(Entities.FindByName(null, "wheatley_bottom_swivel"), "SetTargetEntity", playerpointerfinale4, 0, null, null)
-            EntFire("futbol_shooter", "SetTarget", playerpointerfinale4, 0, null)
+        if (Entities.FindByName(null, "wheatley_shadow_brush")) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(855, 256, 64), 150)) {
+                playerpointerfinale4 <- p.GetName()
+            }
         }
+        
+
+        if (!Entities.FindByName(null, "DummyObjectWheatlyLook")) {
+            printl("DummyObjectWheatlyLook not found running objective")
+            Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "DummyObjectWheatlyLook")
+            WatchPlayerWheatley <- false
+            EntFireByHandle(Entities.FindByName(null, "wheatley_bottom_swivel"), "SetTargetEntity", "chassis_target", 0, null, null)
+        }
+
+        cursocket <- "socket" + socketnum + "_trigger"
+        //printl(WatchPlayerWheatley)
+
+        // if (WatchPlayerWheatley == false) {
+        //     printl(cursocket)
+        //     if (!Entities.FindByName(null, cursocket)) {
+        //         if (DoDestroyDummy == true) {
+        //             // Entities.FindByName(null, "DummyObjectWheatlyLookOn").Destroy()
+        //             EntFire("DummyObjectWheatlyLookOn", "kill", "", 8, null)
+        //             socketnum <- socketnum + 1
+        //             DoDestroyDummy <- false
+        //         }
+        //     }
+        // }
+
+        if (!Entities.FindByName(null, "DummyObjectWheatlyLookOn")) {
+            printl("DummyObjectWheatlyLookOn not found running objective")
+            Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "DummyObjectWheatlyLookOn")
+            WatchPlayerWheatley <- true
+        }
+
+        if (WatchPlayerWheatley == true) {
+            if (playerpointerfinale4 == null) {
+                local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "wheatley_bottom_swivel").GetOrigin(), 10000)
+                EntFireByHandle(Entities.FindByName(null, "wheatley_bottom_swivel"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+                EntFire("futbol_shooter", "SetTarget", ClosestPlayerMain.GetName(), 0, null)
+
+            } else {
+                EntFireByHandle(Entities.FindByName(null, "wheatley_bottom_swivel"), "SetTargetEntity", playerpointerfinale4, 0, null, null)
+                EntFire("futbol_shooter", "SetTarget", playerpointerfinale4, 0, null)
+            }
+        }
+
+        //
         
 
         if (!Entities.FindByName(null, "notinelevator")) {
