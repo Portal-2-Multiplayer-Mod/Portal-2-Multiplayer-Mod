@@ -394,7 +394,11 @@ function CreateTrigger(x1, y1, z1, x2, y2, z2){
 function FindPlayerByName(name) {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
-        if (GetPlayerName(p.entindex())==name) {
+        local plrname = GetPlayerName(p.entindex())
+        plrname = plrname.slice(0, name.len())
+        printl(plrname)
+        printl(name)
+        if (plrname==name) {
             return p
         }
     }
