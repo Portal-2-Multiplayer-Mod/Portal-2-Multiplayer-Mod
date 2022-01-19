@@ -17,14 +17,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "credits").Destroy()
 
         Entities.FindByName(null, "ending_playmovie").__KeyValueFromString("targetname", "ending_playmovie_p2mp_override")
+        Entities.FindByName(null, "credits_music").__KeyValueFromString("targetname", "credits_music_meme")
+        
         EntFire("container_path2", "addoutput", "OnPass ending_playmovie_p2mp_override:playmovieforallplayers::2")
         memeplaymovie <- Entities.CreateByClassname("logic_playmovie")
         memeplaymovie.__KeyValueFromString("targetname", "credits_playmovie_p2mp")
         memeplaymovie.__KeyValueFromString("MovieFilename", "sp_credits_bg")
         memeplaymovie.__KeyValueFromString("loopvideo", "1")
         memeplaymovie.__KeyValueFromString("fadeintime", "1")
-        EntFire("container_path2", "addoutput", "OnPass ending_playmovie_p2mp_override:credits_playmovie_p2mp::131")
-        
+        EntFire("container_path2", "addoutput", "OnPass credits_playmovie_p2mp:PlayLevelTransitionMovie::131")
+        EntFire("container_path2", "addoutput", "OnPass credits_music_meme:playsound::131.2")
+        memeplaymovie2 <- Entities.CreateByClassname("logic_playmovie")
+        memeplaymovie2.__KeyValueFromString("targetname", "after_credits_playmovie_p2mp")
+        memeplaymovie2.__KeyValueFromString("MovieFilename", "sp_ending_callback")
+        EntFire("container_path2", "addoutput", "OnPass after_credits_playmovie_p2mp:playmovieforallplayers::280")
+        memecounter <- Entities.CreateByClassname("point_servercommand")
+        memecounter.__KeyValueFromString("targetname", "point_servercommand_credits_counter")
+        EntFire("container_path2", "addoutput", "OnPass point_servercommand_credits_counter:command:changelevel mp_coop_lobby_3:328")
+
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "notinelevator")
         EntFire("breaker_socket_button", "addoutput", "OnPressed notinelevator:kill", 0, null)
