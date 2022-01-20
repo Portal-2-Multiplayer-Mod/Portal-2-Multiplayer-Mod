@@ -30,10 +30,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         memeplaymovie2 <- Entities.CreateByClassname("logic_playmovie")
         memeplaymovie2.__KeyValueFromString("targetname", "after_credits_playmovie_p2mp")
         memeplaymovie2.__KeyValueFromString("MovieFilename", "sp_ending_callback")
-        EntFire("container_path2", "addoutput", "OnPass after_credits_playmovie_p2mp:playmovieforallplayers::280")
+        EntFire("container_path2", "addoutput", "OnPass after_credits_playmovie_p2mp:playmovieforallplayers::272")
+        
+        memeplaymovie23 <- Entities.CreateByClassname("logic_playmovie")
+        memeplaymovie23.__KeyValueFromString("targetname", "after_credits_playmovie_p2mp_loop")
+        memeplaymovie23.__KeyValueFromString("MovieFilename", "menu_act05")
+
+        EntFire("container_path2", "addoutput", "OnPass after_credits_playmovie_p2mp_loop:playmovieforallplayers::317")
+
         memecounter <- Entities.CreateByClassname("point_servercommand")
         memecounter.__KeyValueFromString("targetname", "point_servercommand_credits_counter")
-        EntFire("container_path2", "addoutput", "OnPass point_servercommand_credits_counter:command:changelevel mp_coop_lobby_3:328")
+        EntFire("container_path2", "addoutput", "OnPass point_servercommand_credits_counter:command:changelevel mp_coop_lobby_3:320")
+        
 
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "notinelevator")
