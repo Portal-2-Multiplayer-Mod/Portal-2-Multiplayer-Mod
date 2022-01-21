@@ -200,6 +200,18 @@ function init() {
     onscreendisplay.__KeyValueFromString("channel", "1")
     //onscreendisplay.__KeyValueFromString("x", "-1.1")
     //onscreendisplay.__KeyValueFromString("y", "-1.1")
+    
+    // dc message
+    disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
+    disconnectmessagedisplay.__KeyValueFromString("targetname", "pdcm")
+    disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
+    disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
+    disconnectmessagedisplay.__KeyValueFromString("fadein", "0.2")
+    disconnectmessagedisplay.__KeyValueFromString("spawnflags", "1")
+    disconnectmessagedisplay.__KeyValueFromString("color", "140 40 40")
+    disconnectmessagedisplay.__KeyValueFromString("channel", "3")
+    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected")
+    EntFireByHandle(disconnectmessagedisplay, "display", "", 0.0, null, null)
 
     // Create a join message entity
     joinmessagedisplay <- Entities.CreateByClassname("game_text")
