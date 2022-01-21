@@ -262,7 +262,7 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
             data = data.replace(b'K\x8de\xf4\xb8\x01\x00\x00\x00[^', b'K\x8de\xf4\xb8\x1f\x00\x00\x00[^')
 
             # Partner disconnect edit
-            data = data.replace(b'disconnect "Partner disconnected"', b'script_execute playerdisconnected')
+            data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
 
             # Command patch edit
             data = data.replace(b'restart_level', b'portal2mprslv')
