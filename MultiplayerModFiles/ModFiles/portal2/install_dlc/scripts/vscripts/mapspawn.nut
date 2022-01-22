@@ -173,19 +173,15 @@ function init() {
 
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to display player color at the bottom left of every clients' screen
+    playerclasses <- []
+
     colordisplay <- Entities.CreateByClassname("game_text")
-        // Set the entity's targetname to colordisplay + player's index
-    colordisplay.__KeyValueFromString("targetname", "colordisplay" + PlayerID)
-        // Set the entity's origin to the bottom left of the screen
+    colordisplay.__KeyValueFromString("targetname", "colordisplay")
     colordisplay.__KeyValueFromString("x", "0")
     colordisplay.__KeyValueFromString("y", "1")
-        // Set the entity's holdtime to infinity
     colordisplay.__KeyValueFromString("holdtime", "100000")
-        // Set the fade time to none
     colordisplay.__KeyValueFromString("fadeout", "0")
     colordisplay.__KeyValueFromString("fadein", "0")
-        // Set the channel to top
     colordisplay.__KeyValueFromString("channel", "0")
 
     // Create an on screen text message entity
@@ -401,6 +397,14 @@ function CreateTrigger(x1, y1, z1, x2, y2, z2){
         }
     }
     return plist
+}
+
+function FindPlayerClass(plyr) {
+    foreach (curclass in playerclasses) {
+        if (curclass.player == plyr) {
+            return curclass
+        }
+    }
 }
 
 function FindPlayerByName(name) {
@@ -1186,6 +1190,40 @@ function OnPlayerJoin(p, script_scope) {
     // Set color of player's in-game model
     script_scope.Colored <- true
     EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
+
+    //# Setup Player Class #//
+    local currentplayerclass = {}
+
+    // player
+    currentplayerclass.player <- p
+    // player id
+    currentplayerclass.id <- p.entindex()
+    // player name
+    if (PluginLoaded==true) {
+        currentplayerclass.username <- GetPlayerName(p.entindex())
+    }
+    // player color
+    local localcolorclass = {}
+    localcolorclass.r <- R
+    localcolorclass.g <- G
+    localcolorclass.b <- B
+    currentplayerclass.color <- localcolorclass
+    // player noclip status
+    currentplayerclass.noclip <- false
+
+    // Add player class to the player class array
+    playerclasses.push(currentplayerclass)
+
+    printl("===== Player Class =====")
+    foreach (thing in FindPlayerClass(p)) {
+        printl(thing)
+    }
+    printl("===================")
+    printl("")
+    printl(playerclasses[p.entindex()-1].color.r)
+    printl(playerclasses[p.entindex()-1].color.g)
+    printl(playerclasses[p.entindex()-1].color.b)
+
 }
 
 //////////////////////
