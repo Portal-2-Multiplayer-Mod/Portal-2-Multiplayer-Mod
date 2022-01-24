@@ -14,9 +14,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "blackout_teleport_player_to_surprise").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-976, 256, 32), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-1056, 256, 40.25), 1024).Destroy()
+
+        Entities.FindByName(null, "officedoor_1").__KeyValueFromString("targetname", "MPModOfficeDoorOverride")
+
+        EntFire("surprise_room_door_relay", "addoutput", "OnTrigger MPModOfficeDoorOverride:SetAnimation:Open", 0, null)
         OnlyOnceSpA2ColumBlocker1 <- true
         OnlyOnceSpA2ColumBlocker2 <- true
-        OnlyOnceSpA2ColumBlocker3 <- true
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -26,10 +29,23 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
-        if (OnlyOnceSpA2ColumBlocker3==true) {
+        // Teleport players after blackout
+        if (OnlyOnceSpA2ColumBlocker1==true) {
+            if (!Entities.FindByClassnameNearest("trigger_once", Vector(-76, -1040, 311.5), 3)) {
+                // Find all players
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-64, -1088, 256))
+                    p.SetAngles(0, 90, 0)
+                }
+                OnlyOnceSpA2ColumBlocker1 <- false
+            }
+        }
+
+        // Elevator viewcontrol
+        if (OnlyOnceSpA2ColumBlocker2==true) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(-1486, 256, -139.75), 10)) {
                 printl("Elevator viewcontrol activated")
-                // Elevator viewcontrol
                 SpA2ColumBlockerViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
                 SpA2ColumBlockerViewcontrol.__KeyValueFromString("target_team", "-1")
                 SpA2ColumBlockerViewcontrol.__KeyValueFromString("fov", "100")
@@ -57,29 +73,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetOrigin(Vector(-1964, 331, -2479))
                 }
 
-                OnlyOnceSpA2ColumBlocker3 <- false
-            }
-        }
-
-        // Delete office door after walking through it
-        if (OnlyOnceSpA2ColumBlocker2==true) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-63, -780, 320), 40)) {
-                Entities.FindByName(null, "officedoor_1").Destroy()
                 OnlyOnceSpA2ColumBlocker2 <- false
-            }
-        }
-
-        // Teleport players after blackout
-        if (OnlyOnceSpA2ColumBlocker1==true) {
-            if (!Entities.FindByClassnameNearest("trigger_once", Vector(-76, -1040, 311.5), 3)) {
-                // Find all players
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
-                    p.SetOrigin(Vector(-64, -1088, 256))
-                    p.SetAngles(0, 90, 0)
-                }
-                OnlyOnceSpA2ColumBlocker1 <- false
             }
         }
 
