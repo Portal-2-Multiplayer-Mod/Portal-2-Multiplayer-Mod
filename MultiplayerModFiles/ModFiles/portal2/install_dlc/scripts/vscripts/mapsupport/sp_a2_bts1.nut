@@ -12,20 +12,25 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "chamber_door-close_door_rl").Destroy()
         Entities.FindByName(null, "jailbreak_chamber_unlit-toxin_death_fade").Destroy()
         Entities.FindByName(null, "jailbreak_chamber_unlit-toxin_death_trigger").Destroy()
-        Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damage", "15")
-        Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damagecap", "15")
         Entities.FindByName(null, "pre_solved_chamber-toxin_fade").Destroy()
-        Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_row_5_close_logic").Destroy()
-        Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_row_6_close_logic").Destroy()
         Entities.FindByName(null, "transition_trigger").Destroy()
 
         Entities.FindByClassnameNearest("trigger_once", Vector(-2816, -1576, 32), 1024).Destroy()
-        Entities.FindByClassnameNearest("trigger_once", Vector(864, -1488, -16), 1024).Destroy()
 
+        Entities.FindByName(null, "pre_solved_chamber-sliding_door_2_5").__KeyValueFromString("targetname", "MPModSliding_Door_2_5Override")
+        Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_2_5_close_logic").__KeyValueFromString("targetname", "MPModWall_2_5_Close_LogicOverride")
+        Entities.FindByName(null, "pre_solved_chamber-sliding_door_2_6").__KeyValueFromString("targetname", "MPModSliding_Door_2_6Override")
+        Entities.FindByName(null, "pre_solved_chamber-jailbreak_wall_2_6_close_logic").__KeyValueFromString("targetname", "MPModWall_2_6_Close_LogicOverride")
         Entities.FindByName(null, "pre_solved_chamber-chamber_bridge").__KeyValueFromString("targetname", "MPModBridgeOverride")
-        EntFire("MPModBridgeOverride", "enable", "", 3, null)
+        Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damagecap", "25")
+        Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damage", "25")
 
-        OnceTwiceSp_A2_Bts1 <- true
+        EntFire("pre_solved_chamber-jailbreak_wall_row_5_open_logic", "addoutput", "OnTrigger MPModSliding_Door_2_5Override:Open", 0, null)
+        EntFire("pre_solved_chamber-jailbreak_wall_row_6_open_logic", "addoutput", "OnTrigger MPModSliding_Door_2_6Override:Open", 0, null)
+        EntFire("@pre_solved_chamber_start_rl", "addoutput", "OnTrigger MPModBridgeOverride:Enable::2.5", 0, null)
+
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(864, -1488, -16), 16), "addoutput", "OnTrigger MPModBridgeOverride:Disable", 0, null, null)
+
         OneTimeRunSp_A2_Bts1 <- true
     }
 
@@ -34,16 +39,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
-        // Bridge drop trigger
-        if (OnceTwiceSp_A2_Bts1==true) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(836.91394042969, -1589.0966796875, -30.565340042114), 104.79999542236)) {
-                EntFire("@glados", "RunScriptCode", "JailbreakBridgeDisappear()", 0, null)
-                EntFire("MPModBridgeOverride", "disable", "", 0, null)
-                OnceTwiceSp_A2_Bts1 <- false
-            }
-        }
-
         // Exit Test Trigger
         if (OneTimeRunSp_A2_Bts1==true) {
             local p = null
