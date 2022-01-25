@@ -76,6 +76,7 @@ LoadPlugin <- false
 RunPluginLoad <- false
 PluginLoaded <- false
 PreviousTime1Sec <- 0
+playerclasses <- []
 if (UsePlugin==true) {
     LoadPlugin <- true
 }
@@ -172,8 +173,6 @@ MPMCoopCreditNames <- [
 function init() {
 
     MapSupport(true, false, false, false, false, false, false)
-
-    playerclasses <- []
 
     colordisplay <- Entities.CreateByClassname("game_text")
     colordisplay.__KeyValueFromString("targetname", "colordisplay")
@@ -991,18 +990,32 @@ function ChatCommands(ccuserid, ccmessage) {
     //## NOCLIP COMMAND ##//
     local command="!noclip"
     if (ccmessage.find(command) != null) {
+        local ourclass = FindPlayerClass(p)
+        ourclass.noclip <- p.IsNoclipping()
         if (isadmin>=1) {
             local args = "DONTNOCLIP"
             try { args = ccmessage.slice(command.len()+ccmessage.find("!")+1, ccmessage.len()) } catch(e) { printl(e) }
             if (args=="on") {
                 printl("noclipped: " + pname)
                 EntFireByHandle(p, "addoutput", "MoveType 8", 0, null, null)
+                ourclass.noclip <- true
             } else {
                 if (args=="off") {
                     printl("noclipped: " + pname)
                     EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
+                    ourclass.noclip <- false
                 } else {
-                    SendToConsole("say " + pname + " ERROR: Invalid Option (please use \"on\" or \"off\")")
+                    // SendToConsole("say " + pname + " ERROR: Invalid Option (please use \"on\" or \"off\")")
+                    printl(ourclass.noclip)
+                    if (ourclass.noclip == true) {
+                        printl("noclipped: " + pname)
+                        EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
+                        ourclass.noclip <- false
+                    } else {
+                        printl("noclipped: " + pname)
+                        EntFireByHandle(p, "addoutput", "MoveType 8", 0, null, null)
+                        ourclass.noclip <- true
+                    }
                 }
             }
         } else {
@@ -1209,7 +1222,7 @@ function OnPlayerJoin(p, script_scope) {
     localcolorclass.b <- B
     currentplayerclass.color <- localcolorclass
     // player noclip status
-    currentplayerclass.noclip <- false
+    currentplayerclass.noclip <- p.IsNoclipping()
 
     // Add player class to the player class array
     playerclasses.push(currentplayerclass)

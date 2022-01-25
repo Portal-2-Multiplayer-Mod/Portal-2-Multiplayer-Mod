@@ -1,9 +1,9 @@
-// ██████╗██████╗             █████╗   ██╗██╗           ███████╗██╗███╗  ██╗ █████╗ ██╗     ███████╗██████╗ 
-//██╔════╝██╔══██╗           ██╔══██╗ ██╔╝██║           ██╔════╝██║████╗ ██║██╔══██╗██║     ██╔════╝╚════██╗    44444
-//╚█████╗ ██████╔╝           ███████║██╔╝ ██║           █████╗  ██║██╔██╗██║███████║██║     █████╗ ██████████    444
-// ╚═══██╗██╔═══╝            ██╔══██║███████║           ██╔══╝  ██║██║╚████║██╔══██║██║     ██╔══╝ ██████████    444
-//██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║     ██║██║ ╚███║██║  ██║███████╗███████╗██████╔╝    44444
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝╚═════╝ 
+//  ██████╗██████╗             █████╗   ██╗██╗           ███████╗██╗███╗  ██╗ █████╗ ██╗     ███████╗  ██╗██╗
+// ██╔════╝██╔══██╗           ██╔══██╗ ██╔╝██║           ██╔════╝██║████╗ ██║██╔══██╗██║     ██╔════╝ ██╔╝██║
+// ╚█████╗ ██████╔╝           ███████║██╔╝ ██║           █████╗  ██║██╔██╗██║███████║██║     █████╗  ██╔╝ ██║
+//  ╚═══██╗██╔═══╝            ██╔══██║███████║           ██╔══╝  ██║██║╚████║██╔══██║██║     ██╔══╝  ███████║
+// ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║     ██║██║ ╚███║██║  ██║███████╗███████╗╚════██║
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
@@ -16,6 +16,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("lightfov", "160")
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("lightworld", "1")
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("spawnflags", "2")
+
+        Entities.FindByName(null, "@arrival_video_master").SetOrigin(Vector(574.587524, -30.347410, 235.043121))
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("moviefilename", "media/sp_30_a4_finale5.bik")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("width", "256")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("height", "128")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("forcedslave", "0")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("forceprecache", "0")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("looping", "0")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("stretch", "0")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("targetname", "p2mppenis")
+
+
+
 
 
 

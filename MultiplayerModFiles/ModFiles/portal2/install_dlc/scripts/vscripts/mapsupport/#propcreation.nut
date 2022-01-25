@@ -7,6 +7,38 @@
 
 function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
+//===================================//
+//CREATE OBJECTS FOR mp_coop_rat_maze//
+//===================================//
+
+if (GetMapName() == "mp_coop_rat_maze") {
+    if (CacheTime==true) {
+        // Cache Objects
+
+        CacheModel("props/reflection_cube.mdl")
+
+        DoneCacheing <- true
+  }
+
+
+    if (CreateTime==true) {
+        // Create Objects
+
+        local mp_coop_rat_maze_custom_prop_48 = CreateProp("prop_physics", Vector(-177.24385070801, 83.552711486816, -621.53527832031), "models/props/reflection_cube.mdl", 0)
+        mp_coop_rat_maze_custom_prop_48.SetAngles(-0.073955573141575, 75.476417541504, 179.88249206543)
+        mp_coop_rat_maze_custom_prop_48.__KeyValueFromString("solid", "6")
+        mp_coop_rat_maze_custom_prop_48.__KeyValueFromString("targetname", "genericcustomprop")
+
+  }
+
+
+    if (LoopTime==true) {
+        // Generated Teleports
+
+  }
+}
+
+
 //==================================//
 //CREATE OBJECTS FOR sp_a3_crazy_box//
 //==================================//
