@@ -37,8 +37,19 @@ function MoveSoundScape() {
     // setpos_exact -11257.973633 342.373840 1071.778320;setang_exact 0.000000 -156.680191 0.000000
 }
 
+function TeleportPlayersUp() {
+    Entities.FindByClassname(null, "player").SetOrigin(Vector(-191.816742 -0.485268 64.031250))
+}
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        // Sp_A2_Bts6 viewcontrol creation
+        Sp_A2_Bts6Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+        Sp_A2_Bts6Viewcontrol.__KeyValueFromString("targetname", "Sp_A2_Bts6Viewcontrol")
+        Sp_A2_Bts6Viewcontrol.__KeyValueFromString("target_team", "-1")
+        Sp_A2_Bts6Viewcontrol.SetOrigin(Vector(0, -80, -1332))
+        Sp_A2_Bts6Viewcontrol.SetAngles(20, 90, 0)
+        EntFireByHandle(Sp_A2_Bts6Viewcontrol, "setparent", "basement_breakers_platform", 0.1, null, null)
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
@@ -53,6 +64,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("replace_relay", "addoutput", "OnTrigger p232servercommand:command:script TeleportPlayersBehindEndingElevator()")
         EntFire("container_path2", "addoutput", "OnPass p232servercommand:command:script MoveSoundScape()")
         EntFire("claw3_movelinear", "addoutput", "OnFullyOpen pipe_orange_relay:trigger::10")
+        EntFire("breaker_path2", "addoutput", "OnPass p232servercommand:command:script TeleportPlayersUp():1")
+        EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Bts6Viewcontrol:disable::1")
+        EntFire("relay_neurotoxin_death", "addoutput", "OnTrigger p232servercommand:command:changelevel sp_a4_finale4:7")
+        EntFire("relay_destruction_death", "addoutput", "OnTrigger p232servercommand:command:changelevel sp_a4_finale4:7")
+
+
 
         Entities.FindByName(null, "@arrival_video_master").SetOrigin(Vector(574.587524, -30.347410, 235.043121))
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("moviefilename", "media/sp_30_a4_finale5.bik")
@@ -66,6 +83,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         Entities.FindByName(null, "transition_portal1").Destroy()
         Entities.FindByName(null, "transition_portal2").Destroy()
+        Entities.FindByName(null, "fail_hurt_trigger").Destroy()
+
         // Entities.FindByName(null, "end_player_teleport").Destroy()
         // Entities.FindByName(null, "knockout_teleport_1").Destroy()
 
@@ -316,9 +335,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!Entities.FindByName(null, "notinelevator")) {
             if (Sp_A4_Finale4ElevatorTeleport == true) {
+                EntFireByHandle(Sp_A2_Bts6Viewcontrol, "enable", "", 0, null, null)
+                // EntFireByHandle(Sp_A2_Bts6Viewcontrol, "disable", "", 13, null, null)
+                // EntFire("p232servercommand", "command", "script Entities.FindByClassname(null, \"player\").SetOrigin(Vector(-191.816742 -0.485268 64.031250))", 13)
+
+                //script Entities.FindByClassname(null, "player").SetOrigin(Vector(-191.816742 -0.485268 64.031250))
+
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
-                    p.SetOrigin(Vector(1, -77, -1332))
+                    p.SetOrigin(Vector(-2, -221, -1335))
                 }
                 Sp_A4_Finale4ElevatorTeleport <- false
             }
