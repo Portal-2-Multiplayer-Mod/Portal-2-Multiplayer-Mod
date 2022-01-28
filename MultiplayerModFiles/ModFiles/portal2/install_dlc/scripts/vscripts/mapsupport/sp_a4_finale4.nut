@@ -43,6 +43,30 @@ function TeleportPlayersUp() {
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        // Create Env Globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+
         // Sp_A2_Bts6 viewcontrol creation
         Sp_A2_Bts6Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         Sp_A2_Bts6Viewcontrol.__KeyValueFromString("targetname", "Sp_A2_Bts6Viewcontrol")
@@ -66,6 +90,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("claw3_movelinear", "addoutput", "OnFullyOpen pipe_orange_relay:trigger::10")
         EntFire("breaker_path2", "addoutput", "OnPass p232servercommand:command:script TeleportPlayersUp():1")
         EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Bts6Viewcontrol:disable::1")
+
+
+        EntFire("breaker_path2", "addoutput", "OnPass env_global01:turnoff::1")
+        EntFire("breaker_path2", "addoutput", "OnPass env_global02:turnoff::1")
+        EntFire("breaker_path2", "addoutput", "OnPass env_global03:turnoff::1")
+        EntFire("breaker_path2", "addoutput", "OnPass env_global04:turnoff::1")
+
+
         EntFire("relay_neurotoxin_death", "addoutput", "OnTrigger p232servercommand:command:changelevel sp_a4_finale4:7")
         EntFire("relay_destruction_death", "addoutput", "OnTrigger p232servercommand:command:changelevel sp_a4_finale4:7")
 
@@ -119,8 +151,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         memecounter <- Entities.CreateByClassname("point_servercommand")
         memecounter.__KeyValueFromString("targetname", "point_servercommand_credits_counter")
         EntFire("container_path2", "addoutput", "OnPass point_servercommand_credits_counter:command:changelevel mp_coop_lobby_3:320")
-        
 
+        EntFire("container_path2", "addoutput", "OnPass env_global01:turnoff::318")
+        EntFire("container_path2", "addoutput", "OnPass env_global02:turnoff::318")
+        EntFire("container_path2", "addoutput", "OnPass env_global03:turnoff::318")
+        EntFire("container_path2", "addoutput", "OnPass env_global04:turnoff::318")
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "notinelevator")
         EntFire("breaker_socket_button", "addoutput", "OnPressed notinelevator:kill", 0, null)
@@ -216,13 +251,25 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (!Entities.FindByName(null, "ReEnableViewControl")) {
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0, null, null)
                 if (OneTimeRenableViewControl == false) {
+                    EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global04, "turnon", "", 1, null, null)
                     OneTimeRenableViewControl <- true
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "chell", 55.15, null, null)
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 55.25, null, null)
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
+                        p.SetOrigin(Vector(1106, -142, 64))
                         EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 0.1", 0, p, p)
                     }
+                }
+            }
+
+            if (parentthingerdinger==false) {
+                local ent = null
+                while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+                    EntFireByHandle(ent, "disabledraw", "", 0, null, null)
                 }
             }
 
@@ -236,10 +283,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFireByHandle(player, "disabledraw", "", 0, null, null)
                 }
                 EntFire("rollcameracontrol", "kill", "", 16.1, null)
+                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "disable", "", 16, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0.3, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "ending_vehicle", 0.1, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 0.2, null, null)
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(1106, -142, 64))
+                }
             }
         }
 
@@ -255,6 +309,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("@core03", "addoutput", "OnPlayerPickup @core03:disablepickup", 0, null)
         EntFire("@core03", "addoutput", "OnPlayerDrop @core03:enablepickup", 0, null)
+
+        if (!Entities.FindByName(null, "socket1_trigger")) {
+            EntFire("@core01" "disablepickup")
+        }
+
+        if (!Entities.FindByName(null, "socket2_trigger")) {
+            EntFire("@core02" "disablepickup")
+        }
+
+        if (!Entities.FindByName(null, "socket3_trigger")) {
+            EntFire("@core03" "disablepickup")
+        }
+
 
         // WHEATLEY LOOK
         try {
@@ -283,7 +350,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
             if (Entities.FindByName(null, "wheatley_shadow_brush")) {
                 local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(855, 256, 64), 150)) {
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(763., 256, 42), 150)) {
                     playerpointerfinale4 <- p.GetName()
                 }
             }
@@ -330,12 +397,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         } catch (e) {}
 
-        //
+        /////////// END OF LOOK
         
 
         if (!Entities.FindByName(null, "notinelevator")) {
             if (Sp_A4_Finale4ElevatorTeleport == true) {
                 EntFireByHandle(Sp_A2_Bts6Viewcontrol, "enable", "", 0, null, null)
+                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+                EntFire("environment_darkness_1", "trigger", "", 5, null)
+                EntFire("light_dynamic_wheatley", "TurnOn", "", 5, null)
                 // EntFireByHandle(Sp_A2_Bts6Viewcontrol, "disable", "", 13, null, null)
                 // EntFire("p232servercommand", "command", "script Entities.FindByClassname(null, \"player\").SetOrigin(Vector(-191.816742 -0.485268 64.031250))", 13)
 
