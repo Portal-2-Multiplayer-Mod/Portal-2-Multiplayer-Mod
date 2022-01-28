@@ -5,8 +5,19 @@
 // ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║     ██║██║ ╚███║██║  ██║███████╗███████╗╚════██║
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚═╝
 
+fogs <- [
+    {name = "environment_vista", fogname = "environment_vista_fog", fogdelay = 0}
+    {name = "environment_darkness_1", fogname = "@environment_darkness_1_fog", fogdelay = 0}
+    {name = "relay_environment_neuro2", fogname = "environment_fog_neuro_2", fogdelay = 0}
+    {name = "environment_darkness_2", fogname = "@environment_darkness_fog_2", fogdelay = 0}
+    {name = "environment_darkness_3", fogname = "@environment_darkness_fog_3", fogdelay = 0}
+    {name = "environment_moonshot_1", fogname = "@environment_moonshot_1", fogdelay = 0}
+    {name = "environment_darkness_4", fogname = "@environment_darkness_fog_4", fogdelay = 0}
+]
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects

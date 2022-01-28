@@ -220,6 +220,10 @@ function init() {
     //joinmessagedisplay.__KeyValueFromString("x", "0.1")
     //joinmessagedisplay.__KeyValueFromString("y", "0.1")
 
+    // Create a global servercommand entity
+    globalservercommand <- Entities.CreateByClassname("point_servercommand")
+    globalservercommand.__KeyValueFromString("targetname", "p232servercommand")
+
     // Create entity to run loop() every 0.1 seconds
     timer <- Entities.CreateByClassname("logic_timer")
     timer.__KeyValueFromString("targetname", "timer")
@@ -354,6 +358,21 @@ function RandomColor() {
         b = rcb
     }
     return ColorBar
+}
+
+function p232fogswitch(fogname) {
+    printl("Switching to fog: " + fogname)
+    foreach (fogclass in fogs) {
+        if (fogclass.fogname == fogname) {
+            printl("Found fog: " + fogclass.fogname)
+            // go through each player and set their fog to the new fog
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                EntFireByHandle(p, "setfogcontroller", fogname, fogclass.fogdelay, null, null)
+            }
+            defaultfog <- fogname
+        }
+    }
 }
 
 function CreateTrigger(x1, y1, z1, x2, y2, z2){
@@ -1237,6 +1256,10 @@ function OnPlayerJoin(p, script_scope) {
     printl(playerclasses[p.entindex()-1].color.g)
     printl(playerclasses[p.entindex()-1].color.b)
 
+    // Set fog controller
+    if (HasSpawned==true) {
+        EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
+    }
 }
 
 //////////////////////
@@ -1318,6 +1341,17 @@ function GeneralOneTime() {
         { map = "sp_a4_intro", title_text = "#portal2_Chapter8_Title", subtitle_text = "#portal2_Chapter8_Subtitle", displayOnSpawn = true,			displaydelay = 2.5 },
         { map = "sp_a4_finale1", title_text = "#portal2_Chapter9_Title", subtitle_text = "#portal2_Chapter9_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
     ]
+
+    foreach (fog in fogs) {
+        EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p232servercommand:command:script p232fogswitch(\"" + fog.fogname + "\")", 0, null, null)
+    }
+
+    defaultfog <- fogs[0].fogname
+
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
+    }
 
     // Attempt to display chapter title
     foreach (index, level in CHAPTER_TITLES)
@@ -1485,3 +1519,7 @@ try {
 // Run init
 Entities.First().ConnectOutput("OnUser1", "init")
 DoEntFire("worldspawn", "FireUser1", "", 0.0, null, null)
+
+function hellogamers() {
+    print("Hello Gamers!")
+}
