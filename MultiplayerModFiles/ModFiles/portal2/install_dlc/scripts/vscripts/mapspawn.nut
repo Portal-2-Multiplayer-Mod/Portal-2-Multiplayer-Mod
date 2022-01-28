@@ -52,6 +52,7 @@ if (RandomPortalSize==true) {
     randomportalsize <- 34
     randomportalsizeh <- 34
 }
+usefogcontroller <- false
 yes <- ""
 DevModeConfig <- DevMode
 StartDevModeCheck <- false
@@ -77,6 +78,7 @@ RunPluginLoad <- false
 PluginLoaded <- false
 PreviousTime1Sec <- 0
 playerclasses <- []
+fogs <- false
 if (UsePlugin==true) {
     LoadPlugin <- true
 }
@@ -1259,7 +1261,9 @@ function OnPlayerJoin(p, script_scope) {
 
     // Set fog controller
     if (HasSpawned==true) {
-        EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
+        if (usefogcontroller == true) {
+            EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
+        }
     }
 }
 
@@ -1343,15 +1347,25 @@ function GeneralOneTime() {
         { map = "sp_a4_finale1", title_text = "#portal2_Chapter9_Title", subtitle_text = "#portal2_Chapter9_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
     ]
 
-    foreach (fog in fogs) {
-        EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p232servercommand:command:script p232fogswitch(\"" + fog.fogname + "\")", 0, null, null)
+    if (fogs == false) {
+        usefogcontroller <- false
+        printl("(P2:MM): No fog controller found, disabling fog controller")
+    } else {
+        usefogcontroller <- true
+        printl("(P2:MM): Fog controller found, enabling fog controller")
     }
 
-    defaultfog <- fogs[0].fogname
+    if (usefogcontroller == true) {
+        foreach (fog in fogs) {
+            EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p232servercommand:command:script p232fogswitch(\"" + fog.fogname + "\")", 0, null, null)
+        }
 
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
+        defaultfog <- fogs[0].fogname
+
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
+        }
     }
 
     // Attempt to display chapter title
@@ -1503,6 +1517,7 @@ local MapName = FindAndReplace(GetMapName().tostring(), "maps/", "")
 MapName = FindAndReplace(MapName.tostring(), ".bsp", "")
 
 try {
+    function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
     IncludeScript("mapsupport/#rootfunctions.nut")
     IncludeScript("mapsupport/#propcreation.nut")
     IncludeScript("mapsupport/" + MapName.tostring() + ".nut")
