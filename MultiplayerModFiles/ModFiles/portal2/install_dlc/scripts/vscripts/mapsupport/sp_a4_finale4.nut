@@ -25,15 +25,16 @@ function TeleportPlayersBehindEndingElevator() {
 
 function MoveSoundScape() {
     printl("JELLO")
-    // Entities.FindByName(null, "end_soundscape").Destroy()
+    // EntFire("end_soundscape", "disable")
+    // Entities.FindByName(null, "end_soundscape").SetOrigin(Vector(-11264, 576, 128))
+    // EntFire("end_soundscape", "enable", "", 0.1)
+
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
-        p.SetOrigin(Vector(-11264 0 512))
-        EntFireByHandle(Entities.FindByName(null, "p232clientcommand"), "command", "stopsoundscape", 2.8, p, p)
-        EntFireByHandle(Entities.FindByName(null, "p232clientcommand"), "command", "echo soundscape stopped", 2.8, p, p)
-        EntFireByHandle(Entities.FindByName(null, "p232clientcommand"), "command", "stopsound", 2.9, p, p)
-        EntFireByHandle(Entities.FindByName(null, "p232clientcommand"), "command", "echo sound stopped", 2.9, p, p)
+        p.SetOrigin(Vector(-11257.973633, 342.373840, 1071.778320))
     }
+
+    // setpos_exact -11257.973633 342.373840 1071.778320;setang_exact 0.000000 -156.680191 0.000000
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
@@ -168,6 +169,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+
+        local p = null
+        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-11271, -22, 63), 1020)) {
+            p.SetVelocity(Vector(0, 0, -300))
+        }
+
         // teleport all players in elevator out
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(-11266, 320, 80), 80)) {

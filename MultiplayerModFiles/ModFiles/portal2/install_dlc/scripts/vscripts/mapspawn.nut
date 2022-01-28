@@ -944,6 +944,13 @@ function ChatCommands(ccuserid, ccmessage) {
                     teleporttarget.SetOrigin(p.GetOrigin())
                     teleporttarget.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
                 } else {
+                    if (args=="all") {
+                        local plyrz = null
+                        while (plyrz = Entities.FindByClassname(plyrz, "player")) {
+                            plyrz.SetOrigin(p.GetOrigin())
+                            plyrz.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
+                        }
+                    }
                     SendToConsole("say " + pname + " ERROR: Player " + args + " does not exist!")
                 }
             } else {
