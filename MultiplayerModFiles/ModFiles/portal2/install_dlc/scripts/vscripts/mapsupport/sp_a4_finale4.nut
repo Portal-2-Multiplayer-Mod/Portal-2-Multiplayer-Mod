@@ -15,9 +15,29 @@ fogs <- [
     {name = "environment_darkness_4", fogname = "@environment_darkness_fog_4", fogdelay = 0}
 ]
 
+//## hook line and sinker hooks ##//
+function TeleportPlayersBehindEndingElevator() {
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        p.SetOrigin(Vector(-11264, 576, 128))
+    }
+}
+
+function MoveSoundScape() {
+    printl("JELLO")
+    // Entities.FindByName(null, "end_soundscape").Destroy()
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        p.SetOrigin(Vector(-11264 0 512))
+        EntFireByHandle(Entities.FindByName(null, "p232clientcommand"), "command", "stopsoundscape", 2.8, p, p)
+        EntFireByHandle(Entities.FindByName(null, "p232clientcommand"), "command", "echo soundscape stopped", 2.8, p, p)
+        EntFireByHandle(Entities.FindByName(null, "p232clientcommand"), "command", "stopsound", 2.9, p, p)
+        EntFireByHandle(Entities.FindByName(null, "p232clientcommand"), "command", "echo sound stopped", 2.9, p, p)
+    }
+}
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
@@ -27,6 +47,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("lightfov", "160")
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("lightworld", "1")
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("spawnflags", "2")
+
+        // Setup Function Fires
+        EntFire("replace_relay", "addoutput", "OnTrigger p232servercommand:command:script TeleportPlayersBehindEndingElevator()")
+        EntFire("container_path2", "addoutput", "OnPass p232servercommand:command:script MoveSoundScape()")
 
         Entities.FindByName(null, "@arrival_video_master").SetOrigin(Vector(574.587524, -30.347410, 235.043121))
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("moviefilename", "media/sp_30_a4_finale5.bik")
@@ -38,13 +62,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("stretch", "0")
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("targetname", "p2mppenis")
 
-
-
-
-
-
         Entities.FindByName(null, "transition_portal1").Destroy()
         Entities.FindByName(null, "transition_portal2").Destroy()
+        // Entities.FindByName(null, "end_player_teleport").Destroy()
+        // Entities.FindByName(null, "knockout_teleport_1").Destroy()
+
         //Entities.FindByName(null, "@clientcommand").Destroy()
         Entities.FindByName(null, "credits").Destroy()
 
@@ -59,6 +81,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         memeplaymovie.__KeyValueFromString("fadeintime", "1")
         EntFire("container_path2", "addoutput", "OnPass credits_playmovie_p2mp:PlayLevelTransitionMovie::131")
         EntFire("container_path2", "addoutput", "OnPass credits_music_meme:playsound::131.2")
+
         memeplaymovie2 <- Entities.CreateByClassname("logic_playmovie")
         memeplaymovie2.__KeyValueFromString("targetname", "after_credits_playmovie_p2mp")
         memeplaymovie2.__KeyValueFromString("MovieFilename", "sp_ending_callback")
@@ -67,6 +90,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         memeplaymovie23 <- Entities.CreateByClassname("logic_playmovie")
         memeplaymovie23.__KeyValueFromString("targetname", "after_credits_playmovie_p2mp_loop")
         memeplaymovie23.__KeyValueFromString("MovieFilename", "menu_act05")
+
+        LoopTeleportPlayersEnding <- false
 
         EntFire("container_path2", "addoutput", "OnPass after_credits_playmovie_p2mp_loop:playmovieforallplayers::317")
 
@@ -142,6 +167,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+        // teleport all players in elevator out
+        local p = null
+        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-11266, 320, 80), 80)) {
+            p.SetOrigin(Vector(-11264, 576, 128))
+        }
         
         // CUTSCENE
         if (Entities.FindByName(null, "ending_vehicle")) {

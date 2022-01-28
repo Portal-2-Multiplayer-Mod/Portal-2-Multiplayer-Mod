@@ -234,6 +234,7 @@ function init() {
 
     // Create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
+    clientcommand.__KeyValueFromString("targetname", "p232clientcommand")
 
     // Load plugin
     if (LoadPlugin==true) {
