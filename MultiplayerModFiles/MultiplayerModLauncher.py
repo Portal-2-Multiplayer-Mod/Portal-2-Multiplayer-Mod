@@ -413,7 +413,18 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
                     break
                 else:
                     outputline = origline
-            f2.write(outputline)
+            if (iow):
+                f2.write(outputline)
+            else:
+                if (IsOnProtonIn==True):
+                    # disable plugin if ran with proton
+                    if (outputline.strip().find("UsePlugin <- true") == -1):
+                        f2.write(outputline)
+                    else:
+                        # replace true with false
+                        f2.write(outputline.replace("true", "false"))
+                else:
+                    f2.write(outputline)
         # Remove old mapspawn.nut file
         f2.close()
 
