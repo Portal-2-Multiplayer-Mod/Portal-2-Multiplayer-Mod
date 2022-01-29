@@ -166,23 +166,24 @@ while (Loop == true) do
                                             ournegx = 0
                                             ournegy = 0
                                             ournegz = 0
+                                            offsety = 0
                                             if (oursizebrush.x < 0) then
-                                                oursizebrush.x = oursizebrush.x * -1
                                                 ournegx = oursizebrush.x
+                                                oursizebrush.x = oursizebrush.x * -1
                                             end
 
                                             if (oursizebrush.y < 0) then
-                                                oursizebrush.y = oursizebrush.y * -1
                                                 ournegy = oursizebrush.y
+                                                oursizebrush.y = oursizebrush.y * -1
                                             end
 
                                             if (oursizebrush.z < 0) then
-                                                oursizebrush.z = oursizebrush.z * -1
                                                 ournegz = oursizebrush.z
+                                                oursizebrush.z = oursizebrush.z * -1
                                             end
 
                                             GenerateLine("        CustomBrush"..brushamount.."<- Entities.CreateByClassname(\"func_brush\")")
-                                            GenerateLine("        CustomBrush"..brushamount..".SetOrigin(Vector("..CurBrush:GetPos().x-oursizebrush.x..", "..CurBrush:GetPos().y-oursizebrush.y..", "..CurBrush:GetPos().z-oursizebrush.z.."))")
+                                            GenerateLine("        CustomBrush"..brushamount..".SetOrigin(Vector("..CurBrush:GetPos().x-oursizebrush.x-ournegx..", "..(CurBrush:GetPos().y-oursizebrush.y-ournegy)+offsety..", "..CurBrush:GetPos().z-oursizebrush.z-ournegz.."))")
                                             GenerateLine("        CustomBrush"..brushamount..".SetSize(Vector(0, 0 ,0), Vector("..oursizebrush.x..", "..oursizebrush.y..", "..oursizebrush.z.."))")
                                             GenerateLine("        CustomBrush"..brushamount..".__KeyValueFromInt(\"Solid\", 3)")
                                             GenerateLine("        DebugDrawBox(CustomBrush"..brushamount..".GetOrigin(), CustomBrush"..brushamount..".GetBoundingMins(), CustomBrush"..brushamount..".GetBoundingMaxs(), 0, 255, 0, 15, 9999999)")
