@@ -19,7 +19,9 @@ Loop = true
 MapName = game.GetMap()
 CachedModels = {}
 GeneratedTriggers = {}
+GeneratedBrushes = {}
 ContinueModelCache = true
+brushamount = 0
 
 LineAmount = MapName:len() + 19
 Line = ""
@@ -99,6 +101,8 @@ while (Loop == true) do
                 PropType = "prop_physics"
             end
 
+            --models/maxofs2d/hover_classic.mdl
+
             -- print out generated code
             if (PropModel~=TeleportInputNode && PropModel~=TeleportOutputNode) then
                 -- cache code
@@ -119,29 +123,85 @@ while (Loop == true) do
                 end
                 --create code
                 if (LoopAmount == 1 && prop:GetModel() ~= "models/hunter/blocks/cube025x025x025.mdl") then
-                    GenerateLine("        local " .. PropOutputName .. ' = CreateProp("' .. PropType .. '", Vector(' .. PropCords.x .. ", " .. PropCords.y .. ", " .. PropCords.z .. '), "' .. PropModel .. '", 0)')
-                    GenerateLine("        " .. PropOutputName .. ".SetAngles(" .. PropAngles.x .. ", " .. PropAngles.y .. ", " .. PropAngles.z .. ")")
-                    GenerateLine("        " .. PropOutputName .. '.__KeyValueFromString("solid", "'..PropCollisionNumber..'")')
-                    GenerateLine("        " .. PropOutputName .. '.__KeyValueFromString("targetname", "genericcustomprop")')
-                    -- if the prop is not drawed disable it
-                    if (PropEnableDraw == false) then
-                        GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "disabledraw", "", 0, null, null)')
+                    if (prop:GetModel() ~= "models/maxofs2d/hover_classic.mdl") then
+                        GenerateLine("        local " .. PropOutputName .. ' = CreateProp("' .. PropType .. '", Vector(' .. PropCords.x .. ", " .. PropCords.y .. ", " .. PropCords.z .. '), "' .. PropModel .. '", 0)')
+                        GenerateLine("        " .. PropOutputName .. ".SetAngles(" .. PropAngles.x .. ", " .. PropAngles.y .. ", " .. PropAngles.z .. ")")
+                        GenerateLine("        " .. PropOutputName .. '.__KeyValueFromString("solid", "'..PropCollisionNumber..'")')
+                        GenerateLine("        " .. PropOutputName .. '.__KeyValueFromString("targetname", "genericcustomprop")')
+                        -- if the prop is not drawed disable it
+                        if (PropEnableDraw == false) then
+                            GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "disabledraw", "", 0, null, null)')
+                        end
+                        -- if the prop has a scale then scale it
+                        if (OutputScale ~= 1) then
+                            GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "addoutput", "modelscale ' .. OutputScale * 1.1 .. '", 0, null, null)')
+                        end
+                        -- if the prop has a stored color then apply it
+                        if (PropColor ~= "255 255 255 255") then
+                            GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "color", "' .. PropColor .. '", 0, null, null)')
+                        end
+                        GenerateLine("")
                     end
-                    -- if the prop has a scale then scale it
-                    if (OutputScale ~= 1) then
-                        GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "addoutput", "modelscale ' .. OutputScale * 1.1 .. '", 0, null, null)')
+
+
+                    if (prop:GetModel() == "models/maxofs2d/hover_classic.mdl") then
+                        for inx, CurBrush in ipairs( ents.FindByModel( "models/maxofs2d/hover_classic.mdl" ) ) do
+                            ContinueGENBRUSH = true
+                            for k, Thing in ipairs(GeneratedBrushes) do
+                                if (Thing == CurBrush) then
+                                    ContinueGENBRUSH = false
+                                end
+                            end
+        
+                            if (ContinueGENBRUSH == true) then
+                                brushamount = brushamount + 1
+                                curcol = CurBrush:GetColor()
+                                for inx, CurBrush2 in ipairs( ents.FindByModel( "models/maxofs2d/hover_classic.mdl" ) ) do
+                                    if (CurBrush2 ~= CurBrush) then
+                                        if (CurBrush2:GetColor() == curcol) then
+                                            table.insert(GeneratedBrushes, CurBrush)
+                                            table.insert(GeneratedBrushes, CurBrush2)
+
+                                            oursizebrush = CurBrush:GetPos()-CurBrush2:GetPos()
+                                            ournegx = 0
+                                            ournegy = 0
+                                            ournegz = 0
+                                            if (oursizebrush.x < 0) then
+                                                oursizebrush.x = oursizebrush.x * -1
+                                                ournegx = oursizebrush.x
+                                            end
+
+                                            if (oursizebrush.y < 0) then
+                                                oursizebrush.y = oursizebrush.y * -1
+                                                ournegy = oursizebrush.y
+                                            end
+
+                                            if (oursizebrush.z < 0) then
+                                                oursizebrush.z = oursizebrush.z * -1
+                                                ournegz = oursizebrush.z
+                                            end
+
+                                            GenerateLine("        CustomBrush"..brushamount.."<- Entities.CreateByClassname(\"func_brush\")")
+                                            GenerateLine("        CustomBrush"..brushamount..".SetOrigin(Vector("..CurBrush:GetPos().x-oursizebrush.x..", "..CurBrush:GetPos().y-oursizebrush.y..", "..CurBrush:GetPos().z-oursizebrush.z.."))")
+                                            GenerateLine("        CustomBrush"..brushamount..".SetSize(Vector(0, 0 ,0), Vector("..oursizebrush.x..", "..oursizebrush.y..", "..oursizebrush.z.."))")
+                                            GenerateLine("        CustomBrush"..brushamount..".__KeyValueFromInt(\"Solid\", 3)")
+                                            GenerateLine("        DebugDrawBox(CustomBrush"..brushamount..".GetOrigin(), CustomBrush"..brushamount..".GetBoundingMins(), CustomBrush"..brushamount..".GetBoundingMaxs(), 0, 255, 0, 15, 9999999)")
+                                            --prop3:GetPos()-prop2:GetPos()) - (prop3:GetPos()-prop2:GetPos()
+                                            -- brushattempt <- Entities.CreateByClassname("func_brush")
+                                            -- brushattempt.SetOrigin(Vector(5124, 3721, -338))
+                                            -- brushattempt.SetSize(Vector(0, 0, 0), Vector(100, 100, 100))
+                                            -- brushattempt.__KeyValueFromInt("Solid", 3)
+                                            -- DebugDrawBox(brushattempt.GetOrigin(),brushattempt.GetBoundingMins(), brushattempt.GetBoundingMaxs(), 0, 255, 0, 15, 150)
+                                        end
+                                    end
+                                end
+                            end
+                        end
                     end
-                    -- if the prop has a stored color then apply it
-                    if (PropColor ~= "255 255 255 255") then
-                        GenerateLine("        " .. "EntFireByHandle(" .. PropOutputName .. ', "color", "' .. PropColor .. '", 0, null, null)')
-                    end
-                    GenerateLine("")
                 end
             end
 
             if (LoopAmount == 2) then
-
-
                 for _, prop31 in ipairs( ents.FindByClass( "prop_physics" ) ) do
                     propmodel21 = prop31:GetModel()
                     if (propmodel21==TeleportInputNode2) then
@@ -217,18 +277,39 @@ GenerateLine("}")
 
 
 TeleportInputNode2 = "models/hunter/blocks/cube025x025x025.mdl"
+TeleportInputNode36 = "models/maxofs2d/hover_classic.mdl"
 
-// Add a tick hook
+
+-- models/maxofs2d/hover_classic.mdl
+
+-- Add a tick hook
 function DrawBox()
     for _, prop3 in ipairs( ents.FindByClass( "prop_physics" ) ) do
         propmodel2 = prop3:GetModel()
-        if (propmodel2==TeleportInputNode2) then
+        if (propmodel2==TeleportInputNode36 or propmodel2==TeleportInputNode2) then
             -- create teleport node if model is a teleport node
             for k, prop2 in ipairs(ents.FindByModel(TeleportInputNode2)) do
                 if (prop2 ~= prop3) then
                     if (prop3:GetColor() == prop2:GetColor()) then
                         -- write out mixed premade code with teleport node properties
                         debugoverlay.Box( (prop3:GetPos()-prop2:GetPos()) - (prop3:GetPos()-prop2:GetPos()), prop3:GetPos(), prop2:GetPos(), 0, Color( 255, 100, 8, 20) )
+                        debugoverlay.Axis( prop3:GetPos(), prop3:GetAngles(), 40, 0, false )
+                        prop3:SetMaterial("models/wireframe")
+                        prop2:SetMaterial("models/wireframe")
+                        prop2:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
+                        prop3:SetCollisionGroup(COLLISION_GROUP_PASSABLE_DOOR)
+                        boxsize = 1
+                        debugoverlay.Box(prop2:GetPos(), Vector(boxsize * -1, boxsize * -1, boxsize * -1), Vector(boxsize, boxsize, boxsize), 0, Color( prop2:GetColor().r, prop2:GetColor().g, prop2:GetColor().b, 100) )
+                        debugoverlay.Box(prop3:GetPos(), Vector(boxsize * -1, boxsize * -1, boxsize * -1), Vector(boxsize, boxsize, boxsize), 0, Color( prop2:GetColor().r, prop2:GetColor().g, prop2:GetColor().b, 100) )
+                    end
+                end
+            end
+            -- create teleport node if model is a teleport node
+            for k, prop2 in ipairs(ents.FindByModel(TeleportInputNode36)) do
+                if (prop2 ~= prop3) then
+                    if (prop3:GetColor() == prop2:GetColor()) then
+                        -- write out mixed premade code with teleport node properties
+                        debugoverlay.Box( (prop3:GetPos()-prop2:GetPos()) - (prop3:GetPos()-prop2:GetPos()), prop3:GetPos(), prop2:GetPos(), 0, Color( 100, 255, 8, 20) )
                         debugoverlay.Axis( prop3:GetPos(), prop3:GetAngles(), 40, 0, false )
                         prop3:SetMaterial("models/wireframe")
                         prop2:SetMaterial("models/wireframe")
