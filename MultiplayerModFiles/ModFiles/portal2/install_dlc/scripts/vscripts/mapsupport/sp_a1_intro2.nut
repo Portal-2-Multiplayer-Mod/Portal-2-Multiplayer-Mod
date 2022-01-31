@@ -8,8 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun == true) {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
-        Entities.FindByName(null, "@exit_door-door_close_relay").Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(-320, 832, -24), 100).Destroy()
         Entities.FindByName(null, "Fizzle_Trigger").Destroy()
     }
 
@@ -18,10 +17,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
-        local portalgun = null
-        while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
-            portalgun.Destroy()
+        // remove portalgun
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+            ent.Destroy()
         }
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+            ent.Destroy()
+        }
+
 
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 50)) {

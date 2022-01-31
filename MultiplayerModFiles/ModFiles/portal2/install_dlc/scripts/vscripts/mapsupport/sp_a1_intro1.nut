@@ -81,18 +81,18 @@ function p232DropCollision() {
     CustomBrush12.SetOrigin(Vector(CustomBrush12.GetOrigin().x, CustomBrush12.GetOrigin().y, CustomBrush12.GetOrigin().z - dropamount))
     // EntFire("CustomBrush12", "disable")
     // EntFire("CustomBrush12", "enable", "", ceiltime)
-    DebugDrawBox(CustomBrush1.GetOrigin(), CustomBrush1.GetBoundingMins(), CustomBrush1.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush2.GetOrigin(), CustomBrush2.GetBoundingMins(), CustomBrush2.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush3.GetOrigin(), CustomBrush3.GetBoundingMins(), CustomBrush3.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush4.GetOrigin(), CustomBrush4.GetBoundingMins(), CustomBrush4.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush5.GetOrigin(), CustomBrush5.GetBoundingMins(), CustomBrush5.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush6.GetOrigin(), CustomBrush6.GetBoundingMins(), CustomBrush6.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush7.GetOrigin(), CustomBrush7.GetBoundingMins(), CustomBrush7.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush8.GetOrigin(), CustomBrush8.GetBoundingMins(), CustomBrush8.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush9.GetOrigin(), CustomBrush9.GetBoundingMins(), CustomBrush9.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush10.GetOrigin(), CustomBrush10.GetBoundingMins(), CustomBrush10.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush11.GetOrigin(), CustomBrush11.GetBoundingMins(), CustomBrush11.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    DebugDrawBox(CustomBrush12.GetOrigin(), CustomBrush12.GetBoundingMins(), CustomBrush12.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush1.GetOrigin(), CustomBrush1.GetBoundingMins(), CustomBrush1.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush2.GetOrigin(), CustomBrush2.GetBoundingMins(), CustomBrush2.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush3.GetOrigin(), CustomBrush3.GetBoundingMins(), CustomBrush3.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush4.GetOrigin(), CustomBrush4.GetBoundingMins(), CustomBrush4.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush5.GetOrigin(), CustomBrush5.GetBoundingMins(), CustomBrush5.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush6.GetOrigin(), CustomBrush6.GetBoundingMins(), CustomBrush6.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush7.GetOrigin(), CustomBrush7.GetBoundingMins(), CustomBrush7.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush8.GetOrigin(), CustomBrush8.GetBoundingMins(), CustomBrush8.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush9.GetOrigin(), CustomBrush9.GetBoundingMins(), CustomBrush9.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush10.GetOrigin(), CustomBrush10.GetBoundingMins(), CustomBrush10.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush11.GetOrigin(), CustomBrush11.GetBoundingMins(), CustomBrush11.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(CustomBrush12.GetOrigin(), CustomBrush12.GetBoundingMins(), CustomBrush12.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
 }
 
 containerStick <- false
@@ -159,7 +159,7 @@ function StopStickAndTeleport() {
     EntFire("CustomBrush11", "disable", "", 0)
     EntFire("CustomBrush12", "disable", "", 0)
 
-    EntFire("CustomBrush1", "kill", "", 0)
+    //EntFire("CustomBrush1", "kill", "", 0)
     EntFire("CustomBrush2", "kill", "", 0)
     EntFire("CustomBrush3", "kill", "", 0)
     EntFire("CustomBrush4", "kill", "", 0)
@@ -191,11 +191,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun==true) {
         CustomBrush1 <- false
         CustomBrush1Cache <- false
+
+        Entities.FindByName(null, "open_portal_relay").__KeyValueFromString("targetname", "p232portalrelay")
+        Entities.FindByName(null, "portal_red_0_deactivate_rl").Destroy()
+        Entities.FindByName(null, "portal_blue_0_deactivate_rl").Destroy()
+
         EntFire("return_to_bed_button", "addoutput", "OnPressed p232servercommand:command:script p232DestroyedSequence():5")
         EntFire("@rl_container_ride", "addoutput", "OnTrigger p232servercommand:command:script p232DropCollision():0.5")
         EntFire("@rl_container_ride_second_section", "addoutput", "OnTrigger p232servercommand:command:script p232ParentAndStartMath()")
         EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p232servercommand:command:script StopStickAndTeleport()")
+        EntFire("enter_chamber_trigger", "addoutput", "OnTrigger p232portalrelay:Trigger::34")
         //@rl_container_ride
+        EntFire("@container_stacks_2", "disabledraw", "", 0.1)
         Entities.FindByName(null, "@knockout_teleport_1").Destroy()
         bumpout <- true
         //door_hud_hint_trigger
@@ -211,7 +218,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush1.SetSize(Vector(0, 0 ,0), Vector(71.01123046875, 136.28967285156, 51.549301147461))
         CustomBrush1.__KeyValueFromInt("Solid", 3)
         CustomBrush1.__KeyValueFromString("targetname", "CustomBrush1")
-        DebugDrawBox(CustomBrush1.GetOrigin(), CustomBrush1.GetBoundingMins(), CustomBrush1.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush1.GetOrigin(), CustomBrush1.GetBoundingMins(), CustomBrush1.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush2
         CustomBrush2 <- Entities.CreateByClassname("func_brush")
@@ -219,7 +226,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush2.SetSize(Vector(0, 0 ,0), Vector(550.02978515625, 266.28076171875, 48.8125))
         CustomBrush2.__KeyValueFromInt("Solid", 3)
         CustomBrush2.__KeyValueFromString("targetname", "CustomBrush2")
-        DebugDrawBox(CustomBrush2.GetOrigin(), CustomBrush2.GetBoundingMins(), CustomBrush2.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush2.GetOrigin(), CustomBrush2.GetBoundingMins(), CustomBrush2.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush3
         CustomBrush3 <- Entities.CreateByClassname("func_brush")
@@ -227,7 +234,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush3.SetSize(Vector(0, 0 ,0), Vector(491.03125, 50.630981445312, 153.08879089355))
         CustomBrush3.__KeyValueFromInt("Solid", 3)
         CustomBrush3.__KeyValueFromString("targetname", "CustomBrush3")
-        DebugDrawBox(CustomBrush3.GetOrigin(), CustomBrush3.GetBoundingMins(), CustomBrush3.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush3.GetOrigin(), CustomBrush3.GetBoundingMins(), CustomBrush3.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush4
         CustomBrush4 <- Entities.CreateByClassname("func_brush")
@@ -235,7 +242,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush4.SetSize(Vector(0, 0 ,0), Vector(542.7041015625, 239.28088378906, 70.41552734375))
         CustomBrush4.__KeyValueFromInt("Solid", 3)
         CustomBrush4.__KeyValueFromString("targetname", "CustomBrush4")
-        DebugDrawBox(CustomBrush4.GetOrigin(), CustomBrush4.GetBoundingMins(), CustomBrush4.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush4.GetOrigin(), CustomBrush4.GetBoundingMins(), CustomBrush4.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush5
         CustomBrush5 <- Entities.CreateByClassname("func_brush")
@@ -243,7 +250,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush5.SetSize(Vector(0, 0 ,0), Vector(126.4052734375, 141, 185.86248779297))
         CustomBrush5.__KeyValueFromInt("Solid", 3)
         CustomBrush5.__KeyValueFromString("targetname", "CustomBrush5")
-        DebugDrawBox(CustomBrush5.GetOrigin(), CustomBrush5.GetBoundingMins(), CustomBrush5.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush5.GetOrigin(), CustomBrush5.GetBoundingMins(), CustomBrush5.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush6
         CustomBrush6 <- Entities.CreateByClassname("func_brush")
@@ -252,15 +259,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush6.__KeyValueFromInt("Solid", 3)
         CustomBrush6.__KeyValueFromString("targetname", "CustomBrush6")
         CustomBrush6 <- Entities.FindByName(null, "CustomBrush6")
-        DebugDrawBox(CustomBrush6.GetOrigin(), CustomBrush6.GetBoundingMins(), CustomBrush6.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush6.GetOrigin(), CustomBrush6.GetBoundingMins(), CustomBrush6.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush7
         CustomBrush7 <- Entities.CreateByClassname("func_brush")
-        CustomBrush7.SetOrigin(Vector(-5790.7231445312, 1968.4986572266, 196.52439880371))
+        CustomBrush7.SetOrigin(Vector(-5790.7231445312, 1972.4986572266, 196.52439880371))
         CustomBrush7.SetSize(Vector(0, 0 ,0), Vector(108, 53.184814453125, 101.9672088623))
         CustomBrush7.__KeyValueFromInt("Solid", 3)
         CustomBrush7.__KeyValueFromString("targetname", "CustomBrush7")
-        DebugDrawBox(CustomBrush7.GetOrigin(), CustomBrush7.GetBoundingMins(), CustomBrush7.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush7.GetOrigin(), CustomBrush7.GetBoundingMins(), CustomBrush7.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush8
         CustomBrush8 <- Entities.CreateByClassname("func_brush")
@@ -268,7 +275,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush8.SetSize(Vector(0, 0 ,0), Vector(49.1484375, 259.24450683594, 192.57360839844))
         CustomBrush8.__KeyValueFromInt("Solid", 3)
         CustomBrush8.__KeyValueFromString("targetname", "CustomBrush8")
-        DebugDrawBox(CustomBrush8.GetOrigin(), CustomBrush8.GetBoundingMins(), CustomBrush8.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush8.GetOrigin(), CustomBrush8.GetBoundingMins(), CustomBrush8.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush9
         CustomBrush9 <- Entities.CreateByClassname("func_brush")
@@ -276,7 +283,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush9.SetSize(Vector(0, 0 ,0), Vector(74.576171875, 91.832641601562, 55.819595336914))
         CustomBrush9.__KeyValueFromInt("Solid", 3)
         CustomBrush9.__KeyValueFromString("targetname", "CustomBrush9")
-        DebugDrawBox(CustomBrush9.GetOrigin(), CustomBrush9.GetBoundingMins(), CustomBrush9.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush9.GetOrigin(), CustomBrush9.GetBoundingMins(), CustomBrush9.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush10
         CustomBrush10 <- Entities.CreateByClassname("func_brush")
@@ -284,7 +291,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush10.SetSize(Vector(0, 0 ,0), Vector(100.14599609375, 89.349365234375, 94.880722045898))
         CustomBrush10.__KeyValueFromInt("Solid", 3)
         CustomBrush10.__KeyValueFromString("targetname", "CustomBrush10")
-        DebugDrawBox(CustomBrush10.GetOrigin(), CustomBrush10.GetBoundingMins(), CustomBrush10.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush10.GetOrigin(), CustomBrush10.GetBoundingMins(), CustomBrush10.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush11
         CustomBrush11 <- Entities.CreateByClassname("func_brush")
@@ -292,7 +299,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush11.SetSize(Vector(0, 0 ,0), Vector(64.3701171875, 257.22619628906, 168.0611114502))
         CustomBrush11.__KeyValueFromInt("Solid", 3)
         CustomBrush11.__KeyValueFromString("targetname", "CustomBrush11")
-        DebugDrawBox(CustomBrush11.GetOrigin(), CustomBrush11.GetBoundingMins(), CustomBrush11.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush11.GetOrigin(), CustomBrush11.GetBoundingMins(), CustomBrush11.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         // CustomBrush12
         CustomBrush12 <- Entities.CreateByClassname("func_brush")
@@ -300,7 +307,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush12.SetSize(Vector(0, 0 ,0), Vector(154.63916015625, 102.44201660156, 181.24530029297))
         CustomBrush12.__KeyValueFromInt("Solid", 3)
         CustomBrush12.__KeyValueFromString("targetname", "CustomBrush12")
-        DebugDrawBox(CustomBrush12.GetOrigin(), CustomBrush12.GetBoundingMins(), CustomBrush12.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        //DebugDrawBox(CustomBrush12.GetOrigin(), CustomBrush12.GetBoundingMins(), CustomBrush12.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
 
         // TABLE
@@ -344,6 +351,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+        // remove portalgun
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+            ent.Destroy()
+        }
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+            ent.Destroy()
+        }
 
         //;
         // Make our own changelevel trigger
@@ -420,6 +436,38 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 // -2956 -163 -180
                 p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
             }
+
+            // if someone is outside the container, move them back in
+            local playersinside = []
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x, currentCartPos.y + 150, currentCartPos.z + 75), 300)) {
+                playersinside.push(p)
+            }
+
+            // if someone is stuck in the closet wakka wakka
+            // script p.SetOrigin(Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30))
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30), 82)) {
+                p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
+            }
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 172, currentCartPos.y + 80, currentCartPos.z + 30), 90)) {
+                p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
+            }
+
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                local isplayerinindex = false
+                foreach (player in playersinside) {
+                    if (p == player) {
+                        isplayerinindex = true
+                    }
+                }
+                if (isplayerinindex == false) {
+                    p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
+                }
+            }
+
 
             offsettick <- CustomBrush1.GetOrigin() - CustomBrush1Cache 
             cartrotoffset <- 100

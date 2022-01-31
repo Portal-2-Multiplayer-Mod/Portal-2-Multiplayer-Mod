@@ -1309,7 +1309,7 @@ function PostMapLoad() {
     // Edit Cvars
     SendToConsole("mp_allowspectators 0")
     // Force spawn players in map
-    AddBranchLevelName( 1, "" )
+    AddBranchLevelName( 1, "P2 32" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
     // Enable fast download
