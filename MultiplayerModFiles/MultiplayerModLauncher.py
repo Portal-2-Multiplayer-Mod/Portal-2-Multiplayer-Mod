@@ -353,15 +353,15 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
             print("Copied MultiplayerModMount/install_dlc to " + dlcname)
         else:
             shutil.copytree(owd + "\\MultiplayerModFiles\\ModFiles\\portal2\\install_dlc", owd + dlcname)
-            print("Copied MultiplayerModFiles/ModFiles/install_dlc to " + dlcname + "DEVELOPER MODE")
+            print("Copied MultiplayerModFiles/ModFiles/install_dlc to " + dlcname + " DEVELOPER MODE")
     else:
         if (FindInConfig("Developer")=="off"):
             shutil.copytree(owd + "/MultiplayerModMount/install_dlc", owd + dlcname)
             print("Copied MultiplayerModMount/install_dlc to " + dlcname)
         else:
+            print()
             shutil.copytree(owd + "/MultiplayerModFiles/ModFiles/portal2/install_dlc", owd + dlcname)
-            print("Copied MultiplayerModFiles/ModFiles/install_dlc to " + dlcname + "DEVELOPER MODE")
-    print("Copied \MultiplayerModMount to " + dlcname)
+            print("Copied" + owd + "/MultiplayerModFiles/ModFiles/portal2/install_dlc to " + dlcname + " DEVELOPER MODE")
 
     # Edit mapspawn file in the new dlc
     if (iow):
