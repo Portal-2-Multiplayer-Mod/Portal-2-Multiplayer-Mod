@@ -5,17 +5,178 @@
 // ██║ ╚═╝ ██║██║  ██║██║     ██║ ╚███║██║  ██║██║ ╚═╝ ██║███████╗
 // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
 
+HasSleptInContainer1 <- false
+function p232DestroyedSequence() {
+    printl("p232DestroyedSequence")
+    HasSleptInContainer1 = true
+}
+
+CurrentTeleportOffset <- 0
+DisableJumpmsp <- false
+function p232DropCollision() {
+    DisableJumpmsp = true
+    EntFire("p232servercommand", "command", "script DisableJumpmsp = false", 3)
+    printl("dropping container collision!")
+    local dropamount = 50
+    local ceiltime = 2.6
+
+    local CustomBrush1 = Entities.FindByName(null, "CustomBrush1")
+    local CustomBrush2 = Entities.FindByName(null, "CustomBrush2")
+    local CustomBrush3 = Entities.FindByName(null, "CustomBrush3")
+    local CustomBrush4 = Entities.FindByName(null, "CustomBrush4")
+    local CustomBrush5 = Entities.FindByName(null, "CustomBrush5")
+    local CustomBrush6 = Entities.FindByName(null, "CustomBrush6")
+    local CustomBrush7 = Entities.FindByName(null, "CustomBrush7")
+    local CustomBrush8 = Entities.FindByName(null, "CustomBrush8")
+    local CustomBrush9 = Entities.FindByName(null, "CustomBrush9")
+    local CustomBrush10 = Entities.FindByName(null, "CustomBrush10")
+    local CustomBrush11 = Entities.FindByName(null, "CustomBrush11")
+    local CustomBrush12 = Entities.FindByName(null, "CustomBrush12")
+
+    // CustomBrush1
+    CustomBrush1.SetOrigin(Vector(CustomBrush1.GetOrigin().x, CustomBrush1.GetOrigin().y, CustomBrush1.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush1", "disable")
+    // EntFire("CustomBrush1", "enable", "", ceiltime)
+    // CustomBrush2
+    CustomBrush2.SetOrigin(Vector(CustomBrush2.GetOrigin().x, CustomBrush2.GetOrigin().y, CustomBrush2.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush2", "disable")
+    // EntFire("CustomBrush2", "enable", "", ceiltime)
+    // CustomBrush3
+    CustomBrush3.SetOrigin(Vector(CustomBrush3.GetOrigin().x, CustomBrush3.GetOrigin().y, CustomBrush3.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush3", "disable")
+    // EntFire("CustomBrush3", "enable", "", ceiltime)
+    // CustomBrush4
+    CustomBrush4.SetOrigin(Vector(CustomBrush4.GetOrigin().x, CustomBrush4.GetOrigin().y, CustomBrush4.GetOrigin().z - dropamount))
+    EntFire("CustomBrush4", "disable")
+    EntFire("CustomBrush4", "enable", "", ceiltime)
+    // CustomBrush5
+    CustomBrush5.SetOrigin(Vector(CustomBrush5.GetOrigin().x, CustomBrush5.GetOrigin().y, CustomBrush5.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush5", "disable")
+    // EntFire("CustomBrush5", "enable", "", ceiltime)
+    // CustomBrush6
+    CustomBrush6.SetOrigin(Vector(CustomBrush6.GetOrigin().x, CustomBrush6.GetOrigin().y, CustomBrush6.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush6", "disable")
+    // EntFire("CustomBrush6", "enable", "", ceiltime)
+    // CustomBrush7
+    CustomBrush7.SetOrigin(Vector(CustomBrush7.GetOrigin().x, CustomBrush7.GetOrigin().y, CustomBrush7.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush7", "disable")
+    // EntFire("CustomBrush7", "enable", "", ceiltime)
+    // CustomBrush8
+    CustomBrush8.SetOrigin(Vector(CustomBrush8.GetOrigin().x, CustomBrush8.GetOrigin().y, CustomBrush8.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush8", "disable")
+    // EntFire("CustomBrush8", "enable", "", ceiltime)
+    // CustomBrush9
+    CustomBrush9.SetOrigin(Vector(CustomBrush9.GetOrigin().x, CustomBrush9.GetOrigin().y, CustomBrush9.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush9", "disable")
+    // EntFire("CustomBrush9", "enable", "", ceiltime)
+    // CustomBrush10
+    CustomBrush10.SetOrigin(Vector(CustomBrush10.GetOrigin().x, CustomBrush10.GetOrigin().y, CustomBrush10.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush10", "disable")
+    // EntFire("CustomBrush10", "enable", "", ceiltime)
+    // CustomBrush11
+    CustomBrush11.SetOrigin(Vector(CustomBrush11.GetOrigin().x, CustomBrush11.GetOrigin().y, CustomBrush11.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush11", "disable")
+    // EntFire("CustomBrush11", "enable", "", ceiltime)
+    // CustomBrush12
+    CustomBrush12.SetOrigin(Vector(CustomBrush12.GetOrigin().x, CustomBrush12.GetOrigin().y, CustomBrush12.GetOrigin().z - dropamount))
+    // EntFire("CustomBrush12", "disable")
+    // EntFire("CustomBrush12", "enable", "", ceiltime)
+    DebugDrawBox(CustomBrush1.GetOrigin(), CustomBrush1.GetBoundingMins(), CustomBrush1.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush2.GetOrigin(), CustomBrush2.GetBoundingMins(), CustomBrush2.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush3.GetOrigin(), CustomBrush3.GetBoundingMins(), CustomBrush3.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush4.GetOrigin(), CustomBrush4.GetBoundingMins(), CustomBrush4.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush5.GetOrigin(), CustomBrush5.GetBoundingMins(), CustomBrush5.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush6.GetOrigin(), CustomBrush6.GetBoundingMins(), CustomBrush6.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush7.GetOrigin(), CustomBrush7.GetBoundingMins(), CustomBrush7.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush8.GetOrigin(), CustomBrush8.GetBoundingMins(), CustomBrush8.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush9.GetOrigin(), CustomBrush9.GetBoundingMins(), CustomBrush9.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush10.GetOrigin(), CustomBrush10.GetBoundingMins(), CustomBrush10.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush11.GetOrigin(), CustomBrush11.GetBoundingMins(), CustomBrush11.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    DebugDrawBox(CustomBrush12.GetOrigin(), CustomBrush12.GetBoundingMins(), CustomBrush12.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+}
+
+containerStick <- false
+function p232ParentAndStartMath() {
+    DisableJumpmsp = true
+    // TABLE
+        // CustomBrush7.__KeyValueFromInt("Solid", 0)
+        // CEILING
+        // CustomBrush4.__KeyValueFromInt("Solid", 0)
+        // FLOOR
+        // CustomBrush2.__KeyValueFromInt("Solid", 0)
+        // PLANT
+        // CustomBrush9.__KeyValueFromInt("Solid", 0)
+        // CHAIR
+        // CustomBrush10.__KeyValueFromInt("Solid", 0)
+        // BED
+        // CustomBrush1.__KeyValueFromInt("Solid", 0)
+        EntFire("CustomBrush1", "disable", "", 0)
+        EntFire("CustomBrush2", "disable", "", 0)
+        EntFire("CustomBrush4", "disable", "", 0)
+        EntFire("CustomBrush7", "disable", "", 0)
+        EntFire("CustomBrush9", "disable", "", 0)
+        EntFire("CustomBrush10", "disable", "", 0)
+
+        EntFire("CustomBrush1", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush1", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush2", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush2", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush3", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush3", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush4", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush4", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush5", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush5", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush6", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush6", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush7", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush7", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush8", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush8", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush9", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush9", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush10", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush10", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush11", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush11", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("CustomBrush12", "SetParent", "Actor_container_master", 0)
+        EntFire("CustomBrush12", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+    containerStick = true
+}
+
+SecondToLastTP <- false
+function StopStickAndTeleport() {
+    containerStick = false
+    SecondToLastTP = true
+    DisableJumpmsp = false
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        p.SetOrigin(Vector(-1649, 4376, 3125))
+        p.SetVelocity(Vector(80, 0, 0))
+    }
+}
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
         CustomBrush1 <- false
         CustomBrush1Cache <- false
+        EntFire("return_to_bed_button", "addoutput", "OnPressed p232servercommand:command:script p232DestroyedSequence():5")
+        EntFire("@rl_container_ride", "addoutput", "OnTrigger p232servercommand:command:script p232DropCollision():0.5")
+        EntFire("@rl_container_ride_second_section", "addoutput", "OnTrigger p232servercommand:command:script p232ParentAndStartMath()")
+        EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p232servercommand:command:script StopStickAndTeleport()")
+        //@rl_container_ride
+        Entities.FindByName(null, "@knockout_teleport_1").Destroy()
+        bumpout <- true
+        //door_hud_hint_trigger
+        Entities.FindByName(null, "door_hud_hint_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().x, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().y + 500, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().z))
+        Entities.FindByName(null, "door_open_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_open_trigger").GetOrigin().x, Entities.FindByName(null, "door_open_trigger").GetOrigin().y + 500, Entities.FindByName(null, "door_open_trigger").GetOrigin().z))
     }
 
     if (MSPostPlayerSpawn==true) {
         // CustomBrush1
         CustomBrush1 <- Entities.CreateByClassname("func_brush")
-        CustomBrush1.SetOrigin(Vector(-5746.623046875, 1778.7027587891, 194.95379638672))
-        CustomBrush1.SetSize(Vector(0, 0 ,0), Vector(87.01123046875, 136.28967285156, 51.549301147461))
+        CustomBrush1.SetOrigin(Vector(-5738.623046875, 1778.7027587891, 194.95379638672))
+        CustomBrush1.SetSize(Vector(0, 0 ,0), Vector(71.01123046875, 136.28967285156, 51.549301147461))
         CustomBrush1.__KeyValueFromInt("Solid", 3)
         CustomBrush1.__KeyValueFromString("targetname", "CustomBrush1")
         DebugDrawBox(CustomBrush1.GetOrigin(), CustomBrush1.GetBoundingMins(), CustomBrush1.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
@@ -47,7 +208,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // CustomBrush5
         CustomBrush5 <- Entities.CreateByClassname("func_brush")
         CustomBrush5.SetOrigin(Vector(-5973.0200195312, 1791.1186523438, 193.61361694336))
-        CustomBrush5.SetSize(Vector(0, 0 ,0), Vector(126.4052734375, 149.34594726562, 185.86248779297))
+        CustomBrush5.SetSize(Vector(0, 0 ,0), Vector(126.4052734375, 141, 185.86248779297))
         CustomBrush5.__KeyValueFromInt("Solid", 3)
         CustomBrush5.__KeyValueFromString("targetname", "CustomBrush5")
         DebugDrawBox(CustomBrush5.GetOrigin(), CustomBrush5.GetBoundingMins(), CustomBrush5.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
@@ -63,8 +224,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // CustomBrush7
         CustomBrush7 <- Entities.CreateByClassname("func_brush")
-        CustomBrush7.SetOrigin(Vector(-5801.7231445312, 1968.4986572266, 196.52439880371))
-        CustomBrush7.SetSize(Vector(0, 0 ,0), Vector(125.62890625, 53.184814453125, 101.9672088623))
+        CustomBrush7.SetOrigin(Vector(-5790.7231445312, 1968.4986572266, 196.52439880371))
+        CustomBrush7.SetSize(Vector(0, 0 ,0), Vector(108, 53.184814453125, 101.9672088623))
         CustomBrush7.__KeyValueFromInt("Solid", 3)
         CustomBrush7.__KeyValueFromString("targetname", "CustomBrush7")
         DebugDrawBox(CustomBrush7.GetOrigin(), CustomBrush7.GetBoundingMins(), CustomBrush7.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
@@ -110,47 +271,115 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         DebugDrawBox(CustomBrush12.GetOrigin(), CustomBrush12.GetBoundingMins(), CustomBrush12.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
 
-        CustomBrush7.__KeyValueFromInt("Solid", 0)
-        CustomBrush4.__KeyValueFromInt("Solid", 0)
-        CustomBrush2.__KeyValueFromInt("Solid", 0)
-        CustomBrush9.__KeyValueFromInt("Solid", 0)
-        CustomBrush10.__KeyValueFromInt("Solid", 0)
-        CustomBrush1.__KeyValueFromInt("Solid", 0)
+        // TABLE
+        // CustomBrush7.__KeyValueFromInt("Solid", 0)
+        // CEILING
+        // CustomBrush4.__KeyValueFromInt("Solid", 0)
+        // FLOOR
+        // CustomBrush2.__KeyValueFromInt("Solid", 0)
+        // PLANT
+        // CustomBrush9.__KeyValueFromInt("Solid", 0)
+        // CHAIR
+        // CustomBrush10.__KeyValueFromInt("Solid", 0)
+        // BED
+        // CustomBrush1.__KeyValueFromInt("Solid", 0)
 
 
-        EntFire("CustomBrush1", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush1", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush2", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush2", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush3", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush3", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush4", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush4", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush5", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush5", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush6", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush6", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush7", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush7", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush8", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush8", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush9", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush9", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush10", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush10", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush11", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush11", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush12", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush12", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush1", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush1", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush2", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush2", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush3", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush3", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush4", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush4", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush5", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush5", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush6", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush6", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush7", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush7", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush8", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush8", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush9", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush9", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush10", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush10", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush11", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush11", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("CustomBrush12", "SetParent", "Actor_container_master", 0)
+        // EntFire("CustomBrush12", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
     }
 
     if (MSLoop==true) {
-        if (CustomBrush1 != false) {
+        try {
+            local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "bottom_swivel_1").GetOrigin(), 10000)
+            EntFireByHandle(Entities.FindByName(null, "bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+        } catch(exception) { }
+
+        if (DisableJumpmsp == true) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (p.GetVelocity().z > 0) {
+                    p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, p.GetVelocity().z / -1))
+                }
+            }
+        }
+
+        if (HasSleptInContainer1==true && containerStick == false && SecondToLastTP == false) {
+            // find everyone within 400 units of the container ( -8656.179688 1768.031250 104.196503 )
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+                //p.SetOrigin(Vector(-5700, 1931, 284))
+                // -8622 1768 92
+                // -2956 -163 -180
+                p.SetOrigin(Vector(p.GetOrigin().x+ 2925, p.GetOrigin().y + 166, (p.GetOrigin().z + 190) - CurrentTeleportOffset))
+            }
+            //  -5559.827637 1843.053467 282.763519;
+            if (bumpout==true) {
+                // bump plant
+                local p = null
+                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5556.693848, 1838.821411, 280.240265), 35)) {
+                    p.SetOrigin(Vector(-5556.693848, 1838.821411, 270))
+                    printl("Bumped out")
+                }
+                // // bump table
+                // local p = null
+                // while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5811.007813 1989.968750 282.031250), 35)) {
+                //     p.SetOrigin(Vector(-5825.083008, 1979.134399, 270))
+                //     printl("Bumped out")
+                // }
+
+                //-5811.007813 1989.968750 282.031250;
+                bumpout <- false
+            }
+        }
+
+        if (SecondToLastTP == true) {
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+                //p.SetOrigin(Vector(-5700, 1931, 284))
+                // -8622 1768 92
+                // -2956 -163 -180
+                p.SetOrigin(Vector(-1649, 4376, 3167))
+            }
+        }
+
+        if (containerStick == true) {
             if (CustomBrush1Cache == false) {
                 CustomBrush1Cache <- CustomBrush1.GetOrigin()
             }
             currentCartPos <- CustomBrush1.GetOrigin()
             currentCartRot <- CustomBrush1.GetAngles()
+
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+                //p.SetOrigin(Vector(-5700, 1931, 284))
+                // -8622 1768 92
+                // -2956 -163 -180
+                p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
+            }
+
             offsettick <- CustomBrush1.GetOrigin() - CustomBrush1Cache 
             cartrotoffset <- 100
             rotval <- 2
@@ -167,7 +396,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 printl(planeroll)
                 playermiddle <- p.GetOrigin() - CustomBrush1.GetOrigin()
                 playermiddle <- Vector(((playermiddle.x / -1)/cartrotoffset)*planepitch, ((playermiddle.y)/cartrotoffset1)*planeroll, playermiddle.z)
-                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, CustomBrush1.GetOrigin().z + ((playermiddle.x + playermiddle.y) + 22)))
+                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, CustomBrush1.GetOrigin().z + ((playermiddle.x + playermiddle.y) + 72)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
                 printl(playermiddle)
             }
