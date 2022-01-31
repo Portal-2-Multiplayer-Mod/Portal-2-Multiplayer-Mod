@@ -39,7 +39,6 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
-                SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
         }
@@ -64,7 +63,6 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
-                SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
         }
@@ -89,7 +87,6 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
-                SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
         }
@@ -114,7 +111,6 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {
-                SendToConsole("commentary 1")
                 SendToConsole("changelevel LEVELNAME")
             }
         }
@@ -130,7 +126,6 @@ Entities.FindByClassnameNearest("CLASS", Vector(1, 2, 3), 1).Destroy()
 // Changelevel trigger
 local p = null
 while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
-    SendToConsole("commentary 1")
     SendToConsole("changelevel LEVELNAME")
 }
 

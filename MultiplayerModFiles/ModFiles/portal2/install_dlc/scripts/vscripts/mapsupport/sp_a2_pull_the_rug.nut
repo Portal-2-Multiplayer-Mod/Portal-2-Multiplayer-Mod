@@ -24,7 +24,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(64, 1311, -200), 50)) {
-            SendToConsole("commentary 1")
+             
             SendToConsole("changelevel sp_a2_column_blocker")
         }
     }

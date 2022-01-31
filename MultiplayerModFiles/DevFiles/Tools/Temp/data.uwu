@@ -21,7 +21,7 @@
 
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a1_intro3")
             }
 
@@ -59,7 +59,7 @@
         if (MSLoop==true) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 50)) {
-            SendToConsole("commentary 1")
+             
             SendToConsole("changelevel sp_a1_intro4")
             }
 
@@ -121,7 +121,7 @@
             }
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2151, -527, -499), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a1_intro5")
             }
         }
@@ -146,7 +146,7 @@
             } catch(exception) {}
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-67, 1319, -102), 60)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a1_intro6")
             }
         }
@@ -178,7 +178,7 @@
             } catch(exception) {}
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(3015, -174, -125), 60)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a1_intro7")
             }
         }
@@ -383,7 +383,7 @@
 
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2207, 384, 1280), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a1_wakeup")
             }
         }
@@ -606,7 +606,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(6144, 3456, 904), 120)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_intro")
             }
         }
@@ -673,7 +673,7 @@
 
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-736, 1594, -11038), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_laser_intro")
             }
 
@@ -726,7 +726,7 @@
         if (MSLoop==true) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1224, 8, -590), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_laser_stairs")
             }
         }
@@ -748,7 +748,7 @@
         if (MSLoop==true) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(148, 1126, -396), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_dual_lasers")
             }
         }
@@ -774,7 +774,7 @@
 
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1063, 210, 277), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_laser_over_goo")
             }
         }
@@ -798,7 +798,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_catapult_intro")
             }
 
@@ -824,7 +824,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-80, -2106, -805), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_trust_fling")
             }
 
@@ -849,7 +849,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1151, 2087, -319), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_pit_flings")
             }
 
@@ -884,7 +884,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-893, 1223, -362), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_fizzler_intro")
             }
 
@@ -910,7 +910,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1351, -71, -503), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_sphere_peek")
             }
 
@@ -956,7 +956,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-544, 573, 154), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_ricochet")
             }
         }
@@ -980,7 +980,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(4478, 1158, -774), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_bridge_intro")
             }
         }
@@ -1008,7 +1008,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(0, 1255, -297), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_bridge_the_gap")
             }
         }
@@ -1043,7 +1043,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(321, 1374, 561), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_turret_intro")
             }
         }
@@ -1101,7 +1101,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-452, 196, -292), 200)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_laser_relays")
             }
         }
@@ -1186,7 +1186,7 @@
                 while (p = Entities.FindByClassname(p, "player")) {
                     EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 0.25", 0, p, p)
                 }
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_turret_blocker")
             }
         }
@@ -1212,7 +1212,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -265), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_laser_vs_turret")
             }
         }
@@ -1236,7 +1236,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1075, 382, -8), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_pull_the_rug")
             }
 
@@ -1264,7 +1264,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(64, 1311, -200), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_column_blocker")
             }
         }
@@ -1352,7 +1352,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1469, 265, -2870), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_laser_chaining")
             }
         }
@@ -1376,7 +1376,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1500, 352, -13), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_triple_laser")
             }
         }
@@ -1401,7 +1401,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -273), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_bts1")
             }
 
@@ -1493,7 +1493,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1253.4089355469, -1319.4395751953, -320.2317199707), 104.79999542236)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_bts2")
             }
         }
@@ -1644,7 +1644,7 @@
                         }
 
                         if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
-                            SendToConsole("commentary 1")
+                             
                             SendToConsole("changelevel sp_a2_bts2")
                         }
                     }
@@ -1663,7 +1663,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 150)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_bts3")
             }
 
@@ -1714,7 +1714,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(5952, 4624, -1736), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_bts4")
             }
         }
@@ -1838,7 +1838,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-4080, -7232, 6328), 64)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_bts5")
             }
         }
@@ -2097,7 +2097,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(6016, 4496, -448), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_03")
             }
         }
@@ -2136,7 +2136,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3631, 1284, -2100), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_jump_intro")
             }
         }
@@ -2170,7 +2170,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-668, 2080, 2314), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_bomb_flings")
             }
         }
@@ -2193,7 +2193,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-256, 1570, 1288), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_crazy_box")
             }
         }
@@ -2223,7 +2223,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_transition01")
             }
         }
@@ -2261,7 +2261,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2048, -130, -3750), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_speed_ramp")
             }
         }
@@ -2285,7 +2285,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_speed_flings")
             }
         }
@@ -2309,7 +2309,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(396, 1152, 656), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_portal_intro")
             }
         }
@@ -2354,7 +2354,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(3839.99, 348.8, 5674.67), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a3_end")
             }
         }
@@ -2402,7 +2402,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1540, -830, 3840), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_intro")
             }
         }
@@ -2451,7 +2451,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(3136, -128, 914), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_tb_intro")
             }
         }
@@ -2476,7 +2476,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2784, 736, 432), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_tb_trust_drop")
             }
         }
@@ -2504,7 +2504,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1120, 448, 1328), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_tb_wall_button")
             }
         }
@@ -2530,7 +2530,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1280, 960, 528), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_tb_polarity")
             }
         }
@@ -2556,7 +2556,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-128, -704, 656), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_tb_catch")
             }
         }
@@ -2587,7 +2587,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1440, 896, 688), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_stop_the_box")
             }
         }
@@ -2612,7 +2612,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(896, -800, 1296), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_laser_catapult")
             }
         }
@@ -2637,7 +2637,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1248, -512, 912), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_laser_platform")
             }
         }
@@ -2662,7 +2662,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(3456, -1056, -2648), 200)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_speed_tb_catch")
             }
         }
@@ -2692,7 +2692,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2240, -208, 400), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_jump_polarity")
             }
         }
@@ -2724,7 +2724,7 @@
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(2560, -3072, 768), 50)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_finale1")
             }
         }
@@ -2751,7 +2751,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-12832, -3040, -112), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_finale2")
             }
         }
@@ -2793,7 +2793,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3152, -1928, -240), 100)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_finale3")
             }
         }
@@ -2843,7 +2843,7 @@
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-616, 5376, 720), 200)) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a4_finale4")
             }
         }

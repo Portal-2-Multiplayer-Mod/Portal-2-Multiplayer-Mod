@@ -18,7 +18,6 @@ if (MSLoop==true) {
     // Elevator changelevel
     local p = null
     while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
-        SendToConsole("commentary 1")
         SendToConsole("changelevel sp_a1_wakeup")
     }
 }

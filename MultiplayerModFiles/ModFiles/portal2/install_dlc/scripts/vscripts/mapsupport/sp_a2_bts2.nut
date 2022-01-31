@@ -159,7 +159,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (NoPlayerMadeItOnlyOnceSp_A2_Bts2 == false) {
             if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
-                SendToConsole("commentary 1")
+                 
                 SendToConsole("changelevel sp_a2_bts2")
                 printl("stuff=====================")
             }
@@ -177,7 +177,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make our own changelevel trigger
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 150)) {
-            SendToConsole("commentary 1")
+             
             SendToConsole("changelevel sp_a2_bts3")
         }
 

@@ -38,7 +38,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100)) {
-            SendToConsole("commentary 1")
+             
             SendToConsole("changelevel sp_a3_speed_flings")
         }
     }

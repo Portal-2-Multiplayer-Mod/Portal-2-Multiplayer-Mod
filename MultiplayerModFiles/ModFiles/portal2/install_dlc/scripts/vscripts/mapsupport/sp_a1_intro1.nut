@@ -97,7 +97,7 @@ function p232DropCollision() {
 
 containerStick <- false
 function p232ParentAndStartMath() {
-    DisableJumpmsp = true
+    //DisableJumpmsp = true
     // TABLE
         // CustomBrush7.__KeyValueFromInt("Solid", 0)
         // CEILING
@@ -146,12 +146,43 @@ function p232ParentAndStartMath() {
 
 SecondToLastTP <- false
 function StopStickAndTeleport() {
+    EntFire("CustomBrush1", "disable", "", 0)
+    EntFire("CustomBrush2", "disable", "", 0)
+    EntFire("CustomBrush3", "disable", "", 0)
+    EntFire("CustomBrush4", "disable", "", 0)
+    EntFire("CustomBrush5", "disable", "", 0)
+    EntFire("CustomBrush6", "disable", "", 0)
+    EntFire("CustomBrush7", "disable", "", 0)
+    EntFire("CustomBrush8", "disable", "", 0)
+    EntFire("CustomBrush9", "disable", "", 0)
+    EntFire("CustomBrush10", "disable", "", 0)
+    EntFire("CustomBrush11", "disable", "", 0)
+    EntFire("CustomBrush12", "disable", "", 0)
+
+    EntFire("CustomBrush1", "kill", "", 0)
+    EntFire("CustomBrush2", "kill", "", 0)
+    EntFire("CustomBrush3", "kill", "", 0)
+    EntFire("CustomBrush4", "kill", "", 0)
+    EntFire("CustomBrush5", "kill", "", 0)
+    EntFire("CustomBrush6", "kill", "", 0)
+    EntFire("CustomBrush7", "kill", "", 0)
+    EntFire("CustomBrush8", "kill", "", 0)
+    EntFire("CustomBrush9", "kill", "", 0)
+    EntFire("CustomBrush10", "kill", "", 0)
+    EntFire("CustomBrush11", "kill", "", 0)
+    EntFire("CustomBrush12", "kill", "", 0)
+    
+    Entities.FindByName(null, "@container_stacks_1").__KeyValueFromString("targetname", "p232save1")
+    Entities.FindByName(null, "@container_stacks_2").__KeyValueFromString("targetname", "p232save2")
+    Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232save3")
+    Entities.FindByName(null, "kill_container_rl").Destroy()
     containerStick = false
     SecondToLastTP = true
     DisableJumpmsp = false
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
-        p.SetOrigin(Vector(-1649, 4376, 3125))
+        EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
+        p.SetOrigin(Vector(-1649, 4376, 3112))
         p.SetVelocity(Vector(80, 0, 0))
     }
 }
@@ -170,6 +201,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //door_hud_hint_trigger
         Entities.FindByName(null, "door_hud_hint_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().x, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().y + 500, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().z))
         Entities.FindByName(null, "door_open_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_open_trigger").GetOrigin().x, Entities.FindByName(null, "door_open_trigger").GetOrigin().y + 500, Entities.FindByName(null, "door_open_trigger").GetOrigin().z))
+        Entities.FindByName(null, "door_1-door_close_relay").Destroy()
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -312,6 +344,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+
+        //;
+        // Make our own changelevel trigger
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-685, 3112, 2400), 100)) {
+            SendToConsole("changelevel sp_a1_intro2")
+        }
+
+
         try {
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
@@ -321,7 +362,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 if (p.GetVelocity().z > 0) {
-                    p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, p.GetVelocity().z / -1))
+                    p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, -1))
                 }
             }
         }
@@ -388,6 +429,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             //printl(offsettick)
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
+                EntFireByHandle(p, "addoutput", "MoveType 4", 0, null, null)
+
                 planepitch <- currentCartRot.x * rotval 
                 planeroll <- currentCartRot.z * rotval1
                 p.SetOrigin(p.GetOrigin() + Vector(offsettick.x, offsettick.y, offsettick.z))

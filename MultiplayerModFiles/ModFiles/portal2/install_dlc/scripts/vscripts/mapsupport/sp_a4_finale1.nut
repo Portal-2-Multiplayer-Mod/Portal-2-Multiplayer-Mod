@@ -75,7 +75,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make our own changelevel trigger
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-12832, -3040, -112), 100)) {
-            SendToConsole("commentary 1")
+             
             SendToConsole("changelevel sp_a4_finale2")
         }
     }

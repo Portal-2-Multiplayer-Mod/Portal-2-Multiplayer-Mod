@@ -86,7 +86,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             while (p = Entities.FindByClassname(p, "player")) {
                 EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 0.25", 0, p, p)
             }
-            SendToConsole("commentary 1")
+             
             SendToConsole("changelevel sp_a2_turret_blocker")
         }
     }
