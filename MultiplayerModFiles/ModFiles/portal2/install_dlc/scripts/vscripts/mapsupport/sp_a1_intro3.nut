@@ -21,6 +21,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "backtrack_brush").Destroy()
         Entities.FindByName(null, "portal_orange_mtg").Destroy()
         Entities.FindByName(null, "emitter_orange_mtg").Destroy()
+        a1HasPortalGun <- false
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -28,6 +29,36 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
+        if (a1HasPortalGun == false) {
+            // remove portalgun
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+                ent.__KeyValueFromString("CanFirePortal1", "0")
+                ent.__KeyValueFromString("CanFirePortal2", "0")
+                EntFireByHandle(ent, "disabledraw", "", 0, null, null)
+            }
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+                EntFireByHandle(ent, "disabledraw", "", 0, null, null)
+            }
+        } else {
+            // give portalgun
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+                ent.__KeyValueFromString("CanFirePortal1", "1")
+                ent.__KeyValueFromString("CanFirePortal2", "1.")
+                EntFireByHandle(ent, "enabledraw", "", 0, null, null)
+            }
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+                EntFireByHandle(ent, "enabledraw", "", 0, null, null)
+            }
+        }
+
+        if (!Entities.FindByName(null, "portalgun")) {
+            a1HasPortalGun = true
+        }
+
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 50)) {
         SendToConsole("changelevel sp_a1_intro4")
@@ -36,14 +67,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         try {
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
         } catch(exception) {}
-
-        // Remove Portal Gun
-        if (hasgotportalgunSPMP == 0) {
-            local portalgun = null
-            while (portalgun = Entities.FindByClassname(portalgun, "weapon_portalgun")) {
-                portalgun.Destroy()
-            }
-        }
 
         // Make Wheatley look at nearest player
         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
