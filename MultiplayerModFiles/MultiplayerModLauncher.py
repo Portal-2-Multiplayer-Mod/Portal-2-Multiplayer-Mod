@@ -305,24 +305,46 @@ def LaunchVanillaPortal2(outputconfig, IsOnProton):
     else:
         try:
             f = open(owd + "/bin/linux32/engine.so", 'rb')
+            print("OPEMING ENGINE.SO")
             data = f.read()
+            print("READING ENGINE.SO")
             f.close()
 
+            #   if ((cVar5 == '\0') && (cVar3 == '\0')) {
+            #     if (DAT_00bcdee6 != '\0') {
+            #     iVar10 = *param_1;
+            #     pcVar13 = "#Valve_Reject_Background_Map";
+            #     goto LAB_0029293b;
+            #     }
+            #     if ((DAT_00bcdde8 == '\0') && (param_1[0x41] < 2)) {
+            #     iVar10 = *param_1;
+            #     pcVar13 = "#Valve_Reject_Single_Player";
+            #     goto LAB_0029293b;
+            #     }
+            #     if ((DAT_00be5a40 != (int *)0x0) &&
+            #     (cVar3 = (**(code **)(*DAT_00be5a40 + 0x84))(DAT_00be5a40), cVar3 != '\0')) { # THIS IS THE LINE THAT CAUSES THE DISCONNECT MAKE THE FINAL "cvar3" "TEST AL, AL" INTO "TEST AL, BL"
+            #     iVar10 = *param_1;
+            #     pcVar13 = "#Valve_Reject_Hidden_Game";
+            #     goto LAB_0029293b;
+            #     }
+            # }
+
             # Remove valve_reject_hidden_game commentary check
-            data = data.replace(bytes.fromhex("84 C0 0f 84 f5 fc ff ff 8b 06 8d 93 ae 66 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 11 5e 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 97 5c 2a 00 5a ff b4 24"), bytes.fromhex("a8 00 0f 84 f5 fc ff ff 8b 06 8d 93 ae 66 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 11 5e 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 97 5c 2a 00 5a ff b4 24"))
+            data = data.replace(bytes.fromhex("84 c0 0f 84 f5 fc ff ff 8b 06 8d 93 ee 96 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 31 76 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 b7 74 2a 00 5a ff b4 24 88 00 00 00 50 8d 83 44 a0 d5 ff 50 ff b4 24 8c 00 00 00 56 ff d7 83 c4 20 31 ff e9 ff fe ff ff 8d"), bytes.fromhex("84 d8 0f 84 f5 fc ff ff 8b 06 8d 93 ee 96 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 31 76 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 b7 74 2a 00 5a ff b4 24 88 00 00 00 50 8d 83 44 a0 d5 ff 50 ff b4 24 8c 00 00 00 56 ff d7 83 c4 20 31 ff e9 ff fe ff ff 8d"))
+
 
             # Write changes into a new toplevel engine.dll
             f2 = open("engine.so", 'wb')
             f2.write(data)
             f2.close()
             print("Patched engine.so successfully!")
+        # except: and print the error
         except:
             print("Failed to patch engine.so for use with P2:MM!")
             IsOnProtonIn = False
 
         try:
             IsOnProtonIn = True
-            print("Failed to open engine.so! Attempting to patch server.dll...")
             # Open engine.dll into binary
             f = open(owd + "/bin/engine.dll", 'rb')
             data = f.read()
