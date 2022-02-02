@@ -22,11 +22,11 @@
 //  ██████  ██████  ██   ████ ██      ██  ██████
 
 //-----------------------------------
-DevMode <- false // Set to true if you're a developer
+DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -52,6 +52,34 @@ if (RandomPortalSize==true) {
     randomportalsize <- 34
     randomportalsizeh <- 34
 }
+// Setup A Global SpawnClass
+GlobalSpawnClass <- class {
+    // Try To Make All Spawns Global
+    useautospawn = false
+    // Use Set Spawnpoint
+    usesetspawn = false
+
+    // Set SpawnPoint
+    setspawn = class {
+        // Set SpawnPoint
+        position = Vector(0,0,0)
+        // Set Radius
+        radius = 0
+    }
+    
+    // Reds Spawn Parameters
+    red = class {
+        spawnpoint = Vector(0,0,0)
+        rotation = Vector(0,0,0)
+    }
+    // Blues Spawn Parameters
+    blue = class {
+        spawnpoint = Vector(0,0,0)
+        rotation = Vector(0,0,0)
+    }
+}
+
+MadeSpawnClass <- false
 usefogcontroller <- false
 yes <- ""
 DevModeConfig <- DevMode
@@ -454,8 +482,24 @@ function FindAndReplace(inputstr, findstr, replacestr) {
 }
 
 function UnNegative(num) {
-    if (num <= 0) {
-        num = num * -1
+    try {
+        local test = num.x
+
+        if (num.x < 0) {
+            num.x = num.x * -1
+        }
+        if (num.y < 0) {
+            num.y = num.y * -1
+        }
+        if (num.z < 0) {
+            num.z = num.z * -1
+        }
+
+        num = Vector(num.x, num.y, num.z)
+    } catch(e) {
+        if (num <= 0) {
+            num = num * -1
+        }
     }
     return num
 }
@@ -526,6 +570,93 @@ function FindByIndex(id)  {
         if (p.entindex()==id) {
             return p
         }
+    }
+}
+
+// Find The Spawn Point For The Map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
+function BestGuessSpawnpoint() {
+    if (MadeSpawnClass == false) {
+
+        // Setup Some Variables
+        local ourclosest = 99999999
+        local spawnmiddle = null
+        local ent = null
+        local FinalSpawnRed = Vector(0, 0, 0)
+        local FinalRotationRed = Vector(0, 0, 0)
+        local FinalSpawnBlue = Vector(0, 0, 0)
+        local FinalRotationBlue = Vector(0, 0, 0)
+        
+        // Singlepayer Spawn Stuff
+        if (Entities.FindByModel(ent, "models/elevator/elevator_tube_opener.mdl")) {
+            while (ent = Entities.FindByModel(ent, "models/elevator/elevator_tube_opener.mdl")) {
+                local elevator = Entities.FindByName(null, "arrival_elevator-elevator_1")
+                // get the nearest elevator
+                local elevator_pos = elevator.GetOrigin()
+                local ent_pos = ent.GetOrigin()
+
+                local currentscore = elevator_pos - ent_pos
+                currentscore = UnNegative(currentscore)
+                printl(currentscore)
+                currentscore = currentscore.x + currentscore.y + currentscore.z
+                if (currentscore < ourclosest) {
+                    ourclosest = currentscore
+                    spawnmiddle = ent
+                }
+            }
+
+            // find the angle of the spawnpoint in xyz using cos
+            local spawnmiddle_ang = Entities.FindByName(null, "arrival_elevator-elevator_1").GetAngles()
+            local spawntracex = cos(spawnmiddle_ang.x) * cos(spawnmiddle_ang.y)
+            local spawntracey = sin(spawnmiddle_ang.x) * cos(spawnmiddle_ang.y)
+            printl(spawntracex)
+            printl(spawntracey)
+            spawntracex = spawntracex * 200
+            spawntracey = spawntracey * 200
+            // now get the back front left and right spawnpoints
+            local spawnback = spawnmiddle.GetOrigin() + Vector(spawntracex, spawntracey, 80)
+            local spawnfront = spawnmiddle.GetOrigin() + Vector(spawntracex/-1, spawntracey/-1, 80)
+            local spawnleft = spawnmiddle.GetOrigin() + Vector(spawntracey, spawntracex/-1, 80)
+            local spawnright = spawnmiddle.GetOrigin() + Vector(spawntracey/-1, spawntracex, 80)
+            printl("spawnMiddle: " + spawnmiddle)
+            printl("spawnOrigin: " + spawnmiddle.GetOrigin())
+            printl("ourClosest: " + ourclosest)
+            
+            // output the spawnpoints
+            FinalRotationBlue = spawnmiddle_ang + Vector(0, -90, 0)
+            FinalSpawnBlue = spawnright
+            FinalRotationRed = spawnmiddle_ang + Vector(0, -90, 0)
+            FinalSpawnRed = spawnleft 
+        }
+
+
+        // Override Parts Of The Global Spawn Class
+        GlobalSpawnClass.blue.spawnpoint <- FinalSpawnBlue
+        GlobalSpawnClass.blue.rotation <- FinalRotationBlue
+        GlobalSpawnClass.red.spawnpoint <- FinalSpawnRed
+        GlobalSpawnClass.red.rotation <- FinalRotationRed
+        
+        MadeSpawnClass = true
+        return GlobalSpawnClass
+    } else {
+        return GlobalSpawnClass
+    }
+}
+
+function TeleportToSpawnPoint(p, SpawnClass) {
+    if (SpawnClass == null) {
+        SpawnClass = BestGuessSpawnpoint()
+    }
+
+    if (p.GetTeam() >= 3) {
+        // Blue Team
+        p.SetOrigin(SpawnClass.blue.spawnpoint)
+        p.SetAngles(SpawnClass.blue.rotation.x, SpawnClass.blue.rotation.y, SpawnClass.blue.rotation.z)
+        printl(SpawnClass.blue.rotation)
+    } else {
+        // Red Team
+        p.SetOrigin(SpawnClass.red.spawnpoint)
+        p.SetAngles(SpawnClass.red.rotation.x, SpawnClass.red.rotation.y, SpawnClass.red.rotation.z)
+        printl(SpawnClass.red.rotation)
     }
 }
 
@@ -815,21 +946,27 @@ function loop() {
         }
     } catch (exception) { }
 
-
-
-    //## TESTING ##//
-    local cube = null
-    while (cube = Entities.FindByName(cube, "Gerald")) {
-        local desired = Vector(-10, 31, 159)
-        local current = cube.GetOrigin()
-        local moveamo = desired - current
-        moveamo.x = moveamo.x /3
-        moveamo.y = moveamo.y /3
-        moveamo.z = moveamo.z /3
-        printl(moveamo)
-        cube.SetVelocity(Vector(0, 0, 0))
-        cube.SetOrigin(Vector(cube.GetOrigin().x + moveamo.x, cube.GetOrigin().y + moveamo.y, cube.GetOrigin().z + moveamo.z))
+    //## GlobalSpawnClass SetSpawn ##//
+    if (GlobalSpawnClass.usesetspawn == true) {
+        local p = null
+        while (p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.setspawn.position, GlobalSpawnClass.setspawn.radius)) {
+            TeleportToSpawnPoint(p, null)
+        }
     }
+
+    // //## TESTING ##//
+    // local cube = null
+    // while (cube = Entities.FindByName(cube, "Gerald")) {
+    //     local desired = Vector(-10, 31, 159)
+    //     local current = cube.GetOrigin()
+    //     local moveamo = desired - current
+    //     moveamo.x = moveamo.x /3
+    //     moveamo.y = moveamo.y /3
+    //     moveamo.z = moveamo.z /3
+    //     printl(moveamo)
+    //     cube.SetVelocity(Vector(0, 0, 0))
+    //     cube.SetOrigin(Vector(cube.GetOrigin().x + moveamo.x, cube.GetOrigin().y + moveamo.y, cube.GetOrigin().z + moveamo.z))
+    // }
 }
 
 //---------------------------------------------------------------//
@@ -1122,6 +1259,11 @@ function ChatCommands(ccuserid, ccmessage) {
 
 function OnPlayerJoin(p, script_scope) {
 
+    // GlobalSpawnClass Teleport
+    if (GlobalSpawnClass.useautospawn == true) {
+        TeleportToSpawnPoint(p, null)
+    }
+
     //# Get player's index and store it #//
     PlayerID <- p.GetRootMoveParent()
     PlayerID <- PlayerID.entindex()
@@ -1279,10 +1421,10 @@ function OnPlayerJoin(p, script_scope) {
 //////////////////////
 
 function OnPlayerDeath(player) {
-   if (GetDeveloperLevel() == 1) {
+    if (GetDeveloperLevel() == 1) {
         printl("(P2:MM): Player died!")
         MapSupport(false, false, false, false, false, player, false)
-   }
+    }
 }
 
 ////////////////////////
@@ -1290,6 +1432,11 @@ function OnPlayerDeath(player) {
 ////////////////////////
 
 function OnPlayerRespawn(player) {
+    // GlobalSpawnClass Teleport
+    if (GlobalSpawnClass.useautospawn == true) {
+        TeleportToSpawnPoint(player, null)
+    }
+
     if (GetDeveloperLevel() == 1) {
         printl("(P2:MM): Player respawned!")
         MapSupport(false, false, false, false, false, false, player)
@@ -1340,6 +1487,14 @@ function PostMapLoad() {
 //////////////////////////////////////
 
 function GeneralOneTime() {
+    // GlobalSpawnClass Teleport
+    if (GlobalSpawnClass.useautospawn == true) {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            TeleportToSpawnPoint(p, null)
+        }
+    }
+
     // Single player maps with chapter titles
     local CHAPTER_TITLES =
     [
