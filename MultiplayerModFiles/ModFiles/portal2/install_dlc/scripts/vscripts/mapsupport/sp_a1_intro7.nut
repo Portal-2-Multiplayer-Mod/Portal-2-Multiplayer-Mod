@@ -5,17 +5,30 @@
 //██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝  ██╔╝
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝   ╚═╝
 
-amogos <- false
+amogos <- true
 function PutStickInAss() {
-    amogos = true
+    amogos = false
     EntFire("@sphere", "enablepickup", "", 1)
     printl("You put the stick in your ass.")
     Entities.FindByName(null, "sphere_filter").__KeyValueFromString("Negated", "1")
+    EntFire("spherebot_1_top_swivel_1", "deactivate", "", 0.1)
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-        GlobalSpawnClass.useautospawn <- true
+    //         usesetspawn = false
+
+    // // Set SpawnPoint
+    // setspawn = class {
+    //     // Set SpawnPoint
+    //     position = Vector(0,0,0)
+    //     // Set Radius
+    //     radius = 0
+    // }
+        GlobalSpawnClass.usesetspawn <- true
+        GlobalSpawnClass.setspawn.position <- Vector(-902.380798, -1982.617188, -63.968750)
+        GlobalSpawnClass.setspawn.radius <- 120
+
         EntFire("@sphere", "addoutput", "OnPlayerPickup @sphere:disablepickup", 0, null)
         EntFire("@sphere", "addoutput", "OnPlayerDrop @sphere:enablepickup", 0, null)
         //Entities.FindByName(null, "sphere_impact_trigger").__KeyValueFromString("filtername", "InstanceAuto9-filter_sphere")
@@ -85,8 +98,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //portal_detector
         // Elevator changelevel
         local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2208.151855, 463.968750, 1281.025513), 150)) {
             SendToConsole("changelevel sp_a1_wakeup")
+        }
+
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(3015, -174, -125), 60)) {
+            SendToConsole("changelevel sp_a1_intro7")
         }
     }
 }
