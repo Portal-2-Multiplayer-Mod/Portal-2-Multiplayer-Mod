@@ -226,7 +226,7 @@ while (Loop == true) do
                                                 print(outputct)
                                             end
                                         end
-                                            GenerateLine("     foreach (p in CreateTrigger("..prop31:GetPos().x..", "..prop31:GetPos().y..", "..prop31:GetPos().z..", "..prop21:GetPos().x..", "..prop21:GetPos().y..", "..prop21:GetPos().z..")) {")
+                                            GenerateLine("     foreach (p in CreateTrigger(null, "..prop31:GetPos().x..", "..prop31:GetPos().y..", "..prop31:GetPos().z..", "..prop21:GetPos().x..", "..prop21:GetPos().y..", "..prop21:GetPos().z..")) {")
                                             if (outputct ~= "nothingatall") then
                                                 GenerateLine("         p.SetVelocity(Vector("..outputct.x..","..outputct.y..","..outputct.z.."))")
                                             else
