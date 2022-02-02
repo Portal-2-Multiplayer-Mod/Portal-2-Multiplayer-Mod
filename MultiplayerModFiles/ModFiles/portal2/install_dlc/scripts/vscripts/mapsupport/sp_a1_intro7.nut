@@ -15,6 +15,7 @@ function PutStickInAss() {
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        GlobalSpawnClass.useautospawn <- true
         EntFire("@sphere", "addoutput", "OnPlayerPickup @sphere:disablepickup", 0, null)
         EntFire("@sphere", "addoutput", "OnPlayerDrop @sphere:enablepickup", 0, null)
         //Entities.FindByName(null, "sphere_impact_trigger").__KeyValueFromString("filtername", "InstanceAuto9-filter_sphere")
