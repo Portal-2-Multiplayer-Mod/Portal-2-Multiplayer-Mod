@@ -615,7 +615,7 @@ function BestGuessSpawnpoint() {
             // printl(spawntracey)
             // spawntracex = spawntracex * 282.5
             // spawntracey = spawntracey * 282.5
-            local hieght = 110
+            local hieght = 180
 
             spawnmiddle_ang_vec = spawnmiddle_ang_vec * 126.5
 

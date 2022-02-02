@@ -41,15 +41,13 @@ function NewApertureStartElevatorFixes() {
         local MiddleVector = Entities.FindByNameNearest("arrival_elevator-elevator_tube_opener", Entities.FindByName(null, "blue").GetOrigin(), 1000).GetOrigin()
         local OutsideVector = Entities.FindByName(null, "arrival_elevator-open").GetOrigin()
 
-        printl(MiddleVector)
-
         local ComputedVector = Vector(MiddleVector.x.tointeger()-OutsideVector.x.tointeger(), MiddleVector.y.tointeger()-OutsideVector.y.tointeger(), 0)
 
         //Number Sorter
         local CurrentHighest = 0
         local AmountOfItterations = 0
         foreach (Component in ComputedVector) {
-            printl("foreach")
+
             AmountOfItterations = AmountOfItterations + 1
 
             if (Component <= 0) {
@@ -77,25 +75,18 @@ function NewApertureStartElevatorFixes() {
 
         local FinalVector = Vector(0, 0, 0)
 
-        printl(CurrentHighest)
-
         if (CurrentHighest=="-y") {
-            printl("-y")
             FinalVector = Vector(MiddleVector.x+(RelY), MiddleVector.y+RelX, MiddleVector.z+RelZ)
         }
         if (CurrentHighest=="y") {
             FinalVector = Vector(MiddleVector.x+(RelY*-1), MiddleVector.y+RelX, MiddleVector.z+RelZ)
         }
-        printl("fullx")
         if (CurrentHighest=="-x") {
             FinalVector = Vector(MiddleVector.x+RelX, MiddleVector.y+(RelY), MiddleVector.z+RelZ)
         }
         if (CurrentHighest=="x") {
             FinalVector = Vector(MiddleVector.x+RelX, MiddleVector.y+(RelY*-1), MiddleVector.z+RelZ)
         }
-
-        printl("FinalVector Passed")
-        printl(FinalVector)
 
         local ClosestCoords = Vector(0, 0, 0)
         local ClosestEnt = null
@@ -122,7 +113,7 @@ function NewApertureStartElevatorFixes() {
 
         // Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
         // Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
-    } catch(exception) {printl(exception)}
+    } catch(exception) {printl("EXCEPT")}
     // Enable vgui displays
     try {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
@@ -132,7 +123,6 @@ function NewApertureStartElevatorFixes() {
 
 //## Disable Wheatley Pickup ##//
 function disablewheatleyplayerpickup() {
-    printl("Player picked up Wheatley. Disabling pickup!")
     EntFire("@sphere", "disablepickup", "", 0, null)
     EntFire("@sphereDummy", "enablepickup", "", 0, null)
 }
