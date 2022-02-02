@@ -71,11 +71,13 @@ GlobalSpawnClass <- class {
     red = class {
         spawnpoint = Vector(0,0,0)
         rotation = Vector(0,0,0)
+        velocity = Vector(0,0,0)
     }
     // Blues Spawn Parameters
     blue = class {
         spawnpoint = Vector(0,0,0)
         rotation = Vector(0,0,0)
+        velocity = Vector(0,0,0)
     }
 }
 
@@ -604,30 +606,38 @@ function BestGuessSpawnpoint() {
                 }
             }
 
-            // find the angle of the spawnpoint in xyz using cos
-            local spawnmiddle_ang = Entities.FindByName(null, "arrival_elevator-elevator_1").GetAngles()
-            local spawntracex = cos(spawnmiddle_ang.x) * cos(spawnmiddle_ang.y)
-            local spawntracey = sin(spawnmiddle_ang.x) * cos(spawnmiddle_ang.y)
-            printl(spawntracex)
-            printl(spawntracey)
-            spawntracex = spawntracex * 200
-            spawntracey = spawntracey * 200
+            // // find the angle of the spawnpoint in xyz using cos
+            local spawnmiddle_ang_vec = Entities.FindByName(null, "@arrival_teleport").GetForwardVector()
+            local spawnmiddle_ang = Entities.FindByName(null, "@arrival_teleport").GetAngles()
+            // local spawntracex = cos(spawnmiddle_ang.x) * sin(spawnmiddle_ang.y)
+            // local spawntracey = sin(spawnmiddle_ang.x) * cos(spawnmiddle_ang.y)
+            // printl(spawntracex)
+            // printl(spawntracey)
+            // spawntracex = spawntracex * 282.5
+            // spawntracey = spawntracey * 282.5
+            local hieght = 110
+
+            spawnmiddle_ang_vec = spawnmiddle_ang_vec * 126.5
+
+            printl(spawnmiddle_ang_vec)
+
+            
+
             // now get the back front left and right spawnpoints
-            local spawnback = spawnmiddle.GetOrigin() + Vector(spawntracex, spawntracey, 80)
-            local spawnfront = spawnmiddle.GetOrigin() + Vector(spawntracex/-1, spawntracey/-1, 80)
-            local spawnleft = spawnmiddle.GetOrigin() + Vector(spawntracey, spawntracex/-1, 80)
-            local spawnright = spawnmiddle.GetOrigin() + Vector(spawntracey/-1, spawntracex, 80)
+            local spawnfront = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x, spawnmiddle_ang_vec.y, hieght)
+            local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, hieght)
+            local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, hieght)
+            local spawnleft = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y/-1, spawnmiddle_ang_vec.x, hieght)
             printl("spawnMiddle: " + spawnmiddle)
             printl("spawnOrigin: " + spawnmiddle.GetOrigin())
             printl("ourClosest: " + ourclosest)
             
             // output the spawnpoints
-            FinalRotationBlue = spawnmiddle_ang + Vector(0, -90, 0)
+            FinalRotationBlue = spawnmiddle_ang + Vector(0, 0, 0)
             FinalSpawnBlue = spawnright
-            FinalRotationRed = spawnmiddle_ang + Vector(0, -90, 0)
+            FinalRotationRed = spawnmiddle_ang + Vector(0, 0, 0)
             FinalSpawnRed = spawnleft 
         }
-
 
         // Override Parts Of The Global Spawn Class
         GlobalSpawnClass.blue.spawnpoint <- FinalSpawnBlue
@@ -651,12 +661,12 @@ function TeleportToSpawnPoint(p, SpawnClass) {
         // Blue Team
         p.SetOrigin(SpawnClass.blue.spawnpoint)
         p.SetAngles(SpawnClass.blue.rotation.x, SpawnClass.blue.rotation.y, SpawnClass.blue.rotation.z)
-        printl(SpawnClass.blue.rotation)
+        p.SetVelocity(SpawnClass.blue.velocity)
     } else {
         // Red Team
         p.SetOrigin(SpawnClass.red.spawnpoint)
         p.SetAngles(SpawnClass.red.rotation.x, SpawnClass.red.rotation.y, SpawnClass.red.rotation.z)
-        printl(SpawnClass.red.rotation)
+        p.SetVelocity(SpawnClass.red.velocity)
     }
 }
 
