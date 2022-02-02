@@ -577,7 +577,8 @@ function FindByIndex(id)  {
 
 // Find The Spawn Point For The Map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
 function BestGuessSpawnpoint() {
-    if (MadeSpawnClass == false) {
+    printl(GlobalSpawnClass.blue.spawnpoint)
+    if (MadeSpawnClass == false && GlobalSpawnClass.blue.spawnpoint.x == 0 && GlobalSpawnClass.blue.spawnpoint.y == 0) {
 
         // Setup Some Variables
         local ourclosest = 99999999
