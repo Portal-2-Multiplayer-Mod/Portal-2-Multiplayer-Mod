@@ -17,6 +17,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("@enable_arms", "trigger", "", 0, null)
         Entities.FindByName(null, "InstanceAuto13-dangle_ceiling-disable_arms").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(2704, -1260, 112), 1024).Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(-2250.5, 605.5, 6668), 1024).Destroy()
+        a1HasPortalGun <- false
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -35,6 +37,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local TempEnt = Entities.CreateByClassname("prop_dynamic")
         TempEnt.__KeyValueFromString("targetname", "TempEnt")
         EntFire("TempEnt", "addoutput", "targetname PlayFallSound", 0, null)
+        EntFire("start_fall_anim_relay", "trigger", "", 0, null)
     }
 
     if (MSLoop==true) {
@@ -69,35 +72,65 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             SendToConsole("changelevel sp_a2_laser_intro")
         }
 
-        // Remove the player's Portal Gun
-        if (Entities.FindByName(null, "portalgun")) {
+        // // Remove the player's Portal Gun
+        // if (Entities.FindByName(null, "portalgun")) {
+        //     local ent = null
+        //     while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+        //         ent.Destroy()
+        //     }
+        // }
+
+        // // Give the player a Portal Gun
+        // if (!Entities.FindByName(null, "portalgun")) {
+        //     local p = null
+        //     while (p = Entities.FindByClassname(p, "player")) {
+        //         if (Entities.FindByName(null, "CustomPortalGun")) {
+        //         } else {
+        //             PortalGunGiveContinue <- true
+        //             local ent = null
+        //             while (ent = Entities.FindByClassnameWithin(ent, "weapon_portalgun", p.GetOrigin(), 2)) {
+        //                 PortalGunGiveContinue <- false
+        //             }
+        //             if (PortalGunGiveContinue==true) {
+        //             PortalGun <- Entities.CreateByClassname("weapon_portalgun")
+        //             PortalGun.__KeyValueFromString("StartingTeamNum", "0")
+        //             PortalGun.__KeyValueFromString("targetname", "CustomPortalGun")
+        //             PortalGun.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, p.GetOrigin().z+20))
+        //             EntFireByHandle(PortalGun, "use", "", 0.25, p, p)
+        //             EntFireByHandle(PortalGun, "kill", "", 1.25, p, p)
+        //             }
+        //         }
+        //     }
+        // }
+
+        if (a1HasPortalGun == false) {
+            // remove portalgun
             local ent = null
             while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-                ent.Destroy()
+                ent.__KeyValueFromString("CanFirePortal1", "0")
+                ent.__KeyValueFromString("CanFirePortal2", "0")
+                EntFireByHandle(ent, "disabledraw", "", 0, null, null)
+            }
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+                EntFireByHandle(ent, "disabledraw", "", 0, null, null)
+            }
+        } else {
+            // give portalgun
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+                ent.__KeyValueFromString("CanFirePortal1", "1")
+                ent.__KeyValueFromString("CanFirePortal2", "1.")
+                EntFireByHandle(ent, "enabledraw", "", 0, null, null)
+            }
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+                EntFireByHandle(ent, "enabledraw", "", 0, null, null)
             }
         }
 
-        // Give the player a Portal Gun
         if (!Entities.FindByName(null, "portalgun")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                if (Entities.FindByName(null, "CustomPortalGun")) {
-                } else {
-                    PortalGunGiveContinue <- true
-                    local ent = null
-                    while (ent = Entities.FindByClassnameWithin(ent, "weapon_portalgun", p.GetOrigin(), 2)) {
-                        PortalGunGiveContinue <- false
-                    }
-                    if (PortalGunGiveContinue==true) {
-                    PortalGun <- Entities.CreateByClassname("weapon_portalgun")
-                    PortalGun.__KeyValueFromString("StartingTeamNum", "0")
-                    PortalGun.__KeyValueFromString("targetname", "CustomPortalGun")
-                    PortalGun.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, p.GetOrigin().z+20))
-                    EntFireByHandle(PortalGun, "use", "", 0.25, p, p)
-                    EntFireByHandle(PortalGun, "kill", "", 1.25, p, p)
-                    }
-                }
-            }
+            a1HasPortalGun = true
         }
     }
 }
