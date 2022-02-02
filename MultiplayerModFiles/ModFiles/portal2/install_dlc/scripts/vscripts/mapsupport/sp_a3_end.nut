@@ -80,7 +80,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSp_A3_End==false) {
             if (!Entities.FindByName(null, "big_door_save")) {
-                foreach (player in CreateTrigger(-1902.8851318359, 373.5451965332, 810.53570556641, -1751.1909179688, 269.85140991211, 954.68353271484)) {
+                foreach (player in CreateTrigger("player", -1902.8851318359, 373.5451965332, 810.53570556641, -1751.1909179688, 269.85140991211, 954.68353271484)) {
                     if (player.GetClassname() == "player") {
                         local p = null
                         while (p = Entities.FindByClassname(p, "player")) {

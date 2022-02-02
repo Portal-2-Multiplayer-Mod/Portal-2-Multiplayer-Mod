@@ -86,7 +86,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Open / Close cube dropper
         local stayopen = false
-        foreach (p in CreateTrigger(934.03686523438, -1169.5228271484, 2253.265625, 817.01788330078, -1055.9055175781, 2150.1036376953)) {
+        foreach (p in CreateTrigger(null, 934.03686523438, -1169.5228271484, 2253.265625, 817.01788330078, -1055.9055175781, 2150.1036376953)) {
             if (p.GetClassname()=="prop_weighted_cube") {
                 if (isopen==false) {
                     isopen = true
@@ -114,7 +114,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Fizzle the cube
-        foreach (p in CreateTrigger(75, -1746.5970458984, 1500.7188720703, 1450.1014404297, -509.52490234375, 2840.5529785156)) {
+        foreach (p in CreateTrigger(null, 75, -1746.5970458984, 1500.7188720703, 1450.1014404297, -509.52490234375, 2840.5529785156)) {
             if (p.GetClassname()=="prop_weighted_cube") {
                 DontFizzle = true
             }
@@ -123,7 +123,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFire("tubecap", "dissolve")
         }
 
-        foreach (p in CreateTrigger(968.68884277344, -1023.1279296875, 2889.7351074219, 801.07244873047, -1206.5419921875, 2030)) {
+        foreach (p in CreateTrigger(null, 968.68884277344, -1023.1279296875, 2889.7351074219, 801.07244873047, -1206.5419921875, 2030)) {
             if (p.GetClassname()=="prop_weighted_cube") {
                 if (rollang >= 160) {
                     rollang <- -160

@@ -408,7 +408,7 @@ function p232fogswitch(fogname) {
     }
 }
 
-function CreateTrigger(x1, y1, z1, x2, y2, z2){
+function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
 	if(DevMode == true){
 		DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
 	}
@@ -437,12 +437,25 @@ function CreateTrigger(x1, y1, z1, x2, y2, z2){
     local plist = []
     local p = null
     local outputp = null
-    while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 16384)) {
-        local pos = p.GetOrigin()
-        if (pos.x >= x1 && pos.x <= x2){
-            if (pos.y >= y1 && pos.y <= y2){
-                if (pos.z >= z1 && pos.z <= z2){
-                    plist.push(p)
+    if (desent == null) {
+        while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 16384)) {
+            local pos = p.GetOrigin()
+            if (pos.x >= x1 && pos.x <= x2){
+                if (pos.y >= y1 && pos.y <= y2){
+                    if (pos.z >= z1 && pos.z <= z2){
+                        plist.push(p)
+                    }
+                }
+            }
+        }
+    } else {
+        while (p = Entities.FindByClassname(p, desent)) {
+            local pos = p.GetOrigin()
+            if (pos.x >= x1 && pos.x <= x2){
+                if (pos.y >= y1 && pos.y <= y2){
+                    if (pos.z >= z1 && pos.z <= z2){
+                        plist.push(p)
+                    }
                 }
             }
         }

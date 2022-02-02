@@ -80,11 +80,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
             EntFireByHandle(p, "setfogcontroller", "@environment_darkness_fog", 0, null, null)
         }
+        EntFire("Sp_A2_CoreViewcontrol", "disable", "", 0, null)
+        EntFire("Sp_A2_CoreViewcontrol", "enable", "", 0.1, null)
     }
 
     if (MSLoop==true) {
         if (TeleportOutInSp_A2_Core==false) {
-            foreach (player in CreateTrigger(293.857941, 313.969910, -126.097076, -610.639771, -467.855042, 133.613190)) {
+            foreach (player in CreateTrigger("player", 293.857941, 313.969910, -126.097076, -610.639771, -467.855042, 133.613190)) {
                 if (player.GetClassname() == "player") {
                     TeleportOutInSp_A2_Core <- true
                 }
@@ -95,7 +97,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 local DisableTeleport = false
-                foreach (player in CreateTrigger(-857.83013916016, -1769.8682861328, 1200.1546630859, 828.51452636719, 904.61602783203,  -11763)) {
+                foreach (player in CreateTrigger("player", -857.83013916016, -1769.8682861328, 1200.1546630859, 828.51452636719, 904.61602783203,  -11763)) {
                     if (p == player) {
                         DisableTeleport = true
                     }

@@ -34,7 +34,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSLoop==true) {
         if (OldTimeMapSupport + 0.1 <= Time()) {
-            foreach (p in CreateTrigger(2022.2529296875, 1891.5144042969, 4128.41015625, 2809.6022949219, 1490.4871826172, 3846.3054199219)) {
+            foreach (p in CreateTrigger(null, 2022.2529296875, 1891.5144042969, 4128.41015625, 2809.6022949219, 1490.4871826172, 3846.3054199219)) {
                 if (p.GetClassname() == "npc_portal_turret_floor") {
                     if (p.GetOrigin().z > 4000) {
                         p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y-50, 4020))
