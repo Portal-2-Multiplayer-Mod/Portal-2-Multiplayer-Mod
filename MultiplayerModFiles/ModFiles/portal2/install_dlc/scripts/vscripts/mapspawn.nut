@@ -589,7 +589,9 @@ function BestGuessSpawnpoint() {
         local FinalRotationBlue = Vector(0, 0, 0)
         
         // Singlepayer Spawn Stuff
-        if (Entities.FindByModel(ent, "models/elevator/elevator_tube_opener.mdl")) {
+        
+        // New Aperture
+        if (Entities.FindByModel(null, "models/elevator/elevator_tube_opener.mdl")) {
             while (ent = Entities.FindByModel(ent, "models/elevator/elevator_tube_opener.mdl")) {
                 local elevator = Entities.FindByName(null, "arrival_elevator-elevator_1")
                 // get the nearest elevator
@@ -637,6 +639,70 @@ function BestGuessSpawnpoint() {
             FinalSpawnBlue = spawnright
             FinalRotationRed = spawnmiddle_ang + Vector(0, 0, 0)
             FinalSpawnRed = spawnleft 
+        }
+
+        // Old Aperture
+        if (Entities.FindByModel(null, "models/props_underground/elevator_a.mdl")) {
+            local elevator = Entities.FindByName(null, "@test_dome_lift_entry_teleport")
+            local spawnmiddle = null
+            // Find The Nearst Elevator To The point_teleport
+            while (ent = Entities.FindByModel(ent, "models/props_underground/elevator_a.mdl")) {
+                if (elevator == null) {
+                    elevator = Entities.FindByClassname(null, "point_teleport")
+                }
+                // get the nearest elevator to the point_teleport
+                local elevator_pos = elevator.GetOrigin()
+                local ent_pos = ent.GetOrigin()
+
+                local currentscore = elevator_pos - ent_pos
+                currentscore = UnNegative(currentscore)
+                printl(currentscore)
+                currentscore = currentscore.x + currentscore.y + currentscore.z
+                if (currentscore < ourclosest) {
+                    ourclosest = currentscore
+                    spawnmiddle = ent
+                }
+            }
+            
+            // Find the highest path track next to the spawnpoint
+            local tallestpathtrack = null
+            if (spawnmiddle == null) {
+                printl("failed to find spawnmiddle")
+            } else {
+                local pathtracks = null
+                while (pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600)) {
+                    printl("pathtracks: " + pathtracks)
+                    if (tallestpathtrack == null) {
+                        tallestpathtrack = pathtracks
+                    } else {
+                        if (tallestpathtrack.GetOrigin().z < pathtracks.GetOrigin().z) {
+                            tallestpathtrack = pathtracks
+                        }
+                    }
+                }
+            }
+
+            local extrah = 5
+
+            // Set The Origin Of The Spawnpoint Middle
+            local spawnpointmiddle = Vector(spawnmiddle.GetOrigin().x, spawnmiddle.GetOrigin().y, tallestpathtrack.GetOrigin().z)
+            local spawnpointmiddle_ang_vec = elevator.GetForwardVector()
+            local spawnpointmiddle_ang = elevator.GetAngles()
+
+            // Set The Sides Of The Spawnpoint
+            spawnpointmiddle_ang_vec = spawnpointmiddle_ang_vec *  100
+
+            local spawnfront = spawnpointmiddle + Vector(spawnpointmiddle_ang_vec.x, spawnpointmiddle_ang_vec.y, extrah)
+            local spawnback = spawnpointmiddle + Vector(spawnpointmiddle_ang_vec.x/-1, spawnpointmiddle_ang_vec.y/-1, extrah)
+            local spawnright = spawnpointmiddle + Vector(spawnpointmiddle_ang_vec.y, spawnpointmiddle_ang_vec.x/-1, extrah)
+            local spawnleft = spawnpointmiddle + Vector(spawnpointmiddle_ang_vec.y/-1, spawnpointmiddle_ang_vec.x, extrah)
+
+            // Finalize The Spawnpoints
+            FinalRotationBlue = spawnpointmiddle_ang
+            FinalSpawnBlue = spawnright
+            FinalRotationRed = spawnpointmiddle_ang
+            FinalSpawnRed = spawnleft
+
         }
 
         // Override Parts Of The Global Spawn Class
