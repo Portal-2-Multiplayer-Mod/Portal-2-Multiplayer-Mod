@@ -7,6 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        GlobalSpawnClass.useautospawn <- true
         OnlyOnceSp_A3_Portal_Intro <- false
         Entities.FindByName(null, "1970s_door1door_lower").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "1970s_door1door_upper").__KeyValueFromString("targetname", "moja2")
