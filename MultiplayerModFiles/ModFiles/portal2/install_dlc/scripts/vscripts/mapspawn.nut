@@ -26,7 +26,7 @@ DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- false // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -129,6 +129,16 @@ ConsoleAscii <- [
 "██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝"
 ""
 ]
+
+function ForceRespawnAll() {
+    // GlobalSpawnClass Teleport
+    if (GlobalSpawnClass.useautospawn == true) {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            TeleportToSpawnPoint(p, null)
+        }
+    }
+}
 
 foreach (line in ConsoleAscii) {
     printl(line)
@@ -1577,13 +1587,7 @@ function PostMapLoad() {
 //////////////////////////////////////
 
 function GeneralOneTime() {
-    // GlobalSpawnClass Teleport
-    if (GlobalSpawnClass.useautospawn == true) {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            TeleportToSpawnPoint(p, null)
-        }
-    }
+    EntFire("p232servercommand", "command", "script ForceRespawnAll()", 1)
 
     // Single player maps with chapter titles
     local CHAPTER_TITLES =
