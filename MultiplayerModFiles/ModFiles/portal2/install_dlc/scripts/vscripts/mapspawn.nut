@@ -36,7 +36,7 @@ TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower num
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
 //-----------------------------------
-Admins <- ["vista", "Bumpy", "Nanoman2525", "Wolƒe Strider Shoσter", "CHARITY", "Dreadnox", "!wol"]
+Admins <- ["vista", "Bumpy", "Nanoman2525", "Wolƒe Strider Shoσter", "CHARITY", "Dreadnox", "!wol", "sear"]
 //-----------------------------------
 
 //  ██████  ██████  ██████  ███████
