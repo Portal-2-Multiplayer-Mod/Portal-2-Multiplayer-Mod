@@ -32,7 +32,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //Entities.FindByName(null, "sphere_impact_trigger").__KeyValueFromString("filtername", "InstanceAuto9-filter_sphere")
         // Destroy objects
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
-        Entities.FindByName(null, "room_1_portal_activate_rl").Destroy()
+        Entities.FindByName(null, "relay_portab_spawn").Destroy()
+        Entities.FindByName(null, "portal_blocker").Destroy()
         Entities.FindByName(null, "bts_panel_door-heavydoor_open_clip").Destroy()
         // bts_panel_door-LR_heavydoor_close
         Entities.FindByName(null, "bts_panel_door-LR_heavydoor_close").Destroy()
