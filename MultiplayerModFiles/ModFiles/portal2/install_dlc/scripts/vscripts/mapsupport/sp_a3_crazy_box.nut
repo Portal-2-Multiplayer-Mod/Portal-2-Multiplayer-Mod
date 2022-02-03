@@ -8,9 +8,10 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
         // 2231.027100 187.758835 -386.163635;
-        GlobalSpawnClass.usesetspawn <- true
-        GlobalSpawnClass.setspawn.position <- Vector(2231.027100, 187.758835, -386.163635)
-        GlobalSpawnClass.setspawn.radius <- 200
+         GlobalSpawnClass.useautospawn <- true
+        // GlobalSpawnClass.usesetspawn <- true
+        // GlobalSpawnClass.setspawn.position <- Vector(2231.027100, 187.758835, -386.163635)
+        // GlobalSpawnClass.setspawn.radius <- 200
         isopen <- false
         rollang <- 0
         movecube <- false
@@ -25,6 +26,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(144, -1280, 1600), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(200, -1272, 1600), 20).Destroy()
         Entities.FindByClassnameNearest("prop_weighted_cube", Vector(576, -1024, 1644), 20).__KeyValueFromString("targetname", "tubecap")
+        Entities.FindByName(null, "@test_dome_lift_entry_teleport").__KeyValueFromString("targetname", "tubecapfuckyou")
+
+       
         Entities.FindByName(null, "AutoInstance1-door_prop").__KeyValueFromString("targetname", "DisableDoorMpMod")
         EntFire("DisableDoorMpMod", "setanimation", "open", 1, null)
         //EntFire("room_1_door_open_trigger", "addoutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
