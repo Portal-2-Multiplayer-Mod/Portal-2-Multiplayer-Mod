@@ -7,6 +7,10 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        // 2231.027100 187.758835 -386.163635;
+        GlobalSpawnClass.usesetspawn <- true
+        GlobalSpawnClass.setspawn.position <- Vector(2231.027100, 187.758835, -386.163635)
+        GlobalSpawnClass.setspawn.radius <- 200
         isopen <- false
         rollang <- 0
         movecube <- false

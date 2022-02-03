@@ -964,6 +964,13 @@ function loop() {
         }
     }
 
+    //## GlobalSpawnClass SetSpawn ##//
+    if (GlobalSpawnClass.usesetspawn == true) {
+        local p = null
+        while (p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.setspawn.position, GlobalSpawnClass.setspawn.radius)) {
+            TeleportToSpawnPoint(p, null)
+        }
+    }
 
     //## MapSupport loop ##//
     MapSupport(false, true, false, false, false, false, false)
@@ -1136,14 +1143,6 @@ function loop() {
             EntFire("forcedisconnectclient", "command", "disconnect \"You cannot play singleplayer games when Portal 2 is launched from the Multiplayer Mod launcher. Please close the game and start it from Steam.\"", 1, null)
         }
     } catch (exception) { }
-
-    //## GlobalSpawnClass SetSpawn ##//
-    if (GlobalSpawnClass.usesetspawn == true) {
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.setspawn.position, GlobalSpawnClass.setspawn.radius)) {
-            TeleportToSpawnPoint(p, null)
-        }
-    }
 
     // //## TESTING ##//
     // local cube = null

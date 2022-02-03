@@ -25,9 +25,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     //     // Set Radius
     //     radius = 0
     // }
-        GlobalSpawnClass.usesetspawn <- true
-        GlobalSpawnClass.setspawn.position <- Vector(-902.380798, -1982.617188, -63.968750)
-        GlobalSpawnClass.setspawn.radius <- 120
+        GlobalSpawnClass.useautospawn <- true
 
         EntFire("@sphere", "addoutput", "OnPlayerPickup @sphere:disablepickup", 0, null)
         EntFire("@sphere", "addoutput", "OnPlayerDrop @sphere:enablepickup", 0, null)
