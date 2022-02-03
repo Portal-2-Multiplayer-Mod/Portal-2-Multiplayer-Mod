@@ -26,7 +26,7 @@ DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- true // Set to true if you want to use the plugin (LINUX ONLY)
+UsePlugin <- false // Set to false if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -601,6 +601,97 @@ function FindByIndex(id)  {
 // Find The Spawn Point For The Map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
 function BestGuessSpawnpoint() {
     printl(GlobalSpawnClass.blue.spawnpoint)
+    if (MadeSpawnClass == false) {
+        // Box Ents
+        BoxEnts <- [
+            "@arrival_video_master",
+            "@departure_video_master",
+            "@end_of_playtest_text",
+            "@debug_dump_map_bat_file",
+            "@debug_change_to_next_map",
+            "@chapter_subtitle_text",
+            "@chapter_title_text",
+            "@transition_script",
+            "@transition_from_map",
+        ]
+
+        printl("===========================")
+        printl("Box Ents")
+        printl("===========================")
+
+        local BestSurrondingBoxEnt = -1
+        local CurrentBestStartingEnt = null
+        local StartingBoxEnt = null
+        foreach (PossibleEnt in BoxEnts) {
+            local PossibleSurroundingEnts = 0
+            local CurrentBoi = Entities.FindByName(null, PossibleEnt)
+            if (CurrentBoi) {
+                // If we have found one yet lets tally up the amount of surronding box ents
+                local ent = null
+                while (ent = Entities.FindInSphere(ent, CurrentBoi.GetOrigin(), 300)) {
+                    // if (ent.GetName() in BoxEnts) {
+                    //     printl("Found a box ent: " + ent.GetName())
+                    //     PossibleSurroundingEnts = PossibleSurroundingEnts + 1
+                    // }
+                    foreach (TEnt in BoxEnts) {
+                        if (ent.GetName() == TEnt) {
+                            PossibleSurroundingEnts = PossibleSurroundingEnts + 1
+                        }
+                    }
+                }
+                // If this is the best one so far, save it
+                if (PossibleSurroundingEnts > BestSurrondingBoxEnt) {
+                    BestSurrondingBoxEnt = PossibleSurroundingEnts
+                    StartingBoxEnt = CurrentBoi
+                }
+            }
+        }
+
+        local RealPlayerSpawn = null
+        if (StartingBoxEnt == null) {
+            printl("No starting box ent found")
+        } else {
+            if (BestSurrondingBoxEnt > 0) {
+                printl("Starting box ent found")
+                // If we have found a solid starting box ent, lets find the closest one to it
+                RealPlayerSpawn = Entities.FindByClassnameNearest("info_player_start", StartingBoxEnt.GetOrigin(), 650)
+                if (RealPlayerSpawn == null) {
+                    printl("No real player spawn found")
+                } else {
+                    printl("Real player spawn found")
+                    local LandmarkCheck = Entities.FindByClassnameNearest("info_landmark_entry", RealPlayerSpawn.GetOrigin(), 128)
+                    // If we have found a landmark, we know we are in the box
+                    if (LandmarkCheck == null) {
+                        printl("No landmark found")
+                    } else {
+                        printl("Landmark found")
+                        printl("Found info player start!: " + RealPlayerSpawn.GetOrigin())
+                        // If EVERY Condition is met, lets set the player spawn
+                        if (GlobalSpawnClass.useautospawn == true) {
+                            printl("useautospawn = True: Setting player spawn")
+                            GlobalSpawnClass.useautospawn <- false
+                            GlobalSpawnClass.usesetspawn <- true
+                            GlobalSpawnClass.setspawn.position <- RealPlayerSpawn.GetOrigin()
+                            GlobalSpawnClass.setspawn.radius <- 200
+                            // Get Every Info Player Start And YEET It
+                            local ent = null
+                            while (ent = Entities.FindByClassname(ent, "info_player_start")) {
+                                if (ent != RealPlayerSpawn) {
+                                    printl("Found info player start that is not the real player spawn")
+                                    ent.Destroy()
+                                }
+                            }
+                        } else {
+                            printl("useautospawn = False: Not setting player spawn")
+                        }
+                    }
+                }
+            } else {
+                printl("Starting box ent found but not enough surrounding box ents")
+            }
+        }
+
+    }
     if (MadeSpawnClass == false && GlobalSpawnClass.blue.spawnpoint.x == 0 && GlobalSpawnClass.blue.spawnpoint.y == 0) {
 
         // Setup Some Variables
