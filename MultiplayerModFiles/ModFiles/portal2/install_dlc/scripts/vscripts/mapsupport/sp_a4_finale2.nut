@@ -7,6 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        PermaPotato <- true
         Entities.FindByName(null, "portal_chamber_1").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "portal_chamber_2").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "areaportal_airlock_1").__KeyValueFromString("targetname", "moja3")

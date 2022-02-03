@@ -8,6 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
         GlobalSpawnClass.useautospawn <- true
+        PermaPotato <- true
         Entities.FindByName(null, "antechamber_exit").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "antechamber_areaportal").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "antechamber_door_sound").__KeyValueFromString("targetname", "moja3")
