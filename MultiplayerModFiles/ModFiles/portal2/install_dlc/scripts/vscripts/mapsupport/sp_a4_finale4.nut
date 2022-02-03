@@ -15,6 +15,10 @@ fogs <- [
     {name = "environment_darkness_4", fogname = "@environment_darkness_fog_4", fogdelay = 0}
 ]
 
+function GoodByeIdaho() {
+    PermaPotato = false
+}
+
 //## hook line and sinker hooks ##//
 function TeleportPlayersBehindEndingElevator() {
     local p = null
@@ -40,6 +44,8 @@ function MoveSoundScape() {
 function TeleportPlayersUp() {
     Entities.FindByClassname(null, "player").SetOrigin(Vector(-191.816742 -0.485268 64.031250))
 }
+
+PermaPotato <- true
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
@@ -403,6 +409,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (!Entities.FindByName(null, "notinelevator")) {
             if (Sp_A4_Finale4ElevatorTeleport == true) {
                 EntFireByHandle(Sp_A2_Bts6Viewcontrol, "enable", "", 0, null, null)
+                GoodByeIdaho()
                 EntFireByHandle(env_global01, "turnon", "", 1, null, null)
                 EntFireByHandle(env_global02, "turnon", "", 1, null, null)
                 EntFireByHandle(env_global03, "turnon", "", 1, null, null)

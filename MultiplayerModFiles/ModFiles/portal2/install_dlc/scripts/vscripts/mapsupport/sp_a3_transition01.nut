@@ -5,6 +5,10 @@
 //██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗   ██║   ██║  ██║██║  ██║██║ ╚███║██████╔╝██║   ██║   ██║╚█████╔╝██║ ╚███║╚█████╔╝███████╗
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚══╝╚═════╝ ╚═╝   ╚═╝   ╚═╝ ╚════╝ ╚═╝  ╚══╝ ╚════╝ ╚══════╝
 
+function StartPermaPotato() {
+    PermaPotato = true
+}
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
         GlobalSpawnClass.useautospawn <- true
@@ -18,6 +22,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "sphere_entrance_lift_movelinear").__KeyValueFromString("blockdamage", "10")
         // Here if we need to ent_fire something
         EntFireByHandle(Entities.FindByName(null, "pumproom_door_top_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "sphere_entrance_potatos_button"), "addoutput", "OnPressed p232servercommand:command:script StartPermaPotato()", 1, null, null)
         EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
     }
 
