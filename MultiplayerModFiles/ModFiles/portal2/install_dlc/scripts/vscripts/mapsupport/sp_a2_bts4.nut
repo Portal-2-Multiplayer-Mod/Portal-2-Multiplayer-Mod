@@ -7,6 +7,12 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+
+        // 799.647827 -2908.963623 7232.031250;
+        GlobalSpawnClass.useautospawn <- true
+        GlobalSpawnClass.blue.spawnpoint <- Vector(799.647827, -2908.963623, 7232.031250)
+        GlobalSpawnClass.red.spawnpoint <- Vector(799.647827, -2908.963623, 7232.031250)
+
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
