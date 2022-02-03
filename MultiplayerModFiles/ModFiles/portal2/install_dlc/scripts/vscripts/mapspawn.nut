@@ -81,6 +81,7 @@ GlobalSpawnClass <- class {
     }
 }
 
+PermaPotato <- false
 MadeSpawnClass <- false
 usefogcontroller <- false
 yes <- ""
@@ -598,6 +599,19 @@ function FindByIndex(id)  {
     }
 }
 
+// Potato
+function PotatoIfy() {
+    local ent = null
+    while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+        ent.__KeyValueFromString("targetname", "weapon_portalgun_potatoifyied")
+        EntFire("weapon_portalgun_potatoifyied", "SetBodygroup", "1", 0)
+    }
+    local ent = null
+    while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+        EntFireByHandle(ent, "SetBodyGroup", "1", 0, null, null)
+    }
+}
+
 // Find The Spawn Point For The Map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
 function BestGuessSpawnpoint() {
     printl(GlobalSpawnClass.blue.spawnpoint)
@@ -861,6 +875,16 @@ function TeleportToSpawnPoint(p, SpawnClass) {
 //------------------------------------------------------//
 
 function loop() {
+    //## PotatoIfy! Loop ##//
+    if (PermaPotato == true) {
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+            if (ent.GetName() != "weapon_portalgun_potatoifyied") {
+                PotatoIfy()
+            }
+        }
+    }
+
     //## Run player join code when a player joins ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
