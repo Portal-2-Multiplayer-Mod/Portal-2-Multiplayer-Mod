@@ -477,23 +477,35 @@ function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
     return plist
 }
 
+PrecachedProps <- []
 function PrecacheModel(mdl) {
-    if (!Entities.FindByModel(null, mdl)) {
-        // Add the models/ to the side of the model name if it's not already there
-        if (mdl.slice(0, 7) != "models/") {
-            mdl = "models/" + mdl
+    // Add the models/ to the side of the model name if it's not already there
+    if (mdl.slice(0, 7) != "models/") {
+        mdl = "models/" + mdl
+    }
+    // Add the .mdl to the end of the model name if it's not already there
+    if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl") {
+        mdl = mdl + ".mdl"
+    }
+    // Remove the models/ from the left side and the .mdl from the right side
+    local minimdl = mdl.slice(7, mdl.len())
+    minimdl = minimdl.slice(0, minimdl.len() - 4)
+    
+    // Check if the model is already precached
+    local NotPrecached = true
+    foreach (precached in PrecachedProps) {
+        if (precached == minimdl) {
+            NotPrecached = false
         }
-        // Add the .mdl to the end of the model name if it's not already there
-        if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl") {
-            mdl = mdl + ".mdl"
-        }
-        // Remove the models/ from the left side and the .mdl from the right side
-        local minimdl = mdl.slice(7, mdl.len())
-        minimdl = minimdl.slice(0, minimdl.len() - 4)
-        printl("Precaching model: " + minimdl + " AKA " + mdl)
+    }
 
+    if (!Entities.FindByModel(null, mdl) && NotPrecached == true) {
+        PrecachedProps.push(minimdl)
         SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl + "; sv_cheats 0")
         SendToConsole("script Entities.FindByModel(null, \"" + mdl + "\").Destroy()")
+        printl("Precached model: " + minimdl + " AKA " + mdl)
+    } else {
+        printl("Model: " + mdl + " already precached!")
     }
 }
 
