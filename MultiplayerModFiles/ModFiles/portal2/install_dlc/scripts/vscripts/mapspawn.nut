@@ -26,7 +26,7 @@ DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- false // Set to false if you want to use the plugin (LINUX ONLY)
+UsePlugin <- true // Set to false if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -82,9 +82,16 @@ GlobalSpawnClass <- class {
     }
 }
 
+IsOnSingleplayer <- false
+if (GetMapName().slice(0,7)=="mp_coop") {
+    IsOnSingleplayer = false
+} else {
+    IsOnSingleplayer = true
+}
 
 EventList <- []
 PermaPotato <- false
+
 MadeSpawnClass <- false
 usefogcontroller <- false
 yes <- ""
@@ -309,6 +316,23 @@ function init() {
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
+function SetCosmetics(p) {
+    if (PluginLoaded == true) {
+        // Get Nessasary Data
+        local pname = GetPlayerName(p.entindex())
+
+        //## Kyle Customization ##//
+        if (pname == "kyleraykbs") {
+            SetPlayerModel(p, "models/info_character/info_character_player.mdl")
+        }
+
+        //## Wolfe Customization ##//
+        if (pname == "wolfe") {
+            // Nothing...
+        }
+    }
+}
+
 function RandomColor() {
     local rcr = RandomInt(0, 255)
     local rcg = RandomInt(0, 255)
@@ -476,6 +500,30 @@ function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
     return plist
 }
 
+function MinifyModel(mdl) {
+// Add the models/ to the side of the model name if it's not already there
+    if (mdl.slice(0, 7) == "models/") {
+        mdl = mdl.slice(7, mdl.len())
+    }
+    // Add the .mdl to the end of the model name if it's not already there
+    if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
+        mdl = mdl.slice(0, mdl.len() - 4)
+    }
+    return mdl
+}
+
+AssignedPlayerModels <- []
+function SetPlayerModel(p, mdl) {
+    PrecacheModel(mdl)
+    local mdl2 = MinifyModel(mdl)
+    SendToConsole("script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")")
+    local pmodelclass = class {
+        player = p
+        model = mdl
+    }
+    AssignedPlayerModels.push(pmodelclass)
+}
+
 PrecachedProps <- []
 function PrecacheModel(mdl) {
     // Add the models/ to the side of the model name if it's not already there
@@ -486,9 +534,9 @@ function PrecacheModel(mdl) {
     if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl") {
         mdl = mdl + ".mdl"
     }
+
     // Remove the models/ from the left side and the .mdl from the right side
-    local minimdl = mdl.slice(7, mdl.len())
-    minimdl = minimdl.slice(0, minimdl.len() - 4)
+    local minimdl = MinifyModel(mdl)
     
     // Check if the model is already precached
     local NotPrecached = true
@@ -957,6 +1005,15 @@ function loop() {
                 // Run player join code
                 OnPlayerJoin(p, script_scope)
             }
+        }
+    }
+
+    //## Set PlayerModel ##//
+    foreach (pmodel in AssignedPlayerModels) {
+        local plr = pmodel.player
+        local mdlmodel = pmodel.model
+        if (plr.GetModelName() != mdlmodel) {
+            SendToConsole("script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")")
         }
     }
 
@@ -1690,6 +1747,8 @@ function OnPlayerJoin(p, script_scope) {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
         }
     }
+
+    SetCosmetics(p)
 }
 
 //////////////////////
@@ -1828,7 +1887,7 @@ function GeneralOneTime() {
         // Load plugin
         EntFireByHandle(pluginloadcommand, "Command", "plugin_load 32pmod", 0, null, null)
         // Wait for plugin to load and then restart map
-        EntFireByHandle(pluginloadcommand, "Command", "changelevel mp_coop_lobby_3", 0, null, null)
+        EntFireByHandle(pluginloadcommand, "Command", "portal2mprslv", 0, null, null)
         LoadPlugin <- false
     }
 
@@ -1837,9 +1896,6 @@ function GeneralOneTime() {
 
     // Set a varible to tell the map loaded
     HasSpawned <- true
-
-    // show the chat again
-    SendToConsole("hud_saytext_time 12")
 
     // Cache orange players original position
     local p = null
@@ -1905,29 +1961,30 @@ function GeneralOneTime() {
     local radius = null
 
     //# Attempt to fix some general map issues #//
-        local DoorEntities = [
-            "airlock_1-door1-airlock_entry_door_close_rl",
-            "airlock_2-door1-airlock_entry_door_close_rl",
-            "last_airlock-door1-airlock_entry_door_close_rl",
-            "airlock_1-door1-door_close",
-            "airlock1-door1-door_close",
-            "camera_door_3-relay_doorclose",
-            "entry_airlock-door1-airlock_entry_door_close_rl",
-            "door1-airlock_entry_door_close_rl",
-            "airlock-door1-airlock_entry_door_close_rl",
-            "orange_door_1-ramp_close_start",
-            "blue_door_1-ramp_close_start",
-            "orange_door_1-airlock_player_block",
-            "blue_door_1-airlock_player_block",
-            "airlock_3-door1-airlock_entry_door_close_rl",  //mp_coop_sx_bounce (Sixense map)
-        ]
+    local DoorEntities = [
+        "airlock_1-door1-airlock_entry_door_close_rl",
+        "airlock_2-door1-airlock_entry_door_close_rl",
+        "last_airlock-door1-airlock_entry_door_close_rl",
+        "airlock_1-door1-door_close",
+        "airlock1-door1-door_close",
+        "camera_door_3-relay_doorclose",
+        "entry_airlock-door1-airlock_entry_door_close_rl",
+        "door1-airlock_entry_door_close_rl",
+        "airlock-door1-airlock_entry_door_close_rl",
+        "orange_door_1-ramp_close_start",
+        "blue_door_1-ramp_close_start",
+        "orange_door_1-airlock_player_block",
+        "blue_door_1-airlock_player_block",
+        "airlock_3-door1-airlock_entry_door_close_rl",  //mp_coop_sx_bounce (Sixense map)
+    ]
 
+    if (IsOnSingleplayer == false) {
         foreach (DoorType in DoorEntities) {
             try {
                 Entities.FindByName(null, DoorType).Destroy()
-            } catch(exception) {
-            }
+            } catch(exception) { }
         }
+    }
 
     // Create props after cache
     CreatePropsForLevel(false, true, false)
