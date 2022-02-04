@@ -7,11 +7,14 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        Entities.FindByClassnameNearest("info_player_start", Vector(2715.680664, -4926.100586, 6720.031250), 320).Destroy()
 
         // 799.647827 -2908.963623 7232.031250;
         GlobalSpawnClass.useautospawn <- true
         GlobalSpawnClass.blue.spawnpoint <- Vector(799.647827, -2908.963623, 7232.031250)
         GlobalSpawnClass.red.spawnpoint <- Vector(799.647827, -2908.963623, 7232.031250)
+        GlobalSpawnClass.blue.rotation <- Vector(0, -90, 0)
+        GlobalSpawnClass.red.rotation <- Vector(0, -90, 0)
 
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)

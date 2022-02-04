@@ -717,7 +717,6 @@ function BestGuessSpawnpoint() {
                 printl("Starting box ent found but not enough surrounding box ents")
             }
         }
-
     }
     if (MadeSpawnClass == false && GlobalSpawnClass.blue.spawnpoint.x == 0 && GlobalSpawnClass.blue.spawnpoint.y == 0) {
 
@@ -853,9 +852,10 @@ function BestGuessSpawnpoint() {
         GlobalSpawnClass.red.spawnpoint <- FinalSpawnRed
         GlobalSpawnClass.red.rotation <- FinalRotationRed
         
-        MadeSpawnClass = true
+        MadeSpawnClass <- true
         return GlobalSpawnClass
     } else {
+        MadeSpawnClass <- true
         return GlobalSpawnClass
     }
 }
