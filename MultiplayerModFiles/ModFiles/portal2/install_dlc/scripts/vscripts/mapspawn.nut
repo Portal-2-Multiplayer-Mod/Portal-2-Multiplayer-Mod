@@ -52,6 +52,7 @@ if (RandomPortalSize==true) {
     randomportalsize <- 34
     randomportalsizeh <- 34
 }
+
 // Setup A Global SpawnClass
 GlobalSpawnClass <- class {
     // Try To Make All Spawns Global
@@ -81,6 +82,8 @@ GlobalSpawnClass <- class {
     }
 }
 
+
+EventList <- []
 PermaPotato <- false
 MadeSpawnClass <- false
 usefogcontroller <- false
@@ -472,6 +475,26 @@ function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
         }
     }
     return plist
+}
+
+function PrecacheModel(mdl) {
+    if (!Entities.FindByModel(null, mdl)) {
+        // Add the models/ to the side of the model name if it's not already there
+        if (mdl.slice(0, 7) != "models/") {
+            mdl = "models/" + mdl
+        }
+        // Add the .mdl to the end of the model name if it's not already there
+        if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl") {
+            mdl = mdl + ".mdl"
+        }
+        // Remove the models/ from the left side and the .mdl from the right side
+        local minimdl = mdl.slice(7, mdl.len())
+        minimdl = minimdl.slice(0, minimdl.len() - 4)
+        printl("Precaching model: " + minimdl + " AKA " + mdl)
+
+        SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl + "; sv_cheats 0")
+        SendToConsole("script Entities.FindByModel(null, \"" + mdl + "\").Destroy()")
+    }
 }
 
 function FindPlayerClass(plyr) {
@@ -888,6 +911,12 @@ function TeleportToSpawnPoint(p, SpawnClass) {
 //------------------------------------------------------//
 
 function loop() {
+    //## Event List ##//
+    if (EventList.len() > 0) {
+        SendToConsole("script " + EventList[0])
+        EventList.remove(0)
+    }
+
     //## PotatoIfy! Loop ##//
     if (PermaPotato == true) {
         local ent = null
