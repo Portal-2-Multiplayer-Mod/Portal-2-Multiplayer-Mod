@@ -15,7 +15,7 @@ if (GetMapName() == "mp_coop_rat_maze") {
     if (CacheTime==true) {
         // Cache Objects
 
-        CacheModel("props/reflection_cube.mdl")
+        PrecacheModel("props/reflection_cube.mdl")
 
         DoneCacheing <- true
   }
@@ -47,13 +47,13 @@ if (GetMapName() == "sp_a3_crazy_box") {
     if (CacheTime==true) {
         // Cache Objects
 
-        CacheModel("props_bts/vactube_128_straight.mdl")
+        PrecacheModel("props_bts/vactube_128_straight.mdl")
 
-        CacheModel("props_underground/underground_boxdropper.mdl")
+        PrecacheModel("props_underground/underground_boxdropper.mdl")
 
-        CacheModel("props_underground/underground_boxdropper_cage.mdl")
+        PrecacheModel("props_underground/underground_boxdropper_cage.mdl")
 
-        CacheModel("props_factory/factory_panel_metal_chopped_top_128x128.mdl")
+        PrecacheModel("props_factory/factory_panel_metal_chopped_top_128x128.mdl")
 
         DoneCacheing <- true
   }
@@ -126,39 +126,39 @@ if (GetMapName() == "mp_coop_lobby_3") {
     if (CacheTime==true) {
         // Cache Objects
 
-        CacheModel("car_int_dest/car_int_dest.mdl")
+        PrecacheModel("car_int_dest/car_int_dest.mdl")
 
-        CacheModel("props_bts/truss_1024.mdl")
+        PrecacheModel("props_bts/truss_1024.mdl")
 
-        CacheModel("props_bts/hanging_walkway_32a.mdl")
+        PrecacheModel("props_bts/hanging_walkway_32a.mdl")
 
-        CacheModel("props_bts/hanging_walkway_64a.mdl")
+        PrecacheModel("props_bts/hanging_walkway_64a.mdl")
 
-        CacheModel("props_gameplay/push_button.mdl")
+        PrecacheModel("props_gameplay/push_button.mdl")
 
-        CacheModel("a4_destruction/wallpanel_256_cdest.mdl")
+        PrecacheModel("a4_destruction/wallpanel_256_cdest.mdl")
 
-        CacheModel("props_bts/lab_pod_b.mdl")
+        PrecacheModel("props_bts/lab_pod_b.mdl")
 
-        CacheModel("props_bts/hanging_walkway_128c.mdl")
+        PrecacheModel("props_bts/hanging_walkway_128c.mdl")
 
-        CacheModel("props_gameplay/push_button_mp.mdl")
+        PrecacheModel("props_gameplay/push_button_mp.mdl")
 
-        CacheModel("anim_wp/tv_wallpanel.mdl")
+        PrecacheModel("anim_wp/tv_wallpanel.mdl")
 
-        CacheModel("props_bts/hanging_walkway_512a.mdl")
+        PrecacheModel("props_bts/hanging_walkway_512a.mdl")
 
-        CacheModel("props_bts/push_button_stand.mdl")
+        PrecacheModel("props_bts/push_button_stand.mdl")
 
-        CacheModel("props_gameplay/industrial_elevator_a.mdl")
+        PrecacheModel("props_gameplay/industrial_elevator_a.mdl")
 
-        CacheModel("props_bts/hanging_walkway_l.mdl")
+        PrecacheModel("props_bts/hanging_walkway_l.mdl")
 
-        CacheModel("props_bts/hanging_walkway_end_a.mdl")
+        PrecacheModel("props_bts/hanging_walkway_end_a.mdl")
 
-        CacheModel("props_bts/hanging_walkway_128a.mdl")
+        PrecacheModel("props_bts/hanging_walkway_128a.mdl")
 
-        CacheModel("a4_destruction/fin3_fgwallsmash_stat.mdl")
+        PrecacheModel("a4_destruction/fin3_fgwallsmash_stat.mdl")
 
         DoneCacheing <- true
   }
@@ -339,7 +339,7 @@ if (GetMapName() == "sp_a2_bts2") {
     if (CacheTime==true) {
         // Cache Objects
 
-        CacheModel("props_bts/hanging_walkway_128a.mdl")
+        PrecacheModel("props_bts/hanging_walkway_128a.mdl")
 
         DoneCacheing <- true
   }
@@ -527,19 +527,19 @@ if (GetMapName() == "sp_a4_intro") {
     if (CacheTime==true) {
         // Cache Objects
 
-        CacheModel("props_backstage/vacum_flange_a.mdl")
+        PrecacheModel("props_backstage/vacum_flange_a.mdl")
 
-        CacheModel("props_bts/vactube_90deg_04.mdl")
+        PrecacheModel("props_bts/vactube_90deg_04.mdl")
 
-        CacheModel("props_bts/vactube_connector.mdl")
+        PrecacheModel("props_bts/vactube_connector.mdl")
 
-        CacheModel("props_backstage/item_dropper_static_open.mdl")
+        PrecacheModel("props_backstage/item_dropper_static_open.mdl")
 
-        CacheModel("props_bts/vactube_90deg_03.mdl")
+        PrecacheModel("props_bts/vactube_90deg_03.mdl")
 
-        CacheModel("props_bts/vactube_128_straight.mdl")
+        PrecacheModel("props_bts/vactube_128_straight.mdl")
 
-        CacheModel("props_bts/vactube_90deg_06.mdl")
+        PrecacheModel("props_bts/vactube_90deg_06.mdl")
 
         DoneCacheing <- true
   }

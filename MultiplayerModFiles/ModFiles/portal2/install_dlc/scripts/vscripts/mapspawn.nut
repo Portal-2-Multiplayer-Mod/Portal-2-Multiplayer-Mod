@@ -97,7 +97,6 @@ BundgeeHookMessage <- "none"
 OrangeCacheFailed <- false
 CanClearCache <- false
 DoneCacheing <- false
-CachedModels <- []
 IsInSpawnZone <- []
 HasSpawned <- false
 PlayerColorCached <- []
@@ -584,33 +583,33 @@ function TriggerOnceHook(TriggerName, FunctionName) {
 
 }
 
-function CacheModel(ModelName) {
-    if (Entities.FindByModel(null, "models/"+ModelName)) {
-            if (GetDeveloperLevel() == 1) {
-                printl("(P2:MM): Model " + ModelName + " is already cached!")
-            }
-        } else {
-        try {
-            if (servercommand) {
-                if (GetDeveloperLevel() == 1) {
-                    printl("(P2:MM): point_servercommand to cache props already exists!")
-                }
-            }
-        } catch(exception) {
-            // Create an entity that sends a server command
-            servercommand <- Entities.CreateByClassname("point_servercommand")
-        }
-        EntFireByHandle(servercommand, "command", "hud_saytext_time 0", 0, null, null)
-        EntFireByHandle(servercommand, "command", "sv_cheats 1", 0, null, null)
-        EntFireByHandle(servercommand, "command", "prop_dynamic_create " + ModelName, 0, null, null)
-        EntFireByHandle(servercommand, "command", "sv_cheats 0", 0, null, null)
-        CachedModels.push("models/"+ModelName)
+// function CacheModel(ModelName) {
+//     if (Entities.FindByModel(null, "models/"+ModelName)) {
+//             if (GetDeveloperLevel() == 1) {
+//                 printl("(P2:MM): Model " + ModelName + " is already cached!")
+//             }
+//         } else {
+//         try {
+//             if (servercommand) {
+//                 if (GetDeveloperLevel() == 1) {
+//                     printl("(P2:MM): point_servercommand to cache props already exists!")
+//                 }
+//             }
+//         } catch(exception) {
+//             // Create an entity that sends a server command
+//             servercommand <- Entities.CreateByClassname("point_servercommand")
+//         }
+//         EntFireByHandle(servercommand, "command", "hud_saytext_time 0", 0, null, null)
+//         EntFireByHandle(servercommand, "command", "sv_cheats 1", 0, null, null)
+//         EntFireByHandle(servercommand, "command", "prop_dynamic_create " + ModelName, 0, null, null)
+//         EntFireByHandle(servercommand, "command", "sv_cheats 0", 0, null, null)
+//         CachedModels.push("models/"+ModelName)
 
-        if (GetDeveloperLevel() == 1) {
-            printl("(P2:MM): Model " + ModelName + " has been cached sucessfully!")
-        }
-    }
-}
+//         if (GetDeveloperLevel() == 1) {
+//             printl("(P2:MM): Model " + ModelName + " has been cached sucessfully!")
+//         }
+//     }
+// }
 
 function GetAdminLevel(id) {
   foreach (playername in Admins) {
@@ -1027,29 +1026,29 @@ function loop() {
         }
     } catch(exception) {}
 
-    //## Delete all cached models ##//
-    if (DoneCacheing==true) {
-        // If model has cached successfully delete it from the level
-        foreach (index, CustomGameModel in CachedModels)  {
-            // Find all entities with the model name
-            local ent = null
-            while (ent = Entities.FindByModel(ent, CustomGameModel)) {
-                try {
-                    // If it's a prop_dynamic_create entity delete it
-                if (ent.GetName().slice(0, 17)!="genericcustomprop") {
-                    ent.Destroy()
-                }
-                } catch(exception) {
-                    ent.Destroy()
-                }
-            }
-        }
-    }
-    if (CanClearCache==true) {
-        foreach (index, CustomGameModel in CachedModels)  {
-            CachedModels.remove(index)
-        }
-    }
+    // //## Delete all cached models ##//
+    // if (DoneCacheing==true) {
+    //     // If model has cached successfully delete it from the level
+    //     foreach (index, CustomGameModel in CachedModels)  {
+    //         // Find all entities with the model name
+    //         local ent = null
+    //         while (ent = Entities.FindByModel(ent, CustomGameModel)) {
+    //             try {
+    //                 // If it's a prop_dynamic_create entity delete it
+    //             if (ent.GetName().slice(0, 17)!="genericcustomprop") {
+    //                 ent.Destroy()
+    //             }
+    //             } catch(exception) {
+    //                 ent.Destroy()
+    //             }
+    //         }
+    //     }
+    // }
+    // if (CanClearCache==true) {
+    //     foreach (index, CustomGameModel in CachedModels)  {
+    //         CachedModels.remove(index)
+    //     }
+    // }
 
     //## GlobalSpawnClass SetSpawn ##//
     if (GlobalSpawnClass.usesetspawn == true) {
@@ -1746,11 +1745,8 @@ function PostMapLoad() {
     }
 
     if (RandomTurrets==true) {
-        CacheModel("npcs/turret/turret_skeleton.mdl")
-        CacheModel("npcs/turret/turret_backwards.mdl")
-        // CacheModel("npcs/turret/turret_boxed.mdl")
-        // CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
-        // CacheModel("npcs/turret/turret_fx_laser_gib4.mdl")
+        PrecacheModel("npcs/turret/turret_skeleton.mdl")
+        PrecacheModel("npcs/turret/turret_backwards.mdl")
     }
 
 	//gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
@@ -1837,7 +1833,7 @@ function GeneralOneTime() {
     }
 
     // Clear all cached models from our temp cache as they are already cached
-    CanClearCache <- true
+    // CanClearCache <- true
 
     // Set a varible to tell the map loaded
     HasSpawned <- true
