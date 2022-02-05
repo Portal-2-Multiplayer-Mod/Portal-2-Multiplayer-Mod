@@ -154,6 +154,8 @@ foreach (line in ConsoleAscii) {
     printl(line)
 }
 
+CheatsOn <- false
+
 // Add names to credits
 MPMCoopCreditNames <- [
 "",
@@ -223,7 +225,7 @@ MPMCoopCreditNames <- [
 // █ █░▀█ █ ░█░
 
 function init() {
-
+    
     MapSupport(true, false, false, false, false, false, false)
 
     colordisplay <- Entities.CreateByClassname("game_text")
@@ -315,6 +317,27 @@ function init() {
 
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
+
+function ToggleCheats() {
+    if (CheatsOn == null || CheatsOn == false) {
+        CheatsOn = true
+    } else {
+        CheatsOn = false
+    }
+}
+
+function SetCheats() {
+    CheatsOn = Entities.FindByModel(null, "models/cheatdetectionp232.mdl")
+    if (CheatsOn == null || CheatsOn == false) {
+        CheatsOn = false
+    } else {
+        CheatsOn = true
+        Entities.FindByModel(null, "models/cheatdetectionp232.mdl").Destroy()
+    }
+    printl("===== Cheat Detection =====")
+    printl("           " + CheatsOn)
+    printl("===========================")
+}
 
 function SetCosmetics(p) {
     if (PluginLoaded == true) {
@@ -514,7 +537,7 @@ function MinifyModel(mdl) {
 
 AssignedPlayerModels <- []
 function SetPlayerModel(p, mdl) {
-    PrecacheModel(mdl)
+    PrecacheModelNoDelay(mdl)
     local mdl2 = MinifyModel(mdl)
     SendToConsole("script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")")
     local pmodelclass = class {
@@ -526,7 +549,10 @@ function SetPlayerModel(p, mdl) {
 
 PrecachedProps <- []
 function PrecacheModel(mdl) {
-    // Add the models/ to the side of the model name if it's not already there
+    SendToConsole("script PrecacheModelNoDelay(\"" + mdl + "\")")
+}
+function PrecacheModelNoDelay(mdl) {
+        // Add the models/ to the side of the model name if it's not already there
     if (mdl.slice(0, 7) != "models/") {
         mdl = "models/" + mdl
     }
@@ -548,7 +574,11 @@ function PrecacheModel(mdl) {
 
     if (!Entities.FindByModel(null, mdl) && NotPrecached == true) {
         PrecachedProps.push(minimdl)
-        SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl + "; sv_cheats 0")
+        if (CheatsOn == false) {
+            SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl + "; sv_cheats 0")
+        } else {
+            SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
+        }
         SendToConsole("script Entities.FindByModel(null, \"" + mdl + "\").Destroy()")
         printl("Precached model: " + minimdl + " AKA " + mdl)
     } else {
@@ -1783,6 +1813,10 @@ function OnPlayerRespawn(player) {
 ///////////////////////////////////////
 
 function PostMapLoad() {
+    //## Cheat Detection ##//
+    SendToConsole("prop_dynamic_create cheatdetectionp232")
+    SendToConsole("script SetCheats()")
+
     // add a hook to the chat command function
     if (PluginLoaded==true) {
         printl("(P2:MM): Plugin Loaded")
