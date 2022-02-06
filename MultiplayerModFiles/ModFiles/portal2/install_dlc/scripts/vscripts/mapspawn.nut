@@ -36,7 +36,7 @@ TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower num
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
 //-----------------------------------
-Admins <- ["vista", "Bumpy", "Nanoman2525", "Wolƒe Strider Shoσter", "CHARITY", "Dreadnox", "!wol", "sear"]
+Admins <- ["vista", "Bumpy", "Nanoman2525", "Wolƒe Strider Shoσter", "CHARITY", "Dreadnox", "!wol", "sear", "Ayden", "SuperSpeed", "Eggshell97", "trixie6709"]
 //-----------------------------------
 
 //  ██████  ██████  ██████  ███████
@@ -91,6 +91,7 @@ if (GetMapName().slice(0,7)=="mp_coop") {
 
 EventList <- []
 PermaPotato <- false
+TotalRemovedEnts <- 0
 
 MadeSpawnClass <- false
 usefogcontroller <- false
@@ -349,10 +350,18 @@ function SetCosmetics(p) {
             SetPlayerModel(p, "models/info_character/info_character_player.mdl")
         }
 
-        //## Wolfe Customization ##//
-        if (pname == "wolfe") {
-            // Nothing...
+        // //## Dreadnox Customization ##//
+        if (pname == "Dreadnox") {
+            printl("Dreadnox is here!")
+            SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
         }
+
+        //## Sear Customization ##//
+        if (pname == "sear") {
+            SetPlayerModel(p, "models/props_underground/underground_floor_button.mdl")
+        }
+
+
     }
 }
 
@@ -617,6 +626,22 @@ function FindAndReplace(inputstr, findstr, replacestr) {
 
     local newstr = inputstr.slice(0, startstrip) + replacestr + inputstr.slice(endstrip, inputstr.len())
     return newstr
+}
+
+function RemoveAllClassname(classname, delay = 0) {
+    local p = null
+    while (p = Entities.FindByClassname(p, classname)) {
+        EntFireByHandle(p, "kill", "", delay, null, null)
+        TotalRemovedEnts = TotalRemovedEnts + 1
+    }
+}
+
+function RemoveAllClassnameDistance(classname, pos, dist, delay = 0) {
+    local p = null
+    while (p = Entities.FindByClassnameWithin(p, classname, pos, dist)) {
+        EntFireByHandle(p, "kill", "", delay, null, null)
+        TotalRemovedEnts = TotalRemovedEnts + 1
+    }
 }
 
 function UnNegative(num) {
@@ -1006,6 +1031,57 @@ function loop() {
         EventList.remove(0)
     }
 
+    //## Get Player Color ##//
+    function GetPlayerColor(p, multiply = true) {
+        local PlayerID = p.entindex()
+        try {
+            switch (PlayerID) {
+                case 1 : R <- 255; G <- 255; B <- 255; break;
+                case 2 : R <- 180, G <- 255, B <- 180; break;
+                case 3 : R <- 120, G <- 140, B <- 255; break;
+                case 4 : R <- 255, G <- 170, B <- 120; break;
+                case 5 : R <- 255, G <- 100, B <- 100; break;
+                case 6 : R <- 255, G <- 180, B <- 255; break;
+                case 7 : R <- 255, G <- 255, B <- 180; break;
+                case 8 : R <-   0, G <- 255, B <- 240; break;
+                case 9 : R <-  75, G <-  75, B <-  75; break;
+                case 10: R <- 100, G <-  80, B <-   0; break;
+                case 11: R <-   0, G <-  80, B <- 100; break;
+                case 12: R <- 120, G <- 155, B <-  25; break;
+                case 13: R <-   0, G <-   0, B <- 100; break;
+                case 14: R <-  80, G <-   0, B <-   0; break;
+                case 15: R <-   0, G <-  75, B <-   0; break;
+                case 16: R <-   0, G <-  75, B <-  75; break;
+            }
+        } catch(e) { }
+        if (PlayerID > 16) {
+            R <- 255; G <- 255; B <- 255;
+        }
+
+        if (multiply == true) {
+            // Multiply the color 
+            R <- R * 0.5
+            G <- G * 0.5
+            B <- B * 0.5
+            // cap the color at 255
+            if (R > 255) {
+                R <- 255
+            }
+            if (G > 255) {
+                G <- 255
+            }
+            if (B > 255) {
+                B <- 255
+            }
+        }
+
+        return class {
+            r = R
+            g = G
+            b = B
+        }
+    }
+
     //## PotatoIfy! Loop ##//
     if (PermaPotato == true) {
         local ent = null
@@ -1042,9 +1118,11 @@ function loop() {
     foreach (pmodel in AssignedPlayerModels) {
         local plr = pmodel.player
         local mdlmodel = pmodel.model
-        if (plr.GetModelName() != mdlmodel) {
-            SendToConsole("script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")")
-        }
+        try {
+            if (plr.GetModelName() != mdlmodel) {
+                SendToConsole("script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")")
+            }
+        } catch(e) { }
     }
 
     //## Cache original spawn position ##//
@@ -1749,6 +1827,9 @@ function OnPlayerJoin(p, script_scope) {
     if (PluginLoaded==true) {
         currentplayerclass.username <- GetPlayerName(p.entindex())
     }
+
+    SetCosmetics(p)
+
     // player color
     local localcolorclass = {}
     localcolorclass.r <- R
@@ -1777,8 +1858,6 @@ function OnPlayerJoin(p, script_scope) {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
         }
     }
-
-    SetCosmetics(p)
 }
 
 //////////////////////
