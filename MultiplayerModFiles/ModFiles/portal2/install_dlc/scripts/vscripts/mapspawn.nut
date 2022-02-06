@@ -358,10 +358,18 @@ function SetCosmetics(p) {
 
         //## Sear Customization ##//
         if (pname == "sear") {
-            SetPlayerModel(p, "models/props_underground/underground_floor_button.mdl")
+            SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl")
         }
 
+        //## Mellow Customization ##//
+        if (pname == "Mellow1238") {
+            SetPlayerModel(p, "models/props_moon/moonrock_med08.mdl")
+        }
 
+        //## Nano Customization ##//
+        if (pname == "Nanoman2525") {
+            SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
+        }
     }
 }
 
