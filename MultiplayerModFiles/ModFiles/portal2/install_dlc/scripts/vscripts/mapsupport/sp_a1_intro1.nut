@@ -171,9 +171,11 @@ function StopStickAndTeleport() {
     EntFire("CustomBrush10", "kill", "", 0)
     EntFire("CustomBrush11", "kill", "", 0)
     EntFire("CustomBrush12", "kill", "", 0)
+
+    EntFire("container_collision", "EnableCollision", "", 0)
     
     Entities.FindByName(null, "@container_stacks_1").__KeyValueFromString("targetname", "p232save1")
-    Entities.FindByName(null, "@container_stacks_2").__KeyValueFromString("targetname", "p232save2")
+    Entities.FindByName(null, "p232containerstacks2").__KeyValueFromString("targetname", "p232save2")
     Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232save3")
     Entities.FindByName(null, "kill_container_rl").Destroy()
     containerStick = false
@@ -192,23 +194,34 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         CustomBrush1 <- false
         CustomBrush1Cache <- false
 
+        Entities.FindByName(null, "@music_awake").__KeyValueFromString("targetname", "p232musicawake")
         Entities.FindByName(null, "open_portal_relay").__KeyValueFromString("targetname", "p232portalrelay")
+        Entities.FindByName(null, "mmc_clock_flash_relay").__KeyValueFromString("targetname", "p232clockflashrelay")
+        Entities.FindByName(null, "@container_stacks_2").__KeyValueFromString("targetname", "p232containerstacks2")
         Entities.FindByName(null, "portal_red_0_deactivate_rl").Destroy()
         Entities.FindByName(null, "portal_blue_0_deactivate_rl").Destroy()
+
+        EntFire("container_collision", "DisableCollision", "", 0)
 
         EntFire("return_to_bed_button", "addoutput", "OnPressed p232servercommand:command:script p232DestroyedSequence():5")
         EntFire("@rl_container_ride", "addoutput", "OnTrigger p232servercommand:command:script p232DropCollision():0.5")
         EntFire("@rl_container_ride_second_section", "addoutput", "OnTrigger p232servercommand:command:script p232ParentAndStartMath()")
+        EntFire("@rl_container_ride_second_section", "addoutput", "OnTrigger p232containerstacks2:SetAnimation:anim1")
         EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p232servercommand:command:script StopStickAndTeleport()")
         EntFire("enter_chamber_trigger", "addoutput", "OnTrigger p232portalrelay:Trigger::34")
         //@rl_container_ride
-        EntFire("@container_stacks_2", "disabledraw", "", 0.1)
+        EntFire("relay_start_map", "addoutput", "OnTrigger p232clockflashrelay:Trigger")
+        EntFire("p232clockflashrelay", "addoutput", "OnTrigger p232clockflashrelay:Trigger::1")
         Entities.FindByName(null, "@knockout_teleport_1").Destroy()
         bumpout <- true
         //door_hud_hint_trigger
-        Entities.FindByName(null, "door_hud_hint_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().x, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().y + 500, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().z))
-        Entities.FindByName(null, "door_open_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_open_trigger").GetOrigin().x, Entities.FindByName(null, "door_open_trigger").GetOrigin().y + 500, Entities.FindByName(null, "door_open_trigger").GetOrigin().z))
+        Entities.FindByName(null, "door_hud_hint_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().x, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().y + 512, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().z))
+        Entities.FindByName(null, "door_open_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_open_trigger").GetOrigin().x, Entities.FindByName(null, "door_open_trigger").GetOrigin().y + 512, Entities.FindByName(null, "door_open_trigger").GetOrigin().z))
+        Entities.FindByName(null, "sphere_is_inside_room_trigger").SetOrigin(Vector(Entities.FindByName(null, "sphere_is_inside_room_trigger").GetOrigin().x, Entities.FindByName(null, "sphere_is_inside_room_trigger").GetOrigin().y + 512, Entities.FindByName(null, "sphere_is_inside_room_trigger").GetOrigin().z))
+        //Entities.FindByName(null, "container_entry_door").SetOrigin(Vector(Entities.FindByName(null, "container_entry_door").GetOrigin().x, Entities.FindByName(null, "container_entry_door").GetOrigin().y + 512, Entities.FindByName(null, "container_entry_door").GetOrigin().z))
+        //Entities.FindByName(null, "container_entry_door_push").SetOrigin(Vector(Entities.FindByName(null, "container_entry_door_push").GetOrigin().x, Entities.FindByName(null, "container_entry_door_push").GetOrigin().y + 512, Entities.FindByName(null, "container_entry_door_push").GetOrigin().z))
         Entities.FindByName(null, "door_1-door_close_relay").Destroy()
+        Entities.FindByClassnameNearest("logic_auto", Vector(-5675, 1459, 305), 16).Destroy()
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -348,6 +361,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // EntFire("CustomBrush11", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         // EntFire("CustomBrush12", "SetParent", "Actor_container_master", 0)
         // EntFire("CustomBrush12", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+
+        EntFire("relay_start_cryo_sequence", "Trigger", "", 0)
+        EntFire("relay_intro_camera", "Trigger", "", 0)
+        EntFire("p232musicawake", "PlaySound", "", 0.4)
+        EntFire("announcer_ding_on_wav", "PlaySound", "", 1.5)
+        EntFire("good_morning_vcd", "Start", "", 3)
     }
 
     if (MSLoop==true) {
