@@ -73,13 +73,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
         EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
 
-        // Sp_A2_Bts6 viewcontrol creation
-        Sp_A2_Bts6Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-        Sp_A2_Bts6Viewcontrol.__KeyValueFromString("targetname", "Sp_A2_Bts6Viewcontrol")
-        Sp_A2_Bts6Viewcontrol.__KeyValueFromString("target_team", "-1")
-        Sp_A2_Bts6Viewcontrol.SetOrigin(Vector(0, -80, -1332))
-        Sp_A2_Bts6Viewcontrol.SetAngles(20, 90, 0)
-        EntFireByHandle(Sp_A2_Bts6Viewcontrol, "setparent", "basement_breakers_platform", 0.1, null, null)
+        // Sp_A2_Finale4 viewcontrol creation
+        Sp_A2_Finale4Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+        Sp_A2_Finale4Viewcontrol.__KeyValueFromString("targetname", "Sp_A2_Finale4Viewcontrol")
+        Sp_A2_Finale4Viewcontrol.__KeyValueFromString("target_team", "-1")
+        Sp_A2_Finale4Viewcontrol.SetOrigin(Vector(0, -80, -1332))
+        Sp_A2_Finale4Viewcontrol.SetAngles(20, 90, 0)
+        EntFireByHandle(Sp_A2_Finale4Viewcontrol, "setparent", "basement_breakers_platform", 0.1, null, null)
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
@@ -95,7 +95,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("container_path2", "addoutput", "OnPass p232servercommand:command:script MoveSoundScape()")
         EntFire("claw3_movelinear", "addoutput", "OnFullyOpen pipe_orange_relay:trigger::10")
         EntFire("breaker_path2", "addoutput", "OnPass p232servercommand:command:script TeleportPlayersUp():1")
-        EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Bts6Viewcontrol:disable::1")
+        EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Finale4Viewcontrol:disable::1")
 
 
         EntFire("breaker_path2", "addoutput", "OnPass env_global01:turnoff::1")
@@ -408,7 +408,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!Entities.FindByName(null, "notinelevator")) {
             if (Sp_A4_Finale4ElevatorTeleport == true) {
-                EntFireByHandle(Sp_A2_Bts6Viewcontrol, "enable", "", 0, null, null)
+                EntFireByHandle(Sp_A2_Finale4Viewcontrol, "enable", "", 0, null, null)
                 GoodByeIdaho()
                 EntFireByHandle(env_global01, "turnon", "", 1, null, null)
                 EntFireByHandle(env_global02, "turnon", "", 1, null, null)
@@ -416,7 +416,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFireByHandle(env_global04, "turnon", "", 1, null, null)
                 EntFire("environment_darkness_1", "trigger", "", 5, null)
                 EntFire("light_dynamic_wheatley", "TurnOn", "", 5, null)
-                // EntFireByHandle(Sp_A2_Bts6Viewcontrol, "disable", "", 13, null, null)
+                // EntFireByHandle(Sp_A2_Finale4Viewcontrol, "disable", "", 13, null, null)
                 // EntFire("p232servercommand", "command", "script Entities.FindByClassname(null, \"player\").SetOrigin(Vector(-191.816742 -0.485268 64.031250))", 13)
 
                 //script Entities.FindByClassname(null, "player").SetOrigin(Vector(-191.816742 -0.485268 64.031250))
