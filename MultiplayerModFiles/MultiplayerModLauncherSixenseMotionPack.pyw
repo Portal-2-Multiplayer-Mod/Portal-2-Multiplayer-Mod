@@ -478,9 +478,9 @@ def Launch():
 
     # Copy the multiplayermod files into the new dlc using the dlc name
     if (iow):
-        shutil.copytree(owd + "\MultiplayerModFiles\MainFiles\install_dlc", owd + dlcname)
+        shutil.copytree(owd + "\MultiplayerModFiles\ModFiles\portal2\install_dlc", owd + dlcname)
     else:
-        shutil.copytree(owd + "/MultiplayerModFiles/MainFiles/install_dlc", owd + dlcname)
+        shutil.copytree(owd + "/MultiplayerModFiles/ModFiles/portal2/install_dlc", owd + dlcname)
     print("Copied \MultiplayerModFiles to " + dlcname)
 
     # Edit mapspawn file in the new dlc
