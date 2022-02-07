@@ -92,13 +92,13 @@ if (GetMapName() == "sp_a3_crazy_box") {
         sp_a3_crazy_box_custom_prop_14.__KeyValueFromString("solid", "6")
         sp_a3_crazy_box_custom_prop_14.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a3_crazy_box_custom_prop_15 = CreateProp("prop_dynamic", Vector(879.18041992188, -1113.8999023438, 1952.1126708984), "models/props_underground/underground_boxdropper.mdl", 0)
+        local sp_a3_crazy_box_custom_prop_15 = CreateProp("prop_dynamic", Vector(877.98041992188, -1112.2999023438, 1952.1126708984), "models/props_underground/underground_boxdropper.mdl", 0)
         sp_a3_crazy_box_custom_prop_15.SetAngles(0, 90, 0)
         sp_a3_crazy_box_custom_prop_15.__KeyValueFromString("solid", "6")
         sp_a3_crazy_box_custom_prop_15.__KeyValueFromString("targetname", "genericcustomprop_maindropper")
 
         local sp_a3_crazy_box_custom_prop_16 = CreateProp("prop_dynamic", Vector(877.94549560547, -1111.8862304688, 1951.9709472656), "models/props_underground/underground_boxdropper_cage.mdl", 0)
-        sp_a3_crazy_box_custom_prop_16.SetAngles(-7.4231045998841e-20, -179.99989318848, 1.52587890625e-05)
+        sp_a3_crazy_box_custom_prop_16.SetAngles(-7.4231045998841e-20, 89.99989318848, 1.52587890625e-05)
         sp_a3_crazy_box_custom_prop_16.__KeyValueFromString("solid", "6")
         sp_a3_crazy_box_custom_prop_16.__KeyValueFromString("targetname", "genericcustomprop")
 

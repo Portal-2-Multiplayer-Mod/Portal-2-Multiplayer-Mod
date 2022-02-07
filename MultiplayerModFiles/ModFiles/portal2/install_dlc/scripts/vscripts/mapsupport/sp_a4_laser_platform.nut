@@ -15,10 +15,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "entrance_door-close_door_rl").Destroy()
         Entities.FindByName(null, "fall_fade").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(4088, -528, -2080), 20).Destroy()
+        Entities.FindByClassnameNearest("trigger_once", Vector(2949, -1210, -2266.13), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(2267, -603, -142), 200).__KeyValueFromString("targetname", "mpmoddrop")
-        Sp_A4_Laser_Platform_1 <- false
         Entities.FindByClassnameNearest("trigger_multiple", Vector(2656, -696, -1984), 200).__KeyValueFromString("targetname", "doortriggeroverride")
         EntFire("doortriggeroverride", "addoutput", "OnStartTouch doortriggeroverride:kill::0.01", 1, null)
+        Sp_A4_Laser_Platform_1 <- false
     }
 
     if (MSPostPlayerSpawn==true) {
