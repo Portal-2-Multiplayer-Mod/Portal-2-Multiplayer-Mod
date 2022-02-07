@@ -50,7 +50,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("checkpoint_orange_1", "kill")
         EntFire("checkpoint_blue_1", "kill")
-        RemoveAllClassname("light_spot")
         RemoveAllClassname("beam_spotlight")
         RemoveAllClassname("logic_auto", 5)
         //keyframe_rope

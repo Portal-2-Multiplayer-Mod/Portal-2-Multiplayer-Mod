@@ -226,7 +226,7 @@ MPMCoopCreditNames <- [
 // █ █░▀█ █ ░█░
 
 function init() {
-    
+
     MapSupport(true, false, false, false, false, false, false)
 
     colordisplay <- Entities.CreateByClassname("game_text")
