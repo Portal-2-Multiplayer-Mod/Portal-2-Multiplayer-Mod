@@ -70,7 +70,7 @@ function Gelocity2RemoveLap() {
     printl("Gelocity2LapCount: " + Gelocity2LapCount)
     Entities.FindByName(null, "change_rounds_text_override").__KeyValueFromString("message", Gelocity2LapCount + " Laps")
     EntFire("change_rounds_text_override", "Display")
-    if (Gelocity2LapCount <= 1) {
+    if (Gelocity2LapCount <= 2) {
         EntFire("button_1_override", "Skin", "1")
         EntFire("rounds_button_1_override", "lock")
     }
@@ -140,6 +140,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // EntFire("gel_relay_override", "trigger", "", 2)
         //EntFire("gel_relay_override", "kill", "", 0.2)
         Entities.FindByName(null, "gel_killer").Destroy()
+        //relay_death_field_off_3
+        Entities.FindByName(null, "relay_death_field_off_1").Destroy()
+        Entities.FindByName(null, "relay_death_field_off_2").Destroy()
+        Entities.FindByName(null, "relay_death_field_off_3").Destroy()
 
         // Restart Level
         EntFire("restart_manager", "addouput", "OnChangeToAllTrue scom:command:portal2mprslv:1.5")
@@ -255,6 +259,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     rot = Vector(0, 90, 0)
                 }
             }
+            // 2561.067627 1493.421509 -191.96875
+            // Funnel Checkpoint
+            local CPPos = Vector(2561, 1493, -191)
+            local CPRadius = 550
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+                local CurrentPlayerClass = FindPlayerClass(p)
+                CurrentPlayerClass.Gelocity2CheckpointMove <- class {
+                    pos = Vector(2561, 1493, -191)
+                    rot = Vector(0, 90, 0)
+                }
+            }
             // 2675.282959 4715.997070 192.031250
             // Crusher Checkpoint
             local CPPos = Vector(2675, 4715, 192)
@@ -267,7 +283,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     rot = Vector(0, -180, 0)
                 }
             }
-            // -1791.025024 2439.269043 192.031250;
+            // -1334.455200 5547.971191 192.031250
+            // First Jump Checkpoint
+            local CPPos = Vector(-1334, 5547, 192)
+            local CPRadius = 550
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+                local CurrentPlayerClass = FindPlayerClass(p)
+                CurrentPlayerClass.Gelocity2CheckpointMove <- class {
+                    pos = Vector(-550, 5567, 192)
+                    rot = Vector(0, -180, 0)
+                }
+            }
+            // -1791.025024 2439.269043 192.031250
             // PitFling 1 Checkpoint
             local CPPos = Vector(-1791, 2439, 192)
             local CPRadius = 600
