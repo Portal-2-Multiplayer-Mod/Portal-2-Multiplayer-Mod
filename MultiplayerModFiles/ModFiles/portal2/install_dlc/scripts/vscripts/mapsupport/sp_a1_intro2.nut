@@ -9,6 +9,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun == true) {
         GlobalSpawnClass.useautospawn <- true
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+        //Entities.FindByName(null, "@glados").__KeyValueFromString("targetname", "p232gladosoverride")
         Entities.FindByClassnameNearest("trigger_once", Vector(-320, 832, -24), 100).Destroy()
         Entities.FindByName(null, "Fizzle_Trigger").Destroy()
         Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
@@ -16,6 +17,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSPostPlayerSpawn==true) {
         NewApertureStartElevatorFixes()
+        //Entities.FindByName(null, "p232gladosoverride").__KeyValueFromString("targetname", "@glados")
     }
 
     if (MSLoop==true) {
