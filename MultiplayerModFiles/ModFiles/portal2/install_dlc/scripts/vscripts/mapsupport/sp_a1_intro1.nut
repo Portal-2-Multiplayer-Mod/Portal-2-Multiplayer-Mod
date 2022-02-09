@@ -193,6 +193,33 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun==true) {
         CustomBrush1 <- false
         CustomBrush1Cache <- false
+        stoprenable <- false
+
+        // Create Env Globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+
+        HasStartedSp_A1_Intro1 <- false
 
         Entities.FindByName(null, "@music_awake").__KeyValueFromString("targetname", "p232musicawake")
         Entities.FindByName(null, "open_portal_relay").__KeyValueFromString("targetname", "p232portalrelay")
@@ -222,9 +249,30 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //Entities.FindByName(null, "container_entry_door_push").SetOrigin(Vector(Entities.FindByName(null, "container_entry_door_push").GetOrigin().x, Entities.FindByName(null, "container_entry_door_push").GetOrigin().y + 512, Entities.FindByName(null, "container_entry_door_push").GetOrigin().z))
         Entities.FindByName(null, "door_1-door_close_relay").Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-5675, 1459, 305), 16).Destroy()
+        OnlyOnceSp_A1_Intro1 <- true
     }
 
     if (MSPostPlayerSpawn==true) {
+        HasStartedSp_A1_Intro1 <- true
+        EntFire("relay_start_cryo_sequence", "Trigger", "", 0)
+        EntFire("relay_intro_camera", "Trigger", "", 0)
+        EntFire("p232musicawake", "PlaySound", "", 0.4)
+        EntFire("announcer_ding_on_wav", "PlaySound", "", 1.5)
+        EntFire("good_morning_vcd", "Start", "", 3)
+
+        printl("Ran")
+        Sp_A1_Intro1Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+        Sp_A1_Intro1Viewcontrol.__KeyValueFromString("targetname", "Sp_A1_Intro1Viewcontrol")
+        Sp_A1_Intro1Viewcontrol.__KeyValueFromString("target_team", "-1")
+        Sp_A1_Intro1Viewcontrol.SetOrigin(Entities.FindByName(null, "camera_intro").GetOrigin())
+        Sp_A1_Intro1Viewcontrol.SetAngles(0, 0, 0)
+        EntFire("Sp_A1_Intro1Viewcontrol", "setparent", "camera_intro", 0, null)
+        EntFire("Sp_A1_Intro1Viewcontrol", "setparentattachment", "camera_intro", 0, null)
+        EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0, null)
+        EntFire("Sp_A1_Intro1ViewcontrolTele", "disable", "", 12, null)
+        EntFire("Sp_A1_Intro1Viewcontrol", "addoutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
+        EntFire("Sp_A1_Intro1ViewcontrolTele", "addoutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
+
         // CustomBrush1
         CustomBrush1 <- Entities.CreateByClassname("func_brush")
         CustomBrush1.SetOrigin(Vector(-5738.623046875, 1778.7027587891, 194.95379638672))
@@ -361,15 +409,55 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // EntFire("CustomBrush11", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         // EntFire("CustomBrush12", "SetParent", "Actor_container_master", 0)
         // EntFire("CustomBrush12", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+    }
 
-        EntFire("relay_start_cryo_sequence", "Trigger", "", 0)
-        EntFire("relay_intro_camera", "Trigger", "", 0)
-        EntFire("p232musicawake", "PlaySound", "", 0.4)
-        EntFire("announcer_ding_on_wav", "PlaySound", "", 1.5)
-        EntFire("good_morning_vcd", "Start", "", 3)
+    if (MSOnPlayerJoin != false) {
+        if (stoprenable==true) {
+            printl("Player Joined (Reseting Viewcontrols)")
+            EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
+            EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
+        }
     }
 
     if (MSLoop==true) {
+        local p = Entities.FindByClassnameWithin(null, "player", Vector(-672, -1872, 51), 16)
+        try {
+            if (p.GetOrigin().z >= 45) {
+                p.SetOrigin(Vector(-8674, 1773, 36))
+                p.SetAngles(0, 0, 0)
+            }
+        } catch(exception) {}
+
+        if (HasStartedSp_A1_Intro1 == false) {
+            EntFireByHandle(Entities.FindByName(null, "cryo_fade_in_from_white"), "fade", "", 0, null, null)
+        }
+
+        if (Entities.FindByName(null, "Sp_A1_Intro1ViewcontrolTele")) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                p.SetOrigin(Vector(-8864, 1688, 36))
+                p.SetVelocity(Vector(0, 0, 0))
+            }
+        }
+
+        if (OnlyOnceSp_A1_Intro1 == true) {
+            if (Entities.FindByName(null, "Sp_A1_Intro1ViewcontrolDone")) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-8709.201172, 1690.068359, 36))
+                    p.SetAngles(-4.158184, 64.797371, 0)
+                }
+                EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+                stoprenable <- true
+                //Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
+                //Entities.FindByName(null, "knockout-portalgun").Destroy()
+                OnlyOnceSp_A1_Intro1 <- false
+            }
+        }
+
         // remove portalgun
         local ent = null
         while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
@@ -379,14 +467,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
             ent.Destroy()
         }
-
-        //;
-        // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-685, 3112, 2400), 100)) {
-            SendToConsole("changelevel sp_a1_intro2")
-        }
-
 
         try {
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "bottom_swivel_1").GetOrigin(), 10000)
@@ -511,6 +591,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 printl(playermiddle)
             }
             CustomBrush1Cache <- CustomBrush1.GetOrigin()
+        }
+        // Make our own changelevel trigger
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-685, 3112, 2400), 100)) {
+            SendToConsole("changelevel sp_a1_intro2")
         }
     }
 }

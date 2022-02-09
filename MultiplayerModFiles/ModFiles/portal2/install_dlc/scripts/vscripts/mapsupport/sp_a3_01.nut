@@ -72,7 +72,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
-        local p = Entities.FindByClassnameWithin(null, "player", Vector(-672.000000, -1871.999878, 51.000008), 10)
+        local p = Entities.FindByClassnameWithin(null, "player", Vector(-672, -1872, 51), 16)
         try {
             if (p.GetOrigin().z >= 45) {
                 p.SetOrigin(Vector(-720, -1852, 10))
