@@ -26,7 +26,7 @@ DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- true // Set to false if you want to use the plugin (LINUX ONLY)
+UsePlugin <- false // Set to false if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -229,6 +229,49 @@ function init() {
 
     MapSupport(true, false, false, false, false, false, false)
 
+    // Create a global servercommand entity
+    globalservercommand <- Entities.CreateByClassname("point_servercommand")
+    globalservercommand.__KeyValueFromString("targetname", "p232servercommand")
+
+    // Create entity to run loop() every 0.1 seconds
+    timer <- Entities.CreateByClassname("logic_timer")
+    timer.__KeyValueFromString("targetname", "timer")
+    EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
+    EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
+    EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
+    EntFireByHandle(timer, "Enable", "", 0.1, null, null)
+
+    EntFire("p232servercommand", "command", "script CreateOurEntities()", 0.05)
+
+    // Load plugin
+    if (LoadPlugin==true) {
+        if("GetPlayerName" in this) {
+            if (GetDeveloperLevel() == 1) {
+                printl("============================================")
+                printl("P2:MM plugin has already loaded! Handling...")
+                printl("============================================")
+            }
+            PluginLoaded <- true
+        } else {
+            if (GetDeveloperLevel() == 1) {
+                printl("============================================")
+                printl("P2:MM plugin has not been loaded! Loading...")
+                printl("============================================")
+            }
+            pluginloadcommand <- globalservercommand
+            RunPluginLoad <- true
+            // SendToConsole("plugin_load pl")
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
+// █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
+
+function CreateOurEntities() {
     colordisplay <- Entities.CreateByClassname("game_text")
     colordisplay.__KeyValueFromString("targetname", "colordisplay")
     colordisplay.__KeyValueFromString("x", "0")
@@ -275,49 +318,10 @@ function init() {
     //joinmessagedisplay.__KeyValueFromString("x", "0.1")
     //joinmessagedisplay.__KeyValueFromString("y", "0.1")
 
-    // Create a global servercommand entity
-    globalservercommand <- Entities.CreateByClassname("point_servercommand")
-    globalservercommand.__KeyValueFromString("targetname", "p232servercommand")
-
-    // Create entity to run loop() every 0.1 seconds
-    timer <- Entities.CreateByClassname("logic_timer")
-    timer.__KeyValueFromString("targetname", "timer")
-    EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-    EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
-    EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
-    EntFireByHandle(timer, "Enable", "", 0.1, null, null)
-
     // Create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
     clientcommand.__KeyValueFromString("targetname", "p232clientcommand")
-
-    // Load plugin
-    if (LoadPlugin==true) {
-        if("GetPlayerName" in this) {
-            if (GetDeveloperLevel() == 1) {
-                printl("============================================")
-                printl("P2:MM plugin has already loaded! Handling...")
-                printl("============================================")
-            }
-            PluginLoaded <- true
-        } else {
-            if (GetDeveloperLevel() == 1) {
-                printl("============================================")
-                printl("P2:MM plugin has not been loaded! Loading...")
-                printl("============================================")
-            }
-            pluginloadcommand <- Entities.CreateByClassname("point_servercommand")
-            RunPluginLoad <- true
-            // SendToConsole("plugin_load pl")
-        }
-    }
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
-// █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
 function ToggleCheats() {
     if (CheatsOn == null || CheatsOn == false) {
@@ -468,6 +472,11 @@ function RandomColor() {
         b = rcb
     }
     return ColorBar
+}
+
+function TeleportPlayerToClass(player, curclass) {
+    player.SetOrigin(curclass.pos)
+    player.SetAngles(curclass.rot.x, curclass.rot.y, curclass.rot.z)
 }
 
 function p232fogswitch(fogname) {
@@ -639,7 +648,11 @@ function FindAndReplace(inputstr, findstr, replacestr) {
 function RemoveAllClassname(classname, delay = 0) {
     local p = null
     while (p = Entities.FindByClassname(p, classname)) {
-        EntFireByHandle(p, "kill", "", delay, null, null)
+        if (delay == 0) {
+            p.Destroy()
+        } else {
+            EntFireByHandle(p, "kill", "", delay, null, null)
+        }
         TotalRemovedEnts = TotalRemovedEnts + 1
     }
 }
@@ -1456,21 +1469,21 @@ function ChatCommands(ccuserid, ccmessage) {
 
     //## HELP COMMAND ##//
     if (ccmessage.find("!help") != null) {
-        Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "chatcommandhelp")
-        EntFire("chatcommandhelp", "command", "say [User Commands]", 0, null)
-        EntFire("chatcommandhelp", "command", "say help", 0, null)
-        EntFire("chatcommandhelp", "command", "say kill", 0, null)
-        EntFire("chatcommandhelp", "command", "say changeteam", 0, null)
-        EntFire("chatcommandhelp", "command", "say [Admin Commands]", 1, null)
-        EntFire("chatcommandhelp", "command", "say kill (ARGS)", 1, null)
-        EntFire("chatcommandhelp", "command", "say goto", 1, null)
-        EntFire("chatcommandhelp", "command", "say bring", 1, null)
-        EntFire("chatcommandhelp", "command", "say noclip", 1, null)
-        EntFire("chatcommandhelp", "command", "say rcon", 1, null)
-        EntFire("chatcommandhelp", "command", "say changelevel", 1, null)
-        EntFire("chatcommandhelp", "command", "say [General Help]", 2, null)
-        EntFire("chatcommandhelp", "command", "say {COMMAND PREFIX: !}", 2, null)
-        EntFire("chatcommandhelp", "kill", "", 3, null)
+        // Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p232servercommand")
+        EntFire("p232servercommand", "command", "say [User Commands]", 0, null)
+        EntFire("p232servercommand", "command", "say help", 0, null)
+        EntFire("p232servercommand", "command", "say kill", 0, null)
+        EntFire("p232servercommand", "command", "say changeteam", 0, null)
+        EntFire("p232servercommand", "command", "say [Admin Commands]", 1, null)
+        EntFire("p232servercommand", "command", "say kill (ARGS)", 1, null)
+        EntFire("p232servercommand", "command", "say goto", 1, null)
+        EntFire("p232servercommand", "command", "say bring", 1, null)
+        EntFire("p232servercommand", "command", "say noclip", 1, null)
+        EntFire("p232servercommand", "command", "say rcon", 1, null)
+        EntFire("p232servercommand", "command", "say changelevel", 1, null)
+        EntFire("p232servercommand", "command", "say [General Help]", 2, null)
+        EntFire("p232servercommand", "command", "say {COMMAND PREFIX: !}", 2, null)
+        EntFire("p232servercommand", "kill", "", 3, null)
     }
 
     //## GET COLOR ##//
@@ -1834,6 +1847,8 @@ function OnPlayerJoin(p, script_scope) {
     // player name
     if (PluginLoaded==true) {
         currentplayerclass.username <- GetPlayerName(p.entindex())
+    } else {
+        currentplayerclass.username <- "Player " + p.entindex()
     }
 
     SetCosmetics(p)
