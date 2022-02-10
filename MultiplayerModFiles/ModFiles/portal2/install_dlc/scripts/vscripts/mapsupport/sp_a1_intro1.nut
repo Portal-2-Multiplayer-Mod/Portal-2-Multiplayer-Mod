@@ -16,161 +16,210 @@ DisableJumpmsp <- false
 function p232DropCollision() {
     DisableJumpmsp = true
     EntFire("p232servercommand", "command", "script DisableJumpmsp = false", 3)
-    printl("dropping container collision!")
+    printl("Dropping container collision")
     local dropamount = 50
     local ceiltime = 2.6
 
-    local CustomBrush1 = Entities.FindByName(null, "CustomBrush1")
-    local CustomBrush2 = Entities.FindByName(null, "CustomBrush2")
-    local CustomBrush3 = Entities.FindByName(null, "CustomBrush3")
-    local CustomBrush4 = Entities.FindByName(null, "CustomBrush4")
-    local CustomBrush5 = Entities.FindByName(null, "CustomBrush5")
-    local CustomBrush6 = Entities.FindByName(null, "CustomBrush6")
-    local CustomBrush7 = Entities.FindByName(null, "CustomBrush7")
-    local CustomBrush8 = Entities.FindByName(null, "CustomBrush8")
-    local CustomBrush9 = Entities.FindByName(null, "CustomBrush9")
-    local CustomBrush10 = Entities.FindByName(null, "CustomBrush10")
-    local CustomBrush11 = Entities.FindByName(null, "CustomBrush11")
-    local CustomBrush12 = Entities.FindByName(null, "CustomBrush12")
+    local ContainerBedBrush = Entities.FindByName(null, "ContainerBedBrush")
+    local ContainerFloorBrush = Entities.FindByName(null, "ContainerFloorBrush")
+    local ContainerCeilingBrush = Entities.FindByName(null, "ContainerCeilingBrush")
+    local ContainerRightWallBrush = Entities.FindByName(null, "ContainerRightWallBrush")
+    local ContainerLeftWallBrush = Entities.FindByName(null, "ContainerLeftWallBrush")
+    local ContainerFrontWallBrush = Entities.FindByName(null, "ContainerFrontWallBrush")
+    local ContainerBackDoorBrush = Entities.FindByName(null, "ContainerBackDoorBrush")
+    local ContainerBathroomBrush = Entities.FindByName(null, "ContainerBathroomBrush")
+    local ContainerClosetBrush = Entities.FindByName(null, "ContainerClosetBrush")
+    local ContainerNightstandsBrush = Entities.FindByName(null, "ContainerNightstandsBrush")
+    local ContainerLightBrush = Entities.FindByName(null, "ContainerLightBrush")
+    local ContainerWheatleyBrush = Entities.FindByName(null, "ContainerWheatleyBrush")
+    local ContainerDeskBrush = Entities.FindByName(null, "ContainerDeskBrush")
+    local ContainerPlantBrush = Entities.FindByName(null, "ContainerPlantBrush")
+    local ContainerChairBrush = Entities.FindByName(null, "ContainerChairBrush")
 
-    // CustomBrush1
-    CustomBrush1.SetOrigin(Vector(CustomBrush1.GetOrigin().x, CustomBrush1.GetOrigin().y, CustomBrush1.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush1", "disable")
-    // EntFire("CustomBrush1", "enable", "", ceiltime)
-    // CustomBrush2
-    CustomBrush2.SetOrigin(Vector(CustomBrush2.GetOrigin().x, CustomBrush2.GetOrigin().y, CustomBrush2.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush2", "disable")
-    // EntFire("CustomBrush2", "enable", "", ceiltime)
-    // CustomBrush3
-    CustomBrush3.SetOrigin(Vector(CustomBrush3.GetOrigin().x, CustomBrush3.GetOrigin().y, CustomBrush3.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush3", "disable")
-    // EntFire("CustomBrush3", "enable", "", ceiltime)
-    // CustomBrush4
-    CustomBrush4.SetOrigin(Vector(CustomBrush4.GetOrigin().x, CustomBrush4.GetOrigin().y, CustomBrush4.GetOrigin().z - dropamount))
-    EntFire("CustomBrush4", "disable")
-    EntFire("CustomBrush4", "enable", "", ceiltime)
-    // CustomBrush5
-    CustomBrush5.SetOrigin(Vector(CustomBrush5.GetOrigin().x, CustomBrush5.GetOrigin().y, CustomBrush5.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush5", "disable")
-    // EntFire("CustomBrush5", "enable", "", ceiltime)
-    // CustomBrush6
-    CustomBrush6.SetOrigin(Vector(CustomBrush6.GetOrigin().x, CustomBrush6.GetOrigin().y, CustomBrush6.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush6", "disable")
-    // EntFire("CustomBrush6", "enable", "", ceiltime)
-    // CustomBrush7
-    CustomBrush7.SetOrigin(Vector(CustomBrush7.GetOrigin().x, CustomBrush7.GetOrigin().y, CustomBrush7.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush7", "disable")
-    // EntFire("CustomBrush7", "enable", "", ceiltime)
-    // CustomBrush8
-    CustomBrush8.SetOrigin(Vector(CustomBrush8.GetOrigin().x, CustomBrush8.GetOrigin().y, CustomBrush8.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush8", "disable")
-    // EntFire("CustomBrush8", "enable", "", ceiltime)
-    // CustomBrush9
-    CustomBrush9.SetOrigin(Vector(CustomBrush9.GetOrigin().x, CustomBrush9.GetOrigin().y, CustomBrush9.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush9", "disable")
-    // EntFire("CustomBrush9", "enable", "", ceiltime)
-    // CustomBrush10
-    CustomBrush10.SetOrigin(Vector(CustomBrush10.GetOrigin().x, CustomBrush10.GetOrigin().y, CustomBrush10.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush10", "disable")
-    // EntFire("CustomBrush10", "enable", "", ceiltime)
-    // CustomBrush11
-    CustomBrush11.SetOrigin(Vector(CustomBrush11.GetOrigin().x, CustomBrush11.GetOrigin().y, CustomBrush11.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush11", "disable")
-    // EntFire("CustomBrush11", "enable", "", ceiltime)
-    // CustomBrush12
-    CustomBrush12.SetOrigin(Vector(CustomBrush12.GetOrigin().x, CustomBrush12.GetOrigin().y, CustomBrush12.GetOrigin().z - dropamount))
-    // EntFire("CustomBrush12", "disable")
-    // EntFire("CustomBrush12", "enable", "", ceiltime)
-    //DebugDrawBox(CustomBrush1.GetOrigin(), CustomBrush1.GetBoundingMins(), CustomBrush1.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush2.GetOrigin(), CustomBrush2.GetBoundingMins(), CustomBrush2.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush3.GetOrigin(), CustomBrush3.GetBoundingMins(), CustomBrush3.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush4.GetOrigin(), CustomBrush4.GetBoundingMins(), CustomBrush4.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush5.GetOrigin(), CustomBrush5.GetBoundingMins(), CustomBrush5.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush6.GetOrigin(), CustomBrush6.GetBoundingMins(), CustomBrush6.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush7.GetOrigin(), CustomBrush7.GetBoundingMins(), CustomBrush7.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush8.GetOrigin(), CustomBrush8.GetBoundingMins(), CustomBrush8.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush9.GetOrigin(), CustomBrush9.GetBoundingMins(), CustomBrush9.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush10.GetOrigin(), CustomBrush10.GetBoundingMins(), CustomBrush10.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush11.GetOrigin(), CustomBrush11.GetBoundingMins(), CustomBrush11.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
-    //DebugDrawBox(CustomBrush12.GetOrigin(), CustomBrush12.GetBoundingMins(), CustomBrush12.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    // ContainerBedBrush
+    ContainerBedBrush.SetOrigin(Vector(ContainerBedBrush.GetOrigin().x, ContainerBedBrush.GetOrigin().y, ContainerBedBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerBedBrush", "disable")
+    // EntFire("ContainerBedBrush", "enable", "", ceiltime)
+
+    // ContainerFloorBrush
+    ContainerFloorBrush.SetOrigin(Vector(ContainerFloorBrush.GetOrigin().x, ContainerFloorBrush.GetOrigin().y, ContainerFloorBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerFloorBrush", "disable")
+    // EntFire("ContainerFloorBrush", "enable", "", ceiltime)
+
+    // ContainerCeilingBrush
+    ContainerCeilingBrush.SetOrigin(Vector(ContainerCeilingBrush.GetOrigin().x, ContainerCeilingBrush.GetOrigin().y, ContainerCeilingBrush.GetOrigin().z - dropamount))
+    EntFire("ContainerCeilingBrush", "disable")
+    EntFire("ContainerCeilingBrush", "enable", "", ceiltime)
+
+    // ContainerRightWallBrush
+    ContainerRightWallBrush.SetOrigin(Vector(ContainerRightWallBrush.GetOrigin().x, ContainerRightWallBrush.GetOrigin().y, ContainerRightWallBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerRightWallBrush", "disable")
+    // EntFire("ContainerRightWallBrush", "enable", "", ceiltime)
+
+    // ContainerLeftWallBrush
+    ContainerLeftWallBrush.SetOrigin(Vector(ContainerLeftWallBrush.GetOrigin().x, ContainerLeftWallBrush.GetOrigin().y, ContainerLeftWallBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerLeftWallBrush", "disable")
+    // EntFire("ContainerLeftWallBrush", "enable", "", ceiltime)
+
+    // ContainerFrontWallBrush
+    ContainerFrontWallBrush.SetOrigin(Vector(ContainerFrontWallBrush.GetOrigin().x, ContainerFrontWallBrush.GetOrigin().y, ContainerFrontWallBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerFrontWallBrush", "disable")
+    // EntFire("ContainerFrontWallBrush", "enable", "", ceiltime)
+
+    // ContainerBackDoorBrush
+    ContainerBackDoorBrush.SetOrigin(Vector(ContainerBackDoorBrush.GetOrigin().x, ContainerBackDoorBrush.GetOrigin().y, ContainerBackDoorBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerBackDoorBrush", "disable")
+    // EntFire("ContainerBackDoorBrush", "enable", "", ceiltime)
+
+    // ContainerBathroomBrush
+    ContainerBathroomBrush.SetOrigin(Vector(ContainerBathroomBrush.GetOrigin().x, ContainerBathroomBrush.GetOrigin().y, ContainerBathroomBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerBathroomBrush", "disable")
+    // EntFire("ContainerBathroomBrush", "enable", "", ceiltime)
+
+    // ContainerClosetBrush
+    ContainerClosetBrush.SetOrigin(Vector(ContainerClosetBrush.GetOrigin().x, ContainerClosetBrush.GetOrigin().y, ContainerClosetBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerClosetBrush", "disable")
+    // EntFire("ContainerClosetBrush", "enable", "", ceiltime)
+
+    // ContainerNightstandsBrush
+    ContainerNightstandsBrush.SetOrigin(Vector(ContainerNightstandsBrush.GetOrigin().x, ContainerNightstandsBrush.GetOrigin().y, ContainerNightstandsBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerNightstandsBrush", "disable")
+    // EntFire("ContainerNightstandsBrush", "enable", "", ceiltime)
+
+    // ContainerLightBrush
+    ContainerLightBrush.SetOrigin(Vector(ContainerLightBrush.GetOrigin().x, ContainerLightBrush.GetOrigin().y, ContainerLightBrush.GetOrigin().z - dropamount))
+    EntFire("ContainerLightBrush", "disable")
+    EntFire("ContainerLightBrush", "enable", "", ceiltime)
+
+    // ContainerWheatleyBrush
+    ContainerWheatleyBrush.SetOrigin(Vector(ContainerWheatleyBrush.GetOrigin().x, ContainerWheatleyBrush.GetOrigin().y, ContainerWheatleyBrush.GetOrigin().z - dropamount))
+    EntFire("ContainerWheatleyBrush", "disable")
+    EntFire("ContainerWheatleyBrush", "enable", "", ceiltime)
+
+    // ContainerDeskBrush
+    ContainerDeskBrush.SetOrigin(Vector(ContainerDeskBrush.GetOrigin().x, ContainerDeskBrush.GetOrigin().y, ContainerDeskBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerDeskBrush", "disable")
+    // EntFire("ContainerDeskBrush", "enable", "", ceiltime)
+
+    // ContainerPlantBrush
+    ContainerPlantBrush.SetOrigin(Vector(ContainerPlantBrush.GetOrigin().x, ContainerPlantBrush.GetOrigin().y, ContainerPlantBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerPlantBrush", "disable")
+    // EntFire("ContainerPlantBrush", "enable", "", ceiltime)
+
+    // ContainerChairBrush
+    ContainerChairBrush.SetOrigin(Vector(ContainerChairBrush.GetOrigin().x, ContainerChairBrush.GetOrigin().y, ContainerChairBrush.GetOrigin().z - dropamount))
+    // EntFire("ContainerChairBrush", "disable")
+    // EntFire("ContainerChairBrush", "enable", "", ceiltime)
+
+    //DebugDrawBox(ContainerBedBrush.GetOrigin(), ContainerBedBrush.GetBoundingMins(), ContainerBedBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerFloorBrush.GetOrigin(), ContainerFloorBrush.GetBoundingMins(), ContainerFloorBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerCeilingBrush.GetOrigin(), ContainerCeilingBrush.GetBoundingMins(), ContainerCeilingBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerRightWallBrush.GetOrigin(), ContainerRightWallBrush.GetBoundingMins(), ContainerRightWallBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerLeftWallBrush.GetOrigin(), ContainerLeftWallBrush.GetBoundingMins(), ContainerLeftWallBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerFrontWallBrush.GetOrigin(), ContainerFrontWallBrush.GetBoundingMins(), ContainerFrontWallBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerBackDoorBrush.GetOrigin(), ContainerBackDoorBrush.GetBoundingMins(), ContainerBackDoorBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerBathroomBrush.GetOrigin(), ContainerBathroomBrush.GetBoundingMins(), ContainerBathroomBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerClosetBrush.GetOrigin(), ContainerClosetBrush.GetBoundingMins(), ContainerClosetBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerNightstandsBrush.GetOrigin(), ContainerNightstandsBrush.GetBoundingMins(), ContainerNightstandsBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerLightBrush.GetOrigin(), ContainerLightBrush.GetBoundingMins(), ContainerLightBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerWheatleyBrush.GetOrigin(), ContainerWheatleyBrush.GetBoundingMins(), ContainerWheatleyBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerDeskBrush.GetOrigin(), ContainerDeskBrush.GetBoundingMins(), ContainerDeskBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerPlantBrush.GetOrigin(), ContainerPlantBrush.GetBoundingMins(), ContainerPlantBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
+    //DebugDrawBox(ContainerChairBrush.GetOrigin(), ContainerChairBrush.GetBoundingMins(), ContainerChairBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
 }
 
 containerStick <- false
 function p232ParentAndStartMath() {
     //DisableJumpmsp = true
-    // TABLE
-        // CustomBrush7.__KeyValueFromInt("Solid", 0)
-        // CEILING
-        // CustomBrush4.__KeyValueFromInt("Solid", 0)
-        // FLOOR
-        // CustomBrush2.__KeyValueFromInt("Solid", 0)
-        // PLANT
-        // CustomBrush9.__KeyValueFromInt("Solid", 0)
-        // CHAIR
-        // CustomBrush10.__KeyValueFromInt("Solid", 0)
         // BED
-        // CustomBrush1.__KeyValueFromInt("Solid", 0)
-        EntFire("CustomBrush1", "disable", "", 0)
-        EntFire("CustomBrush2", "disable", "", 0)
-        EntFire("CustomBrush4", "disable", "", 0)
-        EntFire("CustomBrush7", "disable", "", 0)
-        EntFire("CustomBrush9", "disable", "", 0)
-        EntFire("CustomBrush10", "disable", "", 0)
+        // ContainerBedBrush.__KeyValueFromInt("Solid", 0)
+        // FLOOR
+        // ContainerFloorBrush.__KeyValueFromInt("Solid", 0)
+        // CEILING
+        // ContainerCeilingBrush.__KeyValueFromInt("Solid", 0)
+        // DESK
+        // ContainerDeskBrush.__KeyValueFromInt("Solid", 0)
+        // PLANT
+        // ContainerPlantBrush.__KeyValueFromInt("Solid", 0)
+        // CHAIR
+        // ContainerChairBrush.__KeyValueFromInt("Solid", 0)
 
-        EntFire("CustomBrush1", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush1", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush2", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush2", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush3", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush3", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush4", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush4", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush5", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush5", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush6", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush6", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush7", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush7", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush8", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush8", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush9", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush9", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush10", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush10", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush11", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush11", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        EntFire("CustomBrush12", "SetParent", "Actor_container_master", 0)
-        EntFire("CustomBrush12", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerBedBrush", "disable", "", 0)
+        EntFire("ContainerFloorBrush", "disable", "", 0)
+        EntFire("ContainerCeilingBrush", "disable", "", 0)
+        EntFire("ContainerNightstandsBrush", "disable", "", 0)
+        EntFire("ContainerLightBrush", "disable", "", 0)
+        EntFire("ContainerWheatleyBrush", "disable", "", 0)
+        EntFire("ContainerDeskBrush", "disable", "", 0)
+        EntFire("ContainerPlantBrush", "disable", "", 0)
+        EntFire("ContainerChairBrush", "disable", "", 0)
+
+        EntFire("ContainerBedBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerBedBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerFloorBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerFloorBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerCeilingBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerCeilingBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerRightWallBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerRightWallBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerLeftWallBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerLeftWallBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerFrontWallBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerFrontWallBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerBackDoorBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerBackDoorBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerBathroomBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerBathroomBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerClosetBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerClosetBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerNightstandsBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerNightstandsBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerLightBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerLightBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerWheatleyBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerWheatleyBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerDeskBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerDeskBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerPlantBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerPlantBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerChairBrush", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerChairBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
     containerStick = true
 }
 
 SecondToLastTP <- false
 function StopStickAndTeleport() {
-    EntFire("CustomBrush1", "disable", "", 0)
-    EntFire("CustomBrush2", "disable", "", 0)
-    EntFire("CustomBrush3", "disable", "", 0)
-    EntFire("CustomBrush4", "disable", "", 0)
-    EntFire("CustomBrush5", "disable", "", 0)
-    EntFire("CustomBrush6", "disable", "", 0)
-    EntFire("CustomBrush7", "disable", "", 0)
-    EntFire("CustomBrush8", "disable", "", 0)
-    EntFire("CustomBrush9", "disable", "", 0)
-    EntFire("CustomBrush10", "disable", "", 0)
-    EntFire("CustomBrush11", "disable", "", 0)
-    EntFire("CustomBrush12", "disable", "", 0)
+    EntFire("ContainerBedBrush", "disable", "", 0)
+    EntFire("ContainerFloorBrush", "disable", "", 0)
+    EntFire("ContainerCeilingBrush", "disable", "", 0)
+    EntFire("ContainerRightWallBrush", "disable", "", 0)
+    EntFire("ContainerLeftWallBrush", "disable", "", 0)
+    EntFire("ContainerFrontWallBrush", "disable", "", 0)
+    EntFire("ContainerBackDoorBrush", "disable", "", 0)
+    EntFire("ContainerBathroomBrush", "disable", "", 0)
+    EntFire("ContainerClosetBrush", "disable", "", 0)
+    EntFire("ContainerNightstandsBrush", "disable", "", 0)
+    EntFire("ContainerLightBrush", "disable", "", 0)
+    EntFire("ContainerWheatleyBrush", "disable", "", 0)
+    EntFire("ContainerDeskBrush", "disable", "", 0)
+    EntFire("ContainerPlantBrush", "disable", "", 0)
+    EntFire("ContainerChairBrush", "disable", "", 0)
 
-    //EntFire("CustomBrush1", "kill", "", 0)
-    EntFire("CustomBrush2", "kill", "", 0)
-    EntFire("CustomBrush3", "kill", "", 0)
-    EntFire("CustomBrush4", "kill", "", 0)
-    EntFire("CustomBrush5", "kill", "", 0)
-    EntFire("CustomBrush6", "kill", "", 0)
-    EntFire("CustomBrush7", "kill", "", 0)
-    EntFire("CustomBrush8", "kill", "", 0)
-    EntFire("CustomBrush9", "kill", "", 0)
-    EntFire("CustomBrush10", "kill", "", 0)
-    EntFire("CustomBrush11", "kill", "", 0)
-    EntFire("CustomBrush12", "kill", "", 0)
+    //EntFire("ContainerBedBrush", "kill", "", 0)
+    EntFire("ContainerFloorBrush", "kill", "", 0)
+    EntFire("ContainerCeilingBrush", "kill", "", 0)
+    EntFire("ContainerRightWallBrush", "kill", "", 0)
+    EntFire("ContainerLeftWallBrush", "kill", "", 0)
+    EntFire("ContainerFrontWallBrush", "kill", "", 0)
+    EntFire("ContainerBackDoorBrush", "kill", "", 0)
+    EntFire("ContainerBathroomBrush", "kill", "", 0)
+    EntFire("ContainerClosetBrush", "kill", "", 0)
+    EntFire("ContainerNightstandsBrush", "kill", "", 0)
+    EntFire("ContainerLightBrush", "kill", "", 0)
+    EntFire("ContainerWheatleyBrush", "kill", "", 0)
+    EntFire("ContainerDeskBrush", "kill", "", 0)
+    EntFire("ContainerPlantBrush", "kill", "", 0)
+    EntFire("ContainerChairBrush", "kill", "", 0)
 
     EntFire("container_collision", "EnableCollision", "", 0)
     
@@ -184,15 +233,15 @@ function StopStickAndTeleport() {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
-        p.SetOrigin(Vector(-1649, 4376, 3112))
+        p.SetOrigin(Vector(-1710, 4380, 3080))
         p.SetVelocity(Vector(80, 0, 0))
     }
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-        CustomBrush1 <- false
-        CustomBrush1Cache <- false
+        ContainerBedBrush <- false
+        ContainerBedBrushCache <- false
         stoprenable <- false
 
         // Create Env Globals
@@ -273,142 +322,188 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A1_Intro1Viewcontrol", "addoutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
         EntFire("Sp_A1_Intro1ViewcontrolTele", "addoutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
 
-        // CustomBrush1
-        CustomBrush1 <- Entities.CreateByClassname("func_brush")
-        CustomBrush1.SetOrigin(Vector(-5738.623046875, 1778.7027587891, 194.95379638672))
-        CustomBrush1.SetSize(Vector(0, 0 ,0), Vector(71.01123046875, 136.28967285156, 51.549301147461))
-        CustomBrush1.__KeyValueFromInt("Solid", 3)
-        CustomBrush1.__KeyValueFromString("targetname", "CustomBrush1")
-        //DebugDrawBox(CustomBrush1.GetOrigin(), CustomBrush1.GetBoundingMins(), CustomBrush1.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // Create container collisson brushes with an offset of (-19, 510, -3)
+        // ContainerBedBrush
+        ContainerBedBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerBedBrush.SetOrigin(Vector(-5723, 1332, 221))
+        ContainerBedBrush.SetOrigin(Vector(-5742, 1842, 218))
+        ContainerBedBrush.SetSize(Vector(0, 0 ,0), Vector(80, 76, 26))
+        ContainerBedBrush.__KeyValueFromInt("Solid", 3)
+        ContainerBedBrush.__KeyValueFromString("targetname", "ContainerBedBrush")
+        DebugDrawBox(ContainerBedBrush.GetOrigin(), ContainerBedBrush.GetBoundingMins(), ContainerBedBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush2
-        CustomBrush2 <- Entities.CreateByClassname("func_brush")
-        CustomBrush2.SetOrigin(Vector(-6042.2216796875, 1783.7899169922, 171.91059875488))
-        CustomBrush2.SetSize(Vector(0, 0 ,0), Vector(550.02978515625, 266.28076171875, 48.8125))
-        CustomBrush2.__KeyValueFromInt("Solid", 3)
-        CustomBrush2.__KeyValueFromString("targetname", "CustomBrush2")
-        //DebugDrawBox(CustomBrush2.GetOrigin(), CustomBrush2.GetBoundingMins(), CustomBrush2.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerFloorBrush
+        ContainerFloorBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerFloorBrush.SetOrigin(Vector(-5963, 1288, 205))
+        ContainerFloorBrush.SetOrigin(Vector(-5982, 1798, 202))
+        ContainerFloorBrush.SetSize(Vector(0, 0 ,0), Vector(464, 224, 16))
+        ContainerFloorBrush.__KeyValueFromInt("Solid", 3)
+        ContainerFloorBrush.__KeyValueFromString("targetname", "ContainerFloorBrush")
+        DebugDrawBox(ContainerFloorBrush.GetOrigin(), ContainerFloorBrush.GetBoundingMins(), ContainerFloorBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush3
-        CustomBrush3 <- Entities.CreateByClassname("func_brush")
-        CustomBrush3.SetOrigin(Vector(-5973.8920898438, 1764.6313476562, 203.77949523926))
-        CustomBrush3.SetSize(Vector(0, 0 ,0), Vector(491.03125, 50.630981445312, 153.08879089355))
-        CustomBrush3.__KeyValueFromInt("Solid", 3)
-        CustomBrush3.__KeyValueFromString("targetname", "CustomBrush3")
-        //DebugDrawBox(CustomBrush3.GetOrigin(), CustomBrush3.GetBoundingMins(), CustomBrush3.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerCeilingBrush
+        ContainerCeilingBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerCeilingBrush.SetOrigin(Vector(-5963, 1288, 349))
+        ContainerCeilingBrush.SetOrigin(Vector(-5982, 1798, 346))
+        ContainerCeilingBrush.SetSize(Vector(0, 0 ,0), Vector(464, 224, 16))
+        ContainerCeilingBrush.__KeyValueFromInt("Solid", 3)
+        ContainerCeilingBrush.__KeyValueFromString("targetname", "ContainerCeilingBrush")
+        DebugDrawBox(ContainerCeilingBrush.GetOrigin(), ContainerCeilingBrush.GetBoundingMins(), ContainerCeilingBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush4
-        CustomBrush4 <- Entities.CreateByClassname("func_brush")
-        CustomBrush4.SetOrigin(Vector(-6003.9296875, 1777.9016113281, 346.05218505859))
-        CustomBrush4.SetSize(Vector(0, 0 ,0), Vector(542.7041015625, 239.28088378906, 70.41552734375))
-        CustomBrush4.__KeyValueFromInt("Solid", 3)
-        CustomBrush4.__KeyValueFromString("targetname", "CustomBrush4")
-        //DebugDrawBox(CustomBrush4.GetOrigin(), CustomBrush4.GetBoundingMins(), CustomBrush4.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerRightWallBrush
+        ContainerRightWallBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerRightWallBrush.SetOrigin(Vector(-5959, 1288, 221))
+        ContainerRightWallBrush.SetOrigin(Vector(-5978, 1798, 218))
+        ContainerRightWallBrush.SetSize(Vector(0, 0 ,0), Vector(456, 18, 128))
+        ContainerRightWallBrush.__KeyValueFromInt("Solid", 3)
+        ContainerRightWallBrush.__KeyValueFromString("targetname", "ContainerRightWallBrush")
+        DebugDrawBox(ContainerRightWallBrush.GetOrigin(), ContainerRightWallBrush.GetBoundingMins(), ContainerRightWallBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush5
-        CustomBrush5 <- Entities.CreateByClassname("func_brush")
-        CustomBrush5.SetOrigin(Vector(-5973.0200195312, 1791.1186523438, 193.61361694336))
-        CustomBrush5.SetSize(Vector(0, 0 ,0), Vector(126.4052734375, 141, 185.86248779297))
-        CustomBrush5.__KeyValueFromInt("Solid", 3)
-        CustomBrush5.__KeyValueFromString("targetname", "CustomBrush5")
-        //DebugDrawBox(CustomBrush5.GetOrigin(), CustomBrush5.GetBoundingMins(), CustomBrush5.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerLeftWallBrush
+        ContainerLeftWallBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerLeftWallBrush.SetOrigin(Vector(-5959, 1494, 221))
+        ContainerLeftWallBrush.SetOrigin(Vector(-5978, 2004, 218))
+        ContainerLeftWallBrush.SetSize(Vector(0, 0 ,0), Vector(456, 18, 128))
+        ContainerLeftWallBrush.__KeyValueFromInt("Solid", 3)
+        ContainerLeftWallBrush.__KeyValueFromString("targetname", "ContainerLeftWallBrush")
+        ContainerLeftWallBrush <- Entities.FindByName(null, "ContainerLeftWallBrush")
+        DebugDrawBox(ContainerLeftWallBrush.GetOrigin(), ContainerLeftWallBrush.GetBoundingMins(), ContainerLeftWallBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush6
-        CustomBrush6 <- Entities.CreateByClassname("func_brush")
-        CustomBrush6.SetOrigin(Vector(-6007.9018554688, 2011.3055419922, 195.1164855957))
-        CustomBrush6.SetSize(Vector(0, 0 ,0), Vector(546.029296875, 46.874267578125, 179.13430786133))
-        CustomBrush6.__KeyValueFromInt("Solid", 3)
-        CustomBrush6.__KeyValueFromString("targetname", "CustomBrush6")
-        CustomBrush6 <- Entities.FindByName(null, "CustomBrush6")
-        //DebugDrawBox(CustomBrush6.GetOrigin(), CustomBrush6.GetBoundingMins(), CustomBrush6.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerFrontWallBrush
+        ContainerFrontWallBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerFrontWallBrush.SetOrigin(Vector(-5505, 1288, 221))
+        ContainerFrontWallBrush.SetOrigin(Vector(-5524, 1798, 218))
+        ContainerFrontWallBrush.SetSize(Vector(0, 0 ,0), Vector(6, 224, 128))
+        ContainerFrontWallBrush.__KeyValueFromInt("Solid", 3)
+        ContainerFrontWallBrush.__KeyValueFromString("targetname", "ContainerFrontWallBrush")
+        DebugDrawBox(ContainerFrontWallBrush.GetOrigin(), ContainerFrontWallBrush.GetBoundingMins(), ContainerFrontWallBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush7
-        CustomBrush7 <- Entities.CreateByClassname("func_brush")
-        CustomBrush7.SetOrigin(Vector(-5790.7231445312, 1972.4986572266, 196.52439880371))
-        CustomBrush7.SetSize(Vector(0, 0 ,0), Vector(108, 53.184814453125, 101.9672088623))
-        CustomBrush7.__KeyValueFromInt("Solid", 3)
-        CustomBrush7.__KeyValueFromString("targetname", "CustomBrush7")
-        //DebugDrawBox(CustomBrush7.GetOrigin(), CustomBrush7.GetBoundingMins(), CustomBrush7.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerBackDoorBrush
+        ContainerBackDoorBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerBackDoorBrush.SetOrigin(Vector(-5963, 1288, 221))
+        ContainerBackDoorBrush.SetOrigin(Vector(-5982, 1798, 218))
+        ContainerBackDoorBrush.SetSize(Vector(0, 0 ,0), Vector(6, 224, 128))
+        ContainerBackDoorBrush.__KeyValueFromInt("Solid", 3)
+        ContainerBackDoorBrush.__KeyValueFromString("targetname", "ContainerBackDoorBrush")
+        DebugDrawBox(ContainerBackDoorBrush.GetOrigin(), ContainerBackDoorBrush.GetBoundingMins(), ContainerBackDoorBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush8
-        CustomBrush8 <- Entities.CreateByClassname("func_brush")
-        CustomBrush8.SetOrigin(Vector(-6030.4404296875, 1760.5928955078, 193.29339599609))
-        CustomBrush8.SetSize(Vector(0, 0 ,0), Vector(49.1484375, 259.24450683594, 192.57360839844))
-        CustomBrush8.__KeyValueFromInt("Solid", 3)
-        CustomBrush8.__KeyValueFromString("targetname", "CustomBrush8")
-        //DebugDrawBox(CustomBrush8.GetOrigin(), CustomBrush8.GetBoundingMins(), CustomBrush8.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerBathroomBrush
+        ContainerBathroomBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerBathroomBrush.SetOrigin(Vector(-5959, 1304, 221))
+        ContainerBathroomBrush.SetOrigin(Vector(-5978, 1814, 218))
+        ContainerBathroomBrush.SetSize(Vector(0, 0 ,0), Vector(140, 120, 128))
+        ContainerBathroomBrush.__KeyValueFromInt("Solid", 3)
+        ContainerBathroomBrush.__KeyValueFromString("targetname", "ContainerBathroomBrush")
+        DebugDrawBox(ContainerBathroomBrush.GetOrigin(), ContainerBathroomBrush.GetBoundingMins(), ContainerBathroomBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush9
-        CustomBrush9 <- Entities.CreateByClassname("func_brush")
-        CustomBrush9.SetOrigin(Vector(-5580.380859375, 1943.3970947266, 186.30889892578))
-        CustomBrush9.SetSize(Vector(0, 0 ,0), Vector(74.576171875, 91.832641601562, 55.819595336914))
-        CustomBrush9.__KeyValueFromInt("Solid", 3)
-        CustomBrush9.__KeyValueFromString("targetname", "CustomBrush9")
-        //DebugDrawBox(CustomBrush9.GetOrigin(), CustomBrush9.GetBoundingMins(), CustomBrush9.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerClosetBrush
+        ContainerClosetBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerClosetBrush.SetOrigin(Vector(-5819, 1304, 221))
+        ContainerClosetBrush.SetOrigin(Vector(-5838, 1814, 218))
+        ContainerClosetBrush.SetSize(Vector(0, 0 ,0), Vector(32, 76, 128))
+        ContainerClosetBrush.__KeyValueFromInt("Solid", 3)
+        ContainerClosetBrush.__KeyValueFromString("targetname", "ContainerClosetBrush")
+        DebugDrawBox(ContainerClosetBrush.GetOrigin(), ContainerClosetBrush.GetBoundingMins(), ContainerClosetBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush10
-        CustomBrush10 <- Entities.CreateByClassname("func_brush")
-        CustomBrush10.SetOrigin(Vector(-5594.9174804688, 1773.0458984375, 162.32829284668))
-        CustomBrush10.SetSize(Vector(0, 0 ,0), Vector(100.14599609375, 89.349365234375, 94.880722045898))
-        CustomBrush10.__KeyValueFromInt("Solid", 3)
-        CustomBrush10.__KeyValueFromString("targetname", "CustomBrush10")
-        //DebugDrawBox(CustomBrush10.GetOrigin(), CustomBrush10.GetBoundingMins(), CustomBrush10.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerNightstandsBrush
+        ContainerNightstandsBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerNightstandsBrush.SetOrigin(Vector(-5737, 1304, 221))
+        ContainerNightstandsBrush.SetOrigin(Vector(-5756, 1814, 218))
+        ContainerNightstandsBrush.SetSize(Vector(0, 0 ,0), Vector(122, 28, 26))
+        ContainerNightstandsBrush.__KeyValueFromInt("Solid", 3)
+        ContainerNightstandsBrush.__KeyValueFromString("targetname", "ContainerNightstandsBrush")
+        DebugDrawBox(ContainerNightstandsBrush.GetOrigin(), ContainerNightstandsBrush.GetBoundingMins(), ContainerNightstandsBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush11
-        CustomBrush11 <- Entities.CreateByClassname("func_brush")
-        CustomBrush11.SetOrigin(Vector(-5525.6733398438, 1764.2416992188, 204.33180236816))
-        CustomBrush11.SetSize(Vector(0, 0 ,0), Vector(64.3701171875, 257.22619628906, 168.0611114502))
-        CustomBrush11.__KeyValueFromInt("Solid", 3)
-        CustomBrush11.__KeyValueFromString("targetname", "CustomBrush11")
-        //DebugDrawBox(CustomBrush11.GetOrigin(), CustomBrush11.GetBoundingMins(), CustomBrush11.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerLightBrush
+        ContainerLightBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerLightBrush.SetOrigin(Vector(-5643, 1384, 315))
+        ContainerLightBrush.SetOrigin(Vector(-5662, 1894, 312))
+        ContainerLightBrush.SetSize(Vector(0, 0 ,0), Vector(24, 24, 34))
+        ContainerLightBrush.__KeyValueFromInt("Solid", 3)
+        ContainerLightBrush.__KeyValueFromString("targetname", "ContainerLightBrush")
+        DebugDrawBox(ContainerLightBrush.GetOrigin(), ContainerLightBrush.GetBoundingMins(), ContainerLightBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
-        // CustomBrush12
-        CustomBrush12 <- Entities.CreateByClassname("func_brush")
-        CustomBrush12.SetOrigin(Vector(-5972.2534179688, 1785.1105957031, 181.52520751953))
-        CustomBrush12.SetSize(Vector(0, 0 ,0), Vector(154.63916015625, 102.44201660156, 181.24530029297))
-        CustomBrush12.__KeyValueFromInt("Solid", 3)
-        CustomBrush12.__KeyValueFromString("targetname", "CustomBrush12")
-        //DebugDrawBox(CustomBrush12.GetOrigin(), CustomBrush12.GetBoundingMins(), CustomBrush12.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+        // ContainerWheatleyBrush
+        ContainerWheatleyBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerWheatleyBrush.SetOrigin(Vector(-5676.5, 1360, 323))
+        ContainerWheatleyBrush.SetOrigin(Vector(-5695.5, 1870, 320))
+        ContainerWheatleyBrush.SetSize(Vector(0, 0 ,0), Vector(25, 24, 26))
+        ContainerWheatleyBrush.__KeyValueFromInt("Solid", 3)
+        ContainerWheatleyBrush.__KeyValueFromString("targetname", "ContainerWheatleyBrush")
+        DebugDrawBox(ContainerWheatleyBrush.GetOrigin(), ContainerWheatleyBrush.GetBoundingMins(), ContainerWheatleyBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+
+        // ContainerDeskBrush
+        ContainerDeskBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerDeskBrush.SetOrigin(Vector(-5775, 1456, 221))
+        ContainerDeskBrush.SetOrigin(Vector(-5794, 1966, 218))
+        ContainerDeskBrush.SetSize(Vector(0, 0 ,0), Vector(120, 40, 48))
+        ContainerDeskBrush.__KeyValueFromInt("Solid", 3)
+        ContainerDeskBrush.__KeyValueFromString("targetname", "ContainerDeskBrush")
+        DebugDrawBox(ContainerDeskBrush.GetOrigin(), ContainerDeskBrush.GetBoundingMins(), ContainerDeskBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+
+        // ContainerPlantBrush
+        ContainerPlantBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerPlantBrush.SetOrigin(Vector(-5551, 1442, 221))
+        ContainerPlantBrush.SetOrigin(Vector(-5570, 1952, 218))
+        ContainerPlantBrush.SetSize(Vector(0, 0 ,0), Vector(46, 52, 76))
+        ContainerPlantBrush.__KeyValueFromInt("Solid", 3)
+        ContainerPlantBrush.__KeyValueFromString("targetname", "ContainerPlantBrush")
+        DebugDrawBox(ContainerPlantBrush.GetOrigin(), ContainerPlantBrush.GetBoundingMins(), ContainerPlantBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+
+        // ContainerChairBrush
+        ContainerChairBrush <- Entities.CreateByClassname("func_brush")
+        //ContainerChairBrush.SetOrigin(Vector(-5551, 1306, 221))
+        ContainerChairBrush.SetOrigin(Vector(-5570, 1816, 218))
+        ContainerChairBrush.SetSize(Vector(0, 0 ,0), Vector(46, 46, 76))
+        ContainerChairBrush.__KeyValueFromInt("Solid", 3)
+        ContainerChairBrush.__KeyValueFromString("targetname", "ContainerChairBrush")
+        DebugDrawBox(ContainerChairBrush.GetOrigin(), ContainerChairBrush.GetBoundingMins(), ContainerChairBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
 
-        // TABLE
-        // CustomBrush7.__KeyValueFromInt("Solid", 0)
-        // CEILING
-        // CustomBrush4.__KeyValueFromInt("Solid", 0)
-        // FLOOR
-        // CustomBrush2.__KeyValueFromInt("Solid", 0)
-        // PLANT
-        // CustomBrush9.__KeyValueFromInt("Solid", 0)
-        // CHAIR
-        // CustomBrush10.__KeyValueFromInt("Solid", 0)
         // BED
-        // CustomBrush1.__KeyValueFromInt("Solid", 0)
+        // ContainerBedBrush.__KeyValueFromInt("Solid", 0)
+        // FLOOR
+        // ContainerFloorBrush.__KeyValueFromInt("Solid", 0)
+        // CEILING
+        // ContainerCeilingBrush.__KeyValueFromInt("Solid", 0)
+        // DESK
+        // ContainerDeskBrush.__KeyValueFromInt("Solid", 0)
+        // PLANT
+        // ContainerPlantBrush.__KeyValueFromInt("Solid", 0)
+        // CHAIR
+        // ContainerChairBrush.__KeyValueFromInt("Solid", 0)
 
 
-        // EntFire("CustomBrush1", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush1", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush2", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush2", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush3", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush3", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush4", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush4", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush5", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush5", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush6", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush6", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush7", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush7", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush8", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush8", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush9", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush9", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush10", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush10", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush11", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush11", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-        // EntFire("CustomBrush12", "SetParent", "Actor_container_master", 0)
-        // EntFire("CustomBrush12", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerBedBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerBedBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerFloorBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerFloorBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerCeilingBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerCeilingBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerRightWallBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerRightWallBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerLeftWallBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerLeftWallBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerFrontWallBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerFrontWallBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerBackDoorBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerBackDoorBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerBathroomBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerBathroomBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerClosetBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerClosetBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerNightstandsBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerNightstandsBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerLightBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerLightBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerWheatleyBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerWheatleyBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerDeskBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerDeskBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerPlantBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerPlantBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        // EntFire("ContainerChairBrush", "SetParent", "Actor_container_master", 0)
+        // EntFire("ContainerChairBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
     }
 
     if (MSOnPlayerJoin != false) {
@@ -458,7 +553,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        // remove portalgun
+        // Remove portalgun
         local ent = null
         while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
             ent.Destroy()
@@ -483,7 +578,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (HasSleptInContainer1==true && containerStick == false && SecondToLastTP == false) {
-            // find everyone within 400 units of the container ( -8656.179688 1768.031250 104.196503 )
+            // Find everyone within 400 units of the container ( -8656.179688 1768.031250 104.196503 )
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
                 //p.SetOrigin(Vector(-5700, 1931, 284))
@@ -493,13 +588,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
             //  -5559.827637 1843.053467 282.763519;
             if (bumpout==true) {
-                // bump plant
+                // Bump plant
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5556.693848, 1838.821411, 280.240265), 35)) {
                     p.SetOrigin(Vector(-5556.693848, 1838.821411, 270))
                     printl("Bumped out")
                 }
-                // // bump table
+                // // Bump desk
                 // local p = null
                 // while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5811.007813 1989.968750 282.031250), 35)) {
                 //     p.SetOrigin(Vector(-5825.083008, 1979.134399, 270))
@@ -522,11 +617,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (containerStick == true) {
-            if (CustomBrush1Cache == false) {
-                CustomBrush1Cache <- CustomBrush1.GetOrigin()
+            if (ContainerBedBrushCache == false) {
+                ContainerBedBrushCache <- ContainerBedBrush.GetOrigin()
             }
-            currentCartPos <- CustomBrush1.GetOrigin()
-            currentCartRot <- CustomBrush1.GetAngles()
+            currentCartPos <- ContainerBedBrush.GetOrigin()
+            currentCartRot <- ContainerBedBrush.GetAngles()
 
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
@@ -536,14 +631,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
             }
 
-            // if someone is outside the container, move them back in
+            // If someone is outside the container, move them back in
             local playersinside = []
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x, currentCartPos.y + 150, currentCartPos.z + 75), 300)) {
                 playersinside.push(p)
             }
 
-            // if someone is stuck in the closet wakka wakka
+            // If someone is stuck in the closet wakka wakka
             // script p.SetOrigin(Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30))
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30), 82)) {
@@ -568,7 +663,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
 
 
-            offsettick <- CustomBrush1.GetOrigin() - CustomBrush1Cache 
+            offsettick <- ContainerBedBrush.GetOrigin() - ContainerBedBrushCache 
             cartrotoffset <- 100
             rotval <- 2
             cartrotoffset1 <- 100
@@ -584,13 +679,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 printl(planepitch)
                 printl(planeroll)
-                playermiddle <- p.GetOrigin() - CustomBrush1.GetOrigin()
+                playermiddle <- p.GetOrigin() - ContainerBedBrush.GetOrigin()
                 playermiddle <- Vector(((playermiddle.x / -1)/cartrotoffset)*planepitch, ((playermiddle.y)/cartrotoffset1)*planeroll, playermiddle.z)
-                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, CustomBrush1.GetOrigin().z + ((playermiddle.x + playermiddle.y) + 72)))
+                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, ContainerBedBrush.GetOrigin().z + ((playermiddle.x + playermiddle.y) + 72)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
                 printl(playermiddle)
             }
-            CustomBrush1Cache <- CustomBrush1.GetOrigin()
+            ContainerBedBrushCache <- ContainerBedBrush.GetOrigin()
         }
         // Make our own changelevel trigger
         local p = null
