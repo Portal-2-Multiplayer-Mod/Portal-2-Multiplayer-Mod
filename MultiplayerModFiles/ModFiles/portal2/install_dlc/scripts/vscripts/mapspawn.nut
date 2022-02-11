@@ -747,15 +747,11 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         // add the fowardstep to the origin
         originoffset = originoffset + fowardstep
 
-        printl(fowardstep)
-
         // after getting the end point, we need to see if we hit anything
         local newnearest = FindNearest(origin + originoffset, maxreldist, entitiestoexclude, specificclass)
         if (newnearest != null) {
-            printl("hit something")
+            return newnearest
             break
-        } else {
-            printl("hit nothing")
         }
 
 
@@ -769,15 +765,6 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     }
 
     outputorigin = origin + originoffset
-    printl("")
-    printl("==================================================")
-    printl("Output origin: " + outputorigin)
-    printl("Starting Origin: " + origorigin)
-    printl("Nearest ent: " + nearestent)
-    printl("==================================================")
-    printl("")
-
-
     DebugDrawLine(origorigin, outputorigin, 0, 255, 0, false, 0.1)
 }
 
