@@ -286,13 +286,13 @@ function CreateOurEntities() {
 
     nametagdisplay <- Entities.CreateByClassname("game_text")
     nametagdisplay.__KeyValueFromString("targetname", "p232nametagdisplay")
-    //nametagdisplay.__KeyValueFromString("x", "0")
-    //nametagdisplay.__KeyValueFromString("y", "1")
+    nametagdisplay.__KeyValueFromString("x", "0")
+    nametagdisplay.__KeyValueFromString("y", "0.1")
     nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
     //onscreendisplay.__KeyValueFromString("spawnflags", "1")
-    nametagdisplay.__KeyValueFromString("holdtime", "0.5")
+    nametagdisplay.__KeyValueFromString("holdtime", "0")
     nametagdisplay.__KeyValueFromString("fadeout", "0.1")
-    nametagdisplay.__KeyValueFromString("fadein", "0")
+    nametagdisplay.__KeyValueFromString("fadein", "0.1")
     nametagdisplay.__KeyValueFromString("channel", "0")
     nametagdisplay.__KeyValueFromString("color", "60 200 60")
 
@@ -1234,9 +1234,9 @@ function loop() {
 
         if (multiply == true) {
             // Multiply the color 
-            R <- R * 0.5
-            G <- G * 0.5
-            B <- B * 0.5
+            R <- R - 100
+            G <- G - 100
+            B <- B - 100
             // cap the color at 255
             if (R > 255) {
                 R <- 255
@@ -1329,8 +1329,13 @@ function loop() {
         if (currentplayerclass != null) {
             local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, 4, 1, 32, p, "player")
             if (eyeplayer != null) {
-                SendToConsole("say " + eyeplayer.GetName())
-                EntFireByHandle(nametagdisplay, "settext", GetPlayerName(eyeplayer.entindex()), 0, p, p)
+                local clr = GetPlayerColor(eyeplayer, true)
+                EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
+                if (PluginLoaded == true) {
+                    EntFireByHandle(nametagdisplay, "settext", GetPlayerName(eyeplayer.entindex()), 0, p, p)
+                } else {
+                    EntFireByHandle(nametagdisplay, "settext", "player" + eyeplayer.entindex(), 0, p, p)
+                }
                 EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
             }
         }
