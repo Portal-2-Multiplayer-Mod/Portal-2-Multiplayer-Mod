@@ -26,7 +26,7 @@ DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- false // Set to false if you want to use the plugin (LINUX ONLY)
+UsePlugin <- true // Set to false if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -272,6 +272,18 @@ function init() {
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
 function CreateOurEntities() {
+    measuremovement <- Entities.CreateByClassname("logic_measure_movement")
+    measuremovement.__KeyValueFromString( "measuretype", "1")
+    measuremovement.__KeyValueFromString( "measurereference", "" )
+    measuremovement.__KeyValueFromString( "measureretarget", "" )
+    measuremovement.__KeyValueFromString( "targetscale", "1.0" )
+    // Movement Shit
+    measuremovement.__KeyValueFromString( "targetname", "p232_logic_measure_movement" )
+    measuremovement.__KeyValueFromString( "targetreference", "p232_logic_measure_movement" )
+    measuremovement.__KeyValueFromString( "target", "p232_logic_measure_movement" )
+    EntFireByHandle(measuremovement, "SetMeasureReference", "p232_logic_measure_movement", 0.0, null, null)
+    EntFireByHandle(measuremovement, "enable", "", 0.0, null, null)
+
     colordisplay <- Entities.CreateByClassname("game_text")
     colordisplay.__KeyValueFromString("targetname", "colordisplay")
     colordisplay.__KeyValueFromString("x", "0")
@@ -618,6 +630,126 @@ function FindPlayerClass(plyr) {
             return curclass
         }
     }
+}
+
+function FindNearest(origin, radius, entitiestoexclude = [null], specificclass = null) {
+    // setup some existing locals
+    try {
+        entitiestoexclude[0]
+    } catch(e) {
+        // if this errors out we should probably put the defined ent into a table
+        entitiestoexclude = [entitiestoexclude]
+    }
+
+    // define some locals
+    local bestscore = 999999999
+    local nearestent = null
+    local ent = null
+
+    // find the nearest entity
+    if (specificclass == null) {
+        while (ent = Entities.FindInSphere(ent, origin, radius)) {
+            // check if the entity is in the list of entities to exclude
+            local exclude = false
+            foreach (excluded in entitiestoexclude) {
+                if (excluded == ent) {
+                    exclude = true
+                }
+            }
+            if (exclude == false) {
+                // get the score
+                local score = origin - ent.GetOrigin()
+                score = UnNegative(score)
+                score = score.x + score.y + score.z
+                // check if the entity is closer than the current best
+                if (score < bestscore) {
+                    bestscore = score
+                    nearestent = ent
+                }
+            }
+        }
+    } else {
+        while (ent = Entities.FindByClassnameWithin(ent, specificclass, origin, radius)) {
+            // check if the entity is in the list of entities to exclude
+            local exclude = false
+            foreach (excluded in entitiestoexclude) {
+                if (excluded == ent) {
+                    exclude = true
+                }
+            }
+            if (exclude == false) {
+                // get the score
+                local score = origin - ent.GetOrigin()
+                score = UnNegative(score)
+                score = score.x + score.y + score.z
+                // check if the entity is closer than the current best
+                if (score < bestscore) {
+                    bestscore = score
+                    nearestent = ent
+                }
+            }
+        }
+    }
+
+    // return the nearest entity
+    return nearestent
+}
+
+function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 1000, currentstepped = 5, entitiestoexclude = [null], specificclass = null) {
+    // setup some existing locals
+    try {
+        entitiestoexclude[0]
+    } catch(e) {
+        // if this errors out we should probably put the defined ent into a table
+        entitiestoexclude = [entitiestoexclude]
+    }
+    
+    // define some locals
+    local origorigin = origin // preserve
+    local origmindist = mindist // preserve
+    local origmaxdist = maxdist // preserve
+    local originoffset = Vector(forward.x * mindist, forward.y * mindist, forward.z * mindist) // make sure we get outside of the desired min zone
+    local fowardstep = forward //Vector(forward.x * currentstepped, forward.y * currentstepped, forward.z * currentstepped) // multiply this se we can get a base step amount
+    local outputorigin = Vector(0, 0, 0) // output
+    local nearestent = null // output
+    // do some setup math
+    // nothing atm...
+
+    //# trace the ray #//
+    local loopamt = 0
+    while (loopamt < origmaxdist) {
+        // do some math setup
+        local temporigin = origin + originoffset
+        // find the nearest ent within our maxdist
+        nearestent = FindNearest(temporigin, origmaxdist, entitiestoexclude, specificclass)
+        
+        // now that we have the nearest ent, we need to see how far it is from the temporigin
+        if (nearestent == null) {
+            return null
+        }
+        local score = temporigin - nearestent.GetOrigin()
+        score = UnNegative(score)
+        // multiply forwards by the current score
+        fowardstep = Vector(forward.x * score.x, forward.y * score.y, forward.z * score.z)
+        printl("fowardstep:  " + fowardstep)
+        // add the fowardstep to the origin
+        originoffset = originoffset + fowardstep
+        printl("originoffset: " + originoffset)
+
+        loopamt = loopamt + currentstepped
+    }
+
+    outputorigin = origin + originoffset
+    printl("")
+    printl("==================================================")
+    printl("Output origin: " + outputorigin)
+    printl("Starting Origin: " + origorigin)
+    printl("Nearest ent: " + nearestent)
+    printl("==================================================")
+    printl("")
+
+
+    DebugDrawLine(origorigin, outputorigin, 0, 255, 0, false, 0.1)
 }
 
 function FindPlayerByName(name) {
@@ -1045,6 +1177,8 @@ function TeleportToSpawnPoint(p, SpawnClass) {
 // ░█──░█ ░█─░█ ▄█▄ ░█──▀█    ░█▄▄█ ░█▄▄▄█ ░█▄▄▄█ ░█─── //
 //------------------------------------------------------//
 
+LastCoordGetPlayer <- null
+CoordsAlternate <- false
 function loop() {
     //## Event List ##//
     if (EventList.len() > 0) {
@@ -1122,7 +1256,7 @@ function loop() {
         }
     }
 
-    //## Run player join code when a player joins ##//
+    //## Hook Player Join ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.ValidateScriptScope()) {
@@ -1132,6 +1266,50 @@ function loop() {
                 // Run player join code
                 OnPlayerJoin(p, script_scope)
             }
+        }
+    }
+
+    //## Update Eye Angles ##//
+    if (CoordsAlternate == false) {
+        // Alternate so our timings space out correctly
+        if (LastCoordGetPlayer != null) {
+            LastCoordGetPlayer <- Entities.FindByClassname(LastCoordGetPlayer, "player")
+        } else {
+            LastCoordGetPlayer <- Entities.FindByClassname(null, "player")
+        }
+        if (LastCoordGetPlayer != null) {
+            EntFireByHandle(measuremovement, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
+            // Alternate so our timings space out correctly
+            CoordsAlternate <- true
+        }
+    } else {
+        if (LastCoordGetPlayer != null && Entities.FindByName(null, "p232_logic_measure_movement")) {
+            local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
+            if (currentplayerclass != null) {
+                currentplayerclass.eyeangles <- measuremovement.GetAngles()
+                currentplayerclass.eyeforwardvector <- measuremovement.GetForwardVector()
+            }
+        }
+        // Alternate so our timings space out correctly
+        CoordsAlternate <- false
+    }
+    // print out the data
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local currentplayerclass = FindPlayerClass(p)
+        if (currentplayerclass != null) {
+            //printl("player" + p.entindex() + "'s angles " + currentplayerclass.eyeangles)
+            //printl("player" + p.entindex() + "'s vector " + currentplayerclass.eyeforwardvector)
+        }
+    }
+
+    //## Nametags ##//
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local currentplayerclass = FindPlayerClass(p)
+        if (currentplayerclass != null) {
+            printl("did forward vec: " + ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 1000, 250, p, "player"))
+            //printl("player" + p.entindex() + "'s angles " + currentplayerclass.eyeangles)
         }
     }
 
@@ -1192,7 +1370,7 @@ function loop() {
         }
     }
 
-    //## Make a hook for when all players join the game ##//
+    //## Hook First Spawn ##//
     try {
         if (HasRanGeneralOneTime == true) {
             if (Entities.FindByName(null, "HasSpawnedMPMod")) {
@@ -1211,30 +1389,6 @@ function loop() {
             }
         }
     } catch(exception) {}
-
-    // //## Delete all cached models ##//
-    // if (DoneCacheing==true) {
-    //     // If model has cached successfully delete it from the level
-    //     foreach (index, CustomGameModel in CachedModels)  {
-    //         // Find all entities with the model name
-    //         local ent = null
-    //         while (ent = Entities.FindByModel(ent, CustomGameModel)) {
-    //             try {
-    //                 // If it's a prop_dynamic_create entity delete it
-    //             if (ent.GetName().slice(0, 17)!="genericcustomprop") {
-    //                 ent.Destroy()
-    //             }
-    //             } catch(exception) {
-    //                 ent.Destroy()
-    //             }
-    //         }
-    //     }
-    // }
-    // if (CanClearCache==true) {
-    //     foreach (index, CustomGameModel in CachedModels)  {
-    //         CachedModels.remove(index)
-    //     }
-    // }
 
     //## GlobalSpawnClass SetSpawn ##//
     if (GlobalSpawnClass.usesetspawn == true) {
@@ -1850,6 +2004,9 @@ function OnPlayerJoin(p, script_scope) {
     } else {
         currentplayerclass.username <- "Player " + p.entindex()
     }
+    // player angles
+    currentplayerclass.eyeangles <- Vector(0, 0, 0)
+    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0)
 
     SetCosmetics(p)
 
@@ -1870,10 +2027,6 @@ function OnPlayerJoin(p, script_scope) {
         printl(thing)
     }
     printl("===================")
-    printl("")
-    printl(playerclasses[p.entindex()-1].color.r)
-    printl(playerclasses[p.entindex()-1].color.g)
-    printl(playerclasses[p.entindex()-1].color.b)
 
     // Set fog controller
     if (HasSpawned==true) {
