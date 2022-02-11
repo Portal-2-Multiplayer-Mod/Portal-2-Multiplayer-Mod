@@ -26,7 +26,7 @@ DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- false // Set to false if you want to use the plugin (LINUX ONLY)
+UsePlugin <- true // Set to false if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -509,6 +509,56 @@ function p232fogswitch(fogname) {
     }
 }
 
+function GetPlayerColor(p, multiply = true) {
+    local PlayerID = p.entindex()
+    try {
+        switch (PlayerID) {
+            case 1 : R <- 255; G <- 255; B <- 255; break;
+            case 2 : R <- 180, G <- 255, B <- 180; break;
+            case 3 : R <- 120, G <- 140, B <- 255; break;
+            case 4 : R <- 255, G <- 170, B <- 120; break;
+            case 5 : R <- 255, G <- 100, B <- 100; break;
+            case 6 : R <- 255, G <- 180, B <- 255; break;
+            case 7 : R <- 255, G <- 255, B <- 180; break;
+            case 8 : R <-   0, G <- 255, B <- 240; break;
+            case 9 : R <-  75, G <-  75, B <-  75; break;
+            case 10: R <- 100, G <-  80, B <-   0; break;
+            case 11: R <-   0, G <-  80, B <- 100; break;
+            case 12: R <- 120, G <- 155, B <-  25; break;
+            case 13: R <-   0, G <-   0, B <- 100; break;
+            case 14: R <-  80, G <-   0, B <-   0; break;
+            case 15: R <-   0, G <-  75, B <-   0; break;
+            case 16: R <-   0, G <-  75, B <-  75; break;
+        }
+    } catch(e) { }
+    if (PlayerID > 16) {
+        R <- 255; G <- 255; B <- 255;
+    }
+
+    if (multiply == true) {
+        // Multiply the color 
+        R <- R - 100
+        G <- G - 100
+        B <- B - 100
+        // cap the color at 255
+        if (R > 255) {
+            R <- 255
+        }
+        if (G > 255) {
+            G <- 255
+        }
+        if (B > 255) {
+            B <- 255
+        }
+    }
+
+    return class {
+        r = R
+        g = G
+        b = B
+    }
+}
+
 function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
 	if(DevMode == true){
 		DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
@@ -717,8 +767,6 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     local fowardstep = forward //Vector(forward.x * currentstepped, forward.y * currentstepped, forward.z * currentstepped) // multiply this se we can get a base step amount
     local outputorigin = Vector(0, 0, 0) // output
     local nearestent = null // output
-    // do some setup math
-    // nothing atm...
 
     //# trace the ray #//
     local loopamt = 0
@@ -1205,57 +1253,6 @@ function loop() {
         EventList.remove(0)
     }
 
-    //## Get Player Color ##//
-    function GetPlayerColor(p, multiply = true) {
-        local PlayerID = p.entindex()
-        try {
-            switch (PlayerID) {
-                case 1 : R <- 255; G <- 255; B <- 255; break;
-                case 2 : R <- 180, G <- 255, B <- 180; break;
-                case 3 : R <- 120, G <- 140, B <- 255; break;
-                case 4 : R <- 255, G <- 170, B <- 120; break;
-                case 5 : R <- 255, G <- 100, B <- 100; break;
-                case 6 : R <- 255, G <- 180, B <- 255; break;
-                case 7 : R <- 255, G <- 255, B <- 180; break;
-                case 8 : R <-   0, G <- 255, B <- 240; break;
-                case 9 : R <-  75, G <-  75, B <-  75; break;
-                case 10: R <- 100, G <-  80, B <-   0; break;
-                case 11: R <-   0, G <-  80, B <- 100; break;
-                case 12: R <- 120, G <- 155, B <-  25; break;
-                case 13: R <-   0, G <-   0, B <- 100; break;
-                case 14: R <-  80, G <-   0, B <-   0; break;
-                case 15: R <-   0, G <-  75, B <-   0; break;
-                case 16: R <-   0, G <-  75, B <-  75; break;
-            }
-        } catch(e) { }
-        if (PlayerID > 16) {
-            R <- 255; G <- 255; B <- 255;
-        }
-
-        if (multiply == true) {
-            // Multiply the color 
-            R <- R - 100
-            G <- G - 100
-            B <- B - 100
-            // cap the color at 255
-            if (R > 255) {
-                R <- 255
-            }
-            if (G > 255) {
-                G <- 255
-            }
-            if (B > 255) {
-                B <- 255
-            }
-        }
-
-        return class {
-            r = R
-            g = G
-            b = B
-        }
-    }
-
     //## PotatoIfy! Loop ##//
     if (PermaPotato == true) {
         local ent = null
@@ -1327,7 +1324,36 @@ function loop() {
     while (p = Entities.FindByClassname(p, "player")) {
         local currentplayerclass = FindPlayerClass(p)
         if (currentplayerclass != null) {
-            local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, 4, 1, 32, p, "player")
+
+            // Get Number Of Players In The Game
+            local playernums = 0
+            foreach (plr in playerclasses) {
+                playernums = playernums + 1
+            }
+
+            local checkcount = 1
+            // optimise search based on player count
+            if (playernums <= 6) {
+                checkcount = (playernums - 1)
+            } else {
+                if (playernums <= 8) {
+                    checkcount = 4
+                } else {
+                    if (playernums <= 14) {
+                        checkcount = 3
+                    } else {
+                        if (playernums <= 18) {
+                            checkcount = 1
+                        } else {
+                            if (playernums <= 33) {
+                                checkcount = 1
+                            }
+                        }
+                    }
+                }
+            }
+
+            local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, 4, checkcount, 32, p, "player")
             if (eyeplayer != null) {
                 local clr = GetPlayerColor(eyeplayer, true)
                 EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
