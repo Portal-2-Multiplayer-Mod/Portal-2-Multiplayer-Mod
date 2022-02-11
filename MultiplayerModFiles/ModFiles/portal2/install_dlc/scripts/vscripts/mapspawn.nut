@@ -695,7 +695,9 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
     return nearestent
 }
 
-function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 1000, currentstepped = 5, entitiestoexclude = [null], specificclass = null) {
+function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, currentstepped = 4, stepmultiplier = 1, maxreldist = 32, entitiestoexclude = [null], specificclass = null) {
+    //maxdist = maxdist / stepmultiplier
+    
     // setup some existing locals
     try {
         entitiestoexclude[0]
@@ -708,7 +710,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 1000, cu
     local origorigin = origin // preserve
     local origmindist = mindist // preserve
     local origmaxdist = maxdist // preserve
-    local originoffset = Vector(forward.x * mindist, forward.y * mindist, forward.z * mindist) // make sure we get outside of the desired min zone
+    local originoffset = Vector(forward.x, forward.y, forward.z) // make sure we get outside of the desired min zone
     local fowardstep = forward //Vector(forward.x * currentstepped, forward.y * currentstepped, forward.z * currentstepped) // multiply this se we can get a base step amount
     local outputorigin = Vector(0, 0, 0) // output
     local nearestent = null // output
@@ -717,7 +719,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 1000, cu
 
     //# trace the ray #//
     local loopamt = 0
-    while (loopamt < origmaxdist) {
+    while (loopamt < currentstepped) {
         // do some math setup
         local temporigin = origin + originoffset
         // find the nearest ent within our maxdist
@@ -729,14 +731,41 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 1000, cu
         }
         local score = temporigin - nearestent.GetOrigin()
         score = UnNegative(score)
-        // multiply forwards by the current score
-        fowardstep = Vector(forward.x * score.x, forward.y * score.y, forward.z * score.z)
-        printl("fowardstep:  " + fowardstep)
+        // multiply forwards by the lowest value in the score
+        local lowest = 0
+        if (score.x > lowest) {
+            lowest = score.x
+        }
+        if (score.y > lowest) {
+            lowest = score.y
+        }
+        if (score.z > lowest) {
+            lowest = score.z
+        }
+
+        fowardstep = Vector((forward.x * lowest), (forward.y * lowest), (forward.z * lowest))
         // add the fowardstep to the origin
         originoffset = originoffset + fowardstep
-        printl("originoffset: " + originoffset)
 
-        loopamt = loopamt + currentstepped
+        printl(fowardstep)
+
+        // after getting the end point, we need to see if we hit anything
+        local newnearest = FindNearest(origin + originoffset, maxreldist, entitiestoexclude, specificclass)
+        if (newnearest != null) {
+            printl("hit something")
+            break
+        } else {
+            printl("hit nothing")
+        }
+
+
+        // // if we have reached the end of the line break
+        // if (fowardstep.x == 0 && fowardstep.y == 0 && fowardstep.z == 0) {
+        //     printl("END OF LINE")
+        //     break
+        // }
+
+        loopamt = loopamt + 1
     }
 
     outputorigin = origin + originoffset
@@ -1308,7 +1337,7 @@ function loop() {
     while (p = Entities.FindByClassname(p, "player")) {
         local currentplayerclass = FindPlayerClass(p)
         if (currentplayerclass != null) {
-            printl("did forward vec: " + ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 1000, 250, p, "player"))
+            printl("did forward vec: " + ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, 4, 1, 32, p, "player"))
             //printl("player" + p.entindex() + "'s angles " + currentplayerclass.eyeangles)
         }
     }
