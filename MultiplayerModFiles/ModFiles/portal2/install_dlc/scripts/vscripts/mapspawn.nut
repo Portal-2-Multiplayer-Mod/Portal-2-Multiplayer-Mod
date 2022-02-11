@@ -284,14 +284,17 @@ function CreateOurEntities() {
     EntFireByHandle(measuremovement, "SetMeasureReference", "p232_logic_measure_movement", 0.0, null, null)
     EntFireByHandle(measuremovement, "enable", "", 0.0, null, null)
 
-    colordisplay <- Entities.CreateByClassname("game_text")
-    colordisplay.__KeyValueFromString("targetname", "colordisplay")
-    colordisplay.__KeyValueFromString("x", "0")
-    colordisplay.__KeyValueFromString("y", "1")
-    colordisplay.__KeyValueFromString("holdtime", "100000")
-    colordisplay.__KeyValueFromString("fadeout", "0")
-    colordisplay.__KeyValueFromString("fadein", "0")
-    colordisplay.__KeyValueFromString("channel", "0")
+    nametagdisplay <- Entities.CreateByClassname("game_text")
+    nametagdisplay.__KeyValueFromString("targetname", "p232nametagdisplay")
+    //nametagdisplay.__KeyValueFromString("x", "0")
+    //nametagdisplay.__KeyValueFromString("y", "1")
+    nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
+    //onscreendisplay.__KeyValueFromString("spawnflags", "1")
+    nametagdisplay.__KeyValueFromString("holdtime", "0.5")
+    nametagdisplay.__KeyValueFromString("fadeout", "0.1")
+    nametagdisplay.__KeyValueFromString("fadein", "0")
+    nametagdisplay.__KeyValueFromString("channel", "0")
+    nametagdisplay.__KeyValueFromString("color", "60 200 60")
 
     // Create an on screen text message entity
     onscreendisplay <- Entities.CreateByClassname("game_text")
@@ -1324,8 +1327,12 @@ function loop() {
     while (p = Entities.FindByClassname(p, "player")) {
         local currentplayerclass = FindPlayerClass(p)
         if (currentplayerclass != null) {
-            printl("did forward vec: " + ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, 4, 1, 32, p, "player"))
-            //printl("player" + p.entindex() + "'s angles " + currentplayerclass.eyeangles)
+            local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, 4, 1, 32, p, "player")
+            if (eyeplayer != null) {
+                SendToConsole("say " + eyeplayer.GetName())
+                EntFireByHandle(nametagdisplay, "settext", GetPlayerName(eyeplayer.entindex()), 0, p, p)
+                EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
+            }
         }
     }
 
