@@ -26,7 +26,7 @@ DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-UsePlugin <- true // Set to false if you want to use the plugin (LINUX ONLY)
+UsePlugin <- false // Set to false if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
@@ -768,7 +768,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     }
 
     outputorigin = origin + originoffset
-    DebugDrawLine(origorigin, outputorigin, 0, 255, 0, false, 0.1)
+    //DebugDrawLine(origorigin, outputorigin, 0, 255, 0, false, 0.1)
 }
 
 function FindPlayerByName(name) {
