@@ -940,7 +940,7 @@ def rungui():
 
     pygame.init()
 
-    pygame.display.set_caption('Portal 2 Multiplayer Mod | LAUNCHER')
+    pygame.display.set_caption('Portal 2: Multiplayer Mod | Launcher')
     window_surface = pygame.display.set_mode((850, 480))
 
     background = pygame.Surface((850, 480))
