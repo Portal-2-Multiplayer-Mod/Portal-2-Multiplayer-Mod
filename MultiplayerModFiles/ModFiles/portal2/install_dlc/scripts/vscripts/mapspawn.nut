@@ -389,6 +389,16 @@ function SetCosmetics(p) {
         if (pname == "Nanoman2525") {
             SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
         }
+
+        // //## Bumpy Customization ##//
+        // if (pname == "Bumpy") {
+        //     SetPlayerModel(p, "models/gibs/hgibs.mdl")
+        // }
+
+        // //## nintendude Customization ##//
+        // if (pname == "nintendude") {
+        //     SetPlayerModel(p, "props/food_can/food_can_open")
+        // }
     }
 }
 
