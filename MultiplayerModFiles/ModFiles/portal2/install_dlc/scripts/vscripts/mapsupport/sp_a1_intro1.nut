@@ -130,6 +130,42 @@ function p232DropCollision() {
 
 containerStick <- false
 function p232ParentAndStartMath() {
+        // Start container ride
+        EntFire("Actor_container_master", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_01", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_03", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_03_door", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_05", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_07", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_09", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_11", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_12", "SetAnimation", "anim2", 0)
+        EntFire("Actor_container_13", "SetAnimation", "anim2", 0)
+
+        EntFire("Actor_container_01", "addoutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_03", "addoutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_05", "addoutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_07", "addoutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_09", "addoutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_11", "addoutput", "OnAnimationDone !self:Kill")
+
+        // EntFire("Actor_container_master", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_01", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_03", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_03_door", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_05", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_07", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_09", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_11", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_12", "SetDefaultAnimation", "halt2", 0)
+        // EntFire("Actor_container_13", "SetDefaultAnimation", "halt2", 0)
+
+        EntFire("container_tiny_impact_shake", "StartShake", "", 0)
+        EntFire("light_track_04", "TurnOn", "", 78)
+
+	    EntFire("@container_stacks_1", "SetAnimation", "anim1", 0 )
+	    EntFire("@container_stacks_2", "SetAnimation", "anim1", 0 )
+
     //DisableJumpmsp = true
         // BED
         // ContainerBedBrush.__KeyValueFromInt("Solid", 0)
@@ -223,9 +259,7 @@ function StopStickAndTeleport() {
 
     EntFire("container_collision", "EnableCollision", "", 0)
     
-    Entities.FindByName(null, "@container_stacks_1").__KeyValueFromString("targetname", "p232save1")
-    Entities.FindByName(null, "p232containerstacks2").__KeyValueFromString("targetname", "p232save2")
-    Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232save3")
+    Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232save")
     Entities.FindByName(null, "kill_container_rl").Destroy()
     containerStick = false
     SecondToLastTP = true
@@ -233,7 +267,7 @@ function StopStickAndTeleport() {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
-        p.SetOrigin(Vector(-1710, 4380, 3080))
+        p.SetOrigin(Vector(-1710, 4380, 3100))
         p.SetVelocity(Vector(80, 0, 0))
     }
 }
@@ -270,10 +304,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         HasStartedSp_A1_Intro1 <- false
 
+        Entities.FindByName(null, "Actor_container_master").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "Actor_container_01").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "Actor_container_03").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "Actor_container_05").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "Actor_container_07").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "Actor_container_09").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "Actor_container_11").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "Actor_container_12").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "Actor_container_13").__KeyValueFromString("HoldAnimation", "1")
+
         Entities.FindByName(null, "@music_awake").__KeyValueFromString("targetname", "p232musicawake")
         Entities.FindByName(null, "open_portal_relay").__KeyValueFromString("targetname", "p232portalrelay")
         Entities.FindByName(null, "mmc_clock_flash_relay").__KeyValueFromString("targetname", "p232clockflashrelay")
-        Entities.FindByName(null, "@container_stacks_2").__KeyValueFromString("targetname", "p232containerstacks2")
         Entities.FindByName(null, "portal_red_0_deactivate_rl").Destroy()
         Entities.FindByName(null, "portal_blue_0_deactivate_rl").Destroy()
 
@@ -281,13 +324,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("return_to_bed_button", "addoutput", "OnPressed p232servercommand:command:script p232DestroyedSequence():5")
         EntFire("@rl_container_ride", "addoutput", "OnTrigger p232servercommand:command:script p232DropCollision():0.5")
-        EntFire("@rl_container_ride_second_section", "addoutput", "OnTrigger p232servercommand:command:script p232ParentAndStartMath()")
-        EntFire("@rl_container_ride_second_section", "addoutput", "OnTrigger p232containerstacks2:SetAnimation:anim1")
+        EntFire("crane_second_startup_relay", "addoutput", "OnTrigger p232servercommand:command:script p232ParentAndStartMath():1")
+        EntFire("@debug_start_perf_test", "addoutput", "OnTrigger p232servercommand:command:script p232ParentAndStartMath():10")
         EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p232servercommand:command:script StopStickAndTeleport()")
         EntFire("enter_chamber_trigger", "addoutput", "OnTrigger p232portalrelay:Trigger::34")
         //@rl_container_ride
         EntFire("relay_start_map", "addoutput", "OnTrigger p232clockflashrelay:Trigger")
         EntFire("p232clockflashrelay", "addoutput", "OnTrigger p232clockflashrelay:Trigger::1")
+        Entities.FindByName(null, "@rl_container_pause_motion").Destroy()
+        Entities.FindByName(null, "@rl_container_resume_motion").Destroy()
+        Entities.FindByName(null, "@rl_container_ride_second_section").Destroy()
         Entities.FindByName(null, "@knockout_teleport_1").Destroy()
         bumpout <- true
         //door_hud_hint_trigger
@@ -508,7 +554,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable==true) {
-            printl("Player Joined (Reseting Viewcontrols)")
+            printl("Player joined (Reseting viewcontrol)")
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
         }
