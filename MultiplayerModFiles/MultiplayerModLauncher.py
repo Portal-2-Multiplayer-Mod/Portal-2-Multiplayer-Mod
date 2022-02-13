@@ -630,7 +630,7 @@ configdefaults = [
     "",
     "# DISCLAIMER : I recommend you edit this through the gui as this",
     "#              config file has some unstable objects that may or",
-    "#              can in possibly break the game if edited wrong!!!",
+    "#              can possibly break the game if edited incorrectly",
     "",
     "",
     "$launcher",

@@ -99,7 +99,7 @@ function init() {
         }
         EntFire("p232servercommand", "command", "echo Loading Plugin...", 0.01) 
         EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
-        EntFire("p232servercommand", "command", "changelevel " + GetMapName(), 0.1)
+        //EntFire("p232servercommand", "command", "changelevel " + GetMapName(), 0.1)
     }
 }
 
