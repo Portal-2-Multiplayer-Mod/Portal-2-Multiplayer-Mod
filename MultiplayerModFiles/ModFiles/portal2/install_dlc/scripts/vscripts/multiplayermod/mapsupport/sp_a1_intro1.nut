@@ -257,6 +257,7 @@ function StopStickAndTeleport() {
     EntFire("ContainerPlantBrush", "kill", "", 0)
     EntFire("ContainerChairBrush", "kill", "", 0)
 
+    EntFire("container_collision", "enabledraw", "", 0)
     EntFire("container_collision", "EnableCollision", "", 0)
     
     Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232save")
@@ -277,6 +278,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         ContainerBedBrush <- false
         ContainerBedBrushCache <- false
         stoprenable <- false
+
+        // Remove portalgun
+        portalgunblue <- Entities.CreateByClassname("info_target")
+        portalgunblue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+
+        portalgunorange <- Entities.CreateByClassname("info_target")
+        portalgunorange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
 
         // Create Env Globals
         env_global01 <- Entities.CreateByClassname("env_global")
@@ -317,6 +325,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "Actor_trap_door_1").__KeyValueFromString("HoldAnimation", "1")
 
         Entities.FindByName(null, "@music_awake").__KeyValueFromString("targetname", "p232musicawake")
+        Entities.FindByName(null, "container_collision").__KeyValueFromString("rendermode", "10")
         Entities.FindByName(null, "open_portal_relay").__KeyValueFromString("targetname", "p232portalrelay")
         Entities.FindByName(null, "mmc_clock_flash_relay").__KeyValueFromString("targetname", "p232clockflashrelay")
         Entities.FindByName(null, "portal_red_0_deactivate_rl").Destroy()
@@ -599,16 +608,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 //Entities.FindByName(null, "knockout-portalgun").Destroy()
                 OnlyOnceSp_A1_Intro1 <- false
             }
-        }
-
-        // Remove portalgun
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-            ent.Destroy()
-        }
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
-            ent.Destroy()
         }
 
         try {
