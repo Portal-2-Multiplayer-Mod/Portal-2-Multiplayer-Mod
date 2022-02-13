@@ -98,6 +98,63 @@ def FindConfigPath():
     # return the config path
     return configpath
         
+def FindInConfig(cfg, search):
+    # go through each line
+    for line in cfg:
+        # check if the line (left side of the =) is the one we want
+        if line.split("=")[0].strip() == search:
+            print("(P2:MM) Found " + search + " in config!")
+            # return the right side of the line
+            return line.split("=")[1].strip()
+    # if we didn't find it, return undefined
+    print("(P2:MM) " + search + " not found in config!")
+
+def EditConfig(filepath, search, newvalue):
+    # open the file
+    cfg = open(filepath, "r")
+    # read the file
+    cfgdata = cfg.readlines()
+    # close the file
+    cfg.close()
+    # delete the file
+    os.remove(filepath)
+    # open the file
+    cfg = open(filepath, "w")
+
+    
+    # go through each line by index so we can see if there is a match
+    for i in range(len(cfgdata)):
+        line = cfgdata[i]
+        # remove everything after the first #
+        line = line.split("#")[0]
+        # remove the newline
+        line = line.replace("\n", "")
+        
+        # if the line stripped is not empty and has a =, continue
+        if (line != "" and "=" in line):
+            # get everything to the left of the =
+            leftline = line.split("=")[0]
+            # get everything to the right of the =
+            rightline = line.split("=")[1]
+            # remove every space and tab from the left side
+            leftline = leftline.replace(" ", "")
+            leftline = leftline.replace("\t", "")
+            # remove every tab from the right side
+            rightline = rightline.replace("\t", "")
+            # strip left and right
+            leftline = leftline.strip()
+            rightline = rightline.strip()
+            # if the left side is the search, replace the right side with the new value
+            if (leftline == search):
+                print("(P2:MM) Replacing " + rightline + " with " + newvalue + " in config...")
+                cfgdata[i] = search + " = " + newvalue + "\n"
+
+    # write the file
+    for line in cfgdata:
+        cfg.write(line)
+
+    # close the file
+    cfg.close()
 
 def ImportConfig():
     print("(P2:MM) Importing Config...")
@@ -112,7 +169,7 @@ def ImportConfig():
     # process the config file into useable data
     print("(P2:MM) Processing Config...")
     print("")
-    print("FILE========================")
+    print("Config Data========================")
     processedconfig = []
     for line in config:
         # remove everything after the first #
@@ -141,8 +198,12 @@ def ImportConfig():
             if (line != ""):
                 processedconfig.append(line)
                 print("Line:" + line)
-    print("FILE END====================")
+
+    print("Config Data End====================")
     print("")
+    print("(P2:MM) Config Imported!")
+    return processedconfig
+    
 
 
 # █ █▄░█ █ ▀█▀
@@ -151,8 +212,58 @@ def ImportConfig():
 def Init():
     print("(P2:MM) Initializing...")
     print("")
-    # import the config
-    configfile = ImportConfig()
+
+#//# import the config #//#
+    configdata = ImportConfig()
+    configpath = FindConfigPath()
+    print("")
+
+#//# get the portal 2 path #//#
+    # setup a name for the default dlc2 (so we can make sure we get the right path later)
+    if (iow):
+        valvedlc = "\\portal2_dlc2"
+    else:
+        valvedlc = "/portal2_dlc2"
+
+    print("(P2:MM) Checking for Portal 2 Path...")
+    portal2path = FindInConfig(configdata, "portal2path")
+    
+    # if we don't have a path, find it
+    if (portal2path == "undefined"):
+        print("(P2:MM) Portal 2 Path not predefined!")
+        print("(P2:MM) Finding Portal 2 Path...")
+        # as a last resort, ask the user to find the path
+        hasfoundcorrectpath = False
+        while hasfoundcorrectpath == False:
+            print("")
+            portal2path = input("Enter the path to your Portal 2 installation: ")
+
+            # double check that the path is valid
+            if (os.path.exists(portal2path) and os.path.exists(portal2path + valvedlc)):
+                # if it does stop the loop
+                print("(P2:MM) Portal 2 Path found!")
+                hasfoundcorrectpath = True
+            else:
+                print("(P2:MM) Invalid Path!")
+                print("(P2:MM) Please try again!")
+                hasfoundcorrectpath = False
+
+        # write the path to the config
+        print("(P2:MM) Writing Portal 2 Path to Config...")
+        EditConfig(configpath, "portal2path", portal2path)
+
+    # if we still don't have a path, we can't continue
+    if (portal2path == "undefined"):
+        print("(P2:MM) [Error] Portal 2 Path not found! Launch cannot continue!")
+        exit()
+
+    # double check that the path is valid
+    if (os.path.exists(portal2path) and os.path.exists(portal2path + valvedlc)):
+        print("(P2:MM) Portal 2 Path found And Is Correct!")
+    else:
+        print("(P2:MM) [Error] Invalid Path!")
+        print("(P2:MM) [Error] Launch cannot continue!")
+        exit()
 
 
 
