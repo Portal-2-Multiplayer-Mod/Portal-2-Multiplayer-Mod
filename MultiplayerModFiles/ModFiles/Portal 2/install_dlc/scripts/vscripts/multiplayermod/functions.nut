@@ -627,15 +627,19 @@ function TriggerOnceHook(TriggerName, FunctionName) {
 // }
 
 function GetAdminLevel(id) {
-  foreach (playername in Admins) {
-    if (playername==GetPlayerName(id)) {
-        return 1
+    foreach (admin in Admins) {
+        // Seperate the playername and the admin level
+        local level = split(admin, "[]")[0]
+        local playername = split(admin, "]")[1]
+
+        if (playername==GetPlayerName(id)) {
+            return level
+        }
     }
-  }
-  if (id == 1) {
-      return 1
-  }
-  return 0
+    if (id == 1) {
+        return 6
+    }
+    return 0
 }
 
 // Find player by index

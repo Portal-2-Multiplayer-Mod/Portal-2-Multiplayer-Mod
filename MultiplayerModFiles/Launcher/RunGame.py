@@ -3,6 +3,7 @@
 
 from http.client import LineTooLong
 import os
+import subprocess
 
 
 #/////////////////////////////////////////////////////////////////#
@@ -36,6 +37,21 @@ print("(P2:MM) Home Folder: " + homefolder)
 
 print("")
 
+#////////////////////////////////////////////////////////////#
+#//# ask the user if they want to mount or unmout the mod #//#
+#////////////////////////////////////////////////////////////#
+
+validinput = False
+WillMount = True
+while (not validinput):
+    ShouldMount = input("(===) Do you want to mount or unmount the mod? (mount/unmount): ")
+    if (ShouldMount == "mount" or ShouldMount == "unmount"):
+        validinput = True
+    if (ShouldMount == "unmount"):
+        WillMount = False
+    
+print("")
+print("(P2:MM) " + ShouldMount + "ing the mod...")
 
 # █▀█ ▄▀█ ▀█▀ █░█   █▀▄ █▀▀ ▀█▀ █▀▀ █▀▀ ▀█▀ █▀█ █▀█
 # █▀▀ █▀█ ░█░ █▀█   █▄▀ ██▄ ░█░ ██▄ █▄▄ ░█░ █▄█ █▀▄
@@ -87,20 +103,25 @@ def MountMod(gamepath):
         os.system(command)
 
 def UnpatchBinaries(gamepath):
+    binarys = [
+        "bin" + nf + "linux32" + nf + "engine.so",
+        "bin" + nf + "engine.dll",
+        "portal2" + nf + "bin" + nf + "linux32" + nf + "server.so",
+        "portal2" + nf + "bin" + nf + "server.dll",
+    ]
+
     print("")
     print("(P2:MM) Unpatching Binarys...")
+    for binary in binarys:
+        # get the filename
+        filename = binary.rsplit(nf, 1)[1]
+        # delete the file from the gamepath if it exitsts
+        if (os.path.isfile(gamepath + nf + filename)):
+            print("(P2:MM) Deleting " + gamepath + nf + filename + "...")
+            os.remove(gamepath + nf + filename)
 
-    # remove the BinaryStorage folder
-    print("(P2:MM) Removing BinaryStorage folder...")
-    if (iow):
-        command = "rmdir /S /Q \"" + gamepath + nf + "BinaryStorage\""
-        print("(P2:MM) Command: " + command)
-        os.system(command)
-    else:
-        command = "rm -rf \"" + gamepath + nf + "BinaryStorage\""
-        print("(P2:MM) Command: " + command)
-        # if on linux, use the command line
-        os.system(command)
+    # unrename the binaries so we can move them
+    UnRenameBinaries(gamepath, binarys)
 
 def PatchBinaries(gamepath):
     print("")
@@ -597,9 +618,30 @@ def Init():
 
 
 #//# mount the multiplayer mod #//#
-    MountMod(portal2path)
-    # patch the binaries
-    PatchBinaries(portal2path)
+    if (WillMount):
+        MountMod(portal2path)
+        # patch the binaries
+        PatchBinaries(portal2path)
+    else:
+        # this will delete any in use dlcs
+        print("(P2:MM) Deleting In Use DLCs...")
+        print("")
+        FindAvalibleDLC(portal2path)
+        # unpatch the binaries
+        UnpatchBinaries(portal2path)
+
+    if (WillMount):
+    #//# run the game #//#
+        print("(P2:MM) Running Game...")
+        try:
+            if (iow):
+                subprocess.run(["portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3"])
+            else:
+                from subprocess import Popen
+                subprocess.Popen(["steam", "-applaunch", "620", "-novid", "-allowspectators", "-nosixense", "+map", "mp_coop_lobby_3"])
+                print("Game launch successful!")
+        except:
+            print("Failed to launch Portal 2!")
 
 # RUN INIT
 Init()

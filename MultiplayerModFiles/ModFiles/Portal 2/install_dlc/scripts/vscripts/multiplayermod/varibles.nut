@@ -39,6 +39,7 @@ if (GetMapName().slice(0,7)=="mp_coop") {
     IsOnSingleplayer = true
 }
 
+TickSpeed <- 0.00 // now depricated just for legacy
 EventList <- []
 PermaPotato <- false
 TotalRemovedEnts <- 0
