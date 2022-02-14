@@ -12,11 +12,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Shake the camera when you fall through the wood
         Entities.FindByName(null, "crash_landing_shake").__KeyValueFromString("spawnflags", "29")
 
-        // Create Env Globals
+        // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
         env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
 
         env_global02 <- Entities.CreateByClassname("env_global")
         env_global02.__KeyValueFromString("targetname", "env_global02")
@@ -26,7 +25,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         env_global03.__KeyValueFromString("targetname", "env_global03")
         env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
 
-
         env_global04 <- Entities.CreateByClassname("env_global")
         env_global04.__KeyValueFromString("targetname", "env_global04")
         env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
@@ -35,15 +33,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global02, "turnon", "", 1, null, null)
         EntFireByHandle(env_global03, "turnon", "", 1, null, null)
         EntFireByHandle(env_global04, "turnon", "", 1, null, null)
-
-        // Create tube cap brush
-        // TubeCapBrush
-        TubeCapBrush <- Entities.CreateByClassname("func_brush")
-        TubeCapBrush.SetOrigin(Vector(0, -4096, 92))
-        TubeCapBrush.SetSize(Vector(0, 0 ,0), Vector(128, 128, 24))
-        TubeCapBrush.__KeyValueFromInt("Solid", 3)
-        TubeCapBrush.__KeyValueFromString("targetname", "TubeCapBrush")
-        DebugDrawBox(TubeCapBrush.GetOrigin(), TubeCapBrush.GetBoundingMins(), TubeCapBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
 
         Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A3_00ServerCommand")
         printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
@@ -83,9 +72,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Get all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 10))
-            p.SetVelocity(Vector(0, 0, 0))
-            EntFireByHandle(p, "addoutput", "movetype 5", 0, null, null)
+            p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 8))
+            p.SetVelocity(Vector(p.GetVelocity().x/2, p.GetVelocity().y/2, 0))
+            EntFireByHandle(p, "addoutput", "movetype 4", 0, null, null)
         }
         // Make POTATOS tank point at nearest player
         try {
