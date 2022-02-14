@@ -58,6 +58,8 @@ def MountMod(gamepath):
         print("(P2:MM) Creating MultiplayerModFiles folder...")
         os.mkdir(gamepath + nf + "MultiplayerModFiles")
         print("(P2:MM) MultiplayerModFiles folder created!")
+    
+    
     # copy MultiplayerModFiles/ModFiles/Portal 2 to the gamepath
     print("(P2:MM) Copying ModFiles folder to " + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "portal2...")
     # if on windows, use the command line to copy the folder
@@ -67,6 +69,20 @@ def MountMod(gamepath):
         os.system(command)
     else:
         command = "cp -r \"" + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "Portal 2\" \"" + gamepath.replace("Portal 2", "") + "\""
+        print("(P2:MM) Command: " + command)
+        # if on linux, use the command line
+        os.system(command)
+    
+
+    # after we are done copying, we need to change rename the install_dlc folder
+    print("(P2:MM) Renaming install_dlc folder to " + dlcmountpoint + "...")
+    # if on windows, use the command line to rename the folder
+    if (iow):
+        command = "ren \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
+        print("(P2:MM) Command: " + command)
+        os.system(command)
+    else:
+        command = "mv \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         print("(P2:MM) Command: " + command)
         # if on linux, use the command line
         os.system(command)
@@ -130,7 +146,7 @@ def FindAvalibleDLC(gamepath):
         print("")
         print("(P2:MM) DLC Mount Point Found! " + gamepath + nf + "portal2_dlc" + str(highest + 1))
         # return the mount point
-        return gamepath + nf + "portal2_dlc" + str(highest + 1)
+        return "portal2_dlc" + str(highest + 1)
 
         
                 
