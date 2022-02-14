@@ -112,10 +112,10 @@ def PatchBinaries(gamepath):
     print("")
 
     binarys = [
-        "bin/linux32/engine.so",
-        "bin/engine.dll",
-        "portal2/bin/linux32/server.so",
-        "portal2/bin/server.dll",
+        "bin" + nf + "linux32" + nf + "engine.so",
+        "bin" + nf + "engine.dll",
+        "portal2" + nf + "bin" + nf + "linux32" + nf + "server.so",
+        "portal2" + nf + "bin" + nf + "server.dll",
     ]
 
     # unrename the binaries so we can move them
