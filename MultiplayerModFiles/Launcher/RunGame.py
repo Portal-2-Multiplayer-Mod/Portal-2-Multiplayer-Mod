@@ -59,7 +59,6 @@ def MountMod(gamepath):
         os.mkdir(gamepath + nf + "MultiplayerModFiles")
         print("(P2:MM) MultiplayerModFiles folder created!")
     
-    
     # copy MultiplayerModFiles/ModFiles/Portal 2 to the gamepath
     print("(P2:MM) Copying ModFiles folder to " + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "portal2...")
     # if on windows, use the command line to copy the folder
@@ -86,6 +85,178 @@ def MountMod(gamepath):
         print("(P2:MM) Command: " + command)
         # if on linux, use the command line
         os.system(command)
+
+def UnpatchBinaries(gamepath):
+    print("")
+    print("(P2:MM) Unpatching Binarys...")
+
+    # remove the BinaryStorage folder
+    print("(P2:MM) Removing BinaryStorage folder...")
+    if (iow):
+        command = "rmdir /S /Q \"" + gamepath + nf + "BinaryStorage\""
+        print("(P2:MM) Command: " + command)
+        os.system(command)
+    else:
+        command = "rm -rf \"" + gamepath + nf + "BinaryStorage\""
+        print("(P2:MM) Command: " + command)
+        # if on linux, use the command line
+        os.system(command)
+
+def PatchBinaries(gamepath):
+    print("")
+    print("(P2:MM) Patching Binarys...")
+
+    # move the binaries to the storage area
+    print("")
+    print("(P2:MM) Moving binaries to " + gamepath + "...")
+    print("")
+
+    binarys = [
+        "bin/linux32/engine.so",
+        "bin/engine.dll",
+        "portal2/bin/linux32/server.so",
+        "portal2/bin/server.dll",
+    ]
+
+    print("BINARY MOVING==========================================================")
+    print("")
+    for binary in binarys:
+        print("(P2:MM) Moving " + binary + " to " + gamepath + "...")
+        # get the filename
+        filename = binary.rsplit("/", 1)[1]
+        # if the filename already exists, delete it
+        if (os.path.isfile(gamepath + nf + filename)):
+            print("(P2:MM) File already exists, deleting...")
+            os.remove(gamepath + nf + filename)
+
+        # copy the binary to gamepath
+        if (iow):
+            command = "copy \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
+            print("(P2:MM) Command: " + command)
+            os.system(command)
+        else:
+            command = "cp \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
+            print("(P2:MM) Command: " + command)
+            # if on linux, use the command line
+            os.system(command)
+        
+        print("")
+    print("BINARY MOVING END======================================================")
+
+
+    print("")
+    print("BINARY PATCHING========================================================")
+    print("")
+    # patch the binaries
+    ###/// ENGINE.DLL ///###
+    if (os.path.isfile(gamepath + nf + "engine.dll")):
+        print("(P2:MM) Patching engine.dll...")
+        f = open(gamepath + nf + "engine.dll", "rb")
+        data = f.read()
+        f.close()
+        # remove the file
+        os.remove(gamepath + nf + "engine.dll")
+        # replace the data
+        data = data.replace(bytes.fromhex("84 c0 74 1f 8b 16 8b 82 cc 00 00 00 68 98 b0 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b"), bytes.fromhex("84 d8 74 1f 8b 16 8b 82 cc 00 00 00 68 98 b0 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b"))
+        # write the data back to the file
+        f = open(gamepath + nf + "engine.dll", "wb")
+        f.write(data)
+        f.close()
+
+    ###/// SERVER.DLL ///###
+    if (os.path.isfile(gamepath + nf + "server.dll")):
+        print("(P2:MM) Patching server.dll...")
+        f = open(gamepath + nf + "server.dll", "rb")
+        data = f.read()
+        f.close()
+        # remove the file
+        os.remove(gamepath + nf + "server.dll")
+        # replace the data
+        # 33 player cap edit
+        data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15', b'\x8bM\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
+        data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]', b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0 \x89\x01]')
+        data = data.replace(b'\xff\xd0\x85\xc0t\x05\xbe\x03\x00\x00\x00\x8b', b'\xff\xd0\x85\xc0t\x05\xbe\x21\x00\x00\x00\x8b')
+        data = data.replace(b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x01_^', b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x20_^')
+
+        # Partner disconnect edit
+        data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
+
+        # Command patch edit
+        data = data.replace(b'restart_level', b'portal2mprslv')
+        data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
+        data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
+        data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
+        data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
+        data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
+        data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
+        data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
+        data = data.replace(b'transition_map', b'portal2mptrmap')
+        data = data.replace(b'select_map', b'p2mpselmap')
+        data = data.replace(b'mp_select_level', b'portal2mpmpsell')
+        data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
+
+        # write the data back to the file
+        f = open(gamepath + nf + "server.dll", "wb")
+        f.write(data)
+        f.close()
+
+    ###/// ENGINE.SO ///###
+    if (os.path.isfile(gamepath + nf + "engine.so")):
+        print("(P2:MM) Patching engine.so...")
+        f = open(gamepath + nf + "engine.so", "rb")
+        data = f.read()
+        f.close()
+        # remove the file
+        os.remove(gamepath + nf + "engine.so")
+        # replace the data
+        data = data.replace(bytes.fromhex("84 c0 0f 84 f5 fc ff ff 8b 06 8d 93 ee 96 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 31 76 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 b7 74 2a 00 5a ff b4 24 88 00 00 00 50 8d 83 44 a0 d5 ff 50 ff b4 24 8c 00 00 00 56 ff d7 83 c4 20 31 ff e9 ff fe ff ff 8d"), bytes.fromhex("84 d8 0f 84 f5 fc ff ff 8b 06 8d 93 ee 96 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 31 76 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 b7 74 2a 00 5a ff b4 24 88 00 00 00 50 8d 83 44 a0 d5 ff 50 ff b4 24 8c 00 00 00 56 ff d7 83 c4 20 31 ff e9 ff fe ff ff 8d"))
+        # write the data back to the file
+        f = open(gamepath + nf + "engine.so", "wb")
+        f.write(data)
+        f.close()
+
+    ###/// SERVER.SO ///###
+    if (os.path.isfile(gamepath + nf + "server.so")):
+        print("(P2:MM) Patching server.so...")
+        f = open(gamepath + nf + "server.so", "rb")
+        data = f.read()
+        f.close()
+        # remove the file
+        os.remove(gamepath + nf + "server.so")
+        # replace the data
+        # 33 player cap edit
+        data = data.replace(b'\x01\x00\x00\x00\x8bD$\x14\xc7\x00\x01', b'\x1f\x00\x00\x00\x8bD$\x14\xc7\x00\x1f')
+        data = data.replace(b'\xc0\x0f\xb6\xc0\x83\xc0\x02\x89\x02\x83\xc4', b'\xc0\x0f\xb6\xc0\x83\xc0 \x89\x02\x83\xc4')
+        data = data.replace(b'\x0f\xb6\xc0\x83\xc0\x02\x83\xec\x04\x89\xf3', b'\x0f\xb6\xc0\x83\xc0 \x83\xec\x04\x89\xf3')
+        data = data.replace(b'K\x8de\xf4\xb8\x01\x00\x00\x00[^', b'K\x8de\xf4\xb8\x1f\x00\x00\x00[^')
+
+        # Partner disconnect edit
+        data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
+
+        # Command patch edit
+        data = data.replace(b'restart_level', b'portal2mprslv')
+        data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
+        data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
+        data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
+        data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
+        data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
+        data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
+        data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
+        data = data.replace(b'transition_map', b'portal2mptrmap')
+        data = data.replace(b'select_map', b'p2mpselmap')
+        data = data.replace(b'mp_select_level', b'portal2mpmpsell')
+        data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
+
+        # write the data back to the file
+        f = open(gamepath + nf + "server.so", "wb")
+        f.write(data)
+        f.close()        
+
+    print("")
+    print("BINARY PATCHING END====================================================")
+        
+
+
 
 def FindAvalibleDLC(gamepath):
     shouldbe = 1
@@ -386,6 +557,8 @@ def Init():
 
 #//# mount the multiplayer mod #//#
     MountMod(portal2path)
+    # patch the binaries
+    PatchBinaries(portal2path)
 
 # RUN INIT
 Init()
