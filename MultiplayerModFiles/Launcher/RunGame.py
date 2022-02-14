@@ -78,7 +78,7 @@ def MountMod(gamepath):
     print("(P2:MM) Renaming install_dlc folder to " + dlcmountpoint + "...")
     # if on windows, use the command line to rename the folder
     if (iow):
-        command = "ren \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
+        command = "mv \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         print("(P2:MM) Command: " + command)
         os.system(command)
     else:
