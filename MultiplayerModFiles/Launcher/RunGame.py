@@ -99,20 +99,37 @@ def FindAvalibleDLC(gamepath):
         if file.startswith("portal2_dlc"):
             # make sure it's a folder
             if os.path.isdir(gamepath + nf + file):
-                # get everything after "portal2_dlc"
-                try:
-                    dlcnumber = file.split("portal2_dlc")[1]
-                except:
-                    print("(P2:MM) Error getting DLC name (probably a slice error moving on)!")
-                    # move on to the next file
-                    continue
-                
-                # if dlcnumber contains any letters, it's not a number
-                if any(char.isalpha() for char in dlcnumber):
-                    print("(P2:MM) DLC " + dlcnumber + " is not a number!")
-                else:
-                    dlcs.append(str(dlcnumber))
-                    print("(P2:MM) Adding DLC: " + dlcnumber + " to list...")
+                # if inside the folder there is a file called "32playermod.identifier" delete this folder
+                keepgoin = True
+                if "32playermod.identifier" in os.listdir(gamepath + nf + file):
+                    print("(P2:MM) Found OLD DLC: " + file)
+                    # delete the folder even if it's not empty
+                    if (iow):
+                        command = "rmdir /S /Q \"" + gamepath + nf + file + "\""
+                        print("(P2:MM) Command: " + command)
+                        os.system(command)
+                    else:
+                        command = "rm -r \"" + gamepath + nf + file + "\""
+                        print("(P2:MM) Command: " + command)
+                        # if on linux, use the command line
+                        os.system(command)
+                    keepgoin = False
+
+                if keepgoin:
+                    # get everything after "portal2_dlc"
+                    try:
+                        dlcnumber = file.split("portal2_dlc")[1]
+                    except:
+                        print("(P2:MM) Error getting DLC name (probably a slice error moving on)!")
+                        # move on to the next file
+                        continue
+                    
+                    # if dlcnumber contains any letters, it's not a number
+                    if any(char.isalpha() for char in dlcnumber):
+                        print("(P2:MM) DLC " + dlcnumber + " is not a number!")
+                    else:
+                        dlcs.append(str(dlcnumber))
+                        print("(P2:MM) Adding DLC: " + dlcnumber + " to list...")
 
     # sort each dlc number lower to higher
     dlcs.sort(key=int)
