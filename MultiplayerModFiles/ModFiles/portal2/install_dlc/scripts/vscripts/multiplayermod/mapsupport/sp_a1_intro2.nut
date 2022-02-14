@@ -8,6 +8,13 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun == true) {
         GlobalSpawnClass.useautospawn <- true
+        // Remove Portal Gun
+        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
+        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+
+        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
+        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         //Entities.FindByName(null, "@glados").__KeyValueFromString("targetname", "p232gladosoverride")
         Entities.FindByClassnameNearest("trigger_once", Vector(-320, 832, -24), 100).Destroy()
@@ -26,17 +33,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
-        // remove portalgun
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-            ent.Destroy()
-        }
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
-            ent.Destroy()
-        }
-
-
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 50)) {
             SendToConsole("changelevel sp_a1_intro3")

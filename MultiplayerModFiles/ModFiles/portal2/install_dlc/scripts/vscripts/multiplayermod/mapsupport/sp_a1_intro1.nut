@@ -279,12 +279,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         ContainerBedBrushCache <- false
         stoprenable <- false
 
-        // Remove portalgun
-        portalgunblue <- Entities.CreateByClassname("info_target")
-        portalgunblue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+        // Remove Portal Gun
+        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
+        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
 
-        portalgunorange <- Entities.CreateByClassname("info_target")
-        portalgunorange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
+        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
 
         // Create Env Globals
         env_global01 <- Entities.CreateByClassname("env_global")

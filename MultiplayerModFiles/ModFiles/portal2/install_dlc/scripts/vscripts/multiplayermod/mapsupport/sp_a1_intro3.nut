@@ -31,7 +31,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSLoop==true) {
         if (a1HasPortalGun == false) {
-            // remove portalgun
+            // Remove Portal Gun
             local ent = null
             while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
                 ent.__KeyValueFromString("CanFirePortal1", "0")
