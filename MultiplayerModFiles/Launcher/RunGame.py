@@ -311,10 +311,6 @@ def Init():
 
 #//# get the portal 2 path #//#
     # setup a name for the default dlc2 (so we can make sure we get the right path later)
-    if (iow):
-        valvedlc = "\\portal2_dlc2"
-    else:
-        valvedlc = "/portal2_dlc2"
 
     print("(P2:MM) Checking for Portal 2 Path...")
     portal2path = FindInConfig(configdata, "portal2path")
@@ -330,7 +326,7 @@ def Init():
             portal2path = input("Enter the path to your Portal 2 installation: ")
 
             # double check that the path is valid
-            if (os.path.exists(portal2path) and os.path.exists(portal2path + valvedlc)):
+            if (os.path.exists(portal2path) and os.path.exists(portal2path + nf + "portal2_dlc2")):
                 # if it does stop the loop
                 print("(P2:MM) Portal 2 Path found!")
                 hasfoundcorrectpath = True
@@ -349,7 +345,7 @@ def Init():
         exit()
 
     # double check that the path is valid
-    if (os.path.exists(portal2path) and os.path.exists(portal2path + valvedlc)):
+    if (os.path.exists(portal2path) and os.path.exists(portal2path + nf + "portal2_dlc2")):
         print("(P2:MM) Portal 2 Path found And Is Correct!")
     else:
         print("(P2:MM) [Error] Invalid Path!")
