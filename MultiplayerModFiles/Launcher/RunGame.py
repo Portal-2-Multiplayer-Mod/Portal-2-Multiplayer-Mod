@@ -179,7 +179,7 @@ def FindConfigPath():
         print("(P2:MM) Config file not found, creating...")
         print("")
         # create the config file
-        configfile = open(configpath, "w")
+        configfile = open(configpath, "w", encoding="utf-8")
         # write the default config file
         for line in DefaultConfigFile:
             configfile.write(line + "\n")
@@ -202,7 +202,7 @@ def FindInConfig(cfg, search):
 
 def EditConfig(filepath, search, newvalue):
     # open the file
-    cfg = open(filepath, "r")
+    cfg = open(filepath, "r", encoding="utf-8")
     # read the file
     cfgdata = cfg.readlines()
     # close the file
@@ -210,7 +210,7 @@ def EditConfig(filepath, search, newvalue):
     # delete the file
     os.remove(filepath)
     # open the file
-    cfg = open(filepath, "w")
+    cfg = open(filepath, "w", encoding="utf-8")
 
     
     # go through each line by index so we can see if there is a match
@@ -252,7 +252,7 @@ def ImportConfig():
 
     # get the config file and open it
     configpath = FindConfigPath()
-    configfile = open(configpath, "r")
+    configfile = open(configpath, "r", encoding="utf-8")
     config = configfile.readlines()
     configfile.close()
 
