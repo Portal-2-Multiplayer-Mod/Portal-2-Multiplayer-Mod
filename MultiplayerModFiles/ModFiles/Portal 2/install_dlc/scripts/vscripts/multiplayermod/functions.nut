@@ -942,8 +942,8 @@ function CreateOurEntities() {
 
     nametagdisplay <- Entities.CreateByClassname("game_text")
     nametagdisplay.__KeyValueFromString("targetname", "p232nametagdisplay")
-    nametagdisplay.__KeyValueFromString("x", "0")
-    nametagdisplay.__KeyValueFromString("y", "0.1")
+    nametagdisplay.__KeyValueFromString("x", "-1")
+    nametagdisplay.__KeyValueFromString("y", "0.2")
     nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
     //onscreendisplay.__KeyValueFromString("spawnflags", "1")
     nametagdisplay.__KeyValueFromString("holdtime", "0")
