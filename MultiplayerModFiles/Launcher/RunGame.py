@@ -14,8 +14,10 @@ iow = False
 if os.name == 'nt':
     print("")
     print("(P2:MM) Windows OS detected!")
+    nf = "\\"
     iow = True
 else:
+    nf = "/"
     print("")
     print("(P2:MM) Linux OS detected!")
 
@@ -43,6 +45,95 @@ print("")
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
 
+def MountMod(gamepath):
+    print("")
+    print("(P2:MM) Mounting Mod...")
+    # find a place to mount the dlc
+    dlcmountpoint = FindAvalibleDLC(gamepath)
+    # detect if we have a MultiplayModFiles folder
+    if "MultiplayerModFiles" in os.listdir(gamepath):
+        print("(P2:MM) MultiplayerModFiles folder found!")
+    else:
+        print("(P2:MM) MultiplayerModFiles folder not found!")
+        print("(P2:MM) Creating MultiplayerModFiles folder...")
+        os.mkdir(gamepath + nf + "MultiplayerModFiles")
+        print("(P2:MM) MultiplayerModFiles folder created!")
+    # copy MultiplayerModFiles/ModFiles/Portal 2 to the gamepath
+    print("(P2:MM) Copying ModFiles folder to " + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "portal2...")
+    # if on windows, use the command line to copy the folder
+    if (iow):
+        command = "xcopy /E /I /Y \"" + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "Portal 2\" \"" + gamepath + "\""
+        print("(P2:MM) Command: " + command)
+        os.system(command)
+    else:
+        command = "cp -r \"" + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "Portal 2\" \"" + gamepath.replace("Portal 2", "") + "\""
+        print("(P2:MM) Command: " + command)
+        # if on linux, use the command line
+        os.system(command)
+
+def FindAvalibleDLC(gamepath):
+    shouldbe = 1
+    print("")
+    print("(P2:MM) Finding Avalible DLC...")
+    print("")
+    dlcs = []
+    # go through each file in the gamepath
+    for file in os.listdir(gamepath):
+        # find all of them that start with "portal2_dlc"
+        if file.startswith("portal2_dlc"):
+            # make sure it's a folder
+            if os.path.isdir(gamepath + nf + file):
+                # get everything after "portal2_dlc"
+                try:
+                    dlcnumber = file.split("portal2_dlc")[1]
+                except:
+                    print("(P2:MM) Error getting DLC name (probably a slice error moving on)!")
+                    # move on to the next file
+                    continue
+                
+                # if dlcnumber contains any letters, it's not a number
+                if any(char.isalpha() for char in dlcnumber):
+                    print("(P2:MM) DLC " + dlcnumber + " is not a number!")
+                else:
+                    dlcs.append(str(dlcnumber))
+                    print("(P2:MM) Adding DLC: " + dlcnumber + " to list...")
+
+    # go through each dlc in the list and sort them
+    # sort the list
+    dlcs.sort()
+
+    #
+
+    # final pass make sure there are no gaps or in the list
+    for dlc in dlcs:
+        # if the dlc is not the right number, remove it
+        if int(dlc) != shouldbe:
+            print("(P2:MM) DLC " + dlc + " removed from list!")
+            dlcs.remove(dlc)
+        else:
+            print("(P2:MM) DLC " + dlc + " added to list!")
+        shouldbe += 1
+    
+    # find the highest dlc number
+    print("")
+    print("(P2:MM) Used DLCs:")
+    print("")
+    highest = 0
+    for dlc in dlcs:
+        print("(P2:MM) " + dlc)
+        # get the highest dlc
+        if int(dlc) > highest:
+            highest = int(dlc)
+    
+    # if the highest dlc + 1 does not exist then we found our mount point
+    if "portal2_dlc" + str(highest + 1) not in os.listdir(gamepath):
+        print("")
+        print("(P2:MM) DLC Mount Point Found! " + gamepath + nf + "portal2_dlc" + str(highest + 1))
+        # return the mount point
+        return gamepath + nf + "portal2_dlc" + str(highest + 1)
+
+        
+                
 
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
@@ -267,6 +358,8 @@ def Init():
 
 
 
+#//# mount the multiplayer mod #//#
+    MountMod(portal2path)
 
 # RUN INIT
 Init()
