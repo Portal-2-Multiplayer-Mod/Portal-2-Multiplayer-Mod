@@ -118,6 +118,9 @@ def PatchBinaries(gamepath):
         "portal2/bin/server.dll",
     ]
 
+    # unrename the binaries so we can move them
+    UnRenameBinaries(gamepath, binarys)
+
     print("BINARY MOVING==========================================================")
     print("")
     for binary in binarys:
@@ -254,9 +257,47 @@ def PatchBinaries(gamepath):
 
     print("")
     print("BINARY PATCHING END====================================================")
-        
+    print("")
+    # rename the files so the new files are used
+    print("(P2:MM) Renaming binaries...")
+    RenameBinaries(gamepath, binarys)
 
+def RenameBinaries(gamepath, binarys):
+    # binarys = [
+    #     "bin/linux32/engine.so",
+    #     "bin/engine.dll",
+    #     "portal2/bin/linux32/server.so",
+    #     "portal2/bin/server.dll",
+    # ]
+    
+    # go through the list of binaries
+    for binary in binarys:
+        # if the binary exists
+        if (os.path.isfile(gamepath + nf + binary)):
+            # add a ".override" to the end of the binary
+            os.rename(gamepath + nf + binary, gamepath + nf + binary + ".override") 
+            print("(P2:MM) Renamed " + binary + " to " + binary + ".override")
+ 
+def UnRenameBinaries(gamepath, binarys):
+    # binarys = [
+    #     "bin/linux32/engine.so",
+    #     "bin/engine.dll",
+    #     "portal2/bin/linux32/server.so",
+    #     "portal2/bin/server.dll",
+    # ]
+    
+    print("")
+    print("(P2:MM) Un-renaming binaries...")
 
+    # go through the list of binaries
+    for binary in binarys:
+        # add a ".override" to the end of the binary
+        binary = binary + ".override"
+        # if the binary exists
+        if (os.path.isfile(gamepath + nf + binary)):
+            print("(P2:MM) Un-renaming " + binary + " to " + binary[:-9])
+            # rename the binary back to the original
+            os.rename(gamepath + nf + binary, gamepath + nf + binary[:-9])
 
 def FindAvalibleDLC(gamepath):
     shouldbe = 1
