@@ -126,7 +126,7 @@ def PatchBinaries(gamepath):
     for binary in binarys:
         print("(P2:MM) Moving " + binary + " to " + gamepath + "...")
         # get the filename
-        filename = binary.rsplit("/", 1)[1]
+        filename = binary.rsplit(nf, 1)[1]
         # if the filename already exists, delete it
         if (os.path.isfile(gamepath + nf + filename)):
             print("(P2:MM) File already exists, deleting...")
