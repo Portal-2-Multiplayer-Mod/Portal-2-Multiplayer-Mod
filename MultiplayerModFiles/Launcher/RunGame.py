@@ -114,11 +114,8 @@ def FindAvalibleDLC(gamepath):
                     dlcs.append(str(dlcnumber))
                     print("(P2:MM) Adding DLC: " + dlcnumber + " to list...")
 
-    # go through each dlc in the list and sort them
-    # sort the list
-    dlcs.sort()
-
-    #
+    # sort each dlc number lower to higher
+    dlcs.sort(key=int)
 
     # final pass make sure there are no gaps or in the list
     for dlc in dlcs:
