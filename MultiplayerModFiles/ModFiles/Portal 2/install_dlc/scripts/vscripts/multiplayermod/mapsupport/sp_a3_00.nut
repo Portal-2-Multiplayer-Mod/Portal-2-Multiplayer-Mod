@@ -36,6 +36,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global03, "turnon", "", 1, null, null)
         EntFireByHandle(env_global04, "turnon", "", 1, null, null)
 
+        // Create tube cap brush
+        // TubeCapBrush
+        TubeCapBrush <- Entities.CreateByClassname("func_brush")
+        TubeCapBrush.SetOrigin(Vector(0, -4096, 92))
+        TubeCapBrush.SetSize(Vector(0, 0 ,0), Vector(128, 128, 24))
+        TubeCapBrush.__KeyValueFromInt("Solid", 3)
+        TubeCapBrush.__KeyValueFromString("targetname", "TubeCapBrush")
+        DebugDrawBox(TubeCapBrush.GetOrigin(), TubeCapBrush.GetBoundingMins(), TubeCapBrush.GetBoundingMaxs(), 0, 255, 0, 1, 9999999)
+
         Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A3_00ServerCommand")
         printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
         Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
