@@ -7,9 +7,6 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-        // Here if we need to ent_fire something
-        //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
-        // Destroy objects
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "RedFogKillTriggerMPMOD")
         EntFireByHandle(Entities.FindByName(null, "red_light_pit_open_relay"), "addoutput", "OnTrigger RedFogKillTriggerMPMOD:kill", 1, null, null)
 
@@ -24,6 +21,86 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "TPSp_A2_CoreForSure")
 
+        Entities.FindByName(null, "music_sp_a2_core_b3_2").__KeyValueFromString("targetname", "MUSICOVERRIDEMPMOD")
+
+        // Fix client-side animations
+        // Front wall
+        Entities.FindByName(null, "smallwall_front").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_pushdoor").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robopeek_01").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robopeek_02").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robopeek_03").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robopeek_04").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robopeek_05").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robopeek_06").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robopeek_07").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robopeek_09").__KeyValueFromString("HoldAnimation", "1")
+        // Back wall
+        Entities.FindByName(null, "smallwall").__KeyValueFromString("HoldAnimation", "1")
+        // Right wall
+        Entities.FindByName(null, "bigwallA_mover").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_peekyman_01").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_peekyman_02").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_peekyman_03").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_peekyman_04").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_01").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_02").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_03").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_04").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_05").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_06").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_07").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_08").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_09").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_10").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "roboA_walkout_11").__KeyValueFromString("HoldAnimation", "1")
+        // Left wall
+        Entities.FindByName(null, "bigwall_mover").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_peekyman_01").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_peekyman_02").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_peekyman_03").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_peekyman_04").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_01").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_02").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_03").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_04").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_05").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_06").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_07").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_08").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_09").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_10").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "robo_walkout_11").__KeyValueFromString("HoldAnimation", "1")
+        // Core doors
+        Entities.FindByName(null, "core_door_arm_01").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "core_door_arm_02").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "core_door_arm_03").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "core_door_arm_04").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "core_double_arms").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "core_double_arms_right").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "core_double_arms_left").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "chamber_arm_6").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "chamber_arm_7").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "chamber_arm_8").__KeyValueFromString("HoldAnimation", "1")
+        // Core room
+        Entities.FindByName(null, "globe_upper_ring").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "core_receptacle_model").__KeyValueFromString("HoldAnimation", "1")
+        // Neurotoxin tube panels
+        Entities.FindByName(null, "chamber_arm_19").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "chamber_arm_20").__KeyValueFromString("HoldAnimation", "1")
+        // Stalemate room panels
+        Entities.FindByName(null, "statemate_double_arm_01").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "statemate_double_arm_02").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "statemate_double_arm_03").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "chamber_arm_1").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "chamber_arm_2").__KeyValueFromString("HoldAnimation", "1")
+        Entities.FindByName(null, "chamber_arm_24").__KeyValueFromString("HoldAnimation", "1")
+
+        Entities.FindByName(null, "maintenance_pit_model").__KeyValueFromString("HoldAnimation", "1")
+
+        // Here if we need to ent_fire something
+        //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+        // Destroy objects
         Entities.FindByName(null, "death_fade").Destroy()
         Entities.FindByName(null, "rv_trap_portal_surf_cleanser").Destroy()
         Entities.FindByName(null, "swap_stalemate_panels_rl").Destroy()
@@ -32,7 +109,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "stalemate_room_close").Destroy()
         Entities.FindByName(null, "close_stalemate_room_doors_relay").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(0, 304, -10438), 20).Destroy()
-        Entities.FindByName(null, "music_sp_a2_core_b3_2").__KeyValueFromString("targetname", "MUSICOVERRIDEMPMOD")
 
         OnlyOnceSp_A2_Core_2 <- true
         OnlyOnceSp_A2_Core <- true
@@ -47,12 +123,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         StalemateButtonSp_A2_Core_2 <- false
         RoomLookAtPlayerSp_A2_Core <- true
 
-
-        // Create Env Globals
+        // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
         env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
 
         env_global02 <- Entities.CreateByClassname("env_global")
         env_global02.__KeyValueFromString("targetname", "env_global02")
@@ -61,7 +135,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         env_global03 <- Entities.CreateByClassname("env_global")
         env_global03.__KeyValueFromString("targetname", "env_global03")
         env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
 
         env_global04 <- Entities.CreateByClassname("env_global")
         env_global04.__KeyValueFromString("targetname", "env_global04")
@@ -171,7 +244,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceMoveTeleportSp_A2_Core_2 == true) {
             if (Entities.FindByName(null, "OnMoveStartOnlyOnceSp_A2_Core_2")) {
-                //Find all players
+                // Find all players
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     local InsideArea = false
