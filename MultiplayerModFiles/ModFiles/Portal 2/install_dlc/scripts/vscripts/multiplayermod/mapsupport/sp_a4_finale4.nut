@@ -19,6 +19,11 @@ function GoodByeIdaho() {
     PermaPotato = false
 }
 
+function CatwalkDisableRender() {
+    Entities.FindByName(null, "p232catwalkmodeloverride").__KeyValueFromString("rendermode", "10")
+    Entities.FindByName(null, "p232catwalk2modeloverride").__KeyValueFromString("rendermode", "10")
+}
+
 //## hook line and sinker hooks ##//
 function TeleportPlayersBehindEndingElevator() {
     local p = null
@@ -49,11 +54,10 @@ PermaPotato <- true
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-        // Create Env Globals
+        // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
         env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
 
         env_global02 <- Entities.CreateByClassname("env_global")
         env_global02.__KeyValueFromString("targetname", "env_global02")
@@ -62,7 +66,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         env_global03 <- Entities.CreateByClassname("env_global")
         env_global03.__KeyValueFromString("targetname", "env_global03")
         env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
 
         env_global04 <- Entities.CreateByClassname("env_global")
         env_global04.__KeyValueFromString("targetname", "env_global04")
@@ -73,13 +76,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
         EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
 
-        // Sp_A2_Finale4 viewcontrol creation
+        // Sp_A2_Finale4 first elevator viewcontrol creation
         Sp_A2_Finale4Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         Sp_A2_Finale4Viewcontrol.__KeyValueFromString("targetname", "Sp_A2_Finale4Viewcontrol")
         Sp_A2_Finale4Viewcontrol.__KeyValueFromString("target_team", "-1")
         Sp_A2_Finale4Viewcontrol.SetOrigin(Vector(0, -80, -1332))
         Sp_A2_Finale4Viewcontrol.SetAngles(20, 90, 0)
         EntFireByHandle(Sp_A2_Finale4Viewcontrol, "setparent", "basement_breakers_platform", 0.1, null, null)
+
+        Entities.FindByName(null, "catwalk_model").__KeyValueFromString("targetname", "p232catwalkmodeloverride")
+        Entities.FindByName(null, "catwalk2_model").__KeyValueFromString("targetname", "p232catwalk2modeloverride")
+
+        Entities.FindByName(null, "ending_glados_model").__KeyValueFromString("HoldAnimation", "1")
+
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
@@ -90,13 +99,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("lightworld", "1")
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("spawnflags", "2")
 
+        EntFire("catwalk_break_relay", "addoutput", "OnTrigger p232catwalkmodeloverride:Kill")
+        EntFire("catwalk_break_relay", "addoutput", "OnTrigger p232catwalk2modeloverride:Kill")
+
         // Setup Function Fires
+        EntFire("breaker_path2", "addoutput", "OnPass p232servercommand:command:script TeleportPlayersUp():1")
+        EntFire("socket1_start_relay", "addoutput", "OnTrigger p232servercommand:command:script CatwalkDisableRender():2")
         EntFire("replace_relay", "addoutput", "OnTrigger p232servercommand:command:script TeleportPlayersBehindEndingElevator()")
         EntFire("container_path2", "addoutput", "OnPass p232servercommand:command:script MoveSoundScape()")
-        EntFire("claw3_movelinear", "addoutput", "OnFullyOpen pipe_orange_relay:trigger::10")
-        EntFire("breaker_path2", "addoutput", "OnPass p232servercommand:command:script TeleportPlayersUp():1")
-        EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Finale4Viewcontrol:disable::1")
 
+        EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Finale4Viewcontrol:disable::1")
+        EntFire("claw3_movelinear", "addoutput", "OnFullyOpen pipe_orange_relay:trigger::10")
 
         EntFire("breaker_path2", "addoutput", "OnPass env_global01:turnoff::1")
         EntFire("breaker_path2", "addoutput", "OnPass env_global02:turnoff::1")
@@ -106,7 +119,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("relay_neurotoxin_death", "addoutput", "OnTrigger p232servercommand:command:changelevel sp_a4_finale4:7")
         EntFire("relay_destruction_death", "addoutput", "OnTrigger p232servercommand:command:changelevel sp_a4_finale4:7")
-
 
 
         Entities.FindByName(null, "@arrival_video_master").SetOrigin(Vector(574.587524, -30.347410, 235.043121))
@@ -235,7 +247,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             p.SetVelocity(Vector(0, 0, -300))
         }
 
-        // teleport all players in elevator out
+        // Teleport all players in elevator out
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(-11266, 320, 80), 80)) {
             p.SetOrigin(Vector(-11264, 576, 128))

@@ -128,7 +128,7 @@ function p232DropCollision() {
     //DebugDrawBox(ContainerChairBrush.GetOrigin(), ContainerChairBrush.GetBoundingMins(), ContainerChairBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
 }
 
-containerStick <- false
+ContainerStick <- false
 function p232ParentAndStartMath() {
         // Start container ride
         EntFire("Actor_container_master", "SetAnimation", "anim2", 0)
@@ -220,7 +220,7 @@ function p232ParentAndStartMath() {
         EntFire("ContainerPlantBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         EntFire("ContainerChairBrush", "SetParent", "Actor_container_master", 0)
         EntFire("ContainerChairBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
-    containerStick = true
+    ContainerStick = true
 }
 
 SecondToLastTP <- false
@@ -256,13 +256,15 @@ function StopStickAndTeleport() {
     EntFire("ContainerDeskBrush", "kill", "", 0)
     EntFire("ContainerPlantBrush", "kill", "", 0)
     EntFire("ContainerChairBrush", "kill", "", 0)
+    
+    Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232actorwalldestructionoverride")
 
     EntFire("container_collision", "enabledraw", "", 0)
     EntFire("container_collision", "EnableCollision", "", 0)
-    
-    Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232save")
+    EntFire("endwall_collision", "enabledraw", "", 0)
+
     Entities.FindByName(null, "kill_container_rl").Destroy()
-    containerStick = false
+    ContainerStick = false
     SecondToLastTP = true
     DisableJumpmsp = false
     local p = null
@@ -624,7 +626,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (HasSleptInContainer1==true && containerStick == false && SecondToLastTP == false) {
+        if (HasSleptInContainer1==true && ContainerStick == false && SecondToLastTP == false) {
             // Find everyone within 400 units of the container ( -8656.179688 1768.031250 104.196503 )
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
@@ -663,7 +665,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (containerStick == true) {
+        if (ContainerStick == true) {
             if (ContainerBedBrushCache == false) {
                 ContainerBedBrushCache <- ContainerBedBrush.GetOrigin()
             }
