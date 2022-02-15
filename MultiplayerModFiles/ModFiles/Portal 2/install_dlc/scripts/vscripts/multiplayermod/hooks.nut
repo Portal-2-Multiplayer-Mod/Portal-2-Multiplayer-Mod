@@ -408,8 +408,104 @@ function GeneralOneTime() {
 ///////////////////
 
 function ChatCommands(ccuserid, ccmessage) {
+    // get all nessasary data
     local p = FindByIndex(ccuserid)
     local pname = GetPlayerName(ccuserid)
     local adminlevel = GetAdminLevel(ccuserid)
+    local message = split(ccmessage, " ")
+    // print some debug info
+    if (GetDeveloperLevel() == 1) {
+        printl("=========" + pname + " sent a message=========")
 
+        printl("ccuserid: " + ccuserid)
+        printl("ccmessage: " + ccmessage)
+        printl("p: " + p)
+        printl("pname: " + pname)
+        printl("adminlevel: " + adminlevel)
+        printl("message: " + message)
+    }
+
+    // setup the message
+    local indx = -1
+    local isparseingname = false // used to check if we are parsing a name
+    local isparsingcommand = false // used to check if we are parsing a command
+    local parsedname = ""
+    local parsedcommand = ""
+    foreach (submessage in message) {
+        submessage = lstrip(submessage)
+        indx++
+        // if the message starts with a $, then it's a player override
+        if (submessage.slice(0,1) == "$" || isparseingname == true && !submessage.slice(0,1) != "!") {
+            // make sure we update the parse list
+            isparseingname = true
+            isparsingcommand = false
+
+            // get the name itself
+            local playeroverride = submessage
+            if (submessage.slice(0,1) == "$") {
+                playeroverride = submessage.slice(1)
+            }
+
+            // add it to the parsed name
+            parsedname = parsedname + playeroverride + " "
+        }
+
+        // if the message starts with a !, then it's a command
+        if (submessage.slice(0,1) == "!" || isparsingcommand == true && submessage.slice(0,1) != "$") {
+            isparseingname = false
+            isparsingcommand = true
+
+            // get the command itself
+            local command = submessage
+            if (submessage.slice(0,1) == "!") {
+                command = submessage.slice(1)
+            }
+
+            // add it to the parsed command
+            parsedcommand = parsedcommand + command + " "
+        }
+    }
+
+    // strip the last space from the parsed name
+    if (parsedname != "") {
+        parsedname = strip(parsedname)
+        printl("parsed name: " + ExpandName(parsedname))
+        pname = ExpandName(parsedname)
+        p = FindPlayerByName(ExpandName(parsedname))
+        printl("expanded name: " + pname)
+        printl("executing on: " + p)
+    }
+    // strip the last space from the parsed command
+    if (parsedcommand != "") {
+        parsedcommand = parsedcommand.slice(0, -1)
+        printl("parsed command: " + parsedcommand)
+        // run the chat command runner if the player isnt null
+        if (p != null) {
+            ChatCommandRunner(p, pname, parsedcommand, adminlevel)
+        }
+    }
+
+    printl("==============================================")
+}
+
+function ChatCommandRunner(player, playername, command, level) {
+    // split up the command
+    command = split(command, " ")
+    local action = command[0]
+    local currentplayerclass = FindPlayerClass(player)
+
+    //## check for the command ##//
+
+    //## NOCLIP ##//
+    if (action == "noclip") {
+        // update the player's noclip status
+        currentplayerclass.noclip <- player.IsNoclipping()
+        if (currentplayerclass.noclip == false) {
+            EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
+            currentplayerclass.noclip <- true
+        } else {
+            EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
+            currentplayerclass.noclip <- false
+        }
+    }
 }

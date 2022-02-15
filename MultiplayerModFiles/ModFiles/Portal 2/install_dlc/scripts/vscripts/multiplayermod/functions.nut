@@ -515,10 +515,12 @@ function FindPlayerByName(name) {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         local plrname = GetPlayerName(p.entindex())
-        plrname = plrname.slice(0, name.len())
+        try {
+            plrname = plrname.slice(0, name.len())
+        } catch(e) {} // if the name is too long
         printl(plrname)
         printl(name)
-        if (plrname==name) {
+        if (plrname.tolower()==name.tolower()) {
             return p
         }
     }
@@ -640,6 +642,25 @@ function GetAdminLevel(id) {
         return 6
     }
     return 0
+}
+
+// Find player by name
+function ExpandName(name) {
+    name = name.tolower()
+    // go through each player
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        // get the player's name
+        local plrname = GetPlayerName(p.entindex())
+        // if the name matches the input name
+        try {
+            if (plrname.slice(0, name.len()).tolower() == name.tolower()) {
+                // return the player
+                return plrname
+            }
+        } catch(e) {} // if the name is too long
+    }
+    return name
 }
 
 // Find player by index
