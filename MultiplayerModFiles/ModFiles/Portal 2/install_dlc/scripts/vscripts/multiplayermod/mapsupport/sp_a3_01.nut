@@ -9,11 +9,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun==true) {
         stoprenable <- false
 
-        // Create Env Globals
+        // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
         env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
 
         env_global02 <- Entities.CreateByClassname("env_global")
         env_global02.__KeyValueFromString("targetname", "env_global02")
@@ -22,7 +21,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         env_global03 <- Entities.CreateByClassname("env_global")
         env_global03.__KeyValueFromString("targetname", "env_global03")
         env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
 
         env_global04 <- Entities.CreateByClassname("env_global")
         env_global04.__KeyValueFromString("targetname", "env_global04")
@@ -34,11 +32,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global04, "turnon", "", 1, null, null)
 
         HasStartedSp_A3_01 <- false
+
+        Entities.FindByName(null, "AutoInstance1-circuit_breaker_lever").__KeyValueFromString("solid", "0")
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
         Entities.FindByName(null, "transition_trigger").Destroy()
-        Entities.FindByName(null, "AutoInstance1-circuit_breaker_lever").__KeyValueFromString("solid", "0")
+        Entities.FindByName(null, "knockout-teleport").Destroy()
+        Entities.FindByName(null, "knockout-teleport-destination").Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-10304, 2544, 112), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_multiple", Vector(-640, -1520, 456), 20).Destroy()
         OnlyOnceSp_A3_01 <- true
@@ -72,11 +73,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop==true) {
-        local p = Entities.FindByClassnameWithin(null, "player", Vector(-672, -1872, 51), 16)
+        local p = Entities.FindByClassnameWithin(null, "player", Vector(-10240, 3072, 36), 128)
         try {
-            if (p.GetOrigin().z >= 45) {
-                p.SetOrigin(Vector(-720, -1852, 10))
-                p.SetAngles(0, 90, 0)
+            if (p.GetOrigin().z >= -128) {
+                p.SetOrigin(Vector(-720, -1852, 14))
+                p.SetAngles(0, 60, 0)
             }
         } catch(exception) {}
 
@@ -89,6 +90,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             while (p = Entities.FindByClassname(p, "player")) {
                 p.SetOrigin(Vector(-162, -1966, 0))
                 p.SetVelocity(Vector(0, 0, 0))
+                p.SetAngles(-80, 90, 0)
             }
         }
 
@@ -96,8 +98,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (Entities.FindByName(null, "Sp_A3_01ViewcontrolDone")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
-                    p.SetOrigin(Vector(-720, -1852, 10))
-                    p.SetAngles(0, 90, 0)
+                    p.SetOrigin(Vector(-720, -1852, 14))
+                    p.SetAngles(0, 60, 0)
                 }
                 EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
                 EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
