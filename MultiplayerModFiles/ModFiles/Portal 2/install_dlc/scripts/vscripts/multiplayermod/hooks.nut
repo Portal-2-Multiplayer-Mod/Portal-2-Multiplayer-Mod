@@ -413,6 +413,7 @@ function ChatCommands(ccuserid, ccmessage) {
     local pname = GetPlayerName(ccuserid)
     local adminlevel = GetAdminLevel(ccuserid)
     local message = split(ccmessage, " ")
+    local commandrunner = p
     // print some debug info
     if (GetDeveloperLevel() == 1) {
         printl("=========" + pname + " sent a message=========")
@@ -435,7 +436,7 @@ function ChatCommands(ccuserid, ccmessage) {
         submessage = lstrip(submessage)
         indx++
         // if the message starts with a $, then it's a player override
-        if (submessage.slice(0,1) == "$" || isparseingname == true && !submessage.slice(0,1) != "!") {
+        if (strip(submessage).slice(0,1) == "$" || isparseingname == true && strip(submessage).slice(0,1) != "!") {
             // make sure we update the parse list
             isparseingname = true
             isparsingcommand = false
@@ -451,7 +452,7 @@ function ChatCommands(ccuserid, ccmessage) {
         }
 
         // if the message starts with a !, then it's a command
-        if (submessage.slice(0,1) == "!" || isparsingcommand == true && submessage.slice(0,1) != "$") {
+        if (strip(submessage).slice(0,1) == "!" || isparsingcommand == true && strip(submessage).slice(0,1) != "$") {
             isparseingname = false
             isparsingcommand = true
 
@@ -471,6 +472,7 @@ function ChatCommands(ccuserid, ccmessage) {
         parsedname = strip(parsedname)
         printl("parsed name: " + ExpandName(parsedname))
         pname = ExpandName(parsedname)
+        commandrunner = p // set the commandrunner to the player that sent the command
         p = FindPlayerByName(ExpandName(parsedname))
         printl("expanded name: " + pname)
         printl("executing on: " + p)
@@ -481,14 +483,18 @@ function ChatCommands(ccuserid, ccmessage) {
         printl("parsed command: " + parsedcommand)
         // run the chat command runner if the player isnt null
         if (p != null) {
-            ChatCommandRunner(p, pname, parsedcommand, adminlevel)
+            ChatCommandRunner(p, pname, parsedcommand, adminlevel, commandrunner)
         }
     }
 
     printl("==============================================")
 }
 
-function ChatCommandRunner(player, playername, command, level) {
+function ChatCommandRunner(player, playername, command, level, commandrunner = null) {
+    // do some varible setup
+    if (commandrunner == null) {
+        commandrunner = player
+    }
     // split up the command
     command = split(command, " ")
     local action = command[0]
@@ -500,12 +506,55 @@ function ChatCommandRunner(player, playername, command, level) {
     if (action == "noclip") {
         // update the player's noclip status
         currentplayerclass.noclip <- player.IsNoclipping()
-        if (currentplayerclass.noclip == false) {
-            EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
-            currentplayerclass.noclip <- true
+        // inverse the noclip status unless there is a second argument
+        if (command.len() < 2) {
+            if (currentplayerclass.noclip == false) {
+                EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
+                currentplayerclass.noclip <- true
+            } else {
+                EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
+                currentplayerclass.noclip <- false
+            }
         } else {
-            EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
-            currentplayerclass.noclip <- false
+            // set the noclip status to the second argument
+            if (command[1] == "on") {
+                EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
+                currentplayerclass.noclip <- true
+            } else if (command[1] == "off") {
+                EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
+                currentplayerclass.noclip <- false
+            }
+        }
+    }
+
+    //## SPEED ##//
+    if (action == "speed") {
+        if (command.len() > 1) {
+            EntFire("p232_player_speedmod", "modifyspeed", command[1], 0, player)
+        } else {
+            SendToConsole("say " + playername + ": You need to specify a speed.")
+        }
+    }
+
+    //## KICK ##//
+    if (action == "kick") {
+        if (command.len() < 2) {
+            if (commandrunner == player) {
+                SendToConsole("say " + playername + ": You probably dont want to kick yourself. If you do then use kick " + playername + ".")
+            } else {
+                EntFire("p232clientcommand", "command", "disconnect", 0, player)
+            }
+        } else {
+            local reason = ""
+            if (command.len() > 2) {
+                reason = " \"" + CombineList(command, 2) + "\""
+            }
+            local playertokick = FindPlayerByName(command[1])
+            if (playertokick != null) {
+                EntFire("p232clientcommand", "command", "disconnect" + reason, 0, playertokick)
+            } else {
+                SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
+            }
         }
     }
 }

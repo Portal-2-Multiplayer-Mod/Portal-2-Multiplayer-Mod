@@ -5,9 +5,12 @@
 // if the plugin isnt loaded
 // then we make some replacements
 function MakePluginReplacementFunctions() {
-    // function GetPlayerName(entinx) {
-    //     return "plugin not loaded"
-    // }
+    function GetPlayerName(entinx) {
+        return "player" + entinx
+    }
+    function AddChatCallback(func) {
+        printl("plugin not loaded NOT adding chat callback")  
+    }
 }
 
 function ForceRespawnAll() {
@@ -362,7 +365,7 @@ function PrecacheModelNoDelay(mdl) {
         } else {
             SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
         }
-        SendToConsole("script Entities.FindByModel(null, \"" + mdl + "\").Destroy()")
+        EntFire("p232servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.1)
         printl("Precached model: " + minimdl + " AKA " + mdl)
     } else {
         printl("Model: " + mdl + " already precached!")
@@ -952,6 +955,18 @@ function TeleportToSpawnPoint(p, SpawnClass) {
     }
 }
 
+function CombineList(list, startlength, inbetweenchars = " ") {
+    local indx = -1
+    local newstr = ""
+    foreach (thing in list) {
+        indx = indx + 1
+        if (indx >= startlength) {
+            newstr = newstr + thing + inbetweenchars
+        }
+    }
+    return strip(newstr)
+}
+
 function CreateOurEntities() {
     measuremovement <- Entities.CreateByClassname("logic_measure_movement")
     measuremovement.__KeyValueFromString( "measuretype", "1")
@@ -1013,6 +1028,10 @@ function CreateOurEntities() {
     joinmessagedisplay.__KeyValueFromString("channel", "3")
     //joinmessagedisplay.__KeyValueFromString("x", "0.1")
     //joinmessagedisplay.__KeyValueFromString("y", "0.1")
+
+    // Create a player_speedmod entity
+    playerspeedmod <- Entities.CreateByClassname("player_speedmod")
+    playerspeedmod.__KeyValueFromString("targetname", "p232_player_speedmod")
 
     // Create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")

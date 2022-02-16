@@ -62,12 +62,38 @@ function init() {
         printl(line)
     }   
 
-    // Run map specific code
-    MapSupport(true, false, false, false, false, false, false)
-
     // Create a global servercommand entity
     globalservercommand <- Entities.CreateByClassname("point_servercommand")
     globalservercommand.__KeyValueFromString("targetname", "p232servercommand")
+
+        //## Load plugin ##//
+    if("GetPlayerName" in this) {
+        if (GetDeveloperLevel() == 1) {
+            printl("================================")
+            printl("P2:MM plugin has already loaded!")
+            printl("================================")
+        }
+        PluginLoaded <- true
+        if (GetMapName() == "mp_coop_community_hub") {
+            EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
+        }
+    } else {
+        // Make some replacements (this is for if someone doesnt use the plugin)
+        MakePluginReplacementFunctions()
+        if (GetDeveloperLevel() == 1) {
+            printl("============================================")
+            printl("P2:MM plugin has not been loaded!")
+            printl("============================================")
+        }
+        EntFire("p232servercommand", "command", "echo Loading Plugin...", 0.01) 
+        EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
+        if (GetMapName() == "mp_coop_community_hub") {
+            EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
+        }
+    }
+
+    // Run map specific code
+    MapSupport(true, false, false, false, false, false, false)
 
     // Create entity to run loop() every 0.1 seconds
     timer <- Entities.CreateByClassname("logic_timer")
@@ -79,28 +105,6 @@ function init() {
 
     // Give the maps script time to delete entities before we create entities (so we dont get a edict error)
     EntFire("p232servercommand", "command", "script CreateOurEntities()", 0.05)
-
-
-    //## Load plugin ##//
-    if("GetPlayerName" in this) {
-        if (GetDeveloperLevel() == 1) {
-            printl("================================")
-            printl("P2:MM plugin has already loaded!")
-            printl("================================")
-        }
-        PluginLoaded <- true
-    } else {
-        // Make some replacements (this is for if someone doesnt use the plugin)
-        // MakePluginReplacementFunctions()
-        if (GetDeveloperLevel() == 1) {
-            printl("============================================")
-            printl("P2:MM plugin has not been loaded!")
-            printl("============================================")
-        }
-        EntFire("p232servercommand", "command", "echo Loading Plugin...", 0.01) 
-        EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
-        //EntFire("p232servercommand", "command", "changelevel " + GetMapName(), 0.1)
-    }
 }
 
 function DoesPluginExist() {
