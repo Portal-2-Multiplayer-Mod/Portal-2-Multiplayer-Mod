@@ -258,6 +258,7 @@ function StopStickAndTeleport() {
     EntFire("ContainerChairBrush", "kill", "", 0)
     
     Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232actorwalldestructionoverride")
+    Entities.FindByName(null, "endwall_collision").__KeyValueFromString("rendermode", "10")
 
     EntFire("container_collision", "enabledraw", "", 0)
     EntFire("container_collision", "EnableCollision", "", 0)
