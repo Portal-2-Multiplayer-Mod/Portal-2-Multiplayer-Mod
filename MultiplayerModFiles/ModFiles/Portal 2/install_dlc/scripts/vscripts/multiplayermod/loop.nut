@@ -88,26 +88,30 @@ function loop() {
             local checkcount = 1
             // optimise search based on player count
             if (playernums <= 6) {
-                checkcount = (playernums - 1)
+                checkcount = playernums
             } else {
-                if (playernums <= 8) {
-                    checkcount = 4
+                if (playernums <= 11) {
+                    checkcount = 6
                 } else {
                     if (playernums <= 14) {
-                        checkcount = 3
+                        checkcount = 4
                     } else {
-                        if (playernums <= 18) {
-                            checkcount = 1
+                        if (playernums <= 17) {
+                            checkcount = 3
                         } else {
-                            if (playernums <= 33) {
-                                checkcount = 1
+                            if (playernums <= 21) {
+                                checkcount = 2
+                            } else {
+                                if (playernums <= 33) {
+                                    checkcount = 1
+                                }
                             }
                         }
                     }
                 }
             }
 
-            local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, 4, checkcount, 32, p, "player")
+            local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, checkcount, checkcount, 32, p, "player")
             if (eyeplayer != null) {
                 local clr = GetPlayerColor(eyeplayer, true)
                 EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
@@ -127,7 +131,8 @@ function loop() {
         local mdlmodel = pmodel.model
         try {
             if (plr.GetModelName() != mdlmodel) {
-                SendToConsole("script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")")
+                EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")", 1)
+                //SendToConsole("script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")")
             }
         } catch(e) { }
     }
@@ -223,6 +228,20 @@ function loop() {
             }
         } else {
             DevMode <- true
+        }
+    }
+
+    ////#### FUN STUFF ####////
+
+    //## Rocket ##//
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local currentplayerclass = FindPlayerClass(p)
+        if (currentplayerclass.rocket == true) {
+            if (p.GetVelocity().z <= 1) {
+                EntFireByHandle(p, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, p, p)
+                currentplayerclass.rocket <- false
+            }
         }
     }
 

@@ -28,6 +28,8 @@ DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
 // UsePlugin <- true // Set to false if you want to use the plugin (LINUX ONLY)
 //-----------------------------------
+VisualDebug <- false // Set to true if you want to see the debug info
+//-----------------------------------
 DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
 //-----------------------------------
 RandomTurrets <- false // Set to true if you want to randomize every Turret's models and colors (for fun lol)

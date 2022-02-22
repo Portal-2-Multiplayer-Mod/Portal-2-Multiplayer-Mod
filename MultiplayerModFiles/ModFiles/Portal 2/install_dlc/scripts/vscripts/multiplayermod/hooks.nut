@@ -150,6 +150,8 @@ function OnPlayerJoin(p, script_scope) {
     currentplayerclass.color <- localcolorclass
     // player noclip status
     currentplayerclass.noclip <- p.IsNoclipping()
+    // rocket player status
+    currentplayerclass.rocket <- false
 
     // Add player class to the player class array
     playerclasses.push(currentplayerclass)
@@ -189,9 +191,10 @@ function OnPlayerRespawn(player) {
         TeleportToSpawnPoint(player, null)
     }
 
+    MapSupport(false, false, false, false, false, false, player)
+
     if (GetDeveloperLevel() == 1) {
         printl("(P2:MM): Player respawned!")
-        MapSupport(false, false, false, false, false, false, player)
     }
 }
 
@@ -481,9 +484,30 @@ function ChatCommands(ccuserid, ccmessage) {
     if (parsedcommand != "") {
         parsedcommand = parsedcommand.slice(0, -1)
         printl("parsed command: " + parsedcommand)
-        // run the chat command runner if the player isnt null
-        if (p != null) {
-            ChatCommandRunner(p, pname, parsedcommand, adminlevel, commandrunner)
+        // if its all
+        if (pname != "all") {
+            // run the chat command runner if the player isnt null
+            if (p != null) {
+                adminlevel = adminlevel.tointeger() // make sure the adminlevel is an integer
+                if (adminlevel > 1) {
+                    ChatCommandRunner(p, pname, parsedcommand, adminlevel, commandrunner)
+                }
+            }
+        } else {
+            // if its high enough to use all
+            if (adminlevel > 1) {
+                // run the chat command for all players
+                local p2 = null
+                while (p2 = Entities.FindByClassname(p2, "player")) {
+                    adminlevel = adminlevel.tointeger() // make sure the adminlevel is an integer
+                    if (adminlevel > 1) {
+                        local newpname = GetPlayerName(p2.entindex())
+                        ChatCommandRunner(p2, newpname, parsedcommand, adminlevel, commandrunner)
+                    }
+                }
+            } else {
+                SendToConsole("say " + playername + ": You cant use all.")
+            }
         }
     }
 
@@ -557,4 +581,55 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
             }
         }
     }
+
+    //## KILL ##//
+    if (action == "kill") {
+        if (command.len() < 2) {
+            EntFireByHandle(player, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
+        } else {
+            local playertorun = FindPlayerByName(command[1])
+            if (playertorun != null) {
+                EntFireByHandle(playertorun, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
+            } else {
+                SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
+            }
+        }
+    }
+
+    //## ROCKET ##//
+    if (action == "rocket") {
+        if (command.len() < 2) {
+            currentplayerclass.rocket <- !currentplayerclass.rocket
+            //EntFireByHandle(player, "sethealth", "-9999999999999999999999999999999999999999999999999", 5, player, player)
+            player.SetVelocity(Vector(player.GetVelocity().x, player.GetVelocity().y, 1000))
+        } else {
+            local playertorun = FindPlayerByName(command[1])
+            if (playertorun != null) {
+                local tempplayerclass = FindPlayerClass(playertorun)
+                tempplayerclass.rocket <- !tempplayerclass.rocket
+                playertorun.SetVelocity(Vector(playertorun.GetVelocity().x, playertorun.GetVelocity().y, 1000))
+                //EntFireByHandle(playertorun, "sethealth", "-9999999999999999999999999999999999999999999999999", 5, player, player)
+            } else {
+                SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
+            }
+        }
+    }
+
+    //## SLAP ##//
+    if (action == "slap") {
+        if (command.len() < 2) {
+            EntFireByHandle(player, "sethealth", "5", 0, player, player)
+            player.SetVelocity(Vector(RandomInt(-200, 200), RandomInt(-200, 200), RandomInt(200, 500)))
+        } else {
+            local playertorun = FindPlayerByName(command[1])
+            if (playertorun != null) {
+                EntFireByHandle(playertorun, "sethealth", "5", 0, player, player)
+                playertorun.SetVelocity(Vector(RandomInt(-200, 200), RandomInt(-200, 200), RandomInt(200, 500)))
+            } else {
+                SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
+            }
+        }
+    }
+
+    //## BRING ##//
 }

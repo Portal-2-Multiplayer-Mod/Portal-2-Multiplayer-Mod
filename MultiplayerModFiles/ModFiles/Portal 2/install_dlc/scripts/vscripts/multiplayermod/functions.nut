@@ -13,6 +13,9 @@ function MakePluginReplacementFunctions() {
     }
 }
 
+//## Decode Number ##//
+
+
 function ForceRespawnAll() {
     // GlobalSpawnClass Teleport
     if (GlobalSpawnClass.useautospawn == true) {
@@ -325,7 +328,7 @@ AssignedPlayerModels <- []
 function SetPlayerModel(p, mdl) {
     PrecacheModelNoDelay(mdl)
     local mdl2 = MinifyModel(mdl)
-    SendToConsole("script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")")
+    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
     local pmodelclass = class {
         player = p
         model = mdl
@@ -365,7 +368,7 @@ function PrecacheModelNoDelay(mdl) {
         } else {
             SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
         }
-        EntFire("p232servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.1)
+        EntFire("p232servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
         printl("Precached model: " + minimdl + " AKA " + mdl)
     } else {
         printl("Model: " + mdl + " already precached!")
@@ -462,6 +465,8 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     local fowardstep = forward //Vector(forward.x * currentstepped, forward.y * currentstepped, forward.z * currentstepped) // multiply this se we can get a base step amount
     local outputorigin = Vector(0, 0, 0) // output
     local nearestent = null // output
+    local clradd = 0
+    local opadd = 0
 
     //# trace the ray #//
     local loopamt = 0
@@ -490,12 +495,29 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         }
 
         fowardstep = Vector((forward.x * lowest), (forward.y * lowest), (forward.z * lowest))
+        local deboogdatalarb = lowest - 50
+        if (deboogdatalarb < 0) {
+            deboogdatalarb = 0
+        }
+
+        clradd = clradd + 50
+        opadd = opadd + 1
+        if (Entities.FindByName(null, "blue") != entitiestoexclude[0]) {
+            if (VisualDebug) {
+                DebugDrawBox(origin + originoffset, Vector(deboogdatalarb / -1, deboogdatalarb / -1, deboogdatalarb / -1), Vector(deboogdatalarb, deboogdatalarb, deboogdatalarb), 255 - clradd, 0, clradd, 0 + opadd, 0.1)
+                DebugDrawBox(origin + originoffset, Vector(-10, -10, -10), Vector(10, 10, 10), 0, 255, 255, 10, 0.1)
+            }
+        }
+
         // add the fowardstep to the origin
         originoffset = originoffset + fowardstep
 
         // after getting the end point, we need to see if we hit anything
         local newnearest = FindNearest(origin + originoffset, maxreldist, entitiestoexclude, specificclass)
         if (newnearest != null) {
+            if (VisualDebug) {
+                DebugDrawLine(origorigin, origin + originoffset, 0, 255, 0, false, 0.1)
+            }
             return newnearest
             break
         }
@@ -511,7 +533,9 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     }
 
     outputorigin = origin + originoffset
-    //DebugDrawLine(origorigin, outputorigin, 0, 255, 0, false, 0.1)
+    if (VisualDebug) {
+        DebugDrawLine(origorigin, outputorigin, 0, 255, 0, false, 0.1)
+    }
 }
 
 function FindPlayerByName(name) {
@@ -638,7 +662,7 @@ function GetAdminLevel(id) {
         local playername = split(admin, "]")[1]
 
         if (playername==GetPlayerName(id)) {
-            return level
+            return level.tointeger()
         }
     }
     if (id == 1) {
