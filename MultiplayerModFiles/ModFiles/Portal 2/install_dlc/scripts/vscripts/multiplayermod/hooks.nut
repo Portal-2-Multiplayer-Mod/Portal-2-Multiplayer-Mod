@@ -153,6 +153,15 @@ function OnPlayerJoin(p, script_scope) {
     // rocket player status
     currentplayerclass.rocket <- false
 
+
+    // make sure there isnt an existing player class
+    foreach (indx, curlclass in playerclasses) {
+        if (curlclass.player == p) {
+            // if there is, remove it
+            playerclasses.remove(indx) // if there is, remove it
+        }
+    }
+
     // Add player class to the player class array
     playerclasses.push(currentplayerclass)
 
@@ -675,6 +684,50 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
             if (playertorun != null) {
                 player.SetOrigin(playertorun.GetOrigin())
                 SendToConsole("say " + playername + ": You have been teleported to " + nm + ".")
+            } else {
+                SendToConsole("say " + playername + ": " + nm + " is not a valid player.")
+            }
+        }
+    }
+
+    //## RCON ##//
+    if (action == "rcon") {
+        if (command.len() < 2) {
+            SendToConsole("say " + playername + ": You need to specify a command to run.")
+        } else {
+            local commandtosend = CombineList(command, 2)
+            SendToConsole(commandtosend)
+        }
+    }
+
+    //## CHANGELEVEL ##//
+    if (action == "changelevel") {
+        if (command.len() < 2) {
+            SendToConsole("say " + playername + ": You need to specify a map to change to.")
+        } else {
+            local mapname = CombineList(command, 2)
+            SendToConsole("changelevel " + mapname)
+        }
+    }
+
+    //## SPECTATE ##//
+    if (action == "spectate") {
+        if (command.len() < 2) {
+            local currentplayerclass = FindPlayerClass(player)
+        } else {
+            
+        }
+    }
+
+    //## GETPLAYER ##//
+    if (action == "getplayer") {
+        if (command.len() < 2) {
+            SendToConsole("say " + playername + ": You need to specify a player name to get.")
+        } else {
+            local nm = ExpandName(command[1])
+            local playertorun = FindPlayerByName(command[1])
+            if (playertorun != null) {
+                SendToConsole("say " + playername + ": " + nm + "'s index is " + playertorun.entindex() + ".")
             } else {
                 SendToConsole("say " + playername + ": " + nm + " is not a valid player.")
             }

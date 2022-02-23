@@ -13,9 +13,6 @@ function MakePluginReplacementFunctions() {
     }
 }
 
-//## Decode Number ##//
-
-
 function ForceRespawnAll() {
     // GlobalSpawnClass Teleport
     if (GlobalSpawnClass.useautospawn == true) {
