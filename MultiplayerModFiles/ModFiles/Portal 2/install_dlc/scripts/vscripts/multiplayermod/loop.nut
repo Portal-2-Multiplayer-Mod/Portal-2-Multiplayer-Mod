@@ -111,7 +111,7 @@ function loop() {
                 }
             }
 
-            local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, checkcount, checkcount, 32, p, "player")
+            local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
             if (eyeplayer != null) {
                 local clr = GetPlayerColor(eyeplayer, true)
                 EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)

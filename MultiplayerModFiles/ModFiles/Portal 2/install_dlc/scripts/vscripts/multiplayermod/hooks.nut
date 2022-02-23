@@ -587,11 +587,21 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
         if (command.len() < 2) {
             EntFireByHandle(player, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
         } else {
+            local nm = ExpandName(command[1]) 
             local playertorun = FindPlayerByName(command[1])
-            if (playertorun != null) {
-                EntFireByHandle(playertorun, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
+            if (command[1] == "all") {
+                local p2 = null
+                while (p2 = Entities.FindByClassname(p2, "player")) {
+                    EntFireByHandle(p2, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
+                }
+                SendToConsole("say " + playername + ": Killed all players.")
             } else {
-                SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
+                if (playertorun != null) {
+                    EntFireByHandle(playertorun, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
+                    SendToConsole("say " + playername + ": " + nm + " has been killed.")
+                } else {
+                    SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
+                }
             }
         }
     }
@@ -632,4 +642,42 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
     }
 
     //## BRING ##//
+    if (action == "bring") {
+        if (command.len() < 2) {
+            SendToConsole("say " + playername + ": You need to specify a player to bring.")
+        } else {
+            if (command[1] == "all") {
+                local p2 = null
+                while (p2 = Entities.FindByClassname(p2, "player")) {
+                    p2.SetOrigin(player.GetOrigin())
+                }
+                SendToConsole("say " + playername + ": All players have been brought to you.")
+            } else {
+                local nm = ExpandName(command[1])
+                local playertorun = FindPlayerByName(command[1])
+                if (playertorun != null) {
+                    playertorun.SetOrigin(player.GetOrigin())
+                    SendToConsole("say " + playername + ": " + nm + " has been brought.")
+                } else {
+                    SendToConsole("say " + playername + ": " + nm + " is not a valid player.")
+                }       
+            }
+        }
+    }
+
+    //## GOTO / TELEPORT ##//
+    if (action == "goto" || action == "teleport") {
+        if (command.len() < 2) {
+            SendToConsole("say " + playername + ": You need to specify a player to teleport to.")
+        } else {
+            local nm = ExpandName(command[1])
+            local playertorun = FindPlayerByName(command[1])
+            if (playertorun != null) {
+                player.SetOrigin(playertorun.GetOrigin())
+                SendToConsole("say " + playername + ": You have been teleported to " + nm + ".")
+            } else {
+                SendToConsole("say " + playername + ": " + nm + " is not a valid player.")
+            }
+        }
+    }
 }
