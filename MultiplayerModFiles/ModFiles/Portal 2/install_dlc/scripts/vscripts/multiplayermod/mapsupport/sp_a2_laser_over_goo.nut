@@ -17,6 +17,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSPostPlayerSpawn==true) {
         NewApertureStartElevatorFixes()
+        // Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_01bendy02").__KeyValueFromString("targetname", "P232_Wall_Panel_2-Robo_Powerup_Corridor_01_override")
+        // Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_02bendy02").__KeyValueFromString("targetname", "P232_Wall_Panel_2-Robo_Powerup_Corridor_02_override")
+        // Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_03bendy02").__KeyValueFromString("targetname", "P232_Wall_Panel_2-Robo_Powerup_Corridor_03_override")
+        // Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_04bendy02").__KeyValueFromString("targetname", "P232_Wall_Panel_2-Robo_Powerup_Corridor_04_override")
+        // Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_05bendy02").__KeyValueFromString("targetname", "P232_Wall_Panel_2-Robo_Powerup_Corridor_05_override")
+        // Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_06bendy02").__KeyValueFromString("targetname", "P232_Wall_Panel_2-Robo_Powerup_Corridor_06_override")
+        // Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_07bendy02").__KeyValueFromString("targetname", "P232_Wall_Panel_2-Robo_Powerup_Corridor_07_override")
+        // Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_08bendy02").__KeyValueFromString("targetname", "P232_Wall_Panel_2-Robo_Powerup_Corridor_08_override")
     }
 
     if (MSLoop==true) {
