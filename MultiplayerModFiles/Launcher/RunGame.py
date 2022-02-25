@@ -317,8 +317,13 @@ def UnRenameBinaries(gamepath, binarys):
         # if the binary exists
         if (os.path.isfile(gamepath + nf + binary)):
             print("(P2:MM) Un-renaming " + binary + " to " + binary[:-9])
-            # rename the binary back to the original
-            os.rename(gamepath + nf + binary, gamepath + nf + binary[:-9])
+            # if a file with the name gamepath + nf + binary[:-9] exists
+            if (os.path.isfile(gamepath + nf + binary[:-9])):
+                # remove the file
+                os.remove(gamepath + nf + binary)
+            else:
+                # rename the binary back to the original
+                os.rename(gamepath + nf + binary, gamepath + nf + binary[:-9])
 
 def FindAvalibleDLC(gamepath):
     shouldbe = 1
