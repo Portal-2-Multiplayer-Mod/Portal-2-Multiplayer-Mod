@@ -216,6 +216,14 @@ function PostMapLoad() {
     SendToConsole("prop_dynamic_create cheatdetectionp232")
     SendToConsole("script SetCheats()")
 
+    local ent = null
+    while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+        // if it is the player's portalgun, remove it
+        if (ent.GetRootMoveParent().GetName() == "blue") {
+            ent.Destroy()
+        }
+    }
+
     // add a hook to the chat command function
     if (PluginLoaded==true) {
         printl("(P2:MM): Plugin Loaded")
@@ -245,6 +253,8 @@ function PostMapLoad() {
 	SendToConsole("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	SendToConsole("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
+
+    PostMapLoadDone <- true
 }
 
 //////////////////////////////////////

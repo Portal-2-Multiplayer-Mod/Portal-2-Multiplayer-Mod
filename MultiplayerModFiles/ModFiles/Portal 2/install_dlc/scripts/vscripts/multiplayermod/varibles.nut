@@ -39,6 +39,7 @@ if (GetMapName().slice(0,7)=="mp_coop") {
     IsOnSingleplayer = true
 }
 
+PostMapLoadDone <- false
 TickSpeed <- 0.00 // now depricated just for legacy
 EventList <- []
 PermaPotato <- false
@@ -49,7 +50,7 @@ yes <- ""
 DevModeConfig <- DevMode
 StartDevModeCheck <- false
 PreviousTimeDeath <- 0
-HasRanGeneralOneTime <- true
+HasRanGeneralOneTime <- false
 BundgeeHookID <- "none"
 BundgeeHookMessage <- "none"
 OrangeCacheFailed <- false

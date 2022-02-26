@@ -8,23 +8,7 @@ function loop() {
     }
 
     //## PotatoIfy! Loop ##//
-    if (PermaPotato == true) {
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-            if (ent.GetName() != "weapon_portalgun_potatoifyied") {
-                PotatoIfy()
-            }
-        }
-    } else {
-        if (PermaPotato == false) {
-            local ent = null
-            while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-                if (ent.GetName() != "weapon_portalgun_unpotatoifyied") {
-                    UnPotatoIfy()
-                }
-            }
-        }
-    }
+    //weapon_portalgun
 
     //## Hook Player Join ##//
     local p = null
@@ -70,6 +54,16 @@ function loop() {
         if (currentplayerclass != null) {
             //printl("player" + p.entindex() + "'s angles " + currentplayerclass.eyeangles)
             //printl("player" + p.entindex() + "'s vector " + currentplayerclass.eyeforwardvector)
+        }
+    }
+
+    //## Update PortalGun Names ##//
+    local ent = null
+    while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+        // if it doesnt have a name yet
+        if (ent.GetName() == "") {
+            // Set The Name Of The Portalgun
+            ent.__KeyValueFromString("targetname", "weapon_portalgun_player" + ent.GetRootMoveParent().entindex())
         }
     }
 
@@ -184,24 +178,21 @@ function loop() {
     }
 
     //## Hook First Spawn ##//
-    try {
-        if (HasRanGeneralOneTime == true) {
-            if (Entities.FindByName(null, "HasSpawnedMPMod")) {
-                GeneralOneTime()
-                HasRanGeneralOneTime <- false
-            }
-        }
+    if (PostMapLoadDone) {
         if (DoneWaiting == false) {
+            printl(Entities.FindByName(null, "blue").GetVelocity().z)
+            printl(Entities.FindByName(null, "weapon_portalgun_player1"))
             // Check if client is in spawn zone
-            if (Entities.FindByName(null, "blue").GetVelocity().z == 0) {
+            if (Entities.FindByName(null, "blue").GetVelocity().z == 0 || Entities.FindByName(null, "weapon_portalgun_player1") == false) {
                 DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+                printl("EE")
             } else {
+                printl("bruh")
                 DoneWaiting <- true
-                Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "HasSpawnedPreMPMod")
-                EntFire("HasSpawnedPreMPMod", "addoutput", "targetname HasSpawnedMPMod", 1, null)
+                GeneralOneTime()
             }
         }
-    } catch(exception) {}
+    }
 
     //## GlobalSpawnClass SetSpawn ##//
     if (GlobalSpawnClass.usesetspawn == true) {
