@@ -180,16 +180,12 @@ function loop() {
     //## Hook First Spawn ##//
     if (PostMapLoadDone) {
         if (DoneWaiting == false) {
-            printl(Entities.FindByName(null, "blue").GetVelocity().z)
-            printl(Entities.FindByName(null, "weapon_portalgun_player1"))
             // Check if client is in spawn zone
-            if (Entities.FindByName(null, "blue").GetVelocity().z == 0 || Entities.FindByName(null, "weapon_portalgun_player1") == null) {
-                DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
-                printl("EE")
-            } else {
-                printl("bruh")
+            if (Entities.FindByName(null, "blue").GetVelocity().z != 0 || Entities.FindByName(null, "weapon_portalgun_player1")) {
                 DoneWaiting <- true
                 GeneralOneTime()
+            } else {
+                DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
             }
         }
     }
