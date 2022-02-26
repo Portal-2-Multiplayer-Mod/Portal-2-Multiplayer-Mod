@@ -698,28 +698,22 @@ function FindByIndex(id)  {
 }
 
 // Potato
-function PotatoIfy() {
-    local ent = null
-    while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-        ent.__KeyValueFromString("targetname", "weapon_portalgun_potatoifyied")
-        EntFire("weapon_portalgun_potatoifyied", "SetBodygroup", "1", 0)
+function PotatoIfy(plr) {
+    if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
+        EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", "1", 0)
     }
-    local ent = null
-    while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
-        EntFireByHandle(ent, "SetBodyGroup", "1", 0, null, null)
+    if (Entities.FindByName(null, "viewmodel_player" + plr.entindex())) {
+        EntFire("viewmodel_player" + plr.entindex(), "SetBodyGroup", "1", 0)
     }
 }
 
 // No Potato
-function UnPotatoIfy() {
-    local ent = null
-    while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-        ent.__KeyValueFromString("targetname", "weapon_portalgun_unpotatoifyied")
-        EntFire("weapon_portalgun_unpotatoifyied", "SetBodygroup", "0", 0)
+function UnPotatoIfy(plr) {
+    if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
+        EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", "0", 0)
     }
-    local ent = null
-    while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
-        EntFireByHandle(ent, "SetBodyGroup", "0", 0, null, null)
+    if (Entities.FindByName(null, "viewmodel_player" + plr.entindex())) {
+        EntFire("viewmodel_player" + plr.entindex(), "SetBodyGroup", "0", 0)
     }
 }
 

@@ -7,9 +7,6 @@ function loop() {
         EventList.remove(0)
     }
 
-    //## PotatoIfy! Loop ##//
-    //weapon_portalgun
-
     //## Hook Player Join ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
@@ -20,6 +17,33 @@ function loop() {
                 // Run player join code
                 OnPlayerJoin(p, script_scope)
             }
+        }
+    }
+
+    //## PotatoIfy! Loop ##//
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local currentplayerclass = FindPlayerClass(p)
+        if (currentplayerclass.potatogun == true) {
+            PotatoIfy(p)
+        }
+        if (currentplayerclass.potatogun == false) {
+            UnPotatoIfy(p)
+        }
+    }
+    // also update everyones class if PermaPotato is on
+    if (PermaPotato == true) {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            local currentplayerclass = FindPlayerClass(p)
+            currentplayerclass.potatogun <- true
+        }
+    }
+    if (PermaPotato == false) {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            local currentplayerclass = FindPlayerClass(p)
+            currentplayerclass.potatogun <- false
         }
     }
 

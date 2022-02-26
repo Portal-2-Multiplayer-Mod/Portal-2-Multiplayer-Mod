@@ -142,6 +142,9 @@ function OnPlayerJoin(p, script_scope) {
 
     SetCosmetics(p)
 
+    // potatogun
+    currentplayerclass.potatogun <- false
+
     // player color
     local localcolorclass = {}
     localcolorclass.r <- R
