@@ -353,6 +353,7 @@ function SetPlayerModel(p, mdl) {
 
 PrecachedProps <- []
 function PrecacheModel(mdl) {
+    SendToConsole("sv_cheats 1")
     SendToConsole("script PrecacheModelNoDelay(\"" + mdl + "\")")
 }
 function PrecacheModelNoDelay(mdl) {
