@@ -433,6 +433,11 @@ function GeneralOneTime() {
     SendToConsole("script CreatePropsForLevel(false, true, false)")
 
     MapSupport(false, false, true, false, false, false, false)
+
+    // Give the player their portalgun back
+    if (Entities.FindByName(null, "weapon_portalgun_player2") && !Entities.FindByName(null, "weapon_portalgun_player1")) {
+        SendToConsole("sv_cheats 1; give_portalgun; upgrade_portalgun; sv_cheats 0")
+    }
 }
 
 ///////////////////
