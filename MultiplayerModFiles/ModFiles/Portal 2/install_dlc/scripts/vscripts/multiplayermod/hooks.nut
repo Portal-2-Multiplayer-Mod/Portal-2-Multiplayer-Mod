@@ -71,6 +71,11 @@ function OnPlayerJoin(p, script_scope) {
         PostMapLoad()
     }
 
+    // Run code after player 2 joins
+    if (PlayerID == 2) {
+        PostPlayer2Join()
+    }
+
     //# Set cvars on joining players' client #//
     SendToConsole("sv_timeout 3")
     EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
@@ -219,14 +224,6 @@ function PostMapLoad() {
     SendToConsole("prop_dynamic_create cheatdetectionp232")
     SendToConsole("script SetCheats()")
 
-    local ent = null
-    while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-        // if it is the player's portalgun, remove it
-        if (ent.GetRootMoveParent().GetName() == "blue") {
-            ent.Destroy()
-        }
-    }
-
     // add a hook to the chat command function
     if (PluginLoaded==true) {
         printl("(P2:MM): Plugin Loaded")
@@ -257,7 +254,17 @@ function PostMapLoad() {
 	SendToConsole("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
+    EntFire("p232servercommand", "command", "script CanHook <- true", 5)
     PostMapLoadDone <- true
+}
+
+///////////////////////////////
+// RUNS AFTER PLAYER 2 JOINS //
+///////////////////////////////
+
+function PostPlayer2Join() {
+    SendToConsole("sv_cheats 0")
+    Player2Joined <- true
 }
 
 //////////////////////////////////////

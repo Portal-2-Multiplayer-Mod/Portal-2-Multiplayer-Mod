@@ -353,7 +353,6 @@ function SetPlayerModel(p, mdl) {
 
 PrecachedProps <- []
 function PrecacheModel(mdl) {
-    SendToConsole("sv_cheats 1")
     SendToConsole("script PrecacheModelNoDelay(\"" + mdl + "\")")
 }
 function PrecacheModelNoDelay(mdl) {
@@ -380,7 +379,7 @@ function PrecacheModelNoDelay(mdl) {
     if (!Entities.FindByModel(null, mdl) && NotPrecached == true) {
         PrecachedProps.push(minimdl)
         if (CheatsOn == false) {
-            SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl + "; sv_cheats 0")
+            SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
         } else {
             SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
         }

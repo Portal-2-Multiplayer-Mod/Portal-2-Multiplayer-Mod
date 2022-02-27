@@ -39,6 +39,9 @@ if (GetMapName().slice(0,7)=="mp_coop") {
     IsOnSingleplayer = true
 }
 
+CanHook <- false
+Player2Joined <- false
+hasbeenremoved <- false
 PostMapLoadDone <- false
 TickSpeed <- 0.00 // now depricated just for legacy
 EventList <- []

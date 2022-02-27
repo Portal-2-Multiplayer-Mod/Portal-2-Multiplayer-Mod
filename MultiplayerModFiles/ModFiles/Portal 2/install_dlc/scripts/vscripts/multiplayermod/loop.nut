@@ -202,15 +202,24 @@ function loop() {
     }
 
     //## Hook First Spawn ##//
-    if (PostMapLoadDone) {
+    if (PostMapLoadDone == true) {
         if (DoneWaiting == false) {
-            // Check if client is in spawn zone
-            if (Entities.FindByName(null, "blue").GetVelocity().z != 0 || Entities.FindByName(null, "weapon_portalgun_player1")) {
-                DoneWaiting <- true
-                GeneralOneTime()
-            } else {
-                DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+            if (CanHook == true) {
+                // Check if client is in spawn zone
+                if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
+                    DoneWaiting <- true
+                    GeneralOneTime()
+                    printl("==============================VELOCITY SPAWN")
+                }
+
+                if (hasbeenremoved == true && Entities.FindByName(null, "weapon_portalgun_player1")) {
+                    DoneWaiting <- true
+                    GeneralOneTime()
+                    printl("==============================PORTALGUN SPAWN")
+                }
             }
+
+            DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
         }
     }
 
@@ -408,7 +417,19 @@ function loop() {
         }
     } catch (exception) { }
 
-
+    //## Remove The PortalGun INITALLY ##//
+    if (hasbeenremoved == false  && PostMapLoadDone == true && Player2Joined == true) {
+        printl("(P2:MM): Removing The PortalGun...")
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+            // if it is the player's portalgun, remove it
+            if (ent.GetRootMoveParent().GetName() == "blue") {
+                ent.Destroy()
+                printl("(P2:MM): Redsfsdfdsfdsfdsfsdfmoved The PortalGun.")
+                hasbeenremoved <- true
+            }
+        }
+    }
 
 
     //## MATH TESTING ##//
@@ -435,7 +456,10 @@ function loop() {
 
     
     // Following Box
-    local torigin = Entities.FindByClassname(null, "player").GetOrigin()
+    local torigin = Vector(0, 0, 0)
+    if (Entities.FindByClassname(null, "player")) {
+        torigin = Entities.FindByClassname(null, "player").GetOrigin()
+    }
     
     local bxoffset = torigin - bxorigin
 
@@ -490,10 +514,10 @@ function loop() {
     
     bxorigin <- bxorigin + bxoffset
 
-    printl("(P2:MM)bo: " + bxorigin)
-    printl("(P2:MM)boff: " + (torigin - bxorigin))
-    printl("(P2:MM)bof: " + bxoffset)
-    printl("(P2:MM)h: " + highest)
+    // printl("(P2:MM)bo: " + bxorigin)
+    // printl("(P2:MM)boff: " + (torigin - bxorigin))
+    // printl("(P2:MM)bof: " + bxoffset)
+    // printl("(P2:MM)h: " + highest)
 
     // draw the box
     DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
