@@ -13,6 +13,24 @@ function MakePluginReplacementFunctions() {
     }
 }
 
+function GetHighest(inpvec) {
+    local highest = -99999999
+    local highesttemp = -99999999
+    if (UnNegative(inpvec.x) > highesttemp) {
+        highesttemp = UnNegative(inpvec.x)
+        highest = inpvec.x
+    }
+    if (UnNegative(inpvec.y) > highesttemp) {
+        highesttemp = UnNegative(inpvec.y)
+        highest = inpvec.y
+    }
+    if (UnNegative(inpvec.z) > highesttemp) {
+        highesttemp = UnNegative(inpvec.z)
+        highest = inpvec.z
+    }
+    return highest
+}
+
 function ForceRespawnAll() {
     // GlobalSpawnClass Teleport
     if (GlobalSpawnClass.useautospawn == true) {

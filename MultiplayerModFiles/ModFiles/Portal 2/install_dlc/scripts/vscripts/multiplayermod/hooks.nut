@@ -423,7 +423,7 @@ function GeneralOneTime() {
     }
 
     // Create props after cache
-    CreatePropsForLevel(false, true, false)
+    SendToConsole("script CreatePropsForLevel(false, true, false)")
 
     MapSupport(false, false, true, false, false, false, false)
 }
