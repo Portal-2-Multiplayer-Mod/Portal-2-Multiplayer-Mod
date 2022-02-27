@@ -418,7 +418,7 @@ function loop() {
     } catch (exception) { }
 
     //## Remove The PortalGun INITALLY ##//
-    if (hasbeenremoved == false  && PostMapLoadDone == true && Player2Joined == true) {
+    if (hasbeenremoved == false  && PostMapLoadDone == true && Player2Joined == true && HasSpawned == false) {
         printl("(P2:MM): Removing The PortalGun...")
         local ent = null
         while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
@@ -456,71 +456,31 @@ function loop() {
 
     
     // Following Box
-    local torigin = Vector(0, 0, 0)
-    if (Entities.FindByClassname(null, "player")) {
-        torigin = Entities.FindByClassname(null, "player").GetOrigin()
+    local lenp = null
+    while (lenp = Entities.FindByName(lenp, "uwu")) {
+        local torigin = Vector(0, 0, 0)
+        local torigin2 = Vector(0, 0, 0)
+        local tent2 = null
+        if (Entities.FindByName(null, "blue")) {
+            torigin = Entities.FindByName(null, "blue").GetOrigin()
+        }
+        
+        torigin2 = lenp.GetOrigin()
+        tent2 = lenp
+        
+        local uwu = GetDirectionalOffset(torigin, torigin2)
+
+        if (tent2 != null) {
+            tent2.SetOrigin(torigin2 + uwu)
+        }
+
+        // printl("(P2:MM)bo: " + bxorigin)
+        // printl("(P2:MM)boff: " + (torigin - bxorigin))
+        // printl("(P2:MM)bof: " + bxoffset)
+        // printl("(P2:MM)h: " + highest)
+
+        // draw the box
+        //DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
     }
-    
-    local bxoffset = torigin - bxorigin
-
-    // get the highest number in bxoffset
-    local highest = UnNegative(GetHighest(bxoffset))
-    local wasneg = false
-    // if it was originally negative then set the var
-    if (GetHighest(bxoffset) < 0) {
-        wasneg = true
-    }
-
-    // divide it by the highest number
-    // bxoffset.x <- bxoffset.x / highest
-    // bxoffset.y <- bxoffset.y / highest
-    // bxoffset.z <- bxoffset.z / highest
-    // if highest is not 0
-    if (highest > 0) {
-        // if bxoffset.x is negative
-        local wasxneg = false
-        if (bxoffset.x < 0) {
-            wasxneg = true
-        }
-        // if bxoffset.y is negative
-        local wasyneg = false
-        if (bxoffset.y < 0) {
-            wasyneg = true
-        }
-        // if bxoffset.z is negative
-        local waszneg = false
-        if (bxoffset.z < 0) {
-            waszneg = true
-        }
-
-        // set the new values
-        local newx = bxoffset.x / highest
-        if (wasxneg == true && newx > 0) {
-            newx = 0
-        }
-        local newy = bxoffset.y / highest
-        if (wasyneg == true && newy > 0) {
-            newy = 0
-        }
-        local newz = bxoffset.z / highest
-        if (waszneg == true && newz > 0) {
-            newz = 0
-        }
-
-        // put the new values back into bxoffset
-        bxoffset = Vector(newx, newy, newz)
-
-    }
-    
-    bxorigin <- bxorigin + bxoffset
-
-    // printl("(P2:MM)bo: " + bxorigin)
-    // printl("(P2:MM)boff: " + (torigin - bxorigin))
-    // printl("(P2:MM)bof: " + bxoffset)
-    // printl("(P2:MM)h: " + highest)
-
-    // draw the box
-    DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
 }
-
-bxorigin <- Vector(6975, 558, 445)
+oldbx <- Vector(0, 0, 0)

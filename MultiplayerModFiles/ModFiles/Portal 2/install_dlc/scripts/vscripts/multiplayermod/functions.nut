@@ -705,6 +705,63 @@ function ExpandName(name) {
     return name
 }
 
+// Get Directional Offset
+function GetDirectionalOffset(org1, org2, multipl = 1) {
+    
+    local bxoffset = org1 - org2
+
+    // get the highest number in bxoffset
+    local highest = UnNegative(GetHighest(bxoffset))
+    local wasneg = false
+    // if it was originally negative then set the var
+    if (GetHighest(bxoffset) < 0) {
+        wasneg = true
+    }
+
+    // divide it by the highest number
+    // bxoffset.x <- bxoffset.x / highest
+    // bxoffset.y <- bxoffset.y / highest
+    // bxoffset.z <- bxoffset.z / highest
+    // if highest is not 0
+    if (highest > 0) {
+        // if bxoffset.x is negative
+        local wasxneg = false
+        if (bxoffset.x < 0) {
+            wasxneg = true
+        }
+        // if bxoffset.y is negative
+        local wasyneg = false
+        if (bxoffset.y < 0) {
+            wasyneg = true
+        }
+        // if bxoffset.z is negative
+        local waszneg = false
+        if (bxoffset.z < 0) {
+            waszneg = true
+        }
+
+        // set the new values
+        local newx = bxoffset.x / highest
+        if (wasxneg == true && newx > 0) {
+            newx = 0
+        }
+        local newy = bxoffset.y / highest
+        if (wasyneg == true && newy > 0) {
+            newy = 0
+        }
+        local newz = bxoffset.z / highest
+        if (waszneg == true && newz > 0) {
+            newz = 0
+        }
+
+        // put the new values back into bxoffset
+        bxoffset = Vector(newx*multipl, newy*multipl, newz*multipl)
+
+    }
+    
+    return bxoffset
+}
+
 // Find player by index
 function FindByIndex(id)  {
     local p = null
