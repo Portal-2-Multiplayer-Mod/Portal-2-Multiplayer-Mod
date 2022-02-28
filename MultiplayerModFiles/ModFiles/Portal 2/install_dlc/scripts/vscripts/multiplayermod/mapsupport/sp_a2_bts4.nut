@@ -23,8 +23,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "death_fade").Destroy()
         Entities.FindByName(null, "gib_conveyor_shutdown_relay").Destroy()
         Entities.FindByName(null, "dummy_shoot_entry_door_clip").Destroy()
-        // By deleting these doors players can glitch a trigger and make Wheatley trigger a privious line.
-        // To solve this we detect when scanner_socket_new_turret_trigger doesn't exist and then we do something (Moja)
+        Entities.FindByName(null, "wheatley_comment_mission_completed").Destroy()
         Entities.FindByName(null, "control_room_blocking_doors").Destroy()
         Entities.FindByName(null, "control_room_blocking_doors").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(800, -2896, 7224), 20).Destroy()
