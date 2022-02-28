@@ -82,21 +82,21 @@ function init() {
             EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
         }
     } else {
-        // Make some replacements (this is for if someone doesnt use the plugin)
+        // Make some replacements (this is for if someone doesn't use the plugin)
         MakePluginReplacementFunctions()
         if (GetDeveloperLevel() == 1) {
             printl("============================================")
             printl("P2:MM plugin has not been loaded!")
             printl("============================================")
         }
-        EntFire("p232servercommand", "command", "echo Loading Plugin...", 0.01) 
+        EntFire("p232servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01) 
         EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetMapName() == "mp_coop_community_hub") {
             EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
         }
     }
 
-    // Run map specific code
+    // Run map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
     // Create entity to run loop() every 0.1 seconds
@@ -107,15 +107,20 @@ function init() {
     EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
 
-    // Give the maps script time to delete entities before we create entities (so we dont get a edict error)
+    // Give the maps script time to delete entities before we create our entities
+    // so that we don't get an edict engine error
     EntFire("p232servercommand", "command", "script CreateOurEntities()", 0.05)
 }
 
 function DoesPluginExist() {
     if ("GetPlayerName" in this) {
-        printl("yea it exists===================")
+        if (GetDeveloperLevel() == 1) {
+            printl("(P2:MM): Plugin exists!===================")
+        }
     } else {
-        printl("PLUGIN NONE EXISTANT===================")
+        if (GetDeveloperLevel() == 1) {
+            printl("(P2:MM): Plugin nonexistent!==============")
+        }
     }
 }
 
@@ -168,7 +173,9 @@ try {
     IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
     IncludeScript("multiplayermod/mapsupport/" + MapName.tostring() + ".nut")
 } catch (error) {
-    print("No map support for " + MapName.tostring())
+    if (GetDeveloperLevel() == 1) {
+        print("(P2:MM): No map support for " + MapName.tostring())
+    }
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
 }
 
@@ -183,5 +190,5 @@ try {
 DoEntFire("worldspawn", "FireUser1", "", 0.02, null, null)
 Entities.First().ConnectOutput("OnUser1", "init")
 } catch(e) {
-    print("(P2:MM): INITALIZE")
+    print("(P2:MM): Initializing our custom support!")
 }
