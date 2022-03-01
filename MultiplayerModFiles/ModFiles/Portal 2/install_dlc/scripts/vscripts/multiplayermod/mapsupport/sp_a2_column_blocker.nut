@@ -8,6 +8,29 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
         GlobalSpawnClass.useautospawn <- true
+
+        // Create env_globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         // Destroy objects
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -43,7 +66,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        // Elevator viewcontrol
+        // Elevator viewcontrol and changelevel
         if (OnlyOnceSpA2ColumBlocker2==true) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(-1486, 256, -139.75), 10)) {
                 printl("Elevator viewcontrol activated")
@@ -58,6 +81,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", "SpA2ColumBlockerViewcontrol", 0, null, null)
 
+                EntFireByHandle(env_global01, "turnon", "", 0, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 0, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 0, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 0, null, null)
+
                 EntFire("global_ents-proxy", "OnProxyRelay2", "", 6.2, null)
                 EntFire("departure_elevator-bts_shadowed_light_01", "TurnOn", "", 6.2, null)
                 EntFire("departure_elevator-elevator_1", "SetSpeedReal", "50", 6.2, null)
@@ -66,8 +94,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "SpA2ColumBlockerCommand")
                 EntFire("@sphere", "RunScriptCode", "ElevatorThereYouAre()", OnlyOnceSpA2ColumBlockerGlobalTime, null)
                 EntFire("departure_elevator-//spherebot_train_1_chassis_1", "MoveToPathNode", "spherebot_train_1_path_2", OnlyOnceSpA2ColumBlockerGlobalTime, null)
-                EntFire("ColumServerCommand", "command", "echo Changing level...", OnlyOnceSpA2ColumBlockerGlobalTime + 29, null)
-                EntFire("ColumServerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceSpA2ColumBlockerGlobalTime + 29, null)
+
+                EntFireByHandle(env_global01, "turnoff", "", OnlyOnceSpA2ColumBlockerGlobalTime + 31, null, null)
+                EntFireByHandle(env_global02, "turnoff", "", OnlyOnceSpA2ColumBlockerGlobalTime + 31, null, null)
+                EntFireByHandle(env_global03, "turnoff", "", OnlyOnceSpA2ColumBlockerGlobalTime + 31, null, null)
+                EntFireByHandle(env_global04, "turnoff", "", OnlyOnceSpA2ColumBlockerGlobalTime + 31, null, null)
+
+                EntFire("SpA2ColumBlockerCommand", "command", "echo Changing level...", OnlyOnceSpA2ColumBlockerGlobalTime + 32, null)
+                EntFire("SpA2ColumBlockerCommand", "command", "changelevel sp_a2_laser_chaining", OnlyOnceSpA2ColumBlockerGlobalTime + 32, null)
 
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -76,13 +110,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 OnlyOnceSpA2ColumBlocker2 <- false
             }
-        }
-
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1469, 265, -2870), 50)) {
-             
-            SendToConsole("changelevel sp_a2_laser_chaining")
         }
     }
 }

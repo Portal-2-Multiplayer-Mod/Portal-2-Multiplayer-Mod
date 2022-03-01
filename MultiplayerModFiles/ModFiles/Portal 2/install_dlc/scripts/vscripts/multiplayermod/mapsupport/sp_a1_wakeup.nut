@@ -8,11 +8,10 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
 
-        // Create Env Globals
+        // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
         env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
 
         env_global02 <- Entities.CreateByClassname("env_global")
         env_global02.__KeyValueFromString("targetname", "env_global02")
@@ -21,7 +20,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         env_global03 <- Entities.CreateByClassname("env_global")
         env_global03.__KeyValueFromString("targetname", "env_global03")
         env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
 
         env_global04 <- Entities.CreateByClassname("env_global")
         env_global04.__KeyValueFromString("targetname", "env_global04")
