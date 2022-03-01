@@ -32,8 +32,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSPostPlayerSpawn==true) {
         local ent = null
         while (ent = Entities.FindByModel(ent, "models/anim_wp/room_transform/arm_exterior.mdl")) {
-            EntFireByHandle(ent, "setanimation", "block_upper01_drop_idle", 0, null, null)
-            ent.__KeyValueFromString("DefaultAnim", "block_upper01_drop_idle")
+            //ent.__KeyValueFromString("HoldAnimation", "1")
             local ent2 = null
             while (ent2 = Entities.FindByClassnameWithin(ent2, "prop_dynamic", Vector(1490, -4311, 128), 300)) {
                 if (ent == ent2) {
