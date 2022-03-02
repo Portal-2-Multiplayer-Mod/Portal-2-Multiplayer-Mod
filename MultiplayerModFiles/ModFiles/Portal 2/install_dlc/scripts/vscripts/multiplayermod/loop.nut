@@ -211,32 +211,35 @@ function loop() {
     if (PostMapLoadDone == true) {
         if (DoneWaiting == false) {
             if (CanHook == true) {
-                // Check if client is in spawn zone
-                printl(OriginalPosMain)
-                printl(Entities.FindByClassname(null, "player").GetOrigin())
-                if (OriginalPosMain != null && OriginalPosMain.x == Entities.FindByClassname(null, "player").GetOrigin().x && OriginalPosMain.y == Entities.FindByClassname(null, "player").GetOrigin().y) {
+                // if (OriginalPosMain != null && OriginalPosMain.x == Entities.FindByClassname(null, "player").GetOrigin().x && OriginalPosMain.y == Entities.FindByClassname(null, "player").GetOrigin().y) {
+                //     DoneWaiting <- true
+                //     GeneralOneTime()
+                //     printl("==============================POSITION SPAWN")
+                // }
+
+                if (Entities.FindByClassname(null, "player").GetHealth() != -230053963) {
                     DoneWaiting <- true
                     GeneralOneTime()
-                    printl("==============================POSITION SPAWN")
+                    printl("==============================HEALTH SPAWN")
                 }
 
-                if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
-                    DoneWaiting <- true
-                    GeneralOneTime()
-                    printl("==============================VELOCITY SPAWN")
-                }
+                // if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
+                //     DoneWaiting <- true
+                //     GeneralOneTime()
+                //     printl("==============================VELOCITY SPAWN")
+                // }
 
-                if (hasbeenremoved == true && Entities.FindByName(null, "weapon_portalgun_player1")) {
-                    DoneWaiting <- true
-                    GeneralOneTime()
-                    printl("==============================PORTALGUN SPAWN")
-                }
+                // if (hasbeenremoved == true && Entities.FindByName(null, "weapon_portalgun_player1")) {
+                //     DoneWaiting <- true
+                //     GeneralOneTime()
+                //     printl("==============================PORTALGUN SPAWN")
+                // }
 
-                if (OriginalAngle != null && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.x == OriginalAngle.x && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.y == OriginalAngle.y && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.z == OriginalAngle.z) {
-                    DoneWaiting <- true
-                    GeneralOneTime()
-                    printl("==============================ANGLE SPAWN")
-                }
+                // if (OriginalAngle != null && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.x == OriginalAngle.x && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.y == OriginalAngle.y && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.z == OriginalAngle.z) {
+                //     DoneWaiting <- true
+                //     GeneralOneTime()
+                //     printl("==============================ANGLE SPAWN")
+                // }
             }
             DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
         }
@@ -436,19 +439,19 @@ function loop() {
         }
     } catch (exception) { }
 
-    //## Remove The PortalGun INITALLY ##//
-    if (hasbeenremoved == false  && PostMapLoadDone == true && Player2Joined == true && HasSpawned == false) {
-        printl("(P2:MM): Removing The PortalGun...")
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-            // if it is the player's portalgun, remove it
-            if (ent.GetRootMoveParent().GetName() == "blue") {
-                ent.Destroy()
-                printl("(P2:MM): Redsfsdfdsfdsfdsfsdfmoved The PortalGun.")
-                hasbeenremoved <- true
-            }
-        }
-    }
+    // //## Remove The PortalGun INITALLY ##//
+    // if (hasbeenremoved == false  && PostMapLoadDone == true && Player2Joined == true && HasSpawned == false) {
+    //     printl("(P2:MM): Removing The PortalGun...")
+    //     local ent = null
+    //     while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+    //         // if it is the player's portalgun, remove it
+    //         if (ent.GetRootMoveParent().GetName() == "blue") {
+    //             ent.Destroy()
+    //             printl("(P2:MM): Redsfsdfdsfdsfdsfsdfmoved The PortalGun.")
+    //             hasbeenremoved <- true
+    //         }
+    //     }
+    // }
 
 
     //## MATH TESTING ##//

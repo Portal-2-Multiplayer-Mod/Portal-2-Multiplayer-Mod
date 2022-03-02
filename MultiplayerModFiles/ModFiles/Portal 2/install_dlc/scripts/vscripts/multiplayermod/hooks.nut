@@ -258,10 +258,14 @@ function PostMapLoad() {
     EntFire("p232servercommand", "command", "script CanCheckAngle <- true", 0.32)
 
     local plr = Entities.FindByClassname(null, "player")
-    OriginalPosMain <- Entities.FindByClassname(null, "player").GetOrigin()
-    Entities.FindByClassname(null, "player").SetOrigin(Vector(plr.GetOrigin().x + 0.24526, plr.GetOrigin().y + 0.23458, OriginalPosMain.z + 0.26497))
+    // OriginalPosMain <- Entities.FindByClassname(null, "player").GetOrigin()
+    // Entities.FindByClassname(null, "player").SetOrigin(Vector(plr.GetOrigin().x + 0.24526, plr.GetOrigin().y + 0.23458, OriginalPosMain.z + 0.26497))
 
-    EntFire("p232servercommand", "command", "script CanHook <- true", 5)
+    plr.SetHealth(-230053963)
+
+    EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
+
+    EntFire("p232servercommand", "command", "script CanHook <- true", 4)
     PostMapLoadDone <- true
 }
 
