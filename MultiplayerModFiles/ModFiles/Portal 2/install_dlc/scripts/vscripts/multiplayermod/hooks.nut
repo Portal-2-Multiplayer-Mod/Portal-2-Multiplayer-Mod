@@ -265,6 +265,7 @@ function PostMapLoad() {
 
     EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
 
+    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(-230053963)", 3.9)
     EntFire("p232servercommand", "command", "script CanHook <- true", 4)
     PostMapLoadDone <- true
 }
