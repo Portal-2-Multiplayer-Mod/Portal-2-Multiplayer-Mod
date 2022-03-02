@@ -212,6 +212,14 @@ function loop() {
         if (DoneWaiting == false) {
             if (CanHook == true) {
                 // Check if client is in spawn zone
+                printl(OriginalPosMain)
+                printl(Entities.FindByClassname(null, "player").GetOrigin())
+                if (OriginalPosMain != null && OriginalPosMain.x == Entities.FindByClassname(null, "player").GetOrigin().x && OriginalPosMain.y == Entities.FindByClassname(null, "player").GetOrigin().y) {
+                    DoneWaiting <- true
+                    GeneralOneTime()
+                    printl("==============================POSITION SPAWN")
+                }
+
                 if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
                     DoneWaiting <- true
                     GeneralOneTime()

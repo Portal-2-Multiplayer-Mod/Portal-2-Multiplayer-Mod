@@ -43,6 +43,8 @@ if (GetMapName().slice(0,7)=="mp_coop") {
 OriginalAngle <- null
 CanCheckAngle <- false
 
+OriginalPosMain <- null
+
 CanHook <- false
 Player2Joined <- false
 hasbeenremoved <- false
