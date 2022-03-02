@@ -64,6 +64,12 @@ function loop() {
         if (LastCoordGetPlayer != null && Entities.FindByName(null, "p232_logic_measure_movement")) {
             local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
             if (currentplayerclass != null) {
+                if (OriginalAngle == null && CanCheckAngle == true) {
+                    OriginalAngle <- measuremovement.GetAngles()
+                    //OriginalAngle + Vector(6.969, 4.69420, 6.9420)
+                    Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 6.969, OriginalAngle.y + 4.69420, OriginalAngle.z + 6.9420)
+                }
+            
                 currentplayerclass.eyeangles <- measuremovement.GetAngles()
                 currentplayerclass.eyeforwardvector <- measuremovement.GetForwardVector()
             }
@@ -217,8 +223,13 @@ function loop() {
                     GeneralOneTime()
                     printl("==============================PORTALGUN SPAWN")
                 }
-            }
 
+                if (OriginalAngle != null && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.x == OriginalAngle.x && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.y == OriginalAngle.y && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.z == OriginalAngle.z) {
+                    DoneWaiting <- true
+                    GeneralOneTime()
+                    printl("==============================ANGLE SPAWN")
+                }
+            }
             DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
         }
     }

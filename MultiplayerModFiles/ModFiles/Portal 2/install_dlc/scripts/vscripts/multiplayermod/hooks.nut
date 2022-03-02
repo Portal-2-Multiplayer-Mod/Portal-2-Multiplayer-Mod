@@ -254,6 +254,9 @@ function PostMapLoad() {
 	SendToConsole("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
+    // set original angles
+    EntFire("p232servercommand", "command", "script CanCheckAngle <- true", 0.32)
+
     EntFire("p232servercommand", "command", "script CanHook <- true", 5)
     PostMapLoadDone <- true
 }

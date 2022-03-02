@@ -39,6 +39,10 @@ if (GetMapName().slice(0,7)=="mp_coop") {
     IsOnSingleplayer = true
 }
 
+
+OriginalAngle <- null
+CanCheckAngle <- false
+
 CanHook <- false
 Player2Joined <- false
 hasbeenremoved <- false
