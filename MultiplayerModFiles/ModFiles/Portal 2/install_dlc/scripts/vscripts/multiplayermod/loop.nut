@@ -217,10 +217,10 @@ function loop() {
                 //     printl("==============================POSITION SPAWN")
                 // }
 
-                if (Entities.FindByClassname(null, "player").GetHealth() < 200000000) {
+                if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
                     DoneWaiting <- true
                     GeneralOneTime()
-                    printl("==============================HEALTH SPAWN")
+                    printl("=================================HEALTH SPAWN")
                 }
 
                 // if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
