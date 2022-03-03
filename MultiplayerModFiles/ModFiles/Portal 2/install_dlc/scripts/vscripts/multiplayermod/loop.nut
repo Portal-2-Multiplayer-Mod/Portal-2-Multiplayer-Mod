@@ -217,7 +217,7 @@ function loop() {
                 //     printl("==============================POSITION SPAWN")
                 // }
 
-                if (Entities.FindByClassname(null, "player").GetHealth() != -230053963) {
+                if (Entities.FindByClassname(null, "player").GetHealth() < 200000000) {
                     DoneWaiting <- true
                     GeneralOneTime()
                     printl("==============================HEALTH SPAWN")

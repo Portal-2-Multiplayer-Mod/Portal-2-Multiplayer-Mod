@@ -261,12 +261,12 @@ function PostMapLoad() {
     // OriginalPosMain <- Entities.FindByClassname(null, "player").GetOrigin()
     // Entities.FindByClassname(null, "player").SetOrigin(Vector(plr.GetOrigin().x + 0.24526, plr.GetOrigin().y + 0.23458, OriginalPosMain.z + 0.26497))
 
-    plr.SetHealth(-230053963)
+    plr.SetHealth(230053963)
 
     EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
 
-    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(-230053963)", 3.9)
-    EntFire("p232servercommand", "command", "script CanHook <- true", 4)
+    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
+    EntFire("p232servercommand", "command", "script CanHook <- true", 1)
     PostMapLoadDone <- true
 }
 
