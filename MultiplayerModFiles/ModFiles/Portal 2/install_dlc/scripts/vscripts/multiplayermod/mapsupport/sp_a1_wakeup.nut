@@ -30,12 +30,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
         EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
 
+        EntFire("@sphere", "EnableMotion", "", 0, null)
+        EntFire("@sphere", "DisableMotion", "", 0.1, null)
+
         Entities.FindByClassnameNearest("trigger_multiple", Vector(6976, 852, 448), 1000).Destroy()
         Entities.FindByName(null, "basement_breakers_entrance_door").Destroy()
         Entities.FindByName(null, "basement_breakers_entrance_blocker").Destroy()
         Entities.FindByName(null, "basement_breakers_entrance_blocker_trigger").Destroy()
-        EntFire("@sphere", "EnableMotion", "", 0, null)
-        EntFire("@sphere", "DisableMotion", "", 0.1, null)
 
         function elevatorrecreationsp_a1_wakeup() {
             printl("Elevator recreationsp_a1_wakeup")
