@@ -7,6 +7,14 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
+        Entities.FindByName(null, "robo_rampa_01b").__KeyValueFromString("mincpulevel", "0")
+        Entities.FindByName(null, "robo_rampa_01b").__KeyValueFromString("mingpulevel", "0")
+        Entities.FindByName(null, "robo_rampa_02b").__KeyValueFromString("mincpulevel", "0")
+        Entities.FindByName(null, "robo_rampa_02b").__KeyValueFromString("mingpulevel", "0")
+        Entities.FindByName(null, "robo_rampa_03b").__KeyValueFromString("mincpulevel", "0")
+        Entities.FindByName(null, "robo_rampa_03b").__KeyValueFromString("mingpulevel", "0")
+        Entities.FindByName(null, "robo_rampa_04b").__KeyValueFromString("mincpulevel", "0")
+        Entities.FindByName(null, "robo_rampa_04b").__KeyValueFromString("mingpulevel", "0")
         EntFire("trigger_run_script", "addoutput", "OnStartTouchBluePlayer coop_man_enter_hub:SetStateBTrue", 0, null)
         EntFire("trigger_quick_spawn", "addoutput", "OnStartTouchBluePlayer coop_man_quick_open:SetStateBTrue", 0, null)
         EntFire("trigger_set_course", "addoutput", "OnStartTouchBluePlayer coop_man_set_course:SetStateBTrue", 0, null)
