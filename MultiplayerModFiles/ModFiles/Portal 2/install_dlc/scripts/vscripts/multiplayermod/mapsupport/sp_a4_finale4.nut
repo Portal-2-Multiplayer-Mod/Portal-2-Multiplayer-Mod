@@ -40,14 +40,14 @@ function MoveSoundScape() {
 
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
-        p.SetOrigin(Vector(-11257.973633, 342.373840, 1071.778320))
+        p.SetOrigin(Vector(-11258, 342, 1072))
     }
 
     // setpos_exact -11257.973633 342.373840 1071.778320;setang_exact 0.000000 -156.680191 0.000000
 }
 
 function TeleportPlayersUp() {
-    Entities.FindByClassname(null, "player").SetOrigin(Vector(-191.816742 -0.485268 64.031250))
+    Entities.FindByClassname(null, "player").SetOrigin(Vector(-190 0 64))
 }
 
 PermaPotato <- true
@@ -102,7 +102,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("catwalk_break_relay", "addoutput", "OnTrigger p232catwalkmodeloverride:Kill")
         EntFire("catwalk_break_relay", "addoutput", "OnTrigger p232catwalk2modeloverride:Kill")
 
-        // Setup Function Fires
+        // Setup function ent_fires
         EntFire("breaker_path2", "addoutput", "OnPass p232servercommand:command:script TeleportPlayersUp():1")
         EntFire("socket1_start_relay", "addoutput", "OnTrigger p232servercommand:command:script CatwalkDisableRender():2")
         EntFire("replace_relay", "addoutput", "OnTrigger p232servercommand:command:script TeleportPlayersBehindEndingElevator()")
