@@ -65,9 +65,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSPostPlayerSpawn==true) {
         NewApertureStartElevatorFixes()
-        Entities.FindByName(null, "cube_dropper_box").SetOrigin(Vector(1100, -666, 576))
         Entities.FindByName(null, "cube_dropper_prop").SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
         Entities.FindByName(null, "cube_dropper_prop").SetAngles(3.4029681046377e-06, -21.125003814697, 29.531248092651)
+        Entities.FindByName(null, "cube_dropper_box").SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
+        EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "setparent", "cube_dropper_prop", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "clearparent", "", 4, null, null)
     }
 
     if (MSLoop==true) {
