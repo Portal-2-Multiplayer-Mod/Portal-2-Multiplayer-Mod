@@ -190,7 +190,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     if (output == true) {
                         SpawnCube = false
                         EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
-                        CubeBeingSpawned.SetOrigin(Vector(-304.093750, -255.031250, 437.968750))
+                        CubeBeingSpawned.SetOrigin(Vector(-304.093750, -250.031250, 438.968750))
                         CubeBeingSpawned.SetAngles(0, 0, 0)
                         CubeBeingSpawned.SetVelocity(Vector(0, 0, 0))
                         CubeBeingSpawned = null
