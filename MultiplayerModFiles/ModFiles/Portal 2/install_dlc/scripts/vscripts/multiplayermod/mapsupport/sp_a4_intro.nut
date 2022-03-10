@@ -8,22 +8,80 @@
 function MoveCubeDropper() {
     Entities.FindByName(null, "cube_dropper_prop").SetOrigin(Vector(1504, -640, 808))
     Entities.FindByName(null, "cube_dropper_prop").SetAngles(0, 270, 0)
-    Entities.FindByName(null, "cube_dropper_box").SetOrigin(Vector(1504, -649, 1270))
-    EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "wake", "", 0, null, null)
+    Entities.FindByName(null, "cube_dropper_box_spawner_override_p232").__KeyValueFromString("targetname", "cube_dropper_box_spawner")
+    EntFire("cube_dropper_box_spawner", "forcespawn", "", 0, null)
+    // Entities.FindByName(null, "cube_dropper_box").SetOrigin(Vector(1504, -649, 1270))
+    // EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "wake", "", 0, null, null)
 }
+
+TrackPoints <- [
+    Vector(-381.308, -375.826, 1331.84),
+    Vector(-417.382, -534.446, 1232.9),
+    Vector(-501.305, -648.05, 1154.88),
+    Vector(-608.646, -685.323, 1098.45),
+    Vector(-694.184, -660.153, 1084.98),
+    Vector(-782.788, -612.837, 1095.06),
+    Vector(-806.732, -549.732, 1105.68),
+    Vector(-822.986, -464.889, 1091.85),
+    Vector(-841.823, -371.966, 1075.54),
+    Vector(-812.164, -312.363, 1065.65),
+    Vector(-757.235, -227.518, 1035.1),
+    Vector(-699.566, -218.069, 996.71),
+    Vector(-636.23, -213.889, 957.994),
+    Vector(-579.131, -250.476, 927.499),
+    Vector(-538.629, -275.657, 905.835),
+    Vector(-486.422, -329.301, 869.821),
+    Vector(-436.1, -361.276, 806.579),
+    Vector(-383.913, -369.294, 727.755),
+    Vector(-337.075, -345.387, 622.686),
+    Vector(-322.715, -307.829, 549.954),
+   // Vector(-304.093750, -255.031250, 437.968750),
+]
+TrackAngles <- [
+    Vector(89, -90.7127, 6.46543e-08),
+    Vector(2.54727, -91.9623, -1.24232e-08),
+    Vector(31.0425, -152.074, 5.44953e-07),
+    Vector(-19.7277, 7.48973, 7.34825e-08),
+    Vector(-6.24633, 146.764, 2.7044e-07),
+    Vector(22.1075, -37.9378, 3.35715e-10),
+    Vector(9.88045, 105.587, -7.90368e-08),
+    Vector(8.60967, 101.473, -9.32294e-08),
+    Vector(10.8479, 101.715, 1.01872e-08),
+    Vector(-5.2484, -114.508, -2.69307e-08),
+    Vector(-12.3971, -123.191, 5.3376e-08),
+    Vector(32.3099, 5.19019, 3.80792e-08),
+    Vector(28.4373, -23.1238, 3.83061e-07),
+    Vector(23.5955, -26.7535, 7.18479e-07),
+    Vector(20.8723, -46.2948, 1.42752e-06),
+    Vector(32.6688, -41.2125, 1.52364e-06),
+    Vector(50.0302, -25.6635, 1.67334e-06),
+    Vector(59.9504, 12.9356, -3.90897e-07),
+    Vector(61.8847, 68.7162, -1.98866e-06),
+    Vector(60.3109, 71.9827, -2.26286e-07),
+    Vector(59.9476, 69.8045, -4.92808e-07),
+]
+
+
+CanSpawnCubeInit <- false
+SpawnCube <- false
+CubeBeingSpawned <- null
+movespeed <- 5
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
         GlobalSpawnClass.useautospawn <- true
         PermaPotato <- true
+        rollang <- 0
         Entities.FindByName(null, "catwalk_lift_door").__KeyValueFromString("dmg", "100")
         Entities.FindByName(null, "recapture_areaportal1").__KeyValueFromString("FadeStartDist", "1750")
         Entities.FindByName(null, "recapture_areaportal1").__KeyValueFromString("FadeDist", "1950")
         Entities.FindByName(null, "recapture_areaportal2").__KeyValueFromString("FadeStartDist", "1750")
         Entities.FindByName(null, "recapture_areaportal2").__KeyValueFromString("FadeDist", "1950")
+        Entities.FindByName(null, "cube_dropper_prop").__KeyValueFromString("HoldAnimation", "1")
         Entities.FindByName(null, "observation_areaportal").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "cube_bot_model").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "@exit_door1-proxy").__KeyValueFromString("targetname", "moja3")
+        Entities.FindByName(null, "cube_dropper_box_spawner").__KeyValueFromString("targetname", "cube_dropper_box_spawner_override_p232")
         Entities.FindByName(null, "test_chamber1_platform").__KeyValueFromString("dmg", "100")
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
@@ -67,12 +125,81 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         NewApertureStartElevatorFixes()
         Entities.FindByName(null, "cube_dropper_prop").SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
         Entities.FindByName(null, "cube_dropper_prop").SetAngles(3.4029681046377e-06, -21.125003814697, 29.531248092651)
-        Entities.FindByName(null, "cube_dropper_box").SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
-        EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "setparent", "cube_dropper_prop", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "clearparent", "", 4, null, null)
+        //Entities.FindByName(null, "cube_dropper_box").Destroy()//SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
+    //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "setparent", "cube_dropper_prop", 0, null, null)
+    //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "clearparent", "", 4, null, null)
+    //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "kill", "", 5, null, null)
+        SpawnCube = false
     }
 
     if (MSLoop==true) {
+        if (Entities.FindByName(null, "turret_bot4_monster")) {
+            CanSpawnCubeInit = true
+        }
+
+        if (SpawnCube == true) {    
+            if (CubeBeingSpawned != null) {
+                local output = 0
+                try {
+                    output = MoveEntityOnTrack(CubeBeingSpawned, TrackPoints, movespeed)
+                } catch (e) {
+                    SpawnCube = false
+                    CanSpawnCubeInit = false
+                    EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
+                    EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
+                    EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
+                    EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
+                    EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
+                    EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+                }
+                // if (rollang >= 160) {
+                //     rollang <- -160
+                // } else {
+                //     if (rollang <= -160) {
+                //         rollang <- 160
+                //     } else {
+                //         rollang <- CubeBeingSpawned.GetAngles().y + 25
+                //     }
+                // }
+
+                CubeBeingSpawned.SetAngles(0, CubeBeingSpawned.GetAngles().y+RandomInt(3, 8), CubeBeingSpawned.GetAngles().z+RandomInt(3, 8))
+
+                if (output == true) {
+                    SpawnCube = false
+                    EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
+                    CubeBeingSpawned.SetOrigin(Vector(-304.093750, -255.031250, 437.968750))
+                    CubeBeingSpawned.SetAngles(0, 0, 0)
+                    CubeBeingSpawned.SetVelocity(Vector(0, 0, 0))
+                    CubeBeingSpawned = null
+                    EntFire("cube_dropper_drop", "trigger")
+                }
+            } else {
+                SpawnCube = false
+                CanSpawnCubeInit = false
+                EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
+                EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
+                EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
+                EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
+                EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
+                EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+            }
+        }
+
+        if (Entities.FindByClassnameNearest("prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800)) {
+        } else {
+            if (CanSpawnCubeInit == true) {
+                if (SpawnCube == false) {
+                    CanSpawnCubeInit = false
+                    EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
+                    EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
+                    EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
+                    EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
+                    EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
+                    EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+                }
+            }
+        }
+
         if (!Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20)) {
             if (OnlyOnceSp_A4_Intro_1==true) {
                 local p = null
