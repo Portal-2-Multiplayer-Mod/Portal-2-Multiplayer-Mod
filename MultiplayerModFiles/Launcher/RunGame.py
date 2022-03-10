@@ -627,16 +627,7 @@ def Init():
         MountMod(portal2path)
         # patch the binaries
         PatchBinaries(portal2path)
-    else:
-        # this will delete any in use dlcs
-        print("(P2:MM) Deleting In Use DLCs...")
-        print("")
-        FindAvalibleDLC(portal2path)
-        # unpatch the binaries
-        UnpatchBinaries(portal2path)
 
-    if (WillMount):
-    #//# run the game #//#
         print("(P2:MM) Running Game...")
         try:
             if (iow):
@@ -649,6 +640,12 @@ def Init():
                 print("Game launch successful!")
         except:
             print("Failed to launch Portal 2!")
-
+    else:
+        # this will delete any in use dlcs
+        print("(P2:MM) Deleting In Use DLCs...")
+        print("")
+        FindAvalibleDLC(portal2path)
+        # unpatch the binaries
+        UnpatchBinaries(portal2path)
 # RUN INIT
 Init()
