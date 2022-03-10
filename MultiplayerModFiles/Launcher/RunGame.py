@@ -640,7 +640,8 @@ def Init():
         print("(P2:MM) Running Game...")
         try:
             if (iow):
-                subprocess.run(["portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_community_hub"])
+                subprocess.run([portal2path+"\\portal2.exe", "-novid",
+                               "-allowspectators", "-nosixense", "+map mp_coop_community_hub"])
             else:
                 from subprocess import Popen
                 subprocess.Popen(["steam", "-applaunch", "620", "-novid", "-allowspectators", "-nosixense", "+map", "mp_coop_community_hub"])
