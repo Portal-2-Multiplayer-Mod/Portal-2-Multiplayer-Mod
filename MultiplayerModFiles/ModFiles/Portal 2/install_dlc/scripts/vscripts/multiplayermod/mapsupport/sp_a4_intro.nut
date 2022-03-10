@@ -6,10 +6,27 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
 function MoveCubeDropper() {
+    SpawnCube = false
+    CubeBeingSpawned = null
+    CanSpawnCubeInit = false
+    FullDisableOldDropper = true
+    local ent = null
+    while (ent = Entities.FindByName(null, "cube_dropper_box")) {
+        ent.Destroy()
+    }
+    Entities.FindByName(null, "cube_dropper_box_spawner_override_p232").__KeyValueFromString("targetname", "cube_dropper_box_spawner")
+    EntFire("cube_dropper_box_spawner", "forcespawn", "", 5, null)
+    EntFire("cube_dropper_box_spawner", "forcespawn", "", 8.1, null)
+    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").Destroy()", 6.45, null)
+    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").Destroy()", 6.45, null)
     Entities.FindByName(null, "cube_dropper_prop").SetOrigin(Vector(1504, -640, 808))
     Entities.FindByName(null, "cube_dropper_prop").SetAngles(0, 270, 0)
-    Entities.FindByName(null, "cube_dropper_box_spawner_override_p232").__KeyValueFromString("targetname", "cube_dropper_box_spawner")
-    EntFire("cube_dropper_box_spawner", "forcespawn", "", 0, null)
+    // set anim to open item_dropper_openitem_dropper_open
+    EntFire("cube_dropper_prop", "setanimation", "item_dropper_open", 0, null)
+    EntFire("cube_dropper_prop", "setanimation", "item_dropper_close", 8, null)
+
+    PermaDestroyCubesSpA4Intro = true
+
     // Entities.FindByName(null, "cube_dropper_box").SetOrigin(Vector(1504, -649, 1270))
     // EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "wake", "", 0, null, null)
 }
@@ -66,6 +83,8 @@ CanSpawnCubeInit <- false
 SpawnCube <- false
 CubeBeingSpawned <- null
 movespeed <- 5
+PermaDestroyCubesSpA4Intro <- false
+FullDisableOldDropper <- false
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
@@ -125,7 +144,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         NewApertureStartElevatorFixes()
         Entities.FindByName(null, "cube_dropper_prop").SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
         Entities.FindByName(null, "cube_dropper_prop").SetAngles(3.4029681046377e-06, -21.125003814697, 29.531248092651)
-        //Entities.FindByName(null, "cube_dropper_box").Destroy()//SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
+        EntFire("cube_dropper_prop", "setanimation", "item_dropper_open", 1, null)
+        EntFire("cube_dropper_prop", "setanimation", "item_dropper_close", 2, null)
+    //     Entities.FindByName(null, "cube_dropper_box").Destroy()//SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
     //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "setparent", "cube_dropper_prop", 0, null, null)
     //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "clearparent", "", 4, null, null)
     //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "kill", "", 5, null, null)
@@ -137,65 +158,72 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             CanSpawnCubeInit = true
         }
 
-        if (SpawnCube == true) {    
-            if (CubeBeingSpawned != null) {
-                local output = 0
-                try {
-                    output = MoveEntityOnTrack(CubeBeingSpawned, TrackPoints, movespeed)
-                } catch (e) {
+        if (FullDisableOldDropper == false) {
+            if (SpawnCube == true) {    
+                if (CubeBeingSpawned != null) {
+                    local output = 0
+                    try {
+                        output = MoveEntityOnTrack(CubeBeingSpawned, TrackPoints, movespeed)
+                    } catch (e) {
+                        SpawnCube = false
+                        CanSpawnCubeInit = false
+                        EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
+                        EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
+                        EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
+                        EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
+                        EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p232_box_yes\")", 0.1, null)
+                        EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
+                        EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+                    }
+                    // if (rollang >= 160) {
+                    //     rollang <- -160
+                    // } else {
+                    //     if (rollang <= -160) {
+                    //         rollang <- 160
+                    //     } else {
+                    //         rollang <- CubeBeingSpawned.GetAngles().y + 25
+                    //     }
+                    // }
+
+                    CubeBeingSpawned.SetAngles(0, CubeBeingSpawned.GetAngles().y+RandomInt(3, 8), CubeBeingSpawned.GetAngles().z+RandomInt(3, 8))
+
+                    if (output == true) {
+                        SpawnCube = false
+                        EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
+                        CubeBeingSpawned.SetOrigin(Vector(-304.093750, -255.031250, 437.968750))
+                        CubeBeingSpawned.SetAngles(0, 0, 0)
+                        CubeBeingSpawned.SetVelocity(Vector(0, 0, 0))
+                        CubeBeingSpawned = null
+                        EntFire("cube_dropper_drop", "trigger")
+                    }
+                } else {
                     SpawnCube = false
                     CanSpawnCubeInit = false
                     EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
                     EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
                     EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
                     EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
+                    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p232_box_yes\")", 0.1, null)
                     EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
                     EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
                 }
-                // if (rollang >= 160) {
-                //     rollang <- -160
-                // } else {
-                //     if (rollang <= -160) {
-                //         rollang <- 160
-                //     } else {
-                //         rollang <- CubeBeingSpawned.GetAngles().y + 25
-                //     }
-                // }
-
-                CubeBeingSpawned.SetAngles(0, CubeBeingSpawned.GetAngles().y+RandomInt(3, 8), CubeBeingSpawned.GetAngles().z+RandomInt(3, 8))
-
-                if (output == true) {
-                    SpawnCube = false
-                    EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
-                    CubeBeingSpawned.SetOrigin(Vector(-304.093750, -255.031250, 437.968750))
-                    CubeBeingSpawned.SetAngles(0, 0, 0)
-                    CubeBeingSpawned.SetVelocity(Vector(0, 0, 0))
-                    CubeBeingSpawned = null
-                    EntFire("cube_dropper_drop", "trigger")
-                }
-            } else {
-                SpawnCube = false
-                CanSpawnCubeInit = false
-                EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
-                EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
-                EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
-                EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
-                EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
-                EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
             }
         }
 
-        if (Entities.FindByClassnameNearest("prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800)) {
-        } else {
-            if (CanSpawnCubeInit == true) {
-                if (SpawnCube == false) {
-                    CanSpawnCubeInit = false
-                    EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
-                    EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
-                    EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
-                    EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
-                    EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
-                    EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+        if (FullDisableOldDropper == false) {
+            if (Entities.FindByClassnameNearest("prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800)) {
+            } else {
+                if (CanSpawnCubeInit == true) {
+                    if (SpawnCube == false) {
+                        CanSpawnCubeInit = false
+                        EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
+                        EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
+                        EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
+                        EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
+                        EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p232_box_yes\")", 0.1, null)
+                        EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
+                        EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+                    }
                 }
             }
         }
@@ -254,6 +282,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 ent.__KeyValueFromString("targetname", "button_1_solved_TURRETNAMECHANGE")
             }
         }
+
+        //PermaDestroyCubesSpA4Intro
+        if (PermaDestroyCubesSpA4Intro) {
+            local ent = null
+            while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800)) {
+                ent.Destroy()
+            }
+        }
+
         if (OnlyOnceSpA4Intro==true) {
             if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
                 printl("Elevator viewcontrol activated")
