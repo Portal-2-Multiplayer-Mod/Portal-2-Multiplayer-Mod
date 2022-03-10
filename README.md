@@ -1,12 +1,12 @@
 # Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, and Wolƒe Strider Shoσter***
 
 # 1.5 VS 2.0
-**You may have noticed that there hasn't been a new release for the better half of a year** ***(234 days at the time of writing)*****.
-In this time we have made ALOT of progress** ***(718 commits at the moment)*** **but because of the way that we handled the previous version of the mod,
+**You may have noticed that there hasn't been a new release for the better half of a year** ***(241 days at the time of writing)*****.
+In this time we have made ALOT of progress** ***(972 commits as of this moment),*** **however due to the method that we have handled the previous version of the mod,
 updating isn't going to be an option until the launcher has been fully finished.
-Because of this there are many stability fixes and features (nametags, singleplayer support, linux support, etc) in the new version of the mod 
-so many that 1.5 is basically garbage but 2.0 also has its issues mainly being its harder to install and keep stable between updates.
-The plan is to make a useable beta for 2.0 but for now you have to choose between 1.5 and 2.0 so a pro's and cons list will be below to help you decide.**
+Because of this, there is many stability fixes and features (nametags, singleplayer support, linux support, etc) in the new version of the mod. 
+In its current stage, 1.5 is severely outdated, however 2.0 also has its issues mainly that being its more difficult to install, aswell as stablity between updates.
+The current plan is to make a usable beta for 2.0, but for now you have to choose between 1.5 or 2.0. A pros and cons list will be provided to help you decide.**
 
 ***1.5***
 ```
