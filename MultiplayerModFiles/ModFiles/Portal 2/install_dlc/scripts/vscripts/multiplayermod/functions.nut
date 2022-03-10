@@ -398,6 +398,105 @@ function FindPlayerClass(plyr) {
     }
 }
 
+function FindEntityClass(ent, createclassifnone = true) {
+    foreach (curclass in entityclasses) {
+        if (curclass.entity == ent) {
+            return curclass
+        }
+    }
+    printl("Could not find entity class for entity: " + ent)
+    if (createclassifnone) {
+        CreateEntityClass(ent)
+        foreach (curclass in entityclasses) {
+            if (curclass.entity == ent) {
+                return curclass
+            }
+        }
+    }
+}
+
+function MultiplyVector(vec, mult) {
+    return Vector(vec.x * mult, vec.y * mult, vec.z * mult)
+}
+
+function CreateEntityClass(ent) {
+    printl("Creating new entity class for entity: " + ent)
+    local newclass = class {
+        entity = ent
+    }
+    entityclasses.push(newclass)
+}
+
+function GetDistanceScore(vec1, vec2) {
+    local betweenvec = UnNegative(vec1 - vec2)
+    local score = betweenvec.x + betweenvec.y + betweenvec.z
+    return score
+}
+
+function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "undefined") {
+    if (Speed == "undefined") {
+        Speed = 1
+    }
+    if (Distance == "undefined") {
+        Distance = (Speed * 1.2) + 1
+    }
+
+    local entclass = FindEntityClass(entity)
+
+    try {
+        if (entclass.followingpointlist[0].x != PointList[0].x && entclass.followingpointlist[0].y != PointList[0].y && entclass.followingpointlist[0].z != PointList[0].z) {
+            entclass.followingpointlist <- PointList
+            entclass.followingpointlistindex <- 0
+        }
+    } catch(e) {
+        entclass.followingpointlist <- PointList
+        entclass.followingpointlistindex <- 0
+    }
+
+    local cindx = -1
+    if (GetDistanceScore(entity.GetOrigin(), PointList[entclass.followingpointlistindex]) < Distance) {
+        cindx = entclass.followingpointlistindex
+        entclass.followingpointlistindex <- entclass.followingpointlistindex + 1
+    }
+
+    if (entclass.followingpointlistindex >= PointList.len()) {
+        entclass.followingpointlistindex <- 0
+        entclass.followingpointlist <- null
+        return true
+    }
+
+    local offset = MultiplyVector(GetDirectionalOffset(entity.GetOrigin(), PointList[entclass.followingpointlistindex]), Speed)
+    entity.SetOrigin(entity.GetOrigin() - offset)
+
+    if (VisualDebug) {
+        DebugDrawLine(entity.GetOrigin(), PointList[entclass.followingpointlistindex], 255, 255, 0, true, 0)
+        if (entclass.followingpointlistindex == 0) {
+            DebugDrawLine(entity.GetOrigin(), PointList[PointList.len() - 1], 0, 255, 0, true, 0)
+        } else {
+            DebugDrawLine(entity.GetOrigin(), PointList[entclass.followingpointlistindex - 1], 0, 255, 0, true, 0)
+        }
+
+        local curindx = 0
+        foreach (point in PointList) {
+            DebugDrawBox(point, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 255, 255, 100, 0)
+            if (curindx != entclass.followingpointlistindex) {
+                if (curindx == 0) {
+                    DebugDrawLine(PointList[PointList.len() - 1], point, 255, 100, 255, true, 0)
+                } else {
+                    DebugDrawLine(PointList[curindx - 1], point, 255, 100, 255, true, 0)
+                }
+            }
+            curindx = curindx + 1
+        }
+    }
+
+    if (cindx == -1) {
+        return false
+    } else {
+        return cindx
+    }
+}
+
 function FindNearest(origin, radius, entitiestoexclude = [null], specificclass = null) {
     // setup some existing locals
     try {
@@ -790,6 +889,72 @@ function UnPotatoIfy(plr) {
     if (Entities.FindByName(null, "viewmodel_player" + plr.entindex())) {
         EntFire("viewmodel_player" + plr.entindex(), "SetBodyGroup", "0", 0)
     }
+}
+
+function CanPing(ison = true) {
+    local env_global = Entities.CreateByClassname("env_global")
+    local env_global2 = Entities.CreateByClassname("env_global")
+
+    env_global.__KeyValueFromString("globalstate", "no_pinging_blue")
+    env_global2.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+    // set the targetname
+    env_global.__KeyValueFromString("targetname", "mpmod_no_pinging_blue")
+    env_global2.__KeyValueFromString("targetname", "mpmod_no_pinging_orange")
+
+    if (ison) {
+            EntFireByHandle(env_global, "turnoff", "", 0.1, null, null)
+            EntFireByHandle(env_global2, "turnoff", "", 0.1, null, null)
+    } else {
+            EntFireByHandle(env_global, "turnon", "", 0.1, null, null)
+            EntFireByHandle(env_global2, "turnon", "", 0.1, null, null)
+    }
+
+    // delete the entities
+    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
+    EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
+}
+
+function CanTaunt(ison = true) {
+    local env_global = Entities.CreateByClassname("env_global")
+    local env_global2 = Entities.CreateByClassname("env_global")
+
+    env_global.__KeyValueFromString("globalstate", "no_taunting_blue")
+    env_global2.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+    // set the targetname
+    env_global.__KeyValueFromString("targetname", "mpmod_no_taunting_blue")
+    env_global2.__KeyValueFromString("targetname", "mpmod_no_taunting_orange")
+
+    if (ison) {
+            EntFireByHandle(env_global, "turnoff", "", 0.1, null, null)
+            EntFireByHandle(env_global2, "turnoff", "", 0.1, null, null)
+    } else {
+            EntFireByHandle(env_global, "turnon", "", 0.1, null, null)
+            EntFireByHandle(env_global2, "turnon", "", 0.1, null, null)
+    }
+
+    // delete the entities
+    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
+    EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
+}
+
+function PortalGunSpawn(ison = true) {
+    local env_global = Entities.CreateByClassname("env_global")
+
+    env_global.__KeyValueFromString("globalstate", "portalgun_nospawn")
+
+    // set the targetname
+    env_global.__KeyValueFromString("targetname", "mpmod_portalgun_nospawn")
+
+    if (ison) {
+            EntFireByHandle(env_global, "turnoff", "", 0.1, null, null)
+    } else {
+            EntFireByHandle(env_global, "turnon", "", 0.1, null, null)
+    }
+
+    // delete the entities
+    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
 }
 
 // Find The Spawn Point For The Map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}

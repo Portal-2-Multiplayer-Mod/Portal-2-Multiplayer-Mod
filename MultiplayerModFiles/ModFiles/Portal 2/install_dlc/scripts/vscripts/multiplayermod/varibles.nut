@@ -77,6 +77,7 @@ IsSingleplayerMap <- false
 PluginLoaded <- false
 PreviousTime1Sec <- 0
 playerclasses <- []
+entityclasses <- []
 fogs <- false
 
 ConsoleAscii <- [
