@@ -533,8 +533,6 @@ if (GetMapName() == "sp_a4_intro") {
 
         PrecacheModel("props_bts/vactube_connector.mdl")
 
-        PrecacheModel("props_backstage/item_dropper_static_open.mdl")
-
         PrecacheModel("props_bts/vactube_90deg_03.mdl")
 
         PrecacheModel("props_bts/vactube_128_straight.mdl")
@@ -577,11 +575,6 @@ if (GetMapName() == "sp_a4_intro") {
         sp_a4_intro_custom_prop_92.SetAngles(63.312507629395, -159.18748474121, 65.53125)
         sp_a4_intro_custom_prop_92.__KeyValueFromString("solid", "6")
         sp_a4_intro_custom_prop_92.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local sp_a4_intro_custom_prop_94 = CreateProp("prop_dynamic", Vector(-304.09375, -255.03125, 437.96875), "models/props_backstage/item_dropper.mdl", 0)
-        sp_a4_intro_custom_prop_94.SetAngles(3.4029681046377e-06, -21.125003814697, 29.531248092651)
-        sp_a4_intro_custom_prop_94.__KeyValueFromString("solid", "6")
-        sp_a4_intro_custom_prop_94.__KeyValueFromString("targetname", "genericcustomprop")
 
         local sp_a4_intro_custom_prop_95 = CreateProp("prop_dynamic", Vector(-536.125, -270.625, 897.96875), "models/props_bts/vactube_90deg_03.mdl", 0)
         sp_a4_intro_custom_prop_95.SetAngles(61.15625, -171.15625, 146.25)
