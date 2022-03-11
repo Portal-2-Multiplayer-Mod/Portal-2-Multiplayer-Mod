@@ -9,18 +9,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun==true) {
         // Remove selected pods
         function CreditsRemovePod() {
-            try {
-                local ent = null
-                while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 100)) {
-                    ent.Destroy()
-                }
-            } catch(exeption) { }
+            local ent = null
+            while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 180)) {
+                ent.Destroy()
+            }
 
-            try {
-                while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 100)) {
-                    ent.Destroy()
-                }
-            } catch(exeption) { }
+            local ent = null
+            while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 180)) {
+                ent.Destroy()
+            }
         }
 
     // Fix void camera glitch
@@ -42,14 +39,25 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Count how many credits come on screen to change to humans
         MPMCredits <- MPMCredits + 1
 
+        local tmpname = MPMCoopCreditNames[MPMCredits]
+        if (tmpname.slice(0,3) == "###") {
+            CreditsRemovePod()
+            printl("HIDDEN!!!!!!M" + tmpname)
+            EntFireByHandle(Entities.FindByNameNearest("female*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
+            EntFire("stock_scanner_model", "addoutput", "targetname disabled_stock_scanner_model", 0.5)
+        } else {
+            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
+        }
+
+        printl(tmpname)
         // Preset animation
         local RandomAnimation = RandomInt(0, CRAnimationTypesPB)
 
         // Remove pod if needed
-        HasRemovedPod <- 0
+        HasRemovedPod <- true
         foreach (anim in NOTubeAnimsPB) {
             if (AnimationsPB[RandomAnimation] == anim && HasRemovedPod == 0) {
-                HasRemovedPod <- 1
+                HasRemovedPod <- false
                 CreditsRemovePod()
             }
         }
@@ -73,6 +81,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Count how many credits come on screen to change to humans
         MPMCredits <- MPMCredits + 1
+
+        local tmpname = MPMCoopCreditNames[MPMCredits]
+        if (tmpname.slice(0,3) == "###") {
+            CreditsRemovePod()
+            printl("HIDDEN!!!!!!M" + tmpname)
+            EntFireByHandle(Entities.FindByNameNearest("male*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
+            EntFire("stock_scanner_model", "addoutput", "targetname disabled_stock_scanner_model", 0.5)
+        } else {
+            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
+        }
+
+        printl(tmpname)
 
         // Preset animation
         local RandomAnimation = RandomInt(0, CRAnimationTypesAL)
@@ -114,7 +134,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         NOTubeAnimsAL <- ["taunt_laugh", "taunt_laugh", "taunt_teamhug_initiate", "taunt_teamhug_noShow", "ballbot_taunt_rps_shake", "taunt_basketball2", "taunt_headspin", "taunt_facepalm", "taunt_shrug", "layer_taunt_trickfire_handstand", "noGun_crouch_idle"]
 
         // Credit run counter
-        MPMCredits <- 0
+        MPMCredits <- -1
 
         // Set the amount of P-body animations
         CRAnimationTypesPB <- -1
@@ -136,7 +156,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Mount list of credits to credits
         foreach (Name in MPMCoopCreditNames) {
-            AddCoopCreditsName(Name)
+            if (Name.slice(0,3) == "###") {
+                AddCoopCreditsName(Name.slice(3))
+            } else {
+                AddCoopCreditsName(Name)
+            }
         }
     }
 
@@ -178,6 +202,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             while (ent = Entities.FindByModel(ent, "models/props_underground/stasis_chamber_female_03.mdl")) {
                 CreditsSetModelPB(ent)
             }
+        } else {
+            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
         }
     }
 }
