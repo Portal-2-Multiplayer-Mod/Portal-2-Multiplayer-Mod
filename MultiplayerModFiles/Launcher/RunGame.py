@@ -584,16 +584,21 @@ def Init():
     portal2path = FindInConfig(configdata, "portal2path")
     
     # if we don't have a path, find it
-    if (portal2path == "undefined"):
+    if (portal2path == "undefined") or ((os.path.exists(portal2path)) != True) or (os.path.exists(portal2path + nf + "portal2_dlc2") != True):
         print("(P2:MM) Portal 2 Path not predefined!")
-        print("(P2:MM) Finding Portal 2 Path...")
-        # as a last resort, ask the user to find the path
+        # loop until the path is found or the user aborts
         hasfoundcorrectpath = False
         while hasfoundcorrectpath == False:
             print("")
-            portal2path = input("Enter the path to your Portal 2 installation: ")
+            portal2path = input(
+                "Enter the path to your Portal 2 installation or type 'exit' to abort: ")
 
-            # double check that the path is valid
+            # if the user types "exit" exit the app
+            if (portal2path == "exit"):
+                print("(P2:MM) Exiting")
+                exit()
+
+            # check if the given path is valid
             if (os.path.exists(portal2path) and os.path.exists(portal2path + nf + "portal2_dlc2")):
                 # if it does stop the loop
                 print("(P2:MM) Portal 2 Path found!")
@@ -607,21 +612,6 @@ def Init():
         print("(P2:MM) Writing Portal 2 Path to Config...")
         EditConfig(configpath, "portal2path", portal2path)
 
-    # if we still don't have a path, we can't continue
-    if (portal2path == "undefined"):
-        print("(P2:MM) [Error] Portal 2 Path not found! Launch cannot continue!")
-        exit()
-
-    # double check that the path is valid
-    if (os.path.exists(portal2path) and os.path.exists(portal2path + nf + "portal2_dlc2")):
-        print("(P2:MM) Portal 2 Path found And Is Correct!")
-    else:
-        print("(P2:MM) [Error] Invalid Path!")
-        print("(P2:MM) [Error] Launch cannot continue!")
-        exit()
-
-
-
 #//# mount the multiplayer mod #//#
     if (WillMount):
         MountMod(portal2path)
@@ -631,8 +621,7 @@ def Init():
         print("(P2:MM) Running Game...")
         try:
             if (iow):
-                subprocess.run([portal2path+nf+"portal2.exe", "-novid",
-                               "-allowspectators", "-nosixense", "+map mp_coop_community_hub"])
+                subprocess.run([portal2path+nf+"portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_community_hub"])
                 print("Game launch successful!")
             else:
                 from subprocess import Popen
