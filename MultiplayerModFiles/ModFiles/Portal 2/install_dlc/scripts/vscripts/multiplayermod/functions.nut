@@ -111,78 +111,57 @@ function RandomColor() {
     local rcb = RandomInt(0, 255)
     local ColorBal = RandomInt(0, 2)
     // Balance The Color
-    if (ColorBal == 1) {
-        if (rcr > rcg && rcr > rcb) {
-            rcr = rcr * 2
-            if (rcr > 255) {
-                rcr = 255
-            }
-
+    if (rcr > rcg && rcr > rcb) {
+        rcr = rcr * 2
+        if (rcr > 255) {
+            rcr = 255
+        }
+        if (ColorBal == 1) {
             rcg = rcg / 2
             rcb = rcb / 2
-        } else {
-            if (rcg > rcr && rcg > rcb) {
-                rcg = rcg * 2
-                if (rcg > 255) {
-                    rcg = 255
-                }
-
-                rcr = rcr / 2
-                rcg = rcg / 2
-            } else {
-                if (rcb > rcr && rcb > rcg) {
-                    rcb = rcb * 2
-                    if (rcb > 255) {
-                        rcb = 255
-                    }
-
-                    rcr = rcr / 2
-                    rcg = rcg / 2
-                }
-            }
         }
-    }
-    // Balance The Color
-    if (ColorBal == 2) {
-        if (rcr > rcg && rcr > rcb) {
-            rcr = rcr * 2
-            if (rcr > 255) {
-                rcr = 255
-            }
-
+        if (ColorBal == 2) {
             rcg = rcg * 2
             if (rcg > 255) {
                 rcg = 255
             }
-            rcb = rcb / 3
-        } else {
-            if (rcg > rcr && rcg > rcb) {
-                rcg = rcg * 2
-                if (rcg > 255) {
-                    rcg = 255
-                }
-
+        rcb = rcb / 3
+        }
+    } else {
+        if (rcg > rcr && rcg > rcb) {
+            rcg = rcg * 2
+            if (rcg > 255) {
+                rcg = 255
+            }
+            if (ColorBal == 1) {
+                rcr = rcr / 2
+            }
+            if (ColorBal == 2) {
                 rcr = rcr * 2
                 if (rcr > 255) {
                     rcr = 255
                 }
+            }
+            rcg = rcg / 2
+        } else {
+            if (rcb > rcr && rcb > rcg) {
+                rcb = rcb * 2
+                if (rcb > 255) {
+                    rcb = 255
+                }
+                rcr = rcr / 2
                 rcg = rcg / 2
-            } else {
-                if (rcb > rcr && rcb > rcg) {
-                    rcb = rcb * 2
-                    if (rcb > 255) {
-                        rcb = 255
-                    }
-
+                if (ColorBal == 2) {
                     rcr = R / 2
                     rcg = rcg * 2
                     if (rcg > 255) {
-                        rcg = 255
+                    rcg = 255
                     }
                 }
             }
         }
     }
+    
     if (RandomInt(1, 7)==3) {
         rcg = RandomInt(1, 30)
         rcb = RandomInt(1, 30)
@@ -516,9 +495,11 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
         while (ent = Entities.FindInSphere(ent, origin, radius)) {
             // check if the entity is in the list of entities to exclude
             local exclude = false
+            // we only need to check if 1 ent equals to excluded that's why i added a break
             foreach (excluded in entitiestoexclude) {
                 if (excluded == ent) {
                     exclude = true
+                    break
                 }
             }
             if (exclude == false) {
@@ -537,9 +518,11 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
         while (ent = Entities.FindByClassnameWithin(ent, specificclass, origin, radius)) {
             // check if the entity is in the list of entities to exclude
             local exclude = false
+            // we only need to check if 1 ent equals to excluded that's why i added a break
             foreach (excluded in entitiestoexclude) {
                 if (excluded == ent) {
                     exclude = true
+                    break
                 }
             }
             if (exclude == false) {
@@ -823,21 +806,16 @@ function GetDirectionalOffset(org1, org2, multipl = 1) {
     // bxoffset.z <- bxoffset.z / highest
     // if highest is not 0
     if (highest > 0) {
+        //i genuinely have no idea if this works, but if js can do it squirrel can too
+        
         // if bxoffset.x is negative
-        local wasxneg = false
-        if (bxoffset.x < 0) {
-            wasxneg = true
-        }
+        local wasxneg = bxoffset.x < 0
+
         // if bxoffset.y is negative
-        local wasyneg = false
-        if (bxoffset.y < 0) {
-            wasyneg = true
-        }
+        local wasyneg = bxoffset.y < 0
+
         // if bxoffset.z is negative
-        local waszneg = false
-        if (bxoffset.z < 0) {
-            waszneg = true
-        }
+        local waszneg = bxoffset.z < 0
 
         // set the new values
         local newx = bxoffset.x / highest
@@ -902,13 +880,13 @@ function CanPing(ison = true) {
     env_global.__KeyValueFromString("targetname", "mpmod_no_pinging_blue")
     env_global2.__KeyValueFromString("targetname", "mpmod_no_pinging_orange")
 
-    if (ison) {
-            EntFireByHandle(env_global, "turnoff", "", 0.1, null, null)
-            EntFireByHandle(env_global2, "turnoff", "", 0.1, null, null)
-    } else {
-            EntFireByHandle(env_global, "turnon", "", 0.1, null, null)
-            EntFireByHandle(env_global2, "turnon", "", 0.1, null, null)
+    
+    local entFireByHandleState = "turnon"
+    if (ison){
+        entFireByHandleState = "turnoff"
     }
+    EntFireByHandle(env_global, entFireByHandleState, "", 0.1, null, null)
+    EntFireByHandle(env_global2, entFireByHandleState, "", 0.1, null, null)
 
     // delete the entities
     EntFireByHandle(env_global, "kill", "", 0.2, null, null)
@@ -926,13 +904,12 @@ function CanTaunt(ison = true) {
     env_global.__KeyValueFromString("targetname", "mpmod_no_taunting_blue")
     env_global2.__KeyValueFromString("targetname", "mpmod_no_taunting_orange")
 
-    if (ison) {
-            EntFireByHandle(env_global, "turnoff", "", 0.1, null, null)
-            EntFireByHandle(env_global2, "turnoff", "", 0.1, null, null)
-    } else {
-            EntFireByHandle(env_global, "turnon", "", 0.1, null, null)
-            EntFireByHandle(env_global2, "turnon", "", 0.1, null, null)
+    local entFireByHandleState = "turnon"
+    if (ison){
+        entFireByHandleState = "turnoff"
     }
+    EntFireByHandle(env_global, entFireByHandleState, "", 0.1, null, null)
+    EntFireByHandle(env_global2, entFireByHandleState, "", 0.1, null, null)
 
     // delete the entities
     EntFireByHandle(env_global, "kill", "", 0.2, null, null)

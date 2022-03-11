@@ -647,5 +647,6 @@ def Init():
         FindAvalibleDLC(portal2path)
         # unpatch the binaries
         UnpatchBinaries(portal2path)
+        
 # RUN INIT
 Init()
