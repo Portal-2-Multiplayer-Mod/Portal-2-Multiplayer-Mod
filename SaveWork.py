@@ -1,6 +1,6 @@
 import os
 
-#set cur dir to the directory of the script
+#set current dir to the directory of the script
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 # detect if running on windows
@@ -25,7 +25,7 @@ if os.path.exists("portal2_dlc3"):
         os.system("rmdir /S /Q MultiplayerModFiles\\ModFiles\\Portal\ 2\\install_dlc")
 
         # copy everything inside of portal2_dlc3/ to MultiplayerModFiles/ModFiles/Portal 2/install_dlc
-        os.system("xcopy /E /I /Y portal2_dlc4\\* \"MultiplayerModFiles\\ModFiles\\Portal 2\\install_dlc\"")
+        os.system("xcopy /E /I /Y portal2_dlc3\\* \"MultiplayerModFiles\\ModFiles\\Portal 2\\install_dlc\"")
 
 
 else:
