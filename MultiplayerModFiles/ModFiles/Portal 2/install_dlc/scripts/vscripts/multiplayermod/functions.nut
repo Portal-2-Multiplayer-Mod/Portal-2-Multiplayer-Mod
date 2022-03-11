@@ -651,6 +651,18 @@ function FindPlayerByName(name) {
     return null
 }
 
+function DisplayPlayerColor(player) {
+    playercolordisplay <- Entities.CreateByClassname("game_text")
+    playercolordisplay.__KeyValueFromString("targetname", "playercolordisplay")
+    playercolordisplay.__KeyValueFromString("holdtime", "3")
+    playercolordisplay.__KeyValueFromString("fadeout", "0.2")
+    playercolordisplay.__KeyValueFromString("fadein", "0.2")
+    playercolordisplay.__KeyValueFromString("spawnflags", "0")
+    playercolordisplay.__KeyValueFromString("color", "255 200 0")
+    playercolordisplay.__KeyValueFromString("channel", "3")
+    printl(GetPlayerColor(player))
+}
+
 function FindAndReplace(inputstr, findstr, replacestr) {
     local startstrip = inputstr.find(findstr)
     if (startstrip==null) {

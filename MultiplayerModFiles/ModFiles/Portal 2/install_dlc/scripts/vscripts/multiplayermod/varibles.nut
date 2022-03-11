@@ -118,7 +118,7 @@ MPMCoopCreditNames <- [
 "###--------------------------",
 "###Multiplayer Mod: Contributers",
 "###--------------------------",
-"cabiste | Scripting",
+"cabiste | Code Cleanup / Refactoring",
 "Darnias | Jumpstarter Code",
 "Mellow | stole all of Python"
 "The Pineapple | (outdated) Hamachi support",
