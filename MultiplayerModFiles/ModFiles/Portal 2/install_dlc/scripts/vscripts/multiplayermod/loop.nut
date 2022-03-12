@@ -381,6 +381,18 @@ function loop() {
         }
     }
 
+    /////////////////////////
+    // RUNS EVERY 5 SECONDS//
+    /////////////////////////
+    if (Time() >= PreviousTime5Sec + 5) {
+        PreviousTime5Sec = Time()
+        // Color Display
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            DisplayPlayerColor(p)
+        }
+    }
+
     ///////////////////////
     // RUNS EVERY SECOND //
     ///////////////////////

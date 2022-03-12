@@ -202,36 +202,43 @@ function p232fogswitch(fogname) {
 }
 
 function GetPlayerColor(p, multiply = true) {
-    local PlayerID = p.entindex()
+    local PlayerID = p.entindex() + amtoffsetclr
+    local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; break;
-            case 2 : R <- 180, G <- 255, B <- 180; break;
-            case 3 : R <- 120, G <- 140, B <- 255; break;
-            case 4 : R <- 255, G <- 170, B <- 120; break;
-            case 5 : R <- 255, G <- 100, B <- 100; break;
-            case 6 : R <- 255, G <- 180, B <- 255; break;
-            case 7 : R <- 255, G <- 255, B <- 180; break;
-            case 8 : R <-   0, G <- 255, B <- 240; break;
-            case 9 : R <-  75, G <-  75, B <-  75; break;
-            case 10: R <- 100, G <-  80, B <-   0; break;
-            case 11: R <-   0, G <-  80, B <- 100; break;
-            case 12: R <- 120, G <- 155, B <-  25; break;
-            case 13: R <-   0, G <-   0, B <- 100; break;
-            case 14: R <-  80, G <-   0, B <-   0; break;
-            case 15: R <-   0, G <-  75, B <-   0; break;
-            case 16: R <-   0, G <-  75, B <-  75; break;
+            case 1 : R <- 255; G <- 255; B <- 255; colorname = "white";      break;
+            case 2 : R <- 180, G <- 255, B <- 180; colorname = "green";      break;
+            case 3 : R <- 120, G <- 140, B <- 255; colorname = "blue";       break;
+            case 4 : R <- 255, G <- 170, B <- 120; colorname = "orange";     break;
+            case 5 : R <- 255, G <- 100, B <- 100; colorname = "red";        break;
+            case 6 : R <- 255, G <- 180, B <- 255; colorname = "pink";       break;
+            case 7 : R <- 255, G <- 255, B <- 180; colorname = "yellow";     break;
+            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "aqua";       break;
+            case 9 : R <-  60, G <-  15, B <-   0; colorname = "brown";      break;
+            case 10: R <-   0, G <- 255, B <- 200; colorname = "ocean green";break;
+            case 11: R <-  80, G <-  99, B <-   0; colorname = "olive";      break;
+            case 12: R <-  40, G <-  40, B <-  80; colorname = "violet";     break;
+            case 13: R <-  75, G <-  75, B <-  75; colorname = "gray";       break;
+            case 14: R <-  64, G <-   0, B <-   0; colorname = "dark red";   break;
+            case 15: R <-   0, G <-  64, B <-   0; colorname = "dark green"; break;
+            case 16: R <-   0, G <-   0, B <-  64; colorname = "dark blue";  break;
         }
     } catch(e) { }
     if (PlayerID > 16) {
-        R <- 255; G <- 255; B <- 255;
+        R <- 255; G <- 255; B <- 255; colorname = "random";
     }
 
     if (multiply == true) {
-        // Multiply the color 
-        R <- R - 100
-        G <- G - 100
-        B <- B - 100
+        // Multiply the color
+        if (R >= 100) {
+            R <- R - 100
+        }
+        if (G >= 100) {
+            G <- G - 100
+        }
+        if (B >= 100) {
+            B <- B - 100
+        }
         // cap the color at 255
         if (R > 255) {
             R <- 255
@@ -242,12 +249,23 @@ function GetPlayerColor(p, multiply = true) {
         if (B > 255) {
             B <- 255
         }
+        // bottom the color at 0
+        if (R < 0) {
+            R <- 0
+        }
+        if (G < 0) {
+            G <- 0
+        }
+        if (B < 0) {
+            B <- 0
+        }
     }
 
     return class {
         r = R
         g = G
         b = B
+        name = colorname
     }
 }
 
@@ -652,15 +670,23 @@ function FindPlayerByName(name) {
 }
 
 function DisplayPlayerColor(player) {
+    if (!Entities.FindByName(null, "playercolordisplay"))
     playercolordisplay <- Entities.CreateByClassname("game_text")
     playercolordisplay.__KeyValueFromString("targetname", "playercolordisplay")
-    playercolordisplay.__KeyValueFromString("holdtime", "3")
-    playercolordisplay.__KeyValueFromString("fadeout", "0.2")
-    playercolordisplay.__KeyValueFromString("fadein", "0.2")
-    playercolordisplay.__KeyValueFromString("spawnflags", "0")
-    playercolordisplay.__KeyValueFromString("color", "255 200 0")
-    playercolordisplay.__KeyValueFromString("channel", "3")
-    printl(GetPlayerColor(player))
+    playercolordisplay.__KeyValueFromString("holdtime", "5")
+    playercolordisplay.__KeyValueFromString("fadeout", "2")
+    playercolordisplay.__KeyValueFromString("fadein", "2")
+    //playercolordisplay.__KeyValueFromString("spawnflags", "0")
+    playercolordisplay.__KeyValueFromString("channel", "1")
+    //playercolordisplay.__KeyValueFromString("message", )
+    playercolordisplay.__KeyValueFromString("x", "0.005")
+    playercolordisplay.__KeyValueFromString("y", "1")
+
+    EntFireByHandle(playercolordisplay, "SetText", "Your Color : " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
+    EntFireByHandle(playercolordisplay, "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
+    EntFireByHandle(playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(playercolordisplay, "kill", "", 0.1, player, player)
 }
 
 function FindAndReplace(inputstr, findstr, replacestr) {

@@ -70,6 +70,8 @@ HasSpawned <- false
 PlayerColorCached <- []
 CurrentlyDead <- []
 PlayerID <- 0
+PreviousTime5Sec <- 0
+amtoffsetclr <- 0
 GBIsMultiplayer <- 0
 cacheoriginalplayerposition <- 0
 DoneWaiting <- false
