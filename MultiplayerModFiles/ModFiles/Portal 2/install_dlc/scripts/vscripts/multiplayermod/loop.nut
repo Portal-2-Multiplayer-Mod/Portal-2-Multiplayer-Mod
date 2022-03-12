@@ -1,13 +1,13 @@
 LastCoordGetPlayer <- null
 CoordsAlternate <- false
 function loop() {
-    //## Event List ##//
+    //## Event list ##//
     if (EventList.len() > 0) {
         SendToConsole("script " + EventList[0])
         EventList.remove(0)
     }
 
-    //## Hook Player Join ##//
+    //## Hook player join ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         if (p.ValidateScriptScope()) {
@@ -20,7 +20,7 @@ function loop() {
         }
     }
 
-    //## PotatoIfy! Loop ##//
+    //## PotatoIfy loop ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         local currentplayerclass = FindPlayerClass(p)
@@ -31,7 +31,7 @@ function loop() {
             UnPotatoIfy(p)
         }
     }
-    // also update everyones class if PermaPotato is on
+    // Also update everyones class if PermaPotato is on
     if (PermaPotato == true) {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -47,7 +47,7 @@ function loop() {
         }
     }
 
-    //## Update Eye Angles ##//
+    //## Update eye angles ##//
     if (CoordsAlternate == false) {
         // Alternate so our timings space out correctly
         if (LastCoordGetPlayer != null) {
@@ -77,7 +77,7 @@ function loop() {
         // Alternate so our timings space out correctly
         CoordsAlternate <- false
     }
-    // print out the data
+    // Print out the data
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         local currentplayerclass = FindPlayerClass(p)
@@ -87,7 +87,7 @@ function loop() {
         }
     }
 
-    //## Update PortalGun Names ##//
+    //## Update Portal Gun names ##//
     local ent = null
     while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
         // if it doesnt have a name yet
@@ -103,14 +103,14 @@ function loop() {
         local currentplayerclass = FindPlayerClass(p)
         if (currentplayerclass != null) {
 
-            // Get Number Of Players In The Game
+            // Get number of players in the game
             local playernums = 0
             foreach (plr in playerclasses) {
                 playernums = playernums + 1
             }
 
             local checkcount = 1
-            // optimise search based on player count
+            // Optimise search based on player count
             if (playernums <= 6) {
                 checkcount = playernums
             } else {
@@ -142,7 +142,7 @@ function loop() {
                 if (PluginLoaded == true) {
                     EntFireByHandle(nametagdisplay, "settext", GetPlayerName(eyeplayer.entindex()), 0, p, p)
                 } else {
-                    EntFireByHandle(nametagdisplay, "settext", "player" + eyeplayer.entindex(), 0, p, p)
+                    EntFireByHandle(nametagdisplay, "settext", "Player " + eyeplayer.entindex(), 0, p, p)
                 }
                 EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
             }
@@ -207,7 +207,7 @@ function loop() {
         }
     }
 
-    //## Hook First Spawn ##//
+    //## Hook first spawn ##//
     if (PostMapLoadDone == true) {
         if (DoneWaiting == false) {
             if (CanHook == true) {
@@ -327,7 +327,7 @@ function loop() {
         }
     }
 
-    //## "colored portals" ##//
+    //## "Colored portals" ##//
     if (DevInfo == true) {
         if (DevMode == true) {
             local p = null
@@ -386,7 +386,7 @@ function loop() {
     /////////////////////////
     if (Time() >= PreviousTime5Sec + 5) {
         PreviousTime5Sec = Time()
-        // Color Display
+        // Color display
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             DisplayPlayerColor(p)
@@ -400,7 +400,7 @@ function loop() {
     if (Time() >= PreviousTime1Sec + 1) {
     PreviousTime1Sec <- Time()
 
-    // Random Portal Sizes
+    // Random portal sizes
 
     if (RandomPortalSize == true) {
         randomportalsize <- RandomInt(1, 100 ).tostring()
@@ -451,7 +451,7 @@ function loop() {
         }
     } catch (exception) { }
 
-    // //## Remove The PortalGun INITALLY ##//
+    // //## Remove the Portal Gun INITALLY ##//
     // if (hasbeenremoved == false  && PostMapLoadDone == true && Player2Joined == true && HasSpawned == false) {
     //     printl("(P2:MM): Removing The PortalGun...")
     //     local ent = null
@@ -489,7 +489,7 @@ function loop() {
 
 
     
-    // Following Box
+    // Following box
     local lenp = null
     while (lenp = Entities.FindByName(lenp, "uwu")) {
         local torigin = Vector(0, 0, 0)
