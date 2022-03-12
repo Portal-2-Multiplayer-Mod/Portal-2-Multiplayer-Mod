@@ -13,8 +13,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             while (ent = Entities.FindByNameNearest("chamber*", Vector(-64, 217, 72), 180)) {
                 ent.Destroy()
             }
-
-            local ent = null
+            // it's already declared so we just need to reset it to null
+            ent = null
             while (ent = Entities.FindByNameNearest("bubbles*", Vector(-64, 217, 72), 180)) {
                 ent.Destroy()
             }
@@ -54,11 +54,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local RandomAnimation = RandomInt(0, CRAnimationTypesPB)
 
         // Remove pod if needed
-        HasRemovedPod <- true
+        HasRemovedPod <- false
         foreach (anim in NOTubeAnimsPB) {
-            if (AnimationsPB[RandomAnimation] == anim && HasRemovedPod == 0) {
-                HasRemovedPod <- false
+            // this operation gonna work once only that's why i added a break
+            // for more optimizations we can also remove the variable 'HasRemovedPod' since it's not doing anything
+            if (AnimationsPB[RandomAnimation] == anim && HasRemovedPod == false) {
+                HasRemovedPod <- true
                 CreditsRemovePod()
+                break
             }
         }
 
@@ -110,12 +113,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(ent, "setanimation", AnimationsAL[RandomAnimation], 0, null, null)
 
         // Remove pod if needed
-        HasRemovedPod <- 0
+        HasRemovedPod <- false
         foreach (anim in NOTubeAnimsAL) {
-            if (AnimationsAL[RandomAnimation] == anim && HasRemovedPod == 0) {
-                HasRemovedPod <- 1
+            // this operation gonna work once only that's why i added a break
+            // for more optimizations we can also remove the variable 'HasRemovedPod' since it's not doing anything
+            if (AnimationsAL[RandomAnimation] == anim && HasRemovedPod == false) {
+                HasRemovedPod <- true
                 CreditsRemovePod()
                 ent.SetOrigin(Vector(0, 0, 7.5))
+                break
             }
         }
     }
