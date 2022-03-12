@@ -5,6 +5,17 @@
 //██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
+function SpawnBackupCube() {
+    CanSpawnCubeInit = false
+    EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
+    EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
+    EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
+    EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
+    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p232_box_yes\")", 0.1, null)
+    EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-394, -270, 1350))", 0.1, null)
+    EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+}
+
 function MoveCubeDropper() {
     SpawnCube = false
     CubeBeingSpawned = null
@@ -32,52 +43,27 @@ function MoveCubeDropper() {
 }
 
 TrackPoints <- [
-    Vector(-381.308, -375.826, 1331.84),
-    Vector(-417.382, -534.446, 1232.9),
-    Vector(-501.305, -648.05, 1154.88),
-    Vector(-608.646, -685.323, 1098.45),
-    Vector(-694.184, -660.153, 1084.98),
-    Vector(-782.788, -612.837, 1095.06),
-    Vector(-806.732, -549.732, 1105.68),
-    Vector(-822.986, -464.889, 1091.85),
-    Vector(-841.823, -371.966, 1075.54),
-    Vector(-812.164, -312.363, 1065.65),
-    Vector(-757.235, -227.518, 1035.1),
-    Vector(-699.566, -218.069, 996.71),
-    Vector(-636.23, -213.889, 957.994),
-    Vector(-579.131, -250.476, 927.499),
-    Vector(-538.629, -275.657, 905.835),
-    Vector(-486.422, -329.301, 869.821),
-    Vector(-436.1, -361.276, 806.579),
-    Vector(-383.913, -369.294, 727.755),
-    Vector(-337.075, -345.387, 622.686),
-    Vector(-322.715, -307.829, 549.954),
-   // Vector(-304.093750, -255.031250, 437.968750),
+    Vector(-390, -376, 1310),
+    Vector(-412, -534, 1222),
+    Vector(-504, -648, 1140),
+    Vector(-608, -680, 1094),
+    Vector(-694, -660, 1082),
+    Vector(-770, -610, 1086),
+    Vector(-816, -548, 1092),
+    Vector(-836, -464, 1090),
+    Vector(-834, -372, 1070),
+    Vector(-812, -312, 1054),
+    Vector(-744, -230, 1008),
+    Vector(-700, -210, 982),
+    Vector(-636, -210, 948),
+    Vector(-580, -234, 920),
+    Vector(-530, -284, 894),
+    Vector(-480, -328, 860),
+    Vector(-426, -360, 800),
+    Vector(-384, -378, 728),
+    Vector(-340, -350, 614),
+    Vector(-324, -308, 536),
 ]
-TrackAngles <- [
-    Vector(89, -90.7127, 6.46543e-08),
-    Vector(2.54727, -91.9623, -1.24232e-08),
-    Vector(31.0425, -152.074, 5.44953e-07),
-    Vector(-19.7277, 7.48973, 7.34825e-08),
-    Vector(-6.24633, 146.764, 2.7044e-07),
-    Vector(22.1075, -37.9378, 3.35715e-10),
-    Vector(9.88045, 105.587, -7.90368e-08),
-    Vector(8.60967, 101.473, -9.32294e-08),
-    Vector(10.8479, 101.715, 1.01872e-08),
-    Vector(-5.2484, -114.508, -2.69307e-08),
-    Vector(-12.3971, -123.191, 5.3376e-08),
-    Vector(32.3099, 5.19019, 3.80792e-08),
-    Vector(28.4373, -23.1238, 3.83061e-07),
-    Vector(23.5955, -26.7535, 7.18479e-07),
-    Vector(20.8723, -46.2948, 1.42752e-06),
-    Vector(32.6688, -41.2125, 1.52364e-06),
-    Vector(50.0302, -25.6635, 1.67334e-06),
-    Vector(59.9504, 12.9356, -3.90897e-07),
-    Vector(61.8847, 68.7162, -1.98866e-06),
-    Vector(60.3109, 71.9827, -2.26286e-07),
-    Vector(59.9476, 69.8045, -4.92808e-07),
-]
-
 
 CanSpawnCubeInit <- false
 SpawnCube <- false
@@ -91,6 +77,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         GlobalSpawnClass.useautospawn <- true
         PermaPotato <- true
         rollang <- 0
+        self.PrecacheSoundScript("ambient\\industrial\\delivery_tubes_lp_01.wav")
+        Entities.FindByName(null, "wheatley_mad_sound1").SetOrigin(Vector(-680, -210, 916))
+        Entities.FindByName(null, "wheatley_mad_sound1").__KeyValueFromString("message", "ambient\\industrial\\delivery_tubes_lp_01.wav")
+        Entities.FindByName(null, "wheatley_mad_sound1").__KeyValueFromString("spawnflags", "0")
         Entities.FindByName(null, "catwalk_lift_door").__KeyValueFromString("dmg", "100")
         Entities.FindByName(null, "recapture_areaportal1").__KeyValueFromString("FadeStartDist", "1750")
         Entities.FindByName(null, "recapture_areaportal1").__KeyValueFromString("FadeDist", "1950")
@@ -146,6 +136,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "cube_dropper_prop").SetAngles(3.4029681046377e-06, -21.125003814697, 29.531248092651)
         EntFire("cube_dropper_prop", "setanimation", "item_dropper_open", 1, null)
         EntFire("cube_dropper_prop", "setanimation", "item_dropper_close", 2, null)
+        EntFireByHandle(Entities.FindByName(null, "wheatley_mad_sound1"), "PlaySound", "", 4, null, null)
     //     Entities.FindByName(null, "cube_dropper_box").Destroy()//SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
     //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "setparent", "cube_dropper_prop", 0, null, null)
     //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "clearparent", "", 4, null, null)
@@ -166,14 +157,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         output = MoveEntityOnTrack(CubeBeingSpawned, TrackPoints, movespeed)
                     } catch (e) {
                         SpawnCube = false
-                        CanSpawnCubeInit = false
-                        EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
-                        EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
-                        EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
-                        EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
-                        EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p232_box_yes\")", 0.1, null)
-                        EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
-                        EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+                        SpawnBackupCube()
                     }
                     // if (rollang >= 160) {
                     //     rollang <- -160
@@ -190,7 +174,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     if (output == true) {
                         SpawnCube = false
                         EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
-                        CubeBeingSpawned.SetOrigin(Vector(-304.093750, -250.031250, 438.968750))
+                        EntFireByHandle(CubeBeingSpawned, "BecomeMonster", "", 3, null, null)
+                        CubeBeingSpawned.SetOrigin(TrackPoints[TrackPoints.len() - 1])
                         CubeBeingSpawned.SetAngles(0, 0, 0)
                         CubeBeingSpawned.SetVelocity(Vector(0, 0, 0))
                         CubeBeingSpawned = null
@@ -198,14 +183,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     }
                 } else {
                     SpawnCube = false
-                    CanSpawnCubeInit = false
-                    EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
-                    EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
-                    EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
-                    EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
-                    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p232_box_yes\")", 0.1, null)
-                    EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
-                    EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+                    SpawnBackupCube()
                 }
             }
         }
@@ -215,14 +193,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             } else {
                 if (CanSpawnCubeInit == true) {
                     if (SpawnCube == false) {
-                        CanSpawnCubeInit = false
-                        EntFire("cube_dropper_box_spawner_override_p232", "forcespawn", "", 0, null)
-                        EntFire("p232servercommand", "command", "script SpawnCube = true", 0.2, null)
-                        EntFire("p232servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
-                        EntFire("p232servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
-                        EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p232_box_yes\")", 0.1, null)
-                        EntFire("p232servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-438, -200, 1424))", 0.1, null)
-                        EntFire("p232servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+                        SpawnBackupCube()
                     }
                 }
             }
