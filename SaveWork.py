@@ -8,22 +8,35 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 # windows = true, linux = false 
 isWindowns = os.name == "nt"
 
+ourfolder = "NONE"
+# get every folder that starts with portal2_dlc
+for file in os.listdir(os.getcwd()):
+    # if it is a folder
+    if os.path.isdir(file):
+        # if it starts with portal2_dlc
+        if file.startswith("portal2_dlc"):
+            # if there is a file named 32playermod.identifier
+            if os.path.isfile(file + "/32playermod.identifier"):
+                print("Found DLC: " + file)
+                ourfolder = file
+
+
 # if the folder portal2_dlc3 exists
-if os.path.exists("portal2_dlc3"):
+if os.path.exists(ourfolder):
     # linux
     if not isWindowns:
         # delete everything inside of MultiplayerModFiles/ModFiles/Portal 2/install_dlc
         os.system("rm -rf MultiplayerModFiles/ModFiles/Portal\ 2/install_dlc/*")
 
         # copy everything inside of portal2_dlc3/ to MultiplayerModFiles/ModFiles/Portal 2/install_dlc
-        os.system("cp -r portal2_dlc3/* MultiplayerModFiles/ModFiles/Portal\ 2/install_dlc/")
+        os.system("cp -r " + ourfolder + "/* MultiplayerModFiles/ModFiles/Portal\ 2/install_dlc/")
     # windows
     else:
         # delete everything inside of MultiplayerModFiles/ModFiles/Portal 2/install_dlc
         os.system("rmdir /S /Q MultiplayerModFiles\\ModFiles\\Portal\ 2\\install_dlc")
 
         # copy everything inside of portal2_dlc3/ to MultiplayerModFiles/ModFiles/Portal 2/install_dlc
-        os.system("xcopy /E /I /Y portal2_dlc3\\* \"MultiplayerModFiles\\ModFiles\\Portal 2\\install_dlc\"")
+        os.system("xcopy /E /I /Y " + ourfolder + "\\* \"MultiplayerModFiles\\ModFiles\\Portal 2\\install_dlc\"")
 
 else:
     print("portal2_dlc3 folder not found")
