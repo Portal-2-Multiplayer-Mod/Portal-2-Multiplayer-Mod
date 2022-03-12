@@ -225,7 +225,9 @@ function GetPlayerColor(p, multiply = true) {
         }
     } catch(e) { }
     if (PlayerID > 16) {
-        R <- 255; G <- 255; B <- 255; colorname = "random";
+        // if you have more than 16 players then you gotta bear the consequences of your own actions
+        local randomColor = RandomColor()
+        R <- randomColor.r; G <- randomColor.g; B <- randomColor.B; colorname = "random";
     }
 
     if (multiply == true) {
