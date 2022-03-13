@@ -201,10 +201,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20)) {
             if (OnlyOnceSp_A4_Intro_1==true) {
+                Entities.FindByName(null, "floor_gate1-cover_arm").SetOrigin(Vector(1056, 384, 128))
+                EntFireByHandle(Entities.FindByName(null, "floor_gate1-floor_panel"), "clearparent", "", 0, null, null)
+                Entities.FindByName(null, "floor_gate1-floor_panel").SetAngles(0, 0, 0)
+                EntFireByHandle(Entities.FindByName(null, "floor_gate1-floor_panel"), "setparent", "test_chamber1_platform", 0, null, null)
+                Entities.FindByName(null, "floor_gate1-floor_panel").__KeyValueFromString("rendermode", "10")
+                Entities.FindByName(null, "floor_gate1-cover_arm").__KeyValueFromString("rendermode", "10")
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(1053, 380, 185))
-                    p.SetAngles(0, -180, 0)
+                    p.SetAngles(0, 0, 0)
                     p.SetVelocity(Vector(0, 0, 0))
                 }
                 OnlyOnceSp_A4_Intro_1 <- false
