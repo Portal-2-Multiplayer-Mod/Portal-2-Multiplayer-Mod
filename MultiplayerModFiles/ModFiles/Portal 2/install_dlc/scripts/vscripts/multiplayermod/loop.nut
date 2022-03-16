@@ -1,10 +1,11 @@
 LastCoordGetPlayer <- null
 CoordsAlternate <- false
 PreviousTime01Sec <- 0
+MinecraftMode <- false
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 
 function loop() {
-    if (HasSpawned == true) {
+    if (HasSpawned == true && MinecraftMode) {
         if (Time() >= PreviousTime01Sec + 0.2) {
             PreviousTime01Sec = Time()
 
