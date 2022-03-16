@@ -619,4 +619,11 @@ if (GetMapName() == "sp_a4_intro") {
 
   }
 }
+
+
+if (CacheTime == true) {
+  PrecacheModel("models/props/metal_box.mdl")
+  DoneCacheing <- true
+}
+
 }

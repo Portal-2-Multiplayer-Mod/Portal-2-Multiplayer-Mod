@@ -229,6 +229,7 @@ function PostMapLoad() {
         printl("(P2:MM): Plugin Loaded")
         AddChatCallback("ChatCommands")
     }
+    //PrecacheModel("models/props/metal_box.mdl")
     // Edit Cvars
     SendToConsole("mp_allowspectators 0")
     // Force spawn players in map

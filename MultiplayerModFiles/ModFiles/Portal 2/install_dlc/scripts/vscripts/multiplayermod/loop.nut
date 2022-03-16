@@ -1,6 +1,70 @@
 LastCoordGetPlayer <- null
 CoordsAlternate <- false
+PreviousTime01Sec <- 0
+setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
+
 function loop() {
+    if (HasSpawned == true) {
+        if (Time() >= PreviousTime01Sec + 0.2) {
+            PreviousTime01Sec = Time()
+
+            local amt = 0
+
+            // local ent = null
+            // while (ent = Entities.FindByModel(ent, "models/props/metal_box.mdl")) {
+            //     ent.Destroy()
+            // }
+
+            IncludeScript("portalcraft.nut")
+            foreach (thing in PortalBlocks) {
+              //  printl("thing: " + thing.name)
+                if (thing.name != "AIR") {
+                    local spacing = 36
+                    local x = ((thing.x - PortalCapture.x) * spacing)
+                    local y = ((thing.y - PortalCapture.y) * spacing)
+                    local z = ((thing.z - PortalCapture.z) * spacing)
+                    local colorr = 100
+                    local colorg = 100
+                    local colorb = 100
+                    local calpha = 1
+                    if (thing.name == "WATER") {
+                        colorr = 0
+                        colorg = 0
+                        colorb = 255
+                    }
+                    if (thing.name == "GRASS_BLOCK") {
+                        colorr = 20
+                        colorg = 255
+                        colorb = 100
+                    }
+                    if (thing.name == "DIRT") {
+                        colorr = 120
+                        colorg = 90
+                        colorb = 00
+                    }
+                    if (thing.name == "STONE") {
+                        colorr = 30
+                        colorg = 30
+                        colorb = 30
+                    }
+                    if (thing.name == "SAND") {
+                        colorr = 150
+                        colorg = 255
+                        colorb = 30
+                    }
+                    DebugDrawBox(Vector(x + setspot.x, y + setspot.y, z + setspot.z), Vector(-16, -16, -16), Vector(16, 16, 16), colorr, colorg, colorb, calpha, 0.218)
+                    
+                    amt = amt + 1
+                    if (amt < 500) {
+                        local ourent = Entities.FindByName(null, "minecraftblock" + amt)
+                        ourent.SetOrigin(Vector(x + setspot.x, y + setspot.y, z + setspot.z))
+                        EntFireByHandle(ourent, "Color", colorr + " " + colorg + " " + colorb + " " + calpha, 0, null, null)
+                    }
+                }
+            }
+        }
+    }
+
     //## Event List ##//
     if (EventList.len() > 0) {
         SendToConsole("script " + EventList[0])

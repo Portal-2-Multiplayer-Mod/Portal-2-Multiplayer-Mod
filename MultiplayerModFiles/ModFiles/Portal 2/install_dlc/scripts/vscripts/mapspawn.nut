@@ -78,9 +78,9 @@ function init() {
             printl("================================")
         }
         PluginLoaded <- true
-        if (GetMapName() == "mp_coop_community_hub") {
-            EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
-        }
+        // if (GetMapName() == "mp_coop_community_hub") {
+        //     EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
+        // }
     } else {
         // Make some replacements (this is for if someone doesn't use the plugin)
         MakePluginReplacementFunctions()
@@ -91,9 +91,9 @@ function init() {
         }
         EntFire("p232servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01) 
         EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
-        if (GetMapName() == "mp_coop_community_hub") {
-            EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
-        }
+    //     if (GetMapName() == "mp_coop_community_hub") {
+    //         EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
+    //     }
     }
 
     // Run map-specific code
