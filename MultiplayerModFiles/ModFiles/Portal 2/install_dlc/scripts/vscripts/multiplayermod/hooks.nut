@@ -58,7 +58,7 @@ function OnPlayerJoin(p, script_scope) {
         // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
     }
 
-    // If the player is the first player to join, Fix OrangeOldPlayerPos
+    // If the player is the first player to join, fix OrangeOldPlayerPos
     if (p.GetTeam() == 2) {
         if (OrangeCacheFailed==true) {
             OrangeOldPlayerPos <- p.GetOrigin()
@@ -97,7 +97,7 @@ function OnPlayerJoin(p, script_scope) {
         onscreendisplay.__KeyValueFromString("y", "0.075")
     }
 
-    //# Set Player Color #//
+    //# Set player color #//
 
     // Set a random color for clients that join after 16 have joined
     if (PlayerID != 1) {
@@ -128,45 +128,45 @@ function OnPlayerJoin(p, script_scope) {
     script_scope.Colored <- true
     EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
 
-    //# Setup Player Class #//
+    //# Setup player class #//
     local currentplayerclass = {}
 
-    // player
+    // Player
     currentplayerclass.player <- p
-    // player id
+    // Player id
     currentplayerclass.id <- p.entindex()
-    // player name
+    // Player name
     if (PluginLoaded==true) {
         currentplayerclass.username <- GetPlayerName(p.entindex())
     } else {
         currentplayerclass.username <- "Player " + p.entindex()
     }
-    // player angles
+    // Player angles
     currentplayerclass.eyeangles <- Vector(0, 0, 0)
     currentplayerclass.eyeforwardvector <- Vector(0, 0, 0)
 
     SetCosmetics(p)
 
-    // potatogun
+    // Potatogun
     currentplayerclass.potatogun <- false
 
-    // player color
+    // Player color
     local localcolorclass = {}
     localcolorclass.r <- R
     localcolorclass.g <- G
     localcolorclass.b <- B
     currentplayerclass.color <- localcolorclass
-    // player noclip status
+    // Player noclip status
     currentplayerclass.noclip <- p.IsNoclipping()
-    // rocket player status
+    // Rocket player status
     currentplayerclass.rocket <- false
 
 
-    // make sure there isnt an existing player class
+    // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
         if (curlclass.player == p) {
-            // if there is, remove it
-            playerclasses.remove(indx) // if there is, remove it
+            // If there is, remove it
+            playerclasses.remove(indx)
         }
     }
 
@@ -203,7 +203,7 @@ function OnPlayerDeath(player) {
 ////////////////////////
 
 function OnPlayerRespawn(player) {
-    // GlobalSpawnClass Teleport
+    // GlobalSpawnClass teleport
     if (GlobalSpawnClass.useautospawn == true) {
         TeleportToSpawnPoint(player, null)
     }
@@ -220,17 +220,16 @@ function OnPlayerRespawn(player) {
 ///////////////////////////////////////
 
 function PostMapLoad() {
-    //## Cheat Detection ##//
+    //## Cheat detection ##//
     SendToConsole("prop_dynamic_create cheatdetectionp232")
     SendToConsole("script SetCheats()")
 
-    // add a hook to the chat command function
+    // Add a hook to the chat command function
     if (PluginLoaded==true) {
         printl("(P2:MM): Plugin Loaded")
         AddChatCallback("ChatCommands")
     }
-    //PrecacheModel("models/props/metal_box.mdl")
-    // Edit Cvars
+    // Edit cvars
     SendToConsole("mp_allowspectators 0")
     // Force spawn players in map
     AddBranchLevelName( 1, "P2 32" )
@@ -250,12 +249,12 @@ function PostMapLoad() {
         PrecacheModel("npcs/turret/turret_backwards.mdl")
     }
 
-	//gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
+	// Gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
 	SendToConsole("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	SendToConsole("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
-    // set original angles
+    // Set original angles
     EntFire("p232servercommand", "command", "script CanCheckAngle <- true", 0.32)
 
     local plr = Entities.FindByClassname(null, "player")
@@ -447,7 +446,7 @@ function GeneralOneTime() {
 
     MapSupport(false, false, true, false, false, false, false)
 
-    // Give the player their portalgun back
+    // Give the player their Portal Gun back
     if (Entities.FindByName(null, "weapon_portalgun_player2") && !Entities.FindByName(null, "weapon_portalgun_player1")) {
         SendToConsole("sv_cheats 1; give_portalgun; upgrade_portalgun; sv_cheats 0")
     }
@@ -458,13 +457,13 @@ function GeneralOneTime() {
 ///////////////////
 
 function ChatCommands(ccuserid, ccmessage) {
-    // get all nessasary data
+    // Get all nessasary data
     local p = FindByIndex(ccuserid)
     local pname = GetPlayerName(ccuserid)
     local adminlevel = GetAdminLevel(ccuserid)
     local message = split(ccmessage, " ")
     local commandrunner = p
-    // print some debug info
+    // Print some debug info
     if (GetDeveloperLevel() == 1) {
         printl("=========" + pname + " sent a message=========")
 
@@ -476,77 +475,77 @@ function ChatCommands(ccuserid, ccmessage) {
         printl("message: " + message)
     }
 
-    // setup the message
+    // Setup the message
     local indx = -1
-    local isparseingname = false // used to check if we are parsing a name
-    local isparsingcommand = false // used to check if we are parsing a command
+    local isparseingname = false // Used to check if we are parsing a name
+    local isparsingcommand = false // Used to check if we are parsing a command
     local parsedname = ""
     local parsedcommand = ""
     foreach (submessage in message) {
         submessage = lstrip(submessage)
         indx++
-        // if the message starts with a $, then it's a player override
+        // If the message starts with a $, then it's a player override
         if (strip(submessage).slice(0,1) == "$" || isparseingname == true && strip(submessage).slice(0,1) != "!") {
-            // make sure we update the parse list
+            // Make sure we update the parse list
             isparseingname = true
             isparsingcommand = false
 
-            // get the name itself
+            // Get the name itself
             local playeroverride = submessage
             if (submessage.slice(0,1) == "$") {
                 playeroverride = submessage.slice(1)
             }
 
-            // add it to the parsed name
+            // Add it to the parsed name
             parsedname = parsedname + playeroverride + " "
         }
 
-        // if the message starts with a !, then it's a command
+        // If the message starts with a !, then it's a command
         if (strip(submessage).slice(0,1) == "!" || isparsingcommand == true && strip(submessage).slice(0,1) != "$") {
             isparseingname = false
             isparsingcommand = true
 
-            // get the command itself
+            // Get the command itself
             local command = submessage
             if (submessage.slice(0,1) == "!") {
                 command = submessage.slice(1)
             }
 
-            // add it to the parsed command
+            // Add it to the parsed command
             parsedcommand = parsedcommand + command + " "
         }
     }
 
-    // strip the last space from the parsed name
+    // Strip the last space from the parsed name
     if (parsedname != "") {
         parsedname = strip(parsedname)
         printl("parsed name: " + ExpandName(parsedname))
         pname = ExpandName(parsedname)
-        commandrunner = p // set the commandrunner to the player that sent the command
+        commandrunner = p // Set the commandrunner to the player that sent the command
         p = FindPlayerByName(ExpandName(parsedname))
         printl("expanded name: " + pname)
         printl("executing on: " + p)
     }
-    // strip the last space from the parsed command
+    // Strip the last space from the parsed command
     if (parsedcommand != "") {
         parsedcommand = parsedcommand.slice(0, -1)
         printl("parsed command: " + parsedcommand)
-        // if its all
+        // If it's all
         if (pname != "all") {
-            // run the chat command runner if the player isnt null
+            // Run the chat command runner if the player isnt null
             if (p != null) {
-                adminlevel = adminlevel.tointeger() // make sure the adminlevel is an integer
+                adminlevel = adminlevel.tointeger() // Make sure the adminlevel is an integer
                 if (adminlevel > 1) {
                     ChatCommandRunner(p, pname, parsedcommand, adminlevel, commandrunner)
                 }
             }
         } else {
-            // if its high enough to use all
+            // If its high enough to use all
             if (adminlevel > 1) {
-                // run the chat command for all players
+                // Run the chat command for all players
                 local p2 = null
                 while (p2 = Entities.FindByClassname(p2, "player")) {
-                    adminlevel = adminlevel.tointeger() // make sure the adminlevel is an integer
+                    adminlevel = adminlevel.tointeger() // Make sure the adminlevel is an integer
                     if (adminlevel > 1) {
                         local newpname = GetPlayerName(p2.entindex())
                         ChatCommandRunner(p2, newpname, parsedcommand, adminlevel, commandrunner)
@@ -562,22 +561,22 @@ function ChatCommands(ccuserid, ccmessage) {
 }
 
 function ChatCommandRunner(player, playername, command, level, commandrunner = null) {
-    // do some varible setup
+    // Do some varible setup
     if (commandrunner == null) {
         commandrunner = player
     }
-    // split up the command
+    // Split up the command
     command = split(command, " ")
     local action = command[0]
     local currentplayerclass = FindPlayerClass(player)
 
-    //## check for the command ##//
+    //## Check for the command ##//
 
     //## NOCLIP ##//
     if (action == "noclip") {
-        // update the player's noclip status
+        // Update the player's noclip status
         currentplayerclass.noclip <- player.IsNoclipping()
-        // inverse the noclip status unless there is a second argument
+        // Inverse the noclip status unless there is a second argument
         if (command.len() < 2) {
             if (currentplayerclass.noclip == false) {
                 EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
@@ -587,7 +586,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
                 currentplayerclass.noclip <- false
             }
         } else {
-            // set the noclip status to the second argument
+            // Set the noclip status to the second argument
             if (command[1] == "on") {
                 EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
                 currentplayerclass.noclip <- true

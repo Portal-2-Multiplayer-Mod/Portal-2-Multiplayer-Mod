@@ -2,14 +2,13 @@
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
 //## Replace Plugin Functions ##//
-// if the plugin isnt loaded
-// then we make some replacements
+// If the plugin isn't loaded then we make some replacements
 function MakePluginReplacementFunctions() {
     function GetPlayerName(entinx) {
         return "player" + entinx
     }
     function AddChatCallback(func) {
-        printl("plugin not loaded NOT adding chat callback")  
+        printl("plugin not loaded NOT adding chat callback")
     }
 }
 
@@ -32,7 +31,7 @@ function GetHighest(inpvec) {
 }
 
 function ForceRespawnAll() {
-    // GlobalSpawnClass Teleport
+    // GlobalSpawnClass teleport
     if (GlobalSpawnClass.useautospawn == true) {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -64,41 +63,41 @@ function SetCheats() {
 
 function SetCosmetics(p) {
     if (PluginLoaded == true) {
-        // Get Nessasary Data
+        // Get nessasary data
         local pname = GetPlayerName(p.entindex())
 
-        //## Kyle Customization ##//
+        //## Kyle customization ##//
         if (pname == "kyleraykbs") {
             SetPlayerModel(p, "models/info_character/info_character_player.mdl")
         }
 
-        // //## Dreadnox Customization ##//
+        // //## Dreadnox customization ##//
         if (pname == "Dreadnox") {
             printl("Dreadnox is here!")
             SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
         }
 
-        //## Sear Customization ##//
+        //## Sear customization ##//
         if (pname == "sear") {
             SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl")
         }
 
-        //## Mellow Customization ##//
+        //## Mellow customization ##//
         if (pname == "Mellow1238") {
             SetPlayerModel(p, "models/props_moon/moonrock_med08.mdl")
         }
 
-        //## Nano Customization ##//
+        //## Nano customization ##//
         if (pname == "Nanoman2525") {
             SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
         }
 
-        // //## Bumpy Customization ##//
+        // //## Bumpy customization ##//
         // if (pname == "Bumpy") {
         //     SetPlayerModel(p, "models/gibs/hgibs.mdl")
         // }
 
-        // //## nintendude Customization ##//
+        // //## nintendude customization ##//
         // if (pname == "nintendude") {
         //     SetPlayerModel(p, "props/food_can/food_can_open")
         // }
@@ -110,7 +109,7 @@ function RandomColor() {
     local rcg = RandomInt(0, 255)
     local rcb = RandomInt(0, 255)
     local ColorBal = RandomInt(0, 2)
-    // Balance The Color
+    // Balance the color
     if (rcr > rcg && rcr > rcb) {
         rcr = rcr * 2
         if (rcr > 255) {
@@ -225,7 +224,9 @@ function GetPlayerColor(p, multiply = true) {
         }
     } catch(e) { }
     if (PlayerID > 16) {
-        R <- 255; G <- 255; B <- 255; colorname = "random";
+        // If you have more than 16 players then you gotta bear the consequences of your own actions
+        local randomColor = RandomColor()
+        R <- randomColor.r; G <- randomColor.g; B <- randomColor.B; colorname = "random";
     }
 
     if (multiply == true) {
@@ -495,25 +496,25 @@ function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "u
 }
 
 function FindNearest(origin, radius, entitiestoexclude = [null], specificclass = null) {
-    // setup some existing locals
+    // Setup some existing locals
     try {
         entitiestoexclude[0]
     } catch(e) {
-        // if this errors out we should probably put the defined ent into a table
+        // If this errors out we should probably put the defined ent into a table
         entitiestoexclude = [entitiestoexclude]
     }
 
-    // define some locals
+    // Define some locals
     local bestscore = 999999999
     local nearestent = null
     local ent = null
 
-    // find the nearest entity
+    // Find the nearest entity
     if (specificclass == null) {
         while (ent = Entities.FindInSphere(ent, origin, radius)) {
-            // check if the entity is in the list of entities to exclude
+            // Check if the entity is in the list of entities to exclude
             local exclude = false
-            // we only need to check if 1 ent equals to excluded that's why i added a break
+            // We only need to check if 1 ent equals to excluded that's why i added a break
             foreach (excluded in entitiestoexclude) {
                 if (excluded == ent) {
                     exclude = true
@@ -521,11 +522,11 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
                 }
             }
             if (exclude == false) {
-                // get the score
+                // Get the score
                 local score = origin - ent.GetOrigin()
                 score = UnNegative(score)
                 score = score.x + score.y + score.z
-                // check if the entity is closer than the current best
+                // Check if the entity is closer than the current best
                 if (score < bestscore) {
                     bestscore = score
                     nearestent = ent
@@ -534,9 +535,9 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
         }
     } else {
         while (ent = Entities.FindByClassnameWithin(ent, specificclass, origin, radius)) {
-            // check if the entity is in the list of entities to exclude
+            // Check if the entity is in the list of entities to exclude
             local exclude = false
-            // we only need to check if 1 ent equals to excluded that's why i added a break
+            // We only need to check if 1 ent equals to excluded that's why i added a break
             foreach (excluded in entitiestoexclude) {
                 if (excluded == ent) {
                     exclude = true
@@ -544,11 +545,11 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
                 }
             }
             if (exclude == false) {
-                // get the score
+                // Get the score
                 local score = origin - ent.GetOrigin()
                 score = UnNegative(score)
                 score = score.x + score.y + score.z
-                // check if the entity is closer than the current best
+                // Check if the entity is closer than the current best
                 if (score < bestscore) {
                     bestscore = score
                     nearestent = ent
@@ -557,47 +558,47 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
         }
     }
 
-    // return the nearest entity
+    // Return the nearest entity
     return nearestent
 }
 
 function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, currentstepped = 4, stepmultiplier = 1, maxreldist = 32, entitiestoexclude = [null], specificclass = null) {
-    //maxdist = maxdist / stepmultiplier
+    // maxdist = maxdist / stepmultiplier
     
-    // setup some existing locals
+    // Setup some existing locals
     try {
         entitiestoexclude[0]
     } catch(e) {
-        // if this errors out we should probably put the defined ent into a table
+        // If this errors out we should probably put the defined ent into a table
         entitiestoexclude = [entitiestoexclude]
     }
     
-    // define some locals
-    local origorigin = origin // preserve
-    local origmindist = mindist // preserve
-    local origmaxdist = maxdist // preserve
-    local originoffset = Vector(forward.x, forward.y, forward.z) // make sure we get outside of the desired min zone
-    local fowardstep = forward //Vector(forward.x * currentstepped, forward.y * currentstepped, forward.z * currentstepped) // multiply this se we can get a base step amount
-    local outputorigin = Vector(0, 0, 0) // output
-    local nearestent = null // output
+    // Define some locals
+    local origorigin = origin // Preserve
+    local origmindist = mindist // Preserve
+    local origmaxdist = maxdist // Preserve
+    local originoffset = Vector(forward.x, forward.y, forward.z) // Make sure we get outside of the desired min zone
+    local fowardstep = forward // Vector(forward.x * currentstepped, forward.y * currentstepped, forward.z * currentstepped) // Multiply this se we can get a base step amount
+    local outputorigin = Vector(0, 0, 0) // Output
+    local nearestent = null // Output
     local clradd = 0
     local opadd = 0
 
-    //# trace the ray #//
+    //# Trace the ray #//
     local loopamt = 0
     while (loopamt < currentstepped) {
-        // do some math setup
+        // Do some math setup
         local temporigin = origin + originoffset
-        // find the nearest ent within our maxdist
+        // Find the nearest ent within our maxdist
         nearestent = FindNearest(temporigin, origmaxdist, entitiestoexclude, specificclass)
         
-        // now that we have the nearest ent, we need to see how far it is from the temporigin
+        // Now that we have the nearest ent, we need to see how far it is from the temporigin
         if (nearestent == null) {
             return null
         }
         local score = temporigin - nearestent.GetOrigin()
         score = UnNegative(score)
-        // multiply forwards by the lowest value in the score
+        // Multiply forwards by the lowest value in the score
         local lowest = 0
         if (score.x > lowest) {
             lowest = score.x
@@ -624,10 +625,10 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
             }
         }
 
-        // add the fowardstep to the origin
+        // Add the fowardstep to the origin
         originoffset = originoffset + fowardstep
 
-        // after getting the end point, we need to see if we hit anything
+        // After getting the end point, we need to see if we hit anything
         local newnearest = FindNearest(origin + originoffset, maxreldist, entitiestoexclude, specificclass)
         if (newnearest != null) {
             if (VisualDebug) {
@@ -638,7 +639,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         }
 
 
-        // // if we have reached the end of the line break
+        // // If we have reached the end of the line break
         // if (fowardstep.x == 0 && fowardstep.y == 0 && fowardstep.z == 0) {
         //     printl("END OF LINE")
         //     break
@@ -659,7 +660,7 @@ function FindPlayerByName(name) {
         local plrname = GetPlayerName(p.entindex())
         try {
             plrname = plrname.slice(0, name.len())
-        } catch(e) {} // if the name is too long
+        } catch(e) {} // If the name is too long
         printl(plrname)
         printl(name)
         if (plrname.tolower()==name.tolower()) {
@@ -676,13 +677,13 @@ function DisplayPlayerColor(player) {
     playercolordisplay.__KeyValueFromString("holdtime", "5")
     playercolordisplay.__KeyValueFromString("fadeout", "2")
     playercolordisplay.__KeyValueFromString("fadein", "2")
-    //playercolordisplay.__KeyValueFromString("spawnflags", "0")
+    // playercolordisplay.__KeyValueFromString("spawnflags", "0")
     playercolordisplay.__KeyValueFromString("channel", "1")
-    //playercolordisplay.__KeyValueFromString("message", )
+    // playercolordisplay.__KeyValueFromString("message", )
     playercolordisplay.__KeyValueFromString("x", "0.005")
     playercolordisplay.__KeyValueFromString("y", "1")
 
-    EntFireByHandle(playercolordisplay, "SetText", "Your Color : " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
+    EntFireByHandle(playercolordisplay, "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
     EntFireByHandle(playercolordisplay, "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
     EntFireByHandle(playercolordisplay, "display", "", 0, player, player)
     EntFireByHandle(playercolordisplay, "display", "", 0, player, player)
@@ -809,15 +810,15 @@ function GetAdminLevel(id) {
 // Find player by name
 function ExpandName(name) {
     name = name.tolower()
-    // go through each player
+    // Go through each player
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
-        // get the player's name
+        // Get the player's name
         local plrname = GetPlayerName(p.entindex())
-        // if the name matches the input name
+        // If the name matches the input name
         try {
             if (plrname.slice(0, name.len()).tolower() == name.tolower()) {
-                // return the player
+                // Return the player
                 return plrname
             }
         } catch(e) {} // if the name is too long
@@ -825,37 +826,37 @@ function ExpandName(name) {
     return name
 }
 
-// Get Directional Offset
+// Get directional offset
 function GetDirectionalOffset(org1, org2, multipl = 1) {
     
     local bxoffset = org1 - org2
 
-    // get the highest number in bxoffset
+    // Get the highest number in bxoffset
     local highest = UnNegative(GetHighest(bxoffset))
     local wasneg = false
-    // if it was originally negative then set the var
+    // If it was originally negative then set the var
     if (GetHighest(bxoffset) < 0) {
         wasneg = true
     }
 
-    // divide it by the highest number
+    // Divide it by the highest number
     // bxoffset.x <- bxoffset.x / highest
     // bxoffset.y <- bxoffset.y / highest
     // bxoffset.z <- bxoffset.z / highest
-    // if highest is not 0
+    // If highest is not 0
     if (highest > 0) {
-        //i genuinely have no idea if this works, but if js can do it squirrel can too
+        // I genuinely have no idea if this works, but if js can do it squirrel can too
         
-        // if bxoffset.x is negative
+        // If bxoffset.x is negative
         local wasxneg = bxoffset.x < 0
 
-        // if bxoffset.y is negative
+        // If bxoffset.y is negative
         local wasyneg = bxoffset.y < 0
 
-        // if bxoffset.z is negative
+        // If bxoffset.z is negative
         local waszneg = bxoffset.z < 0
 
-        // set the new values
+        // Set the new values
         local newx = bxoffset.x / highest
         if (wasxneg == true && newx > 0) {
             newx = 0
@@ -869,7 +870,7 @@ function GetDirectionalOffset(org1, org2, multipl = 1) {
             newz = 0
         }
 
-        // put the new values back into bxoffset
+        // Put the new values back into bxoffset
         bxoffset = Vector(newx*multipl, newy*multipl, newz*multipl)
 
     }
@@ -887,7 +888,7 @@ function FindByIndex(id)  {
     }
 }
 
-// Potato
+// Potatogun
 function PotatoIfy(plr) {
     if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
         EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", "1", 0)
@@ -897,7 +898,7 @@ function PotatoIfy(plr) {
     }
 }
 
-// No Potato
+// No Potatogun
 function UnPotatoIfy(plr) {
     if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
         EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", "0", 0)
@@ -914,7 +915,7 @@ function CanPing(ison = true) {
     env_global.__KeyValueFromString("globalstate", "no_pinging_blue")
     env_global2.__KeyValueFromString("globalstate", "no_pinging_orange")
 
-    // set the targetname
+    // Set the targetname
     env_global.__KeyValueFromString("targetname", "mpmod_no_pinging_blue")
     env_global2.__KeyValueFromString("targetname", "mpmod_no_pinging_orange")
 
@@ -926,7 +927,7 @@ function CanPing(ison = true) {
     EntFireByHandle(env_global, entFireByHandleState, "", 0.1, null, null)
     EntFireByHandle(env_global2, entFireByHandleState, "", 0.1, null, null)
 
-    // delete the entities
+    // Delete the entities
     EntFireByHandle(env_global, "kill", "", 0.2, null, null)
     EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
 }
@@ -938,7 +939,7 @@ function CanTaunt(ison = true) {
     env_global.__KeyValueFromString("globalstate", "no_taunting_blue")
     env_global2.__KeyValueFromString("globalstate", "no_taunting_orange")
 
-    // set the targetname
+    // Set the targetname
     env_global.__KeyValueFromString("targetname", "mpmod_no_taunting_blue")
     env_global2.__KeyValueFromString("targetname", "mpmod_no_taunting_orange")
 
@@ -949,7 +950,7 @@ function CanTaunt(ison = true) {
     EntFireByHandle(env_global, entFireByHandleState, "", 0.1, null, null)
     EntFireByHandle(env_global2, entFireByHandleState, "", 0.1, null, null)
 
-    // delete the entities
+    // Delete the entities
     EntFireByHandle(env_global, "kill", "", 0.2, null, null)
     EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
 }
@@ -959,7 +960,7 @@ function PortalGunSpawn(ison = true) {
 
     env_global.__KeyValueFromString("globalstate", "portalgun_nospawn")
 
-    // set the targetname
+    // Set the targetname
     env_global.__KeyValueFromString("targetname", "mpmod_portalgun_nospawn")
 
     if (ison) {
@@ -968,15 +969,15 @@ function PortalGunSpawn(ison = true) {
             EntFireByHandle(env_global, "turnon", "", 0.1, null, null)
     }
 
-    // delete the entities
+    // Delete the entities
     EntFireByHandle(env_global, "kill", "", 0.2, null, null)
 }
 
-// Find The Spawn Point For The Map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
+// Find the spawn point for the map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
 function BestGuessSpawnpoint() {
     printl(GlobalSpawnClass.blue.spawnpoint)
     if (MadeSpawnClass == false) {
-        // Box Ents
+        // Box ents
         BoxEnts <- [
             "@arrival_video_master",
             "@departure_video_master",
@@ -990,7 +991,7 @@ function BestGuessSpawnpoint() {
         ]
 
         printl("===========================")
-        printl("Box Ents")
+        printl("Box ents")
         printl("===========================")
 
         local BestSurrondingBoxEnt = -1
@@ -1047,7 +1048,7 @@ function BestGuessSpawnpoint() {
                             GlobalSpawnClass.usesetspawn <- true
                             GlobalSpawnClass.setspawn.position <- RealPlayerSpawn.GetOrigin()
                             GlobalSpawnClass.setspawn.radius <- 200
-                            // Get Every Info Player Start And YEET It
+                            // Get every info_player_start and kill it
                             local ent = null
                             while (ent = Entities.FindByClassname(ent, "info_player_start")) {
                                 if (ent != RealPlayerSpawn) {
@@ -1067,7 +1068,7 @@ function BestGuessSpawnpoint() {
     }
     if (MadeSpawnClass == false && GlobalSpawnClass.blue.spawnpoint.x == 0 && GlobalSpawnClass.blue.spawnpoint.y == 0) {
 
-        // Setup Some Variables
+        // Setup some variables
         local ourclosest = 99999999
         local spawnmiddle = null
         local ent = null
@@ -1076,13 +1077,13 @@ function BestGuessSpawnpoint() {
         local FinalSpawnBlue = Vector(0, 0, 0)
         local FinalRotationBlue = Vector(0, 0, 0)
         
-        // Singlepayer Spawn Stuff
+        // Singlepayer spawn stuff
         
         // New Aperture
         if (Entities.FindByModel(null, "models/elevator/elevator_tube_opener.mdl")) {
             while (ent = Entities.FindByModel(ent, "models/elevator/elevator_tube_opener.mdl")) {
                 local elevator = Entities.FindByName(null, "arrival_elevator-elevator_1")
-                // get the nearest elevator
+                // Get the nearest elevator
                 local elevator_pos = elevator.GetOrigin()
                 local ent_pos = ent.GetOrigin()
 
@@ -1096,7 +1097,7 @@ function BestGuessSpawnpoint() {
                 }
             }
 
-            // // find the angle of the spawnpoint in xyz using cos
+            // Find the angle of the spawnpoint in xyz using cos
             local spawnmiddle_ang_vec = Entities.FindByName(null, "@arrival_teleport").GetForwardVector()
             local spawnmiddle_ang = Entities.FindByName(null, "@arrival_teleport").GetAngles()
             // local spawntracex = cos(spawnmiddle_ang.x) * sin(spawnmiddle_ang.y)
@@ -1113,7 +1114,7 @@ function BestGuessSpawnpoint() {
 
             
 
-            // now get the back front left and right spawnpoints
+            // Now get the back front left and right spawnpoints
             local spawnfront = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x, spawnmiddle_ang_vec.y, hieght)
             local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, hieght)
             local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, hieght)
@@ -1122,7 +1123,7 @@ function BestGuessSpawnpoint() {
             printl("spawnOrigin: " + spawnmiddle.GetOrigin())
             printl("ourClosest: " + ourclosest)
             
-            // output the spawnpoints
+            // Output the spawnpoints
             FinalRotationBlue = spawnmiddle_ang + Vector(0, 0, 0)
             FinalSpawnBlue = spawnright
             FinalRotationRed = spawnmiddle_ang + Vector(0, 0, 0)
@@ -1133,12 +1134,12 @@ function BestGuessSpawnpoint() {
         if (Entities.FindByModel(null, "models/props_underground/elevator_a.mdl")) {
             local elevator = Entities.FindByName(null, "@test_dome_lift_entry_teleport")
             local spawnmiddle = null
-            // Find The Nearst Elevator To The point_teleport
+            // Find the nearst elevator to the point_teleport
             while (ent = Entities.FindByModel(ent, "models/props_underground/elevator_a.mdl")) {
                 if (elevator == null) {
                     elevator = Entities.FindByClassname(null, "point_teleport")
                 }
-                // get the nearest elevator to the point_teleport
+                // Get the nearest elevator to the point_teleport
                 local elevator_pos = elevator.GetOrigin()
                 local ent_pos = ent.GetOrigin()
 
@@ -1152,7 +1153,7 @@ function BestGuessSpawnpoint() {
                 }
             }
             
-            // Find the highest path track next to the spawnpoint
+            // Find the highest path_track next to the spawnpoint
             local tallestpathtrack = null
             if (spawnmiddle == null) {
                 printl("failed to find spawnmiddle")
@@ -1172,12 +1173,12 @@ function BestGuessSpawnpoint() {
 
             local extrah = 5
 
-            // Set The Origin Of The Spawnpoint Middle
+            // Set the origin of the spawnpoint middle
             local spawnpointmiddle = Vector(spawnmiddle.GetOrigin().x, spawnmiddle.GetOrigin().y, tallestpathtrack.GetOrigin().z)
             local spawnpointmiddle_ang_vec = elevator.GetForwardVector()
             local spawnpointmiddle_ang = elevator.GetAngles()
 
-            // Set The Sides Of The Spawnpoint
+            // Set the sides of the spawnpoint
             spawnpointmiddle_ang_vec = spawnpointmiddle_ang_vec *  100
 
             local spawnfront = spawnpointmiddle + Vector(spawnpointmiddle_ang_vec.x, spawnpointmiddle_ang_vec.y, extrah)
@@ -1185,7 +1186,7 @@ function BestGuessSpawnpoint() {
             local spawnright = spawnpointmiddle + Vector(spawnpointmiddle_ang_vec.y, spawnpointmiddle_ang_vec.x/-1, extrah)
             local spawnleft = spawnpointmiddle + Vector(spawnpointmiddle_ang_vec.y/-1, spawnpointmiddle_ang_vec.x, extrah)
 
-            // Finalize The Spawnpoints
+            // Finalize the spawnpoints
             FinalRotationBlue = spawnpointmiddle_ang
             FinalSpawnBlue = spawnright
             FinalRotationRed = spawnpointmiddle_ang
@@ -1193,7 +1194,7 @@ function BestGuessSpawnpoint() {
 
         }
 
-        // Override Parts Of The Global Spawn Class
+        // Override parts of the global spawn class
         GlobalSpawnClass.blue.spawnpoint <- FinalSpawnBlue
         GlobalSpawnClass.blue.rotation <- FinalRotationBlue
         GlobalSpawnClass.red.spawnpoint <- FinalSpawnRed
@@ -1213,12 +1214,12 @@ function TeleportToSpawnPoint(p, SpawnClass) {
     }
 
     if (p.GetTeam() >= 3) {
-        // Blue Team
+        // Blue team
         p.SetOrigin(SpawnClass.blue.spawnpoint)
         p.SetAngles(SpawnClass.blue.rotation.x, SpawnClass.blue.rotation.y, SpawnClass.blue.rotation.z)
         p.SetVelocity(SpawnClass.blue.velocity)
     } else {
-        // Red Team
+        // Red team
         p.SetOrigin(SpawnClass.red.spawnpoint)
         p.SetAngles(SpawnClass.red.rotation.x, SpawnClass.red.rotation.y, SpawnClass.red.rotation.z)
         p.SetVelocity(SpawnClass.red.velocity)
@@ -1243,7 +1244,7 @@ function CreateOurEntities() {
     measuremovement.__KeyValueFromString( "measurereference", "" )
     measuremovement.__KeyValueFromString( "measureretarget", "" )
     measuremovement.__KeyValueFromString( "targetscale", "1.0" )
-    // Movement Shit
+    // Movement shit
     measuremovement.__KeyValueFromString( "targetname", "p232_logic_measure_movement" )
     measuremovement.__KeyValueFromString( "targetreference", "p232_logic_measure_movement" )
     measuremovement.__KeyValueFromString( "target", "p232_logic_measure_movement" )
@@ -1255,7 +1256,7 @@ function CreateOurEntities() {
     nametagdisplay.__KeyValueFromString("x", "-1")
     nametagdisplay.__KeyValueFromString("y", "0.2")
     nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
-    //onscreendisplay.__KeyValueFromString("spawnflags", "1")
+    // onscreendisplay.__KeyValueFromString("spawnflags", "1")
     nametagdisplay.__KeyValueFromString("holdtime", "0")
     nametagdisplay.__KeyValueFromString("fadeout", "0.1")
     nametagdisplay.__KeyValueFromString("fadein", "0.1")
@@ -1272,10 +1273,10 @@ function CreateOurEntities() {
     onscreendisplay.__KeyValueFromString("spawnflags", "1")
     onscreendisplay.__KeyValueFromString("color", "60 200 60")
     onscreendisplay.__KeyValueFromString("channel", "1")
-    //onscreendisplay.__KeyValueFromString("x", "-1.1")
-    //onscreendisplay.__KeyValueFromString("y", "-1.1")
+    // onscreendisplay.__KeyValueFromString("x", "-1.1")
+    // onscreendisplay.__KeyValueFromString("y", "-1.1")
     
-    // dc message
+    // Disconnect message
     disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
     disconnectmessagedisplay.__KeyValueFromString("targetname", "pdcm")
     disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
@@ -1296,8 +1297,8 @@ function CreateOurEntities() {
     joinmessagedisplay.__KeyValueFromString("spawnflags", "1")
     joinmessagedisplay.__KeyValueFromString("color", "255 200 0")
     joinmessagedisplay.__KeyValueFromString("channel", "3")
-    //joinmessagedisplay.__KeyValueFromString("x", "0.1")
-    //joinmessagedisplay.__KeyValueFromString("y", "0.1")
+    // joinmessagedisplay.__KeyValueFromString("x", "0.1")
+    // joinmessagedisplay.__KeyValueFromString("y", "0.1")
 
     // Create a player_speedmod entity
     playerspeedmod <- Entities.CreateByClassname("player_speedmod")
