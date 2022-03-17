@@ -278,8 +278,8 @@ function StopStickAndTeleport() {
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun==true) {
-        ContainerBedBrush <- false
-        ContainerBedBrushCache <- false
+        ContainerFloorBrush <- false
+        currentCartCache <- false
         stoprenable <- false
 
         // Remove Portal Gun
@@ -667,53 +667,53 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (ContainerStick == true) {
-            if (ContainerBedBrushCache == false) {
-                ContainerBedBrushCache <- ContainerBedBrush.GetOrigin()
+            if (currentCartCache == false) {
+                currentCartCache <- Entities.FindByName(null, "Actor_container_master").GetAttachmentOrigin(1)
             }
-            currentCartPos <- ContainerBedBrush.GetOrigin()
-            currentCartRot <- ContainerBedBrush.GetAngles()
+            currentCartPos <- Entities.FindByName(null, "Actor_container_master").GetAttachmentOrigin(1)
+            currentCartRot <- Entities.FindByName(null, "Actor_container_master").GetAttachmentAngles(1)
 
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
-                //p.SetOrigin(Vector(-5700, 1931, 284))
-                // -8622 1768 92
-                // -2956 -163 -180
-                p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
-            }
+            // local p = null
+            // while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+            //     //p.SetOrigin(Vector(-5700, 1931, 284))
+            //     // -8622 1768 92
+            //     // -2956 -163 -180
+            //     p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
+            // }
 
-            // If someone is outside the container, move them back in
-            local playersinside = []
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x, currentCartPos.y + 150, currentCartPos.z + 75), 300)) {
-                playersinside.push(p)
-            }
+            // // If someone is outside the container, move them back in
+            // local playersinside = []
+            // local p = null
+            // while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x, currentCartPos.y + 150, currentCartPos.z + 75), 300)) {
+            //     playersinside.push(p)
+            // }
 
-            // If someone is stuck in the closet wakka wakka
-            // script p.SetOrigin(Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30))
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30), 82)) {
-                p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
-            }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 172, currentCartPos.y + 80, currentCartPos.z + 30), 90)) {
-                p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
-            }
+            // // If someone is stuck in the closet wakka wakka
+            // // script p.SetOrigin(Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30))
+            // local p = null
+            // while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30), 82)) {
+            //     p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
+            // }
+            // local p = null
+            // while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 172, currentCartPos.y + 80, currentCartPos.z + 30), 90)) {
+            //     p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
+            // }
 
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                local isplayerinindex = false
-                foreach (player in playersinside) {
-                    if (p == player) {
-                        isplayerinindex = true
-                    }
-                }
-                if (isplayerinindex == false) {
-                    p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
-                }
-            }
+            // local p = null
+            // while (p = Entities.FindByClassname(p, "player")) {
+            //     local isplayerinindex = false
+            //     foreach (player in playersinside) {
+            //         if (p == player) {
+            //             isplayerinindex = true
+            //         }
+            //     }
+            //     if (isplayerinindex == false) {
+            //         p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
+            //     }
+            // }
 
 
-            offsettick <- ContainerBedBrush.GetOrigin() - ContainerBedBrushCache 
+            offsettick <- currentCartPos - currentCartCache
             cartrotoffset <- 100
             rotval <- 2
             cartrotoffset1 <- 100
@@ -729,14 +729,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 printl(planepitch)
                 printl(planeroll)
-                playermiddle <- p.GetOrigin() - ContainerBedBrush.GetOrigin()
+                playermiddle <- p.GetOrigin() - currentCartPos
                 playermiddle <- Vector(((playermiddle.x / -1)/cartrotoffset)*planepitch, ((playermiddle.y)/cartrotoffset1)*planeroll, playermiddle.z)
-                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, ContainerBedBrush.GetOrigin().z + ((playermiddle.x + playermiddle.y) + 72)))
+                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, currentCartPos.z + ((playermiddle.x + playermiddle.y) + 12)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
                 printl(playermiddle)
             }
-            ContainerBedBrushCache <- ContainerBedBrush.GetOrigin()
+            DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)
+            currentCartCache <- currentCartPos
         }
+
         // Make our own changelevel trigger
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-685, 3112, 2400), 100)) {
