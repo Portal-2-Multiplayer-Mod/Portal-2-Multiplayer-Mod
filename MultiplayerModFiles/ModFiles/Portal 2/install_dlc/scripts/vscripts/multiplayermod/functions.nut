@@ -413,8 +413,80 @@ function FindEntityClass(ent, createclassifnone = true) {
     }
 }
 
+function LineIntersect2D(point1start, point1end, point2start, point2end) {
+
+    local d = (point1start.x - point1end.x) * (point2start.y - point2end.y) - (point1start.y - point1end.y) * (point2start.x - point2end.x)
+    local a = point1start.x * point1end.y - point1start.y * point1end.x
+    local b = point2start.x * point2end.y - point2start.y * point2end.x
+    local x = (a * (point2start.x - point2end.x) - (point1start.x - point1end.x) * b) / d
+    local y = (a * (point2start.y - point2end.y) - (point1start.y - point1end.y) * b) / d
+
+    // calculate the z coordinate of the intersection point
+    local z = point1start.z + (x - point1start.x) * (point1end.z - point1start.z) / (point1end.x - point1start.x)
+
+    return Vector(x, y, z)
+}
+
+function FlipVectorsZY(midvec1, vec2) {
+    vec2 = GlobalToLocal(vec2, midvec1)
+    vec2 = Vector(vec2.x, vec2.z, vec2.y)
+
+    vec2 = vec2 + midvec1
+    return vec2
+}
+
+function GlobalToLocal(point1, middlepoint) {
+    point1 = point1 - middlepoint
+
+    return point1
+}
+
 function MultiplyVector(vec, mult) {
     return Vector(vec.x * mult, vec.y * mult, vec.z * mult)
+}
+
+function DivideVector(vec, div) {
+    return Vector(vec.x / div, vec.y / div, vec.z / div)
+}
+
+function AddVectors(vec1, vec2) {
+    return Vector(vec1.x + vec2.x, vec1.y + vec2.y, vec1.z + vec2.z)
+}
+
+function GetLastThing(list, thingindx) {
+    if (thingindx > 0) {
+        return list[thingindx - 1]
+    } else {
+        return list[list.len() - 1]
+    }
+}
+
+function VectorAddSinglePart(vec, amt, part) {
+    if (part == 1) {
+        return Vector(vec.x + amt, vec.y, vec.z)
+    } else {
+        if (part == 2) {
+            return Vector(vec.x, vec.y + amt, vec.z)
+        } else { 
+            if (part == 3) {
+            return Vector(vec.x, vec.y, vec.z + amt)
+            }
+        }
+    }
+}
+
+function VectorMultiplySinglePart(vec, amt, part) {
+    if (part == 1) {
+        return Vector(vec.x * amt, vec.y, vec.z)
+    } else {
+        if (part == 2) {
+            return Vector(vec.x, vec.y * amt, vec.z)
+        } else { 
+            if (part == 3) {
+            return Vector(vec.x, vec.y, vec.z * amt)
+            }
+        }
+    }
 }
 
 function CreateEntityClass(ent) {

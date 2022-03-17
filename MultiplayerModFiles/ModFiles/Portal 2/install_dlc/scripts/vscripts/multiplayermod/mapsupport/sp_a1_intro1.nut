@@ -281,6 +281,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         ContainerFloorBrush <- false
         currentCartCache <- false
         stoprenable <- false
+        dummyent <- Entities.CreateByClassname("prop_dynamic")
 
         // Remove Portal Gun
         RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
@@ -673,13 +674,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             currentCartPos <- Entities.FindByName(null, "Actor_container_master").GetAttachmentOrigin(1)
             currentCartRot <- Entities.FindByName(null, "Actor_container_master").GetAttachmentAngles(1)
 
-            // local p = null
-            // while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
-            //     //p.SetOrigin(Vector(-5700, 1931, 284))
-            //     // -8622 1768 92
-            //     // -2956 -163 -180
-            //     p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
-            // }
+            local p = null
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+                //p.SetOrigin(Vector(-5700, 1931, 284))
+                // -8622 1768 92
+                // -2956 -163 -180
+                p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y, currentCartPos.z + 75))
+            }
 
             // // If someone is outside the container, move them back in
             // local playersinside = []
@@ -727,16 +728,155 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 planeroll <- currentCartRot.z * rotval1
                 p.SetOrigin(p.GetOrigin() + Vector(offsettick.x, offsettick.y, offsettick.z))
 
-                printl(planepitch)
-                printl(planeroll)
                 playermiddle <- p.GetOrigin() - currentCartPos
                 playermiddle <- Vector(((playermiddle.x / -1)/cartrotoffset)*planepitch, ((playermiddle.y)/cartrotoffset1)*planeroll, playermiddle.z)
                 p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, currentCartPos.z + ((playermiddle.x + playermiddle.y) + 12)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
-                printl(playermiddle)
             }
             DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)
             currentCartCache <- currentCartPos
+
+
+
+
+
+
+
+            dummyent.SetAngles(currentCartRot.x, currentCartRot.y, currentCartRot.z)
+
+            local forwardvec = dummyent.GetForwardVector()
+            local rightvec = dummyent.GetLeftVector()
+            local upvec = dummyent.GetUpVector()
+            local backvec = MultiplyVector(forwardvec, -1)
+            local leftvec = MultiplyVector(rightvec, -1)
+            local downvec = MultiplyVector(upvec, -1)
+            local zoffset = -25 //currentCartPos.z - (Entities.FindByName(null, "blue").GetOrigin().z + 73)
+            local z2offset = 135
+
+            // BOTTOM POINTS
+            // frontleft forwardvec, leftvec, 200, 100
+            local frontleft = MoveVectorCheck(currentCartPos, forwardvec, 200, leftvec, 100, upvec, zoffset)
+
+            // frontright forwardvec, rightvec, 200, 100
+            local frontright = MoveVectorCheck(currentCartPos, forwardvec, 200, rightvec, 100, upvec, zoffset)
+
+            // backleft backvec, leftvec, 200, 100
+            local backleft = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 100, upvec, zoffset)
+
+            // backleftcloset backvec, leftvec, 200, 50
+            local backleftcloset = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 25, upvec, zoffset)
+
+            // frontleftcloset backvec, leftvec, 100, 50
+            local frontleftcloset = MoveVectorCheck(currentCartPos, backvec, 120, leftvec, 25, upvec, zoffset)
+
+            // frontrightcloset backvec, rightvec, 50, 100
+            local frontrightcloset = MoveVectorCheck(currentCartPos, backvec, 120, rightvec, 100, upvec, zoffset)
+
+
+
+
+            // TOP POINTS (same points just with z2offset)
+            // frontleft forwardvec, leftvec, 200, 100
+            local frontlefttop = MoveVectorCheck(currentCartPos, forwardvec, 200, leftvec, 100, upvec, z2offset)
+
+            // frontright forwardvec, rightvec, 200, 100
+            local frontrighttop = MoveVectorCheck(currentCartPos, forwardvec, 200, rightvec, 100, upvec, z2offset)
+
+            // backleft backvec, leftvec, 200, 100
+            local backlefttop = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 100, upvec, z2offset)
+
+            // backleftcloset backvec, leftvec, 200, 50
+            local backleftclosettop = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 25, upvec, z2offset)
+
+            // frontleftcloset backvec, leftvec, 100, 50
+            local frontleftclosettop = MoveVectorCheck(currentCartPos, backvec, 120, leftvec, 25, upvec, z2offset)
+
+            // frontrightcloset backvec, rightvec, 50, 100
+            local frontrightclosettop = MoveVectorCheck(currentCartPos, backvec, 120, rightvec, 100, upvec, z2offset)
+
+
+
+            local minsize = Vector(-2, -2, -2)
+            local maxsize = Vector(2, 2, 2)
+            local r = 255
+            local g = 0
+            local b = 0
+            local alpha = 100
+            local time = 0
+            // draw the boxes
+            DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(backleftcloset, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(frontleftcloset, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(frontrightcloset, minsize, maxsize, r, g, b, alpha, time)
+            //top
+            DebugDrawBox(frontlefttop, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(frontrighttop, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(backlefttop, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(backleftclosettop, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(frontleftclosettop, minsize, maxsize, r, g, b, alpha, time)
+            DebugDrawBox(frontrightclosettop, minsize, maxsize, r, g, b, alpha, time)
+
+
+
+            // make the lines
+            local frontwall = [[frontleft, frontlefttop, true], [frontlefttop, frontrighttop, false]]
+
+            local player = Entities.FindByClassname(null, "player")
+            local playerforward = player.GetOrigin() + Vector(5, 0, 0)
+
+            local line = frontwall[1]
+            local intersect1 = LineIntersect2D(line[0], line[1], player.GetOrigin(), playerforward)
+
+            DebugDrawLine(line[0], line[1], 255, 255, 0, true, 0)
+            DebugDrawBox(intersect1, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0)
+
+
+
+            //// vertical attempt ////
+
+            local line = frontwall[0]
+            local point1 = line[0]
+            local point2 = line[1]
+
+            // flip the line z to y
+            point2 = FlipVectorsZY(point1, point2)
+            line = [point1, point2]
+
+
+
+            local playerorigin = player.EyePosition()
+            //playerorigin = playerorigin + Vector(0, 0, 73)
+            playerorigin = FlipVectorsZY(point1, playerorigin)
+            local forwardvec = playerorigin + Vector(5, 0, 0)
+
+
+            local intersect2 = Vector(0, 0, 0)
+            // get the intersection
+            intersect2 = LineIntersect2D(line[0], line[1], playerorigin, forwardvec)
+
+            // flip the intersection
+            intersect2 = FlipVectorsZY(point1, intersect2)
+
+            // flip the line back
+            point2 = FlipVectorsZY(point1, point2)
+            line = [point1, point2]
+
+            DebugDrawLine(line[0], line[1], 255, 255, 0, true, 0)
+            DebugDrawBox(intersect2, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0)
+
+
+
+            // get the final point (the intersection of the two lines)
+            local finalpoint = Vector(intersect2.x, intersect1.y, intersect2.z)
+
+            DebugDrawBox(finalpoint, Vector(-4, -4, -4), Vector(4, 4, 4), 75, 75, 255, 255, 0)
+
+            //////////////////////////
+
+
+
         }
 
         // Make our own changelevel trigger
@@ -745,4 +885,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             SendToConsole("changelevel sp_a1_intro2")
         }
     }
+}
+
+function MoveVectorCheck(objectmiddle, vector1, mult1, vector2, mult2, vector3, mult3) {
+    local cur = AddVectors(MultiplyVector(vector1, mult1), MultiplyVector(vector2, mult2)) // set the vectors offset relitive to the middle
+    cur = AddVectors(cur, MultiplyVector(vector3, mult3)) // set the vectors offset relitive to the middle
+
+
+    cur = AddVectors(objectmiddle, cur) // change the vector from local space to world space
+    return cur
 }
