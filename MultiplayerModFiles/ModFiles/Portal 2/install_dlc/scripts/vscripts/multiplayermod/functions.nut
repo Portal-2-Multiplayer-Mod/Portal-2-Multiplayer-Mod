@@ -159,6 +159,11 @@ function RandomColor() {
                 }
             }
         }
+        return class {
+            r = rcr
+            g = rcg
+            b = rcb
+        }
     }
     
     if (RandomInt(1, 7)==3) {
@@ -226,7 +231,7 @@ function GetPlayerColor(p, multiply = true) {
     if (PlayerID > 16) {
         // If you have more than 16 players then you gotta bear the consequences of your own actions
         local randomColor = RandomColor()
-        R <- randomColor.r; G <- randomColor.g; B <- randomColor.B; colorname = "random";
+        R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; colorname = "random";
     }
 
     if (multiply == true) {
