@@ -414,7 +414,6 @@ function FindEntityClass(ent, createclassifnone = true) {
 }
 
 function LineIntersect2D(point1start, point1end, point2start, point2end) {
-
     local d = (point1start.x - point1end.x) * (point2start.y - point2end.y) - (point1start.y - point1end.y) * (point2start.x - point2end.x)
     local a = point1start.x * point1end.y - point1start.y * point1end.x
     local b = point2start.x * point2end.y - point2start.y * point2end.x
@@ -427,9 +426,105 @@ function LineIntersect2D(point1start, point1end, point2start, point2end) {
     return Vector(x, y, z)
 }
 
+function TranslatePlayerToWall(wall, playerpos) {
+    local line1 = wall[1]
+    local line2 = wall[2]
+
+    local dir = wall[0]
+
+    local playerforward = Vector(0, 0, 0)
+    if (dir == 0) {
+        playerforward = Vector(5, 0, 0)
+    } else {
+        playerforward = Vector(0, 5, 0)
+    }
+
+    local intersect1 = Vector(0, 0, 0)
+    // now find line 1's intersection with the player
+    if (line1[2] == false) {
+        intersect1 = LineIntersect2D(line1[0], line1[1], playerpos, playerpos + playerforward)
+    } else {
+        intersect1 = LineIntersect2DZTranslation(line1[0], line1[1], playerpos, playerpos + playerforward, dir)
+    }
+
+    local intersect2 = Vector(0, 0, 0)
+    // now find line 2's intersection with the player
+    if (line2[2] == false) {
+        intersect2 = LineIntersect2D(line2[0], line2[1], playerpos, playerpos + playerforward)
+    } else {
+        intersect2 = LineIntersect2DZTranslation(line2[0], line2[1], playerpos, playerpos + playerforward, dir)
+    }
+
+    // get the final point (the intersection of the two lines)
+
+    local finalpoint = Vector(0, 0, 0)
+    if (dir == 0) {
+        if (line1[2] == false) {
+            finalpoint = Vector(intersect2.x, intersect1.y, intersect2.z)
+        } else {
+            finalpoint = Vector(intersect1.x, intersect2.y, intersect1.z)
+        }
+    } else {
+        if (line1[2] == false) {
+            finalpoint = Vector(intersect1.x, intersect2.y, intersect2.z)
+        } else {
+            finalpoint = Vector(intersect2.x, intersect1.y, intersect1.z)
+        }
+    }
+
+    return finalpoint
+}
+
+function LineIntersect2DZTranslation(point1, point2, flatpoint1, flatpoint2, ztranslation) { // ztranslation is y flip = 0, x flip = 1
+
+    // flip the line so we can send it to the 2D line intersect function
+    if (ztranslation == 0) {
+        point2 = FlipVectorsZY(point1, point2)
+    } else {
+        point2 = FlipVectorsZX(point1, point2)
+    }
+
+    // put the players coords on the same plane as the line
+    if (ztranslation == 0) {
+        flatpoint1 = FlipVectorsZY(point1, flatpoint1) 
+    } else {
+        flatpoint1 = FlipVectorsZX(point1, flatpoint1)
+    }
+
+    // put the players coords on the same plane as the line
+    if (ztranslation == 0) {
+        flatpoint2 = FlipVectorsZY(point1, flatpoint2) 
+    } else {
+        flatpoint2 = FlipVectorsZX(point1, flatpoint2)
+    }
+
+
+    // get the intersection
+    local intersect = LineIntersect2D(point1, point2, flatpoint1, flatpoint2)
+
+    // flip the intersection back to the original z
+    if (ztranslation == 0) {
+        intersect = FlipVectorsZY(point1, intersect)
+    } else {
+        intersect = FlipVectorsZX(point1, intersect)
+    }
+
+
+
+    return intersect
+}
+
 function FlipVectorsZY(midvec1, vec2) {
     vec2 = GlobalToLocal(vec2, midvec1)
     vec2 = Vector(vec2.x, vec2.z, vec2.y)
+
+    vec2 = vec2 + midvec1
+    return vec2
+}
+
+function FlipVectorsZX(midvec1, vec2) {
+    vec2 = GlobalToLocal(vec2, midvec1)
+    vec2 = Vector(vec2.z, vec2.y, vec2.x)
 
     vec2 = vec2 + midvec1
     return vec2

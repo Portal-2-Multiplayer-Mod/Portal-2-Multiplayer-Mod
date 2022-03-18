@@ -220,6 +220,24 @@ function p232ParentAndStartMath() {
         EntFire("ContainerPlantBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         EntFire("ContainerChairBrush", "SetParent", "Actor_container_master", 0)
         EntFire("ContainerChairBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+
+        // disable all the brushes
+        // EntFire("ContainerBedBrush", "disable", "", 0)
+        // EntFire("ContainerFloorBrush", "disable", "", 0)
+        // EntFire("ContainerCeilingBrush", "disable", "", 0)
+        // EntFire("ContainerRightWallBrush", "disable", "", 0)
+        // EntFire("ContainerLeftWallBrush", "disable", "", 0)
+        // EntFire("ContainerFrontWallBrush", "disable", "", 0)
+        // EntFire("ContainerBackDoorBrush", "disable", "", 0)
+        // EntFire("ContainerBathroomBrush", "disable", "", 0)
+        // EntFire("ContainerClosetBrush", "disable", "", 0)
+        // EntFire("ContainerNightstandsBrush", "disable", "", 0)
+        // EntFire("ContainerLightBrush", "disable", "", 0)
+        // EntFire("ContainerWheatleyBrush", "disable", "", 0)
+        // EntFire("ContainerDeskBrush", "disable", "", 0)
+        // EntFire("ContainerPlantBrush", "disable", "", 0)
+        // EntFire("ContainerChairBrush", "disable", "", 0)
+
     ContainerStick = true
 }
 
@@ -753,130 +771,135 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local zoffset = -25 //currentCartPos.z - (Entities.FindByName(null, "blue").GetOrigin().z + 73)
             local z2offset = 135
 
+
+
+
+
+
+
+
             // BOTTOM POINTS
-            // frontleft forwardvec, leftvec, 200, 100
-            local frontleft = MoveVectorCheck(currentCartPos, forwardvec, 200, leftvec, 100, upvec, zoffset)
-
-            // frontright forwardvec, rightvec, 200, 100
-            local frontright = MoveVectorCheck(currentCartPos, forwardvec, 200, rightvec, 100, upvec, zoffset)
-
-            // backleft backvec, leftvec, 200, 100
-            local backleft = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 100, upvec, zoffset)
-
-            // backleftcloset backvec, leftvec, 200, 50
+            local frontleft = MoveVectorCheck(currentCartPos, forwardvec, 200, leftvec, 90, upvec, zoffset)
+            local frontright = MoveVectorCheck(currentCartPos, forwardvec, 200, rightvec, 90, upvec, zoffset)
+            local backleft = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 90, upvec, zoffset)
             local backleftcloset = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 25, upvec, zoffset)
-
-            // frontleftcloset backvec, leftvec, 100, 50
-            local frontleftcloset = MoveVectorCheck(currentCartPos, backvec, 120, leftvec, 25, upvec, zoffset)
-
-            // frontrightcloset backvec, rightvec, 50, 100
-            local frontrightcloset = MoveVectorCheck(currentCartPos, backvec, 120, rightvec, 100, upvec, zoffset)
-
-
-
-
+            local frontleftcloset = MoveVectorCheck(currentCartPos, backvec, 110, leftvec, 28, upvec, zoffset)
+            local frontrightcloset = MoveVectorCheck(currentCartPos, backvec, 110, rightvec, 90, upvec, zoffset)
+            local dressingclosetfrontleft = MoveVectorCheck(currentCartPos, backvec, 80, rightvec, 20, upvec, zoffset)
+            local dressingclosetfrontright = MoveVectorCheck(currentCartPos, backvec, 80, rightvec, 90, upvec, zoffset)
+            local dressingclosetbackleft = MoveVectorCheck(currentCartPos, backvec, 110, rightvec, 20, upvec, zoffset)
             // TOP POINTS (same points just with z2offset)
-            // frontleft forwardvec, leftvec, 200, 100
-            local frontlefttop = MoveVectorCheck(currentCartPos, forwardvec, 200, leftvec, 100, upvec, z2offset)
-
-            // frontright forwardvec, rightvec, 200, 100
-            local frontrighttop = MoveVectorCheck(currentCartPos, forwardvec, 200, rightvec, 100, upvec, z2offset)
-
-            // backleft backvec, leftvec, 200, 100
-            local backlefttop = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 100, upvec, z2offset)
-
-            // backleftcloset backvec, leftvec, 200, 50
+            local frontlefttop = 0
+            frontlefttop = MoveVectorCheck(currentCartPos, forwardvec, 200, leftvec, 90, upvec, z2offset)
+            local frontrighttop = MoveVectorCheck(currentCartPos, forwardvec, 200, rightvec, 90, upvec, z2offset)
+            local backlefttop = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 90, upvec, z2offset)
             local backleftclosettop = MoveVectorCheck(currentCartPos, backvec, 250, leftvec, 25, upvec, z2offset)
+            local frontleftclosettop = MoveVectorCheck(currentCartPos, backvec, 110, leftvec, 28, upvec, z2offset)
+            local frontrightclosettop = MoveVectorCheck(currentCartPos, backvec, 110, rightvec, 90, upvec, z2offset)
+            local dressingclosetfrontlefttop = MoveVectorCheck(currentCartPos, backvec, 80, rightvec, 20, upvec, z2offset)
+            local dressingclosetfrontrighttop = MoveVectorCheck(currentCartPos, backvec, 80, rightvec, 90, upvec, z2offset)
+            local dressingclosetbacklefttop = MoveVectorCheck(currentCartPos, backvec, 110, rightvec, 20, upvec, z2offset)
 
-            // frontleftcloset backvec, leftvec, 100, 50
-            local frontleftclosettop = MoveVectorCheck(currentCartPos, backvec, 120, leftvec, 25, upvec, z2offset)
+            //                                                                                                    _ _ _ _
+            // WALL CONSISTS OF (ONE INT X or Y) AND (TWO LINES (LISTS)) (LEFT AND TOP (FORMING A RIGHT ANGLE))  |
+            //                                                                                                   |
+            //                                                                                                   |
+            // [Int FACING(0=x or 1=y), List LINE1[Vector POINT1, Vector POINT2, Bool IsVertical]      ,     List LINE2 LINE1[Vector POINT1, Vector POINT2, Bool IsVertical]]
 
-            // frontrightcloset backvec, rightvec, 50, 100
-            local frontrightclosettop = MoveVectorCheck(currentCartPos, backvec, 120, rightvec, 100, upvec, z2offset)
+            // make the lines //////////////////////////////////////////////////////////////////////////
+            local frontwall = [0, [frontleft, frontlefttop, true], [frontlefttop, frontrighttop, false]]
+            local leftwall = [1, [backleft, backlefttop, true], [backlefttop, frontlefttop, false]]
+            local backdoor = [0, [backleft, backlefttop, true], [backlefttop, backleftclosettop, false]]
+            local bathroomwall = [1, [frontleftcloset, frontleftclosettop, true], [frontleftclosettop, backleftclosettop, false]]
+            local closetwall = [0, [frontleftcloset, frontleftclosettop, true], [frontleftclosettop, frontrightclosettop, false]]
+            local rightwall = [1, [frontright, frontrighttop, true], [frontrighttop, frontrightclosettop, false]]
+            local frontclosetwall = [0, [dressingclosetfrontleft, dressingclosetfrontlefttop, true], [dressingclosetfrontlefttop, dressingclosetfrontrighttop, false]]
+            local leftclosetwall = [1, [dressingclosetfrontleft, dressingclosetfrontlefttop, true], [dressingclosetfrontlefttop, dressingclosetbacklefttop, false]]
+            ////////////////////////////////////////////////////////////////////////////////////////////
 
+            local ply = null
+            while (ply = Entities.FindByClassname(ply, "player")) {
+                // Get The Origin
+                local player = ply
+                local playerpoint = player.GetOrigin() + Vector(0, 0, 73)
 
+                // Get The Points ////////////////////////////////////////////
+                WallPush(frontwall, playerpoint, player, Vector(-1, 0, 0), 35)
 
-            local minsize = Vector(-2, -2, -2)
-            local maxsize = Vector(2, 2, 2)
-            local r = 255
-            local g = 0
-            local b = 0
-            local alpha = 100
-            local time = 0
-            // draw the boxes
-            DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(backleftcloset, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(frontleftcloset, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(frontrightcloset, minsize, maxsize, r, g, b, alpha, time)
-            //top
-            DebugDrawBox(frontlefttop, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(frontrighttop, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(backlefttop, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(backleftclosettop, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(frontleftclosettop, minsize, maxsize, r, g, b, alpha, time)
-            DebugDrawBox(frontrightclosettop, minsize, maxsize, r, g, b, alpha, time)
+                WallPush(leftwall, playerpoint, player, Vector(0, -1, 0), 35)
 
+                WallPush(backdoor, playerpoint, player, Vector(1, 0, 0), 35)
 
+                WallPush(bathroomwall, playerpoint, player, Vector(0, 1, 0), 35, true, frontleftcloset, frontleftclosettop, 0)
 
-            // make the lines
-            local frontwall = [[frontleft, frontlefttop, true], [frontlefttop, frontrighttop, false]]
+                WallPush(closetwall, playerpoint, player, Vector(1, 0, 0), 35, true, frontleftcloset, frontleftclosettop, 1)
 
-            local player = Entities.FindByClassname(null, "player")
-            local playerforward = player.GetOrigin() + Vector(5, 0, 0)
+                WallPush(rightwall, playerpoint, player, Vector(0, 1, 0), 35)
 
-            local line = frontwall[1]
-            local intersect1 = LineIntersect2D(line[0], line[1], player.GetOrigin(), playerforward)
+                WallPush(frontclosetwall, playerpoint, player, Vector(1, 0, 0), 35, true, dressingclosetfrontleft, dressingclosetfrontlefttop, 1)
+                
+                WallPush(leftclosetwall, playerpoint, player, Vector(0, 1, 0), 35, true, dressingclosetfrontleft, dressingclosetfrontlefttop, 0)
+                //////////////////////////////////////////////////////////////
 
-            DebugDrawLine(line[0], line[1], 255, 255, 0, true, 0)
-            DebugDrawBox(intersect1, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0)
-
-
-
-            //// vertical attempt ////
-
-            local line = frontwall[0]
-            local point1 = line[0]
-            local point2 = line[1]
-
-            // flip the line z to y
-            point2 = FlipVectorsZY(point1, point2)
-            line = [point1, point2]
+                
 
 
+                // Debug The Lines  ////////////////////////////////////////////////////
+                DebugDrawLine(frontwall[1][0], frontwall[1][1], 255, 255, 0, true, 0) // front wall
+                DebugDrawLine(frontwall[2][0], frontwall[2][1], 255, 255, 0, true, 0) // front wall
+                DebugDrawLine(leftwall[1][0], leftwall[1][1], 255, 255, 0, true, 0)   // left wall
+                DebugDrawLine(leftwall[2][0], leftwall[2][1], 255, 255, 0, true, 0)   // left wall
+                DebugDrawLine(backdoor[1][0], backdoor[1][1], 255, 255, 0, true, 0)   // back door
+                DebugDrawLine(backdoor[2][0], backdoor[2][1], 255, 255, 0, true, 0)   // back door
+                DebugDrawLine(bathroomwall[1][0], bathroomwall[1][1], 255, 255, 0, true, 0)   // bathroom wall
+                DebugDrawLine(bathroomwall[2][0], bathroomwall[2][1], 255, 255, 0, true, 0)   // bathroom wall
+                DebugDrawLine(closetwall[1][0], closetwall[1][1], 255, 255, 0, true, 0)   // closet wall
+                DebugDrawLine(closetwall[2][0], closetwall[2][1], 255, 255, 0, true, 0)   // closet wall
+                DebugDrawLine(rightwall[1][0], rightwall[1][1], 255, 255, 0, true, 0)   // right wall
+                DebugDrawLine(rightwall[2][0], rightwall[2][1], 255, 255, 0, true, 0)   // right wall
+                DebugDrawLine(frontclosetwall[1][0], frontclosetwall[1][1], 255, 255, 0, true, 0)   // front closet wall
+                DebugDrawLine(frontclosetwall[2][0], frontclosetwall[2][1], 255, 255, 0, true, 0)   // front closet wall
+                DebugDrawLine(leftclosetwall[1][0], leftclosetwall[1][1], 255, 255, 0, true, 0)   // left closet wall
+                DebugDrawLine(leftclosetwall[2][0], leftclosetwall[2][1], 255, 255, 0, true, 0)   // left closet wall
+                ////////////////////////////////////////////////////////////////////////
+                // Debug The Points ////////////////////////////////////////////////////
+                local minsize = Vector(-2, -2, -2)
+                local maxsize = Vector(2, 2, 2)
+                local r = 255
+                local g = 0
+                local b = 0
+                local alpha = 100
+                local time = 0
+                // draw the boxes
+                DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(backleftcloset, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(frontleftcloset, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(frontrightcloset, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(dressingclosetfrontleft, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(dressingclosetfrontright, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(dressingclosetbackleft, minsize, maxsize, r, g, b, alpha, time)
+                //top
+                DebugDrawBox(frontlefttop, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(frontrighttop, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(backlefttop, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(backleftclosettop, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(frontleftclosettop, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(frontrightclosettop, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(dressingclosetfrontlefttop, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(dressingclosetfrontrighttop, minsize, maxsize, r, g, b, alpha, time)
+                DebugDrawBox(dressingclosetbacklefttop, minsize, maxsize, r, g, b, alpha, time)
+                ////////////////////////////////////////////////////////////////////////
 
-            local playerorigin = player.EyePosition()
-            //playerorigin = playerorigin + Vector(0, 0, 73)
-            playerorigin = FlipVectorsZY(point1, playerorigin)
-            local forwardvec = playerorigin + Vector(5, 0, 0)
+                // // draw a line from intersect1 to finalpoint
+                // DebugDrawLine(intersect1, finalpoint, 255, 120, 255, true, 0)
+                // // draw a line from intersect2 to finalpoint
+                // DebugDrawLine(intersect2, finalpoint, 255, 120, 255, true, 0)
+                // DebugDrawBox(finalpoint, Vector(-4, -4, -4), Vector(4, 4, 4), 75, 75, 255, 255, 0)
 
-
-            local intersect2 = Vector(0, 0, 0)
-            // get the intersection
-            intersect2 = LineIntersect2D(line[0], line[1], playerorigin, forwardvec)
-
-            // flip the intersection
-            intersect2 = FlipVectorsZY(point1, intersect2)
-
-            // flip the line back
-            point2 = FlipVectorsZY(point1, point2)
-            line = [point1, point2]
-
-            DebugDrawLine(line[0], line[1], 255, 255, 0, true, 0)
-            DebugDrawBox(intersect2, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0)
-
-
-
-            // get the final point (the intersection of the two lines)
-            local finalpoint = Vector(intersect2.x, intersect1.y, intersect2.z)
-
-            DebugDrawBox(finalpoint, Vector(-4, -4, -4), Vector(4, 4, 4), 75, 75, 255, 255, 0)
-
-            //////////////////////////
-
-
-
+                //////////////////////////
+            }
         }
 
         // Make our own changelevel trigger
@@ -884,6 +907,53 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-685, 3112, 2400), 100)) {
             SendToConsole("changelevel sp_a1_intro2")
         }
+    }
+}
+
+function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = false, cull1 = Vector(0, 0, 0), cull2 = Vector(0, 0, 0), axiscull = 0) {
+    local point = TranslatePlayerToWall(wall, playerpoint)
+
+    local dir = wall[0]
+    local cullpoint = 0
+    local inter = Vector(0, 0, 0)
+    if (outofbounds) {
+        local playerforward = Vector(0, 0, 0)
+        if (dir == 0) {
+            playerforward = Vector(5, 0, 0)
+        } else {
+            playerforward = Vector(0, 5, 0)
+        }
+        inter = LineIntersect2DZTranslation(cull1, cull2, playerpoint, playerpoint + playerforward, dir)
+        DebugDrawBox(inter, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 75, 75, 255, 0)
+    }
+
+    if (outofbounds) {
+        if (axiscull == 0 && point.x > inter.x) {
+            point = inter
+        } else {
+            if (axiscull == 1 && point.y > inter.y) {
+                point = inter
+            } else {
+                
+            }
+        }
+    }
+
+    local distancescore = GetDistanceScore(point, playerpoint)
+
+
+    // axiscull +x = 0, +y = 1, -x = 2, -y = 3
+
+    
+    
+    if (distancescore < distance) {
+        
+        player.SetOrigin(player.GetOrigin() + pushvec)
+        
+        DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 255, 75, 255, 0)
+
+    } else {
+        DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0)
     }
 }
 
@@ -895,3 +965,4 @@ function MoveVectorCheck(objectmiddle, vector1, mult1, vector2, mult2, vector3, 
     cur = AddVectors(objectmiddle, cur) // change the vector from local space to world space
     return cur
 }
+amogmanpeen <- false
