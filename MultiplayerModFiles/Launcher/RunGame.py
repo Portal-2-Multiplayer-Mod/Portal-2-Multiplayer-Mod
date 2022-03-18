@@ -621,11 +621,11 @@ def Init():
         print("(P2:MM) Running Game...")
         try:
             if (iow):
-                subprocess.run([portal2path+nf+"portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_community_hub"])
+                subprocess.run([portal2path+nf+"portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3"])
                 print("Game launch successful!")
             else:
                 from subprocess import Popen
-                subprocess.Popen(["steam", "-applaunch", "620", "-novid", "-allowspectators", "-nosixense", "+map", "mp_coop_community_hub"])
+                subprocess.Popen(["steam", "-applaunch", "620", "-novid", "-allowspectators", "-nosixense", "+map", "mp_coop_lobby_3"])
                 print("Game launch successful!")
         except:
             print("Failed to launch Portal 2!")
