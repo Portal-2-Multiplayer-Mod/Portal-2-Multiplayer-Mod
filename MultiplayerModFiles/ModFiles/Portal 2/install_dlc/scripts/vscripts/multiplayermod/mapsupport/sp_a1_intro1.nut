@@ -824,21 +824,32 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local playerpoint = player.GetOrigin() + Vector(0, 0, 73)
 
                 // Get The Points ////////////////////////////////////////////
-                WallPush(frontwall, playerpoint, player, Vector(-1, 0, 0), 35)
-
-                WallPush(leftwall, playerpoint, player, Vector(0, -1, 0), 35)
-
-                WallPush(backdoor, playerpoint, player, Vector(1, 0, 0), 35)
-
-                WallPush(bathroomwall, playerpoint, player, Vector(0, 1, 0), 35, true, frontleftcloset, frontleftclosettop, 0)
-
-                WallPush(closetwall, playerpoint, player, Vector(1, 0, 0), 35, true, frontleftcloset, frontleftclosettop, 1)
-
-                WallPush(rightwall, playerpoint, player, Vector(0, 1, 0), 35)
-
-                WallPush(frontclosetwall, playerpoint, player, Vector(1, 0, 0), 35, true, dressingclosetfrontleft, dressingclosetfrontlefttop, 1)
                 
-                WallPush(leftclosetwall, playerpoint, player, Vector(0, 1, 0), 35, true, dressingclosetfrontleft, dressingclosetfrontlefttop, 0)
+                local ittr = 2
+                while (ittr > 0) {
+                    if (ittr == 1) {
+                        playerpoint = player.GetOrigin() // switch to feet after doing head
+                    }
+                    ittr = ittr - 1
+
+                    WallPush(frontwall, playerpoint, player, Vector(-1, 0, 0), 35)
+
+                    WallPush(leftwall, playerpoint, player, Vector(0, -1, 0), 35)
+
+                    WallPush(backdoor, playerpoint, player, Vector(1, 0, 0), 35)
+
+                    WallPush(bathroomwall, playerpoint, player, Vector(0, 1, 0), 35, true, frontleftcloset, frontleftclosettop, 0)
+
+                    WallPush(closetwall, playerpoint, player, Vector(1, 0, 0), 35, true, frontleftcloset, frontleftclosettop, 1)
+
+                    WallPush(rightwall, playerpoint, player, Vector(0, 1, 0), 35)
+
+                    WallPush(frontclosetwall, playerpoint, player, Vector(1, 0, 0), 35, true, dressingclosetfrontleft, dressingclosetfrontlefttop, 1)
+                    
+                    WallPush(leftclosetwall, playerpoint, player, Vector(0, 1, 0), 35, true, dressingclosetfrontleft, dressingclosetfrontlefttop, 0)
+
+                }
+
                 //////////////////////////////////////////////////////////////
 
                 
