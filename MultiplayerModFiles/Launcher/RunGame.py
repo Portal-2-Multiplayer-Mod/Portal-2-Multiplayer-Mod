@@ -91,17 +91,17 @@ def MountMod(gamepath):
         os.system(command)
     
 
-    # after we are done copying, we need to change rename the install_dlc folder
+    # after we are done copying, we need to rename the install_dlc folder
     print("(P2:MM) Renaming install_dlc folder to " + dlcmountpoint + "...")
-    # if on windows, use the command line to rename the folder
+    # windows command
     if (iow):
         command = "move \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         print("(P2:MM) Command: " + command)
         os.system(command)
+    # linux command
     else:
         command = "mv \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         print("(P2:MM) Command: " + command)
-        # if on linux, use the command line
         os.system(command)
 
 def UnpatchBinaries(gamepath):
@@ -129,7 +129,7 @@ def PatchBinaries(gamepath):
     print("")
     print("(P2:MM) Patching Binarys...")
 
-    # move the binaries to the storage area
+    # move the binaries to the game path area
     print("")
     print("(P2:MM) Moving binaries to " + gamepath + "...")
     print("")
@@ -155,15 +155,16 @@ def PatchBinaries(gamepath):
             print("(P2:MM) File already exists, deleting...")
             os.remove(gamepath + nf + filename)
 
-        # copy the binary to gamepath
+        # copy the binary to the gamepath
+        # windows command
         if (iow):
             command = "copy \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
             print("(P2:MM) Command: " + command)
             os.system(command)
+        # linux command
         else:
             command = "cp \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
             print("(P2:MM) Command: " + command)
-            # if on linux, use the command line
             os.system(command)
         
         print("")
