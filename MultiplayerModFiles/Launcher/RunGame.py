@@ -350,12 +350,12 @@ def FindAvalibleDLC(gamepath):
                 if "32playermod.identifier" in os.listdir(gamepath + nf + file):
                     print("(P2:MM) Found OLD DLC: " + file)
                     # delete the folder even if it's not empty
-                    # windows command
+                    # Windows command
                     if (iow):
                         command = "rmdir /S /Q \"" + gamepath + nf + file + "\""
                         print("(P2:MM) Command: " + command)
                         os.system(command)
-                    # linux command 
+                    # Linux command 
                     else:
                         command = "rm -r \"" + gamepath + nf + file + "\""
                         print("(P2:MM) Command: " + command)
