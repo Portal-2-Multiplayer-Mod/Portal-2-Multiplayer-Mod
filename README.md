@@ -5,7 +5,7 @@
 In this time we have made ALOT of progress** ***(972 commits as of this moment),*** **however due to the method that we have handled the previous version of the mod,
 updating isn't going to be an option until the launcher has been fully finished.
 Because of this, there is many stability fixes and features (nametags, singleplayer support, linux support, etc) in the new version of the mod. 
-In its current stage, 1.5 is severely outdated, however 2.0 also has its issues mainly that being its more difficult to install, aswell as stablity between updates.
+In its current stage, 1.5 is severely outdated, however 2.0 also has its issues mainly that its more difficult to install, aswell as stablity between updates.
 The current plan is to make a usable beta for 2.0, but for now you have to choose between 1.5 or 2.0. A pros and cons list will be provided to help you decide.**
 
 ***1.5***
@@ -44,6 +44,7 @@ The current plan is to make a usable beta for 2.0, but for now you have to choos
 6. Removed game breaking commands
 7. Full cooperative campaign support
 8. Support for Windows 11, 10, 8.1, 8, 7, Vista, and XP
+9. Support for Linux (only with the 2.0 version)
 
 # Planned features
 1. Full singleplayer campaign support (Coming soon!)
@@ -57,7 +58,8 @@ The current plan is to make a usable beta for 2.0, but for now you have to choos
 - Latest version download: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
 - Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
   - ***The Steam guide goes over everything you need to know in order to get the mod working, but just in case, we have also prepared a supplementary video if you get stuck.***
-- Video: https://www.youtube.com/watch?v=AOh6qela-uI
+- Video v1.5: https://www.youtube.com/watch?v=AOh6qela-uI
+- video v2.0: https://www.youtube.com/watch?v=_Vsey2wPXSo
 
 # Discord
 
