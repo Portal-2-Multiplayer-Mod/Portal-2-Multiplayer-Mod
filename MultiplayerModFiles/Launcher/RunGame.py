@@ -129,7 +129,7 @@ def PatchBinaries(gamepath):
     print("")
     print("(P2:MM) Patching Binarys...")
 
-    # move the binaries to the game path area
+    # move the binaries to the game directory
     print("")
     print("(P2:MM) Moving binaries to " + gamepath + "...")
     print("")
@@ -341,7 +341,7 @@ def FindAvalibleDLC(gamepath):
     dlcs = []
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
-        # find all files/folders that start with "portal2_dlc"
+        # find all of them that start with "portal2_dlc"
         if file.startswith("portal2_dlc"):
             # make sure it's a folder
             if os.path.isdir(gamepath + nf + file):
@@ -350,12 +350,12 @@ def FindAvalibleDLC(gamepath):
                 if "32playermod.identifier" in os.listdir(gamepath + nf + file):
                     print("(P2:MM) Found OLD DLC: " + file)
                     # delete the folder even if it's not empty
-                    # Windows command
+                    # windows command
                     if (iow):
                         command = "rmdir /S /Q \"" + gamepath + nf + file + "\""
                         print("(P2:MM) Command: " + command)
                         os.system(command)
-                    # Linux command
+                    # linux command 
                     else:
                         command = "rm -r \"" + gamepath + nf + file + "\""
                         print("(P2:MM) Command: " + command)
@@ -380,37 +380,11 @@ def FindAvalibleDLC(gamepath):
 
     # sort each dlc number lower to higher
     dlcs.sort(key=int)
+    # return the mount point
+    return "portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1)
 
-    # final pass make sure there are no gaps or in the list
-    for dlc in dlcs:
-        # if the dlc is not the right number, remove it
-        if int(dlc) != shouldbe:
-            print("(P2:MM) DLC " + dlc + " removed from list!")
-            dlcs.remove(dlc)
-        else:
-            print("(P2:MM) DLC " + dlc + " added to list!")
-        shouldbe += 1
-    
-    # find the highest dlc number
-    print("")
-    print("(P2:MM) Used DLCs:")
-    print("")
-    highest = 0
-    for dlc in dlcs:
-        print("(P2:MM) " + dlc)
-        # get the highest dlc
-        if int(dlc) > highest:
-            highest = int(dlc)
-    
-    # if the highest dlc + 1 does not exist then we found our mount point
-    if "portal2_dlc" + str(highest + 1) not in os.listdir(gamepath):
-        print("")
-        print("(P2:MM) DLC Mount Point Found! " + gamepath + nf + "portal2_dlc" + str(highest + 1))
-        # return the mount point
-        return "portal2_dlc" + str(highest + 1)
 
-        
-                
+
 
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
