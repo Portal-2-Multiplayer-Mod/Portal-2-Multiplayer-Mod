@@ -10,7 +10,9 @@ import subprocess
 #//# detect if we are on windows (by default, we are on Linux) #//#
 #/////////////////////////////////////////////////////////////////#
 
+# iow = Is On Windows
 iow = False
+
 # nt is the windows os
 if os.name == 'nt':
     print("")
