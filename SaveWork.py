@@ -9,14 +9,17 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 isWindowns = os.name == "nt"
 
 ourfolder = "NONE"
-# get every folder that starts with portal2_dlc
+# get every file/folder in the portal 2 directory
 for folder in os.listdir(os.getcwd()):
     # if it starts with portal2_dlc
     if folder.startswith("portal2_dlc"):
-        # if there is a file named 32playermod.identifier
-        if os.path.isfile(folder + "/32playermod.identifier"):
-            print("Found DLC: " + folder)
-            ourfolder = folder
+        # make sure it's a folder
+        if os.path.isdir(folder):
+            # if there is a file named 32playermod.identifier
+            if os.path.isfile(folder + "/32playermod.identifier"):
+                print("Found DLC: " + folder)
+                ourfolder = folder
+                break
 
 # if the mod folder exists
 if os.path.exists(ourfolder):

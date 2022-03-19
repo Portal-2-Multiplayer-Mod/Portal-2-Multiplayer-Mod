@@ -10,7 +10,9 @@ import subprocess
 #//# detect if we are on windows (by default, we are on Linux) #//#
 #/////////////////////////////////////////////////////////////////#
 
+# iow = Is On Windows
 iow = False
+
 # nt is the windows os
 if os.name == 'nt':
     print("")
@@ -89,17 +91,17 @@ def MountMod(gamepath):
         os.system(command)
     
 
-    # after we are done copying, we need to change rename the install_dlc folder
+    # after we are done copying, we need to rename the install_dlc folder
     print("(P2:MM) Renaming install_dlc folder to " + dlcmountpoint + "...")
-    # if on windows, use the command line to rename the folder
+    # windows command
     if (iow):
         command = "move \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         print("(P2:MM) Command: " + command)
         os.system(command)
+    # linux command
     else:
         command = "mv \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         print("(P2:MM) Command: " + command)
-        # if on linux, use the command line
         os.system(command)
 
 def UnpatchBinaries(gamepath):
@@ -127,7 +129,7 @@ def PatchBinaries(gamepath):
     print("")
     print("(P2:MM) Patching Binarys...")
 
-    # move the binaries to the storage area
+    # move the binaries to the game path area
     print("")
     print("(P2:MM) Moving binaries to " + gamepath + "...")
     print("")
@@ -153,15 +155,16 @@ def PatchBinaries(gamepath):
             print("(P2:MM) File already exists, deleting...")
             os.remove(gamepath + nf + filename)
 
-        # copy the binary to gamepath
+        # copy the binary to the gamepath
+        # windows command
         if (iow):
             command = "copy \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
             print("(P2:MM) Command: " + command)
             os.system(command)
+        # linux command
         else:
             command = "cp \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
             print("(P2:MM) Command: " + command)
-            # if on linux, use the command line
             os.system(command)
         
         print("")
@@ -338,7 +341,7 @@ def FindAvalibleDLC(gamepath):
     dlcs = []
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
-        # find all of them that start with "portal2_dlc"
+        # find all files/folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc"):
             # make sure it's a folder
             if os.path.isdir(gamepath + nf + file):
@@ -347,14 +350,15 @@ def FindAvalibleDLC(gamepath):
                 if "32playermod.identifier" in os.listdir(gamepath + nf + file):
                     print("(P2:MM) Found OLD DLC: " + file)
                     # delete the folder even if it's not empty
+                    # Windows command
                     if (iow):
                         command = "rmdir /S /Q \"" + gamepath + nf + file + "\""
                         print("(P2:MM) Command: " + command)
                         os.system(command)
+                    # Linux command
                     else:
                         command = "rm -r \"" + gamepath + nf + file + "\""
                         print("(P2:MM) Command: " + command)
-                        # if on linux, use the command line
                         os.system(command)
                     keepgoin = False
 
@@ -588,7 +592,7 @@ def Init():
     print("(P2:MM) Checking for Portal 2 Path...")
     portal2path = FindInConfig(configdata, "portal2path")
     
-    # if we don't have a path, find it
+    # if we don't have a path, ask the user to provide it
     if (portal2path == "undefined") or ((os.path.exists(portal2path)) != True) or (os.path.exists(portal2path + nf + "portal2_dlc2") != True):
         print("(P2:MM) Portal 2 Path not predefined!")
         # loop until the path is found or the user aborts
