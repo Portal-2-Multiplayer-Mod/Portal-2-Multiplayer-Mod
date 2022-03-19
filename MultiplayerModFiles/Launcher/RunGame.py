@@ -341,7 +341,7 @@ def FindAvalibleDLC(gamepath):
     dlcs = []
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
-        # find all of files/folders that start with "portal2_dlc"
+        # find all the files/folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc"):
             # make sure it's a folder
             if os.path.isdir(gamepath + nf + file):
@@ -380,7 +380,7 @@ def FindAvalibleDLC(gamepath):
 
     # sort each dlc number lower to higher
     dlcs.sort(key=int)
-    # return the mount point
+    # return the folder where to mount the mod
     return "portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1)
 
 
