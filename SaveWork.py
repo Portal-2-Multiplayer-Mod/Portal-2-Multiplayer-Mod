@@ -17,6 +17,7 @@ for folder in os.listdir(os.getcwd()):
         if os.path.isfile(folder + "/32playermod.identifier"):
             print("Found DLC: " + folder)
             ourfolder = folder
+            break
 
 # if the mod folder exists
 if os.path.exists(ourfolder):
