@@ -341,7 +341,7 @@ def FindAvalibleDLC(gamepath):
     dlcs = []
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
-        # find all of them that start with "portal2_dlc"
+        # find all of files/folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc"):
             # make sure it's a folder
             if os.path.isdir(gamepath + nf + file):
