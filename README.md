@@ -1,4 +1,4 @@
-# Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, and Wolƒe Strider Shoσter***
+# Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, Wolƒe Strider Shoσter and Cabiste***
 
 # 1.5 VS 2.0
 **You may have noticed that there hasn't been a new release for the better half of a year** ***(241 days at the time of writing)*****.
