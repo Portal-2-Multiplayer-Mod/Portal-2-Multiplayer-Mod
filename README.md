@@ -1,4 +1,5 @@
-# Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, Wolƒe Strider Shoσter, and Cabiste***
+# Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, & Wolƒe Strider Shoσter***
+**Big thanks to our team members: ***Cabiste, sear, & Jeffrey*****
 
 # v1.5 vs v2.0
 **You may have noticed that there hasn't been a new release for the better half of a year**.
@@ -22,7 +23,7 @@ The pros and cons are listed below, though we recommend sticking with the latest
 
 ***Version 2.0***
 ```
-+ Presents new features that were not in 1.5 (nametags, singleplayer support, chat commands, stability, prop creation, improved spawn detection, spawn in any map, gelocity support, launcher patching)
++ Presents tons new features that were not in 1.5
 + Makes use of a custom plugin to bring about some of the features (Broken on Windows at the moment)
 + Full Linux support in addition to Windows
 + Rewritten codebase to allow for efficiency
@@ -48,7 +49,11 @@ The pros and cons are listed below, though we recommend sticking with the latest
 1. Full singleplayer campaign support (Almost finished, needs a lot more polishing)
 2. Nametags (Finished)
 3. Support for Linux (Finished)
-4. Full support for the cooperative Gelocity workshop maps. (Two of the three maps are finished)
+4. Full support for the cooperative Gelocity workshop maps (Two of the three maps are finished)
+5. Chat commands (Finished)
+6. Allow players to spawn in any map without breaking (Finished)
+7. Make the launcher patch files on the spot for consistency and stability (Finished)
+8. Allow the server to cache objects server-side without crashing (Finished)
 
 # Features on the table
 1. Dedicated servers
@@ -57,7 +62,8 @@ The pros and cons are listed below, though we recommend sticking with the latest
 
 # Installation & use
 
-- Latest version download: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
+- Latest version released: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
+  - v2.0 can be downloaded from the commits.
 
 - Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
   - ***The Steam guide goes over everything you need to know in order to get the mod working, but just in case, we have also prepared supplementary videos if you get stuck.***
