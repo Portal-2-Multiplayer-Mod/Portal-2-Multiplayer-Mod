@@ -5,66 +5,6 @@ MinecraftMode <- false
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 
 function loop() {
-    if (HasSpawned == true && MinecraftMode) {
-        if (Time() >= PreviousTime01Sec + 0.2) {
-            PreviousTime01Sec = Time()
-
-            local amt = 0
-
-            // local ent = null
-            // while (ent = Entities.FindByModel(ent, "models/props/metal_box.mdl")) {
-            //     ent.Destroy()
-            // }
-
-            IncludeScript("portalcraft.nut")
-            foreach (thing in PortalBlocks) {
-              //  printl("thing: " + thing.name)
-                if (thing.name != "AIR") {
-                    local spacing = 36
-                    local x = ((thing.x - PortalCapture.x) * spacing)
-                    local y = ((thing.y - PortalCapture.y) * spacing)
-                    local z = ((thing.z - PortalCapture.z) * spacing)
-                    local colorr = 100
-                    local colorg = 100
-                    local colorb = 100
-                    local calpha = 1
-                    if (thing.name == "WATER") {
-                        colorr = 0
-                        colorg = 0
-                        colorb = 255
-                    }
-                    if (thing.name == "GRASS_BLOCK") {
-                        colorr = 20
-                        colorg = 255
-                        colorb = 100
-                    }
-                    if (thing.name == "DIRT") {
-                        colorr = 120
-                        colorg = 90
-                        colorb = 00
-                    }
-                    if (thing.name == "STONE") {
-                        colorr = 30
-                        colorg = 30
-                        colorb = 30
-                    }
-                    if (thing.name == "SAND") {
-                        colorr = 150
-                        colorg = 255
-                        colorb = 30
-                    }
-                    DebugDrawBox(Vector(x + setspot.x, y + setspot.y, z + setspot.z), Vector(-16, -16, -16), Vector(16, 16, 16), colorr, colorg, colorb, calpha, 0.218)
-                    
-                    amt = amt + 1
-                    if (amt < 500) {
-                        local ourent = Entities.FindByName(null, "minecraftblock" + amt)
-                        ourent.SetOrigin(Vector(x + setspot.x, y + setspot.y, z + setspot.z))
-                        EntFireByHandle(ourent, "Color", colorr + " " + colorg + " " + colorb + " " + calpha, 0, null, null)
-                    }
-                }
-            }
-        }
-    }
 
     //## Event List ##//
     if (EventList.len() > 0) {
@@ -134,7 +74,7 @@ function loop() {
                     //OriginalAngle + Vector(6.969, 4.69420, 6.9420)
                     Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 6.969, OriginalAngle.y + 4.69420, OriginalAngle.z + 6.9420)
                 }
-            
+
                 currentplayerclass.eyeangles <- measuremovement.GetAngles()
                 currentplayerclass.eyeforwardvector <- measuremovement.GetForwardVector()
             }
@@ -516,70 +456,93 @@ function loop() {
         }
     } catch (exception) { }
 
-    // //## Remove the Portal Gun INITALLY ##//
-    // if (hasbeenremoved == false  && PostMapLoadDone == true && Player2Joined == true && HasSpawned == false) {
-    //     printl("(P2:MM): Removing The PortalGun...")
-    //     local ent = null
-    //     while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-    //         // if it is the player's portalgun, remove it
-    //         if (ent.GetRootMoveParent().GetName() == "blue") {
-    //             ent.Destroy()
-    //             printl("(P2:MM): Redsfsdfdsfdsfdsfsdfmoved The PortalGun.")
-    //             hasbeenremoved <- true
-    //         }
+    // // Following box
+    // local lenp = null
+    // while (lenp = Entities.FindByName(lenp, "uwu")) {
+    //     local torigin = Vector(0, 0, 0)
+    //     local torigin2 = Vector(0, 0, 0)
+    //     local tent2 = null
+    //     if (Entities.FindByName(null, "blue")) {
+    //         torigin = Entities.FindByName(null, "blue").GetOrigin()
     //     }
+
+    //     torigin2 = lenp.GetOrigin()
+    //     tent2 = lenp
+
+    //     local uwu = GetDirectionalOffset(torigin, torigin2)
+
+    //     if (tent2 != null) {
+    //         tent2.SetOrigin(torigin2 + uwu)
+    //     }
+
+    //     // printl("(P2:MM)bo: " + bxorigin)
+    //     // printl("(P2:MM)boff: " + (torigin - bxorigin))
+    //     // printl("(P2:MM)bof: " + bxoffset)
+    //     // printl("(P2:MM)h: " + highest)
+
+    //     // draw the box
+    //     //DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
     // }
 
+    if (HasSpawned == true && MinecraftMode) {
+        if (Time() >= PreviousTime01Sec + 0.2) {
+            PreviousTime01Sec = Time()
 
-    //## MATH TESTING ##//
-            // local originpos = Vector(6975, 558, 445)
+            local amt = 0
 
-            // // setup the coords
-            // local topleft = originpos + Vector(-50, 0, 50)
-            // local topright = originpos + Vector(50, 0, 50)
-            // local btmleft = originpos + Vector(-80, 0, -50)
-            // local btmright = originpos + Vector(50, 0, -50)
+            // local ent = null
+            // while (ent = Entities.FindByModel(ent, "models/props/metal_box.mdl")) {
+            //     ent.Destroy()
+            // }
 
-            // // Draw The Square
-            // DebugDrawLine(btmleft, topleft, 100, 255, 0, false, 0) // left
-            // DebugDrawLine(topleft, topright, 100, 255, 0, false, 0) // top
-            // DebugDrawLine(topright, btmright, 100, 255, 0, false, 0) // right
-            // DebugDrawLine(btmright, btmleft, 100, 255, 0, false, 0) // bottom
+            IncludeScript("portalcraft.nut")
+            foreach (thing in PortalBlocks) {
+              //  printl("thing: " + thing.name)
+                if (thing.name != "AIR") {
+                    local spacing = 36
+                    local x = ((thing.x - PortalCapture.x) * spacing)
+                    local y = ((thing.y - PortalCapture.y) * spacing)
+                    local z = ((thing.z - PortalCapture.z) * spacing)
+                    local colorr = 100
+                    local colorg = 100
+                    local colorb = 100
+                    local calpha = 1
+                    if (thing.name == "WATER") {
+                        colorr = 0
+                        colorg = 0
+                        colorb = 255
+                    }
+                    if (thing.name == "GRASS_BLOCK") {
+                        colorr = 20
+                        colorg = 255
+                        colorb = 100
+                    }
+                    if (thing.name == "DIRT") {
+                        colorr = 120
+                        colorg = 90
+                        colorb = 00
+                    }
+                    if (thing.name == "STONE") {
+                        colorr = 30
+                        colorg = 30
+                        colorb = 30
+                    }
+                    if (thing.name == "SAND") {
+                        colorr = 150
+                        colorg = 255
+                        colorb = 30
+                    }
+                    DebugDrawBox(Vector(x + setspot.x, y + setspot.y, z + setspot.z), Vector(-16, -16, -16), Vector(16, 16, 16), colorr, colorg, colorb, calpha, 0.218)
 
-
-            // // Get a random z position
-            // local z = RandomInt(-50, 50)
-            // z = originpos + Vector(0, 0, z)
-            // DebugDrawBox(z, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 0)
-
-
-    
-    // Following box
-    local lenp = null
-    while (lenp = Entities.FindByName(lenp, "uwu")) {
-        local torigin = Vector(0, 0, 0)
-        local torigin2 = Vector(0, 0, 0)
-        local tent2 = null
-        if (Entities.FindByName(null, "blue")) {
-            torigin = Entities.FindByName(null, "blue").GetOrigin()
+                    amt = amt + 1
+                    if (amt < 500) {
+                        local ourent = Entities.FindByName(null, "minecraftblock" + amt)
+                        ourent.SetOrigin(Vector(x + setspot.x, y + setspot.y, z + setspot.z))
+                        EntFireByHandle(ourent, "Color", colorr + " " + colorg + " " + colorb + " " + calpha, 0, null, null)
+                    }
+                }
+            }
         }
-        
-        torigin2 = lenp.GetOrigin()
-        tent2 = lenp
-        
-        local uwu = GetDirectionalOffset(torigin, torigin2)
-
-        if (tent2 != null) {
-            tent2.SetOrigin(torigin2 + uwu)
-        }
-
-        // printl("(P2:MM)bo: " + bxorigin)
-        // printl("(P2:MM)boff: " + (torigin - bxorigin))
-        // printl("(P2:MM)bof: " + bxoffset)
-        // printl("(P2:MM)h: " + highest)
-
-        // draw the box
-        //DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
     }
 }
 oldbx <- Vector(0, 0, 0)

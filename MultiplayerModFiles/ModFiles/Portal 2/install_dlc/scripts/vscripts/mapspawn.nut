@@ -64,13 +64,13 @@ function init() {
     // Show the console ascii art
     foreach (line in ConsoleAscii) {
         printl(line)
-    }   
+    }
 
     // Create a global servercommand entity
     globalservercommand <- Entities.CreateByClassname("point_servercommand")
     globalservercommand.__KeyValueFromString("targetname", "p232servercommand")
 
-        //## Load plugin ##//
+    //## Load plugin ##//
     if("GetPlayerName" in this) {
         if (GetDeveloperLevel() == 1) {
             printl("================================")
@@ -78,22 +78,19 @@ function init() {
             printl("================================")
         }
         PluginLoaded <- true
-        // if (GetMapName() == "mp_coop_community_hub") {
-        //     EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
-        // }
     } else {
-        // Make some replacements (this is for if someone doesn't use the plugin)
         MakePluginReplacementFunctions()
         if (GetDeveloperLevel() == 1) {
             printl("============================================")
             printl("P2:MM plugin has not been loaded!")
             printl("============================================")
         }
-        EntFire("p232servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01) 
+        EntFire("p232servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
         EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
-    //     if (GetMapName() == "mp_coop_community_hub") {
-    //         EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.1)
-    //     }
+        if (GetDeveloperLevel() == 918612) {
+            EntFire("p232servercommand", "command", "developer 1", 0.01)
+            EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
+        }
     }
 
     // Run map-specific code
@@ -141,7 +138,7 @@ IncludeScript("multiplayermod/functions.nut")
 // ░█──░█ ░█─░█ ▄█▄ ░█──▀█    ░█▄▄█ ░█▄▄▄█ ░█▄▄▄█ ░█─── //
 //------------------------------------------------------//
 
-IncludeScript("multiplayermod/loop.nut") 
+IncludeScript("multiplayermod/loop.nut")
 
 //---------------------------------------------------------------//
 // ░█▀▀▀ ░█▄─░█ ░█▀▀▄   ░█▀▀▀█ ░█▀▀▀   ░█─── ░█▀▀▀█ ░█▀▀▀█ ░█▀▀█ //
