@@ -59,6 +59,7 @@ function SetCheats() {
     printl("===== Cheat Detection =====")
     printl("           " + CheatsOn)
     printl("===========================")
+    SendToConsole("sv_cheats 1")
 }
 
 function SetCosmetics(p) {
@@ -165,7 +166,7 @@ function RandomColor() {
             b = rcb
         }
     }
-    
+
     if (RandomInt(1, 7)==3) {
         rcg = RandomInt(1, 30)
         rcb = RandomInt(1, 30)
@@ -370,7 +371,7 @@ function PrecacheModelNoDelay(mdl) {
 
     // Remove the models/ from the left side and the .mdl from the right side
     local minimdl = MinifyModel(mdl)
-    
+
     // Check if the model is already precached
     local NotPrecached = true
     foreach (precached in PrecachedProps) {
@@ -491,14 +492,14 @@ function LineIntersect2DZTranslation(point1, point2, flatpoint1, flatpoint2, ztr
 
     // put the players coords on the same plane as the line
     if (ztranslation == 0) {
-        flatpoint1 = FlipVectorsZY(point1, flatpoint1) 
+        flatpoint1 = FlipVectorsZY(point1, flatpoint1)
     } else {
         flatpoint1 = FlipVectorsZX(point1, flatpoint1)
     }
 
     // put the players coords on the same plane as the line
     if (ztranslation == 0) {
-        flatpoint2 = FlipVectorsZY(point1, flatpoint2) 
+        flatpoint2 = FlipVectorsZY(point1, flatpoint2)
     } else {
         flatpoint2 = FlipVectorsZX(point1, flatpoint2)
     }
@@ -567,7 +568,7 @@ function VectorAddSinglePart(vec, amt, part) {
     } else {
         if (part == 2) {
             return Vector(vec.x, vec.y + amt, vec.z)
-        } else { 
+        } else {
             if (part == 3) {
             return Vector(vec.x, vec.y, vec.z + amt)
             }
@@ -581,7 +582,7 @@ function VectorMultiplySinglePart(vec, amt, part) {
     } else {
         if (part == 2) {
             return Vector(vec.x, vec.y * amt, vec.z)
-        } else { 
+        } else {
             if (part == 3) {
             return Vector(vec.x, vec.y, vec.z * amt)
             }
@@ -736,7 +737,7 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
 
 function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, currentstepped = 4, stepmultiplier = 1, maxreldist = 32, entitiestoexclude = [null], specificclass = null) {
     // maxdist = maxdist / stepmultiplier
-    
+
     // Setup some existing locals
     try {
         entitiestoexclude[0]
@@ -744,7 +745,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         // If this errors out we should probably put the defined ent into a table
         entitiestoexclude = [entitiestoexclude]
     }
-    
+
     // Define some locals
     local origorigin = origin // Preserve
     local origmindist = mindist // Preserve
@@ -763,7 +764,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         local temporigin = origin + originoffset
         // Find the nearest ent within our maxdist
         nearestent = FindNearest(temporigin, origmaxdist, entitiestoexclude, specificclass)
-        
+
         // Now that we have the nearest ent, we need to see how far it is from the temporigin
         if (nearestent == null) {
             return null
@@ -935,34 +936,6 @@ function TriggerOnceHook(TriggerName, FunctionName) {
 
 }
 
-// function CacheModel(ModelName) {
-//     if (Entities.FindByModel(null, "models/"+ModelName)) {
-//             if (GetDeveloperLevel() == 1) {
-//                 printl("(P2:MM): Model " + ModelName + " is already cached!")
-//             }
-//         } else {
-//         try {
-//             if (servercommand) {
-//                 if (GetDeveloperLevel() == 1) {
-//                     printl("(P2:MM): point_servercommand to cache props already exists!")
-//                 }
-//             }
-//         } catch(exception) {
-//             // Create an entity that sends a server command
-//             servercommand <- Entities.CreateByClassname("point_servercommand")
-//         }
-//         EntFireByHandle(servercommand, "command", "hud_saytext_time 0", 0, null, null)
-//         EntFireByHandle(servercommand, "command", "sv_cheats 1", 0, null, null)
-//         EntFireByHandle(servercommand, "command", "prop_dynamic_create " + ModelName, 0, null, null)
-//         EntFireByHandle(servercommand, "command", "sv_cheats 0", 0, null, null)
-//         CachedModels.push("models/"+ModelName)
-
-//         if (GetDeveloperLevel() == 1) {
-//             printl("(P2:MM): Model " + ModelName + " has been cached sucessfully!")
-//         }
-//     }
-// }
-
 function GetAdminLevel(id) {
     foreach (admin in Admins) {
         // Seperate the playername and the admin level
@@ -1000,7 +973,7 @@ function ExpandName(name) {
 
 // Get directional offset
 function GetDirectionalOffset(org1, org2, multipl = 1) {
-    
+
     local bxoffset = org1 - org2
 
     // Get the highest number in bxoffset
@@ -1018,7 +991,7 @@ function GetDirectionalOffset(org1, org2, multipl = 1) {
     // If highest is not 0
     if (highest > 0) {
         // I genuinely have no idea if this works, but if js can do it squirrel can too
-        
+
         // If bxoffset.x is negative
         local wasxneg = bxoffset.x < 0
 
@@ -1046,7 +1019,7 @@ function GetDirectionalOffset(org1, org2, multipl = 1) {
         bxoffset = Vector(newx*multipl, newy*multipl, newz*multipl)
 
     }
-    
+
     return bxoffset
 }
 
@@ -1091,7 +1064,7 @@ function CanPing(ison = true) {
     env_global.__KeyValueFromString("targetname", "mpmod_no_pinging_blue")
     env_global2.__KeyValueFromString("targetname", "mpmod_no_pinging_orange")
 
-    
+
     local entFireByHandleState = "turnon"
     if (ison){
         entFireByHandleState = "turnoff"
@@ -1248,9 +1221,9 @@ function BestGuessSpawnpoint() {
         local FinalRotationRed = Vector(0, 0, 0)
         local FinalSpawnBlue = Vector(0, 0, 0)
         local FinalRotationBlue = Vector(0, 0, 0)
-        
+
         // Singlepayer spawn stuff
-        
+
         // New Aperture
         if (Entities.FindByModel(null, "models/elevator/elevator_tube_opener.mdl")) {
             while (ent = Entities.FindByModel(ent, "models/elevator/elevator_tube_opener.mdl")) {
@@ -1284,7 +1257,7 @@ function BestGuessSpawnpoint() {
 
             printl(spawnmiddle_ang_vec)
 
-            
+
 
             // Now get the back front left and right spawnpoints
             local spawnfront = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x, spawnmiddle_ang_vec.y, hieght)
@@ -1294,12 +1267,12 @@ function BestGuessSpawnpoint() {
             printl("spawnMiddle: " + spawnmiddle)
             printl("spawnOrigin: " + spawnmiddle.GetOrigin())
             printl("ourClosest: " + ourclosest)
-            
+
             // Output the spawnpoints
             FinalRotationBlue = spawnmiddle_ang + Vector(0, 0, 0)
             FinalSpawnBlue = spawnright
             FinalRotationRed = spawnmiddle_ang + Vector(0, 0, 0)
-            FinalSpawnRed = spawnleft 
+            FinalSpawnRed = spawnleft
         }
 
         // Old Aperture
@@ -1324,7 +1297,7 @@ function BestGuessSpawnpoint() {
                     spawnmiddle = ent
                 }
             }
-            
+
             // Find the highest path_track next to the spawnpoint
             local tallestpathtrack = null
             if (spawnmiddle == null) {
@@ -1371,7 +1344,7 @@ function BestGuessSpawnpoint() {
         GlobalSpawnClass.blue.rotation <- FinalRotationBlue
         GlobalSpawnClass.red.spawnpoint <- FinalSpawnRed
         GlobalSpawnClass.red.rotation <- FinalRotationRed
-        
+
         MadeSpawnClass <- true
         return GlobalSpawnClass
     } else {
@@ -1447,7 +1420,7 @@ function CreateOurEntities() {
     onscreendisplay.__KeyValueFromString("channel", "1")
     // onscreendisplay.__KeyValueFromString("x", "-1.1")
     // onscreendisplay.__KeyValueFromString("y", "-1.1")
-    
+
     // Disconnect message
     disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
     disconnectmessagedisplay.__KeyValueFromString("targetname", "pdcm")

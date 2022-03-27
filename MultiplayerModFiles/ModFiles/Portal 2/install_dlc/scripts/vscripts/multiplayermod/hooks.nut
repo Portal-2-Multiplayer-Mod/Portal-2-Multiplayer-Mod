@@ -275,7 +275,9 @@ function PostMapLoad() {
 ///////////////////////////////
 
 function PostPlayer2Join() {
-    SendToConsole("sv_cheats 0")
+    if (!CheatsOn) {
+        SendToConsole("sv_cheats 0")
+    }
     Player2Joined <- true
 }
 
@@ -445,11 +447,6 @@ function GeneralOneTime() {
     SendToConsole("script CreatePropsForLevel(false, true, false)")
 
     MapSupport(false, false, true, false, false, false, false)
-
-    // Give the player their Portal Gun back
-    if (Entities.FindByName(null, "weapon_portalgun_player2") && !Entities.FindByName(null, "weapon_portalgun_player1")) {
-        SendToConsole("sv_cheats 1; give_portalgun; upgrade_portalgun; sv_cheats 0")
-    }
 }
 
 ///////////////////
@@ -633,7 +630,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
         if (command.len() < 2) {
             EntFireByHandle(player, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
         } else {
-            local nm = ExpandName(command[1]) 
+            local nm = ExpandName(command[1])
             local playertorun = FindPlayerByName(command[1])
             if (command[1] == "all") {
                 local p2 = null
@@ -706,7 +703,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
                     SendToConsole("say " + playername + ": " + nm + " has been brought.")
                 } else {
                     SendToConsole("say " + playername + ": " + nm + " is not a valid player.")
-                }       
+                }
             }
         }
     }
@@ -752,7 +749,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
         if (command.len() < 2) {
             local currentplayerclass = FindPlayerClass(player)
         } else {
-            
+
         }
     }
 

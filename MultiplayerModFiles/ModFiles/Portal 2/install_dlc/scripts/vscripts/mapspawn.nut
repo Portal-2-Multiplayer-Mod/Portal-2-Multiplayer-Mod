@@ -59,7 +59,6 @@ IncludeScript("multiplayermod/varibles.nut")
 // █ █░▀█ █ ░█░
 
 function init() {
-    SendToConsole("sv_cheats 1")
 
     // Show the console ascii art
     foreach (line in ConsoleAscii) {
