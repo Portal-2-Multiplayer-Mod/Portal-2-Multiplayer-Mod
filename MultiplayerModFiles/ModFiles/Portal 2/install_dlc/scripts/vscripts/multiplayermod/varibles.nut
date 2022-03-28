@@ -17,7 +17,7 @@ GlobalSpawnClass <- class {
         // Set Radius
         radius = 0
     }
-    
+
     // Reds Spawn Parameters
     red = class {
         spawnpoint = Vector(0,0,0)
@@ -55,7 +55,6 @@ PermaPotato <- false
 TotalRemovedEnts <- 0
 MadeSpawnClass <- false
 usefogcontroller <- false
-yes <- ""
 DevModeConfig <- DevMode
 StartDevModeCheck <- false
 PreviousTimeDeath <- 0

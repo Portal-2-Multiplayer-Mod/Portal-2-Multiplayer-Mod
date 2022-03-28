@@ -1,6 +1,12 @@
 // █▀▀ █░░ █▀█ █▄▄ ▄▀█ █░░   █▀▀ █░█ █▄░█ █▀▀ ▀█▀ █ █▀█ █▄░█ █▀
 // █▄█ █▄▄ █▄█ █▄█ █▀█ █▄▄   █▀░ █▄█ █░▀█ █▄▄ ░█░ █ █▄█ █░▀█ ▄█
 
+
+//## Stupid Shit Fixes ##//
+function DecEntFireByHandle(target, action, value = "", delay = 0, activator = null, caller = null) {
+    EntFireByHandle(target, action, value, delay, activator, caller);
+}
+
 //## Replace Plugin Functions ##//
 // If the plugin isn't loaded then we make some replacements
 function MakePluginReplacementFunctions() {
@@ -1075,6 +1081,199 @@ function CanPing(ison = true) {
     // Delete the entities
     EntFireByHandle(env_global, "kill", "", 0.2, null, null)
     EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
+}
+
+function CanJump(enable = false, player = "all") {
+    local name = "p232temp_CanJump"
+    local mainent = Entities.FindByName(null, name)
+    if (!mainent) {
+        mainent = Entities.CreateByClassname("player_speedmod")
+        mainent.__KeyValueFromString("targetname", name)
+    }
+
+    mainent.__KeyValueFromString("spawnflags", "4")
+
+    local set = "1.01"
+    if (enable) { set = "1" }
+
+    if (player == "all") {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+        }
+    } else {
+        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+    }
+}
+
+function CanUse(enable = false, player = "all") {
+    local name = "p232temp_CanUse"
+    local mainent = Entities.FindByName(null, name)
+    if (!mainent) {
+        mainent = Entities.CreateByClassname("player_speedmod")
+        mainent.__KeyValueFromString("targetname", name)
+    }
+
+    mainent.__KeyValueFromString("spawnflags", "16")
+
+    local set = "1.01"
+    if (enable) { set = "1" }
+
+    if (player == "all") {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+        }
+    } else {
+        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+    }
+}
+
+function CanCrouch(enable = false, player = "all") {
+    local name = "p232temp_CanCrouch"
+    local mainent = Entities.FindByName(null, name)
+    if (!mainent) {
+        mainent = Entities.CreateByClassname("player_speedmod")
+        mainent.__KeyValueFromString("targetname", name)
+    }
+
+    mainent.__KeyValueFromString("spawnflags", "8")
+
+    local set = "1.01"
+    if (enable) { set = "1" }
+
+    if (player == "all") {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+        }
+    } else {
+        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+    }
+}
+
+function EnableHud(enable = false, player = "all") {
+    local name = "p232temp_EnableHud"
+    local mainent = Entities.FindByName(null, name)
+    if (!mainent) {
+        mainent = Entities.CreateByClassname("player_speedmod")
+        mainent.__KeyValueFromString("targetname", name)
+    }
+
+    mainent.__KeyValueFromString("spawnflags", "2")
+
+    local set = "1.01"
+    if (enable) { set = "1" }
+
+    if (player == "all") {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+        }
+    } else {
+        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+    }
+}
+
+function EnablePortalGun(enable = false, player = "all") {
+    local set = "0"
+    if (enable) { set = "1" }
+
+    local draw = "disabledraw"
+    if (enable) { draw = "enabledraw" }
+
+    if (player = "all") {
+        local p = null;
+        while (p = Entities.FindByClassname(p, "player")) {
+            local ent = Entities.FindByName(null, "weapon_portalgun_player" + p.entindex())
+            local entviewmodel = Entities.FindByName(null, "viewmodel_player" + p.entindex())
+            ent.__KeyValueFromString("CanFirePortal1", set)
+            ent.__KeyValueFromString("CanFirePortal2", set)
+            DecEntFireByHandle(ent, draw)
+            DecEntFireByHandle(entviewmodel, draw)
+        }
+    } else {
+        local ent = Entities.FindByName(null, "weapon_portalgun_player" + player.entindex())
+        local entviewmodel = Entities.FindByName(null, "viewmodel_player" + player.entindex())
+        ent.__KeyValueFromString("CanFirePortal1", set)
+        ent.__KeyValueFromString("CanFirePortal2", set)
+        DecEntFireByHandle(ent, draw)
+        DecEntFireByHandle(entviewmodel, draw)
+    }
+}
+
+function EnableSpectator(enable = true, player = "all") {
+    local enable = !enable
+    local draw = "DisableDraw" 
+    if (enable) { draw = "EnableDraw" }
+
+    local fov = "100"
+    if (enable) { fov = "90" }
+
+    if (player == "all") {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            CanCrouch(enable, p)
+            CanJump(enable, p)
+            CanUse(enable, p)
+            DecEntFireByHandle(p, draw)
+            EnableNoclip(!enable, p)
+            EnablePortalGun(enable, p)
+            SetSpeed(p, 1.2)
+            SendClientCommand("cl_fov " + fov.tostring(), p)
+        }
+    } else {
+        CanCrouch(enable, player)
+        CanJump(enable, player)
+        CanUse(enable, player)
+        DecEntFireByHandle(player, draw)
+        EnableNoclip(!enable, player)
+        EnablePortalGun(enable, player)
+        SetSpeed(player, 1.2)
+        SendClientCommand("cl_fov " + fov.tostring(), player)
+    }
+}
+
+function EnableNoclip(enable, player = "all") {
+    if (player == "all") {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            local currentplayerclass = FindPlayerClass(p)
+            if (enable) {
+                EntFireByHandle(p, "addoutput", "MoveType 8", 0, null, null)
+                currentplayerclass.noclip <- true
+            } else {
+                EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
+                currentplayerclass.noclip <- false
+            }
+        }
+    } else {
+        local currentplayerclass = FindPlayerClass(player)
+        if (enable) {
+            EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
+            currentplayerclass.noclip <- true
+        } else {
+            EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
+            currentplayerclass.noclip <- false
+        }
+    }
+}
+
+function SendClientCommand(command, player = "all") {
+    if (player == "all") {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            EntFire("p232clientcommand", "command", command, 0, p)
+        }
+    } else {
+        EntFire("p232clientcommand", "command", command, 0, player)
+    }
+}
+
+function SetSpeed(player, speed) {
+    speed = speed.tostring()
+    local ent = Entities.FindByName(null, "player_speedmod")
+    DecEntFireByHandle(ent, "modifyspeed", speed, 0, player, player)
 }
 
 function CanTaunt(ison = true) {

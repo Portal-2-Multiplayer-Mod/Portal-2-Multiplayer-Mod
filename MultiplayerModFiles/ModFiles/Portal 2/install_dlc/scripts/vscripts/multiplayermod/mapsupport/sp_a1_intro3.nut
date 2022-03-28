@@ -47,7 +47,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local ent = null
             while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
                 ent.__KeyValueFromString("CanFirePortal1", "1")
-                ent.__KeyValueFromString("CanFirePortal2", "1.")
+                ent.__KeyValueFromString("CanFirePortal2", "1")
                 EntFireByHandle(ent, "enabledraw", "", 0, null, null)
             }
             local ent = null
