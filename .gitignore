@@ -34,6 +34,8 @@ cfg/
 vpk_override/
 *.so
 !MultiplayerModFiles/
+!MultiplayerModFiles/ModFiles/Portal 2/install_dlc/32pmod.so
+!MultiplayerModFiles/ModFiles/Portal 2/install_dlc/32pmod.dll
 MultiplayerModMount/
 !MultiplayerModFiles/ModFiles/portal2
 !WebFiles/FastDL/portal2/
