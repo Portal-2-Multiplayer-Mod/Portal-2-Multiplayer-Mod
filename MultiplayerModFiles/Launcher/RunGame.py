@@ -632,10 +632,10 @@ def LaunchGame(portal2path):
     Log("Running Game...")
     try:
         if (iow):
-            subprocess.run([portal2path+nf+"portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3"])
+            subprocess.run([portal2path+nf+"portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612"])
             Log("Game launch successful!")
         else:
-            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3")
+            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612")
             Log("Game launch successful!")
     except:
         Log("Failed to launch Portal 2!")
