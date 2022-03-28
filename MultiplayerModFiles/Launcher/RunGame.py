@@ -30,21 +30,21 @@ def Log(message):
         log.close()
     print("(P2:MM): " + message)
 
-Log("")
-Log("")
-Log("")
-Log("")
-Log("")
-Log("")
-Log("")
-Log("")
-Log("______________________NEW LAUNCH LOG______________________")
+print("")
+print("")
+print("")
+print("")
+print("")
+print("")
+print("")
+print("")
+print("            ____________NEW LAUNCH LOG____________")
 
 if (iow):
-    Log("")
+    print("")
     Log("Windows OS detected!")
 else:
-    Log("")
+    print("")
     Log("Linux OS detected!")
 
 
@@ -59,25 +59,31 @@ else:
 
 Log("Home Folder: " + homefolder)
 
-Log("")
+print("")
 
 #////////////////////////////////////////////////////////////#
-#//# ask the user if they want to mount or unmout the mod #//#
+#//# Ask the user if they want to mount or unmout the mod #//#
 #////////////////////////////////////////////////////////////#
 
 validinput = False
 WillMount = True
 while (not validinput):
-    ShouldMount = input("(===) Do you want to mount or unmount the mod? (mount/unmount): ")
-    if (ShouldMount == "mount" or ShouldMount == "unmount"):
+    ShouldMount = input("(===) Would you like to mount or unmount the mod? (Mount/Unmount): ")
+    if (ShouldMount == "Mount" or ShouldMount == "mount" or ShouldMount == "M" or ShouldMount == "m"):
         validinput = True
         Log("User input: " + str(WillMount))
-    if (ShouldMount == "unmount"):
+    if (ShouldMount == "Unmount" or ShouldMount == "unmount" or ShouldMount == "U" or ShouldMount == "u"):
+        validinput = True
         WillMount = False
         Log("User input: " + str(WillMount))
+    if (validinput == False):
+        Log("Type in a valid option!")
 
-Log("")
-Log("" + ShouldMount + "ing the mod...")
+if (WillMount == True):
+    Log("Mounting the mod...")
+else:
+    Log("Unmounting the mod...")
+
 
 
 
@@ -90,13 +96,14 @@ Log("" + ShouldMount + "ing the mod...")
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
 
 def MountMod(gamepath):
-    Log("")
-    Log("Mounting Mod...")
+    print("")
+    print("            __________Mounting Mod Start_________")
+    Log("Gathering DLC folder data...")
     # find a place to mount the dlc
-    dlcmountpoint = FindAvalibleDLC(gamepath)
+    dlcmountpoint = FindAvailableDLC(gamepath)
     # detect if we have a MultiplayModFiles folder
     if "MultiplayerModFiles" in os.listdir(gamepath):
-        Log("MultiplayerModFiles folder found!")
+        Log("MultiplayerModFiles folder exists!")
     else:
         Log("MultiplayerModFiles folder not found!")
         Log("Creating MultiplayerModFiles folder...")
@@ -104,6 +111,8 @@ def MountMod(gamepath):
         Log("MultiplayerModFiles folder created!")
 
     # copy MultiplayerModFiles/ModFiles/Portal 2 to the gamepath
+    print("")
+    print("            __________Moving Files Start_________")
     Log("Copying ModFiles folder to " + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "portal2...")
     # if on windows, use the command line to copy the folder
     if (iow):
@@ -117,6 +126,7 @@ def MountMod(gamepath):
         os.system(command)
 
     # patch the binaries
+    print("            ___________Moving Files End__________")
     PatchBinaries(gamepath)
 
 
@@ -127,11 +137,13 @@ def MountMod(gamepath):
         command = "move \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         Log("Command: " + command)
         os.system(command)
+        print("             __________Mounting Mod End__________")
     # linux command
     else:
         command = "mv \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         Log("Command: " + command)
         os.system(command)
+        print("             __________Mounting Mod End__________")
 
 def UnpatchBinaries(gamepath):
     binarys = [
@@ -141,8 +153,9 @@ def UnpatchBinaries(gamepath):
         "portal2" + nf + "bin" + nf + "server.dll",
     ]
 
-    Log("")
-    Log("Unpatching Binary's...")
+    print("")
+    print("             __________Binary Restoration_________")
+    Log("Unpatching binaries...")
     for binary in binarys:
         # get the filename
         filename = binary.rsplit(nf, 1)[1]
@@ -155,26 +168,26 @@ def UnpatchBinaries(gamepath):
     UnRenameBinaries(gamepath, binarys)
 
 def PatchBinaries(gamepath):
-    Log("")
-    Log("Patching Binarys...")
+    print("")
+    Log("Patching binaries...")
 
     # move the binaries to the game directory
-    Log("")
-    Log("Moving binaries to " + gamepath + "...")
-    Log("")
+    Log("Moving the patched binaries to " + gamepath + "...")
+    print("")
 
-    binarys = [
-        "bin" + nf + "linux32" + nf + "engine.so",
-        "bin" + nf + "engine.dll",
-        "portal2" + nf + "bin" + nf + "linux32" + nf + "server.so",
-        "portal2" + nf + "bin" + nf + "server.dll",
-    ]
+    if (iow):
+        binarys = [
+            "bin" + nf + "engine.dll",
+            "portal2" + nf + "bin" + nf + "server.dll",
+        ]
+    else:
+        binarys = [
+            "bin" + nf + "linux32" + nf + "engine.so",
+            "portal2" + nf + "bin" + nf + "linux32" + nf + "server.so",
+        ]
 
-    # unrename the binaries so we can move them
-    UnRenameBinaries(gamepath, binarys)
-
-    Log("BINARY MOVING==========================================================")
-    Log("")
+    print("")
+    print("             _________Binary Moving Start________")
     for binary in binarys:
         Log("Moving " + binary + " to " + gamepath + "...")
         # get the filename
@@ -195,17 +208,13 @@ def PatchBinaries(gamepath):
             command = "cp \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
             Log("Command: " + command)
             os.system(command)
-
-        Log("")
-    Log("BINARY MOVING END======================================================")
+    print("             __________Binary Moving End_________")
 
 
-    Log("")
-    Log("BINARY PATCHING========================================================")
-    Log("")
     # patch the binaries
     ###/// ENGINE.DLL ///###
     if (os.path.isfile(gamepath + nf + "engine.dll")):
+        print("")
         Log("Patching engine.dll...")
         f = open(gamepath + nf + "engine.dll", "rb")
         data = f.read()
@@ -257,9 +266,11 @@ def PatchBinaries(gamepath):
         f = open(gamepath + nf + "server.dll", "wb")
         f.write(data)
         f.close()
+        print("")
 
     ###/// ENGINE.SO ///###
     if (os.path.isfile(gamepath + nf + "engine.so")):
+        print("")
         Log("Patching engine.so...")
         f = open(gamepath + nf + "engine.so", "rb")
         data = f.read()
@@ -312,10 +323,8 @@ def PatchBinaries(gamepath):
         f = open(gamepath + nf + "server.so", "wb")
         f.write(data)
         f.close()
+        print("")
 
-    Log("")
-    Log("BINARY PATCHING END====================================================")
-    Log("")
     # rename the files so the new files are used
     Log("Renaming binaries...")
     RenameBinaries(gamepath, binarys)
@@ -344,7 +353,7 @@ def UnRenameBinaries(gamepath, binarys):
     #     "portal2/bin/server.dll",
     # ]
 
-    Log("")
+    print("")
     Log("Un-renaming binaries...")
 
     # go through the list of binaries
@@ -363,7 +372,9 @@ def UnRenameBinaries(gamepath, binarys):
                 os.rename(gamepath + nf + binary, gamepath + nf + binary[:-9])
 
 def DeleteUnusedDlcs(gamepath):
-    Log("Deleting In Use DLCs...")
+    print("")
+    print("            _________Dealing with Folders________")
+    Log("Deleting in-use DLCs...")
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the files/folders that start with "portal2_dlc"
@@ -389,13 +400,10 @@ def DeleteUnusedDlcs(gamepath):
                         os.system(command)
                         FoundDlc = file
                         Log("Deleted OLD DLC: " + file)
-    Log("")
     return FoundDlc
 
-def FindAvalibleDLC(gamepath):
-    Log("")
-    Log("Finding Avalible DLC...")
-    Log("")
+def FindAvailableDLC(gamepath):
+    Log("Finding Available DLC...")
     dlcs = []
     DeleteUnusedDlcs(gamepath)
     # go through each file in the gamepath
@@ -417,7 +425,7 @@ def FindAvalibleDLC(gamepath):
                     Log("DLC " + dlcnumber + " is not a number!")
                 else:
                     dlcs.append(str(dlcnumber))
-                    Log("Adding DLC: " + dlcnumber + " to list...")
+                    Log("Adding DLC: " + dlcnumber + " to our internal list...")
 
     # sort each dlc number lower to higher
     dlcs.sort(key=int)
@@ -488,6 +496,7 @@ def FindInConfig(cfg, search):
         if line.split("=")[0].strip() == search:
             Log("Found " + search + " in config!")
             # return the right side of the line
+            print("            ___________Config Data End___________")
             return line.split("=")[1].strip()
     # if we didn't find it, return undefined
     Log("" + search + " not found in config!")
@@ -576,6 +585,7 @@ def EditConfig(filepath, search, newvalue):
     cfg.close()
 
 def ImportConfig():
+    print("            __________Config Data Start__________")
     Log("Importing Config...")
 
     # get the config file and open it
@@ -587,8 +597,7 @@ def ImportConfig():
 
     # process the config file into useable data
     Log("Processing Config...")
-    Log("")
-    Log("Config Data========================")
+    print("")
     processedconfig = []
     for line in config:
         # remove everything after the first #
@@ -618,8 +627,7 @@ def ImportConfig():
                 processedconfig.append(line)
                 Log("Line:" + line)
 
-    Log("Config Data End====================")
-    Log("")
+    print("")
     Log("Config Imported!")
     return processedconfig
 
@@ -629,6 +637,7 @@ def ImportConfig():
 # █ █░▀█ █ ░█░
 
 def LaunchGame(portal2path):
+    print("")
     Log("Running Game...")
     try:
         if (iow):
@@ -642,13 +651,14 @@ def LaunchGame(portal2path):
 
 ####### INIT ########
 def Init():
+    print("")
     Log("Initializing...")
-    Log("")
+    print("")
 
 #//# import the config #//#
     configdata = ImportConfig()
     configpath = FindConfigPath()
-    Log("")
+    print("")
 
 #//# get the portal 2 path #//#
     # setup a name for the default dlc2 (so we can make sure we get the right path later)
