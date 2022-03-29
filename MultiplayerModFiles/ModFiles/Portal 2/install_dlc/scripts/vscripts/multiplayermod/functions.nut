@@ -99,10 +99,10 @@ function SetCosmetics(p) {
             SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
         }
 
-        // //## Bumpy customization ##//
-        // if (pname == "Bumpy") {
-        //     SetPlayerModel(p, "models/gibs/hgibs.mdl")
-        // }
+        //## Bumpy customization ##//
+        if (pname == "Bumpy") {
+            SetPlayerModel(p, "models\handles_map_editor\torus.mdl")
+        }
 
         // //## nintendude customization ##//
         // if (pname == "nintendude") {
