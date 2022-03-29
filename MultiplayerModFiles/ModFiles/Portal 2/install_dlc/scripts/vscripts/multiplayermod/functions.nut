@@ -101,7 +101,7 @@ function SetCosmetics(p) {
 
         //## Bumpy customization ##//
         if (pname == "Bumpy") {
-            SetPlayerModel(p, "models\handles_map_editor\torus.mdl")
+            SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
         }
 
         // //## nintendude customization ##//
