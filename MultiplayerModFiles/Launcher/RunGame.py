@@ -28,9 +28,9 @@ def Log(message):
         # close the log
         log.close()
     if len(message) > 0:
-        Log("(P2:MM): " + message)
+        print("(P2:MM): " + message)
     else:
-        Log("")
+        print("")
 
 Log("")
 Log("")
