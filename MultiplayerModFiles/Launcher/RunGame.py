@@ -28,9 +28,9 @@ def Log(message):
         # close the log
         log.close()
     if len(message) > 0:
-        print("(P2:MM): " + message)
+        Log("(P2:MM): " + message)
     else:
-        print("")
+        Log("")
 
 Log("")
 Log("")
@@ -40,7 +40,7 @@ Log("")
 Log("")
 Log("")
 Log("")
-print("            ____________NEW LAUNCH LOG____________")
+Log("            ____________NEW LAUNCH LOG____________")
 
 if (iow):
     Log("")
@@ -99,7 +99,7 @@ else:
 
 def MountMod(gamepath):
     Log("")
-    print("            __________Mounting Mod Start_________")
+    Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
@@ -114,7 +114,7 @@ def MountMod(gamepath):
 
     # copy MultiplayerModFiles/ModFiles/Portal 2 to the gamepath
     Log("")
-    print("            __________Moving Files Start_________")
+    Log("            __________Moving Files Start_________")
     Log("Copying ModFiles folder to " + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "portal2...")
     # if on windows, use the command line to copy the folder
     if (iow):
@@ -128,7 +128,7 @@ def MountMod(gamepath):
         os.system(command)
 
     # patch the binaries
-    print("            ___________Moving Files End__________")
+    Log("            ___________Moving Files End__________")
     PatchBinaries(gamepath)
 
 
@@ -139,13 +139,13 @@ def MountMod(gamepath):
         command = "move \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         Log("Command: " + command)
         os.system(command)
-        print("             __________Mounting Mod End__________")
+        Log("             __________Mounting Mod End__________")
     # linux command
     else:
         command = "mv \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
         Log("Command: " + command)
         os.system(command)
-        print("             __________Mounting Mod End__________")
+        Log("             __________Mounting Mod End__________")
 
 def UnpatchBinaries(gamepath):
     binarys = [
@@ -156,7 +156,7 @@ def UnpatchBinaries(gamepath):
     ]
 
     Log("")
-    print("             __________Binary Restoration_________")
+    Log("             __________Binary Restoration_________")
     Log("Unpatching binaries...")
     for binary in binarys:
         # get the filename
@@ -189,7 +189,7 @@ def PatchBinaries(gamepath):
         ]
 
     Log("")
-    print("             _________Binary Moving Start________")
+    Log("             _________Binary Moving Start________")
     for binary in binarys:
         Log("Moving " + binary + " to " + gamepath + "...")
         # get the filename
@@ -210,7 +210,7 @@ def PatchBinaries(gamepath):
             command = "cp \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
             Log("Command: " + command)
             os.system(command)
-    print("             __________Binary Moving End_________")
+    Log("             __________Binary Moving End_________")
 
 
     # patch the binaries
@@ -375,7 +375,7 @@ def UnRenameBinaries(gamepath, binarys):
 
 def DeleteUnusedDlcs(gamepath):
     Log("")
-    print("            _________Dealing with Folders________")
+    Log("            _________Dealing with Folders________")
     Log("Deleting in-use DLCs...")
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
@@ -498,7 +498,7 @@ def FindInConfig(cfg, search):
         if line.split("=")[0].strip() == search:
             Log("Found " + search + " in config!")
             # return the right side of the line
-            print("            ___________Config Data End___________")
+            Log("            ___________Config Data End___________")
             return line.split("=")[1].strip()
     # if we didn't find it, return undefined
     Log("" + search + " not found in config!")
@@ -587,7 +587,7 @@ def EditConfig(filepath, search, newvalue):
     cfg.close()
 
 def ImportConfig():
-    print("            __________Config Data Start__________")
+    Log("            __________Config Data Start__________")
     Log("Importing Config...")
 
     # get the config file and open it
