@@ -84,7 +84,7 @@ function init() {
             printl("P2:MM plugin has not been loaded!")
             printl("============================================")
         }
-        printl("Attempting to load the P2:MM plugin...")
+        EntFire("p232servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
         EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetDeveloperLevel() == 918612) {
             EntFire("p232servercommand", "command", "developer 1", 0.01)
