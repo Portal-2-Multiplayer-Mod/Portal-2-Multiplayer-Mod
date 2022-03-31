@@ -11,17 +11,6 @@ import sys
 #//# Check to see what OS we are running and set up some variables #//#
 #/////////////////////////////////////////////////////////////////////#
 
-# detect if we are running on windows or linux
-def DetectOS():
-    # windows
-    if (os.name == "nt"):
-        return True
-    # linux
-    elif (os.name == "posix"):
-        return False
-    
-        return False
-
 iow = False # iow = Is on Windows?
 iol = False # iol = Is on Linux?
 if (os.name == "nt"):
