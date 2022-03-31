@@ -126,6 +126,8 @@ def MountMod(gamepath):
 
     # patch the binaries
     Log("            ___________Moving Files End__________")
+    UnpatchBinaries(gamepath)
+
     PatchBinaries(gamepath)
 
 
@@ -171,16 +173,12 @@ def PatchBinaries(gamepath):
     Log("Moving the patched binaries to " + gamepath + "...")
     Log("")
 
-    if (iow):
-        binarys = [
-            "bin" + nf + "engine.dll",
-            "portal2" + nf + "bin" + nf + "server.dll",
-        ]
-    elif (iol):
-        binarys = [
-            "bin" + nf + "linux32" + nf + "engine.so",
-            "portal2" + nf + "bin" + nf + "linux32" + nf + "server.so",
-        ]
+    binarys = [
+        "bin" + nf + "engine.dll",
+        "portal2" + nf + "bin" + nf + "server.dll",
+        "bin" + nf + "linux32" + nf + "engine.so",
+        "portal2" + nf + "bin" + nf + "linux32" + nf + "server.so",
+    ]
 
     Log("")
     Log("             _________Binary Moving Start________")
