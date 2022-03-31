@@ -2,7 +2,7 @@
 # █ █░▀░█ █▀▀ █▄█ █▀▄ ░█░ ▄█   ░▀░   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
 import os
-import subprocess
+# import subprocess
 import sys
 from scripts.BasicLogger import Log
 
@@ -49,7 +49,7 @@ if (sys.platform == "win32"):
     nf = "\\"
     iow = True
     homefolder = os.environ['USERPROFILE']
-elif (sys.platform == "linux"):
+elif (sys.platform.startswith("linux")):
     iol = True
     nf = "/"
     homefolder = os.path.expanduser("~")
@@ -628,10 +628,12 @@ def LaunchGame(portal2path):
     Log("")
     Log("Running Game...")
     
+    # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console
+
     try:
         if (iow):
-
-            subprocess.run([portal2path+nf+"portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "-conclearlog", "-condebug", "-console"])
+            # start portal 2 with the launch options and dont wait for it to finish
+            os.system(portal2path + nf + "portal2.exe -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
             Log("Game launch successful!")
         else:
             os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
