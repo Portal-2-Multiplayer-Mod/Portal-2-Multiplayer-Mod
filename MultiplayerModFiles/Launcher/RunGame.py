@@ -2,7 +2,7 @@
 # █ █░▀░█ █▀▀ █▄█ █▀▄ ░█░ ▄█   ░▀░   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
 import os
-# import subprocess
+import subprocess
 import sys
 from scripts.BasicLogger import Log
 
@@ -49,10 +49,12 @@ if (sys.platform == "win32"):
     nf = "\\"
     iow = True
     homefolder = os.environ['USERPROFILE']
+    Log("Windows OS detected")
 elif (sys.platform.startswith("linux")):
     iol = True
     nf = "/"
     homefolder = os.path.expanduser("~")
+    Log("Linux OS detected")
 elif (sys.platform == "darwin"):
     log("GET OUT OF HERE AND MAKE A DAMN PULL REQUEST FOR MAC SUPPORT!!!!!")
     sys.exit()
@@ -60,6 +62,7 @@ else:
     # feel sad for the poor people who are running templeOS :(
     Log("This operating system is not supported!")
     Log("We only support Windows and Linux as of current.")
+    Log("Cringe OS detected")
     quit()
 
 
@@ -633,8 +636,9 @@ def LaunchGame(portal2path):
     try:
         if (iow):
             # start portal 2 with the launch options and dont wait for it to finish
-            os.system(portal2path + nf + "portal2.exe -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
-            Log("Game launch successful!")
+            subprocess.run([portal2path + nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "-conclearlog", "-condebug", "-console"])
+            # os.system(portal2path + nf + "portal2.exe -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
+
         else:
             os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
             Log("Game launch successful!")
