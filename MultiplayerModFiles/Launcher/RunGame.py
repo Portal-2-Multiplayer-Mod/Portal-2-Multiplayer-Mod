@@ -5,19 +5,22 @@ from ast import Delete
 from http.client import LineTooLong
 import os
 import subprocess
+import sys
 
-#/////////////////////////////////////////////////////////////////#
-#//# detect if we are on windows (by default, we are on Linux) #//#
-#/////////////////////////////////////////////////////////////////#
+#/////////////////////////////////////////////////////////////////////#
+#//# Check to see what OS we are running and set up some variables #//#
+#/////////////////////////////////////////////////////////////////////#
 
-# iow = Is On Windows
-iow = False
-if os.name == 'nt':
+iow = False # iow = Is on Windows?
+iol = False # iol = Is on Linux?
+if sys.platform == "win32":
     nf = "\\"
     iow = True
-else:
+if sys.platform == sys.platform.startswith("linux"):
     nf = "/"
+    iol = True
 
+# Set up the logging system first thing in case of immediate errors
 def Log(message):
     # get the path of the python file and set the directory to it
     path = os.path.dirname(os.path.realpath(__file__))
@@ -36,56 +39,61 @@ Log("")
 Log("")
 Log("")
 Log("")
-Log("")
-Log("")
-Log("")
-Log("")
 Log("            ____________NEW LAUNCH LOG____________")
+Log("")
+Log("")
+Log("")
+Log("██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░██████╗░")
+Log("██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░╚════██╗")
+Log("██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░░░███╔═╝")
+Log("██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░██╔══╝░░")
+Log("██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░███████╗")
+Log("╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░╚══════╝")
+Log("")
+Log("███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░")
+Log("████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗")
+Log("██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║")
+Log("██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║")
+Log("██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝")
+Log("")
 
+# Print out what OS we are running and end program
+# for invalid OS's and get local user path
 if (iow):
     Log("")
     Log("Windows OS detected!")
-else:
+    homefolder = os.environ['USERPROFILE']
+elif (iol):
     Log("")
     Log("Linux OS detected!")
-
-
-#///////////////////////////////#
-#//# get the local user path #//#
-#///////////////////////////////#
-
-if (iow):
-    homefolder = os.environ['USERPROFILE']
-else:
     homefolder = os.path.expanduser("~")
+else:
+    Log("This operating system is not supported!")
+    Log("We only support Windows and Linux as of current.")
+    quit()
 
 Log("Home Folder: " + homefolder)
-
 Log("")
 
-#////////////////////////////////////////////////////////////#
-#//# Ask the user if they want to mount or unmout the mod #//#
-#////////////////////////////////////////////////////////////#
+#/////////////////////////////////////////////////////////////#
+#//# Ask the user if they want to mount or unmount the mod #//#
+#/////////////////////////////////////////////////////////////#
 
 validinput = False
 WillMount = True
 while (not validinput):
-    ShouldMount = input("(===) Would you like to mount or unmount the mod? (Mount/Unmount): ")
-    if (ShouldMount == "Mount" or ShouldMount == "mount" or ShouldMount == "M" or ShouldMount == "m"):
+    ShouldMount = input("(?) Would you like to mount or unmount the mod? (Mount/Unmount): ")
+    if (ShouldMount.upper() == "MOUNT" or ShouldMount.upper() == "M"):
         validinput = True
-        Log("User input: " + str(WillMount))
-    if (ShouldMount == "Unmount" or ShouldMount == "unmount" or ShouldMount == "U" or ShouldMount == "u"):
+        Log("User input: " + ShouldMount)
+        Log("Mounting the mod...")
+    elif (ShouldMount.upper() == "UNMOUNT" or ShouldMount.upper() == "U"):
         validinput = True
         WillMount = False
-        Log("User input: " + str(WillMount))
-    if (validinput == False):
+        Log("User input: " + ShouldMount)
+        Log("Unmounting the mod...")
+    else:
         Log("Type in a valid option!")
-
-if (WillMount == True):
-    Log("Mounting the mod...")
-else:
-    Log("Unmounting the mod...")
-
 
 
 
@@ -116,16 +124,14 @@ def MountMod(gamepath):
     Log("")
     Log("            __________Moving Files Start_________")
     Log("Copying ModFiles folder to " + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "portal2...")
-    # if on windows, use the command line to copy the folder
+    # windows command
     if (iow):
         command = "xcopy /E /I /Y \"" + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "Portal 2\" \"" + gamepath + "\""
-        Log("Command: " + command)
-        os.system(command)
-    else:
+    # linux command
+    elif (iol):
         command = "cp -r \"" + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "Portal 2\" \"" + gamepath.replace("Portal 2", "") + "\""
-        Log("Command: " + command)
-        # if on linux, use the command line
-        os.system(command)
+    Log("Command: " + command)
+    os.system(command)
 
     # patch the binaries
     Log("            ___________Moving Files End__________")
@@ -137,15 +143,12 @@ def MountMod(gamepath):
     # windows command
     if (iow):
         command = "move \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
-        Log("Command: " + command)
-        os.system(command)
-        Log("             __________Mounting Mod End__________")
     # linux command
-    else:
+    elif (iol):
         command = "mv \"" + gamepath + nf + "install_dlc\" \"" + gamepath + nf + dlcmountpoint + "\""
-        Log("Command: " + command)
-        os.system(command)
-        Log("             __________Mounting Mod End__________")
+    Log("Command: " + command)
+    os.system(command)
+    Log("             __________Mounting Mod End__________")
 
 def UnpatchBinaries(gamepath):
     binarys = [
@@ -182,7 +185,7 @@ def PatchBinaries(gamepath):
             "bin" + nf + "engine.dll",
             "portal2" + nf + "bin" + nf + "server.dll",
         ]
-    else:
+    if (iol):
         binarys = [
             "bin" + nf + "linux32" + nf + "engine.so",
             "portal2" + nf + "bin" + nf + "linux32" + nf + "server.so",
@@ -203,13 +206,11 @@ def PatchBinaries(gamepath):
         # windows command
         if (iow):
             command = "copy \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
-            Log("Command: " + command)
-            os.system(command)
         # linux command
-        else:
+        elif (iol):
             command = "cp \"" + gamepath + nf + binary + "\" \"" + gamepath + nf + filename + "\""
-            Log("Command: " + command)
-            os.system(command)
+        Log("Command: " + command)
+        os.system(command)
     Log("             __________Binary Moving End_________")
 
 
@@ -396,7 +397,7 @@ def DeleteUnusedDlcs(gamepath):
                         FoundDlc = file
                         Log("Deleted OLD DLC: " + file)
                     # Linux command
-                    else:
+                    if (iol):
                         command = "rm -r \"" + gamepath + nf + file + "\""
                         Log("Command: " + command)
                         os.system(command)
@@ -417,8 +418,9 @@ def FindAvailableDLC(gamepath):
                 # get everything after "portal2_dlc"
                 try:
                     dlcnumber = file.split("portal2_dlc")[1]
-                except:
+                except Exception as e:
                     Log("Error getting DLC name (probably a slice error moving on)!")
+                    Log("Error: " + str(e))
                     # move on to the next file
                     continue
 
@@ -472,9 +474,9 @@ def FindConfigPath():
     Log("Finding Config Path...")
     # the config file should be in documents or .config
     if (iow):
-        configpath = homefolder + "\\documents\\multiplayermod.conf"
-    else:
-        configpath = homefolder + "/.config/multiplayermod.conf"
+        configpath = homefolder + nf+"documents"+nf+"multiplayermod.conf"
+    elif (iol):
+        configpath = homefolder + nf+".config"+nf+"multiplayermod.conf"
 
     # if it doesn't exist, create it
     if not os.path.exists(configpath):
@@ -622,12 +624,12 @@ def ImportConfig():
             leftline = leftline.strip()
             rightline = rightline.strip()
             # recombine the two sides with a =
-            line = leftline + "=" + rightline
+            line = leftline + " = " + rightline
 
             # if the line is not empty, add it to the processed config
             if (line != ""):
                 processedconfig.append(line)
-                Log("Line:" + line)
+                Log("Line: " + line)
 
     Log("")
     Log("Config Imported!")
@@ -648,8 +650,9 @@ def LaunchGame(portal2path):
         else:
             os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
             Log("Game launch successful!")
-    except:
+    except Exception as e:
         Log("Failed to launch Portal 2!")
+        Log("Error: " + str(e))
 
 ####### INIT ########
 def Init():
