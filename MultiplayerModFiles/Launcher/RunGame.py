@@ -57,7 +57,7 @@ elif (sys.platform.startswith("linux")):
     Log("Linux OS detected")
 elif (sys.platform == "darwin"):
     log("GET OUT OF HERE AND MAKE A DAMN PULL REQUEST FOR MAC SUPPORT!!!!!")
-    sys.exit()
+    quit()
 else:
     # feel sad for the poor people who are running templeOS :(
     Log("This operating system is not supported!")
@@ -72,22 +72,29 @@ Log("")
 #/////////////////////////////////////////////////////////////#
 #//# Ask the user if they want to mount or unmount the mod #//#
 #/////////////////////////////////////////////////////////////#
-
-validinput = False
-WillMount = True
-while (not validinput):
-    ShouldMount = input("(?) Would you like to mount or unmount the mod? (Mount/Unmount): ")
-    if (ShouldMount.upper() == "MOUNT" or ShouldMount.upper() == "M"):
-        validinput = True
-        Log("User input: " + ShouldMount)
-        Log("Mounting the mod...")
-    elif (ShouldMount.upper() == "UNMOUNT" or ShouldMount.upper() == "U"):
-        validinput = True
-        WillMount = False
-        Log("User input: " + ShouldMount)
-        Log("Unmounting the mod...")
-    else:
-        Log("Type in a valid option!")
+def UserAction():
+    validinput = False
+    global WillMount
+    WillMount = True
+    while (not validinput):
+        ShouldMount = input("(?) Would you like to mount or unmount the mod? (Mount/Unmount)")
+    
+        # if the user doesn't want to proceed they can can quit
+        if (ShouldMount.upper() == "EXIT" or ShouldMount.upper() == "ABORT" or ShouldMount.upper() == "QUIT"):
+            Log("Exiting")
+            quit()
+        
+        if (ShouldMount.upper() == "MOUNT" or ShouldMount.upper() == "M"):
+            validinput = True
+            Log("User input: " + ShouldMount)
+            Log("Mounting the mod...")
+        elif (ShouldMount.upper() == "UNMOUNT" or ShouldMount.upper() == "U"):
+            validinput = True
+            WillMount = False
+            Log("User input: " + ShouldMount)
+            Log("Unmounting the mod...")
+        else:
+            Log("Type in a valid option!")
 
 
 
@@ -503,13 +510,7 @@ def GetPortal2Path(configpath, configdata):
         hasfoundcorrectpath = False
         while hasfoundcorrectpath == False:
             Log("")
-            portal2path = input(
-                "Enter the path to your Portal 2 installation or type 'exit' to abort: ")
-
-            # if the user types "exit" exit the app
-            if (portal2path == "exit"):
-                Log("Exiting")
-                quit()
+            portal2path = input("Enter the path to your Portal 2 installation: ")
 
             # check if the given path is valid
             if (os.path.exists(portal2path) and os.path.exists(portal2path + nf + "portal2_dlc2")):
@@ -656,6 +657,8 @@ def Init():
     Log("Initializing...")
     Log("")
 
+    # ask the user what they want before proceeding
+    UserAction()
 #//# import the config #//#
     configdata = ImportConfig()
     configpath = FindConfigPath()
@@ -663,7 +666,6 @@ def Init():
 
 #//# get the portal 2 path #//#
     # setup a name for the default dlc2 (so we can make sure we get the right path later)
-
     portal2path = GetPortal2Path(configpath, configdata)
 
 #//# mount the multiplayer mod #//#
@@ -674,5 +676,6 @@ def Init():
         DeleteUnusedDlcs(portal2path)
         UnpatchBinaries(portal2path)
 
-# RUN INIT
-Init()
+if __name__ == "__main__":
+    # RUN INIT
+    Init()
