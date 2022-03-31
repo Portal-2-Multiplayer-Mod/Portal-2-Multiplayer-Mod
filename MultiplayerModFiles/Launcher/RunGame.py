@@ -11,14 +11,28 @@ import sys
 #//# Check to see what OS we are running and set up some variables #//#
 #/////////////////////////////////////////////////////////////////////#
 
+# detect if we are running on windows or linux
+def DetectOS():
+    # windows
+    if (os.name == "nt"):
+        return True
+    # linux
+    elif (os.name == "posix"):
+        return False
+    
+        return False
+
 iow = False # iow = Is on Windows?
 iol = False # iol = Is on Linux?
-if sys.platform == "win32":
+if (os.name == "nt"):
     nf = "\\"
     iow = True
-if sys.platform == sys.platform.startswith("linux"):
+if (os.name == "posix"):
     nf = "/"
     iol = True
+if iol == False & iow == False:
+    print("ERROR: unable to detect OS")
+    sys.exit()
 
 # Set up the logging system first thing in case of immediate errors
 def Log(message):
