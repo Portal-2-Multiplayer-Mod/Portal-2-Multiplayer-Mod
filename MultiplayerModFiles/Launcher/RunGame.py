@@ -43,24 +43,26 @@ Log("")
 # checks if the OS is Windows or Linux
 # sets the default configs for each OS
 # quits the application if the OS is not supported
-iow = False  # iow = Is on Windows?
-iol = False  # iol = Is on Linux?
-if (os.name == "nt"):
-    iow = True
+iow = False # iow = Is on Windows?
+iol = False # iol = Is on Linux?
+if (sys.platform == "win32"):
     nf = "\\"
+    iow = True
     homefolder = os.environ['USERPROFILE']
-    Log("Windows OS detected!")
-elif (os.name == "posix"):
+elif (sys.platform == "linux"):
     iol = True
     nf = "/"
     homefolder = os.path.expanduser("~")
-    Log("Linux OS detected!")
+elif (sys.platform == "darwin"):
+    log("GET OUT OF HERE AND MAKE A DAMN PULL REQUEST FOR MAC SUPPORT!!!!!")
+    sys.exit()
 else:
     # feel sad for the poor people who are running templeOS :(
     Log("This operating system is not supported!")
     Log("We only support Windows and Linux as of current.")
     quit()
-    
+
+
 Log("Home Folder: " + homefolder)
 Log("")
 
