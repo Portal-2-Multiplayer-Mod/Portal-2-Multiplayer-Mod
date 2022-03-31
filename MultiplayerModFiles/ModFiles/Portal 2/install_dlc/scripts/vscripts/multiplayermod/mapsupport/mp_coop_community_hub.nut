@@ -35,4 +35,48 @@ if (MinecraftMode) {
 
         }
     }
+} else {
+    // ███╗   ███╗ █████╗ ██████╗ ███╗  ██╗ █████╗ ███╗   ███╗███████╗
+    // ████╗ ████║██╔══██╗██╔══██╗████╗ ██║██╔══██╗████╗ ████║██╔════╝
+    // ██╔████╔██║███████║██████╔╝██╔██╗██║███████║██╔████╔██║█████╗
+    // ██║╚██╔╝██║██╔══██║██╔═══╝ ██║╚████║██╔══██║██║╚██╔╝██║██╔══╝
+    // ██║ ╚═╝ ██║██║  ██║██║     ██║ ╚███║██║  ██║██║ ╚═╝ ██║███████╗
+    // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
+
+    function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
+        if (MSInstantRun==true) {
+            DecEntFireByHandle(Entities.FindByClassname(null, "prop_button"), "addoutput", "OnPressed p232servercommand:command:script PressedButton()")
+            Entities.FindByClassname(null, "prop_button").__KeyValueFromString("Delay", "0")
+        }
+
+        if (MSPostPlayerSpawn==true) {
+            SendToConsole("script BruhBoi()")
+        }
+
+        if (MSLoop==true) {
+
+        }
+    }
+}
+
+function PressedButton() {
+    printl("ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣blare")
+    local randnum = RandomInt(2, 5)
+    while (randnum > 0) {
+        local ent = Entities.FindByName(null, "genericcustomprop")
+        DecEntFireByHandle(ent, "enabledraw")
+        DecEntFireByHandle(ent, "enablecollision")
+        if (ent != null) {
+            ent.__KeyValueFromString("targetname", "genericcustompropenabled")
+        }
+        randnum = randnum - 1
+    }
+}
+
+function BruhBoi() {
+    local ent = null
+    while (ent = Entities.FindByName(ent, "genericcustomprop")) {
+        DecEntFireByHandle(ent, "disabledraw", "", 1)
+        DecEntFireByHandle(ent, "disablecollision", "", 1)
+    }
 }

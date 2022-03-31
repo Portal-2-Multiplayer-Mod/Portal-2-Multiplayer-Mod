@@ -484,6 +484,18 @@ function loop() {
     //     //DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
     // }
 
+    if ("PythonHookIs" in this) { if (PythonHookIs == true) {
+        try {
+            try {
+                OldPyInputNum <- PyInputNum
+            } catch(e) { 
+                PyInputNum <- 0
+                OldPyInputNum <- PyInputNum
+            }
+            IncludeScript("PyInput")
+        } catch(e) { }
+    }}
+
     if (HasSpawned == true && MinecraftMode) {
         if (Time() >= PreviousTime01Sec + 0.2) {
             PreviousTime01Sec = Time()

@@ -6,9 +6,11 @@ import subprocess
 import sys
 from scripts.BasicLogger import Log
 
+
 #////////////////////////////////////////#
 #//# Cool text to start the log with  #//#
 #////////////////////////////////////////#
+
 
 Log("")
 Log("")
@@ -43,12 +45,12 @@ Log("")
 # quits the application if the OS is not supported
 iow = False  # iow = Is on Windows?
 iol = False  # iol = Is on Linux?
-if sys.platform == "win32":
+if (os.name == "nt"):
     iow = True
     nf = "\\"
     homefolder = os.environ['USERPROFILE']
     Log("Windows OS detected!")
-elif sys.platform == sys.platform.startswith("linux"):
+elif (os.name == "posix"):
     iol = True
     nf = "/"
     homefolder = os.path.expanduser("~")
@@ -628,10 +630,13 @@ def LaunchGame(portal2path):
     
     try:
         if (iow):
-            subprocess.run([portal2path + nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612"])
-        elif (iol):
-            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612")
-            
+
+            subprocess.run([portal2path+nf+"portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "-conclearlog", "-condebug", "-console"])
+            Log("Game launch successful!")
+        else:
+            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
+            Log("Game launch successful!")
+
     except Exception as e:
         Log("Failed to launch Portal 2!")
         Log("Error: " + str(e))
