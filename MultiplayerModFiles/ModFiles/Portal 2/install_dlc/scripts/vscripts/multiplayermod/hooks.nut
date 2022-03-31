@@ -138,6 +138,9 @@ function OnPlayerJoin(p, script_scope) {
     // Player name
     if (PluginLoaded==true) {
         currentplayerclass.username <- GetPlayerName(p.entindex())
+        player1discordhookstr = "ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣hookdiscord Player " + currentplayerclass.username + " Joined The Game"
+        player1discordhookstr.tostring()
+        EntFire("p232servercommand", "command", "script printl(player1discordhookstr)", 1)
     } else {
         currentplayerclass.username <- "Player " + p.entindex()
     }
@@ -220,6 +223,9 @@ function OnPlayerRespawn(player) {
 ///////////////////////////////////////
 
 function PostMapLoad() {
+    //# Discord Hook #//
+    printl("ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣hookdiscord Portal 2 Playing On: " + GetMapName())
+
     //## Cheat detection ##//
     SendToConsole("prop_dynamic_create cheatdetectionp232")
     SendToConsole("script SetCheats()")

@@ -45,6 +45,7 @@ CanCheckAngle <- false
 
 OriginalPosMain <- null
 
+player1discordhookstr <- ""
 CanHook <- false
 Player2Joined <- false
 hasbeenremoved <- false
