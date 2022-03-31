@@ -1,39 +1,14 @@
 # █ █▀▄▀█ █▀█ █▀█ █▀█ ▀█▀ █▀   ▄█▄   █░█ ▄▀█ █▀█ █ █▄▄ █░░ █▀▀ █▀
 # █ █░▀░█ █▀▀ █▄█ █▀▄ ░█░ ▄█   ░▀░   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
-from ast import Delete
-from http.client import LineTooLong
 import os
 import subprocess
 import sys
+from scripts.BasicLogger import Log
 
-#/////////////////////////////////////////////////////////////////////#
-#//# Check to see what OS we are running and set up some variables #//#
-#/////////////////////////////////////////////////////////////////////#
-
-iow = False # iow = Is on Windows?
-iol = False # iol = Is on Linux?
-if sys.platform == "win32":
-    nf = "\\"
-    iow = True
-if sys.platform == sys.platform.startswith("linux"):
-    nf = "/"
-    iol = True
-
-# Set up the logging system first thing in case of immediate errors
-def Log(message):
-    # get the path of the python file and set the directory to it
-    path = os.path.dirname(os.path.realpath(__file__))
-    # if there is open it as utf-8 but dont delete the contents
-    with open(path + nf + "MultiplayerModLauncher.log", "a", encoding="utf-8") as log:
-        # write the message to the log
-        log.write(message + "\n")
-        # close the log
-        log.close()
-    if len(message) > 0:
-        print("(P2:MM): " + message)
-    else:
-        print("")
+#////////////////////////////////////////#
+#//# Cool text to start the log with  #//#
+#////////////////////////////////////////#
 
 Log("")
 Log("")
@@ -56,27 +31,39 @@ Log("██╔████╔██║██████╔╝░░░░██
 Log("██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║")
 Log("██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝")
 Log("")
+Log("")
 
-# Print out what OS we are running and end program
-# for invalid OS's and get local user path
-if (iow):
-    Log("")
-    Log("Windows OS detected!")
+
+#/////////////////////////////////////////////////////////////////////#
+#//# Check to see what OS we are running and set up some variables #//#
+#/////////////////////////////////////////////////////////////////////#
+
+# checks if the OS is Windows or Linux
+# sets the default configs for each OS
+# quits the application if the OS is not supported
+iow = False  # iow = Is on Windows?
+iol = False  # iol = Is on Linux?
+if sys.platform == "win32":
+    iow = True
+    nf = "\\"
     homefolder = os.environ['USERPROFILE']
-elif (iol):
-    Log("")
-    Log("Linux OS detected!")
+    Log("Windows OS detected!")
+elif sys.platform == sys.platform.startswith("linux"):
+    iol = True
+    nf = "/"
     homefolder = os.path.expanduser("~")
+    Log("Linux OS detected!")
 else:
+    # feel sad for the poor people who are running templeOS :(
     Log("This operating system is not supported!")
     Log("We only support Windows and Linux as of current.")
     quit()
-
+    
 Log("Home Folder: " + homefolder)
 Log("")
 
 #////////////////////////////////////////////////////////////#
-#//# Ask the user if they want to mount or unmout the mod #//#
+#//# Ask the user if they want to mount or unmount the mod #//#
 #////////////////////////////////////////////////////////////#
 
 validinput = False
@@ -185,7 +172,7 @@ def PatchBinaries(gamepath):
             "bin" + nf + "engine.dll",
             "portal2" + nf + "bin" + nf + "server.dll",
         ]
-    if (iol):
+    elif (iol):
         binarys = [
             "bin" + nf + "linux32" + nf + "engine.so",
             "portal2" + nf + "bin" + nf + "linux32" + nf + "server.so",
@@ -385,25 +372,20 @@ def DeleteUnusedDlcs(gamepath):
             # make sure it's a folder
             if os.path.isdir(gamepath + nf + file):
                 # if inside the folder there is a file called "32playermod.identifier" delete this folder
-                FoundDlc = False
                 if "32playermod.identifier" in os.listdir(gamepath + nf + file):
                     Log("Found OLD DLC: " + file)
                     # delete the folder even if it's not empty
                     # Windows command
                     if (iow):
                         command = "rmdir /S /Q \"" + gamepath + nf + file + "\""
-                        Log("Command: " + command)
                         os.system(command)
-                        FoundDlc = file
-                        Log("Deleted OLD DLC: " + file)
                     # Linux command
-                    if (iol):
+                    elif (iol):
                         command = "rm -r \"" + gamepath + nf + file + "\""
-                        Log("Command: " + command)
                         os.system(command)
-                        FoundDlc = file
-                        Log("Deleted OLD DLC: " + file)
-    return FoundDlc
+                        
+                    Log("Deleted OLD DLC: " + file)
+                    Log("Command: " + command)
 
 def FindAvailableDLC(gamepath):
     Log("Finding Available DLC...")
@@ -522,7 +504,7 @@ def GetPortal2Path(configpath, configdata):
             # if the user types "exit" exit the app
             if (portal2path == "exit"):
                 Log("Exiting")
-                exit()
+                quit()
 
             # check if the given path is valid
             if (os.path.exists(portal2path) and os.path.exists(portal2path + nf + "portal2_dlc2")):
@@ -643,16 +625,19 @@ def ImportConfig():
 def LaunchGame(portal2path):
     Log("")
     Log("Running Game...")
+    
     try:
         if (iow):
             subprocess.run([portal2path + nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612"])
-            Log("Game launch successful!")
         elif (iol):
             os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612")
-            Log("Game launch successful!")
+            
     except Exception as e:
         Log("Failed to launch Portal 2!")
         Log("Error: " + str(e))
+        quit()
+    
+    Log("Game exited successfully.")
 
 ####### INIT ########
 def Init():
