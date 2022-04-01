@@ -14,12 +14,12 @@ links = [
     "https://cdn.discordapp.com/attachments/958242420313698344/958278800708345876/redditsave.com_rule-kpfm3g5vykg81.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958278921198141440/video041.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958278921198141440/video041.mp4",
-    "https://cdn.discordapp.com/attachments/958242420313698344/958278921198141440/video041.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958279151477981254/video0.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958279215583723550/IMG_4209.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958279322509135872/99.mov",
     "https://cdn.discordapp.com/attachments/958242420313698344/958279365102272522/redditsave.com_le_methe-qi4lsfjupb071.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958279409788420116/Crab_boogie1.mp4",
+    "https://cdn.discordapp.com/attachments/958242420313698344/958279479699075102/NoBitches.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958279479699075102/NoBitches.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958279557033623642/no_damsels.mp4",
     "https://cdn.discordapp.com/attachments/958242420313698344/958279617800712242/trim.BCD7CCC3-1DF4-447B-85FF-27E7C53B74CF.mov",
@@ -27,7 +27,13 @@ links = [
     "https://cdn.discordapp.com/attachments/844275121950687232/941408792904597604/video0-205.mov",
     "https://cdn.discordapp.com/attachments/844275121950687232/941408472027791432/fall_guys.mp4",
     "https://cdn.discordapp.com/attachments/858082675464863764/937429700509331456/redditsave.com_her_ps5_or_pc-9zph4n92cve81.mp4",
-    "https://cdn.discordapp.com/attachments/844275121950687232/958297431290822716/Logging_into_discord_be_like.mp4"
+    "https://cdn.discordapp.com/attachments/844275121950687232/958297431290822716/Logging_into_discord_be_like.mp4",
+    "https://cdn.discordapp.com/attachments/844275121950687232/958297431290822716/Logging_into_discord_be_like.mp4",
+    "https://cdn.discordapp.com/attachments/844275121950687232/958161162418139196/video1.mov",
+    "https://cdn.discordapp.com/attachments/839651381383397378/959406612605456394/youtube_tutorials_be_like.mp4",
+    "https://cdn.discordapp.com/attachments/839651381383397378/959406749767577610/french.mp4",
+    "https://cdn.discordapp.com/attachments/839651381383397378/959407122813173810/234238622_361815072183954_4327328764559183360_n.mp4",
+    ""
 ]
 
 def WritePyInput(saydata):
