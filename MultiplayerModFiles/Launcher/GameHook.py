@@ -33,6 +33,18 @@ links = [
     "https://cdn.discordapp.com/attachments/839651381383397378/959406612605456394/youtube_tutorials_be_like.mp4",
     "https://cdn.discordapp.com/attachments/839651381383397378/959406749767577610/french.mp4",
     "https://cdn.discordapp.com/attachments/839651381383397378/959407122813173810/234238622_361815072183954_4327328764559183360_n.mp4",
+    "https://cdn.discordapp.com/attachments/439519668819066880/959285762317250611/I_am_no_longer_racist.mp4",
+    "https://cdn.discordapp.com/attachments/311176612341088258/959072455564075058/y.mp4",
+    "https://cdn.discordapp.com/attachments/782174973074604052/959172812411662366/mhng.mp4",
+    "https://cdn.discordapp.com/attachments/407955661016793088/958912106147754004/0c0ad448cae4189f9e8ced06cd8db7b5.mov",
+    "https://cdn.discordapp.com/attachments/607866069767684096/958516788373618688/ugb9mJS77iH6v49B.mp4",
+    "https://cdn.discordapp.com/attachments/835922432790626314/957288049325260810/trim.D4FB7751-4071-4CCC-8B85-90CD52963020.mov",
+    "https://cdn.discordapp.com/attachments/547851758668611634/947086989218414602/senator_armstrong_sons_of_your_mom.mp4",
+    "https://cdn.discordapp.com/attachments/824184319391956993/931809744912515142/ssstiktok_1642231149.mp4",
+    "https://cdn.discordapp.com/attachments/693229671407681537/928460648252338297/redditsave.com_bones-ojisk0kafb981.mp4",
+    "https://cdn.discordapp.com/attachments/878044914770907156/929459944858742834/939a46845c4e03d2cae12cb9fd60b6fe.mp4",
+    "https://cdn.discordapp.com/attachments/649230397569368064/908454259392147496/redditsave.com_betrayal-k6v7agxd5uw71.mp4",
+    "https://cdn.discordapp.com/attachments/429143634072305675/899788628937556058/video0-2-3-1.mp4",
     ""
 ]
 
