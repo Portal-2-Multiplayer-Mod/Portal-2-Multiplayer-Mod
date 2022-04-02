@@ -71,7 +71,7 @@ PlayerColorCached <- []
 CurrentlyDead <- []
 PlayerID <- 0
 PreviousTime5Sec <- 0
-amtoffsetclr <- 0
+amtoffsetclr <- 1
 GBIsMultiplayer <- 0
 cacheoriginalplayerposition <- 0
 DoneWaiting <- false

@@ -444,6 +444,7 @@ if (GetMapName() == "sp_a3_crazy_box") {
 }
 
 
+
 //==================================//
 //CREATE OBJECTS FOR mp_coop_lobby_3//
 //==================================//
@@ -452,26 +453,378 @@ if (GetMapName() == "mp_coop_lobby_3") {
     if (CacheTime==true) {
         // Cache Objects
 
-        PrecacheModel("props_urban/metal_plate001.mdl")
+        PrecacheModel("props_motel/armchair.mdl")
 
-        PrecacheModel("props_vehicles/train_box.mdl")
+        PrecacheModel("props_motel/smoke_detector01.mdl")
+
+        PrecacheModel("props_motel/fridge.mdl")
+
+        PrecacheModel("props_motel/pink_tablelamp.mdl")
+
+        PrecacheModel("props_motel/closet_curtain01.mdl")
+
+        PrecacheModel("props_motel/rotating_picture.mdl")
+
+        PrecacheModel("props_motel/tall_round_table.mdl")
+
+        PrecacheModel("props_motel/tv.mdl")
+
+        PrecacheModel("props_motel/trimdesk_wall.mdl")
+
+        PrecacheModel("props_motel/hotel_container_furniture03.mdl")
+
+        PrecacheModel("props_motel/microwave.mdl")
+
+        PrecacheModel("props_motel/wall_lamp.mdl")
+
+        PrecacheModel("props_motel/bedside_table.mdl")
+
+        PrecacheModel("props_office/desk_freestanding.mdl")
+
+        PrecacheModel("props_office/tv_1970.mdl")
+
+        PrecacheModel("props_office/whiteboard.mdl")
+
+        PrecacheModel("props_office/whiteboard_coop.mdl")
+
+        PrecacheModel("props_office/lab_display_standup.mdl")
+
+        PrecacheModel("props_underground/elevator_enclosure.mdl")
+
+        PrecacheModel("props_underground/distillery_tanks_small.mdl")
+
+        PrecacheModel("props_underground/chair_lobby.mdl")
+
+        PrecacheModel("props_underground/entrance_elevator.mdl")
+
+        PrecacheModel("props_underground/door_bipart_frame_128_combined.mdl")
+
+        PrecacheModel("props_underground/desk_lobby.mdl")
+
+        PrecacheModel("props_underground/chair_folding_01.mdl")
+
+        PrecacheModel("props_underground/chair_office_padded_1980.mdl")
+
+        PrecacheModel("props_underground/pillar_cage.mdl")
+
+        PrecacheModel("props_underground/underground_door_closed_lod1.mdl")
+
+        PrecacheModel("props_underground/truss_32_256.mdl")
+
+        PrecacheModel("props_underground/underground_floor_button.mdl")
+
+        PrecacheModel("props_underground/underground_boxdropper_cage.mdl")
+
+        PrecacheModel("props_underground/tube_paint_leak.mdl")
+
+        PrecacheModel("car_int_dest/car_int_dest.mdl")
+
+        PrecacheModel("props_bts/hanging_platform_b.mdl")
+
+        PrecacheModel("props_bts/lab_pod_b.mdl")
+
+        PrecacheModel("props_bts/vertical_small_piston_body.mdl")
+
+        PrecacheModel("props_bts/vertical_small_piston_base.mdl")
+
+        PrecacheModel("props_urban/telephone_pole002.mdl")
+
+        PrecacheModel("props_urban/telephone_pole003.mdl")
+
+        PrecacheModel("npcs/glados/glados_disc_base.mdl")
+
+        PrecacheModel("props_lab/glados_chamber_lightpanels.mdl")
+
+        PrecacheModel("npcs/glados/glados_ring_medium.mdl")
+
+        PrecacheModel("npcs/glados/glados_wheatley_newbody.mdl")
 
         DoneCacheing <- true
-    }
+  }
 
 
     if (CreateTime==true) {
         // Create Objects
 
-        local mp_coop_lobby_3_custom_prop_256 = CreateProp("prop_dynamic", Vector(5754.3134765625, 4373.8295898438, -382.41793823242), "models/props_urban/metal_plate001.mdl", 0)
-        mp_coop_lobby_3_custom_prop_256.SetAngles(16.878709793091, -156.00103759766, -4.7347717285156)
-        mp_coop_lobby_3_custom_prop_256.__KeyValueFromString("solid", "6")
-        mp_coop_lobby_3_custom_prop_256.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local mp_coop_lobby_3_custom_prop_257 = CreateProp("prop_dynamic", Vector(4971.7221679688, 3216.0473632813, -651.88122558594), "models/props_vehicles/train_box.mdl", 0)
-        mp_coop_lobby_3_custom_prop_257.SetAngles(1.084222276404e-07, -172.5950012207, 44.999992370605)
+        local mp_coop_lobby_3_custom_prop_257 = CreateProp("prop_dynamic", Vector(5011.6875, 3502.5944824219, -508.60208129883), "models/props_motel/armchair.mdl", 0)
+        mp_coop_lobby_3_custom_prop_257.SetAngles(-0.49653694033623, -154.99290466309, 0.090956099331379)
         mp_coop_lobby_3_custom_prop_257.__KeyValueFromString("solid", "6")
         mp_coop_lobby_3_custom_prop_257.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_259 = CreateProp("prop_dynamic", Vector(5006.1079101563, 3629.2321777344, -508.57754516602), "models/props_motel/armchair.mdl", 0)
+        mp_coop_lobby_3_custom_prop_259.SetAngles(-0.10151860117912, 150.84159851074, -0.51852416992188)
+        mp_coop_lobby_3_custom_prop_259.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_259.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_261 = CreateProp("prop_dynamic", Vector(5097.5776367188, 3687.4870605469, -508.54922485352), "models/props_motel/armchair.mdl", 0)
+        mp_coop_lobby_3_custom_prop_261.SetAngles(0.098633550107479, 104.49559783936, 0.0045187557116151)
+        mp_coop_lobby_3_custom_prop_261.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_261.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_263 = CreateProp("prop_dynamic", Vector(5194.1879882813, 3698.9753417969, -508.58837890625), "models/props_motel/armchair.mdl", 0)
+        mp_coop_lobby_3_custom_prop_263.SetAngles(-0.37336966395378, 77.125160217285, -0.20321655273438)
+        mp_coop_lobby_3_custom_prop_263.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_263.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_265 = CreateProp("prop_dynamic", Vector(5184.9951171875, 3609.3735351563, -383.78820800781), "models/props_motel/smoke_detector01.mdl", 0)
+        mp_coop_lobby_3_custom_prop_265.SetAngles(4.7535090175188e-07, -0.021117420867085, 0)
+        mp_coop_lobby_3_custom_prop_265.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_265.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_267 = CreateProp("prop_dynamic", Vector(5223.4077148438, 3474.8022460938, -508.62036132813), "models/props_motel/fridge.mdl", 0)
+        mp_coop_lobby_3_custom_prop_267.SetAngles(-0.17555300891399, -62.044471740723, -0.20001220703125)
+        mp_coop_lobby_3_custom_prop_267.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_267.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_269 = CreateProp("prop_dynamic", Vector(5231.4614257813, 3571.0849609375, -466.56085205078), "models/props_motel/pink_tablelamp.mdl", 0)
+        mp_coop_lobby_3_custom_prop_269.SetAngles(5.1035371539726e-14, -177.23361206055, 3.7145980513742e-06)
+        mp_coop_lobby_3_custom_prop_269.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_269.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_270 = CreateProp("prop_dynamic", Vector(5109.6201171875, 3462.7553710938, -470.17736816406), "models/props_motel/closet_curtain01.mdl", 0)
+        mp_coop_lobby_3_custom_prop_270.SetAngles(0.010738008655608, 1.2122988700867, 0.0083315502852201)
+        mp_coop_lobby_3_custom_prop_270.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_270.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_272 = CreateProp("prop_dynamic", Vector(5047.2651367188, 3459.4931640625, -445.62130737305), "models/props_motel/rotating_picture.mdl", 0)
+        mp_coop_lobby_3_custom_prop_272.SetAngles(-3.320953104527e-12, -90.000038146973, -2.0950942598574e-06)
+        mp_coop_lobby_3_custom_prop_272.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_272.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_274 = CreateProp("prop_dynamic", Vector(5122.6186523438, 3584.7529296875, -508.60638427734), "models/props_motel/tall_round_table.mdl", 0)
+        mp_coop_lobby_3_custom_prop_274.SetAngles(0.47404038906097, 119.48056793213, 0.77687060832977)
+        mp_coop_lobby_3_custom_prop_274.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_274.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_276 = CreateProp("prop_dynamic", Vector(5244.0107421875, 3638.8391113281, -428.09030151367), "models/props_motel/tv.mdl", 0)
+        mp_coop_lobby_3_custom_prop_276.SetAngles(-1.4357164762613e-11, -0.00020793594012503, -2.0959346329619e-06)
+        mp_coop_lobby_3_custom_prop_276.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_276.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_278 = CreateProp("prop_dynamic", Vector(5241.1860351563, 3605.921875, -508.53622436523), "models/props_motel/trimdesk_wall.mdl", 0)
+        mp_coop_lobby_3_custom_prop_278.SetAngles(0.22855341434479, 1.823633313179, 0.43648156523705)
+        mp_coop_lobby_3_custom_prop_278.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_278.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_280 = CreateProp("prop_dynamic", Vector(5082.7709960938, 3682.3959960938, -508.59829711914), "models/props_motel/hotel_container_furniture03.mdl", 0)
+        mp_coop_lobby_3_custom_prop_280.SetAngles(5.5397822507075e-07, 180, -1.5568800790788e-06)
+        mp_coop_lobby_3_custom_prop_280.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_280.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_282 = CreateProp("prop_dynamic", Vector(5099.71484375, 3539.8173828125, -386.61880493164), "models/props_motel/smoke_detector01.mdl", 0)
+        mp_coop_lobby_3_custom_prop_282.SetAngles(5.1801774675342e-11, 90.000595092773, 0)
+        mp_coop_lobby_3_custom_prop_282.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_282.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_284 = CreateProp("prop_dynamic", Vector(5226.1000976563, 3625.162109375, -465.91015625), "models/props_motel/microwave.mdl", 0)
+        mp_coop_lobby_3_custom_prop_284.SetAngles(-1.1806892201665e-14, 12.84631729126, 7.9168075899361e-06)
+        mp_coop_lobby_3_custom_prop_284.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_284.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_286 = CreateProp("prop_dynamic", Vector(5174.4829101563, 3464.2966308594, -451.74954223633), "models/props_motel/wall_lamp.mdl", 0)
+        mp_coop_lobby_3_custom_prop_286.SetAngles(4.5172960966462e-13, -90, -2.1010962427681e-06)
+        mp_coop_lobby_3_custom_prop_286.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_286.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_288 = CreateProp("prop_dynamic", Vector(5146.3276367188, 3704.9406738281, -508.60430908203), "models/props_motel/bedside_table.mdl", 0)
+        mp_coop_lobby_3_custom_prop_288.SetAngles(0.1255606263876, 90.166061401367, -0.097564697265625)
+        mp_coop_lobby_3_custom_prop_288.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_288.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_289 = CreateProp("prop_dynamic", Vector(5286.3442382813, 3863.0441894531, -502.96496582031), "models/props_office/desk_freestanding.mdl", 0)
+        mp_coop_lobby_3_custom_prop_289.SetAngles(-7.1353642994154e-09, -135, 0)
+        mp_coop_lobby_3_custom_prop_289.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_289.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_290 = CreateProp("prop_dynamic", Vector(5122.291015625, 3588.2854003906, -473.36599731445), "models/props_office/tv_1970.mdl", 0)
+        mp_coop_lobby_3_custom_prop_290.SetAngles(1.5666234856691e-13, -106.78383636475, 7.9168075899361e-06)
+        mp_coop_lobby_3_custom_prop_290.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_290.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_291 = CreateProp("prop_dynamic", Vector(5449.7973632813, 3876.140625, -475.76379394531), "models/props_office/whiteboard.mdl", 0)
+        mp_coop_lobby_3_custom_prop_291.SetAngles(-78.959693908691, -123.23107910156, -9.5823364257813)
+        mp_coop_lobby_3_custom_prop_291.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_291.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_292 = CreateProp("prop_dynamic", Vector(5598.9389648438, 3894.7136230469, -452.16052246094), "models/props_office/whiteboard_coop.mdl", 0)
+        mp_coop_lobby_3_custom_prop_292.SetAngles(-54.389652252197, -176.62394714355, -0.13845825195313)
+        mp_coop_lobby_3_custom_prop_292.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_292.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_293 = CreateProp("prop_dynamic", Vector(5754.1088867188, 3929.4611816406, -388.87954711914), "models/props_office/lab_display_standup.mdl", 0)
+        mp_coop_lobby_3_custom_prop_293.SetAngles(-47.230926513672, -90.957389831543, -9.7377624511719)
+        mp_coop_lobby_3_custom_prop_293.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_293.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_294 = CreateProp("prop_dynamic", Vector(5885.7138671875, 4301.8618164063, -475.45272827148), "models/props_underground/elevator_enclosure.mdl", 0)
+        mp_coop_lobby_3_custom_prop_294.SetAngles(4.5527815818787, -167.04455566406, -22.337646484375)
+        mp_coop_lobby_3_custom_prop_294.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_294.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_295 = CreateProp("prop_dynamic", Vector(5622.4814453125, 4607.5, -249.21875), "models/props_underground/distillery_tanks_small.mdl", 0)
+        mp_coop_lobby_3_custom_prop_295.SetAngles(-76.898796081543, -1.2314409104874e-05, 90.000015258789)
+        mp_coop_lobby_3_custom_prop_295.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_295.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_296 = CreateProp("prop_dynamic", Vector(5367.6245117188, 4524.341796875, -259.47296142578), "models/props_underground/chair_lobby.mdl", 0)
+        mp_coop_lobby_3_custom_prop_296.SetAngles(23.965255737305, 57.225124359131, 148.88334655762)
+        mp_coop_lobby_3_custom_prop_296.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_296.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_297 = CreateProp("prop_dynamic", Vector(5985.6162109375, 4041.8571777344, -344.9055480957), "models/props_underground/entrance_elevator.mdl", 0)
+        mp_coop_lobby_3_custom_prop_297.SetAngles(-57.635852813721, 106.67250823975, -4.4412231445313)
+        mp_coop_lobby_3_custom_prop_297.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_297.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_298 = CreateProp("prop_dynamic", Vector(6025.3598632813, 3690.2587890625, -195.85893249512), "models/props_underground/door_bipart_frame_128_combined.mdl", 0)
+        mp_coop_lobby_3_custom_prop_298.SetAngles(-60.856800079346, 60.805923461914, 12.061276435852)
+        mp_coop_lobby_3_custom_prop_298.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_298.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_299 = CreateProp("prop_dynamic", Vector(5687.0786132813, 3532.6818847656, -192.88035583496), "models/props_underground/desk_lobby.mdl", 0)
+        mp_coop_lobby_3_custom_prop_299.SetAngles(-2.3971837088597e-15, 38.018241882324, 7.9168066804414e-06)
+        mp_coop_lobby_3_custom_prop_299.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_299.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_300 = CreateProp("prop_dynamic", Vector(5561.3125, 3437.5720214844, -189.2610168457), "models/props_underground/chair_folding_01.mdl", 0)
+        mp_coop_lobby_3_custom_prop_300.SetAngles(-3.0025030991207e-14, 54.990810394287, 7.9168075899361e-06)
+        mp_coop_lobby_3_custom_prop_300.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_300.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_301 = CreateProp("prop_dynamic", Vector(5522.9038085938, 3385.2531738281, -193.97674560547), "models/props_underground/chair_office_padded_1980.mdl", 0)
+        mp_coop_lobby_3_custom_prop_301.SetAngles(3.1318131817277e-14, 106.18547058105, 0)
+        mp_coop_lobby_3_custom_prop_301.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_301.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_302 = CreateProp("prop_dynamic", Vector(5456.4765625, 3350.4191894531, -185.17584228516), "models/props_underground/chair_lobby.mdl", 0)
+        mp_coop_lobby_3_custom_prop_302.SetAngles(-5.9865153161809e-05, -77.451324462891, 180)
+        mp_coop_lobby_3_custom_prop_302.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_302.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_303 = CreateProp("prop_dynamic", Vector(5186.4897460938, 3286.3334960938, -1027.8315429688), "models/props_underground/pillar_cage.mdl", 0)
+        mp_coop_lobby_3_custom_prop_303.SetAngles(3.1522104127239e-14, 29.671562194824, 7.9168084994308e-06)
+        mp_coop_lobby_3_custom_prop_303.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_303.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_305 = CreateProp("prop_dynamic", Vector(5212.1303710938, 3302.28125, -256.45645141602), "models/props_underground/underground_door_closed_lod1.mdl", 0)
+        mp_coop_lobby_3_custom_prop_305.SetAngles(-89.980407714844, 176.77880859375, 180)
+        mp_coop_lobby_3_custom_prop_305.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_305.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_307 = CreateProp("prop_dynamic", Vector(5249.3842773438, 3260.6186523438, -256.44427490234), "models/props_underground/underground_door_closed_lod1.mdl", 0)
+        mp_coop_lobby_3_custom_prop_307.SetAngles(-89.963760375977, 110.70074462891, 180)
+        mp_coop_lobby_3_custom_prop_307.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_307.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_308 = CreateProp("prop_dynamic", Vector(4982.4609375, 3072.9465332031, -250.49705505371), "models/props_underground/truss_32_256.mdl", 0)
+        mp_coop_lobby_3_custom_prop_308.SetAngles(-81.964302062988, 51.30530166626, 36.399639129639)
+        mp_coop_lobby_3_custom_prop_308.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_308.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_309 = CreateProp("prop_dynamic", Vector(4819.439453125, 3065.24609375, -245.56672668457), "models/props_underground/truss_32_256.mdl", 0)
+        mp_coop_lobby_3_custom_prop_309.SetAngles(-84.894882202148, -2.2358276844025, -83.787902832031)
+        mp_coop_lobby_3_custom_prop_309.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_309.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_310 = CreateProp("prop_dynamic", Vector(4586.5317382813, 3162.5078125, -281.28802490234), "models/props_underground/underground_floor_button.mdl", 0)
+        mp_coop_lobby_3_custom_prop_310.SetAngles(0, 0, 0)
+        mp_coop_lobby_3_custom_prop_310.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_310.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_311 = CreateProp("prop_dynamic", Vector(4293.1948242188, 3285.7875976563, -385.07440185547), "models/props_underground/underground_boxdropper_cage.mdl", 0)
+        mp_coop_lobby_3_custom_prop_311.SetAngles(-4.2153899926234e-07, -3.9042602111294e-06, 0)
+        mp_coop_lobby_3_custom_prop_311.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_311.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_312 = CreateProp("prop_dynamic", Vector(4293.1484375, 3181.6916503906, -329.94137573242), "models/props_underground/tube_paint_leak.mdl", 0)
+        mp_coop_lobby_3_custom_prop_312.SetAngles(-1.3765758012596e-05, 0.00012088470248273, 2.4577628209954e-05)
+        mp_coop_lobby_3_custom_prop_312.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_312.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_316 = CreateProp("prop_dynamic", Vector(4624.5, 3464.5336914063, 750.00408935547), "models/car_int_dest/car_int_dest.mdl", 0)
+        mp_coop_lobby_3_custom_prop_316.SetAngles(5.8641398757286e-14, -88.08863067627, 5.8157024795946e-06)
+        mp_coop_lobby_3_custom_prop_316.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_316.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_317 = CreateProp("prop_dynamic", Vector(4589.7836914063, 3371.4694824219, 736.42138671875), "models/props_bts/hanging_platform_b.mdl", 0)
+        mp_coop_lobby_3_custom_prop_317.SetAngles(-0.00018438739061821, -89.999961853027, -0.00091552734375)
+        mp_coop_lobby_3_custom_prop_317.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_317.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_318 = CreateProp("prop_dynamic", Vector(4644.2885742188, 3746.9187011719, 535.01776123047), "models/props_bts/lab_pod_b.mdl", 0)
+        mp_coop_lobby_3_custom_prop_318.SetAngles(-0.11796709895134, -179.32249450684, -0.54833984375)
+        mp_coop_lobby_3_custom_prop_318.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_318.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_319 = CreateProp("prop_dynamic", Vector(4633.9384765625, 3236.8703613281, 531.42474365234), "models/props_bts/lab_pod_b.mdl", 0)
+        mp_coop_lobby_3_custom_prop_319.SetAngles(5.8604630481796e-08, 4.9589989430388e-06, -1.9052854440815e-06)
+        mp_coop_lobby_3_custom_prop_319.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_319.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_320 = CreateProp("prop_dynamic", Vector(4584.748046875, 3836.2309570313, -844.16607666016), "models/props_bts/vertical_small_piston_body.mdl", 0)
+        mp_coop_lobby_3_custom_prop_320.SetAngles(0.001642492134124, 3.6723034381866, -0.07733154296875)
+        mp_coop_lobby_3_custom_prop_320.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_320.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_321 = CreateProp("prop_dynamic", Vector(4599.3125, 4159.7836914063, -904.63677978516), "models/props_bts/vertical_small_piston_body.mdl", 0)
+        mp_coop_lobby_3_custom_prop_321.SetAngles(5.2015348002117e-14, -24.65821647644, 7.9168166848831e-06)
+        mp_coop_lobby_3_custom_prop_321.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_321.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_322 = CreateProp("prop_dynamic", Vector(4759.0390625, 4418.4370117188, -986.43725585938), "models/props_bts/vertical_small_piston_body.mdl", 0)
+        mp_coop_lobby_3_custom_prop_322.SetAngles(2.8190581921779e-13, -114.81666564941, 7.9168075899361e-06)
+        mp_coop_lobby_3_custom_prop_322.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_322.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_323 = CreateProp("prop_dynamic", Vector(4938.9399414063, 4219.7416992188, -684.30218505859), "models/props_bts/vertical_small_piston_base.mdl", 0)
+        mp_coop_lobby_3_custom_prop_323.SetAngles(7.1810569579611e-07, 1.1084609031677, 180)
+        mp_coop_lobby_3_custom_prop_323.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_323.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_324 = CreateProp("prop_dynamic", Vector(5099.3696289063, 3894.4841308594, -511.32684326172), "models/props_urban/telephone_pole002.mdl", 0)
+        mp_coop_lobby_3_custom_prop_324.SetAngles(-1.2917853593826, -78.794792175293, 1.2820138931274)
+        mp_coop_lobby_3_custom_prop_324.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_324.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_325 = CreateProp("prop_dynamic", Vector(4784.5756835938, 3676.7990722656, -511.64712524414), "models/props_urban/telephone_pole002.mdl", 0)
+        mp_coop_lobby_3_custom_prop_325.SetAngles(0.092705897986889, -150.49839782715, 0.019584244117141)
+        mp_coop_lobby_3_custom_prop_325.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_325.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_326 = CreateProp("prop_dynamic", Vector(4427.58984375, 3690.8303222656, -511.54342651367), "models/props_urban/telephone_pole002.mdl", 0)
+        mp_coop_lobby_3_custom_prop_326.SetAngles(-0.81194353103638, -170.90003967285, 0.023089719936252)
+        mp_coop_lobby_3_custom_prop_326.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_326.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_327 = CreateProp("prop_dynamic", Vector(4166.8374023438, 3682.0637207031, -511.64083862305), "models/props_urban/telephone_pole002.mdl", 0)
+        mp_coop_lobby_3_custom_prop_327.SetAngles(-0.58125507831573, -170.79605102539, 0)
+        mp_coop_lobby_3_custom_prop_327.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_327.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_328 = CreateProp("prop_dynamic", Vector(5001.4794921875, 4415.158203125, -511.2639465332), "models/props_urban/telephone_pole003.mdl", 0)
+        mp_coop_lobby_3_custom_prop_328.SetAngles(3.3775227069855, -122.57166290283, 0.37793523073196)
+        mp_coop_lobby_3_custom_prop_328.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_328.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_329 = CreateProp("prop_dynamic", Vector(5023.6489257813, 3921.6921386719, 318.16213989258), "models/npcs/glados/glados_disc_base.mdl", 0)
+        mp_coop_lobby_3_custom_prop_329.SetAngles(-2.4768790059877e-14, 174.69952392578, 5.815713393531e-06)
+        mp_coop_lobby_3_custom_prop_329.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_329.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_331 = CreateProp("prop_dynamic", Vector(5022.1411132813, 3931.3920898438, 273.66232299805), "models/props_lab/glados_chamber_lightpanels.mdl", 0)
+        mp_coop_lobby_3_custom_prop_331.SetAngles(3.7334393709898e-05, 155.27180480957, 1.6526062609046e-05)
+        mp_coop_lobby_3_custom_prop_331.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_331.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_333 = CreateProp("prop_dynamic", Vector(5004.865234375, 3926.3596191406, 197.08883666992), "models/npcs/glados/glados_ring_medium.mdl", 0)
+        mp_coop_lobby_3_custom_prop_333.SetAngles(6.7086879671288e-14, 90.000007629395, 0)
+        mp_coop_lobby_3_custom_prop_333.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_333.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local mp_coop_lobby_3_custom_prop_335 = CreateProp("prop_dynamic", Vector(5025.765625, 3875.8156738281, 170.76031494141), "models/npcs/glados/glados_wheatley_newbody.mdl", 0)
+        mp_coop_lobby_3_custom_prop_335.SetAngles(0.86587929725647, 110.82048034668, 2.8028428554535)
+        mp_coop_lobby_3_custom_prop_335.__KeyValueFromString("solid", "6")
+        mp_coop_lobby_3_custom_prop_335.__KeyValueFromString("targetname", "genericcustomprop")
 
   }
 
@@ -479,9 +832,78 @@ if (GetMapName() == "mp_coop_lobby_3") {
     if (LoopTime==true) {
         // Generated Teleports
 
-     foreach (p in CreateTrigger(null, 6250.5971679688, 2941.2487792969, -755.17462158203, 3891.3664550781, 4681.6884765625, -845.08978271484)) {
+     foreach (p in CreateTrigger("player", 6250.5971679688, 2941.2487792969, -850.17462158203, 3891.3664550781, 4681.6884765625, -900.08978271484)) {
          printl(p)
+         p.SetVelocity(Vector(0,0,1000))
      }
+     foreach (p in CreateTrigger("player", 4347.2573242188, 3235.3771972656, 771.96112060547, 4244.0380859375, 3338.3122558594, -505.74911499023)) {
+         printl(p)
+         p.SetVelocity(Vector(0,0,1000))
+     }
+  }
+}
+
+
+//================================//
+//CREATE OBJECTS FOR mp_coop_doors//
+//================================//
+
+if (GetMapName() == "mp_coop_doors") {
+    if (CacheTime==true) {
+        // Cache Objects
+
+        PrecacheModel("props/portal_gap.mdl")
+
+        DoneCacheing <- true
+  }
+
+
+    if (CreateTime==true) {
+        // Create Objects
+
+        local mp_coop_doors_custom_prop_40 = CreateProp("prop_dynamic", Vector(-9817.8466796875, -698.283203125, 62.814430236816), "models/props/portal_gap.mdl", 0)
+        mp_coop_doors_custom_prop_40.SetAngles(-1.3524796393938e-08, -78.13956451416, 1.52587890625e-05)
+        mp_coop_doors_custom_prop_40.__KeyValueFromString("solid", "6")
+        mp_coop_doors_custom_prop_40.__KeyValueFromString("targetname", "genericcustomprop")
+
+  }
+
+
+    if (LoopTime==true) {
+        // Generated Teleports
+
+  }
+}
+
+//===============================================//
+//CREATE OBJECTS FOR mp_coop_paint_longjump_intro//
+//===============================================//
+
+if (GetMapName() == "mp_coop_paint_longjump_intro") {
+    if (CacheTime==true) {
+        // Cache Objects
+
+        PrecacheModel("props/door_02.mdl")
+
+        DoneCacheing <- true
+  }
+
+
+    if (CreateTime==true) {
+        // Create Objects
+
+        local mp_coop_paint_longjump_intro_custom_prop_27 = CreateProp("prop_dynamic", Vector(410.9128112793, -6973.33203125, 896.44897460938), "models/props/door_02.mdl", 0)
+        mp_coop_paint_longjump_intro_custom_prop_27.SetAngles(-0.00049216544721276, 179.99603271484, -6.103515625e-05)
+        mp_coop_paint_longjump_intro_custom_prop_27.__KeyValueFromString("solid", "6")
+        mp_coop_paint_longjump_intro_custom_prop_27.__KeyValueFromString("targetname", "genericcustomprop")
+        EntFireByHandle(mp_coop_paint_longjump_intro_custom_prop_27, "color", "8 255 0 166", 0, null, null)
+
+  }
+
+
+    if (LoopTime==true) {
+        // Generated Teleports
+
   }
 }
 

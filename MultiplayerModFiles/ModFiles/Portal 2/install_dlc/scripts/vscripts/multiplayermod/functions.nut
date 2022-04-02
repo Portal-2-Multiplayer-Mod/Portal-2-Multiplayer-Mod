@@ -65,7 +65,12 @@ function SetCheats() {
     printl("===== Cheat Detection =====")
     printl("           " + CheatsOn)
     printl("===========================")
-    SendToConsole("sv_cheats 1")
+    // SendToConsole("sv_cheats 1")
+    AlwaysPrecachedModels()
+}
+
+function AlwaysPrecachedModels() {
+    PrecacheModel("props/portal_gap.mdl")
 }
 
 function SetCosmetics(p) {
@@ -76,6 +81,11 @@ function SetCosmetics(p) {
         //## Kyle customization ##//
         if (pname == "kyleraykbs") {
             SetPlayerModel(p, "models/info_character/info_character_player.mdl")
+        }
+
+        //## Kyle customization ##//
+        if (pname == "SuperSpeed") {
+            SetPlayerModel(p, "models/npcs/turret/turretwife.mdl")
         }
 
         // //## Dreadnox customization ##//
@@ -212,6 +222,67 @@ function p232fogswitch(fogname) {
     }
 }
 
+function GetPlayerPortalColor(p, Darken = false) {
+    local PlayerID = p.entindex() + amtoffsetclr
+    local A = 220
+    try {
+        switch (PlayerID) {
+            case 1 : R <- 255; G <- 255; B <- 255; A = A; break; //white
+            case 2 : R <- 50,  G <- 255, B <-  50; A = A; break; //green
+            case 3 : R <- 40,  G <- 60,  B <- 255; A = A; break; //blue
+            case 4 : R <- 255, G <- 255, B <-  50; A = A; break; //orange
+            case 5 : R <- 255, G <-  50, B <-  50; A = A; break; //red
+            case 6 : R <- 255, G <- 100, B <- 255; A = A; break; //pink
+            case 7 : R <- 255, G <- 255, B <-  50; A = A; break; //yellow
+            case 8 : R <-  0 , G <- 255, B <- 255; A = A; break; //aqua
+            case 9 : R <- 100, G <-  50, B <-   0; A = A; break; //brown
+            case 10: R <-   0, G <- 255, B <- 200; A = A; break; //ocean green
+            case 11: R <-  90, G <- 120, B <-   0; A = A; break; //olive
+            case 12: R <-  90, G <-  70, B <- 100; A = A; break; //violet
+            case 13: R <-  75, G <-  75, B <-  75; A = A; break; //gray
+            case 14: R <-  75, G <-   0, B <-   0; A = A; break; //dark red
+            case 15: R <-   0, G <-  75, B <-   0; A = A; break; //dark green
+            case 16: R <-   0, G <-   0, B <-  75; A = A; break; //dark blue
+        }
+    } catch(e) { }
+    if (PlayerID > 16) {
+        // If you have more than 16 players then you gotta bear the consequences of your own actions
+        local randomColor = RandomColor()
+        R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; A = 250;
+    }
+
+    if (Darken) {
+        local amt = 2
+        printl("Darkening color")
+        printl("R: " + R + " G: " + G + " B: " + B)
+        R <- (R / amt);
+        G <- (G / amt);
+        B <- (B / amt);
+        printl("R: " + R + " G: " + G + " B: " + B)
+        if (R < 1) {
+            R <- 1;
+        }
+        if (G < 1) {
+            G <- 1;
+        }
+        if (B < 1) {
+            B <- 1;
+        }
+
+        // remove the decimal
+        B <- B.tointeger()
+        G <- G.tointeger()
+        R <- R.tointeger()
+    }
+
+    return class {
+        r = R
+        g = G
+        b = B
+        a = A
+    }
+}
+
 function GetPlayerColor(p, multiply = true) {
     local PlayerID = p.entindex() + amtoffsetclr
     local colorname = ""
@@ -225,7 +296,7 @@ function GetPlayerColor(p, multiply = true) {
             case 6 : R <- 255, G <- 180, B <- 255; colorname = "pink";       break;
             case 7 : R <- 255, G <- 255, B <- 180; colorname = "yellow";     break;
             case 8 : R <-  0 , G <- 255, B <- 255; colorname = "aqua";       break;
-            case 9 : R <-  60, G <-  15, B <-   0; colorname = "brown";      break;
+            case 9 : R <-  60, G <-  15, B <-   0; colorname = "crimson";      break;
             case 10: R <-   0, G <- 255, B <- 200; colorname = "ocean green";break;
             case 11: R <-  80, G <-  99, B <-   0; colorname = "olive";      break;
             case 12: R <-  40, G <-  40, B <-  80; colorname = "violet";     break;
@@ -392,6 +463,9 @@ function PrecacheModelNoDelay(mdl) {
             SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
         } else {
             SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
+        }
+        if (CheatsOn == false) {
+            SendToConsole("sv_cheats 0")
         }
         EntFire("p232servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
         printl("Precached model: " + minimdl + " AKA " + mdl)
@@ -594,6 +668,25 @@ function VectorMultiplySinglePart(vec, amt, part) {
             }
         }
     }
+}
+
+function CreatePortalsLinkedProp(portal1, portal2, player) {
+    local linkedportal1 = CreateProp("prop_dynamic", portal1.GetOrigin(), "models/props/portal_gap.mdl", 0)
+    local linkedportal2 = CreateProp("prop_dynamic", portal2.GetOrigin(), "models/props/portal_gap.mdl", 0)
+    linkedportal1.SetAngles(portal1.GetAngles().x, portal1.GetAngles().y, portal1.GetAngles().z)
+    linkedportal2.SetAngles(portal2.GetAngles().x, portal2.GetAngles().y, portal2.GetAngles().z)
+    linkedportal1.__KeyValueFromString("targetname", portal1.GetName() + "_linked")
+    linkedportal2.__KeyValueFromString("targetname", portal2.GetName() + "_linked")
+    linkedportal1.__KeyValueFromString("rendermode", "2")
+    linkedportal2.__KeyValueFromString("rendermode", "2")
+    DecEntFireByHandle(linkedportal1, "SetParent", portal1.GetName())
+    DecEntFireByHandle(linkedportal2, "SetParent", portal2.GetName())
+    local color1 = GetPlayerPortalColor(player, false)
+    local color2 = GetPlayerPortalColor(player, true)
+    DecEntFireByHandle(linkedportal1, "alpha", "" + color1.a)
+    DecEntFireByHandle(linkedportal2, "alpha", "" + color2.a)
+    DecEntFireByHandle(linkedportal1, "color", color1.r + " " + color1.g + " " + color1.b)
+    DecEntFireByHandle(linkedportal2, "color", color2.r + " " + color2.g + " " + color2.b)
 }
 
 function CreateEntityClass(ent) {
