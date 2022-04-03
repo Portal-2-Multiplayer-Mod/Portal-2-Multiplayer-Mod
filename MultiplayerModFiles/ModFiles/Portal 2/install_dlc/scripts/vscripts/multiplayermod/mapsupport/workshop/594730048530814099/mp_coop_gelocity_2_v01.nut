@@ -44,6 +44,9 @@ function Gelocity2AddLap() {
 function Gelocity2RemoveLap() {
     if (Gelocity2LapCount < 50) {
         Gelocity2LapCount = Gelocity2LapCount - 1
+        if (Gelocity2LapCount < 2) {
+            Gelocity2LapCount = 2
+        }
     } else {
         if (Gelocity2LapCount < 200) {
             Gelocity2LapCount = Gelocity2LapCount - 5
@@ -187,7 +190,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local test3 = CurrentPlayerClass.Gelocity2CheckpointMove
             } catch(e) {
                 CurrentPlayerClass.Gelocity2Checkpoint <- true
-                CurrentPlayerClass.Laps <- 0
+                CurrentPlayerClass.Laps <- -1
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(2580, -4399,  267)
                     rot = Vector(0, 90, 0)

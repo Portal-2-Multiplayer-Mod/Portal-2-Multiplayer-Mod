@@ -117,7 +117,7 @@ while (Loop == true) do
                     -- if uncached cache model
                     if (ContinueModelCache == true) then
                         table.insert(CachedModels, PropModel)
-                        GenerateLine('        CacheModel("' .. PropModel:sub(8) .. '")')
+                        GenerateLine('        PrecacheModel("' .. PropModel:sub(8) .. '")')
                         GenerateLine("")
                     end
                 end

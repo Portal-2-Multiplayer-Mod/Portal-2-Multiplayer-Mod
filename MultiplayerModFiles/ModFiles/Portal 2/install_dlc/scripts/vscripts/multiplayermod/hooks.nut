@@ -25,6 +25,8 @@ function OnPlayerJoin(p, script_scope) {
     local ent1 = null
     local ent2 = null
     local ent = null
+    local portal1 = null
+    local portal2 = null
     while (ent = Entities.FindByClassname(ent, "prop_portal")) {
         if (ent.GetName() == "") {
             if (ent1 == null) {
@@ -37,12 +39,20 @@ function OnPlayerJoin(p, script_scope) {
 
     try {
         if (ent1.entindex() > ent2.entindex()) {
-            ent1.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
-            ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "1")
+            ent1.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "2")
+            ent2.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "1")
+            portal1 = ent2
+            portal2 = ent1
         } else {
-            ent1.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "1")
-            ent2.__KeyValueFromString("targetname", p.GetName() + "_portal-" + "2")
+            ent1.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "1")
+            ent2.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "2")
+            portal1 = ent1
+            portal2 = ent2
         }
+        CreateEntityClass(portal1)
+        CreateEntityClass(portal2)
+        FindEntityClass(portal1).linkedprop <- null
+        FindEntityClass(portal2).linkedprop <- null
     } catch (exception) {
         if (GetDeveloperLevel() == 1) {
             printl("(P2:MM): Failed to rename portals" + exception)
@@ -95,38 +105,17 @@ function OnPlayerJoin(p, script_scope) {
     EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
     if (PlayerID >= 2) {
         onscreendisplay.__KeyValueFromString("y", "0.075")
+        CreatePortalsLinkedProp(portal1, portal2, p)
     }
 
     //# Set player color #//
 
     // Set a random color for clients that join after 16 have joined
-    if (PlayerID != 1) {
-        R <- RandomInt(0, 255), G <- RandomInt(0, 255), B <- RandomInt(0, 255)
-    }
-
-    // Set preset colors for up to 16 clients
-    switch (PlayerID) {
-        case 1 : R <- 255; G <- 255; B <- 255; break;
-        case 2 : R <- 180, G <- 255, B <- 180; break;
-        case 3 : R <- 120, G <- 140, B <- 255; break;
-        case 4 : R <- 255, G <- 170, B <- 120; break;
-        case 5 : R <- 255, G <- 100, B <- 100; break;
-        case 6 : R <- 255, G <- 180, B <- 255; break;
-        case 7 : R <- 255, G <- 255, B <- 180; break;
-        case 8 : R <-   0, G <- 255, B <- 240; break;
-        case 9 : R <-  75, G <-  75, B <-  75; break;
-        case 10: R <- 100, G <-  80, B <-   0; break;
-        case 11: R <-   0, G <-  80, B <- 100; break;
-        case 12: R <- 120, G <- 155, B <-  25; break;
-        case 13: R <-   0, G <-   0, B <- 100; break;
-        case 14: R <-  80, G <-   0, B <-   0; break;
-        case 15: R <-   0, G <-  75, B <-   0; break;
-        case 16: R <-   0, G <-  75, B <-  75; break;
-    }
+    local pcolor = GetPlayerColor(p, false)
 
     // Set color of player's in-game model
     script_scope.Colored <- true
-    EntFireByHandle(p, "Color", (R + " " + G + " " + B), 0, null, null)
+    EntFireByHandle(p, "Color", (pcolor.r + " " + pcolor.g + " " + pcolor.b), 0, null, null)
 
     //# Setup player class #//
     local currentplayerclass = {}
@@ -164,6 +153,8 @@ function OnPlayerJoin(p, script_scope) {
     // Rocket player status
     currentplayerclass.rocket <- false
 
+    currentplayerclass.portal1 <- portal1
+    currentplayerclass.portal2 <- portal2
 
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
@@ -307,6 +298,10 @@ function GeneralOneTime() {
         { map = "sp_a4_intro", title_text = "#portal2_Chapter8_Title", subtitle_text = "#portal2_Chapter8_Subtitle", displayOnSpawn = true,			displaydelay = 2.5 },
         { map = "sp_a4_finale1", title_text = "#portal2_Chapter9_Title", subtitle_text = "#portal2_Chapter9_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
     ]
+
+    local ent = Entities.FindByName(null, "blue")
+    local playerclass = FindPlayerClass(ent)
+    CreatePortalsLinkedProp(playerclass.portal1, playerclass.portal2, ent)
 
     if (fogs == false) {
         usefogcontroller <- false
