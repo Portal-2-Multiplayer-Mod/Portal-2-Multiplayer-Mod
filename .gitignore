@@ -61,6 +61,7 @@ sar.pdb
 
 # This is for the new launcher :3
 src/
+tests/
 
 ##################################################################################
 # default list of files to ignore for python
