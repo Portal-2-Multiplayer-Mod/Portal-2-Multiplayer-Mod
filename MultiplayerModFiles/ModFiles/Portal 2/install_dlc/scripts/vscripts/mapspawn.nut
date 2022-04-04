@@ -6,8 +6,8 @@
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 
 // Here, you can customize several parameters in your server.
-// You can change this mid-game as well, however, be sure to
-// modify the the one that has been copied into a new
+// You can change this mid-game as well, however, be sure
+// to modify the one that has been copied into a new
 // portal2_dlcX folder and switch levels after modifying!
 
 //    ___              __  _        _ 
