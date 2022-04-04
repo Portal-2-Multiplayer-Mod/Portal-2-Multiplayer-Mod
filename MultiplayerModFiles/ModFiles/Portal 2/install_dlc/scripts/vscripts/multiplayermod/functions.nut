@@ -358,25 +358,25 @@ function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
 		DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
 	}
 
-    local TransitionVarible = 0
+    local TransitionVariable = 0
     if (x1 >= x2) {
-        TransitionVarible = x2
+        TransitionVariable = x2
         x2 = x1
-        x1 = TransitionVarible
+        x1 = TransitionVariable
     }
 
-    local TransitionVarible = 0
+    local TransitionVariable = 0
     if (y1 >= y2) {
-        TransitionVarible = y2
+        TransitionVariable = y2
         y2 = y1
-        y1 = TransitionVarible
+        y1 = TransitionVariable
     }
 
-    local TransitionVarible = 0
+    local TransitionVariable = 0
     if (z1 >= z2) {
-        TransitionVarible = z2
+        TransitionVariable = z2
         z2 = z1
-        z1 = TransitionVarible
+        z1 = TransitionVariable
     }
 
     local plist = []

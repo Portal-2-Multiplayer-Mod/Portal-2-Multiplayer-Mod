@@ -352,7 +352,7 @@ function GeneralOneTime() {
     // Clear all cached models from our temp cache as they are already cached
     // CanClearCache <- true
 
-    // Set a varible to tell the map loaded
+    // Set a variable to tell the map loaded
     HasSpawned <- true
 
     // Cache orange players original position
@@ -559,7 +559,7 @@ function ChatCommands(ccuserid, ccmessage) {
 }
 
 function ChatCommandRunner(player, playername, command, level, commandrunner = null) {
-    // Do some varible setup
+    // Do some variable setup
     if (commandrunner == null) {
         commandrunner = player
     }
