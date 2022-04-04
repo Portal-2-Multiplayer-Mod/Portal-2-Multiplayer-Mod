@@ -74,8 +74,8 @@ function OnPlayerJoin(p, script_scope) {
     while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
         EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
         // printl("(P2:MM): Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
-        // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
-        // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
+        // printl("(P2:MM):" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
+        // printl("(P2:MM):" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
     }
 
     // If the player is the first player to join, fix OrangeOldPlayerPos
@@ -139,7 +139,7 @@ function OnPlayerJoin(p, script_scope) {
         currentplayerclass.username <- GetPlayerName(p.entindex())
         player1discordhookstr = "ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣hookdiscord Player " + currentplayerclass.username + " Joined The Game"
         player1discordhookstr.tostring()
-        EntFire("p232servercommand", "command", "script printl(player1discordhookstr)", 1)
+        EntFire("p232servercommand", "command", "script printl("(P2:MM): " + player1discordhookstr)", 1)
     } else {
         currentplayerclass.username <- "Player " + p.entindex()
     }
@@ -177,11 +177,11 @@ function OnPlayerJoin(p, script_scope) {
     // Add player class to the player class array
     playerclasses.push(currentplayerclass)
 
-    printl("===== Player Class =====")
+    printl("(P2:MM): ===== Player Class =====")
     foreach (thing in FindPlayerClass(p)) {
-        printl(thing)
+        printl("(P2:MM): " + thing)
     }
-    printl("===================")
+    printl("(P2:MM): ===================")
 
     // Set fog controller
     if (HasSpawned==true) {
@@ -216,7 +216,7 @@ function OnPlayerRespawn(player) {
 // Runs after the host loads in
 function PostMapLoad() {
     //# Discord Hook #//
-    printl("ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣hookdiscord Portal 2 Playing On: " + GetMapName())
+    printl("(P2:MM): ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣hookdiscord Portal 2 Playing On: " + GetMapName())
 
     //## Cheat detection ##//
     SendToConsole("prop_dynamic_create cheatdetectionp232")
@@ -387,8 +387,8 @@ function GeneralOneTime() {
     }
 
     // Force open the red player droppers
-    printl(OrangeOldPlayerPos)
-    printl(OldPlayerPos)
+    printl("(P2:MM): " + OrangeOldPlayerPos)
+    printl("(P2:MM): " + OldPlayerPos)
 
     local radius = 150
 
@@ -456,14 +456,14 @@ function ChatCommands(ccuserid, ccmessage) {
     local commandrunner = p
     // Print some debug info
     if (GetDeveloperLevel() == 1) {
-        printl("=========" + pname + " sent a message=========")
+        printl("(P2:MM): =========" + pname + " sent a message =========")
 
-        printl("ccuserid: " + ccuserid)
-        printl("ccmessage: " + ccmessage)
-        printl("p: " + p)
-        printl("pname: " + pname)
-        printl("adminlevel: " + adminlevel)
-        printl("message: " + message)
+        printl("(P2:MM): ccuserid: " + ccuserid)
+        printl("(P2:MM): ccmessage: " + ccmessage)
+        printl("(P2:MM): p: " + p)
+        printl("(P2:MM): pname: " + pname)
+        printl("(P2:MM): adminlevel: " + adminlevel)
+        printl("(P2:MM): message: " + message)
     }
 
     // Setup the message
@@ -510,17 +510,17 @@ function ChatCommands(ccuserid, ccmessage) {
     // Strip the last space from the parsed name
     if (parsedname != "") {
         parsedname = strip(parsedname)
-        printl("parsed name: " + ExpandName(parsedname))
+        printl("(P2:MM): Parsed name: " + ExpandName(parsedname))
         pname = ExpandName(parsedname)
         commandrunner = p // Set the commandrunner to the player that sent the command
         p = FindPlayerByName(ExpandName(parsedname))
-        printl("expanded name: " + pname)
-        printl("executing on: " + p)
+        printl("(P2:MM): Expanded name: " + pname)
+        printl("(P2:MM): Executing on: " + p)
     }
     // Strip the last space from the parsed command
     if (parsedcommand != "") {
         parsedcommand = parsedcommand.slice(0, -1)
-        printl("parsed command: " + parsedcommand)
+        printl("(P2:MM): Parsed command: " + parsedcommand)
         // If it's all
         if (pname != "all") {
             // Run the chat command runner if the player isnt null
@@ -548,7 +548,7 @@ function ChatCommands(ccuserid, ccmessage) {
         }
     }
 
-    printl("==============================================")
+    printl("(P2:MM): ==============================================")
 }
 
 //  Parse the chat commands coming from clients

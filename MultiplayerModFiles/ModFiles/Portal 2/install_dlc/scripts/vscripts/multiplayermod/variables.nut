@@ -69,7 +69,7 @@ CanHook <- false
 Player2Joined <- false
 hasbeenremoved <- false
 PostMapLoadDone <- false
-TickSpeed <- 0.00 // now depricated just for legacy
+TickSpeed <- 0.00 // Now deprecated; Kept for legacy
 EventList <- []
 PermaPotato <- false
 TotalRemovedEnts <- 0
@@ -120,7 +120,7 @@ ConsoleAscii <- [
 
 CheatsOn <- false
 
-// Add names to credits
+// Add names to coop ending credits
 MPMCoopCreditNames <- [
 "### ",
 "### ",

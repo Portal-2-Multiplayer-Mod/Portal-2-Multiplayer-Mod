@@ -101,8 +101,8 @@ function loop() {
     while (p = Entities.FindByClassname(p, "player")) {
         local currentplayerclass = FindPlayerClass(p)
         if (currentplayerclass != null) {
-            //printl("player" + p.entindex() + "'s angles " + currentplayerclass.eyeangles)
-            //printl("player" + p.entindex() + "'s vector " + currentplayerclass.eyeforwardvector)
+            //printl("(P2:MM): Player" + p.entindex() + "'s angles " + currentplayerclass.eyeangles)
+            //printl("(P2:MM): Player" + p.entindex() + "'s vector " + currentplayerclass.eyeforwardvector)
         }
     }
 
@@ -233,31 +233,31 @@ function loop() {
                 // if (OriginalPosMain != null && OriginalPosMain.x == Entities.FindByClassname(null, "player").GetOrigin().x && OriginalPosMain.y == Entities.FindByClassname(null, "player").GetOrigin().y) {
                 //     DoneWaiting <- true
                 //     GeneralOneTime()
-                //     printl("==============================POSITION SPAWN")
+                //     printl("(P2:MM): ==============================POSITION SPAWN")
                 // }
 
                 if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
                     DoneWaiting <- true
                     GeneralOneTime()
-                    printl("=================================HEALTH SPAWN")
+                    printl("(P2:MM): =================================HEALTH SPAWN")
                 }
 
                 // if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
                 //     DoneWaiting <- true
                 //     GeneralOneTime()
-                //     printl("==============================VELOCITY SPAWN")
+                //     printl((P2:MM): "==============================VELOCITY SPAWN")
                 // }
 
                 // if (hasbeenremoved == true && Entities.FindByName(null, "weapon_portalgun_player1")) {
                 //     DoneWaiting <- true
                 //     GeneralOneTime()
-                //     printl("==============================PORTALGUN SPAWN")
+                //     printl("(P2:MM): ==============================PORTALGUN SPAWN")
                 // }
 
                 // if (OriginalAngle != null && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.x == OriginalAngle.x && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.y == OriginalAngle.y && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.z == OriginalAngle.z) {
                 //     DoneWaiting <- true
                 //     GeneralOneTime()
-                //     printl("==============================ANGLE SPAWN")
+                //     printl("(P2:MM): ==============================ANGLE SPAWN")
                 // }
             }
             DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
@@ -363,10 +363,10 @@ function loop() {
                 x = x * 10
                 y = y * 10
 
-                // printl(c1.GetName())
-                // printl(x)
-                // printl(y)
-                // printl("========")
+                // printl("(P2:MM): " + c1.GetName())
+                // printl("(P2:MM): " + x)
+                // printl("(P2:MM): " + y)
+                // printl("(P2:MM): ========")
 
                 local c2o = c2.GetOrigin()
                 local c1o = c1.GetOrigin()
@@ -430,17 +430,17 @@ function loop() {
         try {
         local ent = null
         while (ent = Entities.FindByClassname(ent, "prop_portal")) {
-            // printl(ent)
-            // printl(ent.GetOrigin())
-            // printl(ent.GetAngles())
-            // printl("=================")
+            // printl("(P2:MM): " + ent)
+            // printl("(P2:MM): " + ent.GetOrigin())
+            // printl("(P2:MM): " + ent.GetAngles())
+            // printl("(P2:MM): =================")
             ent.__KeyValueFromString("HalfWidth", randomportalsize)
             ent.__KeyValueFromString("HalfHeight", randomportalsizeh)
         }
         } catch(exception) {
             // printl("(P2:MM): Error: " + exception)
         }
-        // printl("################################")
+        // printl("(P2:MM): ################################")
     }
 
     //## Detect respawn ##//
@@ -461,7 +461,7 @@ function loop() {
     EntFire("player", "addoutput", "CollisionGroup 2")
     }
 
-    //## If not in multiplayer then disconnect ##//
+    //## If not in multiplayer, then disconnect ##//
     try {
         if (Entities.FindByClassname(null, "player").GetName() == "") {
             printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
@@ -523,7 +523,7 @@ function loop() {
 
             IncludeScript("portalcraft.nut")
             foreach (thing in PortalBlocks) {
-              //  printl("thing: " + thing.name)
+              //  printl("(P2:MM): Thing: " + thing.name)
                 if (thing.name != "AIR") {
                     local spacing = 36
                     local x = ((thing.x - PortalCapture.x) * spacing)
