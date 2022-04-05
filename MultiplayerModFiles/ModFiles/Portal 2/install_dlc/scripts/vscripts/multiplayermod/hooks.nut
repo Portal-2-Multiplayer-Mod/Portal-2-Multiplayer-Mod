@@ -139,7 +139,7 @@ function OnPlayerJoin(p, script_scope) {
         currentplayerclass.username <- GetPlayerName(p.entindex())
         player1discordhookstr = "ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣hookdiscord Player " + currentplayerclass.username + " Joined The Game"
         player1discordhookstr.tostring()
-        EntFire("p232servercommand", "command", "script printl("(P2:MM): " + player1discordhookstr)", 1)
+        EntFire("p232servercommand", "command", "script printl('(P2:MM):  ' + player1discordhookstr)", 1)
     } else {
         currentplayerclass.username <- "Player " + p.entindex()
     }
