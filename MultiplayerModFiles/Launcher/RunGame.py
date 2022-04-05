@@ -56,7 +56,7 @@ elif (sys.platform.startswith("linux")):
     homefolder = os.path.expanduser("~")
     Log("Linux OS detected")
 elif (sys.platform == "darwin"):
-    log("GET OUT OF HERE AND MAKE A DAMN PULL REQUEST FOR MAC SUPPORT!!!!!")
+    Log("We do not support MacOS! We only support Windows and Linux as of current.")
     quit()
 else:
     # feel sad for the poor people who are running templeOS :(
@@ -117,14 +117,13 @@ def MountMod(gamepath):
         Log("MultiplayerModFiles folder exists!")
     else:
         Log("MultiplayerModFiles folder not found!")
-        Log("Creating MultiplayerModFiles folder...")
-        os.mkdir(gamepath + nf + "MultiplayerModFiles")
-        Log("MultiplayerModFiles folder created!")
+        Log("aboting...")
+        quit()
 
     # copy MultiplayerModFiles/ModFiles/Portal 2 to the gamepath
     Log("")
     Log("            __________Moving Files Start_________")
-    Log("Copying ModFiles folder to " + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "portal2...")
+    Log("Copying ModFiles folder to " + gamepath + nf + "portal2_dlc")
     # windows command
     if (iow):
         command = "xcopy /E /I /Y \"" + gamepath + nf + "MultiplayerModFiles" + nf + "ModFiles" + nf + "Portal 2\" \"" + gamepath + "\""
