@@ -69,6 +69,9 @@ function init() {
     globalservercommand <- Entities.CreateByClassname("point_servercommand")
     globalservercommand.__KeyValueFromString("targetname", "p232servercommand")
 
+    worldspawn <- Entities.FindByClassname(null, "worldspawn")
+    worldspawn.__KeyValueFromString("paintinmap", "1")
+
     //## Load plugin ##//
     if("GetPlayerName" in this) {
         if (GetDeveloperLevel() == 1) {
