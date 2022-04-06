@@ -282,7 +282,7 @@ function loop() {
 
     //## Config developer mode loop ##//
     if (DevModeConfig==true) {
-        // Change DevMode variable based on convar "developer"
+        // Change DevMode varible based on convar "developer"
         if (GetDeveloperLevel() == 0) {
             if (StartDevModeCheck == true) {
                 DevMode <- false

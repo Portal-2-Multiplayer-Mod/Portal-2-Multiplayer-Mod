@@ -45,11 +45,15 @@ Admins <- ["[420]kyleraykbs", "[69]vista", "[12]cabiste", "[12]Bumpy", "[12]Nano
 //   \___|\___/\__,_|\___| |___/\___| \__| \_,_|| .__/(_)
 //                                              |_|      
 
+<<<<<<< HEAD
 // Import our external Squirrel "libraries"
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")       
+=======
+IncludeScript("multiplayermod/varibles.nut")
+>>>>>>> parent of a24f870 (corrected one word and fixed credits)
 
 // Now we declare some functions...
 

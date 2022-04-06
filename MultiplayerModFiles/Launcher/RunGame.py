@@ -56,7 +56,7 @@ elif (sys.platform.startswith("linux")):
     homefolder = os.path.expanduser("~")
     Log("Linux OS detected")
 elif (sys.platform == "darwin"):
-    Log("We do not support MacOS! We only support Windows and Linux as of current.")
+    log("GET OUT OF HERE AND MAKE A DAMN PULL REQUEST FOR MAC SUPPORT!!!!!")
     quit()
 else:
     # feel sad for the poor people who are running templeOS :(
