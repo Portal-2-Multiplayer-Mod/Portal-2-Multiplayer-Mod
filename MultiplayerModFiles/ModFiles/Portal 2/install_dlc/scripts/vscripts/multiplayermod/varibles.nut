@@ -115,19 +115,8 @@ MPMCoopCreditNames <- [
 "kyleraykbs | Scripting + Reverse Engineering",
 "Vista | Reverse Engineering, Plugin Dev",
 "Bumpy | Script Theory",
-<<<<<<< HEAD:MultiplayerModFiles/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/variables.nut
-"Wolƒe Strider Shoσter | Scripting + Singleplayer Support",
-"Nanoman2525 | Mapping + Entity Work + Launcher",
-"###--------------------------",
-"###P2:MM Team Members",
-"###--------------------------",
-"cabiste | Scripting + Mod Launcher",
-"sear | Theorycrafting + Ideas",
-"Jeffrey | Ideas",
-=======
 "Wolƒe Strider Shoσter | Scripting + Script Theory",
 "Nanoman2525 | Mapping + Entity and Command Help",
->>>>>>> parent of a24f870 (corrected one word and fixed credits):MultiplayerModFiles/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/varibles.nut
 "###--------------------------",
 "###Multiplayer Mod: Contributers",
 "###--------------------------",
