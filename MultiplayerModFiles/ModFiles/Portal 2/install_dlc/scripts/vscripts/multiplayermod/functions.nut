@@ -14,7 +14,7 @@ function MakePluginReplacementFunctions() {
         return "player" + entinx
     }
     function AddChatCallback(func) {
-        printl("(P2:MM): Plugin is not loaded! NOT adding chat callback!")
+        printl("plugin not loaded NOT adding chat callback")
     }
 }
 
@@ -62,9 +62,9 @@ function SetCheats() {
         CheatsOn = true
         Entities.FindByModel(null, "models/cheatdetectionp232.mdl").Destroy()
     }
-    printl("(P2:MM): ===== Cheat Detection =====")
-    printl("(P2:MM):            " + CheatsOn)
-    printl("(P2:MM): ===========================")
+    printl("===== Cheat Detection =====")
+    printl("           " + CheatsOn)
+    printl("===========================")
     // SendToConsole("sv_cheats 1")
     AlwaysPrecachedModels()
 }
@@ -90,6 +90,7 @@ function SetCosmetics(p) {
 
         // //## Dreadnox customization ##//
         if (pname == "Dreadnox") {
+            printl("Dreadnox is here!")
             SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
         }
 
@@ -207,10 +208,10 @@ function TeleportPlayerToClass(player, curclass) {
 }
 
 function p232fogswitch(fogname) {
-    printl("(P2:MM): Switching to fog: " + fogname)
+    printl("Switching to fog: " + fogname)
     foreach (fogclass in fogs) {
         if (fogclass.fogname == fogname) {
-            printl("(P2:MM): Found fog: " + fogclass.fogname)
+            printl("Found fog: " + fogclass.fogname)
             // go through each player and set their fog to the new fog
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -252,12 +253,12 @@ function GetPlayerPortalColor(p, Darken = false) {
 
     if (Darken) {
         local amt = 2
-        printl("(P2:MM): Darkening color")
-        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
+        printl("Darkening color")
+        printl("R: " + R + " G: " + G + " B: " + B)
         R <- (R / amt);
         G <- (G / amt);
         B <- (B / amt);
-        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
+        printl("R: " + R + " G: " + G + " B: " + B)
         if (R < 1) {
             R <- 1;
         }
@@ -467,9 +468,9 @@ function PrecacheModelNoDelay(mdl) {
             SendToConsole("sv_cheats 0")
         }
         EntFire("p232servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
-        printl("(P2:MM): Precached model: " + minimdl + " AKA " + mdl)
+        printl("Precached model: " + minimdl + " AKA " + mdl)
     } else {
-        printl("(P2:MM): Model: " + mdl + " already precached!")
+        printl("Model: " + mdl + " already precached!")
     }
 }
 
@@ -487,7 +488,7 @@ function FindEntityClass(ent, createclassifnone = true) {
             return curclass
         }
     }
-    printl("(P2:MM): Could not find entity class for entity: " + ent)
+    printl("Could not find entity class for entity: " + ent)
     if (createclassifnone) {
         CreateEntityClass(ent)
         foreach (curclass in entityclasses) {
@@ -691,7 +692,7 @@ function CreatePortalsLinkedProp(portal1, portal2, player) {
 }
 
 function CreateEntityClass(ent) {
-    printl("(P2:MM): Creating new entity class for entity: " + ent)
+    printl("Creating new entity class for entity: " + ent)
     local newclass = class {
         entity = ent
     }
@@ -914,7 +915,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
 
         // // If we have reached the end of the line break
         // if (fowardstep.x == 0 && fowardstep.y == 0 && fowardstep.z == 0) {
-        //     printl("(P2:MM): END OF LINE")
+        //     printl("END OF LINE")
         //     break
         // }
 
@@ -934,8 +935,8 @@ function FindPlayerByName(name) {
         try {
             plrname = plrname.slice(0, name.len())
         } catch(e) {} // If the name is too long
-        printl("(P2:MM): " + plrname)
-        printl("(P2:MM): " + name)
+        printl(plrname)
+        printl(name)
         if (plrname.tolower()==name.tolower()) {
             return p
         }
@@ -1413,7 +1414,7 @@ function PortalGunSpawn(ison = true) {
 
 // Find the spawn point for the map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
 function BestGuessSpawnpoint() {
-    printl("(P2:MM): " + GlobalSpawnClass.blue.spawnpoint)
+    printl(GlobalSpawnClass.blue.spawnpoint)
     if (MadeSpawnClass == false) {
         // Box ents
         BoxEnts <- [
@@ -1428,9 +1429,9 @@ function BestGuessSpawnpoint() {
             "@transition_from_map",
         ]
 
-        printl("(P2:MM): ===========================")
-        printl("(P2:MM): Box ents")
-        printl("(P2:MM): ===========================")
+        printl("===========================")
+        printl("Box ents")
+        printl("===========================")
 
         local BestSurrondingBoxEnt = -1
         local CurrentBestStartingEnt = null
@@ -1443,7 +1444,7 @@ function BestGuessSpawnpoint() {
                 local ent = null
                 while (ent = Entities.FindInSphere(ent, CurrentBoi.GetOrigin(), 300)) {
                     // if (ent.GetName() in BoxEnts) {
-                    //     printl("(P2:MM): Found a box ent: " + ent.GetName())
+                    //     printl("Found a box ent: " + ent.GetName())
                     //     PossibleSurroundingEnts = PossibleSurroundingEnts + 1
                     // }
                     foreach (TEnt in BoxEnts) {
@@ -1462,26 +1463,26 @@ function BestGuessSpawnpoint() {
 
         local RealPlayerSpawn = null
         if (StartingBoxEnt == null) {
-            printl("(P2:MM): No starting box ent found!")
+            printl("No starting box ent found")
         } else {
             if (BestSurrondingBoxEnt > 0) {
-                printl("(P2:MM): Starting box ent found!")
+                printl("Starting box ent found")
                 // If we have found a solid starting box ent, lets find the closest one to it
                 RealPlayerSpawn = Entities.FindByClassnameNearest("info_player_start", StartingBoxEnt.GetOrigin(), 650)
                 if (RealPlayerSpawn == null) {
-                    printl("(P2:MM): No real player spawn found!")
+                    printl("No real player spawn found")
                 } else {
-                    printl("(P2:MM): Real player spawn found!")
+                    printl("Real player spawn found")
                     local LandmarkCheck = Entities.FindByClassnameNearest("info_landmark_entry", RealPlayerSpawn.GetOrigin(), 128)
                     // If we have found a landmark, we know we are in the box
                     if (LandmarkCheck == null) {
-                        printl("(P2:MM): No landmark found!")
+                        printl("No landmark found")
                     } else {
-                        printl("(P2:MM): Landmark found")
-                        printl("(P2:MM): Found info_player_start!: " + RealPlayerSpawn.GetOrigin())
+                        printl("Landmark found")
+                        printl("Found info player start!: " + RealPlayerSpawn.GetOrigin())
                         // If EVERY Condition is met, lets set the player spawn
                         if (GlobalSpawnClass.useautospawn == true) {
-                            printl("(P2:MM): useautospawn = true: Setting player spawn...")
+                            printl("useautospawn = True: Setting player spawn")
                             GlobalSpawnClass.useautospawn <- false
                             GlobalSpawnClass.usesetspawn <- true
                             GlobalSpawnClass.setspawn.position <- RealPlayerSpawn.GetOrigin()
@@ -1490,17 +1491,17 @@ function BestGuessSpawnpoint() {
                             local ent = null
                             while (ent = Entities.FindByClassname(ent, "info_player_start")) {
                                 if (ent != RealPlayerSpawn) {
-                                    printl("(P2:MM): Found a fake info_player_start!")
+                                    printl("Found info player start that is not the real player spawn")
                                     ent.Destroy()
                                 }
                             }
                         } else {
-                            printl("(P2:MM): useautospawn = false: Not setting player spawn...")
+                            printl("useautospawn = False: Not setting player spawn")
                         }
                     }
                 }
             } else {
-                printl("(P2:MM): Starting box ent found, but there is not enough surrounding box ents!")
+                printl("Starting box ent found but not enough surrounding box ents")
             }
         }
     }
@@ -1527,7 +1528,7 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                printl("(P2:MM): " + currentscore)
+                printl(currentscore)
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1540,8 +1541,8 @@ function BestGuessSpawnpoint() {
             local spawnmiddle_ang = Entities.FindByName(null, "@arrival_teleport").GetAngles()
             // local spawntracex = cos(spawnmiddle_ang.x) * sin(spawnmiddle_ang.y)
             // local spawntracey = sin(spawnmiddle_ang.x) * cos(spawnmiddle_ang.y)
-            // printl("(P2:MM): " + spawntracex)
-            // printl("(P2:MM): " + spawntracey)
+            // printl(spawntracex)
+            // printl(spawntracey)
             // spawntracex = spawntracex * 282.5
             // spawntracey = spawntracey * 282.5
             local hieght = 180
@@ -1557,9 +1558,9 @@ function BestGuessSpawnpoint() {
             local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, hieght)
             local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, hieght)
             local spawnleft = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y/-1, spawnmiddle_ang_vec.x, hieght)
-            printl("(P2:MM): spawnMiddle: " + spawnmiddle)
-            printl("(P2:MM): spawnOrigin: " + spawnmiddle.GetOrigin())
-            printl("(P2:MM): ourClosest: " + ourclosest)
+            printl("spawnMiddle: " + spawnmiddle)
+            printl("spawnOrigin: " + spawnmiddle.GetOrigin())
+            printl("ourClosest: " + ourclosest)
 
             // Output the spawnpoints
             FinalRotationBlue = spawnmiddle_ang + Vector(0, 0, 0)
@@ -1583,7 +1584,7 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                printl("(P2:MM): " + currentscore)
+                printl(currentscore)
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1594,11 +1595,11 @@ function BestGuessSpawnpoint() {
             // Find the highest path_track next to the spawnpoint
             local tallestpathtrack = null
             if (spawnmiddle == null) {
-                printl("(P2:MM): Failed to find spawnmiddle!")
+                printl("failed to find spawnmiddle")
             } else {
                 local pathtracks = null
                 while (pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600)) {
-                    printl("(P2:MM): Pathtracks: " + pathtracks)
+                    printl("pathtracks: " + pathtracks)
                     if (tallestpathtrack == null) {
                         tallestpathtrack = pathtracks
                     } else {
