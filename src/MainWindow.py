@@ -26,6 +26,9 @@ class MainUI(qtw.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         
+        # setting Images
+        self.ui.Button_Discord.setIcon(qtg.QIcon(":\Views\Resources\Images\discord-icon.svg"))
+        
         # Binding click events
         self.ui.actionGuide.triggered.connect(lambda: self.OpenGuide())
         self.ui.Button_Guide.clicked.connect(lambda: self.OpenGuide())

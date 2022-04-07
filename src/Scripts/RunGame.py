@@ -346,24 +346,3 @@ def LaunchGame():
         Log("Failed to launch Portal 2!")
         Log("Error: " + str(e))
         quit()
-    
-    
-
-####### INIT ########
-def Init():
-    Log("")
-    Log("Initializing...")
-    Log("")
-
-
-#//# mount the multiplayer mod #//#
-    # if (WillMount):
-    #     MountMod(portal2path) # mount the mod
-    #     LaunchGame(portal2path) # launch the game
-    # else:
-    #     DeleteUnusedDlcs(portal2path)
-    #     UnpatchBinaries(portal2path)
-
-if __name__ == "__main__":
-    # RUN INIT
-    Init()
