@@ -85,7 +85,7 @@ https://discord.gg/kW3nG6GKpF
 		- `python3 -m venv env`
 	2.  Activate the virtual environment 
 		- Windows: `.\env\Scripts\activate.bat`
-		- Linux: `source ./venv/bin/activate`
+		- Linux: `source ./env/bin/activate`
 4. Download dependencies 
 	- `pip install PySide6`
 	- `pip install requests`

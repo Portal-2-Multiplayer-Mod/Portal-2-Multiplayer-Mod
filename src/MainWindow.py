@@ -14,9 +14,6 @@ import Scripts.Configs as cfg
 from requests import get
 import webbrowser
 import sys
-
-# for tests
-import tests.a as a
 #----------------------------------------------------------------
 
 
