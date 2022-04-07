@@ -4,7 +4,6 @@
 import os
 import subprocess
 from Scripts.BasicLogger import Log
-import Scripts.Configs as cfg 
 import Scripts.GlobalVariables as GVars
 import __main__
 import shutil
@@ -13,8 +12,7 @@ import shutil
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
 
-def MountMod():
-    gamepath = cfg.FindInConfig(GVars.configData, "portal2path")
+def MountMod(gamepath):
     
     # make sure the gamepath in the config file exists and is valid
     if (gamepath == "undefined") or ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
@@ -45,6 +43,7 @@ def MountMod():
 
     PatchBinaries(gamepath)
     Log("             __________Mounting Mod End__________")
+    return True
 
 def UnpatchBinaries(gamepath):
     binarys = [
@@ -327,9 +326,8 @@ def FindAvailableDLC(gamepath):
 # █ █▄░█ █ ▀█▀
 # █ █░▀█ █ ░█░
 
-def LaunchGame():
+def LaunchGame(gamepath):
     Log("")
-    gamepath = cfg.FindInConfig(GVars.configData, "portal2path")
     Log("Running Game...")
     
     # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console

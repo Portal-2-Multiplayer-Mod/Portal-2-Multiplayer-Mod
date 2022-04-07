@@ -27,7 +27,12 @@ def UserAction():
         else:
             Log("Type in a valid option!")
             
-            
+
+def GetGamePath():
+    folder = input("please enter the path to the game:")
+    cfg.EditConfig("portal2path", folder)
+    Log("saved '" + folder + "' as the game path")
+
 def OnStart():
     # populate the global variables
     GVars.init()
@@ -45,14 +50,29 @@ def Init():
     # ask the user what they want before proceeding
     UserAction()
     Log("")
-
+    gamepath = cfg.FindInConfig(GVars.configData, "portal2path")
 #//# mount the multiplayer mod #//#
     if (WillMount):
-        RG.MountMod()  # mount the mod
-        RG.LaunchGame()  # launch the game
+        # checks for the state of the mounting process
+        mountState = ""
+        # undefined -> the game path in the config file is either undefined or invalid
+        # filesMissing -> the mod's files (ModFiles/Portal 2/install_dlc) are missing
+        # true -> the mouting process completed successfully
+        while mountState != True:
+            mountState = RG.MountMod(gamepath)
+            if mountState == "undefined":
+                Log("game path is undefined/ invalid , would you like to select it?")
+                GetGamePath()
+
+            if mountState == "filesMissing":
+                Log("the mod files are missing")
+                return
+            
+        RG.LaunchGame(gamepath)  # launch the game
+        
     else:
-        RG.DeleteUnusedDlcs(cfg.FindInConfig(GVars.configData, "portal2path"))
-        RG.UnpatchBinaries(cfg.FindInConfig(GVars.configData, "portal2path"))
+        RG.DeleteUnusedDlcs(gamepath)
+        RG.UnpatchBinaries(gamepath)
 
 
 if __name__ == "__main__":
