@@ -32,12 +32,7 @@ bee2/
 *.mdmp
 cfg/
 vpk_override/
-# *.so
-!MultiplayerModFiles/
-!MultiplayerModFiles/ModFiles/Portal 2/install_dlc/32pmod.so
-!MultiplayerModFiles/ModFiles/Portal 2/install_dlc/32pmod.dll
-MultiplayerModMount/
-!MultiplayerModFiles/ModFiles/portal2
+*.so
 !WebFiles/FastDL/portal2/
 kyle.portal2.gdb.E5rc
 kyle.portal2.gdb.x1ij
