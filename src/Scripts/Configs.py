@@ -36,7 +36,7 @@ DefaultConfigFile = [
 def FindConfigPath():
     Log("Finding Config Path...")
     configpath = GVars.modPath + GVars.nf + "configs.cfg"
-    
+
     # if it doesn't exist, create it
     if not os.path.exists(configpath):
         Log("Config file not found, creating...")
@@ -53,19 +53,6 @@ def FindConfigPath():
     return configpath
 
 
-def FindInConfig(cfg, search):
-    # go through each line
-    for line in cfg:
-        # check if the line (left side of the =) is the one we want
-        if line.split("=")[0].strip() == search:
-            Log("Found " + search + " in config!")
-            # return the right side of the line
-            Log("            ___________Config Data End___________")
-            return line.split("=")[1].strip()
-        
-    # if we didn't find it, return empty string
-    Log(search + " is not found in config!")
-    return ""
 
 def EditConfig(search, newvalue):
     # gets the config path
@@ -123,33 +110,24 @@ def ImportConfig():
     # process the config file into useable data
     Log("Processing Config...")
     Log("")
-    processedconfig = []
+    processedconfig = {}
     for line in config:
         # remove everything after the first #
         line = line.split("#")[0]
         # remove the newline
-        line = line.replace("\n", "")
+        line = line.strip()
 
         # if the line stripped is not empty and has a =, continue
         if (line != "" and "=" in line):
             # get everything to the left of the =
-            leftline = line.split("=")[0]
+            leftline = line.split("=")[0].strip()
             # get everything to the right of the =
-            rightline = line.split("=")[1]
-            # remove every space and tab from the left side
-            leftline = leftline.replace(" ", "")
-            leftline = leftline.replace("\t", "")
-            # remove every tab from the right side
-            rightline = rightline.replace("\t", "")
-            # strip left and right
-            leftline = leftline.strip()
-            rightline = rightline.strip()
-            # recombine the two sides with a =
-            line = leftline + " = " + rightline
+            rightline = line.split("=")[1].strip()
 
-            # if the line is not empty, add it to the processed config
-            if (line != ""):
-                processedconfig.append(line)
+            # if the left line is not empty then add it to the dictionary
+            # if the right line is empty we can handle it later
+            if (leftline != ""):
+                processedconfig[leftline] = rightline
                 Log("Line: " + line)
 
     Log("")

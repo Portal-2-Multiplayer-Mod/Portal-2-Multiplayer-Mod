@@ -32,7 +32,7 @@ bee2/
 *.mdmp
 cfg/
 vpk_override/
-*.so
+# *.so
 !MultiplayerModFiles/
 !MultiplayerModFiles/ModFiles/Portal 2/install_dlc/32pmod.so
 !MultiplayerModFiles/ModFiles/Portal 2/install_dlc/32pmod.dll
@@ -63,6 +63,9 @@ sar.pdb
 tests/
 Logs/
 configs.cfg
+!src/ModFiles/portal2
+!src/ModFiles/Portal 2/install_dlc/32pmod.dll
+!src/ModFiles/Portal 2/install_dlc/32pmod.so
 
 ##################################################################################
 # default list of files to ignore for python
@@ -73,8 +76,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
-*.so
+
 
 # Distribution / packaging
 .Python
@@ -198,3 +200,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+

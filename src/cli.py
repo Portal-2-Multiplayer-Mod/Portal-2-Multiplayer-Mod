@@ -50,7 +50,7 @@ def Init():
     # ask the user what they want before proceeding
     UserAction()
     Log("")
-    gamepath = cfg.FindInConfig(GVars.configData, "portal2path")
+    gamepath = GVars.configData["portal2path"]
 #//# mount the multiplayer mod #//#
     if (WillMount):
         # checks for the state of the mounting process

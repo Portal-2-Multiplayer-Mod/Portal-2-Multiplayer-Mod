@@ -65,7 +65,7 @@ class MainUI(qtw.QMainWindow):
     # mounts the mod and starts the game
     def MountMod(self):
         # gets the game path from the config file
-        gamepath = cfg.FindInConfig(GVars.configData, "portal2path")
+        gamepath = GVars.configData["portal2path"]
         
         # checks for the state of the mounting process
         mountState = ""

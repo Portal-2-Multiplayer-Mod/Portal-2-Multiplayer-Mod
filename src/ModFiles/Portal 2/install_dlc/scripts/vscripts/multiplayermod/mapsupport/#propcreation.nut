@@ -832,14 +832,14 @@ if (GetMapName() == "mp_coop_lobby_3") {
     if (LoopTime==true) {
         // Generated Teleports
 
-     foreach (p in CreateTrigger("player", 6250.5971679688, 2941.2487792969, -850.17462158203, 3891.3664550781, 4681.6884765625, -900.08978271484)) {
-         printl(p)
-         p.SetVelocity(Vector(0,0,1000))
-     }
-     foreach (p in CreateTrigger("player", 4347.2573242188, 3235.3771972656, 771.96112060547, 4244.0380859375, 3338.3122558594, -505.74911499023)) {
-         printl(p)
-         p.SetVelocity(Vector(0,0,1000))
-     }
+    //  foreach (p in CreateTrigger("player", 6250.5971679688, 2941.2487792969, -850.17462158203, 3891.3664550781, 4681.6884765625, -900.08978271484)) {
+    //      printl(p)
+    //      p.SetVelocity(Vector(0,0,1000))
+    //  }
+    //  foreach (p in CreateTrigger("player", 4347.2573242188, 3235.3771972656, 771.96112060547, 4244.0380859375, 3338.3122558594, -505.74911499023)) {
+    //      printl(p)
+    //      p.SetVelocity(Vector(0,0,1000))
+    //  }
   }
 }
 
