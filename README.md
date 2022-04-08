@@ -78,7 +78,8 @@ If you need help setting up this mod, or just want to chill with a great communi
 https://discord.gg/kW3nG6GKpF
 
 # How to build
-- This project can be built theoretically on any OS that supports python 3 
+- This project can be built (*theoretically*) on any OS that supports python 3 
+**GUI launcher**
 1. Clone the repo
 2. Create a virtual python environment (Not needed but preferred) 
 	1. Create the virtual environment 
@@ -86,7 +87,10 @@ https://discord.gg/kW3nG6GKpF
 	2.  Activate the virtual environment 
 		- Windows: `.\env\Scripts\activate.bat`
 		- Linux: `source ./env/bin/activate`
-4. Download dependencies 
+3. Download dependencies 
 	- `pip install PyQt5`
 	- `pip install requests`
-5. Run `src/MainWindow.py`
+4. Run `src/MainWindow.py`
+
+**CLI launcher**
+- just run `cli.py`
