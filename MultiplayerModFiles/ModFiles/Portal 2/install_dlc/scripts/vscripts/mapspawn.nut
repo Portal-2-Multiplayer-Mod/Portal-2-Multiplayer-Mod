@@ -59,6 +59,8 @@ IncludeScript("multiplayermod/varibles.nut")
 // █ █░▀█ █ ░█░
 
 function init() {
+    
+    SendPythonReset()
 
     // Show the console ascii art
     foreach (line in ConsoleAscii) {

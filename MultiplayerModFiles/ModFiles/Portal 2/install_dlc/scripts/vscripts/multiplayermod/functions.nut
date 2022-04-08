@@ -46,6 +46,16 @@ function ForceRespawnAll() {
     }
 }
 
+function SendPythonReset() {
+    CurrentPythonOutputID = 0
+    printl("ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣reset╠═╣")
+}
+
+function SendPythonOutput(text) {
+    CurrentPythonOutputID = CurrentPythonOutputID + 1
+    printl("ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣" + CurrentPythonOutputID + "╠═╣" + text)
+}
+
 function ToggleCheats() {
     if (CheatsOn == null || CheatsOn == false) {
         CheatsOn = true

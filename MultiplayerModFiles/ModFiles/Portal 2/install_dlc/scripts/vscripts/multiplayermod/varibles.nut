@@ -81,6 +81,8 @@ PreviousTime1Sec <- 0
 playerclasses <- []
 entityclasses <- []
 fogs <- false
+CurrentPythonOutputID <- 0
+CurrentPythonInputID <- 0
 
 ConsoleAscii <- [
 ""
