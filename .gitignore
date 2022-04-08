@@ -59,9 +59,10 @@ hammer/
 steam_input/
 sar.pdb
 
-# This is for the new launcher :3
-src/
+# added by cabiste ;) 
 tests/
+Logs/
+configs.cfg
 
 ##################################################################################
 # default list of files to ignore for python
@@ -171,11 +172,11 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-# .env
+.env
 .venv
-# env/
+env/
 venv/
-# ENV/
+ENV/
 env.bak/
 venv.bak/
 env/pyvenv.cfg

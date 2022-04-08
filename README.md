@@ -76,3 +76,17 @@ The pros and cons are listed below, though we recommend sticking with the latest
 If you need help setting up this mod, or just want to chill with a great community filled with developers, feel free to join our Discord server!
 
 https://discord.gg/kW3nG6GKpF
+
+# How to build
+- This project can be built theoretically on any OS that supports python 3 
+1. Clone the repo
+2. Create a virtual python environment (Not needed but preferred) 
+	1. Create the virtual environment 
+		- `python3 -m venv env`
+	2.  Activate the virtual environment 
+		- Windows: `.\env\Scripts\activate.bat`
+		- Linux: `source ./env/bin/activate`
+4. Download dependencies 
+	- `pip install PySide6`
+	- `pip install requests`
+5. Run `src/MainWindow.py`
