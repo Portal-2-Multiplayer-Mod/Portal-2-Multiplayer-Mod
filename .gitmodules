@@ -1,3 +1,6 @@
 [submodule "Optional/portal32playermod_plugin"]
 	path = Optional/portal32playermod_plugin
 	url = https://github.com/KonradCzerw/portal32playermod_plugin
+[submodule "Optional/portal32playermod_plugin_win"]
+	path = Optional/portal32playermod_plugin_win
+	url = https://github.com/KonradCzerw/portal32playermod_plugin_win
