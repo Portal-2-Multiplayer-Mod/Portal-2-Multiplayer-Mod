@@ -19,7 +19,7 @@ def MountMod(gamepath):
         Log("Portal 2 Path not found!")
         return "undefined"
     
-    # detect if the mod files available 
+    # detect if the mod files are available 
     modFilesPath = os.path.dirname(__main__.__file__) + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     if os.path.exists(modFilesPath):
         Log("MultiplayerModFiles folder exists!")
@@ -35,7 +35,7 @@ def MountMod(gamepath):
     dlcmountpoint = FindAvailableDLC(gamepath)
     
     destination = shutil.copytree(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
-    Log("copied the mod files successfully to"+ destination)
+    Log("copied the mod files successfully to "+ destination)
 
     # patch the binaries
     Log("            ___________Moving Files End__________")
@@ -88,20 +88,15 @@ def PatchBinaries(gamepath):
         Log("Moving " + binary + " to " + gamepath + "...")
         # get the filename
         filename = binary.rsplit(GVars.nf, 1)[1]
-        # if the filename already exists, delete it
-        if (os.path.isfile(gamepath + GVars.nf + filename)):
-            Log("File already exists, deleting...")
-            os.remove(gamepath + GVars.nf + filename)
 
-        # copy the binary to the gamepath
-        # windows command
-        if (GVars.iow):
-            command = "copy \"" + gamepath + GVars.nf + binary + "\" \"" + gamepath + GVars.nf + filename + "\""
-        # linux command
-        elif (GVars.iol):
-            command = "cp \"" + gamepath + GVars.nf + binary + "\" \"" + gamepath + GVars.nf + filename + "\""
-        Log("Command: " + command)
-        os.system(command)
+        # if the file already exists it will be replaced no need to delete it manually
+        try:
+            # copy the binary to the gamepath
+            shutil.copyfile(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
+            Log("copied " + binary+" to " + gamepath + GVars.nf + filename)
+        except:
+            # on windows there is no "linux32" folder so it will throw an error
+            Log("can't copy "+ binary+", since it doesn't exist" )
     Log("             __________Binary Moving End_________")
 
 
@@ -161,6 +156,13 @@ def PatchBinaries(gamepath):
         f.write(data)
         f.close()
         Log("")
+        
+    # we don't need to patch the other files since they don't exist on windows
+    if GVars.iow:
+        # rename the files so the new files are used
+        Log("Renaming binaries...")
+        RenameBinaries(gamepath, binarys)
+        return
 
     ###/// ENGINE.SO ///###
     if (os.path.isfile(gamepath + GVars.nf + "engine.so")):
@@ -271,24 +273,14 @@ def DeleteUnusedDlcs(gamepath):
     Log("Deleting in-use DLCs...")
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
-        # find all the files/folders that start with "portal2_dlc"
-        if file.startswith("portal2_dlc"):
-            # make sure it's a folder
-            if os.path.isdir(gamepath + GVars.nf + file):
-                # if inside the folder there is a file called "32playermod.identifier" delete this folder
-                if "32playermod.identifier" in os.listdir(gamepath + GVars.nf + file):
-                    Log("Found OLD DLC: " + file)
-                    # delete the folder even if it's not empty
-                    # Windows command
-                    if (GVars.iow):
-                        command = "rmdir /S /Q \"" + gamepath + GVars.nf + file + "\""
-                    # Linux command
-                    elif (GVars.iol):
-                        command = "rm -r \"" + gamepath + GVars.nf + file + "\""
-                        
-                    os.system(command)
-                    Log("Deleted OLD DLC: " + file)
-                    Log("Command: " + command)
+        # find all the files/folders that start with "portal2_dlc" and make sure they are a folder
+        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
+            # if inside the folder there is a file called "32playermod.identifier" delete this folder
+            if "32playermod.identifier" in os.listdir(gamepath + GVars.nf + file):
+                Log("Found OLD DLC: " + file)
+                # delete the folder even if it's not empty
+                shutil.rmtree(gamepath + GVars.nf + file)
+                Log("Deleted OLD DLC: " + file)
 
 def FindAvailableDLC(gamepath):
     Log("Finding Available DLC...")
@@ -296,25 +288,23 @@ def FindAvailableDLC(gamepath):
     DeleteUnusedDlcs(gamepath)
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
-        # find all the files/folders that start with "portal2_dlc"
-        if file.startswith("portal2_dlc"):
-            # make sure it's a folder
-            if os.path.isdir(gamepath + GVars.nf + file):
-                # get everything after "portal2_dlc"
-                try:
-                    dlcnumber = file.split("portal2_dlc")[1]
-                except Exception as e:
-                    Log("Error getting DLC name (probably a slice error moving on)!")
-                    Log("Error: " + str(e))
-                    # move on to the next file
-                    continue
+        # find all the files/folders that start with "portal2_dlc" and make sure it's a folder
+        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
+            # get everything after "portal2_dlc"
+            try:
+                dlcnumber = file.split("portal2_dlc")[1]
+            except Exception as e:
+                Log("Error getting DLC name (probably a slice error moving on)!")
+                Log("Error: " + str(e))
+                # move on to the next file
+                continue
 
-                # if dlcnumber contains any letters, it's not a number
-                if any(char.isalpha() for char in dlcnumber):
-                    Log("DLC " + dlcnumber + " is not a number!")
-                else:
-                    dlcs.append(str(dlcnumber))
-                    Log("Adding DLC: " + dlcnumber + " to our internal list...")
+            # if dlcnumber contains any letters, it's not a number
+            if any(char.isalpha() for char in dlcnumber):
+                Log("DLC " + dlcnumber + " is not a number!")
+            else:
+                dlcs.append(str(dlcnumber))
+                Log("Adding DLC: " + dlcnumber + " to our internal list...")
 
     # sort each dlc number lower to higher
     dlcs.sort(key=int)
