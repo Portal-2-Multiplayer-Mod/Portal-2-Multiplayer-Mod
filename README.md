@@ -87,6 +87,6 @@ https://discord.gg/kW3nG6GKpF
 		- Windows: `.\env\Scripts\activate.bat`
 		- Linux: `source ./env/bin/activate`
 4. Download dependencies 
-	- `pip install PySide6`
+	- `pip install PyQt5`
 	- `pip install requests`
 5. Run `src/MainWindow.py`

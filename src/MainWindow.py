@@ -1,7 +1,7 @@
 # PySide libraries, needed for the gui
-from PySide6 import QtWidgets as qtw
-from PySide6 import QtCore as qtc
-from PySide6 import QtGui as qtg
+from PyQt5 import QtWidgets as qtw
+from PyQt5 import QtCore as qtc
+from PyQt5 import QtGui as qtg
 
 # OUR modules 
 from Views.Ui_MainWindow import Ui_MainWindow
@@ -31,7 +31,7 @@ class MainUI(qtw.QMainWindow):
         self.ui.Button_Guide.clicked.connect(lambda: self.OpenGuide())
         self.ui.Button_Play.clicked.connect(lambda: self.MountMod())
         self.ui.Button_Discord.clicked.connect(lambda: self.DiscordInvite())
-        self.ui.button_CopyIP.clicked.connect(lambda: self.CopyIp())
+        self.ui.Button_CopyIP.clicked.connect(lambda: self.CopyIp())
         
         # this should be the custom toggle button but i didn't get it to work so i'm giving up for now 
         # self.toggle = qtw.QCheckBox()
@@ -100,15 +100,15 @@ class MainUI(qtw.QMainWindow):
         # this error handling is temporary i'll fix it later too trust me :)
         try:
             ip = get('https://api.ipify.org').text
-            self.ui.button_CopyIP.setText(ip)
+            self.ui.Button_CopyIP.setText(ip)
             Log("Got the ip")
         except:
-            self.ui.button_CopyIP.setText("internet error")
+            self.ui.Button_CopyIP.setText("internet error")
             Log("no internet connection")
     
     # copies the public ip to the user's clipboard when they click on the ip
     def CopyIp(self):
-        qtw.QApplication.clipboard().setText("connect "+self.ui.button_CopyIP.text()+":27015")
+        qtw.QApplication.clipboard().setText("connect "+self.ui.Button_CopyIP.text()+":27015")
         Log("coppied the ip")
       
 # runs when the app starts to initialize some variables
@@ -129,4 +129,4 @@ if __name__ =='__main__':
     window.GetIp()
     
     window.show()
-    sys.exit(app.exec())
+    sys.exit(app.exec_())
