@@ -24,7 +24,7 @@ The pros and cons are listed below, though we recommend sticking with the latest
 ***Version 2.0***
 ```
 + Presents tons new features that were not in 1.5
-+ Makes use of a custom plugin to bring about some of the features (Broken on Windows at the moment)
++ Makes use of a custom plugin to bring about some of the features
 + Full Linux support in addition to Windows
 + Rewritten codebase to allow for efficiency
 + Coded in a way to more likely to work with every Portal 2's continual updates.
