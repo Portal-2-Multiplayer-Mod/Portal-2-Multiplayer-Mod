@@ -64,15 +64,14 @@ class MainUI(qtw.QMainWindow):
             
     # mounts the mod and starts the game
     def MountMod(self):
-        # gets the game path from the config file
-        gamepath = GVars.configData["portal2path"]
-        
         # checks for the state of the mounting process
         mountState = ""
         # undefined -> the game path in the config file is either undefined or invalid 
         # filesMissing -> the mod's files (ModFiles/Portal 2/install_dlc) are missing
         # true -> the mouting process completed successfully
         while mountState != True:
+            # gets the game path from the config file
+            gamepath = GVars.configData["portal2path"]
             mountState = RG.MountMod(gamepath)
             if mountState == "undefined":
                 response = self.ErrorBox("game path is undefined/ invalid , would you like to select it?")

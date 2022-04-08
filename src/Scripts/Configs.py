@@ -53,7 +53,6 @@ def FindConfigPath():
     return configpath
 
 
-
 def EditConfig(search, newvalue):
     # gets the config path
     filepath = FindConfigPath()
@@ -68,24 +67,15 @@ def EditConfig(search, newvalue):
     for i in range(len(cfgdata)):
         line = cfgdata[i]
         # remove everything after the first #
-        line = line.split("#")[0]
-        # remove the newline
-        line = line.replace("\n", "")
+        line = line.split("#")[0].strip()
 
-        # if the line stripped is not empty and has a =, continue
-        if (line != "" and "=" in line):
+        # if the line contains "=" then it's not empty
+        # and if the is longer or equal to 3 characters then then clearly it has some data
+        if ("=" in line and len(line) >= 3):
             # get everything to the left of the =
-            leftline = line.split("=")[0]
+            leftline = line.split("=")[0].strip()
             # get everything to the right of the =
-            rightline = line.split("=")[1]
-            # remove every space and tab from the left side
-            leftline = leftline.replace(" ", "")
-            leftline = leftline.replace("\t", "")
-            # remove every tab from the right side
-            rightline = rightline.replace("\t", "")
-            # strip left and right
-            leftline = leftline.strip()
-            rightline = rightline.strip()
+            rightline = line.split("=")[1].strip()
             # if the left side is the search, replace the right side with the new value
             if (leftline == search):
                 Log("Replacing " + rightline + " with " + newvalue + " in config...")
@@ -113,15 +103,14 @@ def ImportConfig():
     processedconfig = {}
     for line in config:
         # remove everything after the first #
-        line = line.split("#")[0]
-        # remove the newline
-        line = line.strip()
+        line = line.split("#")[0].strip()
 
-        # if the line stripped is not empty and has a =, continue
-        if (line != "" and "=" in line):
-            # get everything to the left of the =
+        # if the line contains "=" then it's not empty 
+        # and if the is longer or equal to 3 characters then then clearly it has some data 
+        if ("=" in line and len(line)>=3):
+            # get everything to the left of the = and clean it from whitespaces
             leftline = line.split("=")[0].strip()
-            # get everything to the right of the =
+            # get everything to the right of the = and clean it from whitespaces
             rightline = line.split("=")[1].strip()
 
             # if the left line is not empty then add it to the dictionary

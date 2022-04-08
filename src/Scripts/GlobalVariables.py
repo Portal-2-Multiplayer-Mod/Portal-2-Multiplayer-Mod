@@ -36,8 +36,6 @@ def init():
         Log("This operating system is not supported!")
         Log("We only support Windows and Linux as of current.")
         quit()
-        
-    Log("")
 
 def LoadConfig():   
     global configData
