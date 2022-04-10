@@ -23,13 +23,11 @@ class MainUI(qtw.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         
-        # setting Images
-        self.ui.Button_Discord.setIcon(qtg.QIcon(":\Views\Resources\Images\discord-icon.svg"))
-        
         # Binding click events
         self.ui.actionGuide.triggered.connect(lambda: self.OpenGuide())
         self.ui.Button_Guide.clicked.connect(lambda: self.OpenGuide())
         self.ui.Button_Play.clicked.connect(lambda: self.MountMod())
+        self.ui.Button_Unmount.clicked.connect(lambda: self.UnmountMod())
         self.ui.Button_Discord.clicked.connect(lambda: self.DiscordInvite())
         self.ui.Button_CopyIP.clicked.connect(lambda: self.CopyIp())
         
@@ -87,6 +85,23 @@ class MainUI(qtw.QMainWindow):
                 return
         # if everything goes well then run the game
         RG.LaunchGame(gamepath)
+        
+    def UnmountMod(self):
+        unmountState = ""
+        while unmountState != True:
+            gamepath = GVars.configData["portal2path"]
+            unmountState = RG.DeleteUnusedDlcs(gamepath)
+            if unmountState == "undefined":
+                response = self.ErrorBox("game path is undefined/ invalid , would you like to select it?")
+                if response == qtw.QMessageBox.Ok:
+                    Log("searching for game path")
+                    self.GetGamePath()
+                else:
+                    Log("user canceled search")
+                    return
+        RG.DeleteUnusedDlcs(gamepath)
+        RG.UnpatchBinaries(gamepath)
+        Log("unmount completed")
         
     # opens a discord invite in the browser
     def DiscordInvite(self):

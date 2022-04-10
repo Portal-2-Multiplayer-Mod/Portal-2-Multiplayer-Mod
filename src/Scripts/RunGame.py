@@ -271,6 +271,11 @@ def DeleteUnusedDlcs(gamepath):
     Log("")
     Log("            _________Dealing with Folders________")
     Log("Deleting in-use DLCs...")
+    
+    if (gamepath == "undefined") or ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+        Log("Portal 2 Path not found!")
+        return "undefined"
+    
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the files/folders that start with "portal2_dlc" and make sure they are a folder
@@ -281,6 +286,8 @@ def DeleteUnusedDlcs(gamepath):
                 # delete the folder even if it's not empty
                 shutil.rmtree(gamepath + GVars.nf + file)
                 Log("Deleted OLD DLC: " + file)
+    
+    return True
 
 def FindAvailableDLC(gamepath):
     Log("Finding Available DLC...")

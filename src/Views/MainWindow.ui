@@ -231,6 +231,26 @@ border-color: rgb(19, 231, 69);</string>
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="Button_Unmount">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>390</y>
+      <width>181</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(218, 44, 56);
+font: 600 30pt &quot;Quicksand&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Unmount</string>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
