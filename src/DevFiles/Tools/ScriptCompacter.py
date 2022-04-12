@@ -1,4 +1,4 @@
-#VARIBLES
+#VARIABLES
 # prefix = 'script if (Entities.FindByClassname(null, "point_clientcommand") == null) { Entities.CreateByClassname("point_clientcommand")} else { myclientcommand <- Entities.FindByClassname(null, "point_clientcommand")};echo NEWLINE;script EntFireByHandle(myclientcommand, "Command", \''
 # suffix = '\', 0, Entities.FindByName(null, "red"), Entities.FindByName(null, "red"));echo NEWLINE'
 prefix = ''

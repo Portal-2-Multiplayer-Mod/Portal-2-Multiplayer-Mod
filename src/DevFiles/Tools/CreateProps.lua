@@ -65,7 +65,7 @@ while (Loop == true) do
     for k, prop in ipairs(ents.FindByClass("prop_*")) do
         if (!prop:CreatedByMap() && prop:GetClass() ~= "prop_effect" && prop:GetMaterial() ~= "phoenix_storms/stripes") or (prop:GetClass() == "animprop_generic_physmodel") then
 
-            -- reset varibles
+            -- reset variables
             PropType = "prop_dynamic"
             PropCords = prop:GetPos()
             PropModel = prop:GetModel()

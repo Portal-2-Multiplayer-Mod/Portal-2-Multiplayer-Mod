@@ -45,7 +45,7 @@ Admins <- ["[420]kyleraykbs", "[69]vista", "[12]cabiste", "[12]Bumpy", "[12]Nano
 //   \___|\___/\__,_|\___| |___/\___| \__| \_,_|| .__/(_)
 //                                              |_|      
 
-IncludeScript("multiplayermod/varibles.nut")
+IncludeScript("multiplayermod/variables.nut")
 
 // Now we declare some functions...
 
@@ -96,7 +96,7 @@ function init() {
     // Run map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create entity to run the loop() function every 0.1 second
+    // Create an entity to run the loop() function every 0.1 second
     timer <- Entities.CreateByClassname("logic_timer")
     timer.__KeyValueFromString("targetname", "timer")
     EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
