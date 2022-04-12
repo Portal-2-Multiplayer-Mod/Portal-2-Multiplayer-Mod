@@ -8,6 +8,8 @@
 // Here, you can customize several parameters in your server.
 // You can change this mid-game as well, however, be sure to
 // modify the the one that has been copied into a new
+// You can change this mid-game as well, however, be sure
+// to modify the one that has been copied into a new
 // portal2_dlcX folder and switch levels after modifying!
 
 //    ___              __  _        _ 
@@ -148,9 +150,9 @@ MapName = FindAndReplace(MapName.tostring(), ".bsp", "")
 
 try {
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
-    IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
-    IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
-    IncludeScript("multiplayermod/mapsupport/" + MapName.tostring() + ".nut")
+    IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut") // Import some generally used map functions to call upon in the map code for ease
+    IncludeScript("multiplayermod/mapsupport/#propcreation.nut") // Import a giant function to create props server-side based on map name
+    IncludeScript("multiplayermod/mapsupport/" + MapName.tostring() + ".nut") // Import the  map support code
 } catch (error) {
     if (GetDeveloperLevel() == 1) {
         print("(P2:MM): No map support for " + MapName.tostring())
