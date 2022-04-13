@@ -15,6 +15,7 @@ The pros and cons are listed below, though we recommend sticking with the latest
 ```
 + Easy to install
 + Gets the job done of having multiple players
++ User-friendly launcher
 - Lacks many features
 - Rushed codebase
 - Existing features may be broken due to binary changes in recent Portal 2 updates
@@ -25,18 +26,19 @@ The pros and cons are listed below, though we recommend sticking with the latest
 ```
 + Presents tons new features that were not in 1.5
 + Makes use of a custom plugin to bring about some of the features
-+ Full Linux support in addition to Windows
++ Full Linux and Windows support
 + Rewritten codebase to allow for efficiency
-+ Coded in a way to more likely to work with every Portal 2's continual updates.
-+ Stable, user-friendly launcher
++ Coded in a way to will more likely work with every Portal 2's continual updates.
++ Stable
 + More organized file-structure
-- Will take longer to install (requires that you install Python and add it to PATH)
+- Will take longer to install (requires that you install Python)
+- No launcher (you gotta download the code base and run it yourself) 
 - Some features may break as we update the pre-release.
 - Not easy to update
 ```
 
 
-# Mod features (Already shipped in v1.5)
+## Mod features (Already shipped in v1.5)
 1. Maximum player cap of 33 (not 32!)
 2. Elastic player collision
 3. Custom player colors
@@ -45,20 +47,20 @@ The pros and cons are listed below, though we recommend sticking with the latest
 6. Full cooperative campaign support
 7. Support for Windows 11, 10, 8.1, 8, 7, Vista, and XP
 
-# Planned features (Will be shipped in v2.0)
-1. Full singleplayer campaign support (Almost finished, needs a lot more polishing)
-2. Nametags (Finished)
-3. Support for Linux (Finished)
-4. Full support for the cooperative Gelocity workshop maps (Two of the three maps are finished)
-5. Chat commands (Finished)
-6. Allow players to spawn in any map without breaking (Finished)
-7. Make the launcher patch files on the spot for consistency and stability (Finished)
-8. Allow the server to cache objects server-side without crashing (Finished)
+## Planned features (Will be shipped in v2.0)
+-   [ ] Full singleplayer campaign support (Almost finished, needs a lot more polishing)
+-   [x] Nametags
+-   [x] Support for Linux
+-   [ ] Full support for the cooperative Gelocity workshop maps (Two of the three maps are finished)
+-   [x] Chat commands
+-   [x] Allow players to spawn in any map without breaking
+-   [x] Make the launcher patch files on the spot for consistency and stability
+-   [x] Allow the server to cache objects server-side without crashing
 
-# Features on the table
-1. Dedicated servers
-2. Sixense support
-3. Player specific colored portals
+## Features on the table
+- Dedicated servers
+- Sixense support
+- Player specific colored portals
 
 # Installation & use
 
@@ -71,17 +73,19 @@ The pros and cons are listed below, though we recommend sticking with the latest
 - Version 1.5 YouTube installation: https://www.youtube.com/watch?v=AOh6qela-uI
 - Version 2.0 YouTube installation: https://www.youtube.com/watch?v=_Vsey2wPXSo
 
-# Discord
-
-If you need help setting up this mod, or just want to chill with a great community filled with developers, feel free to join our Discord server!
-
-https://discord.gg/kW3nG6GKpF
 
 # How to build
-- This project can be built (*theoretically*) on any OS that supports python 3 
+**Notes:**
+1. the project requires Python3 to run
+2. The GUI launcher can only run on OSs supported by **[Qt 5](https://doc.qt.io/qt-5/supported-platforms.html)**
+
+**CLI launcher**
+- Just run `src/cli.py`
+
+
 **GUI launcher**
 1. Clone the repo
-2. Create a virtual python environment (Not needed but preferred) 
+2. Create a virtual python environment (Not needed but recommended) 
 	1. Create the virtual environment 
 		- `python3 -m venv env`
 	2.  Activate the virtual environment 
@@ -92,5 +96,9 @@ https://discord.gg/kW3nG6GKpF
 	- `pip install requests`
 4. Run `src/MainWindow.py`
 
-**CLI launcher**
-- just run `cli.py`
+
+# Discord
+
+If you need help setting up this mod, or just want to chill with a great community filled with developers, feel free to join our Discord server!
+
+https://discord.gg/kW3nG6GKpF
