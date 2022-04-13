@@ -79,6 +79,8 @@ The pros and cons are listed below, though we recommend sticking with the latest
 1. the project requires Python3 to run
 2. The GUI launcher can only run on OSs supported by **[Qt 5](https://doc.qt.io/qt-5/supported-platforms.html)**
 
+---
+
 **CLI launcher**
 - Just run `src/cli.py`
 
