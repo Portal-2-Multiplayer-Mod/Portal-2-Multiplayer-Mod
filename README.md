@@ -9,7 +9,7 @@ During this time, however, we have restructured the mod almost entirely to allow
 Because of the amount of stability fixes and new features in the recent version of the mod, we have decided to rename it to version 2.0 rather than 1.6.
 As it stands right now, version 1.5 is severely outdated, however, version 2.0 also has its issues with stability, as it is constantly being updated.
 
-The pros and cons are listed below, though we recommend sticking with the latest pre-release. (v2.0)
+The pros and cons are listed below, though **we recommend sticking with the latest pre-release. (v2.0)**
 
 ***Version 1.5***
 ```

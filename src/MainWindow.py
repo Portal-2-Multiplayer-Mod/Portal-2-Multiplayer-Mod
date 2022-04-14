@@ -65,7 +65,7 @@ class MainUI(qtw.QMainWindow):
         # checks for the state of the mounting process
         mountState = ""
         # undefined -> the game path in the config file is either undefined or invalid 
-        # filesMissing -> the mod's files (ModFiles/Portal 2/install_dlc) are missing
+        # filesMissing -> the mod's files (./ModFiles/Portal 2/install_dlc) are missing
         # true -> the mouting process completed successfully
         while mountState != True:
             # gets the game path from the config file
@@ -86,7 +86,9 @@ class MainUI(qtw.QMainWindow):
         # if everything goes well then run the game
         RG.LaunchGame(gamepath)
         
+    # to unmount the mod files obviously
     def UnmountMod(self):
+        # here we do the same checking as in the mount process
         unmountState = ""
         while unmountState != True:
             gamepath = GVars.configData["portal2path"]
@@ -99,7 +101,6 @@ class MainUI(qtw.QMainWindow):
                 else:
                     Log("user canceled search")
                     return
-        RG.DeleteUnusedDlcs(gamepath)
         RG.UnpatchBinaries(gamepath)
         Log("unmount completed")
         
@@ -114,16 +115,18 @@ class MainUI(qtw.QMainWindow):
     def GetIp(self):
         # this error handling is temporary i'll fix it later too trust me :)
         try:
+            global ip
             ip = get('https://api.ipify.org').text
-            self.ui.Button_CopyIP.setText(ip)
+            maskedIp = ip[0:ip.index('.')+1] + ("*"*(len(ip)-ip.index('.')+1))
+            self.ui.Button_CopyIP.setText(maskedIp)
             Log("Got the ip")
-        except:
+        except Exception as e:
             self.ui.Button_CopyIP.setText("internet error")
-            Log("no internet connection")
+            Log("no internet connection "+str(e))
     
     # copies the public ip to the user's clipboard when they click on the ip
     def CopyIp(self):
-        qtw.QApplication.clipboard().setText("connect "+self.ui.Button_CopyIP.text()+":27015")
+        qtw.QApplication.clipboard().setText("connect "+ip+":27015")
         Log("coppied the ip")
       
 # runs when the app starts to initialize some variables
