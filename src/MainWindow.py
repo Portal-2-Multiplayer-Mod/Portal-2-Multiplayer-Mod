@@ -168,41 +168,35 @@ def BackMenu():
 def RefreshSettingsMenu():
         SettingsButtons.clear()
         for key in curcfg:
-            print(key + ": " + curcfg[key])
-            class curkeyButton:
-                text = key + ": " + curcfg[key]
-                cfgkey = key
-                cfgvalue = curcfg[key]
-                activecolor = (255, 255, 0)
-                inactivecolor = (255, 255, 255)
-                sizemult = 1
-                selectanim = "pop"
-                selectsnd = pwrsnd
-                hoversnd = blipsnd
-                curanim = ""
-                def function(cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
-                    global curcfg
-                    if cfgvalue == "true":
-                        cfg.EditConfig(cfgkey, "false")
-                        print(cfgkey)
-                        print(cfgvalue)
-                        GVars.LoadConfig()
-                        curcfg = cfg.ImportConfig()
-                        RefreshSettingsMenu()
-                        print(CurrentButtonsIndex)
-                        print(SelectedButton)
-                    if cfgvalue == "false":
-                        cfg.EditConfig(cfgkey, "true")
-                        print(cfgkey)
-                        print(cfgvalue)
-                        GVars.LoadConfig()
-                        curcfg = cfg.ImportConfig()
-                        RefreshSettingsMenu()
-                        print(CurrentButtonsIndex)
-                        print(SelectedButton)
-                    print(text)
-                isasync = False
-            SettingsButtons.append(curkeyButton)
+            if key != "cfgvariant":
+                print(key + ": " + curcfg[key])
+                class curkeyButton:
+                    text = key + ": " + curcfg[key]
+                    cfgkey = key
+                    cfgvalue = curcfg[key]
+                    activecolor = (255, 255, 0)
+                    inactivecolor = (255, 255, 255)
+                    sizemult = 1
+                    selectanim = "pop"
+                    selectsnd = pwrsnd
+                    hoversnd = blipsnd
+                    curanim = ""
+                    def function(cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
+                        global curcfg
+                        if cfgvalue == "true":
+                            cfg.EditConfig(cfgkey, "false")
+                            GVars.LoadConfig()
+                            curcfg = cfg.ImportConfig()
+                            RefreshSettingsMenu()
+                        elif cfgvalue == "false":
+                            cfg.EditConfig(cfgkey, "true")
+                            GVars.LoadConfig()
+                            curcfg = cfg.ImportConfig()
+                            RefreshSettingsMenu()
+                    
+
+                    isasync = False
+                SettingsButtons.append(curkeyButton)
         SettingsButtons.append(BackButton)
 
 ############ BUTTON CLASSES
