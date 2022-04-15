@@ -6,7 +6,6 @@ import random
 import asyncio
 import threading
 import time
-from colorama import Back
 
 import pygame
 from pygame.locals import *
