@@ -140,42 +140,18 @@ def RunAnimation(button, anim):
             button.sizemult = 1
             button.curanim = ""
 
-class RunButton:
-    text = "MOUNT"
-    activecolor = (50, 255, 120)
-    inactivecolor = (255, 255, 255)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    function = RunGameScript
-    isasync = True
-    # function = False
-    # isasync = False
-class StopButton:
-    text = "UNMOUNT"
-    activecolor = (255, 50, 50)
-    inactivecolor = (255, 255, 255)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    function = UnmountScript
-    isasync = True
-    # function = False
-    # isasync = False
-
 directorymenu = []
 
 CurrentMenu = None
 SelectedButton = None
+CurrentButtonsIndex = 0
 
 def ChangeMenu(menu):
     global CurrentMenu
     global SelectedButton
     global directorymenu
+    global CurrentButtonsIndex
+    CurrentButtonsIndex = 0
     directorymenu.append(CurrentMenu)
     print("changing menu to " + str(menu))
     CurrentMenu = menu
@@ -189,8 +165,6 @@ class ManualButton:
     selectanim = "pop"
     selectsnd = pwrsnd
     hoversnd = blipsnd
-    below = False
-    above = False
     curanim = ""
     def function():
         ChangeMenu(ManualButtons)
@@ -204,31 +178,48 @@ class BackButton:
     selectanim = "pop"
     selectsnd = pwrsnd
     hoversnd = blipsnd
-    below = StopButton
-    above = False
     curanim = ""
     def function():
         ChangeMenu(directorymenu[-1])
         directorymenu.pop()
+        CurrentButtonsIndex = 0
     isasync = False
 
-RunButton.below = StopButton
-RunButton.above = False
+class RunButton:
+    text = "MOUNT"
+    activecolor = (50, 255, 120)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    function = RunGameScript
+    isasync = True
 
-StopButton.below = BackButton
-StopButton.above = RunButton
+class StopButton:
+    text = "UNMOUNT"
+    activecolor = (255, 50, 50)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    function = UnmountScript
+    isasync = True
 
-BackButton.below = False
-BackButton.above = StopButton
-
-
+### BUTTONS
 ManualButtons = [RunButton, StopButton, BackButton]
 
 MainButtons = [ManualButton]
+###########
 
 CurrentMenu = MainButtons
 
-SelectedButton = CurrentMenu[0]
+CurrentButtonsIndex = 0
+
+SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
 ###############################################################################
 
@@ -298,6 +289,7 @@ def Main():
     global screen
     global fps
     global SelectedButton
+    global CurrentButtonsIndex
 
     while running:
         for event in pygame.event.get():
@@ -307,14 +299,15 @@ def Main():
                 if event.key == K_ESCAPE:
                     running = False
                 elif event.key == K_DOWN:
-                    if SelectedButton.below:
-                        SelectedButton = SelectedButton.below
-                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                    if CurrentButtonsIndex < len(CurrentMenu) - 1:
+                        CurrentButtonsIndex += 1
+                        SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                        # pygame.mixer.Sound.play(SelectedButton.hoversnd)
                 elif event.key == K_UP:
-                    # find the selected button in the current menu
-                    if SelectedButton.above:
-                        SelectedButton = SelectedButton.above
-                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                    if CurrentButtonsIndex > 0:
+                        CurrentButtonsIndex -= 1
+                        SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                        # pygame.mixer.Sound.play(SelectedButton.hoversnd)
                 elif event.key == K_SPACE:
                     if SelectedButton.function:
                         if SelectedButton.isasync:
@@ -324,7 +317,7 @@ def Main():
 
                     SelectAnimation(SelectedButton, SelectedButton.selectanim)
                     # play the sound at a random pitch and volume 1.5
-                    pygame.mixer.Sound.play(SelectedButton.selectsnd) 
+                    # pygame.mixer.Sound.play(SelectedButton.selectsnd) 
 
         
         # make the screen a gradient
