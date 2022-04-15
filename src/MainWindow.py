@@ -18,10 +18,11 @@ import Scripts.Configs as cfg
 # populate the global variables
 GVars.init()
 GVars.LoadConfig()
+gamepath = GVars.configData["portal2path"]
 pygame.init()
 pygame.mixer.init()
-gamepath = GVars.configData["portal2path"]
 
+curcfg = cfg.ImportConfig()
 
 # change dir into the "GUI" folder
 os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/GUI")
@@ -93,9 +94,12 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
     window.blit( colour_rect, target_rect )  
 
 def GetGamePath():
+    global gamepath
     folder = input("please enter the path to the game:")
     cfg.EditConfig("portal2path", folder)
     Log("saved '" + folder + "' as the game path")
+    GVars.LoadConfig()
+    gamepath = GVars.configData["portal2path"]
 
 def CheckForGamePath():
     # checks for the state of the mounting process
@@ -150,12 +154,56 @@ def ChangeMenu(menu):
     global SelectedButton
     global directorymenu
     global CurrentButtonsIndex
-    CurrentButtonsIndex = 0
     directorymenu.append(CurrentMenu)
-    print("changing menu to " + str(menu))
     CurrentMenu = menu
+    CurrentButtonsIndex = 0
     SelectedButton = CurrentMenu[0]
 
+def BackMenu():
+    if len(directorymenu) > 0:
+        ChangeMenu(directorymenu[-1])
+        directorymenu.pop()
+        CurrentButtonsIndex = 0
+
+def RefreshSettingsMenu():
+        SettingsButtons.clear()
+        for key in curcfg:
+            print(key + ": " + curcfg[key])
+            class curkeyButton:
+                text = key + ": " + curcfg[key]
+                cfgkey = key
+                cfgvalue = curcfg[key]
+                activecolor = (255, 255, 0)
+                inactivecolor = (255, 255, 255)
+                sizemult = 1
+                selectanim = "pop"
+                selectsnd = pwrsnd
+                hoversnd = blipsnd
+                curanim = ""
+                def function(cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
+                    global curcfg
+                    if cfgvalue == "true":
+                        cfg.EditConfig(cfgkey, "false")
+                        print(cfgkey)
+                        print(cfgvalue)
+                        GVars.LoadConfig()
+                        curcfg = cfg.ImportConfig()
+                        RefreshSettingsMenu()
+                        print(CurrentButtonsIndex)
+                        print(SelectedButton)
+                    if cfgvalue == "false":
+                        cfg.EditConfig(cfgkey, "true")
+                        print(cfgkey)
+                        print(cfgvalue)
+                        GVars.LoadConfig()
+                        curcfg = cfg.ImportConfig()
+                        RefreshSettingsMenu()
+                        print(CurrentButtonsIndex)
+                        print(SelectedButton)
+                    print(text)
+                isasync = False
+            SettingsButtons.append(curkeyButton)
+        SettingsButtons.append(BackButton)
 
 ############ BUTTON CLASSES
 
@@ -182,9 +230,7 @@ class BackButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
-        ChangeMenu(directorymenu[-1])
-        directorymenu.pop()
-        CurrentButtonsIndex = 0
+        BackMenu()
     isasync = False
 
 class RunButton:
@@ -251,27 +297,43 @@ class DiscordButton:
         webbrowser.open("https://discord.com/invite/kW3nG6GKpF")
     isasync = True
 
+class SettingsButton:
+    text = "SETTINGS"
+    activecolor = (255, 255, 0)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        RefreshSettingsMenu()
+        ChangeMenu(SettingsButtons)
+    isasync = False
+
 ##############################
 
 ### BUTTONS
+SettingsButtons = []
+
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, ManualButton, GuideButton, DiscordButton]
+MainButtons = [LaunchGameButton, SettingsButton, ManualButton, GuideButton, DiscordButton]
 ###########
 
 CurrentMenu = MainButtons
-
-CurrentButtonsIndex = 0
 
 SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
 ###############################################################################
 
 def Update():
+    global CurrentMenu
+    global SelectedButton
+
     W = screen.get_width()
     H = screen.get_height()
 
-    
     for floater in Floaters:
         surf = floater.surf
         surf = pygame.transform.scale(surf, (W/15, W/15))
@@ -306,6 +368,8 @@ def Update():
         RunAnimation(button, button.curanim)
         text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text, True, clr)
         screen.blit(text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)  ))
+    
+    SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
     # Start Button
     # clr = (0, 0, 0)
@@ -341,7 +405,9 @@ def Main():
                 running = False
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    running = False
+                    BackMenu()
+                elif event.key == K_BACKSPACE:
+                    BackMenu()
                 elif event.key == K_DOWN:
                     if CurrentButtonsIndex < len(CurrentMenu) - 1:
                         CurrentButtonsIndex += 1
