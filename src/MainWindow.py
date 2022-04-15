@@ -1,150 +1,212 @@
-# PySide libraries, needed for the gui
-from PyQt5 import QtWidgets as qtw
-from PyQt5 import QtCore as qtc
-from PyQt5 import QtGui as qtg
+from cmath import rect
+import sys
+import os
+import random
 
-# OUR modules 
-from Views.Ui_MainWindow import Ui_MainWindow
+import pygame
+from pygame.locals import *
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.RunGame as RG
 import Scripts.Configs as cfg
 
-# other modules for better user experience
-from requests import get
-import webbrowser
-import sys
-#----------------------------------------------------------------
+# populate the global variables
+GVars.init()
+GVars.LoadConfig()
+pygame.init()
+gamepath = GVars.configData["portal2path"]
 
 
-class MainUI(qtw.QMainWindow):
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-        
-        # Binding click events
-        self.ui.actionGuide.triggered.connect(lambda: self.OpenGuide())
-        self.ui.Button_Guide.clicked.connect(lambda: self.OpenGuide())
-        self.ui.Button_Play.clicked.connect(lambda: self.MountMod())
-        self.ui.Button_Unmount.clicked.connect(lambda: self.UnmountMod())
-        self.ui.Button_Discord.clicked.connect(lambda: self.DiscordInvite())
-        self.ui.Button_CopyIP.clicked.connect(lambda: self.CopyIp())
-        
-        # this should be the custom toggle button but i didn't get it to work so i'm giving up for now 
-        # self.toggle = qtw.QCheckBox()
-        # self.ui.layout = qtw.QHBoxLayout(self)
-        # self.ui.layout.addWidget(self.toggle, qtg.Qt.AlignCenter, qtg.Qt.AlignCenter)
-        
-    # opens the steam guide in the browser 
-    def OpenGuide(self):
-        guideURL = "https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280"
-        webbrowser.open(guideURL)
-        Log("Opened the steam guide")
+# change dir into the "GUI" folder
+os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/GUI")
+cwd = os.getcwd()
 
-    # opens a fileDialog window to select the folder of the mod then saves it in the config file
-    def GetGamePath(self):
-        folder = str(qtw.QFileDialog.getExistingDirectory(self, "Select Directory"))
-        cfg.EditConfig("portal2path", folder)
-        Log("saved '"+ folder + "' as the game path")
-        
-    # a custom-ish error dialog 
-    def ErrorBox(self, text):
-        Log("Error: "+ text)
-        dialog = qtw.QMessageBox.critical(
-            self,
-            "Error!",
-            text,
-            buttons= qtw.QMessageBox.Ok | qtw.QMessageBox.Cancel,
-            defaultButton= qtw.QMessageBox.Ok,
-        )
-        return dialog
-            
-    # mounts the mod and starts the game
-    def MountMod(self):
-        # checks for the state of the mounting process
-        mountState = ""
-        # undefined -> the game path in the config file is either undefined or invalid 
-        # filesMissing -> the mod's files (./ModFiles/Portal 2/install_dlc) are missing
-        # true -> the mouting process completed successfully
-        while mountState != True:
-            # gets the game path from the config file
-            gamepath = GVars.configData["portal2path"]
-            mountState = RG.MountMod(gamepath)
-            if mountState == "undefined":
-                response = self.ErrorBox("game path is undefined/ invalid , would you like to select it?")
-                if response == qtw.QMessageBox.Ok:
-                    Log("searching for game path")
-                    self.GetGamePath()
-                else:
-                    Log("user canceled search")
-                    return
-                
-            if mountState == "filesMissing":
-                self.ErrorBox("the mod files are missing")
-                return
-        # if everything goes well then run the game
-        RG.LaunchGame(gamepath)
-        
-    # to unmount the mod files obviously
-    def UnmountMod(self):
-        # here we do the same checking as in the mount process
-        unmountState = ""
-        while unmountState != True:
-            gamepath = GVars.configData["portal2path"]
-            unmountState = RG.DeleteUnusedDlcs(gamepath)
-            if unmountState == "undefined":
-                response = self.ErrorBox("game path is undefined/ invalid , would you like to select it?")
-                if response == qtw.QMessageBox.Ok:
-                    Log("searching for game path")
-                    self.GetGamePath()
-                else:
-                    Log("user canceled search")
-                    return
-        RG.UnpatchBinaries(gamepath)
-        Log("unmount completed")
-        
-    # opens a discord invite in the browser
-    def DiscordInvite(self):
-        discordUrl = "https://discord.com/invite/kW3nG6GKpF"
-        webbrowser.open(discordUrl)
-        Log("Opened the discord invite")
-        
-    # gets the public ip of the user 
-    # i need to make this async :>
-    def GetIp(self):
-        # this error handling is temporary i'll fix it later too trust me :)
-        try:
-            global ip
-            ip = get('https://api.ipify.org').text
-            maskedIp = ip[0:ip.index('.')+1] + ("*"*(len(ip)-ip.index('.')+1))
-            self.ui.Button_CopyIP.setText(maskedIp)
-            Log("Got the ip")
-        except Exception as e:
-            self.ui.Button_CopyIP.setText("internet error")
-            Log("no internet connection "+str(e))
+
+###############################################################################
+
+fps = 60
+fpsclock = pygame.time.Clock()
+
+screen = pygame.display.set_mode((1280, 720), RESIZABLE)
+
+running = True
+
+###############################################################################
+
+Floaters = []
+
+# surf = pygame.surface.Surface([int(W / 25) + int(H / 50), int(W / 25) + int(H / 50)])
+#     surf.set_colorkey((0, 0, 0))
+#     surf.fill((255, 255, 255))
+#     surf = pygame.transform.rotate(surf, 19)
+
+def Floater(width, height, rot, x, y, negrot):
+    surf = pygame.image.load("assets/images/button.png")
+    surf = pygame.transform.scale(surf, (width, height))
+    # surf.set_colorkey((0, 0, 0))
+    # surf.fill((130, 130, 140))
+    surf = pygame.transform.rotate(surf, 0)
+    nrot = rot
+    nsurf = surf
+    class Floater:
+        rot = nrot
+        surf = nsurf
+    Floater.x = x
+    Floater.y = y
+    Floater.negrot = negrot
+    return Floater
+
+
+def AddFloater(width, height, rot, x, y):
+    # random bool
+    negrot = random.randint(0, 1) == 1
+    Floaters.append(Floater(width, height, rot, x, y, negrot))
+
+AddFloater(50, 50, 20, 75, 75)
+AddFloater(50, 50, 20, 75, 75)
+AddFloater(50, 50, 20, 75, 75)
+AddFloater(50, 50, 20, 75, 75)
+AddFloater(50, 50, 20, 75, 75)
+AddFloater(50, 50, 20, 75, 75)
+AddFloater(50, 50, 20, 75, 75)
+AddFloater(50, 50, 20, 75, 75)
+AddFloater(50, 50, 20, 75, 75)
+
+
+
+def gradientRect( window, left_colour, right_colour, target_rect ):
+    colour_rect = pygame.Surface( ( 2, 2 ) )                                   # tiny! 2x2 bitmap
+    pygame.draw.line( colour_rect, left_colour,  ( 0,0 ), ( 0,1 ) )            # left colour line
+    pygame.draw.line( colour_rect, right_colour, ( 1,0 ), ( 1,1 ) )            # right colour line
+    colour_rect = pygame.transform.smoothscale( colour_rect, ( target_rect.width, target_rect.height ) )  # stretch!
+    window.blit( colour_rect, target_rect )  
+
+def GetGamePath():
+    folder = input("please enter the path to the game:")
+    cfg.EditConfig("portal2path", folder)
+    Log("saved '" + folder + "' as the game path")
+
+def CheckForGamePath():
+    # checks for the state of the mounting process
+    mountState = ""
+    # undefined -> the game path in the config file is either undefined or invalid
+    # filesMissing -> the mod's files (ModFiles/Portal 2/install_dlc) are missing
+    # true -> the mouting process completed successfully
+    while mountState != True:
+        mountState = RG.MountMod(gamepath)
+        print(mountState)
+        if mountState == "undefined":
+            Log("game path is undefined/ invalid , would you like to select it?")
+            GetGamePath()
+
+        if mountState == "filesMissing":
+            Log("the mod files are missing")
+            return
+
+def RunGameScript():
+    CheckForGamePath()
+    RG.LaunchGame(gamepath)
+
+def UnmountScript():
+    CheckForGamePath()
+    RG.DeleteUnusedDlcs(gamepath)
+    RG.UnpatchBinaries(gamepath)
+
+class RunButton:
+    text = "MOUNT"
+    activecolor = (50, 255, 120)
+    inactivecolor = (255, 255, 255)
+    function = RunGameScript
+class StopButton:
+    text = "UNMOUNT"
+    activecolor = (255, 50, 50)
+    inactivecolor = (255, 255, 255)
+    function = False
+
+RunButton.below = StopButton
+RunButton.above = False
+
+StopButton.below = False
+StopButton.above = RunButton
+
+SelectedButton = RunButton
+
+###############################################################################
+
+def Update():
+    W = screen.get_width()
+    H = screen.get_height()
+
     
-    # copies the public ip to the user's clipboard when they click on the ip
-    def CopyIp(self):
-        qtw.QApplication.clipboard().setText("connect "+ip+":27015")
-        Log("coppied the ip")
-      
-# runs when the app starts to initialize some variables
-# don't log anythin before the StartLog() method  
-def OnStart():
-    # populate the global variables
-    GVars.init()
-    # to do the fancy log thing
-    StartLog()
-    # load the config file into memmory
-    GVars.LoadConfig()
+    for floater in Floaters:
+        surf = floater.surf
+        surf = pygame.transform.scale(surf, (W/15, W/15))
+        surf = pygame.transform.rotate(surf, floater.rot)
+        center = surf.get_rect().center
+        screen.blit(surf, (floater.x - center[0], floater.y - center[1]))
+        if floater.negrot:
+            floater.rot -= (1 + random.randint(0, 2))
+        else:
+            floater.rot += (1 + random.randint(0, 2))
+        floater.y += H / 60
+        if floater.y > (H + floater.surf.get_height() * 2):
+            floater.y = (floater.surf.get_height() * -2) + (random.randint(0, H * 2)) * -1
+            floater.x = random.randint(0, W)
+            floater.negrot = random.randint(0, 1) == 1
 
-if __name__ =='__main__':
-    app = qtw.QApplication([])
-    window = MainUI()
-    
-    OnStart()
-    window.GetIp()
-    
-    window.show()
-    sys.exit(app.exec_())
+    # Start Button
+    clr = (0, 0, 0)
+    if RunButton == SelectedButton:
+        clr = RunButton.activecolor
+    else:
+        clr = RunButton.inactivecolor
+    text1 = pygame.font.Font("assets/fonts/pixel.ttf", int((int(W / 25) + int(H / 50)) / 1.5)).render(RunButton.text, True, clr)
+    screen.blit(text1, (W / 16, H / 2 - (text1.get_height() / 2)))
+    # Stop Button
+    clr = (0, 0, 0)
+    if StopButton == SelectedButton:
+        clr = StopButton.activecolor
+    else:
+        clr = StopButton.inactivecolor
+    text2 = pygame.font.Font("assets/fonts/pixel.ttf", int((int(W / 25) + int(H / 50)) / 1.5)).render(StopButton.text, True, clr)
+    screen.blit(text2, (W / 16, H / 2 - (text2.get_height() / 2) + text1.get_height() + int(H / 50)))
+
+###############################################################################
+
+def Main():
+    global running
+    global screen
+    global fps
+    global SelectedButton
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                running = False
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+                elif event.key == K_DOWN:
+                    if SelectedButton.below:
+                        SelectedButton = SelectedButton.below
+                elif event.key == K_UP:
+                    if SelectedButton.above:
+                        SelectedButton = SelectedButton.above
+                elif event.key == K_RETURN:
+                    if SelectedButton.function:
+                        SelectedButton.function()
+                    
+
+
+        
+        # make the screen a gradient
+        screen.fill((0, 0, 0))
+        gradientRect( screen, (0, 2, 10), (2, 2, 10), pygame.Rect( 0, 0, screen.get_width(), screen.get_height() ) )
+        Update()
+        pygame.display.update()
+        fpsclock.tick(fps)
+
+    pygame.quit()
+    sys.exit()
+
+Main()
