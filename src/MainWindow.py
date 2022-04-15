@@ -2,6 +2,9 @@ from cmath import rect
 import sys
 import os
 import random
+import asyncio
+import threading
+import time
 
 import pygame
 from pygame.locals import *
@@ -14,6 +17,7 @@ import Scripts.Configs as cfg
 GVars.init()
 GVars.LoadConfig()
 pygame.init()
+pygame.mixer.init()
 gamepath = GVars.configData["portal2path"]
 
 
@@ -21,6 +25,11 @@ gamepath = GVars.configData["portal2path"]
 os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/GUI")
 cwd = os.getcwd()
 
+blipsnd = pygame.mixer.Sound("assets/sounds/blip.wav")
+blipsnd.set_volume(0.5)
+
+pwrsnd = pygame.mixer.Sound("assets/sounds/power.wav")
+pwrsnd.set_volume(0.5)
 
 ###############################################################################
 
@@ -112,16 +121,50 @@ def UnmountScript():
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
 
+def SelectAnimation(btn, anim):
+    if anim == "pop":
+        print("POP")
+        btn.curanim = "pop1"
+
+def RunAnimation(button, anim):
+    if anim == "pop1":
+        if button.sizemult < 1.3:
+            button.sizemult += 0.1
+        else:
+            button.curanim = "pop2"
+    if anim == "pop2":
+        if button.sizemult > 1:
+            button.sizemult -= 0.1
+        else:
+            button.sizemult = 1
+            button.curanim = ""
+
 class RunButton:
     text = "MOUNT"
     activecolor = (50, 255, 120)
     inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
     function = RunGameScript
+    isasync = True
+    # function = False
+    # isasync = False
 class StopButton:
     text = "UNMOUNT"
     activecolor = (255, 50, 50)
     inactivecolor = (255, 255, 255)
-    function = False
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    function = UnmountScript
+    isasync = True
+    # function = False
+    # isasync = False
 
 RunButton.below = StopButton
 RunButton.above = False
@@ -160,7 +203,8 @@ def Update():
         clr = RunButton.activecolor
     else:
         clr = RunButton.inactivecolor
-    text1 = pygame.font.Font("assets/fonts/pixel.ttf", int((int(W / 25) + int(H / 50)) / 1.5)).render(RunButton.text, True, clr)
+    RunAnimation(RunButton, RunButton.curanim)
+    text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * RunButton.sizemult)).render(RunButton.text, True, clr)
     screen.blit(text1, (W / 16, H / 2 - (text1.get_height() / 2)))
     # Stop Button
     clr = (0, 0, 0)
@@ -168,7 +212,8 @@ def Update():
         clr = StopButton.activecolor
     else:
         clr = StopButton.inactivecolor
-    text2 = pygame.font.Font("assets/fonts/pixel.ttf", int((int(W / 25) + int(H / 50)) / 1.5)).render(StopButton.text, True, clr)
+    RunAnimation(StopButton, StopButton.curanim)
+    text2 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * StopButton.sizemult)).render(StopButton.text, True, clr)
     screen.blit(text2, (W / 16, H / 2 - (text2.get_height() / 2) + text1.get_height() + int(H / 50)))
 
 ###############################################################################
@@ -189,14 +234,21 @@ def Main():
                 elif event.key == K_DOWN:
                     if SelectedButton.below:
                         SelectedButton = SelectedButton.below
+                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
                 elif event.key == K_UP:
                     if SelectedButton.above:
                         SelectedButton = SelectedButton.above
+                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
                 elif event.key == K_RETURN:
                     if SelectedButton.function:
-                        SelectedButton.function()
-                    
+                        if SelectedButton.isasync:
+                            threading.Thread(target=SelectedButton.function).start()
+                        else:
+                            SelectedButton.function()
 
+                    SelectAnimation(SelectedButton, SelectedButton.selectanim)
+                    # play the sound at a random pitch and volume 1.5
+                    pygame.mixer.Sound.play(SelectedButton.selectsnd) 
 
         
         # make the screen a gradient
