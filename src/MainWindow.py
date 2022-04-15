@@ -1,10 +1,12 @@
 from cmath import rect
+from locale import getlocale
 import sys
 import os
 import random
 import asyncio
 import threading
 import time
+from colorama import Back
 
 import pygame
 from pygame.locals import *
@@ -166,13 +168,68 @@ class StopButton:
     # function = False
     # isasync = False
 
+directorymenu = []
+
+CurrentMenu = None
+SelectedButton = None
+
+def ChangeMenu(menu):
+    global CurrentMenu
+    global SelectedButton
+    global directorymenu
+    directorymenu.append(CurrentMenu)
+    print("changing menu to " + str(menu))
+    CurrentMenu = menu
+    SelectedButton = CurrentMenu[0]
+
+class ManualButton:
+    text = "MANUAL"
+    activecolor = (255, 255, 0)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    below = False
+    above = False
+    curanim = ""
+    def function():
+        ChangeMenu(ManualButtons)
+    isasync = False
+
+class BackButton:
+    text = "BACK"
+    activecolor = (255, 255, 0)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    below = StopButton
+    above = False
+    curanim = ""
+    def function():
+        ChangeMenu(directorymenu[-1])
+        directorymenu.pop()
+    isasync = False
+
 RunButton.below = StopButton
 RunButton.above = False
 
-StopButton.below = False
+StopButton.below = BackButton
 StopButton.above = RunButton
 
-SelectedButton = RunButton
+BackButton.below = False
+BackButton.above = StopButton
+
+
+ManualButtons = [RunButton, StopButton, BackButton]
+
+MainButtons = [ManualButton]
+
+CurrentMenu = MainButtons
+
+SelectedButton = CurrentMenu[0]
 
 ###############################################################################
 
@@ -203,24 +260,37 @@ def Update():
     keys = pygame.transform.scale(keys, (W/10, W/10))
     screen.blit(keys, ((W / 1.05) - keys.get_width(), H/15))
 
+    # loop through all buttons
+    indx = 0
+    for button in CurrentMenu:
+        indx += 1
+        clr = (0, 0, 0)
+        if button == SelectedButton:
+            clr = button.activecolor
+        else:
+            clr = button.inactivecolor
+        RunAnimation(button, button.curanim)
+        text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text, True, clr)
+        screen.blit(text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)  ))
+
     # Start Button
-    clr = (0, 0, 0)
-    if RunButton == SelectedButton:
-        clr = RunButton.activecolor
-    else:
-        clr = RunButton.inactivecolor
-    RunAnimation(RunButton, RunButton.curanim)
-    text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * RunButton.sizemult)).render(RunButton.text, True, clr)
-    screen.blit(text1, (W / 16, H / 2 - (text1.get_height() / 2)))
-    # Stop Button
-    clr = (0, 0, 0)
-    if StopButton == SelectedButton:
-        clr = StopButton.activecolor
-    else:
-        clr = StopButton.inactivecolor
-    RunAnimation(StopButton, StopButton.curanim)
-    text2 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * StopButton.sizemult)).render(StopButton.text, True, clr)
-    screen.blit(text2, (W / 16, H / 2 - (text2.get_height() / 2) + text1.get_height() + int(H / 50)))
+    # clr = (0, 0, 0)
+    # if RunButton == SelectedButton:
+    #     clr = RunButton.activecolor
+    # else:
+    #     clr = RunButton.inactivecolor
+    # RunAnimation(RunButton, RunButton.curanim)
+    # text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * RunButton.sizemult)).render(RunButton.text, True, clr)
+    # screen.blit(text1, (W / 16, H / 2 - (text1.get_height() / 2)))
+    # # Stop Button
+    # clr = (0, 0, 0)
+    # if StopButton == SelectedButton:
+    #     clr = StopButton.activecolor
+    # else:
+    #     clr = StopButton.inactivecolor
+    # RunAnimation(StopButton, StopButton.curanim)
+    # text2 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * StopButton.sizemult)).render(StopButton.text, True, clr)
+    # screen.blit(text2, (W / 16, H / 2 - (text2.get_height() / 2) + text1.get_height() + int(H / 50)))
 
 ###############################################################################
 
@@ -242,6 +312,7 @@ def Main():
                         SelectedButton = SelectedButton.below
                         pygame.mixer.Sound.play(SelectedButton.hoversnd)
                 elif event.key == K_UP:
+                    # find the selected button in the current menu
                     if SelectedButton.above:
                         SelectedButton = SelectedButton.above
                         pygame.mixer.Sound.play(SelectedButton.hoversnd)
