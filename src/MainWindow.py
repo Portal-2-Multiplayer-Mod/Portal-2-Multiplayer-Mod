@@ -104,7 +104,6 @@ def CheckForGamePath():
     # true -> the mouting process completed successfully
     while mountState != True:
         mountState = RG.MountMod(gamepath)
-        print(mountState)
         if mountState == "undefined":
             Log("game path is undefined/ invalid , would you like to select it?")
             GetGamePath()
@@ -124,7 +123,6 @@ def UnmountScript():
 
 def SelectAnimation(btn, anim):
     if anim == "pop":
-        print("POP")
         btn.curanim = "pop1"
 
 def RunAnimation(button, anim):
@@ -156,6 +154,9 @@ def ChangeMenu(menu):
     print("changing menu to " + str(menu))
     CurrentMenu = menu
     SelectedButton = CurrentMenu[0]
+
+
+############ BUTTON CLASSES
 
 class ManualButton:
     text = "MANUAL"
@@ -209,10 +210,24 @@ class StopButton:
     function = UnmountScript
     isasync = True
 
+class LaunchGameButton:
+    text = "START GAME"
+    activecolor = (50, 255, 120)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    function = RunGameScript
+    isasync = True
+
+##############################
+
 ### BUTTONS
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [ManualButton]
+MainButtons = [LaunchGameButton, ManualButton]
 ###########
 
 CurrentMenu = MainButtons
