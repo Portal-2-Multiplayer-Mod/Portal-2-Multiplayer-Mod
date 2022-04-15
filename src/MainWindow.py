@@ -6,6 +6,7 @@ import random
 import asyncio
 import threading
 import time
+import webbrowser
 
 import pygame
 from pygame.locals import *
@@ -222,12 +223,40 @@ class LaunchGameButton:
     function = RunGameScript
     isasync = True
 
+class GuideButton:
+    text = "GUIDE"
+    activecolor = (255, 255, 0)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        # open https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280 in the default browser
+        webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
+    isasync = True
+
+class DiscordButton:
+    text = "DISCORD"
+    activecolor = (75, 75, 150)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        # open https://discord.com/invite/kW3nG6GKpF in the default browser
+        webbrowser.open("https://discord.com/invite/kW3nG6GKpF")
+    isasync = True
+
 ##############################
 
 ### BUTTONS
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, ManualButton]
+MainButtons = [LaunchGameButton, ManualButton, GuideButton, DiscordButton]
 ###########
 
 CurrentMenu = MainButtons
@@ -317,12 +346,12 @@ def Main():
                     if CurrentButtonsIndex < len(CurrentMenu) - 1:
                         CurrentButtonsIndex += 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
                 elif event.key == K_UP:
                     if CurrentButtonsIndex > 0:
                         CurrentButtonsIndex -= 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
                 elif event.key == K_SPACE:
                     if SelectedButton.function:
                         if SelectedButton.isasync:
@@ -331,8 +360,8 @@ def Main():
                             SelectedButton.function()
 
                     SelectAnimation(SelectedButton, SelectedButton.selectanim)
-                    # play the sound at a random pitch and volume 1.5
-                    # pygame.mixer.Sound.play(SelectedButton.selectsnd) 
+
+                    pygame.mixer.Sound.play(SelectedButton.selectsnd) 
 
         
         # make the screen a gradient
