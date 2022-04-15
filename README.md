@@ -94,7 +94,7 @@ The pros and cons are listed below, though **we recommend sticking with the late
 		- Windows: `.\env\Scripts\activate.bat`
 		- Linux: `source ./env/bin/activate`
 3. Download dependencies 
-	- `pip install PyQt5`
+	- `pip install pygame`
 	- `pip install requests`
 4. Run `src/MainWindow.py`
 

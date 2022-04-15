@@ -16,14 +16,9 @@ import Scripts.RunGame as RG
 import Scripts.Configs as cfg
 
 # populate the global variables
-GVars.init()
-GVars.LoadConfig()
-gamepath = GVars.configData["portal2path"]
+
 pygame.init()
 pygame.mixer.init()
-
-curcfg = cfg.ImportConfig()
-
 # change dir into the "GUI" folder
 os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/GUI")
 cwd = os.getcwd()
@@ -94,35 +89,22 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
     window.blit( colour_rect, target_rect )  
 
 def GetGamePath():
-    global gamepath
     folder = input("please enter the path to the game:")
     cfg.EditConfig("portal2path", folder)
     Log("saved '" + folder + "' as the game path")
-    GVars.LoadConfig()
-    gamepath = GVars.configData["portal2path"]
+    return True
 
-def CheckForGamePath():
-    # checks for the state of the mounting process
-    mountState = ""
-    # undefined -> the game path in the config file is either undefined or invalid
-    # filesMissing -> the mod's files (ModFiles/Portal 2/install_dlc) are missing
-    # true -> the mouting process completed successfully
-    while mountState != True:
-        mountState = RG.MountMod(gamepath)
-        if mountState == "undefined":
-            Log("game path is undefined/ invalid , would you like to select it?")
-            GetGamePath()
-
-        if mountState == "filesMissing":
-            Log("the mod files are missing")
-            return
 
 def RunGameScript():
-    CheckForGamePath()
+    # yup for now there's no checking until we find how to show a gui to the user
+    # and yes kyle whatever you did DOES NOT WORK
+    GetGamePath()
+    gamepath = GVars.configData["portal2path"]
+    RG.MountMod(gamepath)
     RG.LaunchGame(gamepath)
 
 def UnmountScript():
-    CheckForGamePath()
+    gamepath = GVars.configData["portal2path"]
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
 
@@ -167,13 +149,13 @@ def BackMenu():
 
 def RefreshSettingsMenu():
         SettingsButtons.clear()
-        for key in curcfg:
+        for key in GVars.configData:
             if key != "cfgvariant":
-                print(key + ": " + curcfg[key])
+                print(key + ": " + GVars.configData[key])
                 class curkeyButton:
-                    text = key + ": " + curcfg[key]
+                    text = key + ": " + GVars.configData[key]
                     cfgkey = key
-                    cfgvalue = curcfg[key]
+                    cfgvalue = GVars.configData[key]
                     activecolor = (255, 255, 0)
                     inactivecolor = (255, 255, 255)
                     sizemult = 1
@@ -182,16 +164,11 @@ def RefreshSettingsMenu():
                     hoversnd = blipsnd
                     curanim = ""
                     def function(cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
-                        global curcfg
                         if cfgvalue == "true":
                             cfg.EditConfig(cfgkey, "false")
-                            GVars.LoadConfig()
-                            curcfg = cfg.ImportConfig()
                             RefreshSettingsMenu()
                         elif cfgvalue == "false":
                             cfg.EditConfig(cfgkey, "true")
-                            GVars.LoadConfig()
-                            curcfg = cfg.ImportConfig()
                             RefreshSettingsMenu()
                     
 
@@ -273,7 +250,7 @@ class GuideButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
-        # open https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280 in the default browser
+        # open the steam guide in the default browser
         webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
     isasync = True
 
@@ -287,7 +264,7 @@ class DiscordButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
-        # open https://discord.com/invite/kW3nG6GKpF in the default browser
+        # open the discord invite in the default browser
         webbrowser.open("https://discord.com/invite/kW3nG6GKpF")
     isasync = True
 
@@ -302,7 +279,6 @@ class SettingsButton:
     curanim = ""
     def function():
         GVars.LoadConfig()
-        curcfg = cfg.ImportConfig()
         RefreshSettingsMenu()
         ChangeMenu(SettingsButtons)
     isasync = False
@@ -450,4 +426,13 @@ def Main():
     pygame.quit()
     sys.exit()
 
-Main()
+def OnStart():
+    GVars.init()
+    # to do the fancy log thing
+    StartLog()
+    # load the config file into memmory
+    GVars.LoadConfig()
+    
+if __name__ == '__main__':
+    OnStart()
+    Main()
