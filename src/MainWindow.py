@@ -98,8 +98,13 @@ def GetGamePath():
 def RunGameScript():
     # yup for now there's no checking until we find how to show a gui to the user
     # and yes kyle whatever you did DOES NOT WORK
-    GetGamePath()
-    gamepath = GVars.configData["portal2path"]
+    NoPathBruh = False
+    while NoPathBruh == False:
+        gamepath = GVars.configData["portal2path"]
+        if (gamepath == "undefined") or ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+            GetGamePath()
+        else:
+            NoPathBruh = True
     RG.MountMod(gamepath)
     RG.LaunchGame(gamepath)
 
@@ -189,6 +194,19 @@ class ManualButton:
     curanim = ""
     def function():
         ChangeMenu(ManualButtons)
+    isasync = False
+
+class SettingsButtonV2:
+    text = "SETTINGS"
+    activecolor = (255, 255, 0)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        ChangeMenu(SettingsButtons)
     isasync = False
 
 class BackButton:
@@ -357,25 +375,6 @@ def Update():
     
     SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
-    # Start Button
-    # clr = (0, 0, 0)
-    # if RunButton == SelectedButton:
-    #     clr = RunButton.activecolor
-    # else:
-    #     clr = RunButton.inactivecolor
-    # RunAnimation(RunButton, RunButton.curanim)
-    # text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * RunButton.sizemult)).render(RunButton.text, True, clr)
-    # screen.blit(text1, (W / 16, H / 2 - (text1.get_height() / 2)))
-    # # Stop Button
-    # clr = (0, 0, 0)
-    # if StopButton == SelectedButton:
-    #     clr = StopButton.activecolor
-    # else:
-    #     clr = StopButton.inactivecolor
-    # RunAnimation(StopButton, StopButton.curanim)
-    # text2 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * StopButton.sizemult)).render(StopButton.text, True, clr)
-    # screen.blit(text2, (W / 16, H / 2 - (text2.get_height() / 2) + text1.get_height() + int(H / 50)))
-
 ###############################################################################
 
 def Main():
@@ -435,4 +434,4 @@ def OnStart():
     
 if __name__ == '__main__':
     OnStart()
-    Main()
+    Main() 

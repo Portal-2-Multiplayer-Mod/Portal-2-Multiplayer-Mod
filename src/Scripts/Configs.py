@@ -9,7 +9,7 @@ DefaultConfigFile = [
     "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
     "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
     "",
-    "cfgvariant = 17 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
+    "cfgvariant = 18 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
     "",
     "#// Launcher //#",
     "",
