@@ -328,7 +328,7 @@ SettingsButtons = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, SettingsButton, ManualButton, UpdateButton, GuideButton, DiscordButton]
+MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton]
 ###########
 
 CurrentMenu = MainButtons
