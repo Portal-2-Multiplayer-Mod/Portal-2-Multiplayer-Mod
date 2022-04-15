@@ -301,9 +301,25 @@ class SettingsButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
+        GVars.LoadConfig()
+        curcfg = cfg.ImportConfig()
         RefreshSettingsMenu()
         ChangeMenu(SettingsButtons)
     isasync = False
+
+class UpdateButton:
+    text = "UPDATE"
+    activecolor = (255, 0, 255)
+    inactivecolor = (255, 255, 255)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        # open https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280 in the default browser
+        webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
+    isasync = True
 
 ##############################
 
@@ -312,7 +328,7 @@ SettingsButtons = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, SettingsButton, ManualButton, GuideButton, DiscordButton]
+MainButtons = [LaunchGameButton, SettingsButton, ManualButton, UpdateButton, GuideButton, DiscordButton]
 ###########
 
 CurrentMenu = MainButtons
