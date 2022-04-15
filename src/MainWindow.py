@@ -197,6 +197,12 @@ def Update():
             floater.x = random.randint(0, W)
             floater.negrot = random.randint(0, 1) == 1
 
+
+    # Put assets/images/keys.png on the top right corner of the screen
+    keys = pygame.image.load("assets/images/keys.png")
+    keys = pygame.transform.scale(keys, (W/10, W/10))
+    screen.blit(keys, ((W / 1.05) - keys.get_width(), H/15))
+
     # Start Button
     clr = (0, 0, 0)
     if RunButton == SelectedButton:
@@ -239,7 +245,7 @@ def Main():
                     if SelectedButton.above:
                         SelectedButton = SelectedButton.above
                         pygame.mixer.Sound.play(SelectedButton.hoversnd)
-                elif event.key == K_RETURN:
+                elif event.key == K_SPACE:
                     if SelectedButton.function:
                         if SelectedButton.isasync:
                             threading.Thread(target=SelectedButton.function).start()
