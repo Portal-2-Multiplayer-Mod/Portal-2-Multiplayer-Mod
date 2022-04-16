@@ -166,7 +166,7 @@ def RefreshSettingsMenu():
                     cfgkey = key
                     cfgvalue = GVars.configData[key]
                     activecolor = (255, 255, 0)
-                    inactivecolor = (255, 255, 255)
+                    inactivecolor = (155, 155, 155)
                     sizemult = 1
                     selectanim = "pop"
                     selectsnd = pwrsnd
@@ -185,12 +185,44 @@ def RefreshSettingsMenu():
                 SettingsButtons.append(curkeyButton)
         SettingsButtons.append(BackButton)
 
+def GetUserInputPYG():
+    global LookingForInput
+    global CurInput
+    print("Getting User INPUT")
+    LookingForInput = True
+    CurInput = ""
+
 ############ BUTTON CLASSES
+
+class InputButton:
+    text = "INPUT"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    function = GetUserInputPYG
+    isasync = False
+
+class TestingButton:
+    text = "TESTING"
+    activecolor = (175, 75, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        ChangeMenu(TestingMenu)
+    isasync = False
 
 class ManualButton:
     text = "MANUAL"
     activecolor = (255, 255, 0)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -200,23 +232,10 @@ class ManualButton:
         ChangeMenu(ManualButtons)
     isasync = False
 
-class SettingsButtonV2:
-    text = "SETTINGS"
-    activecolor = (255, 255, 0)
-    inactivecolor = (255, 255, 255)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    def function():
-        ChangeMenu(SettingsButtons)
-    isasync = False
-
 class BackButton:
     text = "BACK"
     activecolor = (255, 255, 0)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -229,7 +248,7 @@ class BackButton:
 class RunButton:
     text = "MOUNT"
     activecolor = (50, 255, 120)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -241,7 +260,7 @@ class RunButton:
 class StopButton:
     text = "UNMOUNT"
     activecolor = (255, 50, 50)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -253,7 +272,7 @@ class StopButton:
 class LaunchGameButton:
     text = "START GAME"
     activecolor = (50, 255, 120)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -265,7 +284,7 @@ class LaunchGameButton:
 class GuideButton:
     text = "GUIDE"
     activecolor = (255, 255, 0)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -279,7 +298,7 @@ class GuideButton:
 class DiscordButton:
     text = "DISCORD"
     activecolor = (75, 75, 150)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -293,7 +312,7 @@ class DiscordButton:
 class SettingsButton:
     text = "SETTINGS"
     activecolor = (255, 255, 0)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -308,7 +327,7 @@ class SettingsButton:
 class UpdateButton:
     text = "UPDATE"
     activecolor = (255, 0, 255)
-    inactivecolor = (255, 255, 255)
+    inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
@@ -326,18 +345,26 @@ SettingsButtons = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton]
+MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, TestingButton]
+
+TestingMenu = [InputButton, BackButton]
 ###########
 
 CurrentMenu = MainButtons
 
 SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
+
+LookingForInput = False
+CurInput = ""
+
 ###############################################################################
 
 def Update():
     global CurrentMenu
     global SelectedButton
+    global CurInput
+    global LookingForInput
 
     W = screen.get_width()
     H = screen.get_height()
@@ -396,6 +423,25 @@ def Update():
     
     SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
+    ####################### DRAW INPUT BOX
+    if LookingForInput:
+
+        # divide the CurrentInput into lines
+        lines = CurInput.split("\n")
+        # if the amount of chars in the last line is higher then 9
+        if len(lines[len(lines) - 1]) > 23:
+            CurInput = CurInput + "\n"
+
+        for i in range(len(lines)):
+            InputText = pygame.font.Font("assets/fonts/pixel.ttf", int(W / 25)).render(lines[i], True, (255, 255, 175))
+            screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (     (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - ((((text1.get_height() * 1.25) * (len(lines) / 2))))        ))
+
+        surf1 = pygame.Surface((W / 1.5, H / 45))
+        surf1.fill((255, 255, 255))
+        surf2 = pygame.Surface((W / 1.5, H / 45))
+        blitpos = ((W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.050) * ((len(lines) / 2) - 1)))
+        screen.blit(surf1, blitpos)
+
 ###############################################################################
 
 def Main():
@@ -404,36 +450,66 @@ def Main():
     global fps
     global SelectedButton
     global CurrentButtonsIndex
+    global LookingForInput
+    global CurInput
 
     while running:
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
             elif event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
-                    BackMenu()
-                elif event.key == K_BACKSPACE:
-                    BackMenu()
-                elif event.key == K_DOWN or event.key == K_s:
-                    if CurrentButtonsIndex < len(CurrentMenu) - 1:
-                        CurrentButtonsIndex += 1
-                        SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        # pygame.mixer.Sound.play(SelectedButton.hoversnd)
-                elif event.key == K_UP or event.key == K_w:
-                    if CurrentButtonsIndex > 0:
-                        CurrentButtonsIndex -= 1
-                        SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        # pygame.mixer.Sound.play(SelectedButton.hoversnd)
-                elif event.key == K_SPACE:
-                    if SelectedButton.function:
-                        if SelectedButton.isasync:
-                            threading.Thread(target=SelectedButton.function).start()
+                if (LookingForInput):
+                    # get the key and add it to CurInput
+                    name = pygame.key.name(event.key)
+                    if name == "backspace":
+                        # if the last char is a newline, remove it
+                        if CurInput[len(CurInput) - 1] == "\n":
+                            CurInput = CurInput[:-2]
                         else:
-                            SelectedButton.function()
+                            CurInput = CurInput[:-1]
+                    elif name == "space":
+                        CurInput += " "
+                    elif name == "return":
+                        LookingForInput = False
+                    elif name == "escape":
+                        LookingForInput = False
+                    elif name == "tab":
+                        CurInput += "   "
+                    elif len(name) == 1:
+                        CurInput += name
+                else:
+                    if event.key == K_ESCAPE:
+                        BackMenu()
+                    elif event.key == K_BACKSPACE:
+                        BackMenu()
+                    elif event.key == K_DOWN or event.key == K_s:
+                        if CurrentButtonsIndex < len(CurrentMenu) - 1:
+                            CurrentButtonsIndex += 1
+                            SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                            # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        else:
+                            CurrentButtonsIndex = 0
+                            SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                            # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                    elif event.key == K_UP or event.key == K_w:
+                        if CurrentButtonsIndex > 0:
+                            CurrentButtonsIndex -= 1
+                            SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                            # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        else:
+                            CurrentButtonsIndex = len(CurrentMenu) - 1
+                            SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                            # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                    elif event.key == K_SPACE:
+                        if SelectedButton.function:
+                            if SelectedButton.isasync:
+                                threading.Thread(target=SelectedButton.function).start()
+                            else:
+                                SelectedButton.function()
 
-                    SelectAnimation(SelectedButton, SelectedButton.selectanim)
+                        SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
-                    # pygame.mixer.Sound.play(SelectedButton.selectsnd) 
+                        # pygame.mixer.Sound.play(SelectedButton.selectsnd) 
 
         
         # make the screen a gradient
