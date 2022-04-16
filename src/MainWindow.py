@@ -486,20 +486,20 @@ def Main():
                         if CurrentButtonsIndex < len(CurrentMenu) - 1:
                             CurrentButtonsIndex += 1
                             SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                            # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                            pygame.mixer.Sound.play(SelectedButton.hoversnd)
                         else:
                             CurrentButtonsIndex = 0
                             SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                            # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                            pygame.mixer.Sound.play(SelectedButton.hoversnd)
                     elif event.key == K_UP or event.key == K_w:
                         if CurrentButtonsIndex > 0:
                             CurrentButtonsIndex -= 1
                             SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                            # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                            pygame.mixer.Sound.play(SelectedButton.hoversnd)
                         else:
                             CurrentButtonsIndex = len(CurrentMenu) - 1
                             SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                            # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                            pygame.mixer.Sound.play(SelectedButton.hoversnd)
                     elif event.key == K_SPACE:
                         if SelectedButton.function:
                             if SelectedButton.isasync:
@@ -509,7 +509,7 @@ def Main():
 
                         SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
-                        # pygame.mixer.Sound.play(SelectedButton.selectsnd) 
+                        pygame.mixer.Sound.play(SelectedButton.selectsnd) 
 
         
         # make the screen a gradient
