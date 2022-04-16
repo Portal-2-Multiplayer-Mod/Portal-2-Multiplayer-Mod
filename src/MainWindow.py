@@ -42,6 +42,13 @@ screen = pygame.display.set_mode((1280, 720), RESIZABLE)
 
 running = True
 
+# Define the name and image of the window
+pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
+
+p2mmlogo = pygame.image.load("assets/images/p2mm.png")
+
+pygame.display.set_icon(p2mmlogo)
+
 ###############################################################################
 
 Floaters = []
@@ -194,83 +201,8 @@ def GetUserInputPYG():
 
 ############ BUTTON CLASSES
 
-class InputButton:
-    text = "INPUT"
-    activecolor = (255, 255, 0)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    function = GetUserInputPYG
-    isasync = False
-
-class TestingButton:
-    text = "TESTING"
-    activecolor = (175, 75, 0)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    def function():
-        ChangeMenu(TestingMenu)
-    isasync = False
-
-class ManualButton:
-    text = "MANUAL"
-    activecolor = (255, 255, 0)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    def function():
-        ChangeMenu(ManualButtons)
-    isasync = False
-
-class BackButton:
-    text = "BACK"
-    activecolor = (255, 255, 0)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    def function():
-        BackMenu()
-    isasync = False
-
-class RunButton:
-    text = "MOUNT"
-    activecolor = (50, 255, 120)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    function = RunGameScript
-    isasync = True
-
-class StopButton:
-    text = "UNMOUNT"
-    activecolor = (255, 50, 50)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    function = UnmountScript
-    isasync = True
-
 class LaunchGameButton:
-    text = "START GAME"
+    text = "Start Game"
     activecolor = (50, 255, 120)
     inactivecolor = (155, 155, 155)
     sizemult = 1
@@ -279,38 +211,10 @@ class LaunchGameButton:
     hoversnd = blipsnd
     curanim = ""
     function = RunGameScript
-    isasync = True
-
-class GuideButton:
-    text = "GUIDE"
-    activecolor = (255, 255, 0)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    def function():
-        # open the steam guide in the default browser
-        webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
-    isasync = True
-
-class DiscordButton:
-    text = "DISCORD"
-    activecolor = (75, 75, 150)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    def function():
-        # open the discord invite in the default browser
-        webbrowser.open("https://discord.com/invite/kW3nG6GKpF")
     isasync = True
 
 class SettingsButton:
-    text = "SETTINGS"
+    text = "Settings"
     activecolor = (255, 255, 0)
     inactivecolor = (155, 155, 155)
     sizemult = 1
@@ -325,7 +229,7 @@ class SettingsButton:
     isasync = False
 
 class UpdateButton:
-    text = "UPDATE"
+    text = "Update Launcher"
     activecolor = (255, 0, 255)
     inactivecolor = (155, 155, 155)
     sizemult = 1
@@ -337,6 +241,109 @@ class UpdateButton:
         # open https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280 in the default browser
         webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
     isasync = True
+
+class ManualButton:
+    text = "Manual Mounting"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        ChangeMenu(ManualButtons)
+    isasync = False
+
+class GuideButton:
+    text = "Steam Guide"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        # open the steam guide in the default browser
+        webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
+    isasync = True
+
+class DiscordButton:
+    text = "Discord Server"
+    activecolor = (75, 75, 150)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        # open the discord invite in the default browser
+        webbrowser.open("https://discord.com/invite/kW3nG6GKpF")
+    isasync = True
+
+class TestingButton:
+    text = "Testing"
+    activecolor = (175, 75, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        ChangeMenu(TestingMenu)
+    isasync = False
+
+class InputButton:
+    text = "Input"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    function = GetUserInputPYG
+    isasync = False
+
+class RunButton:
+    text = "Mount"
+    activecolor = (50, 255, 120)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    function = RunGameScript
+    isasync = True
+
+class StopButton:
+    text = "Unmount"
+    activecolor = (255, 50, 50)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    function = UnmountScript
+    isasync = True
+
+class BackButton:
+    text = "Back"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        BackMenu()
+    isasync = False
 
 ##############################
 
@@ -371,9 +378,9 @@ def Update():
 
     for floater in Floaters:
         surf = floater.surf
-        if (SelectedButton.text == "UNMOUNT"):
+        if (SelectedButton.text == "Unmount"):
             surf = angrycube
-        elif (SelectedButton.text == "BACK"):
+        elif (SelectedButton.text == "Back"):
             surf = goldencube
         surf = pygame.transform.scale(surf, (W/15, W/15))
         surf = pygame.transform.rotate(surf, floater.rot)
@@ -383,13 +390,13 @@ def Update():
             floater.rot -= (1 + random.randint(0, 2))
         else:
             floater.rot += (1 + random.randint(0, 2))
-        if (SelectedButton.text == "BACK"):
+        if (SelectedButton.text == "Back"):
             floater.x -= W / 100
             if floater.x < (floater.surf.get_width() * -2):
                 floater.y = random.randint(0, H)
                 floater.x = (floater.surf.get_width() * 2) + (random.randint(W, W * 2)) * 1
                 floater.negrot = random.randint(0, 1) == 1
-        elif (SelectedButton.text == "UNMOUNT"):
+        elif (SelectedButton.text == "Unmount"):
             floater.y -= H / 60
             if floater.y < (floater.surf.get_height() * -2):
                 floater.y = (floater.surf.get_height() * 2) + (random.randint(H, H * 2))
