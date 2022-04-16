@@ -29,6 +29,10 @@ blipsnd.set_volume(0.5)
 pwrsnd = pygame.mixer.Sound("assets/sounds/power.wav")
 pwrsnd.set_volume(0.5)
 
+angrycube = pygame.image.load("assets/images/angrycube.png")
+
+goldencube = pygame.image.load("assets/images/goldencube.png")
+
 ###############################################################################
 
 fps = 60
@@ -340,6 +344,10 @@ def Update():
 
     for floater in Floaters:
         surf = floater.surf
+        if (SelectedButton.text == "UNMOUNT"):
+            surf = angrycube
+        elif (SelectedButton.text == "BACK"):
+            surf = goldencube
         surf = pygame.transform.scale(surf, (W/15, W/15))
         surf = pygame.transform.rotate(surf, floater.rot)
         center = surf.get_rect().center
@@ -348,11 +356,24 @@ def Update():
             floater.rot -= (1 + random.randint(0, 2))
         else:
             floater.rot += (1 + random.randint(0, 2))
-        floater.y += H / 60
-        if floater.y > (H + floater.surf.get_height() * 2):
-            floater.y = (floater.surf.get_height() * -2) + (random.randint(0, H * 2)) * -1
-            floater.x = random.randint(0, W)
-            floater.negrot = random.randint(0, 1) == 1
+        if (SelectedButton.text == "BACK"):
+            floater.x -= W / 100
+            if floater.x < (floater.surf.get_width() * -2):
+                floater.y = random.randint(0, H)
+                floater.x = (floater.surf.get_width() * 2) + (random.randint(W, W * 2)) * 1
+                floater.negrot = random.randint(0, 1) == 1
+        elif (SelectedButton.text == "UNMOUNT"):
+            floater.y -= H / 60
+            if floater.y < (floater.surf.get_height() * -2):
+                floater.y = (floater.surf.get_height() * 2) + (random.randint(H, H * 2))
+                floater.x = random.randint(0, W)
+                floater.negrot = random.randint(0, 1) == 1
+        else:
+            floater.y += H / 60
+            if floater.y > (H + floater.surf.get_height() * 2):
+                floater.y = (floater.surf.get_height() * -2) + (random.randint(0, H)) * -1
+                floater.x = random.randint(0, W)
+                floater.negrot = random.randint(0, 1) == 1
 
 
     # Put assets/images/keys.png on the top right corner of the screen
@@ -393,16 +414,16 @@ def Main():
                     BackMenu()
                 elif event.key == K_BACKSPACE:
                     BackMenu()
-                elif event.key == K_DOWN:
+                elif event.key == K_DOWN or event.key == K_s:
                     if CurrentButtonsIndex < len(CurrentMenu) - 1:
                         CurrentButtonsIndex += 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
-                elif event.key == K_UP:
+                        # pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                elif event.key == K_UP or event.key == K_w:
                     if CurrentButtonsIndex > 0:
                         CurrentButtonsIndex -= 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        # pygame.mixer.Sound.play(SelectedButton.hoversnd)
                 elif event.key == K_SPACE:
                     if SelectedButton.function:
                         if SelectedButton.isasync:
@@ -412,7 +433,7 @@ def Main():
 
                     SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
-                    pygame.mixer.Sound.play(SelectedButton.selectsnd) 
+                    # pygame.mixer.Sound.play(SelectedButton.selectsnd) 
 
         
         # make the screen a gradient
