@@ -180,13 +180,12 @@ def RefreshSettingsMenu():
                     hoversnd = blipsnd
                     curanim = ""
                     def function(cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
-                        if cfgvalue == "true":
-                            cfg.EditConfig(cfgkey, "false")
-                            RefreshSettingsMenu()
-                        elif cfgvalue == "false":
+                        if cfgvalue == "false":
                             cfg.EditConfig(cfgkey, "true")
-                            RefreshSettingsMenu()
-                    
+                        # default to false to avoid errors
+                        else:
+                            cfg.EditConfig(cfgkey, "false")
+                        RefreshSettingsMenu()
 
                     isasync = False
                 SettingsButtons.append(curkeyButton)
@@ -223,7 +222,6 @@ class SettingsButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
-        GVars.LoadConfig()
         RefreshSettingsMenu()
         ChangeMenu(SettingsButtons)
     isasync = False
