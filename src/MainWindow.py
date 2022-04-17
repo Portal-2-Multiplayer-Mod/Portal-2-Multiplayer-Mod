@@ -468,7 +468,7 @@ def Main():
                 if (LookingForInput):
                     # get the key and add it to CurInput
                     name = pygame.key.name(event.key)
-                    if name == "backspace":
+                    if name == "backspace" and len(CurInput) >0:
                         # if the last char is a newline, remove it
                         if CurInput[len(CurInput) - 1] == "\n":
                             CurInput = CurInput[:-2]
