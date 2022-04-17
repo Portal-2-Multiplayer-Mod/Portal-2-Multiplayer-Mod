@@ -180,12 +180,13 @@ def RefreshSettingsMenu():
                     hoversnd = blipsnd
                     curanim = ""
                     def function(cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
-                        if cfgvalue == "false":
-                            cfg.EditConfig(cfgkey, "true")
-                        # default to false to avoid errors
-                        else:
-                            cfg.EditConfig(cfgkey, "false")
-                        RefreshSettingsMenu()
+                        if cfgkey != "portal2path":
+                            if cfgvalue == "false":
+                                cfg.EditConfig(cfgkey, "true")
+                            # default to false to avoid errors
+                            else:
+                                cfg.EditConfig(cfgkey, "false")
+                            RefreshSettingsMenu()
 
                     isasync = False
                 SettingsButtons.append(curkeyButton)
