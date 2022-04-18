@@ -100,26 +100,29 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
     window.blit( colour_rect, target_rect )  
 
 def GetGamePath():
-    folder = input("please enter the path to the game:")
+    folder = input("please enter the path to the game: ").strip()
     cfg.EditConfig("portal2path", folder)
     Log("saved '" + folder + "' as the game path")
-    return True
 
-
-def RunGameScript():
-    # yup for now there's no checking until we find how to show a gui to the user
-    # and yes kyle whatever you did DOES NOT WORK
+def VerifyGamePath():
+    Log("verifying game path...")
     NoPathBruh = False
     while NoPathBruh == False:
         gamepath = GVars.configData["portal2path"]
-        if (gamepath == "undefined") or ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+        if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+            Log("Game path is invalid")
             GetGamePath()
         else:
             NoPathBruh = True
+
+def RunGameScript():
+    VerifyGamePath()
+    gamepath = GVars.configData["portal2path"]
     RG.MountMod(gamepath)
     RG.LaunchGame(gamepath)
 
 def UnmountScript():
+    VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
@@ -237,8 +240,8 @@ class UpdateButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
-        # open https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280 in the default browser
-        webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
+        # open the github releases page in the default browser
+        webbrowser.open("https://github.com/kyleraykbs/Portal2-32PlayerMod/releases")
     isasync = True
 
 class ManualButton:
@@ -529,6 +532,7 @@ def Main():
     sys.exit()
 
 def OnStart():
+    # Load the global variables
     GVars.init()
     # to do the fancy log thing
     StartLog()

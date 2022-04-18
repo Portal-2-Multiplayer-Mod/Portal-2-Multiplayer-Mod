@@ -13,12 +13,6 @@ import shutil
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
 
 def MountMod(gamepath):
-    
-    # make sure the gamepath in the config file exists and is valid
-    if (gamepath == "undefined") or ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
-        Log("Portal 2 Path not found!")
-        return "undefined"
-    
     # detect if the mod files are available 
     modFilesPath = os.path.dirname(__main__.__file__) + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     if os.path.exists(modFilesPath):
@@ -105,27 +99,25 @@ def PatchBinaries(gamepath):
     if (os.path.isfile(gamepath + GVars.nf + "engine.dll")):
         Log("")
         Log("Patching engine.dll...")
-        f = open(gamepath + GVars.nf + "engine.dll", "rb")
-        data = f.read()
-        f.close()
-        # remove the file
+        
+        data = open(gamepath + GVars.nf + "engine.dll", "rb").read()
+        
+        # Delete the file
         os.remove(gamepath + GVars.nf + "engine.dll")
         # replace the data
         data = data.replace(bytes.fromhex("84 c0 74 1f 8b 16 8b 82 cc 00 00 00 68 98 b0 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b"), bytes.fromhex("84 d8 74 1f 8b 16 8b 82 cc 00 00 00 68 98 b0 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b"))
 
         data = data.replace(bytes.fromhex("83 f8 03 0f 85 dd 00 00 00 8b 4d 08 33 c0 8d 55 f8 52 89 45 f8 89 45 fc e8 10 27 f2 ff 8b 5d 1c 8d 43 ff 3d fe 07 00 00 0f 87 90 00 00 00 8b 75 10 8b 0e 8b 56 04 8b 46 08 89 4d ec 8b ce 89 55 f0 89 45 f4 e8 c4 3b 14 00 83 f8 01 74 0b 8b ce e8 48 3b 14 00 84 c0 74 13 b9 ac e0 6a 10 e8 ca 3b 14 00 50 8d 4d ec e8 01 3d 14 00 8b 4d 18 8b 45 0c 53 51 8b 4d 08 8d 55 ec 52 50 51 e8 ab a2 ff ff 8b c8 e8 d4"), bytes.fromhex("83 f8 69 0f 85 dd 00 00 00 8b 4d 08 33 c0 8d 55 f8 52 89 45 f8 89 45 fc e8 10 27 f2 ff 8b 5d 1c 8d 43 ff 3d fe 07 00 00 0f 87 90 00 00 00 8b 75 10 8b 0e 8b 56 04 8b 46 08 89 4d ec 8b ce 89 55 f0 89 45 f4 e8 c4 3b 14 00 83 f8 01 74 0b 8b ce e8 48 3b 14 00 84 c0 74 13 b9 ac e0 6a 10 e8 ca 3b 14 00 50 8d 4d ec e8 01 3d 14 00 8b 4d 18 8b 45 0c 53 51 8b 4d 08 8d 55 ec 52 50 51 e8 ab a2 ff ff 8b c8 e8 d4"))
         # write the data back to the file
-        f = open(gamepath + GVars.nf + "engine.dll", "wb")
-        f.write(data)
-        f.close()
+        open(gamepath + GVars.nf + "engine.dll", "wb").write(data)
 
     ###/// SERVER.DLL ///###
     if (os.path.isfile(gamepath + GVars.nf + "server.dll")):
         Log("Patching server.dll...")
-        f = open(gamepath + GVars.nf + "server.dll", "rb")
-        data = f.read()
-        f.close()
-        # remove the file
+        
+        data = open(gamepath + GVars.nf + "server.dll", "rb").read()
+        
+        # Delete the file
         os.remove(gamepath + GVars.nf + "server.dll")
         # replace the data
         # 33 player cap edit
@@ -152,9 +144,7 @@ def PatchBinaries(gamepath):
         data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
         # write the data back to the file
-        f = open(gamepath + GVars.nf + "server.dll", "wb")
-        f.write(data)
-        f.close()
+        open(gamepath + GVars.nf + "server.dll", "wb").write(data)
         Log("")
         
     # we don't need to patch the other files since they don't exist on windows
@@ -168,9 +158,9 @@ def PatchBinaries(gamepath):
     if (os.path.isfile(gamepath + GVars.nf + "engine.so")):
         Log("")
         Log("Patching engine.so...")
-        f = open(gamepath + GVars.nf + "engine.so", "rb")
-        data = f.read()
-        f.close()
+        
+        data = open(gamepath + GVars.nf + "engine.so", "rb").read()
+        
         # remove the file
         os.remove(gamepath + GVars.nf + "engine.so")
         # replace the data
@@ -179,16 +169,14 @@ def PatchBinaries(gamepath):
         # steam validation removal
         data = data.replace(bytes.fromhex("83 f8 03 74 6c e8 a7 7d 24 00 83 ec 08 ff 74 24 4c 50 e8 ca 93 24 00 83 c4 10 84 c0 75 20 8b 16 88 44 24 0f 8d 8b 56 94 d5 ff 83 ec 04 51 57 56 ff 92 d0 00 00 00 0f b6 44 24 1f 83 c4 10 83 c4 2c 5b 5e 5f 5d c3 8d 76 00 8b 06 8d 93 26 94 d5 ff"), bytes.fromhex("83 f8 69 74 6c e8 a7 7d 24 00 83 ec 08 ff 74 24 4c 50 e8 ca 93 24 00 83 c4 10 84 c0 75 20 8b 16 88 44 24 0f 8d 8b 56 94 d5 ff 83 ec 04 51 57 56 ff 92 d0 00 00 00 0f b6 44 24 1f 83 c4 10 83 c4 2c 5b 5e 5f 5d c3 8d 76 00 8b 06 8d 93 26 94 d5 ff"))
         # write the data back to the file
-        f = open(gamepath + GVars.nf + "engine.so", "wb")
-        f.write(data)
-        f.close()
+        open(gamepath + GVars.nf + "engine.so", "wb").write(data)
 
     ###/// SERVER.SO ///###
     if (os.path.isfile(gamepath + GVars.nf + "server.so")):
         Log("Patching server.so...")
-        f = open(gamepath + GVars.nf + "server.so", "rb")
-        data = f.read()
-        f.close()
+        
+        data = open(gamepath + GVars.nf + "server.so", "rb").read()
+        
         # remove the file
         os.remove(gamepath + GVars.nf + "server.so")
         # replace the data
@@ -216,9 +204,7 @@ def PatchBinaries(gamepath):
         data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
         # write the data back to the file
-        f = open(gamepath + GVars.nf + "server.so", "wb")
-        f.write(data)
-        f.close()
+        open(gamepath + GVars.nf + "server.so", "wb").write(data)
         Log("")
 
     # rename the files so the new files are used
@@ -252,7 +238,7 @@ def UnRenameBinaries(gamepath, binarys):
     Log("")
     Log("Un-renaming binaries...")
 
-    # go through the list of binaries
+    # go through the list of binarIES
     for binary in binarys:
         # add a ".override" to the end of the binary
         binary = binary + ".override"
@@ -272,13 +258,13 @@ def DeleteUnusedDlcs(gamepath):
     Log("            _________Dealing with Folders________")
     Log("Deleting in-use DLCs...")
     
-    if (gamepath == "undefined") or ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Log("Portal 2 Path not found!")
         return "undefined"
     
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
-        # find all the files/folders that start with "portal2_dlc" and make sure they are a folder
+        # find all the folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
             # if inside the folder there is a file called "32playermod.identifier" delete this folder
             if "32playermod.identifier" in os.listdir(gamepath + GVars.nf + file):
@@ -295,7 +281,7 @@ def FindAvailableDLC(gamepath):
     DeleteUnusedDlcs(gamepath)
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
-        # find all the files/folders that start with "portal2_dlc" and make sure it's a folder
+        # find all the folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
             # get everything after "portal2_dlc"
             try:

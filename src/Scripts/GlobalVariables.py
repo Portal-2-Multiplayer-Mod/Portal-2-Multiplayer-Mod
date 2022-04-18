@@ -9,8 +9,11 @@ from datetime import datetime
 import Scripts.Configs as cfg
 from Scripts.BasicLogger import Log
 
-# appStartDate is the dateTime when the launcher was started so the logging won't break if we enter a new day
-    # if only kids learned to never use the computer after 10pm i wouldn't have needed to do this
+#//////////////////////////////////////////#
+#//#    Global Variables Declarations   #//#
+#//////////////////////////////////////////#
+
+# appStartDate is the dateTime when the launcher was started, this is used to name the logs
 appStartDate = ""
 configData = {}
 modPath = ""

@@ -24,12 +24,15 @@ DefaultConfigFile = [
     "#-----------------------------------",
 ]
 
+# this is temporary until we agree on whether to add the fluff to the config file or not
 DefaultConfigFile2 = {
     "cfgvariant": 18,
     "portal2path": "undefined",
     "Test": "false"
 }
 
+# verifies the config file by making sure that the processed data has the same keys as the default 
+# if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
 def VerifyConfigFileIntegrity(config):
     if len(config) != len(DefaultConfigFile2) or config.keys() != DefaultConfigFile2.keys():
         DefaultCopy = DefaultConfigFile2
@@ -39,11 +42,10 @@ def VerifyConfigFileIntegrity(config):
                 DefaultCopy[key] = config[key]
             except:
                 Log(f"the key [{key}] is missing from the local config file")
-        Log("writting to file...")
         WriteConfigFile(DefaultCopy)
         return DefaultCopy
         
-    # if the config keys are the same as the default then just return
+    # if the config keys are the same as the default then just return them
     else:
         return config
 
@@ -52,40 +54,42 @@ def WriteConfigFile(configs):
     # just to make sure the file doesn't exist
     try:
         os.remove(filepath)
-    except:
-        Log("doesn't matter")
-        
-    cfg = open(filepath, "w", encoding="utf-8")
+        Log("deleted old file")
+    except Exception as e:
+        Log(f"config file doesn't exist? {str(e)}")
 
-    for key in configs:
-        cfg.write(key+" = "+configs[key] + "\n")
+    Log("writting to file...")
+    with open(filepath, "w", encoding="utf-8") as cfg:
+        for key in configs:
+            cfg.write(key+" = "+configs[key] + "\n")
 
-    cfg.close()
-
+# why this is a seperate function that only has 2 lines?
+# well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine 
 def FindConfigPath():
     Log("Finding Config Path...")
     # default config path should be here
     return GVars.modPath + GVars.nf + "configs.cfg"
 
+# since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
 def EditConfig(search, newvalue):
     GVars.configData[search] = newvalue
     WriteConfigFile(GVars.configData)
-    GVars.LoadConfig()
 
-
+# to import the config data from the local config file
 def ImportConfig():
     Log("            __________Config Data Start__________")
     Log("Importing Config...")
 
     configpath = FindConfigPath()
+    
     # if the file doesn't exist then create it
     if not os.path.exists(configpath):
         WriteConfigFile(DefaultConfigFile2)
         
-    # get the config file and open it
+    # read all the lines in the config file
     config = open(configpath, "r", encoding="utf-8").readlines()
 
-    # if the file is empty then also re-create it
+    # if the file is empty then re-create it
     if len(config) == 0:
         WriteConfigFile(DefaultConfigFile2)
         
@@ -113,4 +117,5 @@ def ImportConfig():
 
     Log("")
     Log("Configs Imported!")
+    # at last pass the data to the verify function to make sure everything is clean
     return VerifyConfigFileIntegrity(processedconfig)
