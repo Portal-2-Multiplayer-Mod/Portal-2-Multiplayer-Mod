@@ -45,7 +45,7 @@ running = True
 # Define the name and image of the window
 pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
 
-p2mmlogo = pygame.image.load("assets/images/p2mm.png")
+p2mmlogo = pygame.image.load("assets/images/p2mm.svg")
 
 pygame.display.set_icon(p2mmlogo)
 
