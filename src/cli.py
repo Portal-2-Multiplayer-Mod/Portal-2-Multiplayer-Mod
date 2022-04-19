@@ -79,6 +79,9 @@ def Init():
     else:
         RG.DeleteUnusedDlcs(gamepath)
         RG.UnpatchBinaries(gamepath)
+        Log("Unmounted the game successfully")
+        
+    input("Press enter to exit")
 
 
 if __name__ == "__main__":
