@@ -61,7 +61,7 @@ def WriteConfigFile(configs):
     Log("writting to file...")
     with open(filepath, "w", encoding="utf-8") as cfg:
         for key in configs:
-            cfg.write(key+" = "+configs[key] + "\n")
+            cfg.write(key+" = "+str(configs[key]) + "\n")
 
 # why this is a seperate function that only has 2 lines?
 # well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine 
