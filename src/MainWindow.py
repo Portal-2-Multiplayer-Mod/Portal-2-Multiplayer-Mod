@@ -7,6 +7,9 @@ import asyncio
 import threading
 import time
 import webbrowser
+from tkinter import Tk
+tk = Tk()
+tk.withdraw()
 
 import pygame
 from pygame.locals import *
@@ -24,10 +27,10 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/GUI")
 cwd = os.getcwd()
 
 blipsnd = pygame.mixer.Sound("assets/sounds/blip.wav")
-blipsnd.set_volume(0.5)
+blipsnd.set_volume(0.25)
 
 pwrsnd = pygame.mixer.Sound("assets/sounds/power.wav")
-pwrsnd.set_volume(0.5)
+pwrsnd.set_volume(0.25)
 
 angrycube = pygame.image.load("assets/images/angrycube.png")
 
@@ -393,7 +396,7 @@ def Update():
         else:
             floater.rot += (1 + random.randint(0, 2))
         if (SelectedButton.text == "Back"):
-            floater.x -= W / 100
+            floater.x -= W / 60
             if floater.x < (floater.surf.get_width() * -2):
                 floater.y = random.randint(0, H)
                 floater.x = (floater.surf.get_width() * 2) + (random.randint(W, W * 2)) * 1
@@ -434,21 +437,27 @@ def Update():
 
     ####################### DRAW INPUT BOX
     if LookingForInput:
+        fntdiv = 32
+        fntsize = int(W / fntdiv)
+        mindiv = int(fntdiv / 1.25)
 
         # divide the CurrentInput into lines
-        lines = CurInput.split("\n")
-        # if the amount of chars in the last line is higher then 9
-        if len(lines[len(lines) - 1]) > 23:
-            CurInput = CurInput + "\n"
+        lines = []
+        # every  23 characters, add a new line
+        lines.append(CurInput[0:mindiv])
+        for i in range(mindiv, len(CurInput), mindiv):
+            lines.append(CurInput[i:i+mindiv])
 
+
+        InputText = ""
         for i in range(len(lines)):
-            InputText = pygame.font.Font("assets/fonts/pixel.ttf", int(W / 25)).render(lines[i], True, (255, 255, 175))
+            InputText = pygame.font.Font("assets/fonts/pixel.ttf", fntsize).render(lines[i], True, (255, 255, 175))
             screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (     (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - ((((text1.get_height() * 1.25) * (len(lines) / 2))))        ))
 
-        surf1 = pygame.Surface((W / 1.5, H / 45))
+        surf1 = pygame.Surface((W / 1.5, W / 100))
         surf1.fill((255, 255, 255))
-        surf2 = pygame.Surface((W / 1.5, H / 45))
-        blitpos = ((W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.050) * ((len(lines) / 2) - 1)))
+        surf2 = pygame.Surface((W / 1.5, W / 100))
+        blitpos = ((W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
         screen.blit(surf1, blitpos)
 
 ###############################################################################
@@ -461,13 +470,35 @@ def Main():
     global CurrentButtonsIndex
     global LookingForInput
     global CurInput
+    LastBackspace = 0
+    BackspaceHasBeenHeld = False
 
     while running:
+        if (LookingForInput):
+            BACKSPACEHELD = pygame.key.get_pressed()[pygame.K_BACKSPACE]
+            BACKSPACEHELD = BACKSPACEHELD > 0
+
+            if (BACKSPACEHELD):
+                if BackspaceHasBeenHeld == False:
+                    LastBackspace = time.time() + 0.5
+                    BackspaceHasBeenHeld = True
+                # if its been a second since the last backspace, delete the last character
+                elif (time.time() - LastBackspace > 0.05):
+                    if (len(CurInput) > 0):
+                        CurInput = CurInput[:-1]
+                    LastBackspace = time.time()
+            else:
+                BackspaceHasBeenHeld = False
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
-            elif event.type == KEYDOWN:
-                if (LookingForInput):
+            elif (LookingForInput):
+                CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
+                CTRLHELD = CTRLHELD > 0
+                SHIFTHELD = pygame.key.get_mods() & pygame.KMOD_SHIFT
+                SHIFTHELD = SHIFTHELD > 0
+
+                if event.type == pygame.KEYDOWN:
                     # get the key and add it to CurInput
                     name = pygame.key.name(event.key)
                     if name == "backspace" and len(CurInput) >0:
@@ -484,41 +515,60 @@ def Main():
                         LookingForInput = False
                     elif name == "tab":
                         CurInput += "   "
+                    elif CTRLHELD and name == "v":
+                        try:
+                            str1 = str(tk.selection_get(selection="CLIPBOARD"))
+                            print(str1)
+                            str1 = str1.replace("\n", "")
+                            print("=================================")
+                            print(str1)
+                            CurInput += str1
+                        except:
+                            pass
                     elif len(name) == 1:
-                        CurInput += name
-                else:
-                    if event.key == K_ESCAPE:
-                        BackMenu()
-                    elif event.key == K_BACKSPACE:
-                        BackMenu()
-                    elif event.key == K_DOWN or event.key == K_s:
-                        if CurrentButtonsIndex < len(CurrentMenu) - 1:
-                            CurrentButtonsIndex += 1
-                            SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                            pygame.mixer.Sound.play(SelectedButton.hoversnd)
-                        else:
-                            CurrentButtonsIndex = 0
-                            SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                            pygame.mixer.Sound.play(SelectedButton.hoversnd)
-                    elif event.key == K_UP or event.key == K_w:
-                        if CurrentButtonsIndex > 0:
-                            CurrentButtonsIndex -= 1
-                            SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                            pygame.mixer.Sound.play(SelectedButton.hoversnd)
-                        else:
-                            CurrentButtonsIndex = len(CurrentMenu) - 1
-                            SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                            pygame.mixer.Sound.play(SelectedButton.hoversnd)
-                    elif event.key == K_SPACE:
-                        if SelectedButton.function:
-                            if SelectedButton.isasync:
-                                threading.Thread(target=SelectedButton.function).start()
+                        if SHIFTHELD:
+                            # if the name doesnt contain a letter
+                            if not name.isalpha():
+                                name = name.replace("1", "!").replace("2", "@").replace("3", "#").replace("4", "$").replace("5", "%").replace("6", "^").replace("7", "&").replace("8", "*").replace("9", "(").replace("0", ")").replace("`", "~").replace("-", "_").replace("=", "+").replace("[", "{").replace("]", "}").replace("\\", "|").replace(";", ":").replace("'", "\"").replace(",", "<").replace(".", ">").replace("/", "?")
+                            # convert lowercase to uppercase
                             else:
-                                SelectedButton.function()
+                                name = name.upper()
+                            CurInput += name
+                        else:
+                            CurInput += name
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    BackMenu()
+                elif event.key == K_BACKSPACE:
+                    BackMenu()
+                elif event.key == K_DOWN or event.key == K_s:
+                    if CurrentButtonsIndex < len(CurrentMenu) - 1:
+                        CurrentButtonsIndex += 1
+                        SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                    else:
+                        CurrentButtonsIndex = 0
+                        SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                elif event.key == K_UP or event.key == K_w:
+                    if CurrentButtonsIndex > 0:
+                        CurrentButtonsIndex -= 1
+                        SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                    else:
+                        CurrentButtonsIndex = len(CurrentMenu) - 1
+                        SelectedButton = CurrentMenu[CurrentButtonsIndex]
+                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                elif event.key == K_SPACE:
+                    if SelectedButton.function:
+                        if SelectedButton.isasync:
+                            threading.Thread(target=SelectedButton.function).start()
+                        else:
+                            SelectedButton.function()
 
-                        SelectAnimation(SelectedButton, SelectedButton.selectanim)
+                    SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
-                        pygame.mixer.Sound.play(SelectedButton.selectsnd) 
+                    pygame.mixer.Sound.play(SelectedButton.selectsnd) 
 
         
         # make the screen a gradient
