@@ -7,9 +7,15 @@ import asyncio
 import threading
 import time
 import webbrowser
-from tkinter import Tk
-tk = Tk()
-tk.withdraw()
+tk = ""
+try:
+    from tkinter import Tk
+    tk = Tk()
+    tk.withdraw()
+except:
+    print("ERROR TKINTER NOT FOUND (TO GET COPY PASTE FUNCTIONALLITY DOWNLOAD THE TKINTER (\"tk\" probably) MODULE FROM YOUR PACKAGE MANAGER)")
+    pass
+
 
 import pygame
 from pygame.locals import *
@@ -100,7 +106,7 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
     pygame.draw.line( colour_rect, left_colour,  ( 0,0 ), ( 0,1 ) )            # left colour line
     pygame.draw.line( colour_rect, right_colour, ( 1,0 ), ( 1,1 ) )            # right colour line
     colour_rect = pygame.transform.smoothscale( colour_rect, ( target_rect.width, target_rect.height ) )  # stretch!
-    window.blit( colour_rect, target_rect )  
+    window.blit( colour_rect, target_rect )
 
 def GetGamePath():
     folder = input("please enter the path to the game: ").strip()
@@ -432,7 +438,7 @@ def Update():
         RunAnimation(button, button.curanim)
         text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text, True, clr)
         screen.blit(text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)  ))
-    
+
     SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
     ####################### DRAW INPUT BOX
@@ -524,6 +530,7 @@ def Main():
                             print(str1)
                             CurInput += str1
                         except:
+                            print("ERROR TKINTER NOT FOUND (TO GET COPY PASTE FUNCTIONALLITY DOWNLOAD THE TKINTER (\"tk\" probably) MODULE FROM YOUR PACKAGE MANAGER)")
                             pass
                     elif len(name) == 1:
                         if SHIFTHELD:
@@ -568,9 +575,9 @@ def Main():
 
                     SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
-                    pygame.mixer.Sound.play(SelectedButton.selectsnd) 
+                    pygame.mixer.Sound.play(SelectedButton.selectsnd)
 
-        
+
         # make the screen a gradient
         screen.fill((0, 0, 0))
         gradientRect( screen, (0, 2, 10), (2, 2, 10), pygame.Rect( 0, 0, screen.get_width(), screen.get_height() ) )
@@ -588,7 +595,7 @@ def OnStart():
     StartLog()
     # load the config file into memmory
     GVars.LoadConfig()
-    
+
 if __name__ == '__main__':
     OnStart()
-    Main() 
+    Main()
