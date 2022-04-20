@@ -25,17 +25,17 @@ for folder in os.listdir(os.getcwd()):
 if os.path.exists(ourfolder):
     # linux
     if not isWindowns:
-        # delete everything inside of MultiplayerModFiles/ModFiles/Portal 2/install_dlc
-        os.system("rm -rf MultiplayerModFiles/ModFiles/Portal\ 2/install_dlc/*")
+        # delete everything inside of src/ModFiles/Portal 2/install_dlc
+        os.system("rm -rf src/ModFiles/Portal\ 2/install_dlc/*")
 
-        # copy everything inside of portal2_dlcX/ to MultiplayerModFiles/ModFiles/Portal 2/install_dlc
-        os.system("cp -r " + ourfolder + "/* MultiplayerModFiles/ModFiles/Portal\ 2/install_dlc/")
+        # copy everything inside of portal2_dlcX/ to src/ModFiles/Portal 2/install_dlc
+        os.system("cp -r " + ourfolder + "/* src/ModFiles/Portal\ 2/install_dlc/")
     # windows
     else:
-        # delete everything inside of MultiplayerModFiles/ModFiles/Portal 2/install_dlc
-        os.system( "rmdir /S /Q MultiplayerModFiles\\ModFiles\\Portal\ 2\\install_dlc")
+        # delete everything inside of src/ModFiles/Portal 2/install_dlc
+        os.system( "rmdir /S /Q src\\ModFiles\\Portal\ 2\\install_dlc")
 
-        # copy everything inside of portal2_dlcX/ to MultiplayerModFiles/ModFiles/Portal 2/install_dlc
-        os.system("xcopy /E /I /Y " + ourfolder + "\\* \"MultiplayerModFiles\\ModFiles\\Portal 2\\install_dlc\"")
+        # copy everything inside of portal2_dlcX/ to src/ModFiles/Portal 2/install_dlc
+        os.system("xcopy /E /I /Y " + ourfolder + "\\* \"src\\ModFiles\\Portal 2\\install_dlc\"")
 else:
     print("mod folder not found")

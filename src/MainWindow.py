@@ -454,9 +454,9 @@ def Update():
             InputText = pygame.font.Font("assets/fonts/pixel.ttf", fntsize).render(lines[i], True, (255, 255, 175))
             screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (     (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - ((((text1.get_height() * 1.25) * (len(lines) / 2))))        ))
 
-        surf1 = pygame.Surface((W / 1.5, W / 45))
+        surf1 = pygame.Surface((W / 1.5, W / 100))
         surf1.fill((255, 255, 255))
-        surf2 = pygame.Surface((W / 1.5, W / 45))
+        surf2 = pygame.Surface((W / 1.5, W / 100))
         blitpos = ((W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
         screen.blit(surf1, blitpos)
 
