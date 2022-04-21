@@ -1,7 +1,9 @@
-import json
 import os
+import json
 import hashlib
+import __main__
 from Scripts.BasicLogger import Log
+import Scripts.GlobalVariables as GVars
 
 def GetFiles(path):
     fileList = []
@@ -30,17 +32,18 @@ def GetHash(file):
 
 
 def SaveFilesData():
-    
-    modFilesPath = "src"+os.sep+"ModFiles" + os.sep+"Portal 2"+os.sep+"install_dlc" # relative mod path
-    path = os.getcwd()+os.sep+ modFilesPath # absolute mod path
-    savePath = os.getcwd() + os.sep + "modFilesData.json" # where to save the files data
+    # if the files structure ever changed just change this line
+    modFilesPath = "src"+GVars.nf+"ModFiles" + GVars.nf+"Portal 2"+GVars.nf+"install_dlc" # relative mod path
+    # and keep the rest as is
+    path = os.path.dirname(__main__.__file__) +GVars.nf+ modFilesPath # absolute mod path
+    savePath = os.path.dirname(__main__.__file__) + GVars.nf + "modFilesData.json" # where to save the files data
     
     fileList = GetFiles(path)
     Log("got all Files data")
     Log("serializing Data")
     jsn = []
     for i in range(len(fileList)):
-        jsn.append({"name": fileList[i].replace(path, "").replace(os.sep, "/"),
+        jsn.append({"name": fileList[i].replace(path, "").replace(GVars.nf, "/"), # the second replace is only needed for windows but whatever
                     "hash": GetHash(fileList[i])})
 
     Log("writing to file")
@@ -48,3 +51,4 @@ def SaveFilesData():
     open(savePath, "w").write(jsonStr)
 
     Log("saved Files Data in: " + savePath)
+    return savePath
