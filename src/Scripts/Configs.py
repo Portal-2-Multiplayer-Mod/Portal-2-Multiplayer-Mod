@@ -36,12 +36,12 @@ DefaultConfigFile2 = {
 def VerifyConfigFileIntegrity(config):
     if len(config) != len(DefaultConfigFile2) or config.keys() != DefaultConfigFile2.keys():
         DefaultCopy = DefaultConfigFile2
-        Log("some config data is invalid, fixing it...")
+        Log("Some config data is invalid, fixing it...")
         for key in DefaultCopy:
             try:
                 DefaultCopy[key] = config[key]
             except:
-                Log(f"the key [{key}] is missing from the local config file")
+                Log(f"The key [{key}] is missing from the local config file!")
         WriteConfigFile(DefaultCopy)
         return DefaultCopy
         
@@ -54,11 +54,11 @@ def WriteConfigFile(configs):
     # just to make sure the file doesn't exist
     try:
         os.remove(filepath)
-        Log("deleted old file")
+        Log("Deleted old file")
     except Exception as e:
-        Log(f"config file doesn't exist? {str(e)}")
+        Log(f"Config file doesn't exist? {str(e)}")
 
-    Log("writting to file...")
+    Log("Writing to file...")
     with open(filepath, "w", encoding="utf-8") as cfg:
         for key in configs:
             cfg.write(key+" = "+str(configs[key]) + "\n")
@@ -66,7 +66,7 @@ def WriteConfigFile(configs):
 # why this is a seperate function that only has 2 lines?
 # well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine 
 def FindConfigPath():
-    Log("Finding Config Path...")
+    Log("Finding config path...")
     # default config path should be here
     return GVars.modPath + GVars.nf + "configs.cfg"
 
@@ -94,7 +94,7 @@ def ImportConfig():
         WriteConfigFile(DefaultConfigFile2)
         
     # process the config file into useable data
-    Log("Processing Config...")
+    Log("Processing config...")
     Log("")
     processedconfig = {}
     for line in config:
@@ -116,6 +116,6 @@ def ImportConfig():
                 Log("Imported: " + line)
 
     Log("")
-    Log("Configs Imported!")
+    Log("Configs imported successfully!")
     # at last pass the data to the verify function to make sure everything is clean
     return VerifyConfigFileIntegrity(processedconfig)

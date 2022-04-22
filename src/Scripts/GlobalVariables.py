@@ -41,4 +41,4 @@ def init():
 def LoadConfig():   
     global configData
     configData = cfg.ImportConfig()
-    Log("config data loaded")
+    Log("Config data loaded.")

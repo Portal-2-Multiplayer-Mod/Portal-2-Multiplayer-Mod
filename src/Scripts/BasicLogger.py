@@ -53,4 +53,3 @@ def StartLog():
     elif (GVars.iol):
         Log("")
         Log("Linux OS detected!")
-        

@@ -111,15 +111,15 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
 def GetGamePath():
     folder = input("please enter the path to the game: ").strip()
     cfg.EditConfig("portal2path", folder)
-    Log("saved '" + folder + "' as the game path")
+    Log("Saved '" + folder + "' as the game path!")
 
 def VerifyGamePath():
-    Log("verifying game path...")
+    Log("Verifying game path...")
     NoPathBruh = False
     while NoPathBruh == False:
         gamepath = GVars.configData["portal2path"]
         if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
-            Log("Game path is invalid")
+            Log("Game path is invalid!")
             GetGamePath()
         else:
             NoPathBruh = True

@@ -16,9 +16,9 @@ def MountMod(gamepath):
     # detect if the mod files are available 
     modFilesPath = os.path.dirname(__main__.__file__) + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     if os.path.exists(modFilesPath):
-        Log("MultiplayerModFiles folder exists!")
+        Log("Found directory: ModFiles/Portal 2/install_dlc")
     else:
-        Log("MultiplayerModFiles folder not found!")
+        Log("Unable to locate directory: ModFiles/Portal 2/install_dlc")
         return "filesMissing"
 
     Log("")
@@ -29,14 +29,14 @@ def MountMod(gamepath):
     dlcmountpoint = FindAvailableDLC(gamepath)
     
     destination = shutil.copytree(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
-    Log("copied the mod files successfully to "+ destination)
+    Log("Successfully copied the mod files to "+ destination)
 
     # patch the binaries
     Log("            ___________Moving Files End__________")
     UnpatchBinaries(gamepath)
 
     PatchBinaries(gamepath)
-    Log("             __________Mounting Mod End__________")
+    Log("            ___________Mounting Mod End__________")
     return True
 
 def UnpatchBinaries(gamepath):
@@ -80,17 +80,17 @@ def PatchBinaries(gamepath):
     Log("             _________Binary Moving Start________")
     for binary in binarys:
         Log("Moving " + binary + " to " + gamepath + "...")
-        # get the filename
+        # Get the filename
         filename = binary.rsplit(GVars.nf, 1)[1]
 
-        # if the file already exists it will be replaced no need to delete it manually
+        # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
             # copy the binary to the gamepath
             shutil.copyfile(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
-            Log("copied " + binary+" to " + gamepath + GVars.nf + filename)
+            Log("Copied " + binary+" to " + gamepath + GVars.nf + filename)
         except:
-            # on windows there is no "linux32" folder so it will throw an error
-            Log("can't copy "+ binary+", since it doesn't exist" )
+            # On Windows there is no "linux32" folder, so we avoid an error.
+            Log("Unable to copy "+ binary+", since it doesn't exist!" )
     Log("             __________Binary Moving End_________")
 
 
@@ -238,19 +238,19 @@ def UnRenameBinaries(gamepath, binarys):
     Log("")
     Log("Un-renaming binaries...")
 
-    # go through the list of binarIES
+    # Go through the list of binaries
     for binary in binarys:
-        # add a ".override" to the end of the binary
+        # Add a ".override" file extension to the end of the binary
         binary = binary + ".override"
-        # if the binary exists
+        # If the binary exists,
         if (os.path.isfile(gamepath + GVars.nf + binary)):
             Log("Un-renaming " + binary + " to " + binary[:-9])
-            # if a file with the name gamepath + GVars.nf + binary[:-9] exists
+            # If a file with the name gamepath + GVars.nf + binary[:-9] exists
             if (os.path.isfile(gamepath + GVars.nf + binary[:-9])):
-                # remove the file
+                # Remove it
                 os.remove(gamepath + GVars.nf + binary)
             else:
-                # rename the binary back to the original
+                # Rename the binary back to the original
                 os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary[:-9])
 
 def DeleteUnusedDlcs(gamepath):
@@ -259,7 +259,7 @@ def DeleteUnusedDlcs(gamepath):
     Log("Deleting in-use DLCs...")
     
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
-        Log("Portal 2 Path not found!")
+        Log("Portal 2 game path not found!")
         return "undefined"
     
     # go through each file in the gamepath
@@ -268,15 +268,15 @@ def DeleteUnusedDlcs(gamepath):
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
             # if inside the folder there is a file called "32playermod.identifier" delete this folder
             if "32playermod.identifier" in os.listdir(gamepath + GVars.nf + file):
-                Log("Found OLD DLC: " + file)
+                Log("Found old DLC: " + file)
                 # delete the folder even if it's not empty
                 shutil.rmtree(gamepath + GVars.nf + file)
-                Log("Deleted OLD DLC: " + file)
+                Log("Deleted old DLC: " + file)
     
     return True
 
 def FindAvailableDLC(gamepath):
-    Log("Finding Available DLC...")
+    Log("Finding the next increment in DLC folders...")
     dlcs = []
     DeleteUnusedDlcs(gamepath)
     # go through each file in the gamepath
@@ -287,7 +287,7 @@ def FindAvailableDLC(gamepath):
             try:
                 dlcnumber = file.split("portal2_dlc")[1]
             except Exception as e:
-                Log("Error getting DLC name (probably a slice error moving on)!")
+                Log("Error getting DLC name! Probably a slice error. Moving on!")
                 Log("Error: " + str(e))
                 # move on to the next file
                 continue
@@ -297,7 +297,8 @@ def FindAvailableDLC(gamepath):
                 Log("DLC " + dlcnumber + " is not a number!")
             else:
                 dlcs.append(str(dlcnumber))
-                Log("Adding DLC: " + dlcnumber + " to our internal list...")
+                Log("Adding DLC: " + dlcnumber + " to our internal list to ignore...")
+                Log("P2:MM files will be mounted to portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1))
 
     # sort each dlc number lower to higher
     dlcs.sort(key=int)
