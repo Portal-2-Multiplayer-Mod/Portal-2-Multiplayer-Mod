@@ -1,7 +1,6 @@
 import os
 import json
 import hashlib
-import __main__
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 
@@ -33,10 +32,10 @@ def GetHash(file):
 
 def SaveFilesData():
     # if the files structure ever changed just change this line
-    modFilesPath = "ModFiles" + GVars.nf+"Portal 2"+GVars.nf+"install_dlc" # relative mod path
+    modFilesPath = "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc" # relative mod path
     # and keep the rest as is
-    path = os.path.dirname(__main__.__file__) +GVars.nf+ modFilesPath # absolute mod path
-    savePath = os.path.dirname(__main__.__file__) + GVars.nf + "modFilesData.json" # where to save the files data
+    path = GVars.modPath + GVars.nf + modFilesPath # absolute mod path
+    savePath = GVars.modPath + GVars.nf + "modFilesData.json" # where to save the files data
     Log(path)
     fileList = GetFiles(path)
     Log("got all Files data")

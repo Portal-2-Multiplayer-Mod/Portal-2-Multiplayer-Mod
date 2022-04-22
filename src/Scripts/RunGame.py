@@ -5,7 +5,6 @@ import os
 import subprocess
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
-import __main__
 import shutil
 
 
@@ -14,7 +13,7 @@ import shutil
 
 def MountMod(gamepath):
     # detect if the mod files are available 
-    modFilesPath = os.path.dirname(__main__.__file__) + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     if os.path.exists(modFilesPath):
         Log("Found directory: ModFiles/Portal 2/install_dlc")
     else:
