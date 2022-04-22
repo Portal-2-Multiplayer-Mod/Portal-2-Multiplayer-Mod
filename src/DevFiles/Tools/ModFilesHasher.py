@@ -33,15 +33,14 @@ def GetHash(file):
 
 def SaveFilesData():
     # if the files structure ever changed just change this line
-    modFilesPath = "src"+os.sep+"ModFiles" + os.sep+"Portal 2"+os.sep+"install_dlc" 
+    modFilesPath = "src/ModFiles/Portal 2/install_dlc" 
     # and keep the rest as is
     path = os.getcwd()+os.sep + modFilesPath
     savePath = os.getcwd() + os.sep + "modFilesData.json"
     fileList = GetFiles(path)
-    jsn = []
+    jsn = {}
     for i in range(len(fileList)):
-        jsn.append({"name": fileList[i].replace(path, "").replace(os.sep, "/"),
-                    "hash": GetHash(fileList[i])})
+        jsn[fileList[i].replace(path, "").replace(os.sep, "/")] = GetHash(fileList[i])
 
     jsonStr = json.dumps(jsn)
     open(savePath, "w").write(modFilesPath + "\n") # this is so the client can know where the files are saved

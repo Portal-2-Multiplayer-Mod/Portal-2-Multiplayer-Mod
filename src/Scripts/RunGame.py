@@ -298,10 +298,9 @@ def FindAvailableDLC(gamepath):
             else:
                 dlcs.append(str(dlcnumber))
                 Log("Adding DLC: " + dlcnumber + " to our internal list to ignore...")
-                Log("P2:MM files will be mounted to portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1))
-
-    # sort each dlc number lower to higher
-    dlcs.sort(key=int)
+                
+    Log("Mod will be mounted to portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1))
+    
     # return the folder where to mount the mod
     return "portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1)
 
