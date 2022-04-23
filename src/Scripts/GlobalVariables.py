@@ -19,7 +19,7 @@ configData = {}
 modPath = ""
 iow = False
 iol = False
-nf = ""
+nf = os.sep # this way the logging won't break if someone runs the app on mac
 
 
 def init():
@@ -29,11 +29,9 @@ def init():
     modPath = os.path.dirname(__main__.__file__)
     
     if (sys.platform == "win32"):
-        nf = "\\"
         iow = True
     elif (sys.platform.startswith("linux")):
-        iol = True
-        nf = "/"
+        iol = True # and we don't even need this variable i'll probably delete it tomorrow
     else:
         # feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")
@@ -43,4 +41,4 @@ def init():
 def LoadConfig():   
     global configData
     configData = cfg.ImportConfig()
-    Log("config data loaded")
+    Log("Config data loaded.")
