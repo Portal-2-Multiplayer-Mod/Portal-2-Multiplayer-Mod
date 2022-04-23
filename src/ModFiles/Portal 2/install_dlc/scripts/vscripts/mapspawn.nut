@@ -12,18 +12,18 @@
 // to modify the one that has been copied into a new
 // portal2_dlcX folder and switch levels after modifying!
 
-//    ___              __  _        _ 
+//    ___              __  _        _
 //   / __| ___  _ _   / _|(_) __ _ (_)
-//  | (__ / _ \| ' \ |  _|| |/ _` | _ 
+//  | (__ / _ \| ' \ |  _|| |/ _` | _
 //   \___|\___/|_||_||_|  |_|\__, |(_)
-//                           |___/    
+//                           |___/
 
 //-----------------------------------
 DevMode <- true // Set to true if you're a developer
 //-----------------------------------
 DevInfo <- false // Set to true if you want to see the developer info
 //-----------------------------------
-// UsePlugin <- true // Set to false if you want to use the plugin (LINUX ONLY)
+FutBolGamemode <- false // Set Futbol gamemode
 //-----------------------------------
 VisualDebug <- false // Set to true if you want to see the debug info
 //-----------------------------------
@@ -41,11 +41,11 @@ Admins <- ["[420]kyleraykbs", "[69]vista", "[12]cabiste", "[12]Bumpy", "[12]Nano
 // END OF CONFIG!
 // Do not modify the below.
 
-//    ___          _        ___       _                _ 
+//    ___          _        ___       _                _
 //   / __| ___  __| | ___  / __| ___ | |_  _  _  _ __ (_)
-//  | (__ / _ \/ _` |/ -_) \__ \/ -_)|  _|| || || '_ \ _ 
+//  | (__ / _ \/ _` |/ -_) \__ \/ -_)|  _|| || || '_ \ _
 //   \___|\___/\__,_|\___| |___/\___| \__| \_,_|| .__/(_)
-//                                              |_|      
+//                                              |_|
 
 IncludeScript("multiplayermod/variables.nut")
 
@@ -59,7 +59,7 @@ IncludeScript("multiplayermod/variables.nut")
 // 3. Create map-specific entities after a delay
 
 function init() {
-    
+
     SendPythonReset()
 
     // Show the console ascii art
@@ -127,22 +127,26 @@ function DoesPluginExist() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Import the rest of our external Squirrel "libraries" 
+// Import the rest of our external Squirrel "libraries"
 IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
 
-//   ___           _  _  _  _          _        
-//  | __|__ _  __ (_)| |(_)| |_  __ _ | |_  ___ 
+if (FutBolGamemode) {
+    IncludeScript("multiplayermod/gamemodes/futbol/functions.nut")
+}
+
+//   ___           _  _  _  _          _
+//  | __|__ _  __ (_)| |(_)| |_  __ _ | |_  ___
 //  | _|/ _` |/ _|| || || ||  _|/ _` ||  _|/ -_)
 //  |_| \__,_|\__||_||_||_|_\__|\__,_| \__|\___|
-//  |  \/  | __ _  _ __   / __| ___  __| | ___  
-//  | |\/| |/ _` || '_ \ | (__ / _ \/ _` |/ -_) 
-//  |_|  |_|\__,_|| .__/  \___|\___/\__,_|\___| 
-//                |_|   ___              _      
-//   __ _  _ _   __| | | _ \ _  _  _ _  | |     
-//  / _` || ' \ / _` | |   /| || || ' \ |_|     
-//  \__,_||_||_|\__,_| |_|_\ \_,_||_||_|(_)     
+//  |  \/  | __ _  _ __   / __| ___  __| | ___
+//  | |\/| |/ _` || '_ \ | (__ / _ \/ _` |/ -_)
+//  |_|  |_|\__,_|| .__/  \___|\___/\__,_|\___|
+//                |_|   ___              _
+//   __ _  _ _   __| | | _ \ _  _  _ _  | |
+//  / _` || ' \ / _` | |   /| || || ' \ |_|
+//  \__,_||_||_|\__,_| |_|_\ \_,_||_||_|(_)
 
 // Import map support code
 local MapName = FindAndReplace(GetMapName().tostring(), "maps/", "")
