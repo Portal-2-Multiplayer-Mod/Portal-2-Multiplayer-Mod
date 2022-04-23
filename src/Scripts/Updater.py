@@ -65,7 +65,7 @@ def DownloadClient():
         return False
     
     # download the file in a temporary folder we move it later
-    path = GVars.modPath + GVars.nf + ".temp" + GVars.nf + "p2mm" + packageType
+    path = os.path.dirname(__main__.__file__) + GVars.nf + ".temp" + GVars.nf + "p2mm" + packageType
     urllib.request.urlretrieve(downloadLink, path)
 
     # can we even send a command to delete the current running instance and replace it with the new one?
