@@ -56,7 +56,6 @@ The pros and cons are listed below, though **we highly recommend sticking with t
 -   [x] Allow players to spawn in any map without breaking
 -   [x] Make the launcher patch files on the spot for consistency and stability
 -   [x] Allow the server to cache objects server-side without crashing
--   [ ] OTA updates
 
 ## Features on the table
 - Dedicated servers
