@@ -42,6 +42,8 @@ angrycube = pygame.image.load("assets/images/angrycube.png")
 
 goldencube = pygame.image.load("assets/images/goldencube.png")
 
+ERRORLIST = []
+
 ###############################################################################
 
 fps = 60
@@ -109,26 +111,36 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
     window.blit( colour_rect, target_rect )
 
 def GetGamePath():
-    folder = input("please enter the path to the game: ").strip()
-    cfg.EditConfig("portal2path", folder)
-    Log("Saved '" + folder + "' as the game path!")
+    def AfterInputGP(inp):
+        if CheckPath(inp):
+            cfg.EditConfig("portal2path", inp.strip())
+            Log("Saved '" + inp.strip() + "' as the game path!")
+            Error("Game path is correct!", 5, (75, 255, 75))
+            Error("Saved path!", 5, (75, 200, 75))
+        else:
+            Error("You entered an invalid game path!")
+    GetUserInputPYG( AfterInputGP )
+    
+def CheckPath(gamepath):
+    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+        return False
+    else:
+        return True
 
 def VerifyGamePath():
     Log("Verifying game path...")
-    NoPathBruh = False
-    while NoPathBruh == False:
-        gamepath = GVars.configData["portal2path"]
-        if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
-            Log("Game path is invalid!")
-            GetGamePath()
-        else:
-            NoPathBruh = True
+    gamepath = GVars.configData["portal2path"]
+    if CheckPath(gamepath) == False:
+        Log("Game path is invalid!")
+        Error("Game path is invalid!")
+        GetGamePath()
 
 def RunGameScript():
     VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
-    RG.MountMod(gamepath)
-    RG.LaunchGame(gamepath)
+    if (CheckPath(gamepath)):
+        RG.MountMod(gamepath)
+        RG.LaunchGame(gamepath)
 
 def UnmountScript():
     VerifyGamePath()
@@ -204,12 +216,27 @@ def RefreshSettingsMenu():
                 SettingsButtons.append(curkeyButton)
         SettingsButtons.append(BackButton)
 
-def GetUserInputPYG():
+def GetUserInputPYG(afterfunc = None):
     global LookingForInput
     global CurInput
+    global AfterInputFunction
     print("Getting User INPUT")
     LookingForInput = True
     CurInput = ""
+    AfterInputFunction = afterfunc
+    print("AfterInputFunction: " + str(AfterInputFunction))
+
+def Error(text, time = 3, clr = (255, 75, 75)):
+    Log(text)
+    # if the text has newlines, split it up
+    if "\n" in text:
+        text = text.split("\n")
+    else:
+        ERRORLIST.append([text, time, clr])
+        return
+    for i in range(0, len(text)):
+        ERRORLIST.append([text[i], time, clr])
+    return
 
 ############ BUTTON CLASSES
 
@@ -316,7 +343,10 @@ class InputButton:
     selectsnd = pwrsnd
     hoversnd = blipsnd
     curanim = ""
-    function = GetUserInputPYG
+    def function():
+        def AfterInput(input):
+            Error("Input: " + input, 3, (255, 255, 0))
+        GetUserInputPYG(AfterInput)
     isasync = False
 
 class RunButton:
@@ -375,17 +405,24 @@ SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
 LookingForInput = False
 CurInput = ""
+AfterInputFunction = None
 
 ###############################################################################
+
+SecAgo = time.time()
 
 def Update():
     global CurrentMenu
     global SelectedButton
     global CurInput
     global LookingForInput
+    global AfterInputFunction
+    global SecAgo
 
     W = screen.get_width()
     H = screen.get_height()
+
+    ########### BACKGROUND
 
     for floater in Floaters:
         surf = floater.surf
@@ -426,6 +463,8 @@ def Update():
     keys = pygame.transform.scale(keys, (W/10, W/10))
     screen.blit(keys, ((W / 1.05) - keys.get_width(), H/15))
 
+    ########### MENU
+
     # loop through all buttons
     indx = 0
     for button in CurrentMenu:
@@ -441,6 +480,21 @@ def Update():
 
     SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
+    ############# OVERLAY
+
+    indx = 0
+    for error in ERRORLIST:
+        indx += 1
+        text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int(W / 60) + int(H / 85))).render(error[0], True, error[2])
+        screen.blit(text1, (W / 30, ((text1.get_height() * indx) * -1) + (H / 1.05)))
+
+    # every 1 second go through each error and remove it if it's been there for more than 1 second
+    if (time.time() - SecAgo) > 1:
+        for error in ERRORLIST:
+            if (error[1] < 0):
+                ERRORLIST.remove(error)
+            error[1] -= 1
+        SecAgo = time.time()
     ####################### DRAW INPUT BOX
     if LookingForInput:
         fntdiv = 32
@@ -476,10 +530,12 @@ def Main():
     global CurrentButtonsIndex
     global LookingForInput
     global CurInput
+    global AfterInputFunction
     LastBackspace = 0
     BackspaceHasBeenHeld = False
 
     while running:
+        ############################ INPUT BOX INPUT
         if (LookingForInput):
             BACKSPACEHELD = pygame.key.get_pressed()[pygame.K_BACKSPACE]
             BACKSPACEHELD = BACKSPACEHELD > 0
@@ -517,6 +573,7 @@ def Main():
                         CurInput += " "
                     elif name == "return":
                         LookingForInput = False
+                        AfterInputFunction( CurInput )
                     elif name == "escape":
                         LookingForInput = False
                     elif name == "tab":
@@ -543,6 +600,8 @@ def Main():
                             CurInput += name
                         else:
                             CurInput += name
+
+            ######################## NORMAL INPUT
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     BackMenu()
