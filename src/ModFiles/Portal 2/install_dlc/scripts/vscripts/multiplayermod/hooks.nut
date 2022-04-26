@@ -64,7 +64,7 @@ function OnPlayerJoin(p, script_scope) {
         FindEntityClass(portal1).linkedprop <- null
         FindEntityClass(portal2).linkedprop <- null
     } catch (exception) {
-        if (GetDeveloperLevel() == 1) {
+        if (GetDeveloperLevel()) {
             printl("(P2:MM): Failed to rename portals" + exception)
         }
     }
@@ -193,7 +193,7 @@ function OnPlayerJoin(p, script_scope) {
 
 // Runs after a player dies
 function OnPlayerDeath(player) {
-    if (GetDeveloperLevel() == 1) {
+    if (GetDeveloperLevel()) {
         printl("(P2:MM): Player died!")
         MapSupport(false, false, false, false, false, player, false)
     }
@@ -208,7 +208,7 @@ function OnPlayerRespawn(player) {
 
     MapSupport(false, false, false, false, false, false, player)
 
-    if (GetDeveloperLevel() == 1) {
+    if (GetDeveloperLevel()) {
         printl("(P2:MM): Player respawned!")
     }
 }
@@ -227,8 +227,13 @@ function PostMapLoad() {
         printl("(P2:MM): Plugin Loaded")
         AddChatCallback("ChatCommands")
     }
-    // Edit cvars
+    // Edit cvars & set server name
     SendToConsole("mp_allowspectators 0")
+    if (PluginLoaded == true) {
+        SendToConsole("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
+    } else {
+        SendToConsole("hostname Portal 2: Multiplayer Mod Server")
+    }
     // Force spawn players in map
     AddBranchLevelName( 1, "P2 32" )
     MapSupport(false, false, false, true, false, false, false)
@@ -361,7 +366,7 @@ function GeneralOneTime() {
     try {
         if (OrangeOldPlayerPos) { }
     } catch(exeption) {
-        if (GetDeveloperLevel() == 1) {
+        if (GetDeveloperLevel()) {
             printl("(P2:MM): OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
         }
         OrangeOldPlayerPos <- OldPlayerPos
@@ -381,7 +386,7 @@ function GeneralOneTime() {
             }
         }
     } catch(exeption) {
-        if (GetDeveloperLevel() == 1) {
+        if (GetDeveloperLevel()) {
             printl("(P2:MM): Blue dropper not found!")
         }
     }
@@ -408,7 +413,7 @@ function GeneralOneTime() {
             }
         }
     } catch(exeption) {
-        if (GetDeveloperLevel() == 1) {
+        if (GetDeveloperLevel()) {
             printl("(P2:MM): Red dropper not found!")
         }
     }
@@ -455,7 +460,7 @@ function ChatCommands(ccuserid, ccmessage) {
     local message = split(ccmessage, " ")
     local commandrunner = p
     // Print some debug info
-    if (GetDeveloperLevel() == 1) {
+    if (GetDeveloperLevel()) {
         printl("=========" + pname + " sent a message=========")
 
         printl("ccuserid: " + ccuserid)
