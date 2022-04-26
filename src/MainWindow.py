@@ -44,6 +44,8 @@ goldencube = pygame.image.load("assets/images/goldencube.png")
 
 ERRORLIST = []
 
+PopupBoxList = []
+
 ###############################################################################
 
 fps = 60
@@ -238,6 +240,10 @@ def Error(text, time = 3, clr = (255, 75, 75)):
         ERRORLIST.append([text[i], time, clr])
     return
 
+def PopupBox(tile, text, buttons):
+    print("")
+
+
 ############ BUTTON CLASSES
 
 class LaunchGameButton:
@@ -406,6 +412,7 @@ SelectedButton = CurrentMenu[CurrentButtonsIndex]
 LookingForInput = False
 CurInput = ""
 AfterInputFunction = None
+InputPrompt = ""
 
 ###############################################################################
 
@@ -476,7 +483,8 @@ def Update():
             clr = button.inactivecolor
         RunAnimation(button, button.curanim)
         text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text, True, clr)
-        screen.blit(text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)  ))
+        if not (LookingForInput):
+            screen.blit(text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)  ))
 
     SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
