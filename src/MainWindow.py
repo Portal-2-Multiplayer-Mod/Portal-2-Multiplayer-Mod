@@ -121,7 +121,7 @@ def GetGamePath():
             Error("Saved path!", 5, (75, 200, 75))
         else:
             Error("You entered an invalid game path!")
-    GetUserInputPYG( AfterInputGP )
+    GetUserInputPYG( AfterInputGP , "Enter Your Portal 2 Game Path")
     
 def CheckPath(gamepath):
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
@@ -218,13 +218,15 @@ def RefreshSettingsMenu():
                 SettingsButtons.append(curkeyButton)
         SettingsButtons.append(BackButton)
 
-def GetUserInputPYG(afterfunc = None):
+def GetUserInputPYG(afterfunc = None, prompt = ""):
     global LookingForInput
     global CurInput
     global AfterInputFunction
+    global InputPrompt
     print("Getting User INPUT")
     LookingForInput = True
     CurInput = ""
+    InputPrompt = prompt
     AfterInputFunction = afterfunc
     print("AfterInputFunction: " + str(AfterInputFunction))
 
@@ -493,8 +495,8 @@ def Update():
     indx = 0
     for error in ERRORLIST:
         indx += 1
-        text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int(W / 60) + int(H / 85))).render(error[0], True, error[2])
-        screen.blit(text1, (W / 30, ((text1.get_height() * indx) * -1) + (H / 1.05)))
+        errortext = pygame.font.Font("assets/fonts/pixel.ttf", int(int(W / 60) + int(H / 85))).render(error[0], True, error[2])
+        screen.blit(errortext, (W / 30, ((errortext.get_height() * indx) * -1) + (H / 1.05)))
 
     # every 1 second go through each error and remove it if it's been there for more than 1 second
     if (time.time() - SecAgo) > 1:
@@ -527,6 +529,11 @@ def Update():
         surf2 = pygame.Surface((W / 1.5, W / 100))
         blitpos = ((W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
         screen.blit(surf1, blitpos)
+        
+        surfInputPrompt = pygame.font.Font("assets/fonts/pixel.ttf", fntsize).render(InputPrompt, True, (255, 255, 255))
+        # blit it right below the surf1
+        screen.blit(surfInputPrompt, (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2), blitpos[1] + surfInputPrompt.get_height()))
+
 
 ###############################################################################
 
