@@ -370,7 +370,7 @@ function GetPlayerColor(p, multiply = true) {
 }
 
 function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
-	if(DevMode == true){
+	if (DevMode){
 		DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
 	}
 

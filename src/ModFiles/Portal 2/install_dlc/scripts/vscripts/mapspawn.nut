@@ -19,9 +19,7 @@
 //                           |___/
 
 //-----------------------------------
-DevMode <- true // Set to true if you're a developer
-//-----------------------------------
-DevInfo <- false // Set to true if you want to see the developer info
+DevMode <- true // Set to true if you want to see the P2:MM debug info
 //-----------------------------------
 FutBolGamemode <- true // Set Futbol gamemode
 //-----------------------------------
@@ -74,7 +72,7 @@ function init() {
     // Load plugin if it exists and compensate if it doesn't
     // Also change the level once it has succeeded this
     if("GetPlayerName" in this) {
-        if (GetDeveloperLevel() == 1) {
+        if (GetDeveloperLevel()) {
             printl("================================")
             printl("P2:MM plugin has already loaded!")
             printl("================================")
@@ -82,7 +80,7 @@ function init() {
         PluginLoaded <- true
     } else {
         MakePluginReplacementFunctions()
-        if (GetDeveloperLevel() == 1) {
+        if (GetDeveloperLevel()) {
             printl("============================================")
             printl("P2:MM plugin has not been loaded!")
             printl("============================================")
@@ -90,7 +88,11 @@ function init() {
         EntFire("p232servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
         EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetDeveloperLevel() == 918612) {
-            EntFire("p232servercommand", "command", "developer 1", 0.01)
+            if (DevMode) {
+                EntFire("p232servercommand", "command", "developer 1", 0.01)
+            } else {
+                EntFire("p232servercommand", "command", "developer 0", 0.01)
+            }
             EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
         }
     }
@@ -114,11 +116,11 @@ function init() {
 // and just helps us with finding our plugin
 function DoesPluginExist() {
     if ("GetPlayerName" in this) {
-        if (GetDeveloperLevel() == 1) {
+        if (GetDeveloperLevel()) {
             printl("(P2:MM): Plugin exists!===================")
         }
     } else {
-        if (GetDeveloperLevel() == 1) {
+        if (GetDeveloperLevel()) {
             printl("(P2:MM): Plugin nonexistent!==============")
         }
     }
@@ -132,6 +134,7 @@ IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
 
+// If we are playing the futbol game mode on this map load, then load another external library with more logic for the minigame
 if (FutBolGamemode) {
     IncludeScript("multiplayermod/gamemodes/futbol/functions.nut")
 }
@@ -158,7 +161,7 @@ try {
     IncludeScript("multiplayermod/mapsupport/#propcreation.nut") // Import a giant function to create props server-side based on map name
     IncludeScript("multiplayermod/mapsupport/" + MapName.tostring() + ".nut") // Import the  map support code
 } catch (error) {
-    if (GetDeveloperLevel() == 1) {
+    if (GetDeveloperLevel()) {
         print("(P2:MM): No map support for " + MapName.tostring())
     }
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
