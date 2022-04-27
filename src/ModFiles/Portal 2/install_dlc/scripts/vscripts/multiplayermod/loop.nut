@@ -346,58 +346,6 @@ function loop() {
         }
     }
 
-    //## "Colored portals" ##//
-    if (DevMode) {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local c1 = Entities.FindByName(null, p.GetName() + "_portal-1")
-            local c2 = Entities.FindByName(null, p.GetName() + "_portal-2")
-
-            local pitch = c2.GetAngles().x
-            local yaw = c2.GetAngles().y
-            local roll = c2.GetAngles().z
-
-            local x = pitch*cos(0) - yaw*sin(0)
-            local y = pitch*sin(0) + yaw*cos(0)
-            x = x * 10
-            y = y * 10
-
-            // printl(c1.GetName())
-            // printl(x)
-            // printl(y)
-            // printl("========")
-
-            local c2o = c2.GetOrigin()
-            local c1o = c1.GetOrigin()
-
-            // DebugDrawBox(origin, mins, max, r, g, b, alpha, duration)
-            // Set preset colors for up to 16 clients
-            switch (p.entindex()) {
-                case 1 : R <- 255; G <- 255; B <- 255; break;
-                case 2 : R <- 0,   G <- 255, B <- 0;   break;
-                case 3 : R <- 0,   G <- 0,   B <- 255; break;
-                case 4 : R <- 255, G <- 0,   B <- 0;   break;
-                case 5 : R <- 255, G <- 100, B <- 100; break;
-                case 6 : R <- 255, G <- 180, B <- 255; break;
-                case 7 : R <- 255, G <- 255, B <- 180; break;
-                case 8 : R <-   0, G <- 255, B <- 240; break;
-                case 9 : R <-  75, G <-  75, B <-  75; break;
-                case 10: R <- 100, G <-  80, B <-   0; break;
-                case 11: R <-   0, G <-  80, B <- 100; break;
-                case 12: R <- 120, G <- 155, B <-  25; break;
-                case 13: R <-   0, G <-   0, B <- 100; break;
-                case 14: R <-  80, G <-   0, B <-   0; break;
-                case 15: R <-   0, G <-  75, B <-   0; break;
-                case 16: R <-   0, G <-  75, B <-  75; break;
-            }
-            DebugDrawBox(c1o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
-            DebugDrawBox(c2o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
-
-            DebugDrawLine(c1o, p.GetOrigin(), R, G, B, true, 0)
-            DebugDrawLine(c2o, p.GetOrigin(), R, G, B, true, 0)
-        }
-    }
-
     /////////////////////////
     // RUNS EVERY 5 SECONDS//
     /////////////////////////
