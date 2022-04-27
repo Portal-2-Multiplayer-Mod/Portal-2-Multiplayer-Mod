@@ -137,6 +137,12 @@ def VerifyGamePath():
         Error("Game path is invalid!")
         GetGamePath()
 
+def MountModOnly():
+    VerifyGamePath()
+    gamepath = GVars.configData["portal2path"]
+    if (CheckPath(gamepath)):
+        RG.MountMod(gamepath)
+
 def RunGameScript():
     VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
@@ -366,7 +372,7 @@ class RunButton:
     selectsnd = pwrsnd
     hoversnd = blipsnd
     curanim = ""
-    function = RunGameScript
+    function = MountModOnly
     isasync = True
 
 class StopButton:
