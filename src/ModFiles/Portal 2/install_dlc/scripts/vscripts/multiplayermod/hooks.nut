@@ -486,21 +486,21 @@ function ChatCommands(ccuserid, ccmessage) {
     if (parsedname != "") {
         parsedname = strip(parsedname)
         if (GetDeveloperLevel()) {
-            printl("parsed name: " + ExpandName(parsedname))
+            printl("(P2:MM): Parsed name: " + ExpandName(parsedname))
         }
         pname = ExpandName(parsedname)
         commandrunner = p // Set the commandrunner to the player that sent the command
         p = FindPlayerByName(ExpandName(parsedname))
         if (GetDeveloperLevel()) {
-            printl("expanded name: " + pname)
-            printl("executing on: " + p)
+            printl("(P2:MM): Expanded name: " + pname)
+            printl("(P2:MM): Executing on: " + p)
         }
     }
     // Strip the last space from the parsed command
     if (parsedcommand != "") {
         parsedcommand = parsedcommand.slice(0, -1)
         if (GetDeveloperLevel()) {
-            printl("parsed command: " + parsedcommand)
+            printl("(P2:MM): Parsed command: " + parsedcommand)
         }
         // If it's all
         if (pname != "all") {

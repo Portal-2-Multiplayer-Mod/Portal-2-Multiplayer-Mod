@@ -25,7 +25,7 @@ function MakePluginReplacementFunctions() {
         return "player" + entinx
     }
     function AddChatCallback(func) {
-        printl("plugin not loaded NOT adding chat callback")
+        printl("(P2:MM): Plugin not loaded. NOT adding chat callback!")
     }
 }
 
@@ -111,7 +111,6 @@ function SetCosmetics(p) {
 
         //## Dreadnox customization ##//
         if (pname == "Dreadnox") {
-            printl("Dreadnox is here!")
             SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
         }
 
@@ -1030,7 +1029,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
 
         // // If we have reached the end of the line break
         // if (fowardstep.x == 0 && fowardstep.y == 0 && fowardstep.z == 0) {
-        //     printl("END OF LINE")
+        //     printl("(P2:MM): END OF LINE")
         //     break
         // }
 

@@ -285,63 +285,63 @@
             } catch(exception) { }
 
             // Voice Lines
-            if(Entities.FindByName(null, "playline1")) {
+            if (Entities.FindByName(null, "playline1")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows01.wav")
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a2_wheatley_ows02.wav")
                 printl("Played line 1")
             }
 
-            if(Entities.FindByName(null, "playline2")) {
+            if (Entities.FindByName(null, "playline2")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sphere_flashlight_tour67.wav")
                 printl("Played line 2")
             }
 
-            if(Entities.FindByName(null, "playline3")) {
+            if (Entities.FindByName(null, "playline3")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking09.wav")
                 printl("Played line 3")
             }
 
-            if(Entities.FindByName(null, "playline4")) {
+            if (Entities.FindByName(null, "playline4")) {
                 Entities.FindByName(null, "InstanceAuto9-sphere_socket").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking12.wav")
                 printl("Played line 4")
             }
 
-            if(Entities.FindByName(null, "playline5")) {
+            if (Entities.FindByName(null, "playline5")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_wakeup_hacking10.wav")
                 printl("Played line 5")
             }
 
-            if(Entities.FindByName(null, "playline6")) {
+            if (Entities.FindByName(null, "playline6")) {
                 Entities.FindByName(null, "InstanceAuto9-sphere_socket").EmitSound("ambient\\alarms\\portal_elevator_chime.wav")
                 printl("Played line 6")
             }
 
-            if(Entities.FindByName(null, "playline7")) {
+            if (Entities.FindByName(null, "playline7")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\bw_finale4_hackworked01.wav")
                 printl("Played line 7")
             }
 
-            if(Entities.FindByName(null, "playline8")) {
+            if (Entities.FindByName(null, "playline8")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret01.wav")
                 printl("Played line 8")
             }
 
-            if(Entities.FindByName(null, "playline9")) {
+            if (Entities.FindByName(null, "playline9")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret08.wav")
                 printl("Played line 9")
             }
 
-            if(Entities.FindByName(null, "playline10")) {
+            if (Entities.FindByName(null, "playline10")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret07.wav")
                 printl("Played line 10")
             }
 
-            if(Entities.FindByName(null, "playline11")) {
+            if (Entities.FindByName(null, "playline11")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret05.wav")
                 printl("Played line 11")
             }
 
-            if(Entities.FindByName(null, "playline12")) {
+            if (Entities.FindByName(null, "playline12")) {
                 Entities.FindByName(null, "@spheredummy").EmitSound("vo\\wheatley\\sp_a1_intro7_hoboturret06.wav")
                 printl("Played line 12")
             }
@@ -397,7 +397,7 @@
             Entities.FindByName(null, "basement_breakers_entrance_blocker_trigger").Destroy()
 
             function elevatorrecreationsp_a1_wakeup() {
-                printl("Elevator recreationsp_a1_wakeup")
+                printl("(P2:MM): Calling elevatorrecreationsp_a1_wakeup()...")
                 EntFire("@sphere", "DisableMotion", "", 0, null)
                 Entities.FindByName(null, "@sphere").SetOrigin(Vector(11357, -819, 161))
                 // Sphere attach bs
@@ -1294,7 +1294,7 @@
         if (MSLoop==true) {
             if (OnlyOnceSpA2ColumBlocker3==true) {
                 if (!Entities.FindByClassnameNearest("trigger_once", Vector(-1486, 256, -139.75), 10)) {
-                    printl("Elevator viewcontrol activated")
+                    printl("(P2:MM): Elevator viewcontrol activated!")
                     // Elevator viewcontrol
                     SpA2ColumBlockerViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
                     SpA2ColumBlockerViewcontrol.__KeyValueFromString("target_team", "-1")
@@ -2439,7 +2439,7 @@
             }
             if (OnlyOnceSpA4Intro==true) {
                 if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
-                    printl("Elevator viewcontrol activated")
+                    printl("(P2:MM): Elevator viewcontrol activated!")
                     // Elevator viewcontrol
                     Entities.FindByName(null, "@exit_door2-close_door_rl").__KeyValueFromString("targetname", "moja3")
 
