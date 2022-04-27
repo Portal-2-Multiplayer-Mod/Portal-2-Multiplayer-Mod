@@ -85,15 +85,20 @@ def CheckForNewFiles():
     # this way if the identifier file does not exist or the time in it is older, it will download the mod files
     try:
         localIdPath = GVars.modPath + GVars.nf + f"ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc{GVars.nf}32playermod.identifier"
-        localDate = datetime.strptime("%Y-%m-%d", open(localIdPath, "r").read())
-        remoteDate = datetime.strptime("%Y-%m-%d", r["Date"])
+        localDate = datetime.strptime(open(localIdPath, "r").read(), "%Y-%m-%d")
+        remoteDate = datetime.strptime(r["Date"],"%Y-%m-%d")
         # love safe guards
         if not (remoteDate > localDate):
             Log("mod files are up to date")
-            return
-    except:
-        Log(f"'{localIdPath}' does not exist")
+            return False
+    except Exception as e:
+        Log(e)
 
+    return True
+
+def DownloadNewFiles():
+    r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
+    r = r.json()
     Log("downloading "+str(len(r["Files"]))+" files...")
     # downlaod the files to a temp folder
     tempPath = GVars.modPath + GVars.nf + ".temp"
