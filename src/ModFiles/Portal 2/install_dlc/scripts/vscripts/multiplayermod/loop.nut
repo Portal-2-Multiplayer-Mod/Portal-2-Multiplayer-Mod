@@ -168,17 +168,20 @@ function loop() {
         }
     }
 
+
     //## Set PlayerModel ##//
-    foreach (pmodel in AssignedPlayerModels) {
-        local plr = pmodel.player
-        local mdlmodel = pmodel.model
-        try {
-            if (plr.GetModelName() != mdlmodel) {
-                EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")", 1)
-                //SendToConsole("script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")")
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local currentplayerclass = FindPlayerClass(p)
+        if (currentplayerclass != null) {
+            if (currentplayerclass.playermodel != null) {
+                if (currentplayerclass.playermodel != p.GetModelName()) {
+                    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + currentplayerclass.playermodel + "\")", 1)
+                }
             }
-        } catch(e) { }
+        }
     }
+
 
     //## Cache original spawn position ##//
     if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {

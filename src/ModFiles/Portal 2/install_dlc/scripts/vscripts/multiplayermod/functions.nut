@@ -134,6 +134,11 @@ function SetCosmetics(p) {
         if (pname == "Bumpy") {
             SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
         }
+
+        //## Mystical Λce customization ##//
+        if (pname == "Mystical Λce") {
+            SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
+        }
     }
 }
 
@@ -440,12 +445,72 @@ AssignedPlayerModels <- []
 function SetPlayerModel(p, mdl) {
     PrecacheModelNoDelay(mdl)
     local mdl2 = MinifyModel(mdl)
-    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
-    local pmodelclass = class {
-        player = p
-        model = mdl
+    local playerclass = FindPlayerClass(p)
+    // EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
+    // local pmodelclass = class {
+    //     player = p
+    //     model = mdl
+    // }
+    // AssignedPlayerModels.push(pmodelclass)
+    playerclass.playermodel <- mdl
+}
+
+function CreateGenericPlayerClass(p) {
+    // Make sure there isnt an existing player class
+    foreach (indx, curlclass in playerclasses) {
+        if (curlclass.player == p) {
+            // If there is, remove it
+            playerclasses.remove(indx)
+        }
     }
-    AssignedPlayerModels.push(pmodelclass)
+
+    local currentplayerclass = {}
+
+    // BASE
+    currentplayerclass.player <- p
+    currentplayerclass.id <- p.entindex()
+
+    // PLUGIN //
+
+        // Player Name
+        if (PluginLoaded==true) {
+            currentplayerclass.username <- GetPlayerName(p.entindex())
+        } else {
+            currentplayerclass.username <- "Player " + p.entindex()
+        }
+
+    ////////////
+
+    // Player color
+    currentplayerclass.color <- GetPlayerColor(p)
+
+    // Player angles
+    currentplayerclass.eyeangles <- Vector(0, 0, 0)
+    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0)
+
+    // Potatogun
+    currentplayerclass.potatogun <- false
+
+    // Player noclip status
+    currentplayerclass.noclip <- p.IsNoclipping()
+
+    // Rocket player status
+    currentplayerclass.rocket <- false
+
+    // Player Portals
+    currentplayerclass.portal1 <- null
+    currentplayerclass.portal2 <- null
+
+    // COSMETICS /////////////
+    
+    currentplayerclass.playermodel <- null
+
+    //////////////////////////////////////////////
+
+    // Add player class to the player class array
+    playerclasses.push(currentplayerclass)
+
+    return currentplayerclass
 }
 
 PrecachedProps <- []
@@ -690,25 +755,6 @@ function VectorMultiplySinglePart(vec, amt, part) {
             }
         }
     }
-}
-
-function CreatePortalsLinkedProp(portal1, portal2, player) {
-    // local linkedportal1 = CreateProp("prop_dynamic", portal1.GetOrigin(), "models/props/portal_gap.mdl", 0)
-    // local linkedportal2 = CreateProp("prop_dynamic", portal2.GetOrigin(), "models/props/portal_gap.mdl", 0)
-    // linkedportal1.SetAngles(portal1.GetAngles().x, portal1.GetAngles().y, portal1.GetAngles().z)
-    // linkedportal2.SetAngles(portal2.GetAngles().x, portal2.GetAngles().y, portal2.GetAngles().z)
-    // linkedportal1.__KeyValueFromString("targetname", portal1.GetName() + "_linked")
-    // linkedportal2.__KeyValueFromString("targetname", portal2.GetName() + "_linked")
-    // linkedportal1.__KeyValueFromString("rendermode", "2")
-    // linkedportal2.__KeyValueFromString("rendermode", "2")
-    // DecEntFireByHandle(linkedportal1, "SetParent", portal1.GetName())
-    // DecEntFireByHandle(linkedportal2, "SetParent", portal2.GetName())
-    // local color1 = GetPlayerPortalColor(player, false)
-    // local color2 = GetPlayerPortalColor(player, true)
-    // DecEntFireByHandle(linkedportal1, "alpha", "" + color1.a)
-    // DecEntFireByHandle(linkedportal2, "alpha", "" + color2.a)
-    // DecEntFireByHandle(linkedportal1, "color", color1.r + " " + color1.g + " " + color1.b)
-    // DecEntFireByHandle(linkedportal2, "color", color2.r + " " + color2.g + " " + color2.b)
 }
 
 function CreateEntityClass(ent) {

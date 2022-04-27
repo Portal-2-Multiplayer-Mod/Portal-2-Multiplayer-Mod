@@ -115,7 +115,6 @@ function OnPlayerJoin(p, script_scope) {
     EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
     if (PlayerID >= 2) {
         onscreendisplay.__KeyValueFromString("y", "0.075")
-        CreatePortalsLinkedProp(portal1, portal2, p)
     }
 
     //# Set player color #//
@@ -127,61 +126,26 @@ function OnPlayerJoin(p, script_scope) {
     script_scope.Colored <- true
     EntFireByHandle(p, "Color", (pcolor.r + " " + pcolor.g + " " + pcolor.b), 0, null, null)
 
-    //# Setup player class #//
-    local currentplayerclass = {}
 
-    // Player
-    currentplayerclass.player <- p
-    // Player id
-    currentplayerclass.id <- p.entindex()
-    // Player name
-    if (PluginLoaded==true) {
-        currentplayerclass.username <- GetPlayerName(p.entindex())
-        player1discordhookstr = "hookdiscord Player " + currentplayerclass.username + " Joined The Game"
-        player1discordhookstr.tostring()
-        EntFire("p232servercommand", "command", "script SendPythonOutput(player1discordhookstr)", 1)
-    } else {
-        currentplayerclass.username <- "Player " + p.entindex()
-    }
-    // Player angles
-    currentplayerclass.eyeangles <- Vector(0, 0, 0)
-    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0)
 
-    SetCosmetics(p)
+    // SETUP THE CLASS /////////////////
+    local currentplayerclass = CreateGenericPlayerClass(p)
 
-    // Potatogun
-    currentplayerclass.potatogun <- false
-
-    // Player color
-    local localcolorclass = {}
-    localcolorclass.r <- R
-    localcolorclass.g <- G
-    localcolorclass.b <- B
-    currentplayerclass.color <- localcolorclass
-    // Player noclip status
-    currentplayerclass.noclip <- p.IsNoclipping()
-    // Rocket player status
-    currentplayerclass.rocket <- false
-
+    // UPDATE THE CLASS
     currentplayerclass.portal1 <- portal1
     currentplayerclass.portal2 <- portal2
 
-    // Make sure there isnt an existing player class
-    foreach (indx, curlclass in playerclasses) {
-        if (curlclass.player == p) {
-            // If there is, remove it
-            playerclasses.remove(indx)
-        }
-    }
-
-    // Add player class to the player class array
-    playerclasses.push(currentplayerclass)
-
+    // PRINT THE CLASS
     printl("===== Player Class =====")
     foreach (thing in FindPlayerClass(p)) {
         printl(thing)
     }
     printl("===================")
+
+    /////////////////////////////////////
+
+    //# SET THE COSMETICS #//
+    SetCosmetics(p)
 
     // Set fog controller
     if (HasSpawned==true) {
@@ -302,7 +266,6 @@ function GeneralOneTime() {
 
     local ent = Entities.FindByName(null, "blue")
     local playerclass = FindPlayerClass(ent)
-    CreatePortalsLinkedProp(playerclass.portal1, playerclass.portal2, ent)
 
     if (fogs == false) {
         usefogcontroller <- false
