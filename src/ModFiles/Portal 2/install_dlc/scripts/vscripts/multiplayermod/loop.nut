@@ -183,6 +183,45 @@ function loop() {
     }
 
 
+    // ENTITY OPTIMIZATION / DELETION ///////////////
+    local cnt = GetEntityCount()
+    local amtpast = cnt - (EntityCap - EntityCapLeeway) // this is the amount of entities we have past the caps leeway amount
+    local amtdeleted = 0
+    
+    if (cnt > EntityCap - EntityCapLeeway) {
+        if (cnt >= FailSafeEntityCap) {
+            printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailSafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
+            SendToConsole("changelevel mp_coop_lobby_3")
+        }
+        printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
+        foreach (entclass in ExpendableEntitys) {
+
+            local curdelamt = amtpast - amtdeleted
+            if (amtdeleted < amtpast) { // if we are still over the cap
+
+                local amt = GetEntityCount(entclass)
+                printl("CURRENT AMOUNT OF " + entclass + ": " + amt)
+                
+                if (amt > 0) {
+                    if (amt >= curdelamt) {
+                        DeleteAmountOfEntitys(entclass, curdelamt)
+                        return
+                    } else {
+                        DeleteAmountOfEntitys(entclass, amt)
+                        amtdeleted = amtdeleted + amt
+                    }
+                }
+
+
+            } else {
+                return
+            }
+        }
+    }
+
+    /////////////////////////////////////////////////
+
+
     //## Cache original spawn position ##//
     if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
         // OldPlayerPos = the blues inital spawn position

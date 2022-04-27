@@ -513,6 +513,49 @@ function CreateGenericPlayerClass(p) {
     return currentplayerclass
 }
 
+function GetEntityCount(classname = null) {
+    if (classname == null) {
+        local p = null
+        local indx = 0
+        while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000)) {
+            indx += 1
+        }
+        return indx
+    } else {
+        local p = null
+        local indx = 0
+        while (p = Entities.FindByClassname(p, classname)) {
+            indx += 1
+        }
+        return indx
+    }
+}
+
+function DeleteAmountOfEntitys(classname, amount) {
+    local p = null
+    local indx = 0
+    while (p = Entities.FindByClassname(p, classname)) {
+        if (indx >= amount) {
+            break
+        }
+        
+        local delthis = true
+        foreach (thing in InvalidRootMoveParents) {
+            if (p.GetRootMoveParent().GetClassname() == thing) {
+                delthis = false
+                printl("Not deleting " + classname + " (ROOTMOVEPARENT:) " + p.GetRootMoveParent().GetClassname() + " because it is in the InvalidRootMoveParents array")
+            }
+        }
+
+        if (delthis) {
+            p.Destroy()
+            indx += 1
+        }  
+    }
+    printl("Deleted " + indx + " " + classname + "'s")
+    return indx
+}
+
 PrecachedProps <- []
 function PrecacheModel(mdl) {
     SendToConsole("script PrecacheModelNoDelay(\"" + mdl + "\")")
