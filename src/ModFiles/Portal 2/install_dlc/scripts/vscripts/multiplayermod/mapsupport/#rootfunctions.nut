@@ -113,7 +113,11 @@ function NewApertureStartElevatorFixes() {
 
         // Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
         // Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
-    } catch(exception) {printl("EXCEPT")}
+    } catch(exception) {
+        if (GetDeveloperLevel()) {
+            printl("(P2:MM): Exception occured in NewApertureStartElevatorFixes()!")
+        }
+    }
     // Enable vgui displays
     try {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)

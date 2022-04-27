@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------------------------------------------------------------------------//
-//                                                                  COPYRIGHT                                                                     //
-//                                                       © 2022 Portal 2: Multiplayer Mod                                                         //
+//                                                                   COPYRIGHT                                                                    //
+//                                                        © 2022 Portal 2: Multiplayer Mod                                                        //
 //                                      https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/LICENSE                                       //
 // In the case that this file does not exist at all or in the GitHub repository, this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE //
 //------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -12,8 +12,6 @@ printl("-------------------------")
 printl("")
 
 // Here, you can customize several parameters in your server.
-// You can change this mid-game as well, however, be sure to
-// modify the the one that has been copied into a new
 // You can change this mid-game as well, however, be sure
 // to modify the one that has been copied into a new
 // portal2_dlcX folder and switch levels after modifying!
@@ -77,7 +75,7 @@ function init() {
 
     // Load plugin if it exists and compensate if it doesn't
     // Also change the level once it has succeeded this
-    if("GetPlayerName" in this) {
+    if ("GetPlayerName" in this) {
         if (GetDeveloperLevel()) {
             printl("=====================================")
             printl("P2:MM plugin has already been loaded!")

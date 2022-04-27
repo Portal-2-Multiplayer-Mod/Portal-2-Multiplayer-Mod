@@ -92,7 +92,7 @@ while (Loop == true) do
             end
 
             -- if the prop is no drawed store that
-            if(prop:GetMaterial() == "models/wireframe") then
+            if (prop:GetMaterial() == "models/wireframe") then
                 PropEnableDraw = false
             end
 

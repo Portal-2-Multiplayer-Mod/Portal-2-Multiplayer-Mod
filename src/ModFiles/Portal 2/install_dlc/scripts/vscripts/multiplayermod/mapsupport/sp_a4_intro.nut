@@ -270,7 +270,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSpA4Intro==true) {
             if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
-                printl("Elevator viewcontrol activated")
+                printl("(P2:MM): Elevator viewcontrol activated!")
                 // Elevator viewcontrol
                 Entities.FindByName(null, "@exit_door2-close_door_rl").__KeyValueFromString("targetname", "moja5")
 

@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "basement_breakers_entrance_blocker_trigger").Destroy()
 
         function elevatorrecreationsp_a1_wakeup() {
-            printl("Elevator recreationsp_a1_wakeup")
+            printl("(P2:MM): Calling elevatorrecreationsp_a1_wakeup()...")
             Entities.FindByName(null, "@sphere").SetOrigin(Vector(11357, -819, 161))
             // Sphere attach bs
             EntFire("@sphere", "EnableMotion", "", 0.7, null)
