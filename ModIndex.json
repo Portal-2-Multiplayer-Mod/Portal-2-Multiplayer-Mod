@@ -1,5 +1,5 @@
 {
-    "Date": "2022-04-27",
+    "Date": "2022-04-28",
     "Path": "src/ModFiles/Portal 2/install_dlc",
     "Files": [
         "/32playermod.identifier",
@@ -11,6 +11,7 @@
         "/scripts/vscripts/multiplayermod/hooks.nut",
         "/scripts/vscripts/multiplayermod/loop.nut",
         "/scripts/vscripts/multiplayermod/variables.nut",
+        "/scripts/vscripts/multiplayermod/gamemodes/futbol/functions.nut",
         "/scripts/vscripts/multiplayermod/mapsupport/#mapsupport_template.nut",
         "/scripts/vscripts/multiplayermod/mapsupport/#propcreation.nut",
         "/scripts/vscripts/multiplayermod/mapsupport/#rootfunctions.nut",

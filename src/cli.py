@@ -2,6 +2,7 @@ import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.RunGame as RG
 import Scripts.Configs as cfg
+import Scripts.Updater as up
 import os
 
 def UserAction():
@@ -47,7 +48,19 @@ def VerifyGamePath():
             valid = True
             Log("Game path is valid!")
 
-
+def CheckForUpdates():
+    if up.CheckForNewFiles():
+        valid = False
+        while not valid:
+            update = input("there are new files do you want to update the mod? (y/n) ")
+            if (update.upper() == "YES") or (update.upper() == "Y"):
+                valid = True
+                up.DownloadNewFiles()
+            elif (update.upper() == "NO") or (update.upper() == "N"):
+                valid = True
+                return
+        
+        
 def OnStart():
     # Populate the global variables
     GVars.init()
@@ -55,7 +68,7 @@ def OnStart():
     StartLog()
     # Load the configs (It's better to do it separately)
     GVars.LoadConfig()
-
+    CheckForUpdates()
 
 def Init():
     OnStart()
@@ -65,9 +78,9 @@ def Init():
 
     # Ask the user what they want before proceeding.
     UserAction()
+    VerifyGamePath()
     Log("")
 
-    VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
     
 #//# Mount P2:MM #//#
