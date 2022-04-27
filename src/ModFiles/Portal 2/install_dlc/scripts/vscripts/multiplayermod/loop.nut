@@ -80,7 +80,7 @@ function loop() {
             CoordsAlternate <- true
         }
     } else {
-        if (LastCoordGetPlayer != null && Entities.FindByName(null, "p232_logic_measure_movement")) {
+        if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
             local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
             if (currentplayerclass != null) {
                 if (OriginalAngle == null && CanCheckAngle == true) {
@@ -281,7 +281,9 @@ function loop() {
                 if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
                     DoneWaiting <- true
                     GeneralOneTime()
-                    printl("=================================HEALTH SPAWN")
+                    if (GetDeveloperLevel()) {
+                        printl("=================================HEALTH SPAWN")
+                    }
                 }
 
                 // if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
@@ -325,8 +327,8 @@ function loop() {
     //## Config developer mode loop ##//
     if (DevModeConfig) {
         // Change DevMode variable based on convar "developer"
-        if (GetDeveloperLevel() == 0) {
-            if (StartDevModeCheck == true) {
+        if (!GetDeveloperLevel()) {
+            if (StartDevModeCheck) {
                 DevMode <- false
             }
         } else {

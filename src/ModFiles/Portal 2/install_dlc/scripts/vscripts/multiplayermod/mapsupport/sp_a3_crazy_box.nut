@@ -26,7 +26,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(144, -1280, 1600), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(200, -1272, 1600), 20).Destroy()
         Entities.FindByClassnameNearest("prop_weighted_cube", Vector(576, -1024, 1644), 20).__KeyValueFromString("targetname", "tubecap")
-        Entities.FindByName(null, "@test_dome_lift_entry_teleport").__KeyValueFromString("targetname", "tubecapfuckyou")
+        Entities.FindByName(null, "@test_dome_lift_entry_teleport").__KeyValueFromString("targetname", "tubecapdome")
 
        
         Entities.FindByName(null, "AutoInstance1-door_prop").__KeyValueFromString("targetname", "DisableDoorMpMod")

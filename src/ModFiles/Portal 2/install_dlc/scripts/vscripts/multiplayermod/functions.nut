@@ -76,12 +76,12 @@ function ToggleCheats() {
 }
 
 function SetCheats() {
-    CheatsOn = Entities.FindByModel(null, "models/cheatdetectionp232.mdl")
+    CheatsOn = Entities.FindByModel(null, "models/cheatdetectionp2mm.mdl")
     if (CheatsOn == null || CheatsOn == false) {
         CheatsOn = false
     } else {
         CheatsOn = true
-        Entities.FindByModel(null, "models/cheatdetectionp232.mdl").Destroy()
+        Entities.FindByModel(null, "models/cheatdetectionp2mm.mdl").Destroy()
     }
     printl("===== Cheat Detection =====")
     printl("           " + CheatsOn)
@@ -228,7 +228,7 @@ function TeleportPlayerToClass(player, curclass) {
     player.SetAngles(curclass.rot.x, curclass.rot.y, curclass.rot.z)
 }
 
-function p232fogswitch(fogname) {
+function p2mmfogswitch(fogname) {
     printl("Switching to fog: " + fogname)
     foreach (fogclass in fogs) {
         if (fogclass.fogname == fogname) {
@@ -502,7 +502,7 @@ function CreateGenericPlayerClass(p) {
     currentplayerclass.portal2 <- null
 
     // COSMETICS /////////////
-    
+
     currentplayerclass.playermodel <- null
 
     //////////////////////////////////////////////
@@ -591,10 +591,14 @@ function PrecacheModelNoDelay(mdl) {
         if (CheatsOn == false) {
             SendToConsole("sv_cheats 0")
         }
-        EntFire("p232servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
-        printl("Precached model: " + minimdl + " AKA " + mdl)
+        EntFire("p2mmservercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
+        if (GetDeveloperLevel()) {
+            printl("Precached model: " + minimdl + " AKA " + mdl)
+        }
     } else {
-        printl("Model: " + mdl + " already precached!")
+        if (GetDeveloperLevel()) {
+            printl("Model: " + mdl + " already precached!")
+        }
     }
 }
 
@@ -801,7 +805,9 @@ function VectorMultiplySinglePart(vec, amt, part) {
 }
 
 function CreateEntityClass(ent) {
-    printl("Creating new entity class for entity: " + ent)
+    if (GetDeveloperLevel()) {
+        printl("Creating new entity class for entity: " + ent)
+    }
     local newclass = class {
         entity = ent
     }
@@ -1288,7 +1294,7 @@ function CanPing(ison = true) {
 }
 
 function CanJump(enable = false, player = "all") {
-    local name = "p232temp_CanJump"
+    local name = "p2mmtemp_CanJump"
     local mainent = Entities.FindByName(null, name)
     if (!mainent) {
         mainent = Entities.CreateByClassname("player_speedmod")
@@ -1311,7 +1317,7 @@ function CanJump(enable = false, player = "all") {
 }
 
 function CanUse(enable = false, player = "all") {
-    local name = "p232temp_CanUse"
+    local name = "p2mmtemp_CanUse"
     local mainent = Entities.FindByName(null, name)
     if (!mainent) {
         mainent = Entities.CreateByClassname("player_speedmod")
@@ -1334,7 +1340,7 @@ function CanUse(enable = false, player = "all") {
 }
 
 function CanCrouch(enable = false, player = "all") {
-    local name = "p232temp_CanCrouch"
+    local name = "p2mmtemp_CanCrouch"
     local mainent = Entities.FindByName(null, name)
     if (!mainent) {
         mainent = Entities.CreateByClassname("player_speedmod")
@@ -1357,7 +1363,7 @@ function CanCrouch(enable = false, player = "all") {
 }
 
 function EnableHud(enable = false, player = "all") {
-    local name = "p232temp_EnableHud"
+    local name = "p2mmtemp_EnableHud"
     local mainent = Entities.FindByName(null, name)
     if (!mainent) {
         mainent = Entities.CreateByClassname("player_speedmod")
@@ -1467,10 +1473,10 @@ function SendClientCommand(command, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            EntFire("p232clientcommand", "command", command, 0, p)
+            EntFire("p2mmclientcommand", "command", command, 0, p)
         }
     } else {
-        EntFire("p232clientcommand", "command", command, 0, player)
+        EntFire("p2mmclientcommand", "command", command, 0, player)
     }
 }
 
@@ -1538,9 +1544,11 @@ function BestGuessSpawnpoint() {
             "@transition_from_map",
         ]
 
-        printl("===========================")
-        printl("Box ents")
-        printl("===========================")
+        if (GetDeveloperLevel()) {
+            printl("===========================")
+            printl("Box ents")
+            printl("===========================")
+        }
 
         local BestSurrondingBoxEnt = -1
         local CurrentBestStartingEnt = null
@@ -1793,14 +1801,14 @@ function CreateOurEntities() {
     measuremovement.__KeyValueFromString( "measureretarget", "" )
     measuremovement.__KeyValueFromString( "targetscale", "1.0" )
     // Movement logics
-    measuremovement.__KeyValueFromString( "targetname", "p232_logic_measure_movement" )
-    measuremovement.__KeyValueFromString( "targetreference", "p232_logic_measure_movement" )
-    measuremovement.__KeyValueFromString( "target", "p232_logic_measure_movement" )
-    EntFireByHandle(measuremovement, "SetMeasureReference", "p232_logic_measure_movement", 0.0, null, null)
+    measuremovement.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement" )
+    measuremovement.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement" )
+    measuremovement.__KeyValueFromString( "target", "p2mm_logic_measure_movement" )
+    EntFireByHandle(measuremovement, "SetMeasureReference", "p2mm_logic_measure_movement", 0.0, null, null)
     EntFireByHandle(measuremovement, "enable", "", 0.0, null, null)
 
     nametagdisplay <- Entities.CreateByClassname("game_text")
-    nametagdisplay.__KeyValueFromString("targetname", "p232nametagdisplay")
+    nametagdisplay.__KeyValueFromString("targetname", "p2mmnametagdisplay")
     nametagdisplay.__KeyValueFromString("x", "-1")
     nametagdisplay.__KeyValueFromString("y", "0.2")
     nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
@@ -1850,9 +1858,9 @@ function CreateOurEntities() {
 
     // Create a player_speedmod entity
     playerspeedmod <- Entities.CreateByClassname("player_speedmod")
-    playerspeedmod.__KeyValueFromString("targetname", "p232_player_speedmod")
+    playerspeedmod.__KeyValueFromString("targetname", "p2mm_player_speedmod")
 
     // Create an entity that sends a client command
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
-    clientcommand.__KeyValueFromString("targetname", "p232clientcommand")
+    clientcommand.__KeyValueFromString("targetname", "p2mmclientcommand")
 }

@@ -27,9 +27,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSPostPlayerSpawn==true) {
         NewApertureStartElevatorFixes()
-        // Fix valves stupid bug
-        Entities.FindByClassnameNearest("trigger_once", Vector(-450.29, -703, 61.5), 24).__KeyValueFromString("targetname", "fuckyouvalve")
-        EntFire("fuckyouvalve", "addoutput", "OnStartTouch player_on_top_branch:SetValue:1:0.7", 2, null)
+        // Fix Valve's stupid bug
+        Entities.FindByClassnameNearest("trigger_once", Vector(-450.29, -703, 61.5), 24).__KeyValueFromString("targetname", "temptrigger")
+        EntFire("temptrigger", "addoutput", "OnStartTouch player_on_top_branch:SetValue:1:0.7", 2, null)
     }
 
     if (MSOnPlayerJoin==true) {

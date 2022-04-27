@@ -5,6 +5,12 @@
 // In the case that this file does not exist at all or in the GitHub repository, this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE //
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 
+printl("")
+printl("-------------------------")
+printl("==== calling mapspawn.nut")
+printl("-------------------------")
+printl("")
+
 // Here, you can customize several parameters in your server.
 // You can change this mid-game as well, however, be sure to
 // modify the the one that has been copied into a new
@@ -19,7 +25,7 @@
 //                           |___/
 
 //-----------------------------------
-DevMode <- true // Set to true if you want to see the P2:MM debug info
+DevMode <- false // Set to true if you want to see the P2:MM debug info
 //-----------------------------------
 FutBolGamemode <- true // Set Futbol gamemode
 //-----------------------------------
@@ -67,33 +73,45 @@ function init() {
 
     // Create a global point_servercommand entity for us to pass through commands
     globalservercommand <- Entities.CreateByClassname("point_servercommand")
-    globalservercommand.__KeyValueFromString("targetname", "p232servercommand")
+    globalservercommand.__KeyValueFromString("targetname", "p2mmservercommand")
 
     // Load plugin if it exists and compensate if it doesn't
     // Also change the level once it has succeeded this
     if("GetPlayerName" in this) {
         if (GetDeveloperLevel()) {
-            printl("================================")
-            printl("P2:MM plugin has already loaded!")
-            printl("================================")
+            printl("=====================================")
+            printl("P2:MM plugin has already been loaded!")
+            printl("=====================================")
         }
         PluginLoaded <- true
     } else {
         MakePluginReplacementFunctions()
         if (GetDeveloperLevel()) {
-            printl("============================================")
+            printl("=================================")
             printl("P2:MM plugin has not been loaded!")
-            printl("============================================")
+            printl("=================================")
         }
-        EntFire("p232servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
-        EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
+        EntFire("p2mmservercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
+        EntFire("p2mmservercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetDeveloperLevel() == 918612) {
             if (DevMode) {
-                EntFire("p232servercommand", "command", "developer 1", 0.01)
+                EntFire("p2mmservercommand", "command", "developer 1", 0.01)
             } else {
-                EntFire("p232servercommand", "command", "developer 0", 0.01)
+                EntFire("p2mmservercommand", "command", "developer 0", 0.01)
             }
-            EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
+            printl("Resetting map so that the plugin has an effect! (if it loaded)")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            EntFire("p2mmservercommand", "command", "clear", 0)
+            EntFire("p2mmservercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
         }
     }
 
@@ -109,21 +127,7 @@ function init() {
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
 
     // Delay the creation of our entities before so that we don't get an engine error from the entity limit
-    EntFire("p232servercommand", "command", "script CreateOurEntities()", 0.05)
-}
-
-// DoesPluginExist() is a developer function
-// and just helps us with finding our plugin
-function DoesPluginExist() {
-    if ("GetPlayerName" in this) {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Plugin exists!===================")
-        }
-    } else {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Plugin nonexistent!==============")
-        }
-    }
+    EntFire("p2mmservercommand", "command", "script CreateOurEntities()", 0.05)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,4 +177,5 @@ DoEntFire("worldspawn", "FireUser1", "", 0.02, null, null)
 Entities.First().ConnectOutput("OnUser1", "init")
 } catch(e) {
     print("(P2:MM): Initializing our custom support!")
+    print("")
 }

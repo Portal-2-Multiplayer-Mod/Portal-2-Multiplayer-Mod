@@ -126,8 +126,6 @@ function OnPlayerJoin(p, script_scope) {
     script_scope.Colored <- true
     EntFireByHandle(p, "Color", (pcolor.r + " " + pcolor.g + " " + pcolor.b), 0, null, null)
 
-
-
     // SETUP THE CLASS /////////////////
     local currentplayerclass = CreateGenericPlayerClass(p)
 
@@ -136,11 +134,16 @@ function OnPlayerJoin(p, script_scope) {
     currentplayerclass.portal2 <- portal2
 
     // PRINT THE CLASS
-    printl("===== Player Class =====")
-    foreach (thing in FindPlayerClass(p)) {
-        printl(thing)
+    if (GetDeveloperLevel()) {
+        printl("")
+        printl("===== New player joined =====")
+        printl("======== Class Info =========")
+        foreach (thing in FindPlayerClass(p)) {
+            printl(thing)
+        }
+        printl("=================================")
+        print("")
     }
-    printl("===================")
 
     /////////////////////////////////////
 
@@ -183,7 +186,7 @@ function PostMapLoad() {
     SendPythonOutput("hookdiscord Portal 2 Playing On: " + GetMapName())
 
     //## Cheat detection ##//
-    SendToConsole("prop_dynamic_create cheatdetectionp232")
+    SendToConsole("prop_dynamic_create cheatdetectionp2mm")
     SendToConsole("script SetCheats()")
 
     // Add a hook to the chat command function
@@ -199,14 +202,14 @@ function PostMapLoad() {
         SendToConsole("hostname Portal 2: Multiplayer Mod Server")
     }
     // Force spawn players in map
-    AddBranchLevelName( 1, "P2 32" )
+    AddBranchLevelName( 1, "P2 MM" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
     // Enable fast download
     SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
     SendToConsole("sv_allowdownload 1")
     SendToConsole("sv_allowupload 1")
-    if (DevMode==true) {
+    if (DevMode) {
         SendToConsole("developer 1")
         StartDevModeCheck <- true
     }
@@ -222,7 +225,7 @@ function PostMapLoad() {
 	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
     // Set original angles
-    EntFire("p232servercommand", "command", "script CanCheckAngle <- true", 0.32)
+    EntFire("p2mmservercommand", "command", "script CanCheckAngle <- true", 0.32)
 
     local plr = Entities.FindByClassname(null, "player")
     // OriginalPosMain <- Entities.FindByClassname(null, "player").GetOrigin()
@@ -232,8 +235,8 @@ function PostMapLoad() {
 
     EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
 
-    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
-    EntFire("p232servercommand", "command", "script CanHook <- true", 1)
+    EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
+    EntFire("p2mmservercommand", "command", "script CanHook <- true", 1)
     PostMapLoadDone <- true
 }
 
@@ -248,7 +251,7 @@ function PostPlayer2Join() {
 // Runs once the game begins
 // (Two players have loaded in by now)
 function GeneralOneTime() {
-    EntFire("p232servercommand", "command", "script ForceRespawnAll()", 1)
+    EntFire("p2mmservercommand", "command", "script ForceRespawnAll()", 1)
 
     // Single player maps with chapter titles
     local CHAPTER_TITLES =
@@ -269,15 +272,19 @@ function GeneralOneTime() {
 
     if (fogs == false) {
         usefogcontroller <- false
-        printl("(P2:MM): No fog controller found, disabling fog controller")
+        if (GetDeveloperLevel()) {
+            printl("(P2:MM): No fog controller found, disabling fog controller")
+        }
     } else {
         usefogcontroller <- true
-        printl("(P2:MM): Fog controller found, enabling fog controller")
+        if (GetDeveloperLevel()) {
+            printl("(P2:MM): Fog controller found, enabling fog controller")
+        }
     }
 
     if (usefogcontroller == true) {
         foreach (fog in fogs) {
-            EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p232servercommand:command:script p232fogswitch(\"" + fog.fogname + "\")", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p2mmservercommand:command:script p2mmfogswitch(\"" + fog.fogname + "\")", 0, null, null)
         }
 
         defaultfog <- fogs[0].fogname
@@ -478,17 +485,23 @@ function ChatCommands(ccuserid, ccmessage) {
     // Strip the last space from the parsed name
     if (parsedname != "") {
         parsedname = strip(parsedname)
-        printl("parsed name: " + ExpandName(parsedname))
+        if (GetDeveloperLevel()) {
+            printl("parsed name: " + ExpandName(parsedname))
+        }
         pname = ExpandName(parsedname)
         commandrunner = p // Set the commandrunner to the player that sent the command
         p = FindPlayerByName(ExpandName(parsedname))
-        printl("expanded name: " + pname)
-        printl("executing on: " + p)
+        if (GetDeveloperLevel()) {
+            printl("expanded name: " + pname)
+            printl("executing on: " + p)
+        }
     }
     // Strip the last space from the parsed command
     if (parsedcommand != "") {
         parsedcommand = parsedcommand.slice(0, -1)
-        printl("parsed command: " + parsedcommand)
+        if (GetDeveloperLevel()) {
+            printl("parsed command: " + parsedcommand)
+        }
         // If it's all
         if (pname != "all") {
             // Run the chat command runner if the player isnt null
@@ -515,8 +528,9 @@ function ChatCommands(ccuserid, ccmessage) {
             }
         }
     }
-
-    printl("==============================================")
+    if (GetDeveloperLevel()) {
+        printl("==============================================")
+    }
 }
 
 // Parse the chat commands coming from clients
@@ -560,7 +574,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
     //## SPEED ##//
     if (action == "speed") {
         if (command.len() > 1) {
-            EntFire("p232_player_speedmod", "modifyspeed", command[1], 0, player)
+            EntFire("p2mm_player_speedmod", "modifyspeed", command[1], 0, player)
         } else {
             SendToConsole("say " + playername + ": You need to specify a speed.")
         }
@@ -572,7 +586,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
             if (commandrunner == player) {
                 SendToConsole("say " + playername + ": You probably dont want to kick yourself. If you do then use kick " + playername + ".")
             } else {
-                EntFire("p232clientcommand", "command", "disconnect", 0, player)
+                EntFire("p2mmclientcommand", "command", "disconnect", 0, player)
             }
         } else {
             local reason = ""
@@ -581,7 +595,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
             }
             local playertokick = FindPlayerByName(command[1])
             if (playertokick != null) {
-                EntFire("p232clientcommand", "command", "disconnect" + reason, 0, playertokick)
+                EntFire("p2mmclientcommand", "command", "disconnect" + reason, 0, playertokick)
             } else {
                 SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
             }

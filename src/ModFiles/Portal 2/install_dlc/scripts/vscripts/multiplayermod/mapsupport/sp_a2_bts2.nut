@@ -147,7 +147,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         envfade.__KeyValueFromString("targetname", "FadeyBoi")
                         DoEntFire("onscreendisplaympmodbts2", "display", "", 0.1, null, null)
                         DoEntFire("FadeyBoi", "fade", "", 0.1, null, null)
-                        printl("stuff=====================thing")
+                        if (GetDeveloperLevel()) {
+                            printl("stuff=====================thing")
+                        }
                         NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- false
                         PreviousTimeSp_A2_Bts2Again <- Time()
                         Entities.FindByName(null, "EndDeathEventMPMod").__KeyValueFromString("targetname", "EndDeathEventMPModDisMain")
@@ -160,7 +162,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
                  
                 SendToConsole("changelevel sp_a2_bts2")
-                printl("stuff=====================")
+                if (GetDeveloperLevel()) {
+                    printl("stuff=====================")
+                }
             }
         }
 

@@ -56,7 +56,7 @@ def DownloadClient():
     # this goes through all the binaries in the latest release until one of them ends with the package type (.exe, .pkg etc...)
     for i in range(len(r.json()["assets"])):
         if(r.json()["assets"][i]["browser_download_url"].endsWith(packageType)):
-            Log("found client to download")
+            Log("Found client to download!")
             downloadLink = r.json()["assets"][i]["browser_download_url"]
             break
     
