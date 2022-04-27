@@ -103,6 +103,40 @@ fogs <- false
 CurrentPythonOutputID <- 0
 CurrentPythonInputID <- 0
 
+FailSafeEntityCap <- 2010
+EntityCap <- 2000
+EntityCapLeeway <- 20
+ExpendableEntitys <- [
+    "logic_auto",
+    "logic_autosave",
+    "env_viewpunch",
+    "env_shake",
+    "info_particle_system",
+    "env_fog_controller",
+    "env_fade",
+    "func_areaportal",
+    "env_soundscape",
+    "ambient_generic",
+    "prop_physics_paintable",
+    "prop_physics",
+    "prop_physics_override",
+    "prop_physics_multiplayer",
+    "prop_detail",
+    "prop_detail",
+    "prop_dynamic_ornament",
+    "prop_dynamic_override",
+    "func_illusionary",
+    "func_brush",
+    "prop_weighted_cube",
+    "func_detail",
+]
+InvalidRootMoveParents <- [
+    "player",
+    "prop_portal",
+    "worldspawn",
+    ""
+]
+
 ConsoleAscii <- [
 ""
 "██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░██████╗░"

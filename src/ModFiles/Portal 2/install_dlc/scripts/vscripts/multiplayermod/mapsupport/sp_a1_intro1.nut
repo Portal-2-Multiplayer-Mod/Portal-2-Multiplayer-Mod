@@ -6,16 +6,16 @@
 // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
 
 HasSleptInContainer1 <- false
-function p232DestroyedSequence() {
-    printl("p232DestroyedSequence")
+function p2mmDestroyedSequence() {
+    printl("p2mmDestroyedSequence")
     HasSleptInContainer1 = true
 }
 
 CurrentTeleportOffset <- 0
 DisableJumpmsp <- false
-function p232DropCollision() {
+function p2mmDropCollision() {
     DisableJumpmsp = true
-    EntFire("p232servercommand", "command", "script DisableJumpmsp = false", 3)
+    EntFire("p2mmservercommand", "command", "script DisableJumpmsp = false", 3)
     printl("Dropping container collision")
     local dropamount = 50
     local ceiltime = 2.6
@@ -129,7 +129,7 @@ function p232DropCollision() {
 }
 
 ContainerStick <- false
-function p232ParentAndStartMath() {
+function p2mmParentAndStartMath() {
         // Start container ride
         EntFire("Actor_container_master", "SetAnimation", "anim2", 0)
         EntFire("Actor_container_01", "SetAnimation", "anim2", 0)
@@ -275,7 +275,7 @@ function StopStickAndTeleport() {
     EntFire("ContainerPlantBrush", "kill", "", 0)
     EntFire("ContainerChairBrush", "kill", "", 0)
     
-    Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p232actorwalldestructionoverride")
+    Entities.FindByName(null, "Actor_wall_destruction_01").__KeyValueFromString("targetname", "p2mmactorwalldestructionoverride")
     Entities.FindByName(null, "endwall_collision").__KeyValueFromString("rendermode", "10")
 
     EntFire("container_collision", "enabledraw", "", 0)
@@ -346,24 +346,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         Entities.FindByName(null, "Actor_trap_door_1").__KeyValueFromString("HoldAnimation", "1")
 
-        Entities.FindByName(null, "@music_awake").__KeyValueFromString("targetname", "p232musicawake")
+        Entities.FindByName(null, "@music_awake").__KeyValueFromString("targetname", "p2mmmusicawake")
         Entities.FindByName(null, "container_collision").__KeyValueFromString("rendermode", "10")
-        Entities.FindByName(null, "open_portal_relay").__KeyValueFromString("targetname", "p232portalrelay")
-        Entities.FindByName(null, "mmc_clock_flash_relay").__KeyValueFromString("targetname", "p232clockflashrelay")
+        Entities.FindByName(null, "open_portal_relay").__KeyValueFromString("targetname", "p2mmportalrelay")
+        Entities.FindByName(null, "mmc_clock_flash_relay").__KeyValueFromString("targetname", "p2mmclockflashrelay")
         Entities.FindByName(null, "portal_red_0_deactivate_rl").Destroy()
         Entities.FindByName(null, "portal_blue_0_deactivate_rl").Destroy()
 
         EntFire("container_collision", "DisableCollision", "", 0)
 
-        EntFire("return_to_bed_button", "addoutput", "OnPressed p232servercommand:command:script p232DestroyedSequence():5")
-        EntFire("@rl_container_ride", "addoutput", "OnTrigger p232servercommand:command:script p232DropCollision():0.5")
-        EntFire("crane_second_startup_relay", "addoutput", "OnTrigger p232servercommand:command:script p232ParentAndStartMath():1")
-        EntFire("@debug_start_perf_test", "addoutput", "OnTrigger p232servercommand:command:script p232ParentAndStartMath():10")
-        EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p232servercommand:command:script StopStickAndTeleport()")
-        EntFire("enter_chamber_trigger", "addoutput", "OnTrigger p232portalrelay:Trigger::34")
+        EntFire("return_to_bed_button", "addoutput", "OnPressed p2mmservercommand:command:script p2mmDestroyedSequence():5")
+        EntFire("@rl_container_ride", "addoutput", "OnTrigger p2mmservercommand:command:script p2mmDropCollision():0.5")
+        EntFire("crane_second_startup_relay", "addoutput", "OnTrigger p2mmservercommand:command:script p2mmParentAndStartMath():1")
+        EntFire("@debug_start_perf_test", "addoutput", "OnTrigger p2mmservercommand:command:script p2mmParentAndStartMath():10")
+        EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p2mmservercommand:command:script StopStickAndTeleport()")
+        EntFire("enter_chamber_trigger", "addoutput", "OnTrigger p2mmportalrelay:Trigger::34")
         //@rl_container_ride
-        EntFire("relay_start_map", "addoutput", "OnTrigger p232clockflashrelay:Trigger")
-        EntFire("p232clockflashrelay", "addoutput", "OnTrigger p232clockflashrelay:Trigger::1")
+        EntFire("relay_start_map", "addoutput", "OnTrigger p2mmclockflashrelay:Trigger")
+        EntFire("p2mmclockflashrelay", "addoutput", "OnTrigger p2mmclockflashrelay:Trigger::1")
         Entities.FindByName(null, "@rl_container_pause_motion").Destroy()
         Entities.FindByName(null, "@rl_container_resume_motion").Destroy()
         Entities.FindByName(null, "@rl_container_ride_second_section").Destroy()
@@ -384,7 +384,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         HasStartedSp_A1_Intro1 <- true
         EntFire("relay_start_cryo_sequence", "Trigger", "", 0)
         EntFire("relay_intro_camera", "Trigger", "", 0)
-        EntFire("p232musicawake", "PlaySound", "", 0.4)
+        EntFire("p2mmmusicawake", "PlaySound", "", 0.4)
         EntFire("announcer_ding_on_wav", "PlaySound", "", 1.5)
         EntFire("good_morning_vcd", "Start", "", 3)
 

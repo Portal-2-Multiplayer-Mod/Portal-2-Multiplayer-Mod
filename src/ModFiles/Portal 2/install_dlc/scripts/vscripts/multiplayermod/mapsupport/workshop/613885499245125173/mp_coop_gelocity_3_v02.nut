@@ -46,7 +46,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFire(ent.GetName(), "kill", "", 1)
         }
 
-        Entities.FindByName(null, "rounds_text_orange").__KeyValueFromString("targetname", "p232_rounds_text_override")
+        Entities.FindByName(null, "rounds_text_orange").__KeyValueFromString("targetname", "p2mm_rounds_text_override")
 
         EntFire("checkpoint_orange_1", "kill")
         EntFire("checkpoint_blue_1", "kill")
@@ -58,8 +58,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //RemoveAllClassname("info_target")
         RemoveAllClassnameDistance("info_target", Vector(-6797.413574, 3837.398682, -447.968750), 600)
 
-        EntFire("rounds_button_2", "addoutput", "OnPressed p232servercommand:command:script RoundsButtonAdd1()")
-        EntFire("rounds_button_1", "addoutput", "OnPressed p232servercommand:command:script RoundsButtonRemove1()")
+        EntFire("rounds_button_2", "addoutput", "OnPressed p2mmservercommand:command:script RoundsButtonAdd1()")
+        EntFire("rounds_button_1", "addoutput", "OnPressed p2mmservercommand:command:script RoundsButtonRemove1()")
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -82,11 +82,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         GameDoneGelocity <- true
                         EntFire("orange_wins", "trigger")
                         SendToConsole("say " + pname + " has won the game!")
-                        EntFire("p232_rounds_text_override", "display")
+                        EntFire("p2mm_rounds_text_override", "display")
                     }
                 } catch(e) {
                     local pclass = FindPlayerClass(p)
-                    printl("no gelocity player class parts found creating...")
+                    printl("No Gelocity player class parts found! Creating...")
                     pclass.hitcheckpoint <- true
                     pclass.laps <- 0
                 }
@@ -114,21 +114,21 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         local pcolor = GetPlayerColor(p, true)
                         
                         if (GameDoneGelocity == false) {
-                            Entities.FindByName(null, "p232_rounds_text_override").__KeyValueFromString("message", pname +" is on lap " + pclass.laps)
-                            Entities.FindByName(null, "p232_rounds_text_override").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
+                            Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("message", pname +" is on lap " + pclass.laps)
+                            Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
                         }
                         if (PluginLoaded != true) {
                             if (p.GetName() == "blue") {
-                                Entities.FindByName(null, "p232_rounds_text_override").__KeyValueFromString("message", "player1 is on lap " + pclass.laps)
+                                Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("message", "player1 is on lap " + pclass.laps)
                             }
                             if (p.GetName() == "red") {
-                                Entities.FindByName(null, "p232_rounds_text_override").__KeyValueFromString("message", "player2 is on lap " + pclass.laps)
+                                Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("message", "player2 is on lap " + pclass.laps)
                             }
                         }
-                        EntFire("p232_rounds_text_override", "display")
+                        EntFire("p2mm_rounds_text_override", "display")
                     }
                 } catch(e) {
-                    printl("no gelocity player class parts found creating...")
+                    printl("No Gelocity player class parts found! Creating...")
                     pclass.hitcheckpoint <- true
                     pclass.laps <- 0
                 }
@@ -144,7 +144,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         printl("HitCheckpoint: " + pclass.hitcheckpoint)
                     }
                 } catch(e) {
-                    printl("no gelocity player class parts found creating...")
+                    printl("No Gelocity player class parts found! Creating...")
                     pclass.hitcheckpoint <- true
                 }
             }

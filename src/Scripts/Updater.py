@@ -54,7 +54,7 @@ def DownloadClient():
     # this goes through all the binaries in the latest release until one of them ends with the package type (.exe, .pkg etc...)
     for i in range(len(r.json()["assets"])):
         if(r.json()["assets"][i]["browser_download_url"].endsWith(packageType)):
-            Log("found client to download")
+            Log("Found client to download!")
             downloadLink = r.json()["assets"][i]["browser_download_url"]
             break
 
@@ -63,7 +63,7 @@ def DownloadClient():
         return False
 
     # download the file in a temporary folder we move it later
-    path = GVars.GVars.modPath + GVars.nf + ".temp" + GVars.nf + "p2mm" + packageType
+    path = GVars.modPath + GVars.nf + ".temp" + GVars.nf + "p2mm" + packageType
     urllib.request.urlretrieve(downloadLink, path)
 
     # can we even send a command to delete the current running instance and replace it with the new one?

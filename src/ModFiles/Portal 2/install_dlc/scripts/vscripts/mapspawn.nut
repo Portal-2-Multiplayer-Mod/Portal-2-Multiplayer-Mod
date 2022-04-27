@@ -5,6 +5,12 @@
 // In the case that this file does not exist at all or in the GitHub repository, this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE //
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 
+printl("")
+printl("-------------------------")
+printl("==== calling mapspawn.nut")
+printl("-------------------------")
+printl("")
+
 // Here, you can customize several parameters in your server.
 // You can change this mid-game as well, however, be sure to
 // modify the the one that has been copied into a new
@@ -12,18 +18,16 @@
 // to modify the one that has been copied into a new
 // portal2_dlcX folder and switch levels after modifying!
 
-//    ___              __  _        _ 
+//    ___              __  _        _
 //   / __| ___  _ _   / _|(_) __ _ (_)
-//  | (__ / _ \| ' \ |  _|| |/ _` | _ 
+//  | (__ / _ \| ' \ |  _|| |/ _` | _
 //   \___|\___/|_||_||_|  |_|\__, |(_)
-//                           |___/    
+//                           |___/
 
 //-----------------------------------
-DevMode <- true // Set to true if you're a developer
+DevMode <- false // Set to true if you want to see the P2:MM debug info
 //-----------------------------------
-DevInfo <- false // Set to true if you want to see the developer info
-//-----------------------------------
-// UsePlugin <- true // Set to false if you want to use the plugin (LINUX ONLY)
+FutBolGamemode <- true // Set Futbol gamemode
 //-----------------------------------
 VisualDebug <- false // Set to true if you want to see the debug info
 //-----------------------------------
@@ -35,17 +39,17 @@ TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower num
 //-----------------------------------
 RandomPortalSize <- false // Set to true if you want to randomize the portal size
 //-----------------------------------
-Admins <- ["[420]kyleraykbs", "[69]vista", "[12]cabiste", "[12]Bumpy", "[12]Nanoman2525", "[12]Wolƒe Strider Shoσter", "[2]CHARITY", "[2]thewoodster75`", "[6]Dreadnox", "[1]!wol", "[6]sear", "[12]Ayden", "[3]SuperSpeed", "[2]Eggshell97", "[1]trixie6709"]
+Admins <- ["[420]kyleraykbs", "[69]vista", "[12]cabiste", "[12]Bumpy", "[12]Nanoman2525", "[12]Wolƒe Strider Shoσter", "[5]Mystical Λce", "[2]CHARITY", "[2]thewoodster75`", "[6]Dreadnox", "[1]!wol", "[6]sear", "[12]Ayden",  "[2]Eggshell97", "[1]trixie6709"]
 //-----------------------------------
 
 // END OF CONFIG!
 // Do not modify the below.
 
-//    ___          _        ___       _                _ 
+//    ___          _        ___       _                _
 //   / __| ___  __| | ___  / __| ___ | |_  _  _  _ __ (_)
-//  | (__ / _ \/ _` |/ -_) \__ \/ -_)|  _|| || || '_ \ _ 
+//  | (__ / _ \/ _` |/ -_) \__ \/ -_)|  _|| || || '_ \ _
 //   \___|\___/\__,_|\___| |___/\___| \__| \_,_|| .__/(_)
-//                                              |_|      
+//                                              |_|
 
 IncludeScript("multiplayermod/variables.nut")
 
@@ -59,7 +63,7 @@ IncludeScript("multiplayermod/variables.nut")
 // 3. Create map-specific entities after a delay
 
 function init() {
-    
+
     SendPythonReset()
 
     // Show the console ascii art
@@ -69,29 +73,45 @@ function init() {
 
     // Create a global point_servercommand entity for us to pass through commands
     globalservercommand <- Entities.CreateByClassname("point_servercommand")
-    globalservercommand.__KeyValueFromString("targetname", "p232servercommand")
+    globalservercommand.__KeyValueFromString("targetname", "p2mmservercommand")
 
     // Load plugin if it exists and compensate if it doesn't
     // Also change the level once it has succeeded this
     if("GetPlayerName" in this) {
-        if (GetDeveloperLevel() == 1) {
-            printl("================================")
-            printl("P2:MM plugin has already loaded!")
-            printl("================================")
+        if (GetDeveloperLevel()) {
+            printl("=====================================")
+            printl("P2:MM plugin has already been loaded!")
+            printl("=====================================")
         }
         PluginLoaded <- true
     } else {
         MakePluginReplacementFunctions()
-        if (GetDeveloperLevel() == 1) {
-            printl("============================================")
+        if (GetDeveloperLevel()) {
+            printl("=================================")
             printl("P2:MM plugin has not been loaded!")
-            printl("============================================")
+            printl("=================================")
         }
-        EntFire("p232servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
-        EntFire("p232servercommand", "command", "plugin_load 32pmod", 0.05)
+        EntFire("p2mmservercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
+        EntFire("p2mmservercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetDeveloperLevel() == 918612) {
-            EntFire("p232servercommand", "command", "developer 1", 0.01)
-            EntFire("p232servercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
+            if (DevMode) {
+                EntFire("p2mmservercommand", "command", "developer 1", 0.01)
+            } else {
+                EntFire("p2mmservercommand", "command", "developer 0", 0.01)
+            }
+            printl("Resetting map so that the plugin has an effect! (if it loaded)")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            printl("")
+            EntFire("p2mmservercommand", "command", "clear", 0)
+            EntFire("p2mmservercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
         }
     }
 
@@ -107,42 +127,33 @@ function init() {
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
 
     // Delay the creation of our entities before so that we don't get an engine error from the entity limit
-    EntFire("p232servercommand", "command", "script CreateOurEntities()", 0.05)
-}
-
-// DoesPluginExist() is a developer function
-// and just helps us with finding our plugin
-function DoesPluginExist() {
-    if ("GetPlayerName" in this) {
-        if (GetDeveloperLevel() == 1) {
-            printl("(P2:MM): Plugin exists!===================")
-        }
-    } else {
-        if (GetDeveloperLevel() == 1) {
-            printl("(P2:MM): Plugin nonexistent!==============")
-        }
-    }
+    EntFire("p2mmservercommand", "command", "script CreateOurEntities()", 0.05)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Import the rest of our external Squirrel "libraries" 
+// Import the rest of our external Squirrel "libraries"
 IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
 
-//   ___           _  _  _  _          _        
-//  | __|__ _  __ (_)| |(_)| |_  __ _ | |_  ___ 
+// If we are playing the futbol game mode on this map load, then load another external library with more logic for the minigame
+if (FutBolGamemode) {
+    IncludeScript("multiplayermod/gamemodes/futbol/functions.nut")
+}
+
+//   ___           _  _  _  _          _
+//  | __|__ _  __ (_)| |(_)| |_  __ _ | |_  ___
 //  | _|/ _` |/ _|| || || ||  _|/ _` ||  _|/ -_)
 //  |_| \__,_|\__||_||_||_|_\__|\__,_| \__|\___|
-//  |  \/  | __ _  _ __   / __| ___  __| | ___  
-//  | |\/| |/ _` || '_ \ | (__ / _ \/ _` |/ -_) 
-//  |_|  |_|\__,_|| .__/  \___|\___/\__,_|\___| 
-//                |_|   ___              _      
-//   __ _  _ _   __| | | _ \ _  _  _ _  | |     
-//  / _` || ' \ / _` | |   /| || || ' \ |_|     
-//  \__,_||_||_|\__,_| |_|_\ \_,_||_||_|(_)     
+//  |  \/  | __ _  _ __   / __| ___  __| | ___
+//  | |\/| |/ _` || '_ \ | (__ / _ \/ _` |/ -_)
+//  |_|  |_|\__,_|| .__/  \___|\___/\__,_|\___|
+//                |_|   ___              _
+//   __ _  _ _   __| | | _ \ _  _  _ _  | |
+//  / _` || ' \ / _` | |   /| || || ' \ |_|
+//  \__,_||_||_|\__,_| |_|_\ \_,_||_||_|(_)
 
 // Import map support code
 local MapName = FindAndReplace(GetMapName().tostring(), "maps/", "")
@@ -154,7 +165,7 @@ try {
     IncludeScript("multiplayermod/mapsupport/#propcreation.nut") // Import a giant function to create props server-side based on map name
     IncludeScript("multiplayermod/mapsupport/" + MapName.tostring() + ".nut") // Import the  map support code
 } catch (error) {
-    if (GetDeveloperLevel() == 1) {
+    if (GetDeveloperLevel()) {
         print("(P2:MM): No map support for " + MapName.tostring())
     }
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
@@ -166,4 +177,5 @@ DoEntFire("worldspawn", "FireUser1", "", 0.02, null, null)
 Entities.First().ConnectOutput("OnUser1", "init")
 } catch(e) {
     print("(P2:MM): Initializing our custom support!")
+    print("")
 }

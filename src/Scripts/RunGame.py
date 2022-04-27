@@ -5,6 +5,7 @@ import os
 import subprocess
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
+import __main__
 import shutil
 
 
@@ -13,7 +14,7 @@ import shutil
 
 def MountMod(gamepath):
     # detect if the mod files are available 
-    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    modFilesPath = os.path.dirname(__main__.__file__) + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     if os.path.exists(modFilesPath):
         Log("Found directory: ModFiles/Portal 2/install_dlc")
     else:
@@ -297,9 +298,10 @@ def FindAvailableDLC(gamepath):
             else:
                 dlcs.append(str(dlcnumber))
                 Log("Adding DLC: " + dlcnumber + " to our internal list to ignore...")
-                
-    Log("Mod will be mounted to portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1))
-    
+                Log("P2:MM files will be mounted to portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1))
+
+    # sort each dlc number lower to higher
+    dlcs.sort(key=int)
     # return the folder where to mount the mod
     return "portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1)
 
@@ -316,10 +318,10 @@ def LaunchGame(gamepath):
     try:
         if (GVars.iow):
             # start portal 2 with the launch options and dont wait for it to finish
-            subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "-conclearlog", "-condebug", "-console"])
+            subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-condebug", "-console"])
             Log("Game exited successfully.")
         else:
-            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
+            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -condebug -console")
             Log("Game launch successful!")
 
     except Exception as e:

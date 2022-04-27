@@ -80,7 +80,7 @@ function loop() {
             CoordsAlternate <- true
         }
     } else {
-        if (LastCoordGetPlayer != null && Entities.FindByName(null, "p232_logic_measure_movement")) {
+        if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
             local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
             if (currentplayerclass != null) {
                 if (OriginalAngle == null && CanCheckAngle == true) {
@@ -168,17 +168,59 @@ function loop() {
         }
     }
 
+
     //## Set PlayerModel ##//
-    foreach (pmodel in AssignedPlayerModels) {
-        local plr = pmodel.player
-        local mdlmodel = pmodel.model
-        try {
-            if (plr.GetModelName() != mdlmodel) {
-                EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")", 1)
-                //SendToConsole("script Entities.FindByName(null, \"" + plr.GetName() + "\").SetModel(\"" + mdlmodel + "\")")
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local currentplayerclass = FindPlayerClass(p)
+        if (currentplayerclass != null) {
+            if (currentplayerclass.playermodel != null) {
+                if (currentplayerclass.playermodel != p.GetModelName()) {
+                    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + currentplayerclass.playermodel + "\")", 1)
+                }
             }
-        } catch(e) { }
+        }
     }
+
+
+    // ENTITY OPTIMIZATION / DELETION ///////////////
+    local cnt = GetEntityCount()
+    local amtpast = cnt - (EntityCap - EntityCapLeeway) // this is the amount of entities we have past the caps leeway amount
+    local amtdeleted = 0
+    
+    if (cnt > EntityCap - EntityCapLeeway) {
+        if (cnt >= FailSafeEntityCap) {
+            printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailSafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
+            SendToConsole("changelevel mp_coop_lobby_3")
+        }
+        printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
+        foreach (entclass in ExpendableEntitys) {
+
+            local curdelamt = amtpast - amtdeleted
+            if (amtdeleted < amtpast) { // if we are still over the cap
+
+                local amt = GetEntityCount(entclass)
+                printl("CURRENT AMOUNT OF " + entclass + ": " + amt)
+                
+                if (amt > 0) {
+                    if (amt >= curdelamt) {
+                        DeleteAmountOfEntitys(entclass, curdelamt)
+                        return
+                    } else {
+                        DeleteAmountOfEntitys(entclass, amt)
+                        amtdeleted = amtdeleted + amt
+                    }
+                }
+
+
+            } else {
+                return
+            }
+        }
+    }
+
+    /////////////////////////////////////////////////
+
 
     //## Cache original spawn position ##//
     if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
@@ -197,7 +239,7 @@ function loop() {
                     } catch(exception) {
                         OldPlayerPos <- Vector(0, 0, 0)
                         OldPlayerAngles <- Vector(0, 0, 0)
-                        if (GetDeveloperLevel() == 1) {
+                        if (GetDeveloperLevel()) {
                             printl("(P2:MM): Error: Could not cache player position. This is catastrophic!")
                         }
                         cacheoriginalplayerposition <- 1
@@ -239,7 +281,9 @@ function loop() {
                 if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
                     DoneWaiting <- true
                     GeneralOneTime()
-                    printl("=================================HEALTH SPAWN")
+                    if (GetDeveloperLevel()) {
+                        printl("=================================HEALTH SPAWN")
+                    }
                 }
 
                 // if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
@@ -281,10 +325,10 @@ function loop() {
 
 
     //## Config developer mode loop ##//
-    if (DevModeConfig==true) {
+    if (DevModeConfig) {
         // Change DevMode variable based on convar "developer"
-        if (GetDeveloperLevel() == 0) {
-            if (StartDevModeCheck == true) {
+        if (!GetDeveloperLevel()) {
+            if (StartDevModeCheck) {
                 DevMode <- false
             }
         } else {
@@ -342,60 +386,6 @@ function loop() {
 
                 EntFireByHandle(ent, "Color", (R + " " + G + " " + R), 0, null, null)
                 ent.SetTeam(69420)
-            }
-        }
-    }
-
-    //## "Colored portals" ##//
-    if (DevInfo == true) {
-        if (DevMode == true) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                local c1 = Entities.FindByName(null, p.GetName() + "_portal-1")
-                local c2 = Entities.FindByName(null, p.GetName() + "_portal-2")
-
-                local pitch = c2.GetAngles().x
-                local yaw = c2.GetAngles().y
-                local roll = c2.GetAngles().z
-
-                local x = pitch*cos(0) - yaw*sin(0)
-                local y = pitch*sin(0) + yaw*cos(0)
-                x = x * 10
-                y = y * 10
-
-                // printl(c1.GetName())
-                // printl(x)
-                // printl(y)
-                // printl("========")
-
-                local c2o = c2.GetOrigin()
-                local c1o = c1.GetOrigin()
-
-                // DebugDrawBox(origin, mins, max, r, g, b, alpha, duration)
-                // Set preset colors for up to 16 clients
-                switch (p.entindex()) {
-                    case 1 : R <- 255; G <- 255; B <- 255; break;
-                    case 2 : R <- 0,   G <- 255, B <- 0;   break;
-                    case 3 : R <- 0,   G <- 0,   B <- 255; break;
-                    case 4 : R <- 255, G <- 0,   B <- 0;   break;
-                    case 5 : R <- 255, G <- 100, B <- 100; break;
-                    case 6 : R <- 255, G <- 180, B <- 255; break;
-                    case 7 : R <- 255, G <- 255, B <- 180; break;
-                    case 8 : R <-   0, G <- 255, B <- 240; break;
-                    case 9 : R <-  75, G <-  75, B <-  75; break;
-                    case 10: R <- 100, G <-  80, B <-   0; break;
-                    case 11: R <-   0, G <-  80, B <- 100; break;
-                    case 12: R <- 120, G <- 155, B <-  25; break;
-                    case 13: R <-   0, G <-   0, B <- 100; break;
-                    case 14: R <-  80, G <-   0, B <-   0; break;
-                    case 15: R <-   0, G <-  75, B <-   0; break;
-                    case 16: R <-   0, G <-  75, B <-  75; break;
-                }
-                DebugDrawBox(c1o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
-                DebugDrawBox(c2o, Vector(-50, -50, -50), Vector(50, 50, 50), R, G, B, 10, 0);
-
-                DebugDrawLine(c1o, p.GetOrigin(), R, G, B, true, 0)
-                DebugDrawLine(c2o, p.GetOrigin(), R, G, B, true, 0)
             }
         }
     }

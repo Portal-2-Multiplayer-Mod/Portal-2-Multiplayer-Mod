@@ -16,7 +16,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
 
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        //Entities.FindByName(null, "@glados").__KeyValueFromString("targetname", "p232gladosoverride")
+        //Entities.FindByName(null, "@glados").__KeyValueFromString("targetname", "p2mmgladosoverride")
         Entities.FindByClassnameNearest("trigger_once", Vector(-320, 832, -24), 100).Destroy()
         Entities.FindByName(null, "Fizzle_Trigger").Destroy()
         Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
@@ -29,7 +29,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSPostPlayerSpawn==true) {
         NewApertureStartElevatorFixes()
-        //Entities.FindByName(null, "p232gladosoverride").__KeyValueFromString("targetname", "@glados")
+        //Entities.FindByName(null, "p2mmgladosoverride").__KeyValueFromString("targetname", "@glados")
     }
 
     if (MSLoop==true) {
