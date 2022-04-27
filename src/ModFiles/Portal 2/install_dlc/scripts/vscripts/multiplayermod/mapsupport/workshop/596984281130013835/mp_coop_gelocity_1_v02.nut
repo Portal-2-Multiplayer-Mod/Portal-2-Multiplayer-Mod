@@ -22,8 +22,8 @@ function StartGelocity() {
 function AddLap() {
     LapCount = LapCount + 1
     printl("LapCount: " + LapCount)
-    EntFire("p232_change_rounds_text", "settext", "Laps: " + LapCount)
-    EntFire("p232_change_rounds_text", "display")
+    EntFire("p2mm_change_rounds_text", "settext", "Laps: " + LapCount)
+    EntFire("p2mm_change_rounds_text", "display")
     if (LapCount >= 50) {
         LapCount = 50
         printl("Hit Max Laps")
@@ -35,8 +35,8 @@ function AddLap() {
 function RemoveLap() {
     LapCount = LapCount - 1
     printl("LapCount: " + LapCount)
-    EntFire("p232_change_rounds_text", "settext", "Laps: " + LapCount)
-    EntFire("p232_change_rounds_text", "display")
+    EntFire("p2mm_change_rounds_text", "settext", "Laps: " + LapCount)
+    EntFire("p2mm_change_rounds_text", "display")
     if (LapCount <= 2) {
         LapCount = 2
         printl("Hit Min Laps")
@@ -64,14 +64,14 @@ function Lap(player) {
 
         local pcolor = GetPlayerColor(player, true)
         local PlayerUsername = playerclass.username
-        Entities.FindByName(null, "p232_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
+        Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
         if (!WinCondition) {
-            EntFire("p232_laps_text", "SetText", PlayerUsername + " Completed Lap " + playerclass.laps, 0.1)
+            EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + playerclass.laps, 0.1)
         } else {
             WonGame = true
-            Entities.FindByName(null, "p232_laps_text").__KeyValueFromString("holdtime", "8")
-            EntFire("p232_laps_text", "SetText", PlayerUsername + " Won The Game!", 0.1)
-            EntFire("p232_laps_text", "display", "", 0.2)
+            Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("holdtime", "8")
+            EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Game!", 0.1)
+            EntFire("p2mm_laps_text", "display", "", 0.2)
             SendToConsole("say " + PlayerUsername + " Won The Game!")
             if (player.GetTeam() == 2) { // red
                 EntFire("orange_wins", "trigger")
@@ -83,7 +83,7 @@ function Lap(player) {
                 Entities.FindByName(null, "win_door_2_orange").Destroy()
             }
         }
-        EntFire("p232_laps_text", "display", "", 0.2)
+        EntFire("p2mm_laps_text", "display", "", 0.2)
     }
 }
 
@@ -97,16 +97,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(2165, -2195, 368))
-        Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p232_laps_text")
-            Entities.FindByName(null, "p232_laps_text").__KeyValueFromString("holdtime", "2.2")
-        Entities.FindByName(null, "change_rounds_text").__KeyValueFromString("targetname", "p232_change_rounds_text")
+        Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p2mm_laps_text")
+            Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("holdtime", "2.2")
+        Entities.FindByName(null, "change_rounds_text").__KeyValueFromString("targetname", "p2mm_change_rounds_text")
 
-        DecEntFireByHandle(Entities.FindByName(null, "start_relay"), "addoutput", "OnTrigger p232servercommand:command:script StartGelocity():0.1")
+        DecEntFireByHandle(Entities.FindByName(null, "start_relay"), "addoutput", "OnTrigger p2mmservercommand:command:script StartGelocity():0.1")
         Entities.FindByName(null, "checkpoint_orange_1").Destroy()
         Entities.FindByName(null, "checkpoint_blue_1").Destroy()
 
-        EntFire("rounds_button_2", "addoutput", "OnPressed p232servercommand:command:script AddLap()", 0.1)
-        EntFire("rounds_button_1", "addoutput", "OnPressed p232servercommand:command:script RemoveLap()", 0.1)
+        EntFire("rounds_button_2", "addoutput", "OnPressed p2mmservercommand:command:script AddLap()", 0.1)
+        EntFire("rounds_button_1", "addoutput", "OnPressed p2mmservercommand:command:script RemoveLap()", 0.1)
 
         Entities.FindByName(null, "win_door_1_orange").__KeyValueFromString("targetname", "win_door_1_orange_override")
         Entities.FindByName(null, "win_door_1_blue").__KeyValueFromString("targetname", "win_door_1_blue_override")

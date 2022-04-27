@@ -119,19 +119,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //     EntFire(ent.GetName(), "kill", "", 1)
         // }
         // Yeet Paint
-        //EntFire("gel_relay", "addoutput", "OnTrigger:p232servercommand:command:script YeetThePaint():2.2", 0.1)
+        //EntFire("gel_relay", "addoutput", "OnTrigger:p2mmservercommand:command:script YeetThePaint():2.2", 0.1)
 
         // Nessasary Stuff
         // EntFire("door_end_2", "addoutput", "targetname door_end_2_override", 5)
         // EntFire("door_end_1", "addoutput", "targetname door_end_1_override", 5)
-        //Entities.FindByName(null, "red_dropper-initial_spawn").__KeyValueFromString("targetname", "p232spawn_override_red")
+        //Entities.FindByName(null, "red_dropper-initial_spawn").__KeyValueFromString("targetname", "p2mmspawn_override_red")
         redspawncoords <- Entities.FindByName(null, "red_dropper-initial_spawn").GetOrigin()
-        //Entities.FindByName(null, "blue_dropper-initial_spawn").__KeyValueFromString("targetname", "p232spawn_override_blue")
+        //Entities.FindByName(null, "blue_dropper-initial_spawn").__KeyValueFromString("targetname", "p2mmspawn_override_blue")
         bluespawncoords <- Entities.FindByName(null, "blue_dropper-initial_spawn").GetOrigin()
-        EntFire("p232spawn_override_red", "enable")
-        EntFire("p232spawn_override_blue", "enable")
-        EntFire("p232spawn_override_red", "setasactivespawn", "", 0.05)
-        EntFire("p232spawn_override_blue", "setasactivespawn", "", 0.05)
+        EntFire("p2mmspawn_override_red", "enable")
+        EntFire("p2mmspawn_override_blue", "enable")
+        EntFire("p2mmspawn_override_red", "setasactivespawn", "", 0.05)
+        EntFire("p2mmspawn_override_blue", "setasactivespawn", "", 0.05)
         local ent = null
         while (ent = Entities.FindByClassname(ent, "info_coop_spawn")) {
             if (ent.GetName() != "blue_dropper-initial_spawn" && ent.GetName() != "red_dropper-initial_spawn") {
@@ -161,13 +161,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "change_rounds_text").__KeyValueFromString("targetname", "change_rounds_text_override")
         Entities.FindByName(null, "button_2").__KeyValueFromString("targetname", "button_2_override")
         Entities.FindByName(null, "button_1").__KeyValueFromString("targetname", "button_1_override")
-        Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p232_laps_text")
+        Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p2mm_laps_text")
         //AddLapButton
         EntFire("rounds_button_2_override", "addoutput", "OnPressed button_2_override:SetAnimation:press_release")
-        EntFire("rounds_button_2_override", "addoutput", "OnPressed p232servercommand:command:script Gelocity2AddLap()")
+        EntFire("rounds_button_2_override", "addoutput", "OnPressed p2mmservercommand:command:script Gelocity2AddLap()")
         //RemoveLapButton
         EntFire("rounds_button_1_override", "addoutput", "OnPressed button_1_override:SetAnimation:press_release")
-        EntFire("rounds_button_1_override", "addoutput", "OnPressed p232servercommand:command:script Gelocity2RemoveLap()")
+        EntFire("rounds_button_1_override", "addoutput", "OnPressed p2mmservercommand:command:script Gelocity2RemoveLap()")
     }
 
     if (MSPostPlayerSpawn==true) {
@@ -364,14 +364,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     CurrentPlayerClass.Gelocity2Checkpoint <- false
                     // Set Text Color
                     local pcolor = GetPlayerColor(p, true)
-                    Entities.FindByName(null, "p232_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
+                    Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
                     if (WinCondition == false) {
                         printl(PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps)
-                        EntFire("p232_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps, 0.1)
+                        EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps, 0.1)
                     } else {
                         printl(PlayerUsername + " Won The Race!")
                         SendToConsole("say " + PlayerUsername + " Won The Race!")
-                        EntFire("p232_laps_text", "SetText", PlayerUsername + " Won The Race!", 0.1)
+                        EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Race!", 0.1)
                         //ent_fire first_blue addoutput "rendercolor 255 0 0"
                         if (p.GetTeam() >= 3) {
                             EntFire("blue_wins", "trigger")
@@ -382,7 +382,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         Entities.FindByName(null, "first_orange").__KeyValueFromString("rendercolor", pcolor2.r.tostring() + " " + pcolor2.g.tostring() + " " + pcolor2.b.tostring())
                         Entities.FindByName(null, "first_blue").__KeyValueFromString("rendercolor", pcolor2.r.tostring() + " " + pcolor2.g.tostring() + " " + pcolor2.b.tostring())
                     }
-                    EntFire("p232_laps_text", "display", "", 0.2)
+                    EntFire("p2mm_laps_text", "display", "", 0.2)
                 }
             }
         }

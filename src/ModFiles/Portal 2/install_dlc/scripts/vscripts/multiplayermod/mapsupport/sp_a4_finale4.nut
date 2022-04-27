@@ -20,8 +20,8 @@ function GoodByeIdaho() {
 }
 
 function CatwalkDisableRender() {
-    Entities.FindByName(null, "p232catwalkmodeloverride").__KeyValueFromString("rendermode", "10")
-    Entities.FindByName(null, "p232catwalk2modeloverride").__KeyValueFromString("rendermode", "10")
+    Entities.FindByName(null, "p2mmcatwalkmodeloverride").__KeyValueFromString("rendermode", "10")
+    Entities.FindByName(null, "p2mmcatwalk2modeloverride").__KeyValueFromString("rendermode", "10")
 }
 
 //## hook line and sinker hooks ##//
@@ -84,8 +84,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A2_Finale4Viewcontrol.SetAngles(20, 90, 0)
         EntFireByHandle(Sp_A2_Finale4Viewcontrol, "setparent", "basement_breakers_platform", 0.1, null, null)
 
-        Entities.FindByName(null, "catwalk_model").__KeyValueFromString("targetname", "p232catwalkmodeloverride")
-        Entities.FindByName(null, "catwalk2_model").__KeyValueFromString("targetname", "p232catwalk2modeloverride")
+        Entities.FindByName(null, "catwalk_model").__KeyValueFromString("targetname", "p2mmcatwalkmodeloverride")
+        Entities.FindByName(null, "catwalk2_model").__KeyValueFromString("targetname", "p2mmcatwalk2modeloverride")
 
         Entities.FindByName(null, "ending_glados_model").__KeyValueFromString("HoldAnimation", "1")
 
@@ -99,14 +99,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("lightworld", "1")
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("spawnflags", "2")
 
-        EntFire("catwalk_break_relay", "addoutput", "OnTrigger p232catwalkmodeloverride:Kill")
-        EntFire("catwalk_break_relay", "addoutput", "OnTrigger p232catwalk2modeloverride:Kill")
+        EntFire("catwalk_break_relay", "addoutput", "OnTrigger p2mmcatwalkmodeloverride:Kill")
+        EntFire("catwalk_break_relay", "addoutput", "OnTrigger p2mmcatwalk2modeloverride:Kill")
 
         // Setup function ent_fires
-        EntFire("breaker_path2", "addoutput", "OnPass p232servercommand:command:script TeleportPlayersUp():1")
-        EntFire("socket1_start_relay", "addoutput", "OnTrigger p232servercommand:command:script CatwalkDisableRender():2")
-        EntFire("replace_relay", "addoutput", "OnTrigger p232servercommand:command:script TeleportPlayersBehindEndingElevator()")
-        EntFire("container_path2", "addoutput", "OnPass p232servercommand:command:script MoveSoundScape()")
+        EntFire("breaker_path2", "addoutput", "OnPass p2mmservercommand:command:script TeleportPlayersUp():1")
+        EntFire("socket1_start_relay", "addoutput", "OnTrigger p2mmservercommand:command:script CatwalkDisableRender():2")
+        EntFire("replace_relay", "addoutput", "OnTrigger p2mmservercommand:command:script TeleportPlayersBehindEndingElevator()")
+        EntFire("container_path2", "addoutput", "OnPass p2mmservercommand:command:script MoveSoundScape()")
 
         EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Finale4Viewcontrol:disable::1")
         EntFire("claw3_movelinear", "addoutput", "OnFullyOpen pipe_orange_relay:trigger::10")
@@ -117,8 +117,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("breaker_path2", "addoutput", "OnPass env_global04:turnoff::1")
 
 
-        EntFire("relay_neurotoxin_death", "addoutput", "OnTrigger p232servercommand:command:changelevel sp_a4_finale4:7")
-        EntFire("relay_destruction_death", "addoutput", "OnTrigger p232servercommand:command:changelevel sp_a4_finale4:7")
+        EntFire("relay_neurotoxin_death", "addoutput", "OnTrigger p2mmservercommand:command:changelevel sp_a4_finale4:7")
+        EntFire("relay_destruction_death", "addoutput", "OnTrigger p2mmservercommand:command:changelevel sp_a4_finale4:7")
 
 
         Entities.FindByName(null, "@arrival_video_master").SetOrigin(Vector(574.587524, -30.347410, 235.043121))
@@ -429,7 +429,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("environment_darkness_1", "trigger", "", 5, null)
                 EntFire("light_dynamic_wheatley", "TurnOn", "", 5, null)
                 // EntFireByHandle(Sp_A2_Finale4Viewcontrol, "disable", "", 13, null, null)
-                // EntFire("p232servercommand", "command", "script Entities.FindByClassname(null, \"player\").SetOrigin(Vector(-191.816742 -0.485268 64.031250))", 13)
+                // EntFire("p2mmservercommand", "command", "script Entities.FindByClassname(null, \"player\").SetOrigin(Vector(-191.816742 -0.485268 64.031250))", 13)
 
                 //script Entities.FindByClassname(null, "player").SetOrigin(Vector(-191.816742 -0.485268 64.031250))
 

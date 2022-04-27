@@ -55,6 +55,25 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
             Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
             Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
+            
+            // Enable retrigger for all logic_relay entities except for those defined otherwise
+            // in the bsp to prevent desync on clients and remove errors from the console
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "logic_relay")) {
+                ent.__KeyValueFromString("spawnflags", "2")
+            }
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit_finished"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track2-rl_start_exit_finished"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track3-rl_start_exit"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track3-rl_start_exit_finished"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track4-rl_start_exit"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track4-rl_start_exit_finished"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-relay_open_doors"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-rl_start_exit"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-rl_start_exit_finished"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit"))
+            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit_finished"))
         } catch(exception) {}
 
         // Remove useless entities so that the entity limit does not crash the game
