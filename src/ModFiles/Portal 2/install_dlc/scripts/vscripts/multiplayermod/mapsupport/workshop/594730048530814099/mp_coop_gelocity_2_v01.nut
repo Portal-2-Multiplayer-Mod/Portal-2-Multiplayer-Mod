@@ -119,7 +119,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //     EntFire(ent.GetName(), "kill", "", 1)
         // }
         // Yeet Paint
-        //EntFire("gel_relay", "addoutput", "OnTrigger:p2mmservercommand:command:script YeetThePaint():2.2", 0.1)
+        //EntFire("gel_relay", "addoutput", "OnTrigger:p2mm_servercommand:command:script YeetThePaint():2.2", 0.1)
 
         // Nessasary Stuff
         // EntFire("door_end_2", "addoutput", "targetname door_end_2_override", 5)
@@ -164,10 +164,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p2mm_laps_text")
         //AddLapButton
         EntFire("rounds_button_2_override", "addoutput", "OnPressed button_2_override:SetAnimation:press_release")
-        EntFire("rounds_button_2_override", "addoutput", "OnPressed p2mmservercommand:command:script Gelocity2AddLap()")
+        EntFire("rounds_button_2_override", "addoutput", "OnPressed p2mm_servercommand:command:script Gelocity2AddLap()")
         //RemoveLapButton
         EntFire("rounds_button_1_override", "addoutput", "OnPressed button_1_override:SetAnimation:press_release")
-        EntFire("rounds_button_1_override", "addoutput", "OnPressed p2mmservercommand:command:script Gelocity2RemoveLap()")
+        EntFire("rounds_button_1_override", "addoutput", "OnPressed p2mm_servercommand:command:script Gelocity2RemoveLap()")
     }
 
     if (MSPostPlayerSpawn==true) {

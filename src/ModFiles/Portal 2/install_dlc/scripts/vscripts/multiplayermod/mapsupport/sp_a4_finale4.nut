@@ -103,10 +103,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("catwalk_break_relay", "addoutput", "OnTrigger p2mmcatwalk2modeloverride:Kill")
 
         // Setup function ent_fires
-        EntFire("breaker_path2", "addoutput", "OnPass p2mmservercommand:command:script TeleportPlayersUp():1")
-        EntFire("socket1_start_relay", "addoutput", "OnTrigger p2mmservercommand:command:script CatwalkDisableRender():2")
-        EntFire("replace_relay", "addoutput", "OnTrigger p2mmservercommand:command:script TeleportPlayersBehindEndingElevator()")
-        EntFire("container_path2", "addoutput", "OnPass p2mmservercommand:command:script MoveSoundScape()")
+        EntFire("breaker_path2", "addoutput", "OnPass p2mm_servercommand:command:script TeleportPlayersUp():1")
+        EntFire("socket1_start_relay", "addoutput", "OnTrigger p2mm_servercommand:command:script CatwalkDisableRender():2")
+        EntFire("replace_relay", "addoutput", "OnTrigger p2mm_servercommand:command:script TeleportPlayersBehindEndingElevator()")
+        EntFire("container_path2", "addoutput", "OnPass p2mm_servercommand:command:script MoveSoundScape()")
 
         EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Finale4Viewcontrol:disable::1")
         EntFire("claw3_movelinear", "addoutput", "OnFullyOpen pipe_orange_relay:trigger::10")
@@ -117,8 +117,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("breaker_path2", "addoutput", "OnPass env_global04:turnoff::1")
 
 
-        EntFire("relay_neurotoxin_death", "addoutput", "OnTrigger p2mmservercommand:command:changelevel sp_a4_finale4:7")
-        EntFire("relay_destruction_death", "addoutput", "OnTrigger p2mmservercommand:command:changelevel sp_a4_finale4:7")
+        EntFire("relay_neurotoxin_death", "addoutput", "OnTrigger p2mm_servercommand:command:changelevel sp_a4_finale4:7")
+        EntFire("relay_destruction_death", "addoutput", "OnTrigger p2mm_servercommand:command:changelevel sp_a4_finale4:7")
 
 
         Entities.FindByName(null, "@arrival_video_master").SetOrigin(Vector(574.587524, -30.347410, 235.043121))
@@ -429,7 +429,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("environment_darkness_1", "trigger", "", 5, null)
                 EntFire("light_dynamic_wheatley", "TurnOn", "", 5, null)
                 // EntFireByHandle(Sp_A2_Finale4Viewcontrol, "disable", "", 13, null, null)
-                // EntFire("p2mmservercommand", "command", "script Entities.FindByClassname(null, \"player\").SetOrigin(Vector(-191.816742 -0.485268 64.031250))", 13)
+                // EntFire("p2mm_servercommand", "command", "script Entities.FindByClassname(null, \"player\").SetOrigin(Vector(-191.816742 -0.485268 64.031250))", 13)
 
                 //script Entities.FindByClassname(null, "player").SetOrigin(Vector(-191.816742 -0.485268 64.031250))
 

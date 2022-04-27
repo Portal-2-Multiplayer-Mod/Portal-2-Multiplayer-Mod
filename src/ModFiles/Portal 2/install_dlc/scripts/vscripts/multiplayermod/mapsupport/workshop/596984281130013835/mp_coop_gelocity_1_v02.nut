@@ -101,12 +101,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("holdtime", "2.2")
         Entities.FindByName(null, "change_rounds_text").__KeyValueFromString("targetname", "p2mm_change_rounds_text")
 
-        DecEntFireByHandle(Entities.FindByName(null, "start_relay"), "addoutput", "OnTrigger p2mmservercommand:command:script StartGelocity():0.1")
+        DecEntFireByHandle(Entities.FindByName(null, "start_relay"), "addoutput", "OnTrigger p2mm_servercommand:command:script StartGelocity():0.1")
         Entities.FindByName(null, "checkpoint_orange_1").Destroy()
         Entities.FindByName(null, "checkpoint_blue_1").Destroy()
 
-        EntFire("rounds_button_2", "addoutput", "OnPressed p2mmservercommand:command:script AddLap()", 0.1)
-        EntFire("rounds_button_1", "addoutput", "OnPressed p2mmservercommand:command:script RemoveLap()", 0.1)
+        EntFire("rounds_button_2", "addoutput", "OnPressed p2mm_servercommand:command:script AddLap()", 0.1)
+        EntFire("rounds_button_1", "addoutput", "OnPressed p2mm_servercommand:command:script RemoveLap()", 0.1)
 
         Entities.FindByName(null, "win_door_1_orange").__KeyValueFromString("targetname", "win_door_1_orange_override")
         Entities.FindByName(null, "win_door_1_blue").__KeyValueFromString("targetname", "win_door_1_blue_override")

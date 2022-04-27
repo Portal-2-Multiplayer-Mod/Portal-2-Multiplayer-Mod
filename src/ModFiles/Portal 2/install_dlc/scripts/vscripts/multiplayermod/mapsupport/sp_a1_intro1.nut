@@ -15,7 +15,7 @@ CurrentTeleportOffset <- 0
 DisableJumpmsp <- false
 function p2mmDropCollision() {
     DisableJumpmsp = true
-    EntFire("p2mmservercommand", "command", "script DisableJumpmsp = false", 3)
+    EntFire("p2mm_servercommand", "command", "script DisableJumpmsp = false", 3)
     printl("Dropping container collision")
     local dropamount = 50
     local ceiltime = 2.6
@@ -355,11 +355,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("container_collision", "DisableCollision", "", 0)
 
-        EntFire("return_to_bed_button", "addoutput", "OnPressed p2mmservercommand:command:script p2mmDestroyedSequence():5")
-        EntFire("@rl_container_ride", "addoutput", "OnTrigger p2mmservercommand:command:script p2mmDropCollision():0.5")
-        EntFire("crane_second_startup_relay", "addoutput", "OnTrigger p2mmservercommand:command:script p2mmParentAndStartMath():1")
-        EntFire("@debug_start_perf_test", "addoutput", "OnTrigger p2mmservercommand:command:script p2mmParentAndStartMath():10")
-        EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p2mmservercommand:command:script StopStickAndTeleport()")
+        EntFire("return_to_bed_button", "addoutput", "OnPressed p2mm_servercommand:command:script p2mmDestroyedSequence():5")
+        EntFire("@rl_container_ride", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmDropCollision():0.5")
+        EntFire("crane_second_startup_relay", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():1")
+        EntFire("@debug_start_perf_test", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():10")
+        EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p2mm_servercommand:command:script StopStickAndTeleport()")
         EntFire("enter_chamber_trigger", "addoutput", "OnTrigger p2mmportalrelay:Trigger::34")
         //@rl_container_ride
         EntFire("relay_start_map", "addoutput", "OnTrigger p2mmclockflashrelay:Trigger")

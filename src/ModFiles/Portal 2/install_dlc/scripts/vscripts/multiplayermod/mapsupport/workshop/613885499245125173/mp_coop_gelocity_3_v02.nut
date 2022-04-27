@@ -58,8 +58,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //RemoveAllClassname("info_target")
         RemoveAllClassnameDistance("info_target", Vector(-6797.413574, 3837.398682, -447.968750), 600)
 
-        EntFire("rounds_button_2", "addoutput", "OnPressed p2mmservercommand:command:script RoundsButtonAdd1()")
-        EntFire("rounds_button_1", "addoutput", "OnPressed p2mmservercommand:command:script RoundsButtonRemove1()")
+        EntFire("rounds_button_2", "addoutput", "OnPressed p2mm_servercommand:command:script RoundsButtonAdd1()")
+        EntFire("rounds_button_1", "addoutput", "OnPressed p2mm_servercommand:command:script RoundsButtonRemove1()")
     }
 
     if (MSPostPlayerSpawn==true) {

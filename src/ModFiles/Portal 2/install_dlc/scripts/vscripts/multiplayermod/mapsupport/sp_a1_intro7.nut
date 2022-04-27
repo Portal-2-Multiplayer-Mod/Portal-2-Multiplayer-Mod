@@ -64,7 +64,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger @sphere:disablepickup::0.11")
 
 
-        EntFire("sphere_impact_trigger", "addoutput", "OnTrigger p2mmservercommand:command:script PutStickInAss():0")
+        EntFire("sphere_impact_trigger", "addoutput", "OnTrigger p2mm_servercommand:command:script PutStickInAss():0")
 
         // EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger bts_panel_door-proxy:OnProxyRelay1::5")
         // EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger open_panel_music:PlaySound::5")

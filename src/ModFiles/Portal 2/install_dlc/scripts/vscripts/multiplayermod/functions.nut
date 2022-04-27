@@ -590,7 +590,7 @@ function PrecacheModelNoDelay(mdl) {
         if (CheatsOn == false) {
             SendToConsole("sv_cheats 0")
         }
-        EntFire("p2mmservercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
+        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
         if (GetDeveloperLevel()) {
             printl("Precached model: " + minimdl + " AKA " + mdl)
         }
@@ -1472,10 +1472,10 @@ function SendClientCommand(command, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            EntFire("p2mmclientcommand", "command", command, 0, p)
+            EntFire("p2mm_clientcommand", "command", command, 0, p)
         }
     } else {
-        EntFire("p2mmclientcommand", "command", command, 0, player)
+        EntFire("p2mm_clientcommand", "command", command, 0, player)
     }
 }
 
@@ -1794,20 +1794,22 @@ function CombineList(list, startlength, inbetweenchars = " ") {
 }
 
 function CreateOurEntities() {
+
+    // Create an entity to measure player eye angles
     measuremovement <- Entities.CreateByClassname("logic_measure_movement")
     measuremovement.__KeyValueFromString( "measuretype", "1")
     measuremovement.__KeyValueFromString( "measurereference", "" )
     measuremovement.__KeyValueFromString( "measureretarget", "" )
     measuremovement.__KeyValueFromString( "targetscale", "1.0" )
-    // Movement logics
     measuremovement.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement" )
     measuremovement.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement" )
     measuremovement.__KeyValueFromString( "target", "p2mm_logic_measure_movement" )
     EntFireByHandle(measuremovement, "SetMeasureReference", "p2mm_logic_measure_movement", 0.0, null, null)
     EntFireByHandle(measuremovement, "enable", "", 0.0, null, null)
 
+    // Create an entity to display player nametags
     nametagdisplay <- Entities.CreateByClassname("game_text")
-    nametagdisplay.__KeyValueFromString("targetname", "p2mmnametagdisplay")
+    nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
     nametagdisplay.__KeyValueFromString("x", "-1")
     nametagdisplay.__KeyValueFromString("y", "0.2")
     nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
@@ -1818,9 +1820,9 @@ function CreateOurEntities() {
     nametagdisplay.__KeyValueFromString("channel", "0")
     nametagdisplay.__KeyValueFromString("color", "60 200 60")
 
-    // Create an on screen text message entity
+    // Create an display entity for the host to wait for another player to load in
     onscreendisplay <- Entities.CreateByClassname("game_text")
-    onscreendisplay.__KeyValueFromString("targetname", "onscreendisplaympmod")
+    onscreendisplay.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
     onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
     onscreendisplay.__KeyValueFromString("holdtime", (0.01 + TickSpeed * 2).tostring())
     onscreendisplay.__KeyValueFromString("fadeout", (0.01 + TickSpeed * 2).tostring())
@@ -1831,9 +1833,9 @@ function CreateOurEntities() {
     // onscreendisplay.__KeyValueFromString("x", "-1.1")
     // onscreendisplay.__KeyValueFromString("y", "-1.1")
 
-    // Disconnect message
+    // Create a player disconnect message entity
     disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
-    disconnectmessagedisplay.__KeyValueFromString("targetname", "pdcm")
+    disconnectmessagedisplay.__KeyValueFromString("targetname", "pdcm") // targetname is sensitive to the hex edits!
     disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
     disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
     disconnectmessagedisplay.__KeyValueFromString("fadein", "0.2")
@@ -1845,7 +1847,7 @@ function CreateOurEntities() {
 
     // Create a join message entity
     joinmessagedisplay <- Entities.CreateByClassname("game_text")
-    joinmessagedisplay.__KeyValueFromString("targetname", "joinmessagedisplaympmod")
+    joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
     joinmessagedisplay.__KeyValueFromString("holdtime", "3")
     joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
     joinmessagedisplay.__KeyValueFromString("fadein", "0.2")
@@ -1855,11 +1857,11 @@ function CreateOurEntities() {
     // joinmessagedisplay.__KeyValueFromString("x", "0.1")
     // joinmessagedisplay.__KeyValueFromString("y", "0.1")
 
-    // Create a player_speedmod entity
+    // Create a player_speedmod entity to modify a player's movement speed
     playerspeedmod <- Entities.CreateByClassname("player_speedmod")
     playerspeedmod.__KeyValueFromString("targetname", "p2mm_player_speedmod")
 
-    // Create an entity that sends a client command
+    // Create an entity that sends miscellaneous client commands
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
-    clientcommand.__KeyValueFromString("targetname", "p2mmclientcommand")
+    clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand")
 }
