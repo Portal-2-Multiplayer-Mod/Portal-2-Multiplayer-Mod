@@ -71,7 +71,7 @@ function init() {
 
     // Create a global point_servercommand entity for us to pass through commands
     globalservercommand <- Entities.CreateByClassname("point_servercommand")
-    globalservercommand.__KeyValueFromString("targetname", "p2mmservercommand")
+    globalservercommand.__KeyValueFromString("targetname", "p2mm_servercommand")
 
     // Load plugin if it exists and compensate if it doesn't
     // Also change the level once it has succeeded this
@@ -89,13 +89,13 @@ function init() {
             printl("P2:MM plugin has not been loaded!")
             printl("=================================")
         }
-        EntFire("p2mmservercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
-        EntFire("p2mmservercommand", "command", "plugin_load 32pmod", 0.05)
+        EntFire("p2mm_servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
+        EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetDeveloperLevel() == 918612) {
             if (DevMode) {
-                EntFire("p2mmservercommand", "command", "developer 1", 0.01)
+                EntFire("p2mm_servercommand", "command", "developer 1", 0.01)
             } else {
-                EntFire("p2mmservercommand", "command", "developer 0", 0.01)
+                EntFire("p2mm_servercommand", "command", "developer 0", 0.01)
             }
             printl("Resetting map so that the plugin has an effect! (if it loaded)")
             printl("")
@@ -108,8 +108,8 @@ function init() {
             printl("")
             printl("")
             printl("")
-            EntFire("p2mmservercommand", "command", "clear", 0)
-            EntFire("p2mmservercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
+            EntFire("p2mm_servercommand", "command", "clear", 0)
+            EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
         }
     }
 
@@ -125,7 +125,7 @@ function init() {
     EntFireByHandle(timer, "Enable", "", 0.1, null, null)
 
     // Delay the creation of our entities before so that we don't get an engine error from the entity limit
-    EntFire("p2mmservercommand", "command", "script CreateOurEntities()", 0.05)
+    EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

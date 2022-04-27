@@ -59,7 +59,7 @@ if (!FutBolGamemode) {
     ]
 
     function FinishingSpawnFutbolInMap() {
-            EntFire("p2mmservercommand", "command", "script CurrentlySpawningFutBol = false", 0.1)
+            EntFire("p2mm_servercommand", "command", "script CurrentlySpawningFutBol = false", 0.1)
             if (CanSpawnFutBol) {
                 SpawnFutBol("futbol_in_map", Vector(7777, -5668, 225))
                 SendToConsole("script DecEntFireByHandle(Entities.FindByClassname(null, \"prop_glass_futbol\"), \"break\", \"\",30)")
@@ -69,7 +69,7 @@ if (!FutBolGamemode) {
     function SpawnFutbolInMap() {
         if (CanSpawnFutBol && !CurrentlySpawningFutBol) {
             CurrentlySpawningFutBol = true
-            EntFire("p2mmservercommand", "command", "script FinishingSpawnFutbolInMap()", 3)
+            EntFire("p2mm_servercommand", "command", "script FinishingSpawnFutbolInMap()", 3)
         }
     }
 
@@ -136,16 +136,16 @@ if (!FutBolGamemode) {
         }
 
         if (MSPostPlayerSpawn==true) {
-            EntFire("p2mmservercommand", "command", "say Game Starts In 30 Seconds", 0)
-            EntFire("p2mmservercommand", "command", "say Game Starts In 20 Seconds", 10)
-            EntFire("p2mmservercommand", "command", "say Game Starts In 10 Seconds", 20)
-            EntFire("p2mmservercommand", "command", "say Game Starts In 5 Seconds", 25)
-            EntFire("p2mmservercommand", "command", "say Game Starts In 4  Seconds", 26)
-            EntFire("p2mmservercommand", "command", "say Game Starts In 3  Seconds", 27)
-            EntFire("p2mmservercommand", "command", "say Game Starts In 2  Seconds", 28)
-            EntFire("p2mmservercommand", "command", "say Game Starts In 1  Seconds", 29)
-            EntFire("p2mmservercommand", "command", "say Game Starting!", 30)
-            EntFire("p2mmservercommand", "command", "script StartGame()", 30)
+            EntFire("p2mm_servercommand", "command", "say Game Starts In 30 Seconds", 0)
+            EntFire("p2mm_servercommand", "command", "say Game Starts In 20 Seconds", 10)
+            EntFire("p2mm_servercommand", "command", "say Game Starts In 10 Seconds", 20)
+            EntFire("p2mm_servercommand", "command", "say Game Starts In 5 Seconds", 25)
+            EntFire("p2mm_servercommand", "command", "say Game Starts In 4  Seconds", 26)
+            EntFire("p2mm_servercommand", "command", "say Game Starts In 3  Seconds", 27)
+            EntFire("p2mm_servercommand", "command", "say Game Starts In 2  Seconds", 28)
+            EntFire("p2mm_servercommand", "command", "say Game Starts In 1  Seconds", 29)
+            EntFire("p2mm_servercommand", "command", "say Game Starting!", 30)
+            EntFire("p2mm_servercommand", "command", "script StartGame()", 30)
                         DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
                         DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
         }
@@ -189,12 +189,12 @@ if (!FutBolGamemode) {
                         DecEntFireByHandle(RedGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
                         DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
                         DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
-                        EntFire("p2mmservercommand", "command", "say Game Restarts In 5 Seconds", 0)
-                        EntFire("p2mmservercommand", "command", "say Game Restarts In 4  Seconds", 1)
-                        EntFire("p2mmservercommand", "command", "say Game Restarts In 3  Seconds", 2)
-                        EntFire("p2mmservercommand", "command", "say Game Restarts In 2  Seconds", 3)
-                        EntFire("p2mmservercommand", "command", "say Game Restarts In 1  Second", 4)
-                        EntFire("p2mmservercommand", "command", "portal2mprslv", 5)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 5 Seconds", 0)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 4  Seconds", 1)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 3  Seconds", 2)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 2  Seconds", 3)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 1  Second", 4)
+                        EntFire("p2mm_servercommand", "command", "portal2mprslv", 5)
                     }
                 }
 
@@ -220,8 +220,8 @@ if (!FutBolGamemode) {
                         if (CheckFutBolGoal(0, disp1, futent)) {
                             futent.__KeyValueFromString("targetname", "futbol_in_map_done")
                             DecEntFireByHandle(futent, "disablemotion", "", 0.05)
-                            EntFire("p2mmservercommand", "command", "script futent.SetOrigin(GetGoalPoint(disp1))", 0.1)
-                            EntFire("p2mmservercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
+                            EntFire("p2mm_servercommand", "command", "script futent.SetOrigin(GetGoalPoint(disp1))", 0.1)
+                            EntFire("p2mm_servercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
                             DecEntFireByHandle(futent, "break", "", 1)
                             DecEntFireByHandle(FutBolGoalText, "SetText", "Blue Scored!", 0)
                             DecEntFireByHandle(FutBolGoalText, "SetTextColor", "0 80 255", 0.1)
@@ -232,8 +232,8 @@ if (!FutBolGamemode) {
                         if (CheckFutBolGoal(1, disp2, futent)) {
                                 futent.__KeyValueFromString("targetname", "futbol_in_map_done")
                                 DecEntFireByHandle(futent, "disablemotion", "", 0.05)
-                                EntFire("p2mmservercommand", "command", "script futent.SetOrigin(GetGoalPoint(disp2))", 0.1)
-                            EntFire("p2mmservercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
+                                EntFire("p2mm_servercommand", "command", "script futent.SetOrigin(GetGoalPoint(disp2))", 0.1)
+                            EntFire("p2mm_servercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
                                 DecEntFireByHandle(futent, "break", "", 1)
                                 DecEntFireByHandle(FutBolGoalText, "SetText", "Red Scored!", 0)
                                 DecEntFireByHandle(FutBolGoalText, "SetTextColor", "255 100 0", 0.1)

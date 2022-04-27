@@ -45,7 +45,7 @@ if (MinecraftMode) {
 
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
         if (MSInstantRun==true) {
-            DecEntFireByHandle(Entities.FindByClassname(null, "prop_button"), "addoutput", "OnPressed p2mmservercommand:command:script PressedButton()")
+            DecEntFireByHandle(Entities.FindByClassname(null, "prop_button"), "addoutput", "OnPressed p2mm_servercommand:command:script PressedButton()")
             Entities.FindByClassname(null, "prop_button").__KeyValueFromString("Delay", "0")
         }
 

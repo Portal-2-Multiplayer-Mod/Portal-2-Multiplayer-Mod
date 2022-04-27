@@ -127,7 +127,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         printl("No Player Made It")
                         PreviousTimeSP_A2_BTS2Again <- Time()
                         // Create an on screen text message entity
-                        onscreendisplay69.__KeyValueFromString("targetname", "onscreendisplaympmodbts2")
+                        onscreendisplay69.__KeyValueFromString("targetname", "p2mm_wait_for_players_textbts2")
                         onscreendisplay69.__KeyValueFromString("message", "Nobody Escaped...")
                         onscreendisplay69.__KeyValueFromString("holdtime", "3")
                         onscreendisplay69.__KeyValueFromString("fadeout", "2")
@@ -145,7 +145,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         envfade.__KeyValueFromString("rendercolor", "0 0 0")
                         envfade.__KeyValueFromString("renderamt", "255")
                         envfade.__KeyValueFromString("targetname", "FadeyBoi")
-                        DoEntFire("onscreendisplaympmodbts2", "display", "", 0.1, null, null)
+                        DoEntFire("p2mm_wait_for_players_textbts2", "display", "", 0.1, null, null)
                         DoEntFire("FadeyBoi", "fade", "", 0.1, null, null)
                         if (GetDeveloperLevel()) {
                             printl("stuff=====================thing")

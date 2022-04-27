@@ -8,12 +8,12 @@
 function SpawnBackupCube() {
     CanSpawnCubeInit = false
     EntFire("cube_dropper_box_spawner_override_p2mm", "forcespawn", "", 0, null)
-    EntFire("p2mmservercommand", "command", "script SpawnCube = true", 0.2, null)
-    EntFire("p2mmservercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
-    EntFire("p2mmservercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
-    EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p2mm_box_yes\")", 0.1, null)
-    EntFire("p2mmservercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-394, -270, 1350))", 0.1, null)
-    EntFire("p2mmservercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+    EntFire("p2mm_servercommand", "command", "script SpawnCube = true", 0.2, null)
+    EntFire("p2mm_servercommand", "command", "script CanSpawnCubeInit = true", 0.2, null)
+    EntFire("p2mm_servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
+    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p2mm_box_yes\")", 0.1, null)
+    EntFire("p2mm_servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-394, -270, 1350))", 0.1, null)
+    EntFire("p2mm_servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
 }
 
 function MoveCubeDropper() {
@@ -28,8 +28,8 @@ function MoveCubeDropper() {
     Entities.FindByName(null, "cube_dropper_box_spawner_override_p2mm").__KeyValueFromString("targetname", "cube_dropper_box_spawner")
     EntFire("cube_dropper_box_spawner", "forcespawn", "", 5, null)
     EntFire("cube_dropper_box_spawner", "forcespawn", "", 8.1, null)
-    EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").Destroy()", 6.45, null)
-    EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").Destroy()", 6.45, null)
+    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").Destroy()", 6.45, null)
+    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").Destroy()", 6.45, null)
     Entities.FindByName(null, "cube_dropper_prop").SetOrigin(Vector(1504, -640, 808))
     Entities.FindByName(null, "cube_dropper_prop").SetAngles(0, 270, 0)
     // set anim to open item_dropper_openitem_dropper_open
@@ -109,7 +109,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "cube_test_button"), "addoutput", "OnPressed button_1_solved:Trigger", 1, null, null)
         EntFireByHandle(Entities.FindByName(null, "button_1_unpressed"), "addoutput", "OnTrigger moja3:OnProxyRelay1:close", 1, null, null)
         // Setup function ent_fires
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20), "addoutput", "OnTrigger p2mmservercommand:command:script MoveCubeDropper()", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20), "addoutput", "OnTrigger p2mm_servercommand:command:script MoveCubeDropper()", 0, null, null)
         // Destroy objects
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByName(null, "catwalk_lift_reset_trigger").Destroy()

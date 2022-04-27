@@ -225,7 +225,7 @@ function PostMapLoad() {
 	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
     // Set original angles
-    EntFire("p2mmservercommand", "command", "script CanCheckAngle <- true", 0.32)
+    EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
 
     local plr = Entities.FindByClassname(null, "player")
     // OriginalPosMain <- Entities.FindByClassname(null, "player").GetOrigin()
@@ -235,8 +235,8 @@ function PostMapLoad() {
 
     EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
 
-    EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
-    EntFire("p2mmservercommand", "command", "script CanHook <- true", 1)
+    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
+    EntFire("p2mm_servercommand", "command", "script CanHook <- true", 1)
     PostMapLoadDone <- true
 }
 
@@ -251,7 +251,7 @@ function PostPlayer2Join() {
 // Runs once the game begins
 // (Two players have loaded in by now)
 function GeneralOneTime() {
-    EntFire("p2mmservercommand", "command", "script ForceRespawnAll()", 1)
+    EntFire("p2mm_servercommand", "command", "script ForceRespawnAll()", 1)
 
     // Single player maps with chapter titles
     local CHAPTER_TITLES =
@@ -284,7 +284,7 @@ function GeneralOneTime() {
 
     if (usefogcontroller == true) {
         foreach (fog in fogs) {
-            EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p2mmservercommand:command:script p2mmfogswitch(\"" + fog.fogname + "\")", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmfogswitch(\"" + fog.fogname + "\")", 0, null, null)
         }
 
         defaultfog <- fogs[0].fogname
@@ -586,7 +586,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
             if (commandrunner == player) {
                 SendToConsole("say " + playername + ": You probably dont want to kick yourself. If you do then use kick " + playername + ".")
             } else {
-                EntFire("p2mmclientcommand", "command", "disconnect", 0, player)
+                EntFire("p2mm_clientcommand", "command", "disconnect", 0, player)
             }
         } else {
             local reason = ""
@@ -595,7 +595,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
             }
             local playertokick = FindPlayerByName(command[1])
             if (playertokick != null) {
-                EntFire("p2mmclientcommand", "command", "disconnect" + reason, 0, playertokick)
+                EntFire("p2mm_clientcommand", "command", "disconnect" + reason, 0, playertokick)
             } else {
                 SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
             }

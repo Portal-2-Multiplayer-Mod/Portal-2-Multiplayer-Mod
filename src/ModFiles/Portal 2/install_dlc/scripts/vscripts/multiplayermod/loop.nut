@@ -304,7 +304,7 @@ function loop() {
                 //     printl("==============================ANGLE SPAWN")
                 // }
             }
-            DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+            DoEntFire("p2mm_wait_for_players_text", "display", "", 0.0, null, null)
         }
     }
 

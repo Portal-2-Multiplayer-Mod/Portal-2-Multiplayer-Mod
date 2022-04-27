@@ -1638,7 +1638,7 @@
                             envfade.__KeyValueFromString("rendercolor", "0 0 0")
                             envfade.__KeyValueFromString("renderamt", "255")
                             envfade.__KeyValueFromString("targetname", "FadeyBoi")
-                            DoEntFire("onscreendisplaympmod", "display", "", 0.0, null, null)
+                            DoEntFire("p2mm_wait_for_players_text", "display", "", 0.0, null, null)
                             DoEntFire("FadeyBoi", "fade", "", 0.0, null, null)
                             NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- false
                         }
