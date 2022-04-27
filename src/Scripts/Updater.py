@@ -82,17 +82,18 @@ def CheckForNewFiles():
     r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
 
-    # this way if the identifier file does not exist or the time in it is older, it will download the mod files
-    try:
-        localIdPath = GVars.modPath + GVars.nf + f"ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc{GVars.nf}32playermod.identifier"
-        localDate = datetime.strptime(open(localIdPath, "r").read(), "%Y-%m-%d")
-        remoteDate = datetime.strptime(r["Date"],"%Y-%m-%d")
-        # love safe guards
-        if not (remoteDate > localDate):
-            Log("mod files are up to date")
-            return False
-    except Exception as e:
-        Log(e)
+    # check if the identifier file exists or no
+    localIdPath = GVars.modPath + GVars.nf + f"ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc{GVars.nf}32playermod.identifier"
+    if not os.path.isfile(localIdPath):
+        return True
+
+    # compare the dates on the local file and the repo
+    localDate = datetime.strptime(open(localIdPath, "r").read(), "%Y-%m-%d")
+    remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
+    # only return false if the remote date is not greater or equal to the local date
+    if not (remoteDate >= localDate):
+        Log("mod files are up to date")
+        return False
 
     return True
 
