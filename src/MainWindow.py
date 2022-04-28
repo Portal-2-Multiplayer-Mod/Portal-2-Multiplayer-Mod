@@ -396,7 +396,7 @@ class StopButton:
         global coolDown
         if coolDown <= 0:
             coolDown = int(8 * 60)
-            UnmountScript
+            UnmountScript()
     isasync = True
 
 class BackButton:
@@ -681,7 +681,6 @@ def Main():
         
         if coolDown > 0:
             coolDown -= 1
-            print("cooldown went down")
 
     pygame.quit()
     sys.exit()

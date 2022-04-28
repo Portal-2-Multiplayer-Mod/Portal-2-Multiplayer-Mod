@@ -223,9 +223,9 @@ def RenameBinaries(gamepath, binarys):
     for binary in binarys:
         # if the binary exists
         if (os.path.isfile(gamepath + GVars.nf + binary)):
-            # add a ".override" to the end of the binary
-            os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary + ".override")
-            Log("Renamed " + binary + " to " + binary + ".override")
+            # add a ".p2mmoverride" to the end of the binary
+            os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary + ".p2mmoverride")
+            Log("Renamed " + binary + " to " + binary + ".p2mmoverride")
 
 def UnRenameBinaries(gamepath, binarys):
     # binarys = [
@@ -240,23 +240,22 @@ def UnRenameBinaries(gamepath, binarys):
 
     # Go through the list of binaries
     for binary in binarys:
-        # Add a ".override" file extension to the end of the binary
-        binary = binary + ".override"
+        # Add a ".p2mmoverride" file extension to the end of the binary
+        binary = binary + ".p2mmoverride"
         # If the binary exists,
         if (os.path.isfile(gamepath + GVars.nf + binary)):
-            Log("Un-renaming " + binary + " to " + binary[:-9])
-            # If a file with the name gamepath + GVars.nf + binary[:-9] exists
-            if (os.path.isfile(gamepath + GVars.nf + binary[:-9])):
+            Log("Un-renaming " + binary + " to " + binary[:-13])
+            # If a file with the name gamepath + GVars.nf + binary[:-13] exists
+            if (os.path.isfile(gamepath + GVars.nf + binary[:-13])):
                 # Remove it
                 os.remove(gamepath + GVars.nf + binary)
             else:
                 # Rename the binary back to the original
-                os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary[:-9])
+                os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary[:-13])
 
 def DeleteUnusedDlcs(gamepath):
     Log("")
     Log("            _________Dealing with Folders________")
-    Log("Deleting in-use DLCs...")
     
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Log("Portal 2 game path not found!")
@@ -298,7 +297,6 @@ def FindAvailableDLC(gamepath):
             else:
                 dlcs.append(str(dlcnumber))
                 Log("Adding DLC: " + dlcnumber + " to our internal list to ignore...")
-                Log("P2:MM files will be mounted to portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1))
 
     # sort each dlc number lower to higher
     dlcs.sort(key=int)
