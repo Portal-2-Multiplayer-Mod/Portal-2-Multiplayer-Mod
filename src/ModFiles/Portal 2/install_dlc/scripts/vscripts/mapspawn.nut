@@ -89,13 +89,14 @@ function init() {
             printl("P2:MM plugin has not been loaded!")
             printl("=================================")
         }
-        EntFire("p2mm_servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.01)
+        EntFire("p2mm_servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.03)
         EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetDeveloperLevel() == 918612) {
             if (DevMode) {
                 EntFire("p2mm_servercommand", "command", "developer 1", 0.01)
             } else {
                 EntFire("p2mm_servercommand", "command", "developer 0", 0.01)
+                EntFire("p2mm_servercommand", "command", "clear", 0.02)
             }
             printl("Resetting map so that the plugin has an effect! (if it loaded)")
             printl("")
