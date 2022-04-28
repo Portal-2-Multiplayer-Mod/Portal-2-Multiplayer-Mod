@@ -1,5 +1,6 @@
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
+import http.client as httplib
 from datetime import datetime
 from pathlib import Path
 import urllib.request
@@ -12,6 +13,17 @@ currentVersion = "2.0.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
+
+# thanks stackOverflow for this solution <3
+def haveInternet():
+    conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
+    try:
+        conn.request("HEAD", "/")
+        return True
+    except Exception:
+        return False
+    finally:
+        conn.close()
 
 def CheckForNewClient():
     Log("searching for a new client...")
@@ -71,6 +83,11 @@ def DownloadClient():
 
 
 def CheckForNewFiles():
+    
+    if not haveInternet():
+        Log("No internet Connection")
+        return False
+    
     Log("Checking for new files...")
     # plan
     # download modIndex.json
@@ -85,16 +102,20 @@ def CheckForNewFiles():
     # check if the identifier file exists or no
     localIdPath = GVars.modPath + GVars.nf + f"ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc{GVars.nf}32playermod.identifier"
     if not os.path.isfile(localIdPath):
+        Log("identifier file doesn't exist so the mod files are probably unavailable too")
         return True
 
+    Log("found identifier file")
     # compare the dates on the local file and the repo
     localDate = datetime.strptime(open(localIdPath, "r").read(), "%Y-%m-%d")
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
     # only return false if the remote date is not greater or equal to the local date
-    if not (remoteDate >= localDate):
+    if not (remoteDate > localDate):
         Log("mod files are up to date")
         return False
 
+    Log(f"the remote date {remoteDate} is greater than the local date {localDate}")
+    
     return True
 
 def DownloadNewFiles():

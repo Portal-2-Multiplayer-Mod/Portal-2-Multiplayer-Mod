@@ -48,6 +48,7 @@ def VerifyGamePath():
             valid = True
             Log("Game path is valid!")
 
+
 def CheckForUpdates():
     if up.CheckForNewFiles():
         valid = False
@@ -59,8 +60,8 @@ def CheckForUpdates():
             elif (update.upper() == "NO") or (update.upper() == "N"):
                 valid = True
                 return
-        
-        
+
+
 def OnStart():
     # Populate the global variables
     GVars.init()
@@ -69,6 +70,8 @@ def OnStart():
     # Load the configs (It's better to do it separately)
     GVars.LoadConfig()
     CheckForUpdates()
+    input()
+
 
 def Init():
     OnStart()
@@ -82,7 +85,8 @@ def Init():
     Log("")
 
     gamepath = GVars.configData["portal2path"]
-    
+
+
 #//# Mount P2:MM #//#
     if (WillMount):
         if RG.MountMod(gamepath) == "filesMissing":
