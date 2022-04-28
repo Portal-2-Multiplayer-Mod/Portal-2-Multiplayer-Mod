@@ -263,7 +263,11 @@ class LaunchGameButton:
     selectsnd = pwrsnd
     hoversnd = blipsnd
     curanim = ""
-    function = RunGameScript
+    def function():
+        global coolDown
+        if coolDown <= 0:
+            coolDown = int(8 * 60)
+            RunGameScript()
     isasync = True
 
 class SettingsButton:
@@ -372,7 +376,11 @@ class RunButton:
     selectsnd = pwrsnd
     hoversnd = blipsnd
     curanim = ""
-    function = MountModOnly
+    def function():
+        global coolDown
+        if coolDown <= 0:
+            coolDown = int(8 * 60)
+            MountModOnly()
     isasync = True
 
 class StopButton:
@@ -384,7 +392,11 @@ class StopButton:
     selectsnd = pwrsnd
     hoversnd = blipsnd
     curanim = ""
-    function = UnmountScript
+    def function():
+        global coolDown
+        if coolDown <= 0:
+            coolDown = int(8 * 60)
+            UnmountScript
     isasync = True
 
 class BackButton:
@@ -552,6 +564,8 @@ def Main():
     global LookingForInput
     global CurInput
     global AfterInputFunction
+    global coolDown
+    coolDown = 0
     LastBackspace = 0
     BackspaceHasBeenHeld = False
 
@@ -664,6 +678,10 @@ def Main():
         Update()
         pygame.display.update()
         fpsclock.tick(fps)
+        
+        if coolDown > 0:
+            coolDown -= 1
+            print("cooldown went down")
 
     pygame.quit()
     sys.exit()
