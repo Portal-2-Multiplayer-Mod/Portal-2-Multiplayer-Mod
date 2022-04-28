@@ -11,6 +11,8 @@ As it stands right now, version 1.5 is severely outdated, however, version 2.0 a
 
 The pros and cons are listed below, though **we highly recommend sticking with the latest pre-release. (v2.0) even if you downloaded 1.5 already considering the huge improvements**
 
+<u>**NOTE: ONLY THE HOST NEEDS TO HAVE THE MOD MOUNTED. PEOPLE WHO ARE JOINING THE HOST NEED TO LAUNCH NORMAL PORTAL 2!**</u>
+
 ***Version 1.5***
 ```
 + Easy to install
@@ -66,7 +68,7 @@ The pros and cons are listed below, though **we highly recommend sticking with t
 # Installation & use
 
 - Latest version released: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
-  - v2.0 can be downloaded from the commits.
+  - v2.0 requires you to download the entire repo.
 
 - Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
   - ***The Steam guide goes over everything you need to know in order to get the mod working, but just in case, we have also prepared supplementary videos if you get stuck.***
@@ -78,26 +80,34 @@ The pros and cons are listed below, though **we highly recommend sticking with t
 # How to build
 **Notes:**
 1. the project requires Python3 to run
-2. The GUI launcher can only run on OSs supported by **[Qt 5](https://doc.qt.io/qt-5/supported-platforms.html)**
+2. The GUI launcher can only run on OSs supported by **[PyGame](https://www.pygame.org/wiki/about#:~:text=Truly%20portable.%20Supports,Child%20(OLPC)%20computer.)**
 
 ---
+1. Download Global Dependencies 
+	- `pip install requests`
+
+
+2. Run The launcher
+
 
 **CLI launcher**
 - Just run `src/cli.py`
 
 
 **GUI launcher**
-1. Clone the repo
-2. Create a virtual python environment (Not needed but recommended) 
+1. Create a virtual python environment (Not needed but recommended) 
 	1. Create the virtual environment 
 		- `python3 -m venv env`
 	2.  Activate the virtual environment 
 		- Windows: `.\env\Scripts\activate.bat`
 		- Linux: `source ./env/bin/activate`
-3. Download dependencies 
+
+
+2. Install GUI dependencies 
 	- `pip install pygame`
-	- `pip install requests`
-4. Run `src/MainWindow.py`
+
+
+3. Run `src/MainWindow.py`
 
 
 # Discord
