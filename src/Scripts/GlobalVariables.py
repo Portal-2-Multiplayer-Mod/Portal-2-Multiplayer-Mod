@@ -26,12 +26,16 @@ def init():
     global appStartDate, modPath, iow, iol, nf
     
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
-    modPath = os.path.dirname(__main__.__file__)
+    # set the modpath the the users home directory
+    modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
+    # check if the modpath exists, if not create it
+    if not os.path.exists(modPath):
+        os.makedirs(modPath)
     
     if (sys.platform == "win32"):
         iow = True
     elif (sys.platform.startswith("linux")):
-        iol = True # and we don't even need this variable i'll probably delete it tomorrow
+        iol = True
     else:
         # feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")

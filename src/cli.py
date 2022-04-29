@@ -91,7 +91,7 @@ def Init():
 #//# Mount P2:MM #//#
     if (WillMount):
         if RG.MountMod(gamepath) == "filesMissing":
-            Log("Unable to locate directory: ModFiles/Portal 2/install_dlc")
+            Log("Unable to locate directory: " + gamepath)
             return
         RG.LaunchGame(gamepath)
 

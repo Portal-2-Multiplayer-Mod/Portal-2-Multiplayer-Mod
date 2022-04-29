@@ -1,12 +1,14 @@
 from cmath import rect
 from locale import getlocale
 import sys
-import os
+import os 
 import random
 import asyncio
 import threading
 import time
+from tkinter import E
 import webbrowser
+import Scripts.Updater as up
 tk = ""
 try:
     from tkinter import Tk
@@ -23,6 +25,7 @@ import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.RunGame as RG
 import Scripts.Configs as cfg
+import Scripts.BasicFunctions as BF
 
 # populate the global variables
 
@@ -62,6 +65,8 @@ pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
 p2mmlogo = pygame.image.load("GUI/assets/images/p2mm.svg")
 
 pygame.display.set_icon(p2mmlogo)
+
+selectedpopupbutton = 0
 
 ###############################################################################
 
@@ -142,14 +147,25 @@ def MountModOnly():
     VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
     if (CheckPath(gamepath)):
-        RG.MountMod(gamepath)
+        if (RG.MountMod(gamepath) == "filesMissing"):
+            return False
+        else:
+            return True
 
 def RunGameScript():
     VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
     if (CheckPath(gamepath)):
-        RG.MountMod(gamepath)
-        RG.LaunchGame(gamepath)
+        if (MountModOnly()):
+            RG.LaunchGame(gamepath)
+        else:
+            if up.haveInternet():
+                Error("Fetching Update...", 5, (255, 150, 75))
+                up.DownloadNewFiles()
+            else:
+                Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
+                RG.MountMod(gamepath, BF.ConvertPath("FALLBACK/ModFiles/Portal 2/install_dlc"))
+                RG.LaunchGame(gamepath)
 
 def UnmountScript():
     VerifyGamePath()
@@ -249,8 +265,22 @@ def Error(text, time = 3, clr = (255, 75, 75)):
         ERRORLIST.append([text[i], time, clr])
     return
 
-def PopupBox(tile, text, buttons):
-    print("")
+def PopupBox(title, text, buttons):
+
+    # MANUAL #
+    # title = "A String Title For The Box"
+    # text = "A String Of Text To Display In The Box (use \n for newlines)"
+    # buttons = [["Button Text", "Button Function"], ["Button Text", "Button Function"], etc, etc.....]
+    ##########
+
+    for button in buttons:
+        button.selected = False
+    buttons[0].selected = True
+
+    PopupBox = [title, text, buttons] # TITLE, TEXT, BUTTONS
+    Log("Creating popup box... Tile: " + str(title) + " Text: " + text + " Buttons: " + str(buttons))
+    PopupBoxList.append(PopupBox)
+
 
 
 ############ BUTTON CLASSES
@@ -267,7 +297,7 @@ class LaunchGameButton:
     def function():
         global coolDown
         if coolDown <= 0:
-            coolDown = int(8 * 60)
+            coolDown = int(3 * 60)
             RunGameScript()
     isasync = True
 
@@ -368,6 +398,38 @@ class InputButton:
         GetUserInputPYG(AfterInput)
     isasync = False
 
+
+class PopupBoxButton:
+    text = "POPUP BOX"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        def YesInput():
+            Error("YES", 3, (75, 255, 75))
+        def NoInput():
+            Error("NO", 3, (255, 75, 75))
+
+        class YesButton:
+            text = "Yes"
+            function = YesInput
+            activecolor = (75, 200, 75)
+            inactivecolor = (155, 155, 155)
+        
+        class NoButton:
+            text = "No"
+            function = NoInput
+            activecolor = (255, 75, 75)
+            inactivecolor = (155, 155, 155)
+
+        PopupBox("Are You A Mogus?", "have you done 1 sussy thing \n and or have done a VENT, SUS?", [YesButton, NoButton])
+    isasync = False
+
+
 class RunButton:
     text = "Mount"
     activecolor = (50, 255, 120)
@@ -380,7 +442,7 @@ class RunButton:
     def function():
         global coolDown
         if coolDown <= 0:
-            coolDown = int(8 * 60)
+            coolDown = int(3 * 60)
             MountModOnly()
     isasync = True
 
@@ -396,7 +458,7 @@ class StopButton:
     def function():
         global coolDown
         if coolDown <= 0:
-            coolDown = int(8 * 60)
+            coolDown = int(3 * 60)
             UnmountScript()
     isasync = True
 
@@ -422,7 +484,7 @@ ManualButtons = [RunButton, StopButton, BackButton]
 
 MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, TestingButton]
 
-TestingMenu = [InputButton, BackButton]
+TestingMenu = [InputButton, PopupBoxButton, BackButton]
 ###########
 
 CurrentMenu = MainButtons
@@ -449,6 +511,10 @@ def Update():
 
     W = screen.get_width()
     H = screen.get_height()
+
+    fntdiv = 32
+    fntsize = int(W / fntdiv)
+    mindiv = int(fntdiv / 1.25)
 
     ########### BACKGROUND
 
@@ -512,7 +578,7 @@ def Update():
     ############# OVERLAY
 
     indx = 0
-    for error in ERRORLIST:
+    for error in ERRORLIST[::-1]:
         indx += 1
         errortext = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(W / 60) + int(H / 85))).render(error[0], True, error[2])
         screen.blit(errortext, (W / 30, ((errortext.get_height() * indx) * -1) + (H / 1.05)))
@@ -524,11 +590,69 @@ def Update():
                 ERRORLIST.remove(error)
             error[1] -= 1
         SecAgo = time.time()
+
+    ####################### DRAW POPUP BOX
+    if len(PopupBoxList) > 0:
+        sz = 1.25
+
+        # draw a white box that is half the width and height of the screen
+        boxbackground = pygame.Surface((W / sz, W / (sz * 2)))
+        boxbackground.fill((255, 255, 255))
+        boxbackground.set_alpha(175)
+        screen.blit(boxbackground, (W / 2 - (boxbackground.get_width() / 2), H / 2 - (boxbackground.get_height() / 2)))
+
+        bw = boxbackground.get_width()
+        bh = boxbackground.get_height()
+        bx = W / 2 - (bw / 2)
+        by = H / 2 - (bh / 2)
+        
+        # put the title in the box
+        boxtitle = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(PopupBoxList[0][0], True, (255, 255, 0))
+        titlew = boxtitle.get_width()
+        titleh = boxtitle.get_height()
+        titlex = bx + (bw / 2) - (titlew / 2)
+        titley = by + (titleh / 2)
+        screen.blit(boxtitle, (titlex, titley))
+
+        # put the text in the box
+        ctext = PopupBoxList[0][1].split("\n")
+        indx = 0
+        for line in ctext:
+            text = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(fntsize / 1.5)).render(line, True, (0, 0, 0))
+            textw = text.get_width()
+            texth = text.get_height()
+            textx = bx + (bw / 2) - (textw / 2)
+            texty = by + (titleh * 2) + (texth * indx)
+            screen.blit(text, (textx, texty))
+            indx += 1
+
+        # put the buttons in the box
+        amtob = len(PopupBoxList[0][2])
+        indx = 0
+        for button in PopupBoxList[0][2]:
+            buttonsurf = pygame.surface.Surface(((bw / amtob) / 1.2, (bh / 5)))
+            if (button.selected == True):
+                buttonsurf.fill(button.activecolor)
+            else:
+                buttonsurf.fill(button.inactivecolor)
+            surfw = buttonsurf.get_width()
+            surfh = buttonsurf.get_height()
+            surfx = bx + (bw / amtob) * indx + (bw / amtob) / 2 - (surfw / 2)
+            surfy = by + bh - (bh / 4)
+            screen.blit(buttonsurf, (surfx, surfy))
+
+
+
+            text = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(fntsize / 1.5)).render(button.text, True, (255, 255, 255))
+            textw = text.get_width()
+            texth = text.get_height()
+            textx = bx + (bw / amtob) * (indx) + ((bw / amtob) / 2) - (textw / 2)
+            texty = by + bh - (bh / 5) + (texth / 2)
+            screen.blit(text, (textx, texty))
+            indx += 1
+
     ####################### DRAW INPUT BOX
     if LookingForInput:
-        fntdiv = 32
-        fntsize = int(W / fntdiv)
-        mindiv = int(fntdiv / 1.25)
 
         # divide the CurrentInput into lines
         lines = []
@@ -566,11 +690,14 @@ def Main():
     global CurInput
     global AfterInputFunction
     global coolDown
+    global selectedpopupbutton
+
     coolDown = 0
     LastBackspace = 0
     BackspaceHasBeenHeld = False
 
     while running:
+
         ############################ INPUT BOX INPUT
         if (LookingForInput):
             BACKSPACEHELD = pygame.key.get_pressed()[pygame.K_BACKSPACE]
@@ -637,6 +764,27 @@ def Main():
                         else:
                             CurInput += name
 
+            ######################## POPUP BOX INPUT
+            elif len(PopupBoxList) > 0:
+                boxlen = len(PopupBoxList[0][2])
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        PopupBoxList.pop()
+                    elif event.key == K_LEFT:
+                        PopupBoxList[0][2][selectedpopupbutton].selected = False
+                        selectedpopupbutton -= 1
+                        if selectedpopupbutton < 0:
+                            selectedpopupbutton = 0
+                        PopupBoxList[0][2][selectedpopupbutton].selected = True
+                    elif event.key == K_RIGHT:
+                        PopupBoxList[0][2][selectedpopupbutton].selected = False
+                        selectedpopupbutton += 1
+                        if selectedpopupbutton >= boxlen:
+                            selectedpopupbutton = boxlen - 1
+                        PopupBoxList[0][2][selectedpopupbutton].selected = True
+                    elif event.key == K_SPACE:
+                        PopupBoxList[0][2][selectedpopupbutton].function()
+                        PopupBoxList.pop()
             ######################## NORMAL INPUT
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
