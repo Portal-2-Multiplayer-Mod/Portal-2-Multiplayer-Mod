@@ -146,7 +146,7 @@ def DownloadNewFiles():
         shutil.rmtree(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
         Log("deleted old files")
     except Exception as e:
-        print(e)
+        Log(e)
         Log("there was no old mod files")
 
     # then copy the new files there

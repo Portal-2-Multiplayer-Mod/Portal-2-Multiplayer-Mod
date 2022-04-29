@@ -53,7 +53,7 @@ def CheckForUpdates():
     if up.CheckForNewFiles():
         valid = False
         while not valid:
-            print("")
+            Log("")
             update = input("there are new files do you want to update the mod? DO NOT UPDATE! IF YOU ARE NOT A DEVELOPER! (y/n) ")
             if (update.upper() == "YES") or (update.upper() == "Y"):
                 valid = True

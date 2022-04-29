@@ -16,7 +16,7 @@ try:
     tk = Tk()
     tk.withdraw()
 except:
-    print("ERROR TKINTER NOT FOUND (TO GET COPY PASTE FUNCTIONALLITY DOWNLOAD THE TKINTER (\"tk\" probably) MODULE FROM YOUR PACKAGE MANAGER)")
+    Log("ERROR TKINTER NOT FOUND (TO GET COPY PASTE FUNCTIONALLITY DOWNLOAD THE TKINTER (\"tk\" probably) MODULE FROM YOUR PACKAGE MANAGER)")
     pass
 
 
@@ -272,7 +272,7 @@ def RefreshSettingsMenu():
         SettingsButtons.clear()
         for key in GVars.configData:
             if key != "cfgvariant":
-                print(key + ": " + GVars.configData[key])
+                Log(key + ": " + GVars.configData[key])
                 class curkeyButton:
                     text = key + ": " + GVars.configData[key]
                     cfgkey = key
@@ -302,12 +302,12 @@ def GetUserInputPYG(afterfunc = None, prompt = ""):
     global CurInput
     global AfterInputFunction
     global InputPrompt
-    print("Getting User INPUT")
+    Log("Getting User INPUT")
     LookingForInput = True
     CurInput = ""
     InputPrompt = prompt
     AfterInputFunction = afterfunc
-    print("AfterInputFunction: " + str(AfterInputFunction))
+    Log("AfterInputFunction: " + str(AfterInputFunction))
 
 def Error(text, time = 3, clr = (255, 75, 75)):
     Log(text)
@@ -815,13 +815,13 @@ def Main():
                     elif CTRLHELD and name == "v":
                         try:
                             str1 = str(tk.selection_get(selection="CLIPBOARD"))
-                            print(str1)
+                            Log(str1)
                             str1 = str1.replace("\n", "")
-                            print("=================================")
-                            print(str1)
+                            Log("=================================")
+                            Log(str1)
                             CurInput += str1
                         except:
-                            print("ERROR TKINTER NOT FOUND (TO GET COPY PASTE FUNCTIONALLITY DOWNLOAD THE TKINTER (\"tk\" probably) MODULE FROM YOUR PACKAGE MANAGER)")
+                            Log("ERROR TKINTER NOT FOUND (TO GET COPY PASTE FUNCTIONALLITY DOWNLOAD THE TKINTER (\"tk\" probably) MODULE FROM YOUR PACKAGE MANAGER)")
                             pass
                     elif len(name) == 1:
                         if SHIFTHELD:

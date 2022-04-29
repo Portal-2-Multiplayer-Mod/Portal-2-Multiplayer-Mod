@@ -15,7 +15,7 @@ import shutil
 def MountMod(gamepath, modFilesPath = "undef"):
     if modFilesPath == "undef":
         modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
-        print(GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc")
+        Log(GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc")
     if os.path.exists(modFilesPath):
         Log("Found directory: ModFiles/Portal 2/install_dlc")
     else:
