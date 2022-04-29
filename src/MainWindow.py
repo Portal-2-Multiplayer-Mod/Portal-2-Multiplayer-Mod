@@ -286,7 +286,7 @@ class SettingsButton:
     isasync = False
 
 class UpdateButton:
-    text = "Update Launcher"
+    text = "Update"
     activecolor = (255, 0, 255)
     inactivecolor = (155, 155, 155)
     sizemult = 1

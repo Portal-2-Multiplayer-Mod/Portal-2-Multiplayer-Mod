@@ -61,7 +61,11 @@ def DownloadClient():
     endpoint = "https://api.github.com/repos"  # github's api endpoint
     r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest")
 
-    packageType = ".exe"  # so we can easily edit it in the future if we want to
+    # so we can easily edit it in the future if we want to
+    if (GVars.iow):
+        packageType = ".exe"  
+    elif (GVars.iol):
+        packageType = ".sh" 
 
     downloadLink = ""
     # this goes through all the binaries in the latest release until one of them ends with the package type (.exe, .pkg etc...)
