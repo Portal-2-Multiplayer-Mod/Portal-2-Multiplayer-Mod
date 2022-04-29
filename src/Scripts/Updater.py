@@ -133,9 +133,10 @@ def DownloadNewFiles():
     Log("finished downloading")
     try:
         # when downloading is done delete the old mod files
-        shutil.rmtree(GVars.modPath + f"{GVars.nf}ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc")
+        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc")
         Log("deleted old files")
     except Exception as e:
+        print(e)
         Log("there was no old mod files")
 
     # then copy the new files there
