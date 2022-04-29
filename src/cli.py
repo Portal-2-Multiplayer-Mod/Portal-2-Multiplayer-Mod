@@ -3,7 +3,12 @@ from Scripts.BasicLogger import Log, StartLog
 import Scripts.RunGame as RG
 import Scripts.Configs as cfg
 import Scripts.Updater as up
+import shutil
 import os
+
+# set current directory to the directory of this file
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+cwd = os.getcwd()
 
 def UserAction():
     validinput = False
@@ -38,7 +43,7 @@ def GetGamePath():
 
 def VerifyGamePath():
     Log("Verifying game path...")
-    valid= False
+    valid = False
     while valid == False:
         gamepath = GVars.configData["portal2path"]
         if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
@@ -70,7 +75,7 @@ def OnStart():
     StartLog()
     # Load the configs (It's better to do it separately)
     GVars.LoadConfig()
-    
+
     # only check for updates for normal users
     if GVars.configData["developer"] != "true":
         CheckForUpdates()
@@ -79,12 +84,31 @@ def OnStart():
 def VerifyModFiles():
     modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     Log("searching for mod files in: "+modFilesPath)
-    if os.path.exists(modFilesPath):
+    if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
         Log("Mod files found")
         return True
 
     Log("Mod files not found")
     return False
+
+
+def DEVMOUNT():
+    try:
+        # delete the old modfiles
+        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+    except Exception as e:
+        Log("folder doesn't exist: "+GVars.modPath + GVars.nf + "ModFiles")
+        Log(str(e))
+
+    # copy the one in the current directory to the modpath
+    shutil.copytree(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+
+    Log("copied files to mod path")
+
+
+def UseFallbacks():
+    # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
+    shutil.copytree(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
 
 
 def Init():
@@ -102,10 +126,15 @@ def Init():
 
 #//# Mount P2:MM #//#
     if (WillMount):
-        if (VerifyModFiles() == False) and (CheckForUpdates() == False):
-            Log("can't mount the mod without mod files") # i'll make it use the backup later
-            quit()
-        
+
+        if (GVars.configData["developer"] == "true"):
+            Log("Dev mode active")
+            DEVMOUNT()
+
+        elif (VerifyModFiles() == False) and (CheckForUpdates() == False):
+            Log("No mod files available \n will use the backup files")
+            UseFallbacks()
+
         RG.MountMod(gamepath)
         RG.LaunchGame(gamepath)
 
@@ -113,8 +142,11 @@ def Init():
         RG.DeleteUnusedDlcs(gamepath)
         RG.UnpatchBinaries(gamepath)
         Log("Unmounted the game successfully")
-        
-    input("Press enter to exit")
+
+    # it's annoying to be asked to exit when you're debugging 
+    # but don't remove it, it's there so the user can read the output when the game closes
+    if (GVars.configData["developer"] != "true"):
+        input("Press enter to exit")
 
 
 if __name__ == "__main__":
