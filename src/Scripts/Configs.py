@@ -70,7 +70,7 @@ def WriteConfigFile(configs):
 def FindConfigPath():
     Log("Finding config path...")
     # default config path should be here
-    return GVars.modPath + GVars.nf + "configs.cfg"
+    return GVars.configPath + GVars.nf + "configs.cfg"
 
 # since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
 def EditConfig(search, newvalue):
