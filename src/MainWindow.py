@@ -168,7 +168,7 @@ def MountModOnly():
     if not up.IsUpdating():
         if (GVars.configData["developer"] == "true"):
             if (TryMount() == False):
-                UseFallbacks(gamepath)
+                DEVMOUNT(gamepath)
         else:
             if (CheckPath(gamepath)):
                 if (TryMount()):
@@ -220,7 +220,7 @@ def RunGameScript():
     gamepath = GVars.configData["portal2path"]
     if MountModOnly():
         RG.LaunchGame(gamepath)
-    elif GVars.configData["developer"] == "true":
+    elif GVars.configData["developer"] == "true" and CheckPath(gamepath):
         RG.LaunchGame(gamepath)
 
 def UnmountScript():
