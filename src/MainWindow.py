@@ -381,8 +381,23 @@ class UpdateButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
-        # open the github releases page in the default browser
-        webbrowser.open("https://github.com/kyleraykbs/Portal2-32PlayerMod/releases")
+        if up.CheckForNewFiles():
+            class YesButton:
+                text = "Yes"
+                function = UpdateMod()
+                activecolor = (75, 200, 75)
+                inactivecolor = (155, 155, 155)
+            
+            class NoButton:
+                text = "No"
+                def function():
+                        pass
+                activecolor = (255, 75, 75)
+                inactivecolor = (155, 155, 155)
+            PopupBox("Update Available", "Would you like to update?", [YesButton, NoButton])
+        else:
+            Error("You are already up to date!", 5, (200, 75, 220))
+
     isasync = True
 
 class ManualButton:
