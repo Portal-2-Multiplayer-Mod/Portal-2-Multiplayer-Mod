@@ -1,4 +1,5 @@
 import Scripts.GlobalVariables as GVars
+import Scripts.BasicFunctions as Funcs
 from Scripts.BasicLogger import Log
 import http.client as httplib
 from datetime import datetime
@@ -133,13 +134,13 @@ def DownloadNewFiles():
     Log("finished downloading")
     try:
         # when downloading is done delete the old mod files
-        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc")
+        shutil.rmtree(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
         Log("deleted old files")
     except Exception as e:
         print(e)
         Log("there was no old mod files")
 
     # then copy the new files there
-    shutil.move(tempPath, GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc")
-    Log("copied new files to " + GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc")
+    shutil.move(tempPath, Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
+    Log("copied new files to " + GVars.modPath + Funcs.ConvertPath("/ModFiles/Portal 2/install_dlc"))
     
