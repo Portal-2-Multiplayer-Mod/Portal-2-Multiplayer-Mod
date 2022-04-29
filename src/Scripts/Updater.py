@@ -47,10 +47,10 @@ def CheckForNewClient():
     # and linux users can update using their package manager
     if GVars.iow:
         # we can have 2 buttons yes or no for this
-        results["message"] = "There's a new update available! {GVars.nf}n do you want to download it?"
+        results["message"] = "There's a new update available! \n do you want to download it?"
     else:
         # we only need an "ok" button for this
-        results["message"] = "there's a new update available! {GVars.nf}n update through your package manager if you want"
+        results["message"] = "there's a new update available! \n update through your package manager if you want"
 
     return results
 
