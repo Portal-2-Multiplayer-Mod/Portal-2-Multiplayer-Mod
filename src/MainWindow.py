@@ -26,21 +26,22 @@ import Scripts.Configs as cfg
 
 # populate the global variables
 
-pygame.init()
-pygame.mixer.init()
-# change dir into the "GUI" folder
-os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/GUI")
+# set current directory to the directory of this file
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 cwd = os.getcwd()
 
-blipsnd = pygame.mixer.Sound("assets/sounds/blip.wav")
+pygame.init()
+pygame.mixer.init()
+
+blipsnd = pygame.mixer.Sound("GUI/assets/sounds/blip.wav")
 blipsnd.set_volume(0.25)
 
-pwrsnd = pygame.mixer.Sound("assets/sounds/power.wav")
+pwrsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
 pwrsnd.set_volume(0.25)
 
-angrycube = pygame.image.load("assets/images/angrycube.png")
+angrycube = pygame.image.load("GUI/assets/images/angrycube.png")
 
-goldencube = pygame.image.load("assets/images/goldencube.png")
+goldencube = pygame.image.load("GUI/assets/images/goldencube.png")
 
 ERRORLIST = []
 
@@ -58,7 +59,7 @@ running = True
 # Define the name and image of the window
 pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
 
-p2mmlogo = pygame.image.load("assets/images/p2mm.svg")
+p2mmlogo = pygame.image.load("GUI/assets/images/p2mm.svg")
 
 pygame.display.set_icon(p2mmlogo)
 
@@ -72,7 +73,7 @@ Floaters = []
 #     surf = pygame.transform.rotate(surf, 19)
 
 def Floater(width, height, rot, x, y, negrot):
-    surf = pygame.image.load("assets/images/button.png")
+    surf = pygame.image.load("GUI/assets/images/button.png")
     surf = pygame.transform.scale(surf, (width, height))
     # surf.set_colorkey((0, 0, 0))
     # surf.fill((130, 130, 140))
@@ -486,7 +487,7 @@ def Update():
 
 
     # Put assets/images/keys.png on the top right corner of the screen
-    keys = pygame.image.load("assets/images/keys.png")
+    keys = pygame.image.load("GUI/assets/images/keys.png")
     keys = pygame.transform.scale(keys, (W/10, W/10))
     screen.blit(keys, ((W / 1.05) - keys.get_width(), H/15))
 
@@ -502,7 +503,7 @@ def Update():
         else:
             clr = button.inactivecolor
         RunAnimation(button, button.curanim)
-        text1 = pygame.font.Font("assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text, True, clr)
+        text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text, True, clr)
         if not (LookingForInput):
             screen.blit(text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)  ))
 
@@ -513,7 +514,7 @@ def Update():
     indx = 0
     for error in ERRORLIST:
         indx += 1
-        errortext = pygame.font.Font("assets/fonts/pixel.ttf", int(int(W / 60) + int(H / 85))).render(error[0], True, error[2])
+        errortext = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(W / 60) + int(H / 85))).render(error[0], True, error[2])
         screen.blit(errortext, (W / 30, ((errortext.get_height() * indx) * -1) + (H / 1.05)))
 
     # every 1 second go through each error and remove it if it's been there for more than 1 second
@@ -539,7 +540,7 @@ def Update():
 
         InputText = ""
         for i in range(len(lines)):
-            InputText = pygame.font.Font("assets/fonts/pixel.ttf", fntsize).render(lines[i], True, (255, 255, 175))
+            InputText = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(lines[i], True, (255, 255, 175))
             screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (     (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - ((((text1.get_height() * 1.25) * (len(lines) / 2))))        ))
 
         surf1 = pygame.Surface((W / 1.5, W / 100))
@@ -548,7 +549,7 @@ def Update():
         blitpos = ((W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
         screen.blit(surf1, blitpos)
         
-        surfInputPrompt = pygame.font.Font("assets/fonts/pixel.ttf", fntsize).render(InputPrompt, True, (255, 255, 255))
+        surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(InputPrompt, True, (255, 255, 255))
         # blit it right below the surf1
         screen.blit(surfInputPrompt, (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2), blitpos[1] + surfInputPrompt.get_height()))
 
