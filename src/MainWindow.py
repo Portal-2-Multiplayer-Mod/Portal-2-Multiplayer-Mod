@@ -154,8 +154,8 @@ def UseFallbacks(gamepath):
     shutil.copytree(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
     RG.MountMod(gamepath)
     Error("Mount Complete!", 5, (75, 255, 75))
-    Error("Launching Game...", 5, (75, 255, 75))
-    RG.LaunchGame(gamepath)
+    # Error("Launching Game...", 5, (75, 255, 75))
+    # RG.LaunchGame(gamepath)
 
 def DEVMOUNT():
     try:
@@ -388,22 +388,25 @@ class UpdateButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
-        if up.CheckForNewFiles():
-            class YesButton:
-                text = "Yes"
-                function = UpdateMod()
-                activecolor = (75, 200, 75)
-                inactivecolor = (155, 155, 155)
-            
-            class NoButton:
-                text = "No"
-                def function():
-                        pass
-                activecolor = (255, 75, 75)
-                inactivecolor = (155, 155, 155)
-            PopupBox("Update Available", "Would you like to update?", [YesButton, NoButton])
-        else:
-            Error("You are already up to date!", 5, (200, 75, 220))
+        global coolDown
+        if coolDown <= 0:
+            coolDown = int(3 * 60)
+            if up.CheckForNewFiles():
+                class YesButton:
+                    text = "Yes"
+                    function = UpdateMod()
+                    activecolor = (75, 200, 75)
+                    inactivecolor = (155, 155, 155)
+
+                class NoButton:
+                    text = "No"
+                    def function():
+                            pass
+                    activecolor = (255, 75, 75)
+                    inactivecolor = (155, 155, 155)
+                PopupBox("Update Available", "Would you like to update?", [YesButton, NoButton])
+            else:
+                Error("You are already up to date!", 5, (200, 75, 220))
 
     isasync = True
 
