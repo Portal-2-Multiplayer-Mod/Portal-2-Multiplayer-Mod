@@ -139,6 +139,6 @@ def DownloadNewFiles():
         Log("there was no old mod files")
 
     # then copy the new files there
-    shutil.move(tempPath + GVars.nf + ".", GVars.modPath + f"{GVars.nf}ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc")
+    shutil.move(tempPath + GVars.nf, GVars.modPath + f"{GVars.nf}ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc")
     Log("copied new files to " + GVars.modPath + f"{GVars.nf}ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc")
     
