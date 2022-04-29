@@ -30,22 +30,19 @@ def init():
     
     if (sys.platform == "win32"):
         iow = True
+        # set the modpath to the users documents folder
+        modPath = os.path.expanduser("~") + nf + "Documents/p2mm"
+        configPath = os.path.expanduser("~") + nf + "Documents/p2mm"
     elif (sys.platform.startswith("linux")):
         iol = True
+        # set the modpath the the users home directory
+        modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
+        configPath = os.path.expanduser("~") + nf + ".config/p2mm"
     else:
         # feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")
         Log("We only support Windows and Linux as of current.")
         quit()
-
-    if (iol):
-        # set the modpath the the users home directory
-        modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
-        configPath = os.path.expanduser("~") + nf + ".config/p2mm"
-    elif (iow):
-        # set the modpath to the users documents folder
-        modPath = os.path.expanduser("~") + nf + "Documents/p2mm"
-        configPath = os.path.expanduser("~") + nf + "Documents/p2mm"
 
     # check if the modpath exists, if not create it
     if not os.path.exists(modPath):

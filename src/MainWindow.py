@@ -1,22 +1,21 @@
 from cmath import rect
 from locale import getlocale
+from operator import truediv
 import sys
 import os 
 import random
-import asyncio
 import threading
 import time
-from tkinter import E
 import webbrowser
-import Scripts.Updater as up
 import shutil
+
 tk = ""
 try:
     from tkinter import Tk
     tk = Tk()
     tk.withdraw()
-except:
-    Log("ERROR TKINTER NOT FOUND (TO GET COPY PASTE FUNCTIONALLITY DOWNLOAD THE TKINTER (\"tk\" probably) MODULE FROM YOUR PACKAGE MANAGER)")
+except Exception as e:
+    Log(str(e))
     pass
 
 
@@ -24,9 +23,9 @@ import pygame
 from pygame.locals import *
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log, StartLog
-import Scripts.RunGame as RG
 import Scripts.Configs as cfg
-import Scripts.BasicFunctions as BF
+import Scripts.Updater as up
+import Scripts.RunGame as RG
 
 # populate the global variables
 
@@ -120,87 +119,94 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
 
 def GetGamePath():
     def AfterInputGP(inp):
-        if CheckPath(inp):
-            cfg.EditConfig("portal2path", inp.strip())
-            Log("Saved '" + inp.strip() + "' as the game path!")
-            Error("Game path is correct!", 5, (75, 255, 75))
-            Error("Saved path!", 5, (75, 200, 75))
-        else:
-            Error("You entered an invalid game path!")
+        
+        cfg.EditConfig("portal2path", inp.strip())
+        Log("Saved '" + inp.strip() + "' as the game path!")
+        Error("Saved path!", 5, (75, 200, 75))
+        VerifyGamePath()
+        
     GetUserInputPYG( AfterInputGP , "Enter Your Portal 2 Game Path")
-    
-def CheckPath(gamepath):
-    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
-        return False
-    else:
-        return True
+
 
 def VerifyGamePath():
     Log("Verifying game path...")
     gamepath = GVars.configData["portal2path"]
-    if CheckPath(gamepath) == False:
-        Log("Game path is invalid!")
+    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Error("Game path is invalid!")
         GetGamePath()
+        return False
+    return True
 
-def TryMount():
-    VerifyGamePath()
-    gamepath = GVars.configData["portal2path"]
-    if (CheckPath(gamepath)):
-        if (RG.MountMod(gamepath) == "filesMissing"):
-            return False
-        else:
-            return True
+
+def VerifyModFiles():
+    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    Log("searching for mod files in: "+ modFilesPath)
+    if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
+        Log("Mod files found")
+        return True
+
+    Log("Mod files not found")
+    return False
+    
 
 def UseFallbacks(gamepath):
     # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
     shutil.copytree(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
     RG.MountMod(gamepath)
+    Error("Mount Complete!", 5, (75, 255, 75))
+    Error("Launching Game...", 5, (75, 255, 75))
+    RG.LaunchGame(gamepath)
 
-def DEVMOUNT(gamepath):
-    # delete the old modfiles
-    shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+def DEVMOUNT():
+    try:
+        # delete the old modfiles
+        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+    except Exception as e:
+        Log("folder doesn't exist: "+GVars.modPath + GVars.nf + "ModFiles")
+        Log(str(e))
+
     # copy the one in the current directory to the modpath
     shutil.copytree(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    Error("Dev mode active", 5, (75, 255, 75))
+    Error("copied files to mod path", 5, (75, 255, 75))
+
 def MountModOnly():
-    VerifyGamePath()
+    if not VerifyGamePath():
+        return
+    
     gamepath = GVars.configData["portal2path"]
-    if not up.IsUpdating():
-        if (GVars.configData["developer"] == "true"):
-            if (TryMount() == False):
-                DEVMOUNT(gamepath)
+    if not IsUpdating:
+        if (GVars.configData["developer"] == "true") and (VerifyModFiles() == False):
+            DEVMOUNT()
         else:
-            if (CheckPath(gamepath)):
-                if (TryMount()):
-                    RG.MountMod(gamepath)
-                    return True
-                else:
-                    if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
-                        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
-
-                    if up.haveInternet():
-                        def YesInput():
-                            Log("YES INPUT CALLED... FETCHING MOD")
-                            UpdateMod()
-                            
-                        class YesButton:
-                            text = "Yes"
-                            function = YesInput
-                            activecolor = (75, 200, 75)
-                            inactivecolor = (155, 155, 155)
+            if (VerifyModFiles()):
+                RG.MountMod(gamepath)
+                return True
+            else:
+                if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
+                    shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+                if up.haveInternet():
+                    def YesInput():
+                        Log("YES INPUT CALLED... FETCHING MOD")
+                        UpdateMod()
                         
-                        class NoButton:
-                            text = "Use Fallbacks"
-                            def function():
-                                    UseFallbacks(gamepath)
-                            activecolor = (255, 75, 75)
-                            inactivecolor = (155, 155, 155)
-
-                        PopupBox("Fetch Game Files?", "there are no cached files for the mod\n\nWould you like to download \nthe latest version of the mod?\n\n\nyou can use the fallbacks\n but they may be unstable.", [YesButton, NoButton])
-                    else:
-                        Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
-                        UseFallbacks(gamepath)
-                        return True
+                    class YesButton:
+                        text = "Yes"
+                        function = YesInput
+                        activecolor = (75, 200, 75)
+                        inactivecolor = (155, 155, 155)
+                    
+                    class NoButton:
+                        text = "Use Fallbacks"
+                        def function():
+                                UseFallbacks(gamepath)
+                        activecolor = (255, 75, 75)
+                        inactivecolor = (155, 155, 155)
+                    PopupBox("Fetch Game Files?", "there are no cached files for the mod\n\nWould you like to download \nthe latest version of the mod?\n\n\nyou can use the fallbacks\n but they may be unstable.", [YesButton, NoButton])
+                else:
+                    Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
+                    UseFallbacks(gamepath)
+                    return True
     else:
         Error("The Mod Is Updating Please Wait", 5, (255, 75, 75))
 
@@ -210,8 +216,11 @@ def UpdateMod():
 
     def UpdateThread():
         Log("Updating...")
+        global IsUpdating
+        IsUpdating = True
         up.DownloadNewFiles()
         Error("Update Complete!", 5, (75, 255, 75))
+        IsUpdating = False
 
     thread = threading.Thread(target=UpdateThread)
     thread.start()
@@ -219,8 +228,6 @@ def UpdateMod():
 def RunGameScript():
     gamepath = GVars.configData["portal2path"]
     if MountModOnly():
-        RG.LaunchGame(gamepath)
-    elif GVars.configData["developer"] == "true" and CheckPath(gamepath):
         RG.LaunchGame(gamepath)
 
 def UnmountScript():
@@ -762,7 +769,9 @@ def Main():
     global AfterInputFunction
     global coolDown
     global selectedpopupbutton
+    global IsUpdating
 
+    IsUpdating = False
     coolDown = 0
     LastBackspace = 0
     BackspaceHasBeenHeld = False
@@ -820,8 +829,8 @@ def Main():
                             Log("=================================")
                             Log(str1)
                             CurInput += str1
-                        except:
-                            Log("ERROR TKINTER NOT FOUND (TO GET COPY PASTE FUNCTIONALLITY DOWNLOAD THE TKINTER (\"tk\" probably) MODULE FROM YOUR PACKAGE MANAGER)")
+                        except Exception as e:
+                            Log(str(e)) # always log the error
                             pass
                     elif len(name) == 1:
                         if SHIFTHELD:
@@ -914,9 +923,8 @@ def OnStart():
     GVars.LoadConfig()
 
     # remove old temp files
-    if (up.IsUpdating()):
-        if os.path.exists(GVars.modPath + GVars.nf + ".temp"):
-            shutil.rmtree(GVars.modPath + GVars.nf + ".temp")
+    if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
+        shutil.rmtree(GVars.modPath + GVars.nf + ".temp")
 
 if __name__ == '__main__':
     OnStart()

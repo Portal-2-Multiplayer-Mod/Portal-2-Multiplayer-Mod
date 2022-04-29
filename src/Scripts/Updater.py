@@ -123,11 +123,6 @@ def CheckForNewFiles():
     
     return True
 
-def IsUpdating():
-    if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
-        return True
-    return False
-
 def DownloadNewFiles():
     r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
@@ -146,7 +141,7 @@ def DownloadNewFiles():
         shutil.rmtree(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
         Log("deleted old files")
     except Exception as e:
-        Log(e)
+        Log(str(e))
         Log("there was no old mod files")
 
     # then copy the new files there

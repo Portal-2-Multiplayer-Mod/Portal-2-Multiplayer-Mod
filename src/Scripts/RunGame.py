@@ -12,19 +12,12 @@ import shutil
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
 
-def MountMod(gamepath, modFilesPath = "undef"):
-    if modFilesPath == "undef":
-        modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
-        Log(GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc")
-    if os.path.exists(modFilesPath):
-        Log("Found directory: ModFiles/Portal 2/install_dlc")
-    else:
-        Log("Unable to locate directory: ModFiles/Portal 2/install_dlc")
-        return "filesMissing"
-
+def MountMod(gamepath):
     Log("")
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
+    
+    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)

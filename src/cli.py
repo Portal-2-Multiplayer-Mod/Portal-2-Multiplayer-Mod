@@ -60,7 +60,7 @@ def CheckForUpdates():
                 up.DownloadNewFiles()
             elif (update.upper() == "NO") or (update.upper() == "N"):
                 valid = True
-                return
+                return False
 
 
 def OnStart():
@@ -70,8 +70,21 @@ def OnStart():
     StartLog()
     # Load the configs (It's better to do it separately)
     GVars.LoadConfig()
-    CheckForUpdates()
-    input("Press enter to continue | ")
+    
+    # only check for updates for normal users
+    if GVars.configData["developer"] != "true":
+        CheckForUpdates()
+
+
+def VerifyModFiles():
+    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    Log("searching for mod files in: "+modFilesPath)
+    if os.path.exists(modFilesPath):
+        Log("Mod files found")
+        return True
+
+    Log("Mod files not found")
+    return False
 
 
 def Init():
@@ -87,12 +100,13 @@ def Init():
 
     gamepath = GVars.configData["portal2path"]
 
-
 #//# Mount P2:MM #//#
     if (WillMount):
-        if RG.MountMod(gamepath) == "filesMissing":
-            Log("Unable to locate directory: " + gamepath)
-            return
+        if (VerifyModFiles() == False) and (CheckForUpdates() == False):
+            Log("can't mount the mod without mod files") # i'll make it use the backup later
+            quit()
+        
+        RG.MountMod(gamepath)
         RG.LaunchGame(gamepath)
 
     else:
