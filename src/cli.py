@@ -71,7 +71,7 @@ def OnStart():
     # Load the configs (It's better to do it separately)
     GVars.LoadConfig()
     CheckForUpdates()
-    input("Press enter to continue")
+    input("Press enter to continue | ")
 
 
 def Init():
