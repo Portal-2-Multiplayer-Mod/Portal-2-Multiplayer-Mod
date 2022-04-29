@@ -123,6 +123,11 @@ def CheckForNewFiles():
     
     return True
 
+def IsUpdating():
+    if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
+        return True
+    return False
+
 def DownloadNewFiles():
     r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()

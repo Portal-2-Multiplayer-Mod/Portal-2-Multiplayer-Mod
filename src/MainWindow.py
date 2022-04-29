@@ -9,6 +9,7 @@ import time
 from tkinter import E
 import webbrowser
 import Scripts.Updater as up
+import shutil
 tk = ""
 try:
     from tkinter import Tk
@@ -110,7 +111,6 @@ AddFloater(50, 50, 20, 75, 75)
 AddFloater(50, 50, 20, 75, 75)
 
 
-
 def gradientRect( window, left_colour, right_colour, target_rect ):
     colour_rect = pygame.Surface( ( 2, 2 ) )                                   # tiny! 2x2 bitmap
     pygame.draw.line( colour_rect, left_colour,  ( 0,0 ), ( 0,1 ) )            # left colour line
@@ -143,7 +143,7 @@ def VerifyGamePath():
         Error("Game path is invalid!")
         GetGamePath()
 
-def MountModOnly():
+def TryMount():
     VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
     if (CheckPath(gamepath)):
@@ -152,20 +152,76 @@ def MountModOnly():
         else:
             return True
 
-def RunGameScript():
+def UseFallbacks(gamepath):
+    # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
+    shutil.copytree(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    RG.MountMod(gamepath)
+
+def DEVMOUNT(gamepath):
+    # delete the old modfiles
+    shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+    # copy the one in the current directory to the modpath
+    shutil.copytree(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+def MountModOnly():
     VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
-    if (CheckPath(gamepath)):
-        if (MountModOnly()):
-            RG.LaunchGame(gamepath)
+    if not up.IsUpdating():
+        if (GVars.configData["developer"] == "true"):
+            if (TryMount() == False):
+                UseFallbacks(gamepath)
         else:
-            if up.haveInternet():
-                Error("Fetching Update...", 5, (255, 150, 75))
-                up.DownloadNewFiles()
-            else:
-                Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
-                RG.MountMod(gamepath, BF.ConvertPath("FALLBACK/ModFiles/Portal 2/install_dlc"))
-                RG.LaunchGame(gamepath)
+            if (CheckPath(gamepath)):
+                if (TryMount()):
+                    RG.MountMod(gamepath)
+                    return True
+                else:
+                    if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
+                        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+
+                    if up.haveInternet():
+                        def YesInput():
+                            Log("YES INPUT CALLED... FETCHING MOD")
+                            UpdateMod()
+                            
+                        class YesButton:
+                            text = "Yes"
+                            function = YesInput
+                            activecolor = (75, 200, 75)
+                            inactivecolor = (155, 155, 155)
+                        
+                        class NoButton:
+                            text = "Use Fallbacks"
+                            def function():
+                                    UseFallbacks(gamepath)
+                            activecolor = (255, 75, 75)
+                            inactivecolor = (155, 155, 155)
+
+                        PopupBox("Fetch Game Files?", "there are no cached files for the mod\n\nWould you like to download \nthe latest version of the mod?\n\n\nyou can use the fallbacks\n but they may be unstable.", [YesButton, NoButton])
+                    else:
+                        Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
+                        UseFallbacks(gamepath)
+                        return True
+    else:
+        Error("The Mod Is Updating Please Wait", 5, (255, 75, 75))
+
+def UpdateMod():
+    Error("Fetching Update...", 5, (255, 150, 75))
+    Log("Thread Starting..")
+
+    def UpdateThread():
+        Log("Updating...")
+        up.DownloadNewFiles()
+        Error("Update Complete!", 5, (75, 255, 75))
+
+    thread = threading.Thread(target=UpdateThread)
+    thread.start()
+
+def RunGameScript():
+    gamepath = GVars.configData["portal2path"]
+    if MountModOnly():
+        RG.LaunchGame(gamepath)
+    elif GVars.configData["developer"] == "true":
+        RG.LaunchGame(gamepath)
 
 def UnmountScript():
     VerifyGamePath()
@@ -841,6 +897,11 @@ def OnStart():
     StartLog()
     # load the config file into memmory
     GVars.LoadConfig()
+
+    # remove old temp files
+    if (up.IsUpdating()):
+        if os.path.exists(GVars.modPath + GVars.nf + ".temp"):
+            shutil.rmtree(GVars.modPath + GVars.nf + ".temp")
 
 if __name__ == '__main__':
     OnStart()

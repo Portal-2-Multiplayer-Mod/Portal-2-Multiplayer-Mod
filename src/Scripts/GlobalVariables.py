@@ -26,11 +26,6 @@ def init():
     global appStartDate, modPath, iow, iol, nf
     
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
-    # set the modpath the the users home directory
-    modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
-    # check if the modpath exists, if not create it
-    if not os.path.exists(modPath):
-        os.makedirs(modPath)
     
     if (sys.platform == "win32"):
         iow = True
@@ -41,6 +36,17 @@ def init():
         Log("This operating system is not supported!")
         Log("We only support Windows and Linux as of current.")
         quit()
+
+    if (iol):
+        # set the modpath the the users home directory
+        modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
+    elif (iow):
+        # set the modpath to the users documents folder
+        modPath = os.path.expanduser("~") + nf + "Documents/p2mm"
+
+    # check if the modpath exists, if not create it
+    if not os.path.exists(modPath):
+        os.makedirs(modPath)
 
 def LoadConfig():   
     global configData

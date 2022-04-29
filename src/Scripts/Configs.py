@@ -15,6 +15,7 @@ DefaultConfigFile = [
     "",
     "#-----------------------------------",
     "portal2path = undefined",
+    "developer = false",
     "#-----------------------------------",
     "",
     "#// Portal 2 //#",
@@ -28,7 +29,8 @@ DefaultConfigFile = [
 DefaultConfigFile2 = {
     "cfgvariant": 18,
     "portal2path": "undefined",
-    "Test": "false"
+    "Test": "false",
+    "developer": "false"
 }
 
 # verifies the config file by making sure that the processed data has the same keys as the default 
