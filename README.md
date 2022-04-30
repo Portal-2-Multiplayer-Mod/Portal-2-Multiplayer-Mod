@@ -113,8 +113,10 @@ You can use the mod with the previously noted steps but if you would like to mak
 
 
 1. install the `pyinstaller` package `pip install pyinstaller`
-2. run pyinstaller either by adding python's bin to your $PATH and running the following command or (possibly) by adding `python` at the beggining
-3. run the following command `pyinstaller MainWindow.py -F --add-data GUI:GUI --add-data FALLBACK:FALLBACK`
+2. run pyinstaller either by adding python's bin to your $PATH and running the following command
+3. run the following command 
+LINUX: `pyinstaller MainWindow.py -F --add-data GUI:GUI --add-data FALLBACK:FALLBACK`
+WINDOWS: `pyinstaller MainWindow.py -F --noconsole --add-data "GUI;GUI" --add-data "FALLBACK;FALLBACK"`
 *this will create a package for your OS that has all the gui files inside of it* **Outputs to *"Build/MainWindow.#"**
 
 # Discord
