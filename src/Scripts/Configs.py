@@ -16,6 +16,8 @@ DefaultConfigFile = [
     "#-----------------------------------",
     "portal2path = undefined",
     "developer = false",
+    "LauncherSFX = true",
+    "LauncherCubes = true",
     "#-----------------------------------",
     "",
     "#// Portal 2 //#",
@@ -31,6 +33,8 @@ DefaultConfigFile2 = {
     "portal2path": "undefined",
     "EncryptCvars": "false",
     "developer": "false",
+    "LauncherSFX": "true",
+    "LauncherCubes": "true",
 }
 
 # verifies the config file by making sure that the processed data has the same keys as the default 

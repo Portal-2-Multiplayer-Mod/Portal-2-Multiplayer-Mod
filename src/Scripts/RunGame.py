@@ -43,8 +43,6 @@ def SetNewEncryptions():
         cmdrep[2] = cmdrep[1][:len(cmdrep[1]) - int(len(cmdrep[1]) / minlen)] + ''.join(random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") for i in range(int(len(cmdrep[1]) / minlen)))
         Log("New CVAR:      " + cmdrep[2])
         Log("===========")
-    Log("")
-    Log("Finishehd setting new encryptions")
 
 def UnEncryptEncryptions():
     Log("UnEncrypting Encryptions...")

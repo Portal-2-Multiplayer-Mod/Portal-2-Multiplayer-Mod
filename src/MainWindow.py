@@ -80,6 +80,11 @@ Floaters = []
 #     surf.fill((255, 255, 255))
 #     surf = pygame.transform.rotate(surf, 19)
 
+def PlaySound(sound):
+    LauncherSFX = GVars.configData["LauncherSFX"] == "true"
+    if LauncherSFX:
+        pygame.mixer.Sound.play(sound)
+
 def Floater(width, height, rot, x, y, negrot):
     surf = pygame.image.load("GUI/assets/images/button.png")
     surf = pygame.transform.scale(surf, (width, height))
@@ -335,11 +340,15 @@ def Error(text, time = 3, clr = (255, 75, 75)):
 
 def PopupBox(title, text, buttons):
 
+    global selectedpopupbutton
+
     # MANUAL #
     # title = "A String Title For The Box"
     # text = "A String Of Text To Display In The Box (use \n for newlines)"
     # buttons = [["Button Text", "Button Function"], ["Button Text", "Button Function"], etc, etc.....]
     ##########
+
+    selectedpopupbutton = 0
 
     for button in buttons:
         button.selected = False
@@ -613,7 +622,9 @@ def Update():
         surf = pygame.transform.scale(surf, (W/15, W/15))
         surf = pygame.transform.rotate(surf, floater.rot)
         center = surf.get_rect().center
-        screen.blit(surf, (floater.x - center[0], floater.y - center[1]))
+        LauncherCubes = GVars.configData["LauncherCubes"] == "true"
+        if (LauncherCubes):
+            screen.blit(surf, (floater.x - center[0], floater.y - center[1]))
         if floater.negrot:
             floater.rot -= (1 + random.randint(0, 2))
         else:
@@ -883,20 +894,20 @@ def Main():
                     if CurrentButtonsIndex < len(CurrentMenu) - 1:
                         CurrentButtonsIndex += 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        PlaySound(SelectedButton.hoversnd)
                     else:
                         CurrentButtonsIndex = 0
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        PlaySound(SelectedButton.hoversnd)
                 elif event.key == K_UP or event.key == K_w:
                     if CurrentButtonsIndex > 0:
                         CurrentButtonsIndex -= 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        PlaySound(SelectedButton.hoversnd)
                     else:
                         CurrentButtonsIndex = len(CurrentMenu) - 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
-                        pygame.mixer.Sound.play(SelectedButton.hoversnd)
+                        PlaySound(SelectedButton.hoversnd)
                 elif event.key == K_SPACE:
                     if SelectedButton.function:
                         if SelectedButton.isasync:
@@ -906,7 +917,7 @@ def Main():
 
                     SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
-                    pygame.mixer.Sound.play(SelectedButton.selectsnd)
+                    PlaySound(SelectedButton.selectsnd)
 
 
         # make the screen a gradient
