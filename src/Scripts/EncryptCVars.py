@@ -13,10 +13,6 @@ def Encrypt(path, search, replace):
                 rt = "r"
                 wt = "w"
                 try:
-                    Log("")
-                    Log("==================")
-                    Log("Encrypting file: " + file + " With encoding: " + enc + " and read mode: " + rt + " and write mode: " + wt)
-                    
                     ###############
                     f = open(root + GVars.nf + file, rt, encoding=enc)
                     ###############
@@ -31,14 +27,12 @@ def Encrypt(path, search, replace):
                     f.close()
 
 
-                    Log("Encrypted file: " + os.path.join(root, file))
-                    Log("==================")
+                    # Log("Encrypted file: " + os.path.join(root, file))
                 except:
-                    Log("=======ERROR======")
-                    Log("=======ERROR======")
-                    Log("Could not encrypt file: " + os.path.join(root, file))
-                    Log("=======ERROR======")
-                    Log("=======ERROR======")
+                    # Log("=======ERROR======")
+                    # Log("Could not encrypt file: " + os.path.join(root, file))
+                    # Log("=======ERROR======")
+                    pass
                 
     elif os.path.isfile(path):
         enc = "utf-8"
