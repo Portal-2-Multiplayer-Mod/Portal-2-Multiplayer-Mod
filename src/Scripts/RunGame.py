@@ -2,17 +2,57 @@
 # █ █░▀░█ █▀▀ █▄█ █▀▄ ░█░ ▄█   ░▀░   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
 import os
+from secrets import choice
 import subprocess
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
+import Scripts.EncryptCVars as EncryptCVars
+import Scripts.BasicFunctions as BF
+import random
 import __main__
 import shutil
+
+CommandReplacements = [
+    ['restart_level', 'portal2mprslv', 'portal2mprslv'],
+    ['mp_restart_level', 'portal2mpmprslev', 'portal2mpmprslev'],
+    ['mp_earn_taunt', 'portal2mpmper', 'portal2mpmper'],
+    ['pre_go_to_calibration', 'portal2multiplayrpgtc', 'portal2multiplayrpgtc'],
+    ['erase_mp_progress', 'portal2multiemppg', 'portal2multiemppg'],
+    ['mp_mark_all_maps_complete', 'portal2multiplayermpmamcp', 'portal2multiplayermpmamcp'],
+    ['mp_mark_all_maps_incomplete', 'portal2multiplayermodmpmami', 'portal2multiplayermodmpmami'],
+    ['pre_go_to_hub', 'portal2mppgth', 'portal2mppgth'],
+    ['transition_map', 'portal2mptrmap', 'portal2mptrmap'],
+    ['select_map', 'p2mpselmap', 'p2mpselmap'],
+    ['mp_select_level', 'portal2mpmpsell', 'portal2mpmpsell'],
+    ['mp_mark_course_complete', 'portal2multiplayermpmcc', 'portal2multiplayermpmcc'],
+    ['script_execute', 'script_execute', 'script_execute'],
+]
 
 
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
 
-def MountMod(gamepath):
+def SetNewEncryptions():
+    # set the new encryptions
+    Log("Setting new encryptions...")
+    Log("")
+    minlen = 3
+    for cmdrep in CommandReplacements:
+        Log("===========")
+        Log("Original CVAR: " + cmdrep[1])
+        cmdrep[2] = cmdrep[1][:len(cmdrep[1]) - int(len(cmdrep[1]) / minlen)] + ''.join(random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") for i in range(int(len(cmdrep[1]) / minlen)))
+        Log("New CVAR:      " + cmdrep[2])
+        Log("===========")
+    Log("")
+    Log("Finishehd setting new encryptions")
+
+def UnEncryptEncryptions():
+    Log("UnEncrypting Encryptions...")
+    for cmdrep in CommandReplacements:
+        cmdrep[2] = cmdrep[1]
+    Log("Finished UnEncrypting Encryptions")
+        
+def MountMod(gamepath, encrypt = True):
     Log("")
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
@@ -24,6 +64,19 @@ def MountMod(gamepath):
     
     destination = shutil.copytree(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
     Log("Successfully copied the mod files to "+ destination)
+
+    #### ENCRYPT THE CVARS #####
+    Log("____ENCRYPTING CVARS____")
+    if encrypt:
+        SetNewEncryptions()
+    else:
+        UnEncryptEncryptions()
+    path = gamepath + GVars.nf + dlcmountpoint
+
+    for cmdrep in CommandReplacements:
+        EncryptCVars.Encrypt(BF.ConvertPath(path), cmdrep[1], cmdrep[2])
+
+    Log("__ENCRYPTING CVARS END__")
 
     # patch the binaries
     Log("            ___________Moving Files End__________")
@@ -124,18 +177,23 @@ def PatchBinaries(gamepath):
         data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
 
         # Command patch edit
-        data = data.replace(b'restart_level', b'portal2mprslv')
-        data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
-        data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
-        data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
-        data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
-        data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
-        data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
-        data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
-        data = data.replace(b'transition_map', b'portal2mptrmap')
-        data = data.replace(b'select_map', b'p2mpselmap')
-        data = data.replace(b'mp_select_level', b'portal2mpmpsell')
-        data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
+        Log("===Patching commands===")
+        for cmdrep in CommandReplacements:
+            Log("Replacing " + cmdrep[0] + " with " + cmdrep[2])
+            data = data.replace(bytes(cmdrep[0], 'utf-8'), bytes(cmdrep[2], 'utf-8'))
+        Log("==========Done=========")
+        # data = data.replace(b'restart_level', b'portal2mprslv')
+        # data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
+        # data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
+        # data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
+        # data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
+        # data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
+        # data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
+        # data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
+        # data = data.replace(b'transition_map', b'portal2mptrmap')
+        # data = data.replace(b'select_map', b'p2mpselmap')
+        # data = data.replace(b'mp_select_level', b'portal2mpmpsell')
+        # data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
         # write the data back to the file
         open(gamepath + GVars.nf + "server.dll", "wb").write(data)
@@ -184,18 +242,23 @@ def PatchBinaries(gamepath):
         data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
 
         # Command patch edit
-        data = data.replace(b'restart_level', b'portal2mprslv')
-        data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
-        data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
-        data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
-        data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
-        data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
-        data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
-        data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
-        data = data.replace(b'transition_map', b'portal2mptrmap')
-        data = data.replace(b'select_map', b'p2mpselmap')
-        data = data.replace(b'mp_select_level', b'portal2mpmpsell')
-        data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
+        Log("===Patching commands===")
+        for cmdrep in CommandReplacements:
+            Log("Replacing " + cmdrep[0] + " with " + cmdrep[2])
+            data = data.replace(bytes(cmdrep[0], 'utf-8'), bytes(cmdrep[2], 'utf-8'))
+        Log("==========Done=========")
+        # data = data.replace(b'restart_level', b'portal2mprslv')
+        # data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
+        # data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
+        # data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
+        # data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
+        # data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
+        # data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
+        # data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
+        # data = data.replace(b'transition_map', b'portal2mptrmap')
+        # data = data.replace(b'select_map', b'p2mpselmap')
+        # data = data.replace(b'mp_select_level', b'portal2mpmpsell')
+        # data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
         # write the data back to the file
         open(gamepath + GVars.nf + "server.so", "wb").write(data)

@@ -9,6 +9,8 @@ import time
 import webbrowser
 import shutil
 
+from Scripts.EncryptCVars import Encrypt
+
 tk = ""
 try:
     from tkinter import Tk
@@ -26,6 +28,7 @@ from Scripts.BasicLogger import Log, StartLog
 import Scripts.Configs as cfg
 import Scripts.Updater as up
 import Scripts.RunGame as RG
+import Scripts.BasicFunctions as BF
 
 # populate the global variables
 
@@ -152,7 +155,8 @@ def VerifyModFiles():
 def UseFallbacks(gamepath):
     # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
     shutil.copytree(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
-    RG.MountMod(gamepath)
+    Encrypt = GVars.configData["EncryptCvars"] == "true"
+    RG.MountMod(gamepath, Encrypt)
     Error("Mount Complete!", 5, (75, 255, 75))
     # Error("Launching Game...", 5, (75, 255, 75))
     # RG.LaunchGame(gamepath)
@@ -180,7 +184,8 @@ def MountModOnly():
             DEVMOUNT()
         else:
             if (VerifyModFiles()):
-                RG.MountMod(gamepath)
+                Encrypt = GVars.configData["EncryptCvars"] == "true"
+                RG.MountMod(gamepath, Encrypt)
                 return True
             else:
                 if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
