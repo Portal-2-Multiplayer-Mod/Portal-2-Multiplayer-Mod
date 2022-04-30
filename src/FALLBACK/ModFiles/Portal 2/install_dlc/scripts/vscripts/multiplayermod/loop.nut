@@ -176,7 +176,7 @@ function loop() {
         if (currentplayerclass != null) {
             if (currentplayerclass.playermodel != null) {
                 if (currentplayerclass.playermodel != p.GetModelName()) {
-                    EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + currentplayerclass.playermodel + "\")", 1)
+                    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + currentplayerclass.playermodel + "\")", 1)
                 }
             }
         }
