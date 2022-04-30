@@ -185,7 +185,7 @@ def MountModOnly():
     
     gamepath = GVars.configData["portal2path"]
     if not IsUpdating:
-        if (GVars.configData["developer"] == "true") and (VerifyModFiles() == False):
+        if (GVars.configData["developer"] == "true"):
             DEVMOUNT()
         else:
             if (VerifyModFiles()):
