@@ -412,7 +412,7 @@ class UpdateButton:
             if up.CheckForNewFiles():
                 class YesButton:
                     text = "Yes"
-                    function = UpdateMod()
+                    function = UpdateMod
                     activecolor = (75, 200, 75)
                     inactivecolor = (155, 155, 155)
 
