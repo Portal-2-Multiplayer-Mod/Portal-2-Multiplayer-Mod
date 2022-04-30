@@ -25,7 +25,7 @@ printl("")
 //-----------------------------------
 DevMode <- false // Set to true if you want to see the P2:MM debug info
 //-----------------------------------
-FutBolGamemode <- true // Set Futbol gamemode
+FutBolGamemode <- false // Set Futbol gamemode
 //-----------------------------------
 VisualDebug <- false // Set to true if you want to see the debug info
 //-----------------------------------
