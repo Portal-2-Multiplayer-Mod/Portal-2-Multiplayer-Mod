@@ -136,7 +136,12 @@ function SetCosmetics(p) {
 
         //## Mystical Λce customization ##//
         if (pname == "Mystical Λce") {
-            SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
+            // SetPlayerModel(p, "models/props_underground/geodome_exterior_3072_exo.mdl")
+        }
+
+        //## Tiddies customization ##//
+        if (pname == "Tiddies") {
+            SetPlayerModel(p, "models/editor/playerstart.mdl")
         }
     }
 }
@@ -445,7 +450,7 @@ function SetPlayerModel(p, mdl) {
     PrecacheModelNoDelay(mdl)
     local mdl2 = MinifyModel(mdl)
     local playerclass = FindPlayerClass(p)
-    // EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
+    // EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
     // local pmodelclass = class {
     //     player = p
     //     model = mdl
