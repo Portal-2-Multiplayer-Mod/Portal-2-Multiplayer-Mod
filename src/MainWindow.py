@@ -212,7 +212,7 @@ def MountModOnly():
                                 UseFallbacks(gamepath)
                         activecolor = (255, 75, 75)
                         inactivecolor = (155, 155, 155)
-                    PopupBox("Fetch Game Files?", "there are no cached files for the mod\n\nWould you like to download \nthe latest version of the mod?\n\n\nyou can use the fallbacks\n but they may be unstable.", [YesButton, NoButton])
+                    PopupBox("Fetch Game Files?", "There are no cached files for the mod!\n\nWould you like to download \nthe latest version?\n\n\nYou can use the fallbacks,\n although it is not recommended.", [YesButton, NoButton])
                 else:
                     Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
                     UseFallbacks(gamepath)
@@ -483,7 +483,7 @@ class TestingButton:
     isasync = False
 
 class InputButton:
-    text = "Input"
+    text = "User Input Test"
     activecolor = (255, 255, 0)
     inactivecolor = (155, 155, 155)
     sizemult = 1
@@ -499,7 +499,7 @@ class InputButton:
 
 
 class PopupBoxButton:
-    text = "POPUP BOX"
+    text = "Popup Box"
     activecolor = (255, 255, 0)
     inactivecolor = (155, 155, 155)
     sizemult = 1
