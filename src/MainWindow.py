@@ -348,11 +348,7 @@ def PopupBox(title, text, buttons):
     # buttons = [["Button Text", "Button Function"], ["Button Text", "Button Function"], etc, etc.....]
     ##########
 
-    selectedpopupbutton = 0
-
-    for button in buttons:
-        button.selected = False
-    buttons[0].selected = True
+    selectedpopupbutton = buttons[0]
 
     PopupBox = [title, text, buttons] # TITLE, TEXT, BUTTONS
     Log("Creating popup box... Tile: " + str(title) + " Text: " + text + " Buttons: " + str(buttons))
@@ -604,12 +600,21 @@ def Update():
     global AfterInputFunction
     global SecAgo
 
+    mouse = pygame.mouse.get_pos()
+    mousex = mouse[0]
+    mousey = mouse[1]
+
     W = screen.get_width()
     H = screen.get_height()
 
     fntdiv = 32
     fntsize = int(W / fntdiv)
     mindiv = int(fntdiv / 1.25)
+
+    ########### DEBUG
+
+    # tempsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5))).render("CuM", True, (255, 100, 255))
+    # screen.blit(tempsurf, (mousex - tempsurf.get_width()/2, mousey - tempsurf.get_height()/2))
 
     ########### BACKGROUND
 
@@ -669,7 +674,10 @@ def Update():
         text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text, True, clr)
         if not (LookingForInput):
             screen.blit(text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)  ))
-
+        button.x = W / 16
+        button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
+        button.width = text1.get_width()
+        button.height = text1.get_height()
     SelectedButton = CurrentMenu[CurrentButtonsIndex]
 
     ############# OVERLAY
@@ -728,7 +736,7 @@ def Update():
         indx = 0
         for button in PopupBoxList[0][2]:
             buttonsurf = pygame.surface.Surface(((bw / amtob) / 1.2, (bh / 5)))
-            if (button.selected == True):
+            if (button == selectedpopupbutton): 
                 buttonsurf.fill(button.activecolor)
             else:
                 buttonsurf.fill(button.inactivecolor)
@@ -736,6 +744,10 @@ def Update():
             surfh = buttonsurf.get_height()
             surfx = bx + (bw / amtob) * indx + (bw / amtob) / 2 - (surfw / 2)
             surfy = by + bh - (bh / 4)
+            button.x = surfx
+            button.y = surfy
+            button.width = surfw
+            button.height = surfh
             screen.blit(buttonsurf, (surfx, surfy))
 
 
@@ -869,21 +881,30 @@ def Main():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
                         PopupBoxList.pop()
-                    elif event.key == K_LEFT:
-                        PopupBoxList[0][2][selectedpopupbutton].selected = False
-                        selectedpopupbutton -= 1
-                        if selectedpopupbutton < 0:
-                            selectedpopupbutton = 0
-                        PopupBoxList[0][2][selectedpopupbutton].selected = True
                     elif event.key == K_RIGHT:
-                        PopupBoxList[0][2][selectedpopupbutton].selected = False
-                        selectedpopupbutton += 1
-                        if selectedpopupbutton >= boxlen:
-                            selectedpopupbutton = boxlen - 1
-                        PopupBoxList[0][2][selectedpopupbutton].selected = True
+                        for btn in PopupBoxList[0][2]:
+                            if btn == selectedpopupbutton:
+                                if PopupBoxList[0][2].index(btn) < boxlen - 1:
+                                    selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) + 1]
+                    elif event.key == K_LEFT:
+                        for btn in PopupBoxList[0][2]:
+                            if btn == selectedpopupbutton:
+                                if PopupBoxList[0][2].index(btn) > 0:
+                                    selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) - 1]
                     elif event.key == K_SPACE:
-                        PopupBoxList[0][2][selectedpopupbutton].function()
+                        selectedpopupbutton.function()
                         PopupBoxList.pop()
+                elif event.type == MOUSEBUTTONDOWN:
+                    mouse = pygame.mouse.get_pos()
+                    mousex = mouse[0]
+                    mousey = mouse[1]
+                    # if the mouse is over a button
+                    for btn in PopupBoxList[0][2]:
+                        if btn.x < mousex < btn.x + btn.width and btn.y < mousey < btn.y + btn.height:
+                            selectedpopupbutton = btn
+                            selectedpopupbutton.function()
+                            PopupBoxList.pop()
+                            break
             ######################## NORMAL INPUT
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
@@ -918,6 +939,57 @@ def Main():
                     SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
                     PlaySound(SelectedButton.selectsnd)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # loop through every button in the current menu
+                for button in CurrentMenu:
+                    try:
+                        # if the mouse is over the button
+                        if mousex > button.x and mousex < button.x + button.width and mousey > button.y and mousey < button.y + button.height:
+                            if SelectedButton.function:
+                                if SelectedButton.isasync:
+                                    threading.Thread(target=SelectedButton.function).start()
+                                else:
+                                    SelectedButton.function()
+
+                            SelectAnimation(SelectedButton, SelectedButton.selectanim)
+
+                            PlaySound(SelectedButton.selectsnd)
+                    except:
+                        pass
+            elif event.type == pygame.MOUSEMOTION:
+                # loop through every button in the current menu
+                for button in CurrentMenu:
+                    try:
+                        # if the mouse is over the button
+                        if mousex > button.x and mousex < button.x + button.width and mousey > button.y and mousey < button.y + button.height:
+                            # if the button isnt already selected
+                            if button != SelectedButton:
+                                # select the button
+                                SelectedButton = button
+                                # set current buttons index to the button
+                                CurrentButtonsIndex = CurrentMenu.index(button)
+                                # play the hover sound
+                                # PlaySound(button.hoversnd)
+                    except:
+                        pass
+
+        ###### MOUSE UPDATE
+        mouse = pygame.mouse.get_pos()
+        mousex = mouse[0]
+        mousey = mouse[1]
+
+        if len(PopupBoxList) > 0:
+            # loop through every button in the current popupbox list
+            for button in PopupBoxList[0][2]:
+                try:
+                    # if the mouse is over the button
+                    if mousex > button.x and mousex < button.x + button.width and mousey > button.y and mousey < button.y + button.height:
+                        if button != selectedpopupbutton:
+                            selectedpopupbutton = button
+                            PlaySound(button.hoversnd)
+                except:
+                    pass
+        ###################
 
 
         # make the screen a gradient
