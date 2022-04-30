@@ -302,13 +302,21 @@ def RefreshSettingsMenu():
                     hoversnd = blipsnd
                     curanim = ""
                     def function(cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
-                        if cfgkey != "portal2path":
+                        if cfgvalue == "true" or cfgvalue == "false":
                             if cfgvalue == "false":
                                 cfg.EditConfig(cfgkey, "true")
                             # default to false to avoid errors
                             else:
                                 cfg.EditConfig(cfgkey, "false")
                             RefreshSettingsMenu()
+                        else:
+                            def AfterInputGenericSetConfig(inp, cfgkey = cfgkey):
+                                cfg.EditConfig(cfgkey, inp.strip())
+                                Log("Saved '" + inp.strip() + "' to config " + cfgkey)
+                                Error("Saved!", 5, (75, 200, 75))
+                                RefreshSettingsMenu()
+                            
+                            GetUserInputPYG( AfterInputGenericSetConfig , "Enter A Value For " + cfgkey)
 
                     isasync = False
                 SettingsButtons.append(curkeyButton)
