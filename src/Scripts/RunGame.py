@@ -3,9 +3,7 @@
 
 import os
 import threading
-from secrets import choice
 
-from psutil import Popen
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
