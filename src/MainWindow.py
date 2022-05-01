@@ -1,6 +1,3 @@
-from cmath import rect
-from locale import getlocale
-from operator import truediv
 import sys
 import os 
 import random
