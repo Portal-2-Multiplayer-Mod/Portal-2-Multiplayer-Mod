@@ -921,7 +921,7 @@ def Main():
                             if btn == selectedpopupbutton:
                                 if PopupBoxList[0][2].index(btn) > 0:
                                     selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) - 1]
-                    elif event.key == K_SPACE:
+                    elif event.key == K_SPACE or event.key == K_RETURN:
                         selectedpopupbutton.function()
                         PopupBoxList.pop()
                 elif event.type == MOUSEBUTTONDOWN:
@@ -959,7 +959,7 @@ def Main():
                         CurrentButtonsIndex = len(CurrentMenu) - 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
                         PlaySound(SelectedButton.hoversnd)
-                elif event.key == K_SPACE:
+                elif event.key == K_SPACE or event.key == K_RETURN:
                     if SelectedButton.function:
                         if SelectedButton.isasync:
                             threading.Thread(target=SelectedButton.function).start()
