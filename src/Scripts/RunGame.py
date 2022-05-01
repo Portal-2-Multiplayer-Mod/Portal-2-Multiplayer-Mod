@@ -328,7 +328,7 @@ def DeleteUnusedDlcs(gamepath):
             if "32playermod.identifier" in os.listdir(gamepath + GVars.nf + file):
                 Log("Found old DLC: " + file)
                 # delete the folder even if it's not empty
-                shutil.rmtree(gamepath + GVars.nf + file)
+                BF.DeleteFolder(gamepath + GVars.nf + file)
                 Log("Deleted old DLC: " + file)
     
     return True

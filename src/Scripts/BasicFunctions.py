@@ -16,3 +16,9 @@ def ConvertPath(path):
         path = path.replace("\\", GVars.nf)
         path = path.replace("/", GVars.nf)
         return path
+
+def DeleteFolder(path):
+    if (GVars.iow):
+        os.system("rmdir /s /q " + path) # Windows
+    elif (GVars.iol):
+        os.system("rm -rf " + path)
