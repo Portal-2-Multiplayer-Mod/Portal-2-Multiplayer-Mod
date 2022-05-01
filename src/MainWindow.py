@@ -138,13 +138,14 @@ def GetGamePath():
 def VerifyGamePath():
     Log("Verifying game path...")
     gamepath = GVars.configData["portal2path"]
+    return VerifyCustomPath(gamepath)
+
+def VerifyCustomPath(gamepath):
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Error("Game path is invalid!")
         GetGamePath()
         return False
     return True
-
-
 def VerifyModFiles():
     modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     Log("searching for mod files in: "+ modFilesPath)
@@ -974,22 +975,26 @@ def Main():
 
                     PlaySound(SelectedButton.selectsnd)
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                # loop through every button in the current menu
-                for button in CurrentMenu:
-                    try:
-                        # if the mouse is over the button
-                        if mousex > button.x and mousex < button.x + button.width and mousey > button.y and mousey < button.y + button.height:
-                            if SelectedButton.function:
-                                if SelectedButton.isasync:
-                                    threading.Thread(target=SelectedButton.function).start()
-                                else:
-                                    SelectedButton.function()
+                ############################ LMB
+                if event.button == 1:
+                    # loop through every button in the current menu
+                    for button in CurrentMenu:
+                        try:
+                            # if the mouse is over the button
+                            if mousex > button.x and mousex < button.x + button.width and mousey > button.y and mousey < button.y + button.height:
+                                if SelectedButton.function:
+                                    if SelectedButton.isasync:
+                                        threading.Thread(target=SelectedButton.function).start()
+                                    else:
+                                        SelectedButton.function()
 
-                            SelectAnimation(SelectedButton, SelectedButton.selectanim)
+                                SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
-                            PlaySound(SelectedButton.selectsnd)
-                    except:
-                        pass
+                                PlaySound(SelectedButton.selectsnd)
+                        except:
+                            pass
+                ###############################
+
             elif event.type == pygame.MOUSEMOTION:
                 # loop through every button in the current menu
                 for button in CurrentMenu:
