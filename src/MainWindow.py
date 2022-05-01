@@ -298,7 +298,11 @@ def RefreshSettingsMenu():
             if key != "cfgvariant":
                 Log(key + ": " + GVars.configData[key])
                 class curkeyButton:
-                    text = key + ": " + GVars.configData[key]
+                    txt = GVars.configData[key]
+                    mlen = 10
+                    if len(txt) > mlen:
+                        txt = txt[:mlen] + "..."
+                    text = key + ": " + txt
                     cfgkey = key
                     cfgvalue = GVars.configData[key]
                     activecolor = (255, 255, 0)
