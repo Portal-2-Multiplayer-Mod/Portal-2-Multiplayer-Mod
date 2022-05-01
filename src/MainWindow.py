@@ -184,6 +184,7 @@ def MountModOnly():
         if (GVars.configData["developer"] == "true"):
             DEVMOUNT()
             RG.MountMod(gamepath)
+            RG.LaunchGame(gamepath)
         else:
             if (VerifyModFiles()):
                 Encrypt = GVars.configData["EncryptCvars"] == "true"
