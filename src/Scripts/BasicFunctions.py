@@ -27,3 +27,4 @@ def CopyFolder(src, dst):
         os.system("xcopy /E /Y \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
+    return dst
