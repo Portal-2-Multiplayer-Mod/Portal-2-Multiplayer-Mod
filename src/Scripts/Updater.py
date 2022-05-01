@@ -14,7 +14,7 @@ currentVersion = "2.0.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
-
+Funcs
 # thanks stackOverflow for this solution <3
 def haveInternet():
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
@@ -138,7 +138,7 @@ def DownloadNewFiles():
     Log("finished downloading")
     try:
         # when downloading is done delete the old mod files
-        shutil.rmtree(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
+        Funcs.DeleteFolder(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
         Log("deleted old files")
     except Exception as e:
         Log(str(e))

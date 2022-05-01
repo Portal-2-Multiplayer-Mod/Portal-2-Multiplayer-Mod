@@ -169,7 +169,7 @@ def UseFallbacks(gamepath):
 def DEVMOUNT():
     try:
         # delete the old modfiles
-        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+        BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
     except Exception as e:
         Log("folder doesn't exist: "+GVars.modPath + GVars.nf + "ModFiles")
         Log(str(e))
@@ -195,7 +195,7 @@ def MountModOnly():
                 return True
             else:
                 if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
-                    shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+                    BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
                 if up.haveInternet():
                     def YesInput():
                         Log("YES INPUT CALLED... FETCHING MOD")
@@ -1024,7 +1024,7 @@ def OnStart():
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
-        shutil.rmtree(GVars.modPath + GVars.nf + ".temp")
+        BF.DeleteFolder(GVars.modPath + GVars.nf + ".temp")
 
 if __name__ == '__main__':
     OnStart()
