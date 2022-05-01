@@ -4,9 +4,12 @@
 import os
 import threading
 from secrets import choice
+
+from psutil import Popen
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
+import subprocess
 import Scripts.BasicFunctions as BF
 import random
 import __main__
@@ -376,7 +379,9 @@ def LaunchGame(gamepath):
             Log("ATTEMPTING TO START PORTAL 2 ===============================")
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame():
-                os.startfile(gamepath + GVars.nf + "portal2.exe -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console")
+                # start portal 2 with the launch options and dont wait for it to finish
+                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-condebug", "-console"])
+                Log("Game exited successfully.")
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
