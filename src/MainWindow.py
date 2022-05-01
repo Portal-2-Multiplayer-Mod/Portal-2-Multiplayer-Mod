@@ -317,26 +317,26 @@ def RefreshSettingsMenu():
                                 cfg.EditConfig(cfgkey, "false")
                             RefreshSettingsMenu()
                         else:
-                            def AfterInputGenericSetConfig(inp, cfgkey = cfgkey):
+                            def AfterInputGenericSetConfig(inp, cfgkey = cfgkey, cfgvalue = cfgvalue):
                                 cfg.EditConfig(cfgkey, inp.strip())
                                 Log("Saved '" + inp.strip() + "' to config " + cfgkey)
                                 Error("Saved!", 5, (75, 200, 75))
                                 RefreshSettingsMenu()
                             
-                            GetUserInputPYG( AfterInputGenericSetConfig , "Enter A Value For " + cfgkey)
+                            GetUserInputPYG( AfterInputGenericSetConfig , "Enter A Value For " + cfgkey, cfgvalue)
 
                     isasync = False
                 SettingsButtons.append(curkeyButton)
         SettingsButtons.append(BackButton)
 
-def GetUserInputPYG(afterfunc = None, prompt = ""):
+def GetUserInputPYG(afterfunc = None, prompt = "", preinput = ""):
     global LookingForInput
     global CurInput
     global AfterInputFunction
     global InputPrompt
     Log("Getting User INPUT")
     LookingForInput = True
-    CurInput = ""
+    CurInput = preinput
     InputPrompt = prompt
     AfterInputFunction = afterfunc
     Log("AfterInputFunction: " + str(AfterInputFunction))
