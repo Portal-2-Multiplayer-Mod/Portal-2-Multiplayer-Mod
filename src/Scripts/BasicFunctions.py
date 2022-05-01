@@ -28,3 +28,10 @@ def CopyFolder(src, dst):
     elif (GVars.iol):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
+
+def CopyFile(src, dst):
+    if (GVars.iow):
+        os.system("copy \"" + src + "\" \"" + dst + "\"")
+    elif (GVars.iol):
+        os.system("cp \"" + src + "\" \"" + dst + "\"")
+    return dst

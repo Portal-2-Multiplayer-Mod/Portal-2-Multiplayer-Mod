@@ -130,7 +130,7 @@ def PatchBinaries(gamepath):
         # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
             # copy the binary to the gamepath
-            BF.CopyFolder(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
+            BF.CopyFile(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
             Log("Copied " + binary+" to " + gamepath + GVars.nf + filename)
         except:
             # On Windows there is no "linux32" folder, so we avoid an error.
