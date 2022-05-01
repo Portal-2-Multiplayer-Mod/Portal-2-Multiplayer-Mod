@@ -24,7 +24,7 @@ def DeleteFolder(path):
 
 def CopyFolder(src, dst):
     if (GVars.iow):
-        os.system("xcopy /E /Y /I /Q /S /H /R /D /C /Y \"" + src + "\" \"" + dst + "\"")
+        os.system("xcopy /E /H /C /I \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
