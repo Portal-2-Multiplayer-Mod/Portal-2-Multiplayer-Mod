@@ -239,10 +239,12 @@ def RunGameScript():
         RG.LaunchGame(gamepath)
 
 def UnmountScript():
+    Log("___Unmounting Mod___")
     VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
+    Log("____DONE UNMOUNTING____")
 
 def SelectAnimation(btn, anim):
     if anim == "pop":
