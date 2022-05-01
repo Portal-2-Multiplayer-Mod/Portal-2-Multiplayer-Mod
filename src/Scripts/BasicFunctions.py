@@ -19,6 +19,6 @@ def ConvertPath(path):
 
 def DeleteFolder(path):
     if (GVars.iow):
-        os.system("rmdir /s /q " + path) # Windows
+        os.system("rmdir /s /q \"" + path + "\"")
     elif (GVars.iol):
-        os.system("rm -rf " + path)
+        os.system("rm -rf \"" + path + "\"")
