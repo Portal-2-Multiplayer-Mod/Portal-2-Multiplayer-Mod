@@ -44,6 +44,9 @@ pwrsnd.set_volume(0.25)
 hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
 hvrclksnd.set_volume(0.05)
 
+startbtnsnd = pygame.mixer.Sound("GUI/assets/sounds/startbtn.wav")
+startbtnsnd.set_volume(0.25)
+
 angrycube = pygame.image.load("GUI/assets/images/angrycube.png")
 
 goldencube = pygame.image.load("GUI/assets/images/goldencube.png")
