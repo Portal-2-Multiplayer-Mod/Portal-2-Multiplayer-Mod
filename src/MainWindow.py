@@ -472,7 +472,7 @@ class ExitButton:
     activecolor = (255, 75, 75)
     inactivecolor = (155, 155, 155)
     sizemult = 1
-    selectanim = "pop"
+    selectanim = "none"
     selectsnd = pwrsnd
     hoversnd = blipsnd
     curanim = ""
