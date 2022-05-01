@@ -175,8 +175,6 @@ def DEVMOUNT():
 
     # copy the one in the current directory to the modpath
     BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
-    Error("Dev mode active", 5, (75, 255, 75))
-    Error("copied files to mod path", 5, (75, 255, 75))
 
 def MountModOnly():
     if not VerifyGamePath():
@@ -184,14 +182,18 @@ def MountModOnly():
     
     gamepath = GVars.configData["portal2path"]
     if not IsUpdating:
+        Error("Mounting Mod!", 5, (75, 255, 75))
         if (GVars.configData["developer"] == "true"):
+            Error("WARN: Dev Mode Active", 5, (255, 180, 75))
             DEVMOUNT()
             RG.MountMod(gamepath)
+            Error("Mounted!", 5, (75, 255, 75))
             return True
         else:
             if (VerifyModFiles()):
                 Encrypt = GVars.configData["EncryptCvars"] == "true"
                 RG.MountMod(gamepath, Encrypt)
+                Error("Mounted!", 5, (75, 255, 75))
                 return True
             else:
                 if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
@@ -217,6 +219,7 @@ def MountModOnly():
                 else:
                     Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
                     UseFallbacks(gamepath)
+                    Error("Mounted!", 5, (75, 255, 75))
                     return True
     else:
         Error("The Mod Is Updating Please Wait", 5, (255, 75, 75))
@@ -240,6 +243,7 @@ def RunGameScript():
     gamepath = GVars.configData["portal2path"]
     if MountModOnly():
         RG.LaunchGame(gamepath)
+        Error("Launched Game!", 5, (75, 255, 75))
 
 def UnmountScript():
     Log("___Unmounting Mod___")
