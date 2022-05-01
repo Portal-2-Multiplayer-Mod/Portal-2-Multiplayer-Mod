@@ -10,7 +10,6 @@ import Scripts.EncryptCVars as EncryptCVars
 import Scripts.BasicFunctions as BF
 import random
 import __main__
-import shutil
 
 CommandReplacements = [
     ['restart_level', 'portal2mprslv', 'portal2mprslv'],
@@ -60,7 +59,7 @@ def MountMod(gamepath, encrypt = True):
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
     
-    destination = shutil.copytree(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
+    destination = BF.CopyFolder(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
     Log("Successfully copied the mod files to "+ destination)
 
     #### ENCRYPT THE CVARS #####
@@ -131,7 +130,7 @@ def PatchBinaries(gamepath):
         # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
             # copy the binary to the gamepath
-            shutil.copyfile(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
+            BF.CopyFolder(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
             Log("Copied " + binary+" to " + gamepath + GVars.nf + filename)
         except:
             # On Windows there is no "linux32" folder, so we avoid an error.

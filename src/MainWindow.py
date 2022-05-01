@@ -7,7 +7,6 @@ import random
 import threading
 import time
 import webbrowser
-import shutil
 
 from Scripts.EncryptCVars import Encrypt
 
@@ -159,7 +158,7 @@ def VerifyModFiles():
 
 def UseFallbacks(gamepath):
     # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
-    shutil.copytree(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
     Encrypt = GVars.configData["EncryptCvars"] == "true"
     RG.MountMod(gamepath, Encrypt)
     Error("Mount Complete!", 5, (75, 255, 75))
@@ -175,7 +174,7 @@ def DEVMOUNT():
         Log(str(e))
 
     # copy the one in the current directory to the modpath
-    shutil.copytree(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
     Error("Dev mode active", 5, (75, 255, 75))
     Error("copied files to mod path", 5, (75, 255, 75))
 

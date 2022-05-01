@@ -1,5 +1,4 @@
 import Scripts.GlobalVariables as GVars
-import shutil
 import os
 
 ##############
@@ -22,3 +21,9 @@ def DeleteFolder(path):
         os.system("rmdir /s /q \"" + path + "\"")
     elif (GVars.iol):
         os.system("rm -rf \"" + path + "\"")
+
+def CopyFolder(src, dst):
+    if (GVars.iow):
+        os.system("xcopy /E /Y \"" + src + "\" \"" + dst + "\"")
+    elif (GVars.iol):
+        os.system("cp -r \"" + src + "\" \"" + dst + "\"")
