@@ -41,6 +41,9 @@ blipsnd.set_volume(0.25)
 pwrsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
 pwrsnd.set_volume(0.25)
 
+hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
+hvrclksnd.set_volume(0.05)
+
 angrycube = pygame.image.load("GUI/assets/images/angrycube.png")
 
 goldencube = pygame.image.load("GUI/assets/images/goldencube.png")
@@ -455,6 +458,21 @@ class GuideButton:
         webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
     isasync = True
 
+class ExitButton:
+    text = "Exit"
+    activecolor = (255, 75, 75)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        global running
+        running = False
+        sys.exit()
+    isasync = True
+
 class DiscordButton:
     text = "Discord Server"
     activecolor = (75, 75, 150)
@@ -581,7 +599,7 @@ SettingsButtons = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, TestingButton]
+MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, TestingButton, ExitButton]
 
 TestingMenu = [InputButton, PopupBoxButton, BackButton]
 ###########
@@ -977,7 +995,7 @@ def Main():
                                 # set current buttons index to the button
                                 CurrentButtonsIndex = CurrentMenu.index(button)
                                 # play the hover sound
-                                # PlaySound(button.hoversnd)
+                                PlaySound(hvrclksnd)
                     except:
                         pass
 
