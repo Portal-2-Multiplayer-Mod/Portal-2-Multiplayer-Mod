@@ -374,7 +374,6 @@ def LaunchGame(gamepath):
     # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console
     try:
         if (GVars.iow):
-            Log("ATTEMPTING TO START PORTAL 2 ===============================")
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame():
                 # start portal 2 with the launch options and dont wait for it to finish
@@ -383,7 +382,6 @@ def LaunchGame(gamepath):
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
-            Log("Game exited successfully.")
         else:
             os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -condebug -console")
             Log("Game launch successful!")
