@@ -480,9 +480,13 @@ function CreateGenericPlayerClass(p) {
     // PLUGIN //
 
         // Player Name
-        if (PluginLoaded==true && GetPlayerName != null && GetSteamID != null) {
-            currentplayerclass.username <- GetPlayerName(p.entindex())
-			currentplayerclass.steamid <- GetSteamID(p.entindex())
+        if (PluginLoaded==true) {
+            try {
+                currentplayerclass.username <- GetPlayerName(p.entindex())
+			    currentplayerclass.steamid <- GetSteamID(p.entindex())
+            } catch(e) {
+                currentplayerclass.steamid <- RandomInt(-32768, -1)
+            }
         } else {
             currentplayerclass.username <- "Player " + p.entindex()
 			currentplayerclass.steamid <- RandomInt(-32768, -1) // invalid steamid
