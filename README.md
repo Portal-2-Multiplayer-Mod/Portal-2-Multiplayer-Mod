@@ -1,6 +1,8 @@
 # Created by ***kyleraykbs, Nanoman2525, Vista, Bumpy, & Wolƒe Strider Shoσter***
 **Big thanks to our team members: ***Cabiste, sear, & Jeffrey*****
 
+<u>**Note: This mod is completely server-side. Only the host needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.**</u>
+
 # v1.5 vs v2.0
 **You may have noticed that there hasn't been a new release for the better half of a year**.
 
@@ -9,9 +11,7 @@ During this time, however, we have restructured the mod almost entirely to allow
 Because of the amount of stability fixes and new features in the recent version of the mod, we have decided to rename it to version 2.0 rather than 1.6.
 As it stands right now, version 1.5 is severely outdated, however, version 2.0 also has its issues with stability, as it is constantly being updated.
 
-The pros and cons are listed below, though **we highly recommend sticking with the latest pre-release. (v2.0) even if you downloaded 1.5 already considering the huge improvements**
-
-<u>**NOTE: ONLY THE HOST NEEDS TO HAVE THE MOD MOUNTED. PEOPLE WHO ARE JOINING THE HOST NEED TO LAUNCH NORMAL PORTAL 2!**</u>
+The pros and cons are listed below, though **we highly recommend upgrading to and sticking with the latest pre-release. (v2.0)**
 
 ***Version 1.5***
 ```
@@ -30,13 +30,13 @@ The pros and cons are listed below, though **we highly recommend sticking with t
 + Makes use of a custom plugin to bring about some of the features
 + Full Linux and Windows support
 + Rewritten codebase to allow for efficiency
-+ Coded in a way to will more likely work with every Portal 2's continual updates.
-+ Stable
++ Coded in a way to more likely work with future Portal 2 updates.
++ A lot more stability than v1.5
 + More organized file-structure
-- Will take longer to install (requires that you install Python)
-- No launcher (you gotta download the code base and run it yourself) 
+- Will take longer to install (requires that you install Python at this point in time)
+- No pre-compiled launcher
 - Some features may break as we update the pre-release.
-- Not easy to update
+- Not easy to set up
 ```
 
 
@@ -59,6 +59,7 @@ The pros and cons are listed below, though **we highly recommend sticking with t
 -   [x] Make the launcher patch files on the spot for consistency and stability
 -   [x] Allow the server to cache objects server-side without crashing
 -   [ ] OTA updates (half done)
+-   [X] Encryption of game-breaking cvars to random characters on each game launch
 
 ## Features on the table
 - Dedicated servers
@@ -68,7 +69,7 @@ The pros and cons are listed below, though **we highly recommend sticking with t
 # Installation & use
 
 - Latest version released: https://github.com/kyleraykbs/Portal2-32PlayerMod-Lite/releases/latest
-  - v2.0 requires you to download the entire repo.
+  - v2.0 requires that you download the entire repository.
 
 - Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
   - ***The Steam guide goes over everything you need to know in order to get the mod working, but just in case, we have also prepared supplementary videos if you get stuck.***
@@ -77,30 +78,28 @@ The pros and cons are listed below, though **we highly recommend sticking with t
 - Version 2.0 YouTube installation: https://www.youtube.com/watch?v=_Vsey2wPXSo
 
 
-# How to build
-**Notes:**
-1. the project requires Python3 to run
+# How to Build the Program for v2.0
+**Prerequisites:**
+1. Python3 is required to run.
 2. The GUI launcher can only run on OSs supported by **[PyGame](https://www.pygame.org/wiki/about#:~:text=Truly%20portable.%20Supports,Child%20(OLPC)%20computer.)**
+	- At the moment, we only support Windows and Linux, not MacOS users!
 
 ---
-1. Download Global Dependencies 
+1. Install the global dependencies:
 	- `pip install requests`
 
 
-2. Run The launcher
+2. Run the launcher through two methods:
+	- Run `src/cli.py` for the client launcher
+	- Run the GUI launcher (Steps listed below)
 
 
-**CLI launcher**
-- Just run `src/cli.py`
-
-
-**GUI launcher**
-1. Create a virtual python environment (Not needed but recommended) 
-	1. Create the virtual environment 
-		- `python3 -m venv env`
-	2.  Activate the virtual environment 
-		- Windows: `.\env\Scripts\activate.bat`
-		- Linux: `source ./env/bin/activate`
+**Running the GUI launcher:**
+1. Create a virtual Python environment: (Not needed, although recommended)  
+	- Run this command: `Python3 -m venv env`
+2.  Activate the virtual environment:
+	- Windows: `.\env\Scripts\activate.bat`
+	- Linux: `source ./env/bin/activate`
 
 
 2. Install GUI dependencies 
@@ -109,15 +108,18 @@ The pros and cons are listed below, though **we highly recommend sticking with t
 
 3. Run `src/MainWindow.py`
 
-You can use the mod with the previously noted steps but if you would like to make a beta distrobution follow the next steps
+**How to make a beta distribution:**
 
 
-1. install the `pyinstaller` package `pip install pyinstaller`
-2. run pyinstaller either by adding python's bin to your $PATH and running the following command
-3. run the following command 
-LINUX: `pyinstaller MainWindow.py -F --add-data GUI:GUI --add-data FALLBACK:FALLBACK`
-WINDOWS: `pyinstaller MainWindow.py -F -i GUI/assets/images/p2mm64.ico --noconsole --add-data "GUI;GUI" --add-data "FALLBACK;FALLBACK"`
-*this will create a package for your OS that has all the gui files inside of it* **Outputs to *"Build/MainWindow.#"**
+1. Install the `pyinstaller` package `pip install pyinstaller`
+2. Run pyinstaller either by adding Python's bin to your $PATH and running the following command
+3. Run the following command:
+	- LINUX: `pyinstaller MainWindow.py -F --add-data GUI:GUI --add-data FALLBACK:FALLBACK`
+	- WINDOWS: `pyinstaller MainWindow.py -F -i GUI/assets/images/p2mm64.ico --noconsole --add-data "GUI;GUI" --add-data "FALLBACK;FALLBACK"`
+
+*This will create a package for your OS that has all the GUI files inside of it*
+
+**Outputs to *"Build/MainWindow.#"**
 
 # Discord
 
