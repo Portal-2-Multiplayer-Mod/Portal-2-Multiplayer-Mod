@@ -447,8 +447,6 @@ function loop() {
         }
     }
 
-    //## Make players' collision elastic ##//
-    EntFire("player", "addoutput", "CollisionGroup 2")
     }
 
     //## If not in multiplayer then disconnect ##//
