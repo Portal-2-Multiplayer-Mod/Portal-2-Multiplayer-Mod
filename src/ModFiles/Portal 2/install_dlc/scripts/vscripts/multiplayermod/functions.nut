@@ -130,6 +130,7 @@ function SetCosmetics(p) {
         }
 
         //## Bumpy customization ##//
+		// It's not even a torus. Its a Trefoil Knot. 
         if (pname == "Bumpy") {
             SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
         }
