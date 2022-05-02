@@ -129,26 +129,25 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
 
 def GetGamePath():
     def AfterInputGP(inp):
-        
         cfg.EditConfig("portal2path", inp.strip())
         Log("Saved '" + inp.strip() + "' as the game path!")
         Error("Saved path!", 5, (75, 200, 75))
-        VerifyGamePath()
+        gamepath = GVars.configData["portal2path"]
+        VerifyGamePath(gamepath)
         
     GetUserInputPYG( AfterInputGP , "Enter Your Portal 2 Game Path")
 
 
-def VerifyGamePath():
+def VerifyGamePath(gamepath):
     Log("Verifying game path...")
     gamepath = GVars.configData["portal2path"]
-    return VerifyCustomPath(gamepath)
-
-def VerifyCustomPath(gamepath):
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Error("Game path is invalid!")
         GetGamePath()
         return False
     return True
+    
+
 def VerifyModFiles():
     modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     Log("searching for mod files in: "+ modFilesPath)
@@ -181,10 +180,10 @@ def DEVMOUNT():
     BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
 
 def MountModOnly():
-    if not VerifyGamePath():
+    gamepath = GVars.configData["portal2path"]
+    if not VerifyGamePath(gamepath):
         return
     
-    gamepath = GVars.configData["portal2path"]
     if not IsUpdating:
         Error("Mounting Mod!", 5, (75, 255, 75))
         if (GVars.configData["developer"] == "true"):
@@ -251,8 +250,8 @@ def RunGameScript():
 
 def UnmountScript():
     Log("___Unmounting Mod___")
-    VerifyGamePath()
     gamepath = GVars.configData["portal2path"]
+    VerifyGamePath(gamepath)
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
     Log("____DONE UNMOUNTING____")
@@ -968,13 +967,13 @@ def Main():
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
                         PlaySound(SelectedButton.hoversnd)
                 elif event.key == K_SPACE or event.key == K_RETURN:
+                    SelectAnimation(SelectedButton, SelectedButton.selectanim)
                     if SelectedButton.function:
                         if SelectedButton.isasync:
                             threading.Thread(target=SelectedButton.function).start()
                         else:
                             SelectedButton.function()
 
-                    SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
                     PlaySound(SelectedButton.selectsnd)
             elif event.type == pygame.MOUSEBUTTONDOWN:
