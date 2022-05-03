@@ -98,8 +98,8 @@ function AlwaysPrecachedModels() {
 function SetCosmetics(p) {
     if (PluginLoaded == true) {
         // Get nessasary data
-		local pclass = FindPlayerClass(p)
-		local psteamid = pclass.steamid
+        local pclass = FindPlayerClass(p)
+        local psteamid = pclass.steamid
 
         //## Kyle customization ##//
         if (psteamid == 91466608) {
@@ -132,7 +132,7 @@ function SetCosmetics(p) {
         }
 
         //## Bumpy customization ##//
-		// It's not even a torus. Its a Trefoil Knot. 
+        // It's not even a torus. Its a Trefoil Knot. 
         if (psteamid == 90835355) {
             SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
         }
@@ -382,9 +382,9 @@ function GetPlayerColor(p, multiply = true) {
 }
 
 function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
-	if (DevMode){
-		DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
-	}
+    if (DevMode){
+        DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
+    }
 
     local TransitionVariable = 0
     if (x1 >= x2) {
@@ -483,13 +483,13 @@ function CreateGenericPlayerClass(p) {
         if (PluginLoaded==true) {
             try {
                 currentplayerclass.username <- GetPlayerName(p.entindex())
-			    currentplayerclass.steamid <- GetSteamID(p.entindex())
+                currentplayerclass.steamid <- GetSteamID(p.entindex())
             } catch(e) {
                 currentplayerclass.steamid <- RandomInt(-32768, -1)
             }
         } else {
             currentplayerclass.username <- "Player " + p.entindex()
-			currentplayerclass.steamid <- RandomInt(-32768, -1) // invalid steamid
+            currentplayerclass.steamid <- RandomInt(-32768, -1) // invalid steamid
         }
 
     ////////////

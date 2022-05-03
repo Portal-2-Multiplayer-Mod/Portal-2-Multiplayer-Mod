@@ -52,7 +52,7 @@ GlobalSpawnClass <- class {
 }
 
 IsOnSingleplayer <- false
-if (GetMapName().slice(0,7)=="mp_coop") {
+if (GetMapName().len() >= 7 && GetMapName().slice(0,7)=="mp_coop") {
     IsOnSingleplayer = false
 } else {
     IsOnSingleplayer = true
