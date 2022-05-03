@@ -94,55 +94,58 @@ function AlwaysPrecachedModels() {
     PrecacheModel("props/portal_gap.mdl")
 }
 
+// TODO: Make sure all SteamIDs are correct -vistr
 function SetCosmetics(p) {
     if (PluginLoaded == true) {
         // Get nessasary data
-        local pname = GetPlayerName(p.entindex())
+		local pclass = FindPlayerClass(p)
+		local psteamid = pclass.steamid
 
         //## Kyle customization ##//
-        if (pname == "kyleraykbs") {
+        if (psteamid == 91466608) {
             SetPlayerModel(p, "models/info_character/info_character_player.mdl")
         }
 
         //## SuperSpeed customization ##//
-        if (pname == "SuperSpeed") {
-            SetPlayerModel(p, "models/npcs/turret/turretwife.mdl")
-        }
+        //if (psteamid == "SuperSpeed") {
+            //SetPlayerModel(p, "models/npcs/turret/turretwife.mdl")
+        //}
 
         //## Dreadnox customization ##//
-        if (pname == "Dreadnox") {
+        if (psteamid == 193052938) {
             SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
         }
 
         //## sear customization ##//
-        if (pname == "sear") {
+        if (psteamid == 18517563) {
             SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl")
         }
 
         //## Mellow customization ##//
-        if (pname == "Mellow1238") {
+        if (psteamid == 149186271) {
             SetPlayerModel(p, "models/props_moon/moonrock_med08.mdl")
         }
 
         //## Nano customization ##//
-        if (pname == "Nanoman2525") {
+        if (psteamid == 145380247) {
             SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
         }
 
         //## Bumpy customization ##//
-        if (pname == "Bumpy") {
+		// It's not even a torus. Its a Trefoil Knot. 
+        if (psteamid == 90835355) {
             SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
         }
 
         //## Mystical Λce customization ##//
-        if (pname == "Mystical Λce") {
+        //if (psteamid == "Mystical Λce") {
             // SetPlayerModel(p, "models/props_underground/geodome_exterior_3072_exo.mdl")
-        }
+        //}
 
         //## Tiddies customization ##//
-        if (pname == "Tiddies") {
-            SetPlayerModel(p, "models/editor/playerstart.mdl")
-        }
+        //if (psteamid == "Tiddies") {
+            //SetPlayerModel(p, "models/editor/playerstart.mdl")
+        //}
     }
 }
 
@@ -478,9 +481,15 @@ function CreateGenericPlayerClass(p) {
 
         // Player Name
         if (PluginLoaded==true) {
-            currentplayerclass.username <- GetPlayerName(p.entindex())
+            try {
+                currentplayerclass.username <- GetPlayerName(p.entindex())
+			    currentplayerclass.steamid <- GetSteamID(p.entindex())
+            } catch(e) {
+                currentplayerclass.steamid <- RandomInt(-32768, -1)
+            }
         } else {
             currentplayerclass.username <- "Player " + p.entindex()
+			currentplayerclass.steamid <- RandomInt(-32768, -1) // invalid steamid
         }
 
     ////////////

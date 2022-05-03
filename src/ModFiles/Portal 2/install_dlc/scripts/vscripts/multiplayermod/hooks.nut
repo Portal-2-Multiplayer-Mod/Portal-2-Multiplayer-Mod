@@ -209,6 +209,10 @@ function PostMapLoad() {
     SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
     SendToConsole("sv_allowdownload 1")
     SendToConsole("sv_allowupload 1")
+	
+	// Elastic Player Collision
+	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
+	
     if (DevMode) {
         SendToConsole("developer 1")
         StartDevModeCheck <- true
