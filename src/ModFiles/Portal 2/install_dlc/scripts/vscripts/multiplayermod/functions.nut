@@ -1056,22 +1056,6 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     }
 }
 
-function FindPlayerByName(name) {
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        local plrname = GetPlayerName(p.entindex())
-        try {
-            plrname = plrname.slice(0, name.len())
-        } catch(e) {} // If the name is too long
-        printl(plrname)
-        printl(name)
-        if (plrname.tolower()==name.tolower()) {
-            return p
-        }
-    }
-    return null
-}
-
 function DisplayPlayerColor(player) {
     if (!Entities.FindByName(null, "playercolordisplay"))
     playercolordisplay <- Entities.CreateByClassname("game_text")
@@ -1165,17 +1149,17 @@ function TriggerOnceHook(TriggerName, FunctionName) {
 
 }
 
-function GetAdminLevel(id) {
+function GetAdminLevel(plr) {
     foreach (admin in Admins) {
-        // Seperate the playername and the admin level
+        // Seperate the steamid and the admin level
         local level = split(admin, "[]")[0]
-        local playername = split(admin, "]")[1]
+        local steamid = split(admin, "]")[1]
 
-        if (playername==GetPlayerName(id)) {
+        if (steamid==FindPlayerClass(plr).steamid) {
             return level.tointeger()
         }
     }
-    if (id == 1) {
+    if (plr == Entities.FindByName(null, "blue")) {
         return 6
     }
     return 0
@@ -1879,3 +1863,332 @@ function CreateOurEntities() {
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
     clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand")
 }
+
+
+///////////////////////////// PLAYERS
+
+    function GetPlayerFromUserID(userid) {
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            if (p.entindex() == userid) {
+                return p
+            }
+        }
+        return null
+    }
+
+    function FindPlayerByName(name) {
+        name = name.tolower()
+        local best = null
+        local bestnamelen = 99999
+        local bestfullname = ""
+
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            local username = FindPlayerClass(p).username
+            username = username.tolower()
+
+            if (username == name) {
+                return p
+            }
+
+            if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) < bestnamelen) {
+                best = p
+                bestnamelen = Len(Replace(username, name, ""))
+                bestfullname = username
+            } else if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) == bestnamelen) {
+                if (Find(username, name) < Find(bestfullname, name)) {
+                    best = p
+                    bestnamelen = Len(Replace(username, name, ""))
+                    bestfullname = username
+                }
+            }
+        }
+        return best
+    }
+
+/////////////////////////////////////
+
+//////////////////////////////// DATA
+
+    function GetType(var, simplify = true) {
+        local type = typeof(var)
+
+        if (!simplify) {
+            return type
+        } else {
+            if (type == "float" || type == "integer") {
+                return "number"
+            } else if (type == "string") {
+                return "string"
+            } else if (type == "bool") {
+                return "bool"
+            } else if (type == "table" || type == "array") {
+                return "table"
+            } else if (type == "instance") {
+                return "entity"
+            } else if (type == "function") {
+                return "function"
+            } else {
+                return "unknown"
+            }
+        }
+    }
+
+/////////////////////////////////////
+
+//////////////////////////////// STRINGS
+
+    function Len(str) {
+        return str.len()
+    }
+
+    function Find(str, substr) {
+        return str.find(substr)
+    }
+
+    function Slice(str, start, end = null) {
+        if (end == null) {
+            end = Len(str)
+        }
+        try {
+            str = str.slice(start, end)
+        } catch (e) {
+            str = ""
+        }
+        return str
+    }
+
+    function Contains(out, find = "") {
+        local type = GetType(out)
+
+        if (type == "null") {
+            return false
+        } else if (type == "number") {
+            return true
+        } else if (type == "string") {
+            return Contains(Find(out, find))
+        }
+        return false
+    }
+
+    function Replace(str, find, replace) {
+        if (find == replace) {
+            return str
+        }
+
+        local findlen = Find(str, find)
+        local len = Len(find)
+        if (Contains(findlen)) {
+            str = Slice(str, 0, findlen) + replace + Slice(str, findlen + len)
+            if (Contains(str, find)) {
+                str = Replace(str, find, replace)
+            }
+            return str
+        } else {
+            return str
+        }
+    }
+
+    function StartsWith(str, substr) {
+        str = Slice(str, 0, Len(substr))
+        if (str == substr) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    function StrToList(str) {
+        local list = []
+        local i = 0
+        while (i < Len(str)) {
+            list.push( Slice(str, i, i + 1) )
+            i = i + 1
+        }
+        return list
+    }
+
+    function Strip(str) {
+        return strip(str)
+    }
+
+    function SplitBetween(str, keysymbols, preserve = false) { //preserve = true : means that the symbol at the beginning of the string will be included in the first part
+        local keys = StrToList(keysymbols)
+        local lst = StrToList(str)
+
+        local contin = false
+        foreach (key in keys) {
+            if (Contains(str, key)) {
+                contin = true
+            }
+        }
+
+        if (!contin) {
+            return []
+        }
+
+
+        // FOUND SOMETHING
+
+        local split = []
+        local curslice = ""
+
+        foreach (indx, letter in lst) {
+            local contains = false
+            foreach (key in keys) {
+                if (letter == key) {
+                    contains = key
+                    if (indx == 0 && preserve) {
+                        curslice = curslice + letter
+                    }
+                }
+            }
+
+            if (contains != false) {
+                if (Len(curslice) > 0 && indx > 0) {
+                    split.push(curslice)
+                    if (preserve) {
+                        curslice = contains
+                    } else {
+                        curslice = ""
+                    }
+                }
+            } else {
+                curslice = curslice + letter
+            }
+        }
+
+        if (Len(curslice) > 0) {
+            split.push(curslice)
+        }
+
+        return split
+    }
+
+////////////////////////////////////////
+
+////////////////////////// CHAT COMMANDS
+
+    ChatCommandErrorList <- [
+        "[ERROR] Command Not Found",
+        "[ERROR] Invalid Syntax",
+        "[ERROR] You do not have permission to use this command",
+        "[ERROR] You cannot use selectors with this command as your admin level is too low",
+    ]
+
+    ////////////////////////////////////////////////////////
+
+    CommandList <- []
+
+    ////////////
+
+
+
+    /////////////////////////////////// NOCLIP
+    function NoclipCommand(plr, args) {
+        local pclass = FindPlayerClass(plr)
+        printl(pclass.noclip)
+        if (pclass.noclip) {
+            EnableNoclip(false, plr)
+        } else {
+            EnableNoclip(true, plr)
+        }
+    }
+
+    CommandList.push(class {
+        name = "noclip"
+        level = 1
+        selectorlevel = 1
+        func = NoclipCommand
+
+        notfounderror = ChatCommandErrorList[0]
+        syntaxerror = ChatCommandErrorList[1]
+        permerror = ChatCommandErrorList[2]
+        selectorpermerror = ChatCommandErrorList[3]
+    })
+    ////////////////////////////////////////////
+
+    /////////////////////////////////////// KILL
+    function KillCommand(plr, args) {
+        EntFireByHandle(plr, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, plr, plr)
+    }
+
+    CommandList.push(class {
+        name = "kill"
+        level = 0
+        selectorlevel = 1
+        func = KillCommand
+
+        notfounderror = ChatCommandErrorList[0]
+        syntaxerror = ChatCommandErrorList[1]
+        permerror = ChatCommandErrorList[2]
+        selectorpermerror = ChatCommandErrorList[3]
+
+    })
+    ////////////////////////////////////////////
+
+
+
+    ////////////////////////////////////////////////////////
+
+
+    function SendChatMessage(message) {
+        SendToConsole("say " + message)
+    }
+
+    function RemoveDangerousChars(str) {
+        str = Replace(str, "%n", "")
+        return str
+    }
+
+    function ShouldIgnoreMessage(str) {
+        if (StartsWith(str, "^")) { return true }
+
+        return false
+    }
+
+    function GetCommandFromString(str) {
+        foreach (cmd in CommandList) {
+            if (StartsWith(str, cmd.name)) {
+                return cmd
+            }
+        }
+        return null
+    }
+
+    function ValidateCommand(str) {
+        if (GetCommandFromString(str) != null) { return true }
+        return false
+    }
+
+    function ValidateCommandAdminLevel(cmd, level) {
+        if (cmd.level <= level) { return true }
+        return false
+    }
+
+    function ErrorOutCommand(level, cmd = null) {
+        if (cmd == null) {
+            SendChatMessage(ChatCommandErrorList[0])
+        } else if (level == 0) {
+            SendChatMessage(cmd.notfounderror)
+        } else if (level == 1) {
+            SendChatMessage(cmd.permerror)
+        } else if (level == 2) {
+            SendChatMessage(cmd.syntaxerror)
+        } else if (level == 3) {
+            SendChatMessage(cmd.selectorpermerror)
+        }
+    }
+
+    function ValidateAlowedRunners(cmd, lvl) {
+        if (cmd.selectorlevel <= lvl) { return true }
+        return false
+    }
+
+    function RunChatCommand(cmd, args, plr) {
+        printl("Running command: " + cmd.name)
+        cmd.func(plr, args)
+    }
+
+////////////////////////////////////////

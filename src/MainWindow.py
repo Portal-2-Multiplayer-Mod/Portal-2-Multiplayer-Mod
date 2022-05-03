@@ -162,8 +162,8 @@ def VerifyModFiles():
 def UseFallbacks(gamepath):
     # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
     BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
-    Encrypt = GVars.configData["EncryptCvars"] == "true"
-    RG.MountMod(gamepath, Encrypt)
+    DoEncrypt = GVars.configData["EncryptCvars"] == "true"
+    RG.MountMod(gamepath, DoEncrypt)
     Error("Mount Complete!", 5, (75, 255, 75))
     # Error("Launching Game...", 5, (75, 255, 75))
     # RG.LaunchGame(gamepath)
@@ -194,8 +194,8 @@ def MountModOnly():
             return True
         else:
             if (VerifyModFiles()):
-                Encrypt = GVars.configData["EncryptCvars"] == "true"
-                RG.MountMod(gamepath, Encrypt)
+                DoEncrypt = GVars.configData["EncryptCvars"] == "true"
+                RG.MountMod(gamepath, DoEncrypt)
                 Error("Mounted!", 5, (75, 255, 75))
                 return True
             else:

@@ -194,7 +194,7 @@ if (!FutBolGamemode) {
                         EntFire("p2mm_servercommand", "command", "say Game Restarts In 3  Seconds", 2)
                         EntFire("p2mm_servercommand", "command", "say Game Restarts In 2  Seconds", 3)
                         EntFire("p2mm_servercommand", "command", "say Game Restarts In 1  Second", 4)
-                        EntFire("p2mm_servercommand", "command", "portal2mprslv", 5)
+                        EntFire("p2mm_servercommand", "command", "portal2mpSa8t", 5)
                     }
                 }
 

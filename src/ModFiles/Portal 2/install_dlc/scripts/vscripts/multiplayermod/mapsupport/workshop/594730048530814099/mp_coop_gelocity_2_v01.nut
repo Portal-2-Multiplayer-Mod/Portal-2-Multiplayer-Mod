@@ -149,7 +149,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "relay_death_field_off_3").Destroy()
 
         // Restart Level
-        EntFire("restart_manager", "addouput", "OnChangeToAllTrue scom:command:portal2mprslv:1.5")
+        EntFire("restart_manager", "addouput", "OnChangeToAllTrue scom:command:portal2mpSa8t:1.5")
 
         // Cosmetic Stuff
         Entities.FindByName(null, "second_blue").Destroy()

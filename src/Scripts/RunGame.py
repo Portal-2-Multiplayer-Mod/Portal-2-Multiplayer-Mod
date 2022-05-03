@@ -50,7 +50,7 @@ def UnEncryptEncryptions():
         cmdrep[2] = cmdrep[1]
     Log("Finished UnEncrypting Encryptions")
         
-def MountMod(gamepath, encrypt = True):
+def MountMod(gamepath, encrypt = False):
     Log("")
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
