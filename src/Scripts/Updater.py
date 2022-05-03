@@ -1,3 +1,4 @@
+import sys
 import Scripts.GlobalVariables as GVars
 import Scripts.BasicFunctions as Funcs
 from Scripts.BasicLogger import Log
@@ -6,7 +7,9 @@ from datetime import datetime
 from pathlib import Path
 import urllib.request
 import urllib.parse
+import subprocess
 import requests
+import __main__
 import shutil
 import os
 
@@ -38,7 +41,6 @@ def CheckForNewClient():
 
     results = {
         "status": True,
-        "Type": "info",  # for if we want to add icons for the alert dialog
         "name": "update available",
         "message": ""  # we set this after we see what OS the user is on
     }
@@ -75,17 +77,18 @@ def DownloadClient():
             downloadLink = r.json()["assets"][i]["browser_download_url"]
             break
 
-    # just to make sure there's a link that we can download from
+    # make sure there's a download link
     if downloadLink == "":
         return False
 
-    # download the file in a temporary folder we move it later
-    path = GVars.modPath + GVars.nf + ".temp" + GVars.nf + "p2mm" + packageType
+    # download the file in the same directory 
+    # i don't want to bother with folders
+    path = os.path.dirname(__main__.__file__) + GVars.nf + "p2mm" + packageType
     urllib.request.urlretrieve(downloadLink, path)
 
-    # can we even send a command to delete the current running instance and replace it with the new one?
-    # it's like self destruction, is that even possible?
-
+    command = [path, "update"]
+    subprocess.Popen(command)
+    sys.exit(0)
 
 def CheckForNewFiles():
     
