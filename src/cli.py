@@ -1,3 +1,5 @@
+import pathlib
+import sys
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.RunGame as RG
@@ -55,6 +57,24 @@ def VerifyGamePath():
 
 
 def CheckForUpdates():
+    
+    clientUpdate = up.CheckForNewClient()
+    if clientUpdate["status"]:
+        Log(clientUpdate["name"])
+        Log(clientUpdate["message"])
+        
+        valid = False
+        while not valid:
+            Log("")
+            update = input()
+            if (update.upper() == "YES") or (update.upper() == "Y"):
+                valid = True
+                if up.DownloadClient() == False:
+                    Log("there was an error while updating")
+            elif (update.upper() == "NO") or (update.upper() == "N"):
+                valid = True
+        
+        
     if up.CheckForNewFiles():
         valid = False
         while not valid:
@@ -67,6 +87,21 @@ def CheckForUpdates():
                 valid = True
                 return False
 
+def IsNew():
+    
+    if len(sys.argv) != 3:
+        return
+    
+    if (sys.argv[1] != "update") or (not os.path.exists(sys.argv[2])):
+        return
+    
+    Log("this is first launch after update")
+    Log("deleting old client...")
+    os.remove(sys.argv[2])
+    Log("renaming new client...")
+    curFile = os.path.abspath(__file__)
+    # only change the name between quotes to whatever you want the client to name itself
+    os.rename(curFile, os.path.dirname(curFile) + "cli" + pathlib.Path(curFile).suffix)
 
 def OnStart():
     # Populate the global variables
@@ -75,7 +110,8 @@ def OnStart():
     StartLog()
     # Load the configs (It's better to do it separately)
     GVars.LoadConfig()
-
+    # checks if the client was launched from an older version 
+    IsNew()
     # only check for updates for normal users
     if GVars.configData["developer"] != "true":
         CheckForUpdates()
