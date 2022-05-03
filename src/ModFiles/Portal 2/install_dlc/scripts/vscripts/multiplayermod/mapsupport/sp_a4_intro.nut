@@ -283,7 +283,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(3136, -128, 914), 50)) {
              
-            SendToConsole("changelevel sp_a4_tb_intro")
+            SendToConsoleP232("changelevel sp_a4_tb_intro")
         }
     }
 }

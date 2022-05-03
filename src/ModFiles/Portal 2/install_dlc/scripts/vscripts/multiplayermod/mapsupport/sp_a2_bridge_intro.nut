@@ -27,7 +27,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(0, 1255, -297), 50)) {
-            SendToConsole("changelevel sp_a2_bridge_the_gap")
+            SendToConsoleP232("changelevel sp_a2_bridge_the_gap")
         }
     }
 }

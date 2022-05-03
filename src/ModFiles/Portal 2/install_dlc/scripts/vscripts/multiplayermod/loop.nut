@@ -22,7 +22,7 @@ function loop() {
 
     //## Event List ##//
     if (EventList.len() > 0) {
-        SendToConsole("script " + EventList[0])
+        SendToConsoleP232("script " + EventList[0])
         EventList.remove(0)
     }
 
@@ -191,7 +191,7 @@ function loop() {
     if (cnt > EntityCap - EntityCapLeeway) {
         if (cnt >= FailSafeEntityCap) {
             printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailSafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
-            SendToConsole("changelevel mp_coop_lobby_3")
+            SendToConsoleP232("changelevel mp_coop_lobby_3")
         }
         printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
         foreach (entclass in ExpendableEntitys) {

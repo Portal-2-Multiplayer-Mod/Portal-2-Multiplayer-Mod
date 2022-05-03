@@ -36,7 +36,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2240, -208, 400), 50)) {
              
-            SendToConsole("changelevel sp_a4_jump_polarity")
+            SendToConsoleP232("changelevel sp_a4_jump_polarity")
         }
     }
 }

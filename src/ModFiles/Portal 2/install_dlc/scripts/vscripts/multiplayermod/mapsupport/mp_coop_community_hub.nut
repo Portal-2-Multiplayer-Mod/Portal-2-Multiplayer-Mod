@@ -50,7 +50,7 @@ if (MinecraftMode) {
         }
 
         if (MSPostPlayerSpawn==true) {
-            SendToConsole("script BruhBoi()")
+            SendToConsoleP232("script BruhBoi()")
         }
 
         if (MSLoop==true) {

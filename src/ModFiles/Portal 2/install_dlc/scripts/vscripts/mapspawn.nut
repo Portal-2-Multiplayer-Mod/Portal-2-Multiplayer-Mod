@@ -5,43 +5,7 @@
 // In the case that this file does not exist at all or in the GitHub repository, this project will fall under a GNU LESSER GENERAL PUBLIC LICENSE //
 //------------------------------------------------------------------------------------------------------------------------------------------------//
 
-printl("")
-printl("-------------------------")
-printl("==== calling mapspawn.nut")
-printl("-------------------------")
-printl("")
-
-// Here, you can customize several parameters in your server.
-// You can change this mid-game as well, however, be sure
-// to modify the one that has been copied into a new
-// portal2_dlcX folder and switch levels after modifying!
-
-//    ___              __  _        _
-//   / __| ___  _ _   / _|(_) __ _ (_)
-//  | (__ / _ \| ' \ |  _|| |/ _` | _
-//   \___|\___/|_||_||_|  |_|\__, |(_)
-//                           |___/
-
-//-----------------------------------
-DevMode <- false // Set to true if you want to see the P2:MM debug info
-//-----------------------------------
-FutBolGamemode <- false // Set Futbol gamemode
-//-----------------------------------
-VisualDebug <- false // Set to true if you want to see the debug info
-//-----------------------------------
-DedicatedServer <- false // Set to true if you want to run the server as a dedicated server (INDEV)
-//-----------------------------------
-RandomTurrets <- false // Set to true if you want to randomize every Turret's models and colors (for fun lol)
-//-----------------------------------
-TickSpeed <- 0.00 // Set to the tick speed of the server [in seconds] (lower numbers are faster but may cause lag on slower clients)
-//-----------------------------------
-RandomPortalSize <- false // Set to true if you want to randomize the portal size
-//-----------------------------------
-Admins <- ["[420]kyleraykbs", "[69]vista", "[12]cabiste", "[12]Bumpy", "[12]Nanoman2525", "[12]Wolƒe Strider Shoσter", "[5]Mystical Λce", "[2]CHARITY", "[2]thewoodster75`", "[6]Dreadnox", "[1]!wol", "[6]sear", "[12]Ayden",  "[2]Eggshell97", "[1]trixie6709"]
-//-----------------------------------
-
-// END OF CONFIG!
-// Do not modify the below.
+IncludeScript("multiplayermod/config.nut")
 
 //    ___          _        ___       _                _
 //   / __| ___  __| | ___  / __| ___ | |_  _  _  _ __ (_)
@@ -50,6 +14,8 @@ Admins <- ["[420]kyleraykbs", "[69]vista", "[12]cabiste", "[12]Bumpy", "[12]Nano
 //                                              |_|
 
 IncludeScript("multiplayermod/variables.nut")
+IncludeScript("multiplayermod/safeguard.nut")
+
 
 // Now we declare some functions...
 

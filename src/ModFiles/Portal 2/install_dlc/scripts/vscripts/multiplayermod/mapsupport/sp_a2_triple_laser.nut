@@ -27,7 +27,7 @@ if (!FutBolGamemode) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -273), 50)) {
 
-                SendToConsole("changelevel sp_a2_bts1")
+                SendToConsoleP232("changelevel sp_a2_bts1")
             }
 
             // Elevator env_projectedtexture
@@ -62,7 +62,7 @@ if (!FutBolGamemode) {
             EntFire("p2mm_servercommand", "command", "script CurrentlySpawningFutBol = false", 0.1)
             if (CanSpawnFutBol) {
                 SpawnFutBol("futbol_in_map", Vector(7777, -5668, 225))
-                SendToConsole("script DecEntFireByHandle(Entities.FindByClassname(null, \"prop_glass_futbol\"), \"break\", \"\",30)")
+                SendToConsoleP232("script DecEntFireByHandle(Entities.FindByClassname(null, \"prop_glass_futbol\"), \"break\", \"\",30)")
             }
     }
 
@@ -176,7 +176,7 @@ if (!FutBolGamemode) {
                     if (FutBolTeams[0].score  >= desiredscore) {
                         GameRunning = false
                         CanSpawnFutBol = false
-                        SendToConsole("say BLUE WON THE GAME!")
+                        SendToConsoleP232("say BLUE WON THE GAME!")
                         DecEntFireByHandle(BlueGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
                         DecEntFireByHandle(RedGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
                         DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
@@ -184,7 +184,7 @@ if (!FutBolGamemode) {
                     } else if (FutBolTeams[1].score  >= desiredscore) {
                         GameRunning = false
                         CanSpawnFutBol = false
-                        SendToConsole("say RED WON THE GAME!")
+                        SendToConsoleP232("say RED WON THE GAME!")
                         DecEntFireByHandle(BlueGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
                         DecEntFireByHandle(RedGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
                         DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)

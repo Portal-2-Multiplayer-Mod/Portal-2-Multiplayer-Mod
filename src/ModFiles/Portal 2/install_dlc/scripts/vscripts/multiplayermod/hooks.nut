@@ -97,7 +97,7 @@ function OnPlayerJoin(p, script_scope) {
     }
 
     //# Set cvars on joining players' client #//
-    SendToConsole("sv_timeout 3")
+    SendToConsoleP232("sv_timeout 3")
     EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
     EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
     EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
@@ -186,8 +186,8 @@ function PostMapLoad() {
     SendPythonOutput("hookdiscord Portal 2 Playing On: " + GetMapName())
 
     //## Cheat detection ##//
-    SendToConsole("prop_dynamic_create cheatdetectionp2mm")
-    SendToConsole("script SetCheats()")
+    SendToConsoleP232("prop_dynamic_create cheatdetectionp2mm")
+    SendToConsoleP232("script SetCheats()")
 
     // Add a hook to the chat command function
     if (PluginLoaded==true) {
@@ -195,26 +195,26 @@ function PostMapLoad() {
         AddChatCallback("ChatCommands")
     }
     // Edit cvars & set server name
-    SendToConsole("mp_allowspectators 0")
+    SendToConsoleP232("mp_allowspectators 0")
     if (PluginLoaded == true) {
-        SendToConsole("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
+        SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
     } else {
-        SendToConsole("hostname Portal 2: Multiplayer Mod Server")
+        SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server")
     }
     // Force spawn players in map
     AddBranchLevelName( 1, "P2 MM" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
     // Enable fast download
-    SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
-    SendToConsole("sv_allowdownload 1")
-    SendToConsole("sv_allowupload 1")
+    SendToConsoleP232("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+    SendToConsoleP232("sv_allowdownload 1")
+    SendToConsoleP232("sv_allowupload 1")
 	
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 	
     if (DevMode) {
-        SendToConsole("developer 1")
+        SendToConsoleP232("developer 1")
         StartDevModeCheck <- true
     }
 
@@ -224,9 +224,9 @@ function PostMapLoad() {
     }
 
 	// Gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
-	SendToConsole("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
-	SendToConsole("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
-	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
+	SendToConsoleP232("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
+	SendToConsoleP232("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
+	SendToConsoleP232("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
@@ -247,7 +247,7 @@ function PostMapLoad() {
 // Runs when the second player loads in
 function PostPlayer2Join() {
     if (!CheatsOn) {
-        SendToConsole("sv_cheats 0")
+        SendToConsoleP232("sv_cheats 0")
     }
     Player2Joined <- true
 }
@@ -420,7 +420,7 @@ function GeneralOneTime() {
     }
 
     // Create props after cache
-    SendToConsole("script CreatePropsForLevel(false, true, false)")
+    SendToConsoleP232("script CreatePropsForLevel(false, true, false)")
 
     MapSupport(false, false, true, false, false, false, false)
 }

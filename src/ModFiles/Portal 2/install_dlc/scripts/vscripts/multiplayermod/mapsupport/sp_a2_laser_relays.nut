@@ -87,7 +87,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 0.25", 0, p, p)
             }
              
-            SendToConsole("changelevel sp_a2_turret_blocker")
+            SendToConsoleP232("changelevel sp_a2_turret_blocker")
         }
     }
 }

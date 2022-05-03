@@ -86,7 +86,7 @@ function SetCheats() {
     printl("===== Cheat Detection =====")
     printl("           " + CheatsOn)
     printl("===========================")
-    // SendToConsole("sv_cheats 1")
+    // SendToConsoleP232("sv_cheats 1")
     AlwaysPrecachedModels()
 }
 
@@ -571,7 +571,7 @@ function DeleteAmountOfEntitys(classname, amount) {
 
 PrecachedProps <- []
 function PrecacheModel(mdl) {
-    SendToConsole("script PrecacheModelNoDelay(\"" + mdl + "\")")
+    SendToConsoleP232("script PrecacheModelNoDelay(\"" + mdl + "\")")
 }
 function PrecacheModelNoDelay(mdl) {
         // Add the models/ to the side of the model name if it's not already there
@@ -597,12 +597,12 @@ function PrecacheModelNoDelay(mdl) {
     if (!Entities.FindByModel(null, mdl) && NotPrecached == true) {
         PrecachedProps.push(minimdl)
         if (CheatsOn == false) {
-            SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
+            SendToConsoleP232("sv_cheats 1; prop_dynamic_create " + minimdl)
         } else {
-            SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
+            SendToConsoleP232("sv_cheats 1; prop_dynamic_create " + minimdl)
         }
         if (CheatsOn == false) {
-            SendToConsole("sv_cheats 0")
+            SendToConsoleP232("sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
         if (GetDeveloperLevel()) {
@@ -2134,7 +2134,7 @@ function CreateOurEntities() {
 
 
     function SendChatMessage(message) {
-        SendToConsole("say " + message)
+        SendToConsoleP232("say " + message)
     }
 
     function RemoveDangerousChars(str) {
