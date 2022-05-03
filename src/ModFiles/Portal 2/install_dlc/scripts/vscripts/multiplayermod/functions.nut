@@ -101,7 +101,7 @@ function SetCosmetics(p) {
         local pclass = FindPlayerClass(p)
         local psteamid = pclass.steamid
 
-        //## Kyle customization ##//
+        //## kyleraykbs customization ##//
         if (psteamid == 91466608) {
             SetPlayerModel(p, "models/info_character/info_character_player.mdl")
         }
@@ -126,7 +126,7 @@ function SetCosmetics(p) {
             SetPlayerModel(p, "models/props_moon/moonrock_med08.mdl")
         }
 
-        //## Nano customization ##//
+        //## Nanoman2525 customization ##//
         if (psteamid == 145380247) {
             SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
         }

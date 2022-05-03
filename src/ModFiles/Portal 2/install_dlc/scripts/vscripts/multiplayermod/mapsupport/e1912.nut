@@ -5,9 +5,6 @@
 // ██║ ╚═╝ ██║██║  ██║██║     ██║ ╚███║██║  ██║██║ ╚═╝ ██║███████╗
 // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
 
-// NOTE: IN ORDER FOR THIS TO WORK, YOU NEED TO FIX LINE 55 OF VARIABLES.NUT
-// THE SCRIPT WON'T RUN SINCE THE MAP NAME IS UNDER 7 CHARACTERS (someone pls fix)
-
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun == true) {
         // Remove Portal Gun

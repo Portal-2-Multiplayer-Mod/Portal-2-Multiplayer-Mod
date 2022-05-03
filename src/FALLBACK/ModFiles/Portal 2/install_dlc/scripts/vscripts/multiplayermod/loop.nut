@@ -85,8 +85,7 @@ function loop() {
             if (currentplayerclass != null) {
                 if (OriginalAngle == null && CanCheckAngle == true) {
                     OriginalAngle <- measuremovement.GetAngles()
-                    //OriginalAngle + Vector(6.969, 4.69420, 6.9420)
-                    Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 6.969, OriginalAngle.y + 4.69420, OriginalAngle.z + 6.9420)
+                    Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
                 }
 
                 currentplayerclass.eyeangles <- measuremovement.GetAngles()

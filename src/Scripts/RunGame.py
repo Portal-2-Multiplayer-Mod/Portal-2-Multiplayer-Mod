@@ -371,19 +371,19 @@ def LaunchGame(gamepath):
     Log("")
     Log("Running Game...")
     
-    # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console
+    # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console -usercon
     try:
         if (GVars.iow):
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame():
                 # start portal 2 with the launch options and dont wait for it to finish
-                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-condebug", "-console"])
+                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-condebug", "-console", "-usercon"])
                 Log("Game exited successfully.")
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
         else:
-            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -condebug -console")
+            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -condebug -console -usercon")
             Log("Game launch successful!")
 
     except Exception as e:
