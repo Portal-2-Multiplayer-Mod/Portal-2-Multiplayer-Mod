@@ -788,6 +788,93 @@ if (GetMapName() == "sp_a4_intro") {
   }
 }
 
+//===============================//
+//CREATE OBJECTS FOR sp_a1_intro1//
+//===============================//
+
+if (GetMapName() == "sp_a1_intro1") {
+    if (CacheTime==true) {
+        // Cache Objects
+
+        PrecacheModel("props_bts/lab_pod_b_low.mdl")
+
+        PrecacheModel("models/props_factory/factory_panel_portalable_128x128.mdl")
+
+        PrecacheModel("models/props_factory/turret_factory_open/turret_factory_open.mdl")
+
+        PrecacheModel("models/props_underground/underground_weighted_cube.mdl")
+
+        DoneCacheing <- true
+  }
+
+
+    if (CreateTime==true) {
+        // Create Objects
+
+        local sp_a1_intro1_custom_prop_95 = CreateProp("prop_dynamic", Vector(-9469, -491, -3152), "models/container_ride/endstate_vcollide.mdl", 0)
+        sp_a1_intro1_custom_prop_95.SetAngles(-6.8249382972717, -0.23543548583984, 0.75763827562332)
+        sp_a1_intro1_custom_prop_95.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_95.__KeyValueFromString("targetname", "genericcustomprop")
+
+        // Floor
+        local sp_a1_intro1_custom_prop_96 = CreateProp("prop_dynamic", Vector(-5755, 1912, 11), "models/props_bts/lab_pod_b_low.mdl", 0)
+        sp_a1_intro1_custom_prop_96.SetAngles(0, -90, 0)
+        sp_a1_intro1_custom_prop_96.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_96.__KeyValueFromString("targetname", "genericcustomprop")
+        //EntFireByHandle(sp_a1_intro1_custom_prop_96, "disabledraw", "", 0, null, null)
+
+        // Right wall
+        local sp_a1_intro1_custom_prop_97 = CreateProp("prop_dynamic", Vector(-5755, 1705, 176), "models/props_bts/lab_pod_b_low.mdl", 0)
+        sp_a1_intro1_custom_prop_97.SetAngles(0, -90, 0)
+        sp_a1_intro1_custom_prop_97.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_97.__KeyValueFromString("targetname", "genericcustomprop")
+        //EntFireByHandle(sp_a1_intro1_custom_prop_97, "disabledraw", "", 0, null, null)
+
+        // Left wall
+        local sp_a1_intro1_custom_prop_98 = CreateProp("prop_dynamic", Vector(-5755, 2120, 176), "models/props_bts/lab_pod_b_low.mdl", 0)
+        sp_a1_intro1_custom_prop_98.SetAngles(0, -90, 0)
+        sp_a1_intro1_custom_prop_98.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_98.__KeyValueFromString("targetname", "genericcustomprop")
+        //EntFireByHandle(sp_a1_intro1_custom_prop_98, "disabledraw", "", 0, null, null)
+
+        // Front wall
+        local sp_a1_intro1_custom_prop_99 = CreateProp("prop_dynamic", Vector(-5535, 1912, 282), "models/props_bts/lab_pod_b_low.mdl", 0)
+        sp_a1_intro1_custom_prop_99.SetAngles(0, -90, -90)
+        sp_a1_intro1_custom_prop_99.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_99.__KeyValueFromString("targetname", "genericcustomprop")
+        //EntFireByHandle(sp_a1_intro1_custom_prop_99, "disabledraw", "", 0, null, null)
+
+        // Ceiling
+        local sp_a1_intro1_custom_prop_100 = CreateProp("prop_dynamic", Vector(-5755, 1912, 346), "models/props_bts/lab_pod_b_low.mdl", 0)
+        sp_a1_intro1_custom_prop_100.SetAngles(0, -90, 0)
+        sp_a1_intro1_custom_prop_100.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_100.__KeyValueFromString("targetname", "genericcustomprop")
+        //EntFireByHandle(sp_a1_intro1_custom_prop_100, "disabledraw", "", 0, null, null)
+
+        local sp_a1_intro1_custom_prop_101 = CreateProp("prop_physics", Vector(-5738.5913085938, 1436.5866699219, 371.41882324219), "models/props_factory/factory_panel_portalable_128x128.mdl", 0)
+        sp_a1_intro1_custom_prop_101.SetAngles(-89.951835632324, 89.97346496582, 180)
+        sp_a1_intro1_custom_prop_102.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_102.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a1_intro1_custom_prop_102 = CreateProp("prop_physics", Vector(-5897.6782226563, 1349.2406005859, 365.28759765625), "models/props_factory/turret_factory_open/turret_factory_open.mdl", 0)
+        sp_a1_intro1_custom_prop_102.SetAngles(0.11501677334309, -179.95906066895, -0.040924072265625)
+        sp_a1_intro1_custom_prop_102.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_102.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a1_intro1_custom_prop_103 = CreateProp("prop_physics", Vector(-5885.8984375, 1477.5599365234, 383.47760009766), "models/props_underground/underground_weighted_cube.mdl", 0)
+        sp_a1_intro1_custom_prop_103.SetAngles(0.089073076844215, -179.96084594727, -0.08380126953125)
+        sp_a1_intro1_custom_prop_103.__KeyValueFromString("solid", "6")
+        sp_a1_intro1_custom_prop_103.__KeyValueFromString("targetname", "genericcustomprop")
+
+  }
+
+
+    if (LoopTime==true) {
+        // Generated Teleports
+
+  }
+}
+
 if (FutBolGamemode) {
 
 //=====================================//
