@@ -46,7 +46,7 @@ if os.path.exists(gamepath + "/" + ourfolder):
     # windows
     else:
         # delete everything inside of src/ModFiles/Portal 2/install_dlc
-        os.system( "rmdir /S /Q src\\ModFiles\\Portal\ 2\\install_dlc")
+        os.system( "rmdir /S /Q ModFiles\\Portal\ 2\\install_dlc")
 
         # copy everything inside of portal2_dlcX/ to src/ModFiles/Portal 2/install_dlc
         shutil.copytree(gamepath + "\\" + ourfolder, "src\\ModFiles\\Portal 2\\install_dlc")
