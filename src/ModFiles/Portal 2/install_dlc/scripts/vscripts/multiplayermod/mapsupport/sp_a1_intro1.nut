@@ -17,8 +17,49 @@ function p2mmDropCollision() {
     DisableJumpmsp = true
     EntFire("p2mm_servercommand", "command", "script DisableJumpmsp = false", 3)
     printl("Dropping container collision")
-    local dropamount = 50
+    local dropamount = 45
     local ceiltime = 2.6
+
+    // Props //
+
+    local ContainerBedPropCollision = Entities.FindByName(null, "ContainerBedPropCollision")
+    local ContainerFloorPropCollision = Entities.FindByName(null, "ContainerFloorPropCollision")
+    local ContainerCeilingPropCollision = Entities.FindByName(null, "ContainerCeilingPropCollision")
+    local ContainerRightWallPropCollision = Entities.FindByName(null, "ContainerRightWallPropCollision")
+    local ContainerLeftWallPropCollision = Entities.FindByName(null, "ContainerLeftWallPropCollision")
+    local ContainerFrontWallPropCollision = Entities.FindByName(null, "ContainerFrontWallPropCollision")
+
+    // ContainerBedPropCollision
+    ContainerBedPropCollision.SetOrigin(Vector(ContainerBedPropCollision.GetOrigin().x, ContainerBedPropCollision.GetOrigin().y, ContainerBedPropCollision.GetOrigin().z - dropamount))
+    // EntFire("ContainerBedPropCollision", "disable")
+    // EntFire("ContainerBedPropCollision", "enable", "", ceiltime)
+
+    // ContainerFloorPropCollision
+    ContainerFloorPropCollision.SetOrigin(Vector(ContainerFloorPropCollision.GetOrigin().x, ContainerFloorPropCollision.GetOrigin().y, ContainerFloorPropCollision.GetOrigin().z - dropamount))
+    // EntFire("ContainerFloorPropCollision", "disable")
+    // EntFire("ContainerFloorPropCollision", "enable", "", ceiltime)
+
+    // ContainerCeilingPropCollision
+    ContainerCeilingPropCollision.SetOrigin(Vector(ContainerCeilingPropCollision.GetOrigin().x, ContainerCeilingPropCollision.GetOrigin().y, ContainerCeilingPropCollision.GetOrigin().z - dropamount))
+    EntFire("ContainerCeilingPropCollision", "disable")
+    EntFire("ContainerCeilingPropCollision", "enable", "", ceiltime)
+
+    // ContainerRightWallPropCollision
+    ContainerRightWallPropCollision.SetOrigin(Vector(ContainerRightWallPropCollision.GetOrigin().x, ContainerRightWallPropCollision.GetOrigin().y, ContainerRightWallPropCollision.GetOrigin().z - dropamount))
+    // EntFire("ContainerRightWallPropCollision", "disable")
+    // EntFire("ContainerRightWallPropCollision", "enable", "", ceiltime)
+
+    // ContainerLeftWallPropCollision
+    ContainerLeftWallPropCollision.SetOrigin(Vector(ContainerLeftWallPropCollision.GetOrigin().x, ContainerLeftWallPropCollision.GetOrigin().y, ContainerLeftWallPropCollision.GetOrigin().z - dropamount))
+    // EntFire("ContainerLeftWallPropCollision", "disable")
+    // EntFire("ContainerLeftWallPropCollision", "enable", "", ceiltime)
+
+    // ContainerFrontWallPropCollision
+    ContainerFrontWallPropCollision.SetOrigin(Vector(ContainerFrontWallPropCollision.GetOrigin().x, ContainerFrontWallPropCollision.GetOrigin().y, ContainerFrontWallPropCollision.GetOrigin().z - dropamount))
+    // EntFire("ContainerFrontWallPropCollision", "disable")
+    // EntFire("ContainerFrontWallPropCollision", "enable", "", ceiltime)
+
+    // Brushes //
 
     // local ContainerBedBrush = Entities.FindByName(null, "ContainerBedBrush")
     // local ContainerFloorBrush = Entities.FindByName(null, "ContainerFloorBrush")
@@ -165,6 +206,23 @@ function p2mmParentAndStartMath() {
 
 	    EntFire("@container_stacks_1", "SetAnimation", "anim1", 0 )
 	    EntFire("@container_stacks_2", "SetAnimation", "anim1", 0 )
+
+        // Props //
+
+        EntFire("ContainerBedPropCollision", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerBedPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerFloorPropCollision", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerFloorPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerCeilingPropCollision", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerCeilingPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerRightWallPropCollision", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerRightWallPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerLeftWallPropCollision", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerLeftWallPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerFrontWallPropCollision", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerFrontWallPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+
+        // Brushes //
 
     //DisableJumpmsp = true
         // BED
@@ -356,7 +414,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("container_collision", "DisableCollision", "", 0)
 
         EntFire("return_to_bed_button", "addoutput", "OnPressed p2mm_servercommand:command:script p2mmDestroyedSequence():5")
-        EntFire("@rl_container_ride", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmDropCollision():0.5")
+        EntFire("@rl_container_ride", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmDropCollision()")
         EntFire("crane_second_startup_relay", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():1")
         EntFire("@debug_start_perf_test", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():10")
         EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p2mm_servercommand:command:script StopStickAndTeleport()")
@@ -748,7 +806,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 playermiddle <- p.GetOrigin() - currentCartPos
                 playermiddle <- Vector(((playermiddle.x / -1)/cartrotoffset)*planepitch, ((playermiddle.y)/cartrotoffset1)*planeroll, playermiddle.z)
-                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, currentCartPos.z + ((playermiddle.x + playermiddle.y) + 12)))
+                p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, currentCartPos.z + ((playermiddle.x + playermiddle.y) + 14)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
             }
             DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)

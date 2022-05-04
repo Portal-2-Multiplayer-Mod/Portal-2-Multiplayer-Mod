@@ -811,44 +811,45 @@ if (GetMapName() == "sp_a1_intro1") {
     if (CreateTime==true) {
         // Create Objects
 
+        // ContainerBedPropCollision
         local sp_a1_intro1_custom_prop_95 = CreateProp("prop_dynamic", Vector(-9469, -491, -3152), "models/container_ride/endstate_vcollide.mdl", 0)
         sp_a1_intro1_custom_prop_95.SetAngles(-6.8249382972717, -0.23543548583984, 0.75763827562332)
         sp_a1_intro1_custom_prop_95.__KeyValueFromString("solid", "6")
-        sp_a1_intro1_custom_prop_95.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a1_intro1_custom_prop_95.__KeyValueFromString("targetname", "ContainerBedPropCollision")
 
-        // Floor
+        // ContainerFloorPropCollision
         local sp_a1_intro1_custom_prop_96 = CreateProp("prop_dynamic", Vector(-5755, 1912, 11), "models/props_bts/lab_pod_b_low.mdl", 0)
         sp_a1_intro1_custom_prop_96.SetAngles(0, -90, 0)
         sp_a1_intro1_custom_prop_96.__KeyValueFromString("solid", "6")
-        sp_a1_intro1_custom_prop_96.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a1_intro1_custom_prop_96.__KeyValueFromString("targetname", "ContainerFloorPropCollision")
         //EntFireByHandle(sp_a1_intro1_custom_prop_96, "disabledraw", "", 0, null, null)
 
-        // Right wall
-        local sp_a1_intro1_custom_prop_97 = CreateProp("prop_dynamic", Vector(-5755, 1705, 176), "models/props_bts/lab_pod_b_low.mdl", 0)
+        // ContainerCeilingPropCollision
+        local sp_a1_intro1_custom_prop_97 = CreateProp("prop_dynamic", Vector(-5755, 1912, 346), "models/props_bts/lab_pod_b_low.mdl", 0)
         sp_a1_intro1_custom_prop_97.SetAngles(0, -90, 0)
         sp_a1_intro1_custom_prop_97.__KeyValueFromString("solid", "6")
-        sp_a1_intro1_custom_prop_97.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a1_intro1_custom_prop_97.__KeyValueFromString("targetname", "ContainerCeilingPropCollision")
         //EntFireByHandle(sp_a1_intro1_custom_prop_97, "disabledraw", "", 0, null, null)
 
-        // Left wall
-        local sp_a1_intro1_custom_prop_98 = CreateProp("prop_dynamic", Vector(-5755, 2120, 176), "models/props_bts/lab_pod_b_low.mdl", 0)
+        // ContainerRightWallPropCollision
+        local sp_a1_intro1_custom_prop_98 = CreateProp("prop_dynamic", Vector(-5755, 1705, 176), "models/props_bts/lab_pod_b_low.mdl", 0)
         sp_a1_intro1_custom_prop_98.SetAngles(0, -90, 0)
         sp_a1_intro1_custom_prop_98.__KeyValueFromString("solid", "6")
-        sp_a1_intro1_custom_prop_98.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a1_intro1_custom_prop_98.__KeyValueFromString("targetname", "ContainerRightWallPropCollision")
         //EntFireByHandle(sp_a1_intro1_custom_prop_98, "disabledraw", "", 0, null, null)
 
-        // Front wall
-        local sp_a1_intro1_custom_prop_99 = CreateProp("prop_dynamic", Vector(-5535, 1912, 282), "models/props_bts/lab_pod_b_low.mdl", 0)
-        sp_a1_intro1_custom_prop_99.SetAngles(0, -90, -90)
+        // ContainerLeftWallPropCollision
+        local sp_a1_intro1_custom_prop_99 = CreateProp("prop_dynamic", Vector(-5755, 2120, 176), "models/props_bts/lab_pod_b_low.mdl", 0)
+        sp_a1_intro1_custom_prop_99.SetAngles(0, -90, 0)
         sp_a1_intro1_custom_prop_99.__KeyValueFromString("solid", "6")
-        sp_a1_intro1_custom_prop_99.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a1_intro1_custom_prop_99.__KeyValueFromString("targetname", "ContainerLeftWallPropCollision")
         //EntFireByHandle(sp_a1_intro1_custom_prop_99, "disabledraw", "", 0, null, null)
 
-        // Ceiling
-        local sp_a1_intro1_custom_prop_100 = CreateProp("prop_dynamic", Vector(-5755, 1912, 346), "models/props_bts/lab_pod_b_low.mdl", 0)
-        sp_a1_intro1_custom_prop_100.SetAngles(0, -90, 0)
+        // ContainerFrontWallPropCollision
+        local sp_a1_intro1_custom_prop_100 = CreateProp("prop_dynamic", Vector(-5535, 1912, 282), "models/props_bts/lab_pod_b_low.mdl", 0)
+        sp_a1_intro1_custom_prop_100.SetAngles(0, -90, -90)
         sp_a1_intro1_custom_prop_100.__KeyValueFromString("solid", "6")
-        sp_a1_intro1_custom_prop_100.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a1_intro1_custom_prop_100.__KeyValueFromString("targetname", "ContainerFrontWallPropCollision")
         //EntFireByHandle(sp_a1_intro1_custom_prop_100, "disabledraw", "", 0, null, null)
 
         local sp_a1_intro1_custom_prop_101 = CreateProp("prop_physics", Vector(-5738.5913085938, 1436.5866699219, 371.41882324219), "models/props_factory/factory_panel_portalable_128x128.mdl", 0)
