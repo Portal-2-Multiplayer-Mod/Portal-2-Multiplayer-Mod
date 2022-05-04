@@ -1,6 +1,0 @@
-background color : #0b3c49
-text color : #689689
-button border color: #13e745
-button text color : #13e745
-danger color : #da2c38
-font family : QuickSand
