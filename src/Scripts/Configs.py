@@ -1,47 +1,72 @@
 import os
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
+import ast
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
-DefaultConfigFile = [
-    "# █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀",
-    "# █▄▄ █▄█ █░▀█ █▀░ █ █▄█",
-    "",
-    "cfgvariant = 18 # DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
-    "",
-    "#// Launcher //#",
-    "",
-    "#-----------------------------------",
-    "portal2path = undefined",
-    "developer = false",
-    "LauncherSFX = true",
-    "LauncherCubes = true",
-    "#-----------------------------------",
-    "",
-    "#// Portal 2 //#",
-    "",
-    "#-----------------------------------",
-    "EncryptCvars = false",
-    "#-----------------------------------",
-]
+DefaultConfigFile = {
+    "cfgvariant":
+        {
+            "value" : 18,
+            "menu" : "hidden",
+            "description" : "DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
+            "warning" : "IF YOU CHANGE THIS NUMBER YOU MAY LOSE YOUR CONFIG FILE!",
+            "prompt" : "DONT CHANGE THIS VALUE",
+        },
 
-# this is temporary until we agree on whether to add the fluff to the config file or not
-DefaultConfigFile2 = {
-    "cfgvariant": 18,
-    "portal2path": "undefined",
-    "EncryptCvars": "false",
-    "developer": "false",
-    "LauncherSFX": "true",
-    "LauncherCubes": "true",
+    "portal2path":
+        {
+            "value" : "undefined",
+            "menu" : "launcher",
+            "description" : "Path to the Portal 2 Folder",
+            "warning" : "",
+            "prompt" : "Enter the path to the Portal 2 folder",
+        },
+
+    "developer":
+        {
+            "value" : "false",
+            "menu" : "launcher",
+            "description" : "Makes the mods files mount from src/ModFiles",
+            "warning" : "",
+            "prompt" : "Enable developer mode?",
+        },
+
+    "LauncherSFX":
+        {
+            "value" : "true",
+            "menu" : "launcher",
+            "description" : "Makes the buttons sound effects",
+            "warning" : "",
+            "prompt" : "Enable sound effects?",
+        },
+
+    "LauncherCubes":
+        {
+            "value" : "true",
+            "menu" : "launcher",
+            "description" : "Makes cubes rain in the background",
+            "warning" : "",
+            "prompt" : "Enable background cubes?",
+        },
+
+    "EncryptCvars":
+        {
+            "value" : "false",
+            "menu" : "portal2",
+            "description" : "Encrypts cvars such as \"restart_level\" and \"reset_all_progress\")", 
+            "warning" : "(only use for public games) may break some functionality",
+            "prompt" : "Encrypt cvars?",
+        },
 }
 
 # verifies the config file by making sure that the processed data has the same keys as the default 
 # if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
 def VerifyConfigFileIntegrity(config):
-    if len(config) != len(DefaultConfigFile2) or config.keys() != DefaultConfigFile2.keys():
-        DefaultCopy = DefaultConfigFile2
+    if len(config) != len(DefaultConfigFile) or config.keys() != DefaultConfigFile.keys():
+        DefaultCopy = DefaultConfigFile
         Log("Some config data is invalid, fixing it...")
         for key in DefaultCopy:
             try:
@@ -50,7 +75,7 @@ def VerifyConfigFileIntegrity(config):
                 Log(f"The key [{key}] is missing from the local config file!")
         WriteConfigFile(DefaultCopy)
         return DefaultCopy
-        
+
     # if the config keys are the same as the default then just return them
     else:
         return config
@@ -78,50 +103,62 @@ def FindConfigPath():
 
 # since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
 def EditConfig(search, newvalue):
-    GVars.configData[search] = newvalue
+    GVars.configData[search]["value"] = newvalue
     WriteConfigFile(GVars.configData)
 
 # to import the config data from the local config file
 def ImportConfig():
-    Log("            __________Config Data Start__________")
-    Log("Importing Config...")
+    try:
+        Log("            __________Config Data Start__________")
+        Log("Importing Config...")
 
-    configpath = FindConfigPath()
-    
-    # if the file doesn't exist then create it
-    if not os.path.exists(configpath):
-        WriteConfigFile(DefaultConfigFile2)
-        
-    # read all the lines in the config file
-    config = open(configpath, "r", encoding="utf-8").readlines()
+        configpath = FindConfigPath()
 
-    # if the file is empty then re-create it
-    if len(config) == 0:
-        WriteConfigFile(DefaultConfigFile2)
-        
-    # process the config file into useable data
-    Log("Processing config...")
-    Log("")
-    processedconfig = {}
-    for line in config:
-        # remove everything after the first #
-        line = line.split("#")[0].strip()
+        # if the file doesn't exist then create it
+        if not os.path.exists(configpath):
+            WriteConfigFile(DefaultConfigFile)
 
-        # if the line contains "=" then it's not empty 
-        # and if the is longer or equal to 3 characters then clearly it has some data 
-        if ("=" in line and len(line)>=3):
-            # get everything to the left of the = and clean it from whitespaces
-            leftline = line.split("=")[0].strip()
-            # get everything to the right of the = and clean it from whitespaces
-            rightline = line.split("=")[1].strip()
+        # read all the lines in the config file
+        config = open(configpath, "r", encoding="utf-8").readlines()
 
-            # if the left line is not empty then add it to the dictionary
-            # if the right line is empty we can handle it later
-            if (leftline != ""):
-                processedconfig[leftline] = rightline
-                Log("Imported: " + line)
+        # if the file is empty then re-create it
+        if len(config) == 0:
+            WriteConfigFile(DefaultConfigFile)
 
-    Log("")
-    Log("Configs imported successfully!")
-    # at last pass the data to the verify function to make sure everything is clean
-    return VerifyConfigFileIntegrity(processedconfig)
+        # process the config file into useable data
+        Log("Processing config...")
+        Log("")
+        processedconfig = {}
+        for line in config:
+            # remove everything after the first #
+            line = line.split("#")[0].strip()
+
+            # if the line contains "=" then it's not empty
+            # and if the is longer or equal to 3 characters then clearly it has some data
+            if ("=" in line and len(line)>=3):
+                # get everything to the left of the = and clean it from whitespaces
+                leftline = line.split("=")[0].strip()
+                # get everything to the right of the = and clean it from whitespaces
+                rightline = line.split("=")[1].strip()
+
+                # if the left line is not empty then add it to the dictionary
+                # if the right line is empty we can handle it later
+                if (leftline != ""):
+                    rl = ast.literal_eval(rightline)
+                    Log("==============================")
+                    Log("WHOLE LINE: " + str(rl))
+                    Log("NAME: " + leftline)
+                    for key in rl:
+                        Log("KEY: " + str(key))
+                        Log("VALUE: " + str(rl[key]))
+                    processedconfig[leftline] = rl
+
+        Log("")
+        Log("Configs imported successfully!")
+        # at last pass the data to the verify function to make sure everything is clean
+        return VerifyConfigFileIntegrity(processedconfig)
+    except Exception as e:
+        Log("FAILED TO IMPORT CONFIGS!")
+        WriteConfigFile(DefaultConfigFile)
+        GVars.hadtoresetconfig = True
+        return ImportConfig()

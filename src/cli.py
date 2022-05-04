@@ -47,7 +47,7 @@ def VerifyGamePath():
     Log("Verifying game path...")
     valid = False
     while valid == False:
-        gamepath = GVars.configData["portal2path"]
+        gamepath = GVars.configData["portal2path"]["value"]
         if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
             Log("Game path is invalid!")
             GetGamePath()
@@ -113,7 +113,7 @@ def OnStart():
     # checks if the client was launched from an older version 
     IsNew()
     # only check for updates for normal users
-    if GVars.configData["developer"] != "true":
+    if GVars.configData["developer"]["value"] != "true":
         CheckForUpdates()
 
 
@@ -158,12 +158,12 @@ def Init():
     VerifyGamePath()
     Log("")
 
-    gamepath = GVars.configData["portal2path"]
+    gamepath = GVars.configData["portal2path"]["value"]
 
 #//# Mount P2:MM #//#
     if (WillMount):
 
-        if (GVars.configData["developer"] == "true"):
+        if (GVars.configData["developer"]["value"] == "true"):
             Log("Dev mode active")
             DEVMOUNT()
 
@@ -181,7 +181,7 @@ def Init():
 
     # it's annoying to be asked to exit when you're debugging 
     # but don't remove it, it's there so the user can read the output when the game closes
-    if (GVars.configData["developer"] != "true"):
+    if (GVars.configData["developer"]["value"] != "true"):
         input("Press enter to exit")
 
 

@@ -21,13 +21,13 @@ configPath = ""
 iow = False
 iol = False
 nf = os.sep # this way the logging won't break if someone runs the app on mac
-
+hadtoresetconfig = False
 
 def init():
     global appStartDate, modPath, iow, iol, nf, configPath
-    
+
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
-    
+
     if (sys.platform == "win32"):
         iow = True
         # set the modpath to the users documents folder
@@ -50,7 +50,7 @@ def init():
     if not os.path.exists(configPath):
         os.makedirs(configPath)
 
-def LoadConfig():   
+def LoadConfig():
     global configData
     configData = cfg.ImportConfig()
     Log("Config data loaded.")

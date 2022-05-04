@@ -83,7 +83,7 @@ Floaters = []
 #     surf = pygame.transform.rotate(surf, 19)
 
 def PlaySound(sound):
-    LauncherSFX = GVars.configData["LauncherSFX"] == "true"
+    LauncherSFX = GVars.configData["LauncherSFX"]["value"] == "true"
     if LauncherSFX:
         pygame.mixer.Sound.play(sound)
 
@@ -132,7 +132,7 @@ def GetGamePath():
         cfg.EditConfig("portal2path", inp.strip())
         Log("Saved '" + inp.strip() + "' as the game path!")
         Error("Saved path!", 5, (75, 200, 75))
-        gamepath = GVars.configData["portal2path"]
+        gamepath = GVars.configData["portal2path"]["value"]
         VerifyGamePath(gamepath)
         
     GetUserInputPYG( AfterInputGP , "Enter Your Portal 2 Game Path")
@@ -140,7 +140,7 @@ def GetGamePath():
 
 def VerifyGamePath(gamepath):
     Log("Verifying game path...")
-    gamepath = GVars.configData["portal2path"]
+    gamepath = GVars.configData["portal2path"]["value"]
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Error("Game path is invalid!")
         GetGamePath()
@@ -162,7 +162,7 @@ def VerifyModFiles():
 def UseFallbacks(gamepath):
     # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
     BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
-    DoEncrypt = GVars.configData["EncryptCvars"] == "true"
+    DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
     RG.MountMod(gamepath, DoEncrypt)
     Error("Mount Complete!", 5, (75, 255, 75))
     # Error("Launching Game...", 5, (75, 255, 75))
@@ -180,13 +180,13 @@ def DEVMOUNT():
     BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
 
 def MountModOnly():
-    gamepath = GVars.configData["portal2path"]
+    gamepath = GVars.configData["portal2path"]["value"]
     if not VerifyGamePath(gamepath):
         return
     
     if not IsUpdating:
         Error("Mounting Mod!", 5, (75, 255, 75))
-        if (GVars.configData["developer"] == "true"):
+        if (GVars.configData["developer"]["value"] == "true"):
             Error("WARN: Dev Mode Active", 5, (255, 180, 75))
             DEVMOUNT()
             RG.MountMod(gamepath)
@@ -194,7 +194,7 @@ def MountModOnly():
             return True
         else:
             if (VerifyModFiles()):
-                DoEncrypt = GVars.configData["EncryptCvars"] == "true"
+                DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
                 RG.MountMod(gamepath, DoEncrypt)
                 Error("Mounted!", 5, (75, 255, 75))
                 return True
@@ -243,14 +243,14 @@ def UpdateMod():
     thread.start()
 
 def RunGameScript():
-    gamepath = GVars.configData["portal2path"]
+    gamepath = GVars.configData["portal2path"]["value"]
     if MountModOnly():
         RG.LaunchGame(gamepath)
         Error("Launched Game!", 5, (75, 255, 75))
 
 def UnmountScript():
     Log("___Unmounting Mod___")
-    gamepath = GVars.configData["portal2path"]
+    gamepath = GVars.configData["portal2path"]["value"]
     VerifyGamePath(gamepath)
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
@@ -279,35 +279,37 @@ CurrentMenu = None
 SelectedButton = None
 CurrentButtonsIndex = 0
 
-def ChangeMenu(menu):
+def ChangeMenu(menu, append = True):
     global CurrentMenu
     global SelectedButton
     global directorymenu
     global CurrentButtonsIndex
-    directorymenu.append(CurrentMenu)
+    if append:
+        directorymenu.append(CurrentMenu)
     CurrentMenu = menu
     CurrentButtonsIndex = 0
     SelectedButton = CurrentMenu[0]
 
 def BackMenu():
     if len(directorymenu) > 0:
-        ChangeMenu(directorymenu[-1])
-        directorymenu.pop()
+        
+        ChangeMenu(directorymenu.pop(), False)
         CurrentButtonsIndex = 0
 
-def RefreshSettingsMenu():
+def RefreshSettingsMenu(menu):
         SettingsButtons.clear()
         for key in GVars.configData:
-            if key != "cfgvariant":
-                Log(key + ": " + GVars.configData[key])
+            if GVars.configData[key]["menu"] == menu:
+                Log(key + ": " + GVars.configData[key]["value"])
                 class curkeyButton:
-                    txt = GVars.configData[key]
+                    txt = GVars.configData[key]["value"]
                     mlen = 10
                     if len(txt) > mlen:
                         txt = txt[:mlen] + "..."
                     text = key + ": " + txt
                     cfgkey = key
-                    cfgvalue = GVars.configData[key]
+                    cfgvalue = GVars.configData[key]["value"]
+                    keyobj = GVars.configData[key]
                     activecolor = (255, 255, 0)
                     inactivecolor = (155, 155, 155)
                     sizemult = 1
@@ -315,22 +317,22 @@ def RefreshSettingsMenu():
                     selectsnd = pwrsnd
                     hoversnd = blipsnd
                     curanim = ""
-                    def function(cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
+                    def function(keyobj = keyobj, cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
                         if cfgvalue == "true" or cfgvalue == "false":
                             if cfgvalue == "false":
                                 cfg.EditConfig(cfgkey, "true")
                             # default to false to avoid errors
                             else:
                                 cfg.EditConfig(cfgkey, "false")
-                            RefreshSettingsMenu()
+                            RefreshSettingsMenu(menu)
                         else:
                             def AfterInputGenericSetConfig(inp, cfgkey = cfgkey, cfgvalue = cfgvalue):
                                 cfg.EditConfig(cfgkey, inp.strip())
                                 Log("Saved '" + inp.strip() + "' to config " + cfgkey)
                                 Error("Saved!", 5, (75, 200, 75))
-                                RefreshSettingsMenu()
-                            
-                            GetUserInputPYG( AfterInputGenericSetConfig , "Enter A Value For " + cfgkey, cfgvalue)
+                                RefreshSettingsMenu(menu)
+
+                            GetUserInputPYG( AfterInputGenericSetConfig , keyobj["prompt"], cfgvalue)
 
                     isasync = False
                 SettingsButtons.append(curkeyButton)
@@ -396,6 +398,34 @@ class LaunchGameButton:
             RunGameScript()
     isasync = True
 
+class LauncherSettingsButton:
+    text = "Launcher Config"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        RefreshSettingsMenu("launcher")
+        ChangeMenu(SettingsButtons)
+    isasync = False
+
+class Portal2SettingsButton:
+    text = "Portal 2 Config"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        RefreshSettingsMenu("portal2")
+        ChangeMenu(SettingsButtons)
+    isasync = False
+
 class SettingsButton:
     text = "Settings"
     activecolor = (255, 255, 0)
@@ -406,8 +436,7 @@ class SettingsButton:
     hoversnd = blipsnd
     curanim = ""
     def function():
-        RefreshSettingsMenu()
-        ChangeMenu(SettingsButtons)
+        ChangeMenu(SettingsMenus)
     isasync = False
 
 class UpdateButton:
@@ -606,6 +635,8 @@ class BackButton:
 ##############################
 
 ### BUTTONS
+SettingsMenus = [LauncherSettingsButton, Portal2SettingsButton, BackButton]
+
 SettingsButtons = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
@@ -664,7 +695,7 @@ def Update():
         surf = pygame.transform.scale(surf, (W/15, W/15))
         surf = pygame.transform.rotate(surf, floater.rot)
         center = surf.get_rect().center
-        LauncherCubes = GVars.configData["LauncherCubes"] == "true"
+        LauncherCubes = GVars.configData["LauncherCubes"]["value"] == "true"
         if (LauncherCubes):
             screen.blit(surf, (floater.x - center[0], floater.y - center[1]))
         if floater.negrot:
@@ -1057,6 +1088,16 @@ def OnStart():
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
         BF.DeleteFolder(GVars.modPath + GVars.nf + ".temp")
+    
+    if (GVars.hadtoresetconfig):
+        Log("UH OH CONFIG RESET YELL AT USER.")
+        class OkButton:
+            text = "Ok"
+            def function():
+                    pass
+            activecolor = (75, 255, 75)
+            inactivecolor = (155, 155, 155)
+        PopupBox("Config Reset", "We had to reset your config \n this could have been an update \n or you could of had an broken config \n\n PLEASE check your settings", [OkButton])
 
 if __name__ == '__main__':
     OnStart()
