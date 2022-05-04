@@ -38,7 +38,7 @@ DefaultConfigFile = {
         {
             "value" : "true",
             "menu" : "launcher",
-            "description" : "Makes the buttons sound effects",
+            "description" : "Makes the buttons play sound effects",
             "warning" : "",
             "prompt" : "Enable sound effects?",
         },

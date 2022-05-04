@@ -7,7 +7,7 @@ os.chdir(os.path.dirname(os.path.realpath(__file__)))
 import Scripts.GlobalVariables as GVars
 GVars.init()
 GVars.LoadConfig()
-gamepath = GVars.configData["portal2path"]
+gamepath = GVars.configData["portal2path"]["value"]
 print("gamepath: " + gamepath)
 
 # detect the running OS

@@ -3,6 +3,7 @@ import os
 import random
 import threading
 import time
+from tkinter import W
 import webbrowser
 
 from Scripts.EncryptCVars import Encrypt
@@ -292,9 +293,18 @@ def ChangeMenu(menu, append = True):
 
 def BackMenu():
     if len(directorymenu) > 0:
-        
+
         ChangeMenu(directorymenu.pop(), False)
         CurrentButtonsIndex = 0
+
+def BlitDescription(txt, x = screen.get_width() / 16, y = screen.get_height() / 16, clr = (255, 255, 255)):
+    try:
+        if (len(txt) > 0):
+            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int( int((int(screen.get_width() / 25) + int(screen.get_height() / 50)) / 1) ) / (len(txt) / 10)) ).render(txt, True, clr)
+            if not (LookingForInput):
+                screen.blit(text1, (x, y))
+    except Exception as e:
+        pass
 
 def RefreshSettingsMenu(menu):
         SettingsButtons.clear()
@@ -313,6 +323,9 @@ def RefreshSettingsMenu(menu):
                     activecolor = (255, 255, 0)
                     inactivecolor = (155, 155, 155)
                     sizemult = 1
+                    def whileselectedfunction(keyobj = keyobj):
+                        BlitDescription(keyobj["description"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1.25), (130, 130, 255))
+                        BlitDescription(keyobj["warning"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1.75), (255, 50, 50))
                     selectanim = "pop"
                     selectsnd = pwrsnd
                     hoversnd = blipsnd
@@ -763,6 +776,11 @@ def Update():
                 ERRORLIST.remove(error)
             error[1] -= 1
         SecAgo = time.time()
+
+    try:
+        SelectedButton.whileselectedfunction()
+    except:
+        pass
 
     ####################### DRAW POPUP BOX
     if len(PopupBoxList) > 0:
