@@ -69,8 +69,9 @@ def CheckForUpdates():
             update = input()
             if (update.upper() == "YES") or (update.upper() == "Y"):
                 valid = True
-                if up.DownloadClient() == False:
+                if up.DownloadClient("cli") == False:
                     Log("there was an error while updating")
+                    Log("please contact the developers")
             elif (update.upper() == "NO") or (update.upper() == "N"):
                 valid = True
         
@@ -92,7 +93,7 @@ def IsNew():
     if len(sys.argv) != 3:
         return
     
-    if (sys.argv[1] != "update") or (not os.path.exists(sys.argv[2])):
+    if (sys.argv[1] != "updated") or (not os.path.exists(sys.argv[2])):
         return
     
     Log("this is first launch after update")

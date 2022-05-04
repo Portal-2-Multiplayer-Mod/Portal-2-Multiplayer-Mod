@@ -17,7 +17,7 @@ currentVersion = "2.0.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
-Funcs
+
 # thanks stackOverflow for this solution <3
 def haveInternet():
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
@@ -33,10 +33,10 @@ def CheckForNewClient():
     Log("searching for a new client...")
     endpoint = "https://api.github.com/repos"  # github's api endpoint
     # do the get request to retrieve the latest release data
-    r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest")
-
+    r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
+    
     # make sure that the latest release has a different version than the current one and is not a beta release
-    if (currentVersion == r.json()["tag_name"]) or ("beta" in r.json()["tag_name"]):
+    if (currentVersion == r["tag_name"]) or ("beta" in r["tag_name"]):
         return {"status": False}
 
     results = {
@@ -57,12 +57,13 @@ def CheckForNewClient():
     return results
 
 
-def DownloadClient():
+def DownloadClient(cType = ""):
+    # cType is the Client Type (gui / cli)
     Log("Downloading...")
 
     endpoint = "https://api.github.com/repos"  # github's api endpoint
-    r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest")
-
+    r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
+    
     # so we can easily edit it in the future if we want to
     if (GVars.iow):
         packageType = ".exe"  
@@ -71,10 +72,10 @@ def DownloadClient():
 
     downloadLink = ""
     # this goes through all the binaries in the latest release until one of them ends with the package type (.exe, .pkg etc...)
-    for i in range(len(r.json()["assets"])):
-        if(r.json()["assets"][i]["browser_download_url"].endsWith(packageType)):
-            Log("Found client to download!")
-            downloadLink = r.json()["assets"][i]["browser_download_url"]
+    for i in range(len(r["assets"])):
+        if(r["assets"][i]["browser_download_url"].endsWith(cType+packageType)):
+            Log("Found new client to download!")
+            downloadLink = r["assets"][i]["browser_download_url"]
             break
 
     # make sure there's a download link
@@ -86,7 +87,7 @@ def DownloadClient():
     path = os.path.dirname(__main__.__file__) + GVars.nf + "p2mm" + packageType
     urllib.request.urlretrieve(downloadLink, path)
 
-    command = [path, "update"]
+    command = [path, "updated"]
     subprocess.Popen(command)
     sys.exit(0)
 
