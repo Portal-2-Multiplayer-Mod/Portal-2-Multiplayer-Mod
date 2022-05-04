@@ -58,7 +58,7 @@ The pros and cons are listed below, though **we highly recommend upgrading to an
 -   [x] Allow players to spawn in any map without breaking
 -   [x] Make the launcher patch files on the spot for consistency and stability
 -   [x] Allow the server to cache objects server-side without crashing
--   [ ] OTA updates (half done)
+-   [x] OTA updates
 -   [X] Encryption of game-breaking cvars to random characters on each game launch
 
 ## Features on the table
