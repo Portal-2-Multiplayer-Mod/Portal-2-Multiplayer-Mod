@@ -324,8 +324,8 @@ def RefreshSettingsMenu(menu):
                     inactivecolor = (155, 155, 155)
                     sizemult = 1
                     def whileselectedfunction(keyobj = keyobj):
-                        BlitDescription(keyobj["description"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1.25), (130, 130, 255))
-                        BlitDescription(keyobj["warning"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1.75), (255, 50, 50))
+                        BlitDescription(keyobj["description"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1), (130, 130, 255))
+                        BlitDescription(keyobj["warning"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1.25), (255, 50, 50))
                     selectanim = "pop"
                     selectsnd = pwrsnd
                     hoversnd = blipsnd
