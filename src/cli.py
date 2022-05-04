@@ -65,8 +65,7 @@ def CheckForUpdates():
         
         valid = False
         while not valid:
-            Log("")
-            update = input()
+            update = input("type YES or NO to update")
             if (update.upper() == "YES") or (update.upper() == "Y"):
                 valid = True
                 if up.DownloadClient("cli") == False:
@@ -102,7 +101,7 @@ def IsNew():
     Log("renaming new client...")
     curFile = os.path.abspath(__file__)
     # only change the name between quotes to whatever you want the client to name itself
-    os.rename(curFile, os.path.dirname(curFile) + "cli" + pathlib.Path(curFile).suffix)
+    os.rename(curFile, os.path.dirname(curFile) + "MultiplayerModLauncherCLI" + pathlib.Path(curFile).suffix)
 
 def OnStart():
     # Populate the global variables
