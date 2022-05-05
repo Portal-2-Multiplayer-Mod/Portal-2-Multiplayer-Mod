@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════════╝ ╚════╝    ╚═╝   ╚══════╝╚═╝  ╚═╝╚═════════╝ ╚═════╝  ╚════╝  ╚════╝ 
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_01bendy02").__KeyValueFromString("HoldAnimation", "1")
@@ -23,7 +23,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(2432, -1056, 72), 1024).Destroy()
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
         Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_01bendy02").__KeyValueFromString("targetname", "P2MM_Wall_Panel_2-Robo_Powerup_Corridor_01_override")
         Entities.FindByName(null, "wall_panel_2-robo_powerup_corridor_02bendy02").__KeyValueFromString("targetname", "P2MM_Wall_Panel_2-Robo_Powerup_Corridor_02_override")
@@ -59,7 +59,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "entry_landing_open_relay"), "addoutput", "OnTrigger P2MM_Wall_Panel_2-Robo_Powerup_Corridor_08_override:DisableDraw::7.65", 0, null, null)
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 50)) {

@@ -1,3 +1,4 @@
+import pathlib
 import sys
 import os 
 import random
@@ -1095,6 +1096,45 @@ def Main():
     pygame.quit()
     sys.exit()
 
+############################################################################
+
+def CheckForUpdates():
+
+    clientUpdate = up.CheckForNewClient()
+    if clientUpdate["status"]:
+        Log(clientUpdate["name"])
+        Log(clientUpdate["message"])
+
+    # kyle make the popup box work :)
+    # PopupBox("there's a new client do you want to download it?", [YesButton, NoButton])
+    
+        valid = False
+        while not valid:
+            update = input("type YES or NO to update")
+            if (update.upper() == "YES") or (update.upper() == "Y"):
+                valid = True
+                if up.DownloadClient() == False:
+                    Log("there was an error while updating")
+                    Log("please contact the developers")
+            elif (update.upper() == "NO") or (update.upper() == "N"):
+                valid = True
+
+def IsNew():
+
+    if len(sys.argv) != 3:
+        return
+
+    if (sys.argv[1] != "updated") or (not os.path.exists(sys.argv[2])):
+        return
+
+    Log("this is first launch after update")
+    Log("deleting old client...")
+    os.remove(sys.argv[2])
+    Log("renaming new client...")
+    curFile = os.path.abspath(__file__)
+    # only change the name between quotes to whatever you want the client to name itself
+    os.rename(curFile, os.path.dirname(curFile) + "MultiplayerModLauncher" + pathlib.Path(curFile).suffix)
+    
 def OnStart():
     # Load the global variables
     GVars.init()
@@ -1107,6 +1147,12 @@ def OnStart():
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
         BF.DeleteFolder(GVars.modPath + GVars.nf + ".temp")
     
+    IsNew()
+    
+    # only check for updates for normal users
+    if GVars.configData["developer"]["value"] != "true":
+        CheckForUpdates()
+        
     if (GVars.hadtoresetconfig):
         Log("UH OH CONFIG RESET YELL AT USER.")
         class OkButton:

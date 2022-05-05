@@ -49,7 +49,7 @@ function GetHighest(inpvec) {
 
 function ForceRespawnAll() {
     // GlobalSpawnClass teleport
-    if (GlobalSpawnClass.useautospawn == true) {
+    if (GlobalSpawnClass.useautospawn) {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             TeleportToSpawnPoint(p, null)
@@ -68,7 +68,7 @@ function SendPythonOutput(text) {
 }
 
 function ToggleCheats() {
-    if (CheatsOn == null || CheatsOn == false) {
+    if (CheatsOn == null || !CheatsOn) {
         CheatsOn = true
     } else {
         CheatsOn = false
@@ -77,7 +77,7 @@ function ToggleCheats() {
 
 function SetCheats() {
     CheatsOn = Entities.FindByModel(null, "models/cheatdetectionp2mm.mdl")
-    if (CheatsOn == null || CheatsOn == false) {
+    if (CheatsOn == null || !CheatsOn) {
         CheatsOn = false
     } else {
         CheatsOn = true
@@ -95,7 +95,7 @@ function AlwaysPrecachedModels() {
 }
 
 function SetCosmetics(p) {
-    if (PluginLoaded == true) {
+    if (PluginLoaded) {
         // Get nessasary data
         local pname = GetPlayerName(p.entindex())
 
@@ -332,7 +332,7 @@ function GetPlayerColor(p, multiply = true) {
         R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; colorname = "random";
     }
 
-    if (multiply == true) {
+    if (multiply) {
         // Multiply the color
         if (R >= 100) {
             R <- R - 100
@@ -472,7 +472,7 @@ function CreateGenericPlayerClass(p) {
     // PLUGIN //
 
         // Player Name
-        if (PluginLoaded==true) {
+        if (PluginLoaded) {
             currentplayerclass.username <- GetPlayerName(p.entindex())
         } else {
             currentplayerclass.username <- "Player " + p.entindex()
@@ -530,7 +530,7 @@ function GetEntityCount(classname = null) {
     }
 }
 
-function DeleteAmountOfEntitys(classname, amount) {
+function DeleteAmountOfEntities(classname, amount) {
     local p = null
     local indx = 0
     while (p = Entities.FindByClassname(p, classname)) {
@@ -580,14 +580,14 @@ function PrecacheModelNoDelay(mdl) {
         }
     }
 
-    if (!Entities.FindByModel(null, mdl) && NotPrecached == true) {
+    if (!Entities.FindByModel(null, mdl) && NotPrecached) {
         PrecachedProps.push(minimdl)
-        if (CheatsOn == false) {
+        if (!CheatsOn) {
             SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
         } else {
             SendToConsole("sv_cheats 1; prop_dynamic_create " + minimdl)
         }
-        if (CheatsOn == false) {
+        if (!CheatsOn) {
             SendToConsole("sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
@@ -909,7 +909,7 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
                     break
                 }
             }
-            if (exclude == false) {
+            if (!exclude) {
                 // Get the score
                 local score = origin - ent.GetOrigin()
                 score = UnNegative(score)
@@ -932,7 +932,7 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
                     break
                 }
             }
-            if (exclude == false) {
+            if (!exclude) {
                 // Get the score
                 local score = origin - ent.GetOrigin()
                 score = UnNegative(score)
@@ -1218,15 +1218,15 @@ function GetDirectionalOffset(org1, org2, multipl = 1) {
 
         // Set the new values
         local newx = bxoffset.x / highest
-        if (wasxneg == true && newx > 0) {
+        if (wasxneg && newx > 0) {
             newx = 0
         }
         local newy = bxoffset.y / highest
-        if (wasyneg == true && newy > 0) {
+        if (wasyneg && newy > 0) {
             newy = 0
         }
         local newz = bxoffset.z / highest
-        if (waszneg == true && newz > 0) {
+        if (waszneg && newz > 0) {
             newz = 0
         }
 
@@ -1529,7 +1529,7 @@ function PortalGunSpawn(ison = true) {
 // Find the spawn point for the map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
 function BestGuessSpawnpoint() {
     printl(GlobalSpawnClass.blue.spawnpoint)
-    if (MadeSpawnClass == false) {
+    if (!MadeSpawnClass) {
         // Box ents
         BoxEnts <- [
             "@arrival_video_master",
@@ -1597,7 +1597,7 @@ function BestGuessSpawnpoint() {
                         printl("Landmark found")
                         printl("Found info player start!: " + RealPlayerSpawn.GetOrigin())
                         // If EVERY Condition is met, lets set the player spawn
-                        if (GlobalSpawnClass.useautospawn == true) {
+                        if (GlobalSpawnClass.useautospawn) {
                             printl("useautospawn = True: Setting player spawn")
                             GlobalSpawnClass.useautospawn <- false
                             GlobalSpawnClass.usesetspawn <- true
@@ -1621,7 +1621,7 @@ function BestGuessSpawnpoint() {
             }
         }
     }
-    if (MadeSpawnClass == false && GlobalSpawnClass.blue.spawnpoint.x == 0 && GlobalSpawnClass.blue.spawnpoint.y == 0) {
+    if (!MadeSpawnClass && GlobalSpawnClass.blue.spawnpoint.x == 0 && GlobalSpawnClass.blue.spawnpoint.y == 0) {
 
         // Setup some variables
         local ourclosest = 99999999

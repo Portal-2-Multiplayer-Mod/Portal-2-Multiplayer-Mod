@@ -43,22 +43,22 @@ function loop() {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         local currentplayerclass = FindPlayerClass(p)
-        if (currentplayerclass.potatogun == true) {
+        if (currentplayerclass.potatogun) {
             PotatoIfy(p)
         }
-        if (currentplayerclass.potatogun == false) {
+        if (!currentplayerclass.potatogun) {
             UnPotatoIfy(p)
         }
     }
     // Also update everyones class if PermaPotato is on
-    if (PermaPotato == true) {
+    if (PermaPotato) {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             local currentplayerclass = FindPlayerClass(p)
             currentplayerclass.potatogun <- true
         }
     }
-    if (PermaPotato == false) {
+    if (!PermaPotato) {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             local currentplayerclass = FindPlayerClass(p)
@@ -67,7 +67,7 @@ function loop() {
     }
 
     //## Update eye angles ##//
-    if (CoordsAlternate == false) {
+    if (!CoordsAlternate) {
         // Alternate so our timings space out correctly
         if (LastCoordGetPlayer != null) {
             LastCoordGetPlayer <- Entities.FindByClassname(LastCoordGetPlayer, "player")
@@ -83,7 +83,7 @@ function loop() {
         if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
             local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
             if (currentplayerclass != null) {
-                if (OriginalAngle == null && CanCheckAngle == true) {
+                if (OriginalAngle == null && CanCheckAngle) {
                     OriginalAngle <- measuremovement.GetAngles()
                     Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
                 }
@@ -157,7 +157,7 @@ function loop() {
             if (eyeplayer != null) {
                 local clr = GetPlayerColor(eyeplayer, true)
                 EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
-                if (PluginLoaded == true) {
+                if (PluginLoaded) {
                     EntFireByHandle(nametagdisplay, "settext", GetPlayerName(eyeplayer.entindex()), 0, p, p)
                 } else {
                     EntFireByHandle(nametagdisplay, "settext", "Player " + eyeplayer.entindex(), 0, p, p)
@@ -188,12 +188,12 @@ function loop() {
     local amtdeleted = 0
     
     if (cnt > EntityCap - EntityCapLeeway) {
-        if (cnt >= FailSafeEntityCap) {
-            printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailSafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
+        if (cnt >= FailsafeEntityCap) {
+            printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
             SendToConsoleP232("changelevel mp_coop_lobby_3")
         }
         printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
-        foreach (entclass in ExpendableEntitys) {
+        foreach (entclass in ExpendableEntities) {
 
             local curdelamt = amtpast - amtdeleted
             if (amtdeleted < amtpast) { // if we are still over the cap
@@ -203,10 +203,10 @@ function loop() {
                 
                 if (amt > 0) {
                     if (amt >= curdelamt) {
-                        DeleteAmountOfEntitys(entclass, curdelamt)
+                        DeleteAmountOfEntities(entclass, curdelamt)
                         return
                     } else {
-                        DeleteAmountOfEntitys(entclass, amt)
+                        DeleteAmountOfEntities(entclass, amt)
                         amtdeleted = amtdeleted + amt
                     }
                 }
@@ -260,7 +260,7 @@ function loop() {
                     progress = false
                 }
             }
-            if (progress == true) {
+            if (progress) {
                 CurrentlyDead.push(p)
                 OnPlayerDeath(p)
             }
@@ -268,9 +268,9 @@ function loop() {
     }
 
     //## Hook first spawn ##//
-    if (PostMapLoadDone == true) {
-        if (DoneWaiting == false) {
-            if (CanHook == true) {
+    if (PostMapLoadDone) {
+        if (!DoneWaiting) {
+            if (CanHook) {
                 // if (OriginalPosMain != null && OriginalPosMain.x == Entities.FindByClassname(null, "player").GetOrigin().x && OriginalPosMain.y == Entities.FindByClassname(null, "player").GetOrigin().y) {
                 //     DoneWaiting <- true
                 //     GeneralOneTime()
@@ -291,7 +291,7 @@ function loop() {
                 //     printl("==============================VELOCITY SPAWN")
                 // }
 
-                // if (hasbeenremoved == true && Entities.FindByName(null, "weapon_portalgun_player1")) {
+                // if (hasbeenremoved && Entities.FindByName(null, "weapon_portalgun_player1")) {
                 //     DoneWaiting <- true
                 //     GeneralOneTime()
                 //     printl("==============================PORTALGUN SPAWN")
@@ -308,7 +308,7 @@ function loop() {
     }
 
     //## GlobalSpawnClass SetSpawn ##//
-    if (GlobalSpawnClass.usesetspawn == true) {
+    if (GlobalSpawnClass.usesetspawn) {
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.setspawn.position, GlobalSpawnClass.setspawn.radius)) {
             TeleportToSpawnPoint(p, null)
@@ -341,7 +341,7 @@ function loop() {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         local currentplayerclass = FindPlayerClass(p)
-        if (currentplayerclass.rocket == true) {
+        if (currentplayerclass.rocket) {
             if (p.GetVelocity().z <= 1) {
                 EntFireByHandle(p, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, p, p)
                 currentplayerclass.rocket <- false
@@ -350,7 +350,7 @@ function loop() {
     }
 
     // Random turret models & colors
-    if (RandomTurrets == true && HasSpawned == true) {
+    if (RandomTurrets && HasSpawned) {
         local ent = null
         while (ent = Entities.FindByClassname(ent, "npc_portal_turret_floor")) {
             local script_scope = ent.GetScriptScope()
@@ -410,12 +410,12 @@ function loop() {
 
     // Random portal sizes
 
-    if (RandomPortalSize == true) {
+    if (RandomPortalSize) {
         randomportalsize <- RandomInt(1, 100 ).tostring()
         randomportalsizeh <- RandomInt(1, 100 ).tostring()
     }
 
-    if (RandomPortalSize == true) {
+    if (RandomPortalSize) {
         try {
         local ent = null
         while (ent = Entities.FindByClassname(ent, "prop_portal")) {
@@ -485,7 +485,7 @@ function loop() {
     //     //DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
     // }
 
-    if ("PythonHookIs" in this) { if (PythonHookIs == true) {
+    if ("PythonHookIs" in this) { if (PythonHookIs) {
         try {
             try {
                 OldPyInputNum <- PyInputNum
@@ -497,7 +497,7 @@ function loop() {
         } catch(e) { }
     }}
 
-    if (HasSpawned == true && MinecraftMode) {
+    if (HasSpawned && MinecraftMode) {
         if (Time() >= PreviousTime01Sec + 0.2) {
             PreviousTime01Sec = Time()
 

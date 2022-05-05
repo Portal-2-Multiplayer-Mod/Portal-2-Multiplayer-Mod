@@ -26,7 +26,13 @@ VisualDebug <- false
 // Game variables
 //-----------------------------------
 // Set to true if you are playing the futbol game mode on the next map load
+// If true, make sure Deathmatch is false, or no gamemode will run!
 FutBolGamemode <- false
+
+// Set to true if you are playing the deathmatch game mode on the next map load
+// If true, make sure FutBolGamemode is false, or no gamemode will run!
+// Note: No implementation just yet
+Deathmatch <- false
 
 // Set to true if you want to randomize every Turret's models and colors (for fun lol)
 RandomTurrets <- false

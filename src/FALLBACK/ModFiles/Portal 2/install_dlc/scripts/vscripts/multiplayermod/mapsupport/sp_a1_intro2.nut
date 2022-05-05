@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun == true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         // Remove Portal Gun
         RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
@@ -27,12 +27,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //EntFire("Sparky", "startspark", 0, null)
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
         //Entities.FindByName(null, "p2mmgladosoverride").__KeyValueFromString("targetname", "@glados")
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 50)) {
             SendToConsole("changelevel sp_a1_intro3")

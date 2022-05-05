@@ -7,11 +7,11 @@
 
 if (MinecraftMode) {
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
 
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
             local bruh = 0
             while (bruh < 500) {
                 printl("bruh")
@@ -31,7 +31,7 @@ if (MinecraftMode) {
             }
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
 
         }
     }
@@ -44,16 +44,16 @@ if (MinecraftMode) {
     // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
 
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             DecEntFireByHandle(Entities.FindByClassname(null, "prop_button"), "addoutput", "OnPressed p2mm_servercommand:command:script PressedButton()")
             Entities.FindByClassname(null, "prop_button").__KeyValueFromString("Delay", "0")
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
             SendToConsoleP232("script BruhBoi()")
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
 
         }
     }

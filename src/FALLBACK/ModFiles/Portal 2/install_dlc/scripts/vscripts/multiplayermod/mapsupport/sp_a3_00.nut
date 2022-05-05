@@ -8,7 +8,7 @@
 // should fix fog sometime
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         // Shake the camera when you fall through the wood
         Entities.FindByName(null, "crash_landing_shake").__KeyValueFromString("spawnflags", "29")
 
@@ -47,7 +47,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         EntFireByHandle(Entities.FindByName(null, "player_looktarget"), "SetParent", "!player", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "potatos_tank"), "SetTargetEntity", "player_looktarget", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "shaft_section_0"), "StartForward", "", 0, null, null)
@@ -68,7 +68,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A3_00ServerCommand", "command", "changelevel sp_a3_01", 76, null)
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Get all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {

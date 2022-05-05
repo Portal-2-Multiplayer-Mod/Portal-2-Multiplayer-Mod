@@ -8,7 +8,7 @@
 
 if (!FutBolGamemode) {
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             GlobalSpawnClass.useautospawn <- true
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
@@ -18,11 +18,11 @@ if (!FutBolGamemode) {
             Entities.FindByClassnameNearest("trigger_once", Vector(6912, -5376, 40), 1024).Destroy()
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
             NewApertureStartElevatorFixes()
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -273), 50)) {
@@ -89,7 +89,7 @@ if (!FutBolGamemode) {
         }
 
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             local laser1 = Entities.FindByClassname(null, "env_portal_laser")
             local laser2 = Entities.FindByClassname(Entities.FindByClassname(null, "env_portal_laser"), "env_portal_laser")
             local laser3 = Entities.FindByClassname(Entities.FindByClassname(Entities.FindByClassname(null, "env_portal_laser"), "env_portal_laser"), "env_portal_laser")
@@ -135,22 +135,22 @@ if (!FutBolGamemode) {
 
         }
 
-        if (MSPostPlayerSpawn==true) {
-            EntFire("p2mm_servercommand", "command", "say Game Starts In 30 Seconds", 0)
-            EntFire("p2mm_servercommand", "command", "say Game Starts In 20 Seconds", 10)
-            EntFire("p2mm_servercommand", "command", "say Game Starts In 10 Seconds", 20)
-            EntFire("p2mm_servercommand", "command", "say Game Starts In 5 Seconds", 25)
-            EntFire("p2mm_servercommand", "command", "say Game Starts In 4  Seconds", 26)
-            EntFire("p2mm_servercommand", "command", "say Game Starts In 3  Seconds", 27)
-            EntFire("p2mm_servercommand", "command", "say Game Starts In 2  Seconds", 28)
-            EntFire("p2mm_servercommand", "command", "say Game Starts In 1  Seconds", 29)
-            EntFire("p2mm_servercommand", "command", "say Game Starting!", 30)
+        if (MSPostPlayerSpawn) {
+            EntFire("p2mm_servercommand", "command", "say Game starts in 30 seconds", 0)
+            EntFire("p2mm_servercommand", "command", "say Game starts in 20 seconds", 10)
+            EntFire("p2mm_servercommand", "command", "say Game starts in 10 seconds", 20)
+            EntFire("p2mm_servercommand", "command", "say Game starts in 5 seconds", 25)
+            EntFire("p2mm_servercommand", "command", "say Game starts in 4 seconds", 26)
+            EntFire("p2mm_servercommand", "command", "say Game starts in 3 seconds", 27)
+            EntFire("p2mm_servercommand", "command", "say Game starts in 2 seconds", 28)
+            EntFire("p2mm_servercommand", "command", "say Game starts in 1 second", 29)
+            EntFire("p2mm_servercommand", "command", "say Game starting!", 30)
             EntFire("p2mm_servercommand", "command", "script StartGame()", 30)
                         DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
                         DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             local spawnpos = Vector(7840, -5824, 64)
             local spawnangle = Vector(0, 90, 0)
             local spawnbox = Vector(11056, -4954, 134)

@@ -17,7 +17,7 @@
 //                  P2:MM codebase
 //---------------------------------------------------
 
-if (RandomPortalSize==true) {
+if (RandomPortalSize) {
     randomportalsize <- 34
     randomportalsizeh <- 34
 }
@@ -103,10 +103,10 @@ fogs <- false
 CurrentPythonOutputID <- 0
 CurrentPythonInputID <- 0
 
-FailSafeEntityCap <- 2010
+FailsafeEntityCap <- 2010
 EntityCap <- 2000
 EntityCapLeeway <- 20
-ExpendableEntitys <- [
+ExpendableEntities <- [
     "logic_auto",
     "logic_autosave",
     "env_viewpunch",

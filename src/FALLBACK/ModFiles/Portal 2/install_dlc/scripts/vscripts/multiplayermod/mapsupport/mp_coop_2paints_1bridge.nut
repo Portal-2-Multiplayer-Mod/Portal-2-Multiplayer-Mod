@@ -6,11 +6,11 @@
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═════╝ ╚═════════╝╚══════╝╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝  ╚═════╝ ╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
 
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         EntFireByHandle(Entities.FindByName(null, "bridge_2"), "enable", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "bridge_1"), "enable", "", 0, null, null)
         Entities.FindByName(null, "bridge_1").__KeyValueFromString("targetname", "moja")
@@ -19,7 +19,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "paint_sprayer_blue_1").__KeyValueFromString("targetname", "moja3")
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
 
     }
 }

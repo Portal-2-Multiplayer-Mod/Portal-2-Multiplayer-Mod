@@ -53,7 +53,7 @@ function TeleportPlayersUp() {
 PermaPotato <- true
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
@@ -226,11 +226,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
 
     }
 
-    if (MSOnPlayerJoin==true) {
+    if (MSOnPlayerJoin) {
         // Find all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -240,7 +240,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
 
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(-11271, -22, 63), 1020)) {
@@ -268,7 +268,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
             if (!Entities.FindByName(null, "ReEnableViewControl")) {
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0, null, null)
-                if (OneTimeRenableViewControl == false) {
+                if (!OneTimeRenableViewControl) {
                     EntFireByHandle(env_global01, "turnon", "", 1, null, null)
                     EntFireByHandle(env_global02, "turnon", "", 1, null, null)
                     EntFireByHandle(env_global03, "turnon", "", 1, null, null)
@@ -284,7 +284,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
 
-            if (parentthingerdinger==false) {
+            if (!parentthingerdinger) {
                 local ent = null
                 while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
                     EntFireByHandle(ent, "disabledraw", "", 0, null, null)
@@ -384,10 +384,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             cursocket <- "socket" + socketnum + "_trigger"
             //printl(WatchPlayerWheatley)
 
-            // if (WatchPlayerWheatley == false) {
+            // if (!WatchPlayerWheatley) {
             //     printl(cursocket)
             //     if (!Entities.FindByName(null, cursocket)) {
-            //         if (DoDestroyDummy == true) {
+            //         if (DoDestroyDummy) {
             //             // Entities.FindByName(null, "DummyObjectWheatlyLookOn").Destroy()
             //             EntFire("DummyObjectWheatlyLookOn", "kill", "", 8, null)
             //             socketnum <- socketnum + 1
@@ -402,7 +402,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 WatchPlayerWheatley <- true
             }
 
-            if (WatchPlayerWheatley == true) {
+            if (WatchPlayerWheatley) {
                 if (playerpointerfinale4 == null) {
                     local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "wheatley_bottom_swivel").GetOrigin(), 10000)
                     EntFireByHandle(Entities.FindByName(null, "wheatley_bottom_swivel"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
@@ -419,7 +419,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         
 
         if (!Entities.FindByName(null, "notinelevator")) {
-            if (Sp_A4_Finale4ElevatorTeleport == true) {
+            if (Sp_A4_Finale4ElevatorTeleport) {
                 EntFireByHandle(Sp_A2_Finale4Viewcontrol, "enable", "", 0, null, null)
                 GoodByeIdaho()
                 EntFireByHandle(env_global01, "turnon", "", 1, null, null)
@@ -443,7 +443,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!Entities.FindByName(null, "topofelevator")) {
             //printl("topofelevator")
-            if (Sp_A4_Finale4ElevatorTopTeleport == true) {
+            if (Sp_A4_Finale4ElevatorTopTeleport) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(1, -77, 200))
@@ -453,7 +453,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (NewSpawnPoint == true) {
+        if (NewSpawnPoint) {
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1691, -635, -2619), 500)) {
                 p.SetOrigin(Vector(1, -77, 200))

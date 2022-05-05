@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════════╝╚═════╝  ╚════╝ ╚═╝  ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         // 2231.027100 187.758835 -386.163635;
          GlobalSpawnClass.useautospawn <- true
         // GlobalSpawnClass.usesetspawn <- true
@@ -36,7 +36,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         WaitDontFizzle <- false
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Goo Damage Code
         try {
         if (GooHurtTimerPred) { printl()}
@@ -55,7 +55,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // if nu moved tube cap
-        if (movecube==true) {
+        if (movecube) {
             if (Entities.FindByName(null, "tubecap")) {
                 local jeff = Entities.FindByName(null, "tubecap")
                 jeff.SetOrigin(Vector(875, -1112, 2720))
@@ -96,7 +96,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local stayopen = false
         foreach (p in CreateTrigger(null, 934.03686523438, -1169.5228271484, 2253.265625, 817.01788330078, -1055.9055175781, 2150.1036376953)) {
             if (p.GetClassname()=="prop_weighted_cube") {
-                if (isopen==false) {
+                if (!isopen) {
                     isopen = true
                     printl("OPENED")
                     EntFire("genericcustomprop_maindropper", "setanimation", "open", 0.4, null)
@@ -105,7 +105,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (stayopen == false && isopen==true) {
+        if (!stayopen && isopen) {
             printl("CLOSED")
             EntFire("genericcustomprop_maindropper", "setanimation", "close", 2.5, null)
             isopen = false
@@ -113,7 +113,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Cube Fizzle Override
         local DontFizzle = false
-        if (WaitDontFizzle==true) {
+        if (WaitDontFizzle) {
             if (Time()>=WaitDontFizzleTime) {
                 WaitDontFizzle <- false
             } else {
@@ -127,7 +127,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 DontFizzle = true
             }
         }
-        if (DontFizzle==false) {
+        if (!DontFizzle) {
             EntFire("tubecap", "dissolve")
         }
 
