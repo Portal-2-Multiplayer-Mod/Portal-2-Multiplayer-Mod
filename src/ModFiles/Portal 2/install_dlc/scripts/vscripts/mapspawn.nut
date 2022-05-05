@@ -25,6 +25,13 @@ IncludeScript("multiplayermod/config.nut")
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
 
+// An extra check to make sure we don't launch two gamemodes at the same time
+if (FutBolGamemode) {
+    Deathmatch <- false
+} else if (Deathmatch) {
+    FutBolGamemode <- false
+}
+
 // init() will run on every map spawn or transition
 // It does a few things:
 // 1. Attempt to load our plugin if it has not been loaded,
@@ -110,8 +117,19 @@ IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
 
 // If we are playing the futbol game mode on this map load, then load another external library with more logic for the minigame
-if (FutBolGamemode) {
-    IncludeScript("multiplayermod/gamemodes/futbol/functions.nut")
+if (FutBolGamemode && !Deathmatch) {
+    IncludeScript("multiplayermod/gamemodes/futbol/futbolfunctions.nut")
+    if (GetDeveloperLevel()) {
+        printl("(P2:MM): Futbol mode set!")
+    }
+}
+
+// If we are playing the deathmatch game mode on this map load, then load another external library with more logic for the minigame
+if (Deathmatch && !FutBolGamemode) {
+    IncludeScript("multiplayermod/gamemodes/deathmatch/deathmatchfunctions.nut")
+    if (GetDeveloperLevel()) {
+        printl("(P2:MM): Deathmatch mode set!")
+    }
 }
 
 //   ___           _  _  _  _          _
