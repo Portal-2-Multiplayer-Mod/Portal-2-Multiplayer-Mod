@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚═════╝ ╚═╝     ╚══════╝╚══════╝╚═════╝ ╚═════════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         PermaPotato <- true
         // Make elevator start moving on level load
@@ -16,11 +16,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
 
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Goo Damage Code
         try {
         if (GooHurtTimerPred) { printl()}

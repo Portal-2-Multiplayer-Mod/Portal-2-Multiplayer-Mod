@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     // Wheatley crusher glitch (Moja)
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         PermaPotato <- true
         Entities.FindByClassnameNearest("prop_dynamic", Vector(736, -1832, 185), 20).__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "airlock_door2").__KeyValueFromString("targetname", "moja2")
@@ -35,11 +35,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("logic_auto", Vector(720, -2048, 152), 20).Destroy()
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         EntFireByHandle(Entities.FindByName(null, "entry_door-proxy"), "OnProxyRelay1", "", 0, null, null)
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Make Wheatley look at nearest player
         try {
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "wheatley_screen-screen_tank").GetOrigin(), 10000)

@@ -18,7 +18,7 @@
 function OnPlayerJoin(p, script_scope) {
 
     // GlobalSpawnClass Teleport
-    if (GlobalSpawnClass.useautospawn == true) {
+    if (GlobalSpawnClass.useautospawn) {
         TeleportToSpawnPoint(p, null)
     }
 
@@ -80,7 +80,7 @@ function OnPlayerJoin(p, script_scope) {
 
     // If the player is the first player to join, fix OrangeOldPlayerPos
     if (p.GetTeam() == 2) {
-        if (OrangeCacheFailed==true) {
+        if (OrangeCacheFailed) {
             OrangeOldPlayerPos <- p.GetOrigin()
             OrangeCacheFailed <- false
         }
@@ -104,7 +104,7 @@ function OnPlayerJoin(p, script_scope) {
     MapSupport(false, false, false, false, true, false, false)
 
     //# Say join message on HUD #//
-    if (PluginLoaded==true) {
+    if (PluginLoaded) {
         JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
     } else {
         JoinMessage <- "Player " + PlayerID + " joined the game"
@@ -151,8 +151,8 @@ function OnPlayerJoin(p, script_scope) {
     SetCosmetics(p)
 
     // Set fog controller
-    if (HasSpawned==true) {
-        if (usefogcontroller == true) {
+    if (HasSpawned) {
+        if (usefogcontroller) {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
         }
     }
@@ -169,7 +169,7 @@ function OnPlayerDeath(player) {
 // Runs after a player respawns
 function OnPlayerRespawn(player) {
     // GlobalSpawnClass teleport
-    if (GlobalSpawnClass.useautospawn == true) {
+    if (GlobalSpawnClass.useautospawn) {
         TeleportToSpawnPoint(player, null)
     }
 
@@ -190,13 +190,13 @@ function PostMapLoad() {
     SendToConsole("script SetCheats()")
 
     // Add a hook to the chat command function
-    if (PluginLoaded==true) {
+    if (PluginLoaded) {
         printl("(P2:MM): Plugin Loaded")
         AddChatCallback("ChatCommands")
     }
     // Edit cvars & set server name
     SendToConsole("mp_allowspectators 0")
-    if (PluginLoaded == true) {
+    if (PluginLoaded) {
         SendToConsole("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
     } else {
         SendToConsole("hostname Portal 2: Multiplayer Mod Server")
@@ -214,7 +214,7 @@ function PostMapLoad() {
         StartDevModeCheck <- true
     }
 
-    if (RandomTurrets==true) {
+    if (RandomTurrets) {
         PrecacheModel("npcs/turret/turret_skeleton.mdl")
         PrecacheModel("npcs/turret/turret_backwards.mdl")
     }
@@ -270,7 +270,7 @@ function GeneralOneTime() {
     local ent = Entities.FindByName(null, "blue")
     local playerclass = FindPlayerClass(ent)
 
-    if (fogs == false) {
+    if (!fogs) {
         usefogcontroller <- false
         if (GetDeveloperLevel()) {
             printl("(P2:MM): No fog controller found, disabling fog controller")
@@ -282,7 +282,7 @@ function GeneralOneTime() {
         }
     }
 
-    if (usefogcontroller == true) {
+    if (usefogcontroller) {
         foreach (fog in fogs) {
             EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmfogswitch(\"" + fog.fogname + "\")", 0, null, null)
         }
@@ -335,7 +335,7 @@ function GeneralOneTime() {
     }
     try {
         if (OrangeOldPlayerPos) { }
-    } catch(exeption) {
+    } catch(exception) {
         if (GetDeveloperLevel()) {
             printl("(P2:MM): OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
         }
@@ -355,7 +355,7 @@ function GeneralOneTime() {
                 ent.__KeyValueFromString("targetname", "BlueDropperForcedOpenMPMOD")
             }
         }
-    } catch(exeption) {
+    } catch(exception) {
         if (GetDeveloperLevel()) {
             printl("(P2:MM): Blue dropper not found!")
         }
@@ -367,7 +367,7 @@ function GeneralOneTime() {
 
     local radius = 150
 
-    if (OrangeCacheFailed==true) {
+    if (OrangeCacheFailed) {
         radius = 350
     }
 
@@ -382,7 +382,7 @@ function GeneralOneTime() {
                 ent.__KeyValueFromString("targetname", "RedDropperForcedOpenMPMOD")
             }
         }
-    } catch(exeption) {
+    } catch(exception) {
         if (GetDeveloperLevel()) {
             printl("(P2:MM): Red dropper not found!")
         }
@@ -407,7 +407,7 @@ function GeneralOneTime() {
         "airlock_3-door1-airlock_entry_door_close_rl",  //mp_coop_sx_bounce (Sixense map)
     ]
 
-    if (IsOnSingleplayer == false) {
+    if (!IsOnSingleplayer) {
         foreach (DoorType in DoorEntities) {
             try {
                 Entities.FindByName(null, DoorType).Destroy()
@@ -451,7 +451,7 @@ function ChatCommands(ccuserid, ccmessage) {
         submessage = lstrip(submessage)
         indx++
         // If the message starts with a $, then it's a player override
-        if (strip(submessage).slice(0,1) == "$" || isparseingname == true && strip(submessage).slice(0,1) != "!") {
+        if (strip(submessage).slice(0,1) == "$" || isparseingname && strip(submessage).slice(0,1) != "!") {
             // Make sure we update the parse list
             isparseingname = true
             isparsingcommand = false
@@ -467,7 +467,7 @@ function ChatCommands(ccuserid, ccmessage) {
         }
 
         // If the message starts with a !, then it's a command
-        if (strip(submessage).slice(0,1) == "!" || isparsingcommand == true && strip(submessage).slice(0,1) != "$") {
+        if (strip(submessage).slice(0,1) == "!" || isparsingcommand && strip(submessage).slice(0,1) != "$") {
             isparseingname = false
             isparsingcommand = true
 
@@ -552,7 +552,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
         currentplayerclass.noclip <- player.IsNoclipping()
         // Inverse the noclip status unless there is a second argument
         if (command.len() < 2) {
-            if (currentplayerclass.noclip == false) {
+            if (!currentplayerclass.noclip) {
                 EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
                 currentplayerclass.noclip <- true
             } else {

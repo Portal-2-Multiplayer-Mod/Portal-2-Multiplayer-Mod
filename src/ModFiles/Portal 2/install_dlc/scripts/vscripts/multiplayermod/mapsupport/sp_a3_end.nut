@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚══════╝╚═╝  ╚══╝╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         PermaPotato <- true
         Entities.FindByName(null, "entrance_door_prop").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "paint_trickle_blue_1").__KeyValueFromString("targetname", "moja2")
@@ -47,11 +47,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OnlyOnceSp_A3_End_1 <- false
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
 
     }
 
-    if (MSOnPlayerJoin==true) {
+    if (MSOnPlayerJoin) {
         // fix collision on the lift
         local sp_a3_end_custom_prop_44 = CreateProp("prop_dynamic", Vector(-1537.98828125, 320.0397644043, 2935.9768066406), "models/props_underground/walkway_end_a.mdl", 0)
         sp_a3_end_custom_prop_44.SetAngles(-4.3527151660783e-07, 89.999946594238, 0)
@@ -77,9 +77,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
 
-        if (OnlyOnceSp_A3_End==false) {
+        if (!OnlyOnceSp_A3_End) {
             if (!Entities.FindByName(null, "big_door_save")) {
                 foreach (player in CreateTrigger("player", -1902.8851318359, 373.5451965332, 810.53570556641, -1751.1909179688, 269.85140991211, 954.68353271484)) {
                     if (player.GetClassname() == "player") {
@@ -96,7 +96,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceSp_A3_End_1==false) {
+        if (!OnlyOnceSp_A3_End_1) {
             if (!Entities.FindByName(null, "look_moxxie_a_thing")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {

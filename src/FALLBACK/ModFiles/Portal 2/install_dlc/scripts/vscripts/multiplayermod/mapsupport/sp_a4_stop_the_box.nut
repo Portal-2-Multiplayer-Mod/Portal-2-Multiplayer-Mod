@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═════╝    ╚═╝    ╚════╝ ╚═╝     ╚═════════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝  ╚════╝ ╚═╝  ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         PermaPotato <- true
         Entities.FindByName(null, "music.sp_a4_stop_the_box_b1").__KeyValueFromString("targetname", "moja")
@@ -17,11 +17,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(896, -800, 1296), 50)) {

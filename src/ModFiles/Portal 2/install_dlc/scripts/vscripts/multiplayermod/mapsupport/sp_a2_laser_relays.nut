@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         // Kill the beginning door close trigger
         Entities.FindByClassnameNearest("trigger_once", Vector(1224, -704, 32), 1024).Destroy()
@@ -25,14 +25,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         SingleplayerOneTimeTrigger1 <- true
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
         // Fix Valve's stupid bug
         Entities.FindByClassnameNearest("trigger_once", Vector(-450.29, -703, 61.5), 24).__KeyValueFromString("targetname", "temptrigger")
         EntFire("temptrigger", "addoutput", "OnStartTouch player_on_top_branch:SetValue:1:0.7", 2, null)
     }
 
-    if (MSOnPlayerJoin==true) {
+    if (MSOnPlayerJoin) {
         // Find all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -41,8 +41,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSLoop==true) {
-        if (SingleplayerOneTimeTrigger1 == true) {
+    if (MSLoop) {
+        if (SingleplayerOneTimeTrigger1) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(-468, -704, -63), 10)) {
                 // Find all players
                 local p = null
@@ -68,7 +68,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         SKIPLaserRelays <- true
                     }
                 }
-                if (SKIPLaserRelays == false) {
+                if (!SKIPLaserRelays) {
                     if (p.GetOrigin().z <= -50) {
                         p.SetOrigin(Vector(-256, -189, 28))
                         p.SetAngles(0, -90, 0)

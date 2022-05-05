@@ -10,7 +10,7 @@ function StartPermaPotato() {
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto2-entrance_lift_train"), "StartForward", "", 0, null, null)
@@ -26,11 +26,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         Entities.FindByName(null, "officedoor_4").__KeyValueFromString("targetname", "moja3")
     }
 
-    if (MSOnPlayerJoin==true) {
+    if (MSOnPlayerJoin) {
         // Find all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Goo Damage Code
         try {
         if (GooHurtTimerPred) { printl()}

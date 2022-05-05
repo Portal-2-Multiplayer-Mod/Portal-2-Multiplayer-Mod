@@ -399,7 +399,7 @@ function StopStickAndTeleport() {
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         ContainerFloorBrush <- false
         currentCartCache <- false
         stoprenable <- false
@@ -484,7 +484,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OnlyOnceSp_A1_Intro1 <- true
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         HasStartedSp_A1_Intro1 <- true
         EntFire("relay_start_cryo_sequence", "Trigger", "", 0)
         EntFire("relay_intro_camera", "Trigger", "", 0)
@@ -690,14 +690,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSOnPlayerJoin != false) {
-        if (stoprenable==true) {
+        if (stoprenable) {
             printl("Player joined (Reseting viewcontrol)")
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
         }
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         local p = Entities.FindByClassnameWithin(null, "player", Vector(-672, -1872, 51), 16)
         try {
             if (p.GetOrigin().z >= 45) {
@@ -706,7 +706,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         } catch(exception) {}
 
-        if (HasStartedSp_A1_Intro1 == false) {
+        if (!HasStartedSp_A1_Intro1e) {
             EntFireByHandle(Entities.FindByName(null, "cryo_fade_in_from_white"), "fade", "", 0, null, null)
         }
 
@@ -718,7 +718,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceSp_A1_Intro1 == true) {
+        if (OnlyOnceSp_A1_Intro1) {
             if (Entities.FindByName(null, "Sp_A1_Intro1ViewcontrolDone")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -741,7 +741,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFireByHandle(Entities.FindByName(null, "bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
         } catch(exception) { }
 
-        if (DisableJumpmsp == true) {
+        if (DisableJumpmsp) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 if (p.GetVelocity().z > 0) {
@@ -750,7 +750,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (HasSleptInContainer1==true && ContainerStick == false && SecondToLastTP == false) {
+        if (HasSleptInContainer1 && !ContainerStick && !SecondToLastTP) {
             // Find everyone within 400 units of the container ( -8656.179688 1768.031250 104.196503 )
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
@@ -760,7 +760,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 p.SetOrigin(Vector(p.GetOrigin().x+ 2925, p.GetOrigin().y + 166, (p.GetOrigin().z + 190) - CurrentTeleportOffset))
             }
             //  -5559.827637 1843.053467 282.763519;
-            if (bumpout==true) {
+            if (bumpout) {
                 // Bump plant
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5556.693848, 1838.821411, 280.240265), 35)) {
@@ -779,7 +779,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (SecondToLastTP == true) {
+        if (SecondToLastTP) {
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
                 //p.SetOrigin(Vector(-5700, 1931, 284))
@@ -789,8 +789,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (ContainerStick == true) {
-            if (currentCartCache == false) {
+        if (ContainerStick) {
+            if (!currentCartCache) {
                 currentCartCache <- Entities.FindByName(null, "Actor_container_master").GetAttachmentOrigin(1)
             }
             currentCartPos <- Entities.FindByName(null, "Actor_container_master").GetAttachmentOrigin(1)
@@ -830,7 +830,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             //             isplayerinindex = true
             //         }
             //     }
-            //     if (isplayerinindex == false) {
+            //     if (!isplayerinindex) {
             //         p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
             //     }
             // }

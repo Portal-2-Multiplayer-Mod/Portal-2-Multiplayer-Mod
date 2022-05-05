@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝      ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         Entities.FindByClassnameNearest("info_player_start", Vector(2715.680664, -4926.100586, 6720.031250), 320).Destroy()
 
         // 799.647827 -2908.963623 7232.031250;
@@ -44,12 +44,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         EntFireByHandle(Entities.FindByName(null, "@transition_script"), "RunScriptCode", "OnPostTransition()", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "entry_airlock_door-proxy"), "OnProxyRelay1", "", 1.5, null, null)
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         TestingHackStart
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879*1.5)) {
@@ -57,7 +57,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         WheatleyPlayerLookSP_A2_BTS4 <- true
-        if (DisableLookDisablerSP_A2_BTS4 == false) {
+        if (!DisableLookDisablerSP_A2_BTS4) {
             // Make a custom trigger to disable player look
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824*1.5)) {
@@ -110,7 +110,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // On trigger hit, smash the door 18 seconds later
-        if (TriggerOnceSP_A2_BTS4_1==true) {
+        if (TriggerOnceSP_A2_BTS4_1) {
             if (!Entities.FindByName(null, "wheatley_scanner_intro_vcd_trigger")) {
                 printl("Wheatley Sequance Started")
                 EntFire("wheatley_start_smash_window_relay", "trigger", "", 18, null)
@@ -120,7 +120,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Make Wheatley look at nearest player (We need wheatley to light the way for the player but since he's looking at them on loop he can't) (Moja)
-        if (WheatleyPlayerLookSP_A2_BTS4==true) {
+        if (WheatleyPlayerLookSP_A2_BTS4) {
             try {
                 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
                 EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)

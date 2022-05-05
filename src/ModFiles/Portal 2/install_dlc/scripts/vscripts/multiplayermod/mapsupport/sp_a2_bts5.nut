@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     // We need to do something with the elevator or use teleports so all players can get up (Moja)
     // We also need to polish the point_viewcontrol somehow to better funnel the players into the vactube (Moja)
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         // Open the airlock areaportal on mapspawn
         EntFireByHandle(Entities.FindByName(null, "airlock_door_01_areaportal"), "Open", "", 0, null, null)
         // Set sv_allow_mobile_portals to 1 and set up the changelevel command entity
@@ -26,13 +26,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OldTimeMapSupport <- 0
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         Entities.FindByName(null, "airlock_door_01_areaportal").__KeyValueFromString("targetname", "moja")
         EntFireByHandle(Entities.FindByName(null, "@transition_script"), "RunScriptCode", "OnPostTransition()", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "exit_airlock_door-proxy"), "OnProxyRelay1", "", 0.5, null, null)
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         if (OldTimeMapSupport + 0.1 <= Time()) {
             foreach (p in CreateTrigger(null, 2022.2529296875, 1891.5144042969, 4128.41015625, 2809.6022949219, 1490.4871826172, 3846.3054199219)) {
                 if (p.GetClassname() == "npc_portal_turret_floor") {
@@ -48,7 +48,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
         // Find all players within
-        if (LoopEnablerSP_A2_BTS5==false) {
+        if (!LoopEnablerSP_A2_BTS5) {
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(2944, 942, 4418), 80)) {
                 LoopEnablerSP_A2_BTS5 <- true
@@ -56,7 +56,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Teleport everyone on the ground to the elevator
-        if (LoopEnablerSP_A2_BTS5==true) {
+        if (LoopEnablerSP_A2_BTS5) {
             // Find all players under the elevator
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -69,7 +69,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Make the elevator go up with the players in it
-        if (OnlyOnceTPSP_A2_BTS5==true) {
+        if (OnlyOnceTPSP_A2_BTS5) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(2941.5, 944, 3662), 20)) {
                 printl("Triggered")
                 //Find all players
@@ -83,7 +83,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceSp_A2_Bts5==true) {
+        if (OnlyOnceSp_A2_Bts5) {
             if (!Entities.FindByName(null, "exit_tube_1_exit_trigger")) {
                 printl("Suction viewcontrol activated")
                 // Sp_A2_Bts5 viewcontrol

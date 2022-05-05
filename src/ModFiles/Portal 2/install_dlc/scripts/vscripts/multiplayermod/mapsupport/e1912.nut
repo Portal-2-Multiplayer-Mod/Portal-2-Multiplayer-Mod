@@ -6,7 +6,7 @@
 // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun == true) {
+    if (MSInstantRun) {
         // Remove Portal Gun
         RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
         RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
@@ -45,7 +45,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         DisableJumpmsp <- true
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         HasStartedE1912 <- true
         EntFire("fade_start", "Fade", "", 0)
         EntFire("speed_mod", "ModifySpeed", "0.65", 0)
@@ -69,8 +69,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("E1912ViewcontrolTele", "addoutput", "targetname E1912ViewcontrolDone", 9, null)
     }
 
-    if (MSLoop==true) {
-        if (HasStartedE1912 == false) {
+    if (MSLoop) {
+        if (!HasStartedE1912) {
             EntFireByHandle(Entities.FindByName(null, "fade_start"), "Fade", "", 0, null, null)
         }
 
@@ -82,7 +82,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceE1912 == true) {
+        if (OnlyOnceE1912) {
             if (Entities.FindByName(null, "E1912ViewcontrolDone")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -98,7 +98,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (DisableJumpmsp == true) {
+        if (DisableJumpmsp) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 if (p.GetVelocity().z > 0) {
@@ -107,7 +107,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        // if (SecondToLastTP == true) {
+        // if (SecondToLastTP) {
         //     local p = null
         //     while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
         //         p.SetOrigin(Vector(-1649, 4376, 3167))

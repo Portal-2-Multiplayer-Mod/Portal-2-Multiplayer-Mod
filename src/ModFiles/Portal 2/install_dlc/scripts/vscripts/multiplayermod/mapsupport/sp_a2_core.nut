@@ -6,7 +6,7 @@
 // ╚═════╝ ╚═╝    ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝ ╚════╝  ╚════╝ ╚═╝  ╚═╝╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "RedFogKillTriggerMPMOD")
         EntFireByHandle(Entities.FindByName(null, "red_light_pit_open_relay"), "addoutput", "OnTrigger RedFogKillTriggerMPMOD:kill", 1, null, null)
 
@@ -146,7 +146,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
     }
 
-    if (MSOnPlayerJoin==true) {
+    if (MSOnPlayerJoin) {
         // Find all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
@@ -157,8 +157,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A2_CoreViewcontrol", "enable", "", 0.1, null)
     }
 
-    if (MSLoop==true) {
-        if (TeleportOutInSp_A2_Core==false) {
+    if (MSLoop) {
+        if (!TeleportOutInSp_A2_Core) {
             foreach (player in CreateTrigger("player", 293.857941, 313.969910, -126.097076, -610.639771, -467.855042, 133.613190)) {
                 if (player.GetClassname() == "player") {
                     TeleportOutInSp_A2_Core <- true
@@ -166,7 +166,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (TeleportOutInSp_A2_Core==true) {
+        if (TeleportOutInSp_A2_Core) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 local DisableTeleport = false
@@ -175,7 +175,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         DisableTeleport = true
                     }
                 }
-                if (DisableTeleport==false) {
+                if (!DisableTeleport) {
                     p.SetOrigin(Vector(-450, 0, 52))
                     p.SetAngles(0, 0, 0)
                     p.SetVelocity(Vector(0, 0, 0))
@@ -183,7 +183,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceSp_A2_Core_2==true) {
+        if (OnlyOnceSp_A2_Core_2) {
             if (!Entities.FindByName(null, "rv_start_moving_trigger")) {
                 EntFireByHandle(Entities.FindByName(null, "start_rv_scene_rl"), "Trigger", "", 8, null, null)
                 EntFireByHandle(Entities.FindByName(null, "MUSICOVERRIDEMPMOD"), "PlaySound", "", 8, null, null)
@@ -193,7 +193,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (ONETIMEFOGCHANGESp_A2_Core_2==false) {
+        if (!ONETIMEFOGCHANGESp_A2_Core_2) {
             if (!Entities.FindByName(null, "RedFogKillTriggerMPMOD")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -203,7 +203,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (ONETIMEFOGCHANGESp_A2_Core_2_white==false) {
+        if (!ONETIMEFOGCHANGESp_A2_Core_2_white) {
             if (!Entities.FindByName(null, "WhiteFogKillTriggerMPMOD")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -214,7 +214,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (ONETIMEFOGCHANGESp_A2_Core_2_evil==false) {
+        if (!ONETIMEFOGCHANGESp_A2_Core_2_evil) {
             if (!Entities.FindByName(null, "EvilFogKillTriggerMPMOD")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -224,7 +224,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (StalemateButtonSp_A2_Core_2==false) {
+        if (!StalemateButtonSp_A2_Core_2) {
             if (!Entities.FindByName(null, "StaleMateButtonKillTrigger")) {
                 Entities.FindByName(null, "statemate_double_arm_01").__KeyValueFromString("targetname", "statemate_double_arm_01DIS")
                 Entities.FindByName(null, "statemate_double_arm_02").__KeyValueFromString("targetname", "statemate_double_arm_02DIS")
@@ -233,7 +233,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (StalemateRoomExitSp_A2_Core_2==false) {
+        if (!StalemateRoomExitSp_A2_Core_2) {
             if (!Entities.FindByName(null, "player_inside_stalemate_room_trigger")) {
                 RoomLookAtPlayerSp_A2_Core <- false
                 EntFire("core_receptacle_pointer_1", "SetTargetEntity", "lookat_glados_bullseye", 0, null)
@@ -242,7 +242,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceMoveTeleportSp_A2_Core_2 == true) {
+        if (OnlyOnceMoveTeleportSp_A2_Core_2) {
             if (Entities.FindByName(null, "OnMoveStartOnlyOnceSp_A2_Core_2")) {
                 // Find all players
                 local p = null
@@ -255,7 +255,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         }
                     }
 
-                    if (InsideArea==false) {
+                    if (!InsideArea) {
                         p.SetOrigin(Vector(-1839, 0, 8))
                         p.SetAngles(0, 0, 0)
                         p.SetVelocity(Vector(0, 0, 0))
@@ -266,7 +266,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceSp_A2_Core==true) {
+        if (OnlyOnceSp_A2_Core) {
             if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {
                 printl("(P2:MM): Elevator viewcontrol activated!")
                 // Elevator viewcontrol
@@ -299,7 +299,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Second teleport into the elevator
-        if (TPSp_A2_Core==true) {
+        if (TPSp_A2_Core) {
             if (!Entities.FindByName(null, "TPSp_A2_CoreForSure")) {
                 EnableMeSp_A2_Core <- false
                 local p = null
@@ -312,7 +312,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (EnableMeSp_A2_Core==true) {
+        if (EnableMeSp_A2_Core) {
             // First teleport behind the panels so players can't be seen from the elevator
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -326,7 +326,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
         } catch(exception) { }
 
-        if (RoomLookAtPlayerSp_A2_Core==true) {
+        if (RoomLookAtPlayerSp_A2_Core) {
             // Make central core point at nearest player (We need it to stop pointing at the player when core transfer begins) (Moja)
             try {
                 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "glados_pointer").GetOrigin(), 10000)

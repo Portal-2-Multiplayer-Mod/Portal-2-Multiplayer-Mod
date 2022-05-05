@@ -8,7 +8,7 @@
 
 if (!FutBolGamemode) {
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             GlobalSpawnClass.useautospawn <- true
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
             // Destroy objects
@@ -18,11 +18,11 @@ if (!FutBolGamemode) {
             Entities.FindByClassnameNearest("trigger_once", Vector(6912, -5376, 40), 1024).Destroy()
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
             NewApertureStartElevatorFixes()
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -273), 50)) {
@@ -89,7 +89,7 @@ if (!FutBolGamemode) {
         }
 
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             local laser1 = Entities.FindByClassname(null, "env_portal_laser")
             local laser2 = Entities.FindByClassname(Entities.FindByClassname(null, "env_portal_laser"), "env_portal_laser")
             local laser3 = Entities.FindByClassname(Entities.FindByClassname(Entities.FindByClassname(null, "env_portal_laser"), "env_portal_laser"), "env_portal_laser")
@@ -135,7 +135,7 @@ if (!FutBolGamemode) {
 
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
             EntFire("p2mm_servercommand", "command", "say Game starts in 30 seconds", 0)
             EntFire("p2mm_servercommand", "command", "say Game starts in 20 seconds", 10)
             EntFire("p2mm_servercommand", "command", "say Game starts in 10 seconds", 20)
@@ -150,7 +150,7 @@ if (!FutBolGamemode) {
                         DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             local spawnpos = Vector(7840, -5824, 64)
             local spawnangle = Vector(0, 90, 0)
             local spawnbox = Vector(11056, -4954, 134)

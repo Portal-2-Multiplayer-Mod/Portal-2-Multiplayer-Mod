@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝   ╚═╝   ╚═╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
 
         // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
@@ -130,14 +130,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
         SpA1WakeupPostPlayerSpawn <- false
     }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             //IncludeScript("amogman")
-            if (TPP1==true) {
+            if (TPP1) {
                 if (Entities.FindByName(null, "TPPLAYERS1")) {
                     local p = null
                     while (p = Entities.FindByClassname(p, "player")) {
@@ -154,7 +154,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
 
-        if (TPP2==true) {
+        if (TPP2) {
             if (Entities.FindByName(null, "TPPLAYERS2")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -170,7 +170,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (TPP3==true) {
+        if (TPP3) {
             if (Entities.FindByName(null, "TPPLAYERS3")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -186,7 +186,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (TPP4==true) {
+        if (TPP4) {
             if (Entities.FindByName(null, "TPPLAYERS4")) {
                 EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
                 EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
@@ -202,14 +202,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-            if (NOLLFIX==true) {
+            if (NOLLFIX) {
                 if (Entities.FindByName(null, "Startelevatorrecreationsp_a1_wakeup")) {
                     elevatorrecreationsp_a1_wakeup()
                     NOLLFIX <- false
                 }
             }
 
-            if (SpA1WakeupONCE3 == true) {
+            if (SpA1WakeupONCE3) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(8976.9541015625, 1085.8822021484, -435.20544433594), 33.199999332428)) {
                     EntFire("@glados", "RunScriptCode", "sp_a1_wakeup_Do_Not_Touch()", 0, null)
@@ -226,7 +226,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
 
-            if (SpA1WakeupONCE2 == true) {
+            if (SpA1WakeupONCE2) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(9377, 1344, -415), 33.199999332428)) {
                     EntFire("basement_breakers_prop_0", "SetAnimation", "breaker_shaft_open_hatch", 0, null)
@@ -239,7 +239,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
 
-        if (SpA1WakeupPostPlayerSpawn == true) {
+        if (SpA1WakeupPostPlayerSpawn) {
             try {
             Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
             Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
@@ -252,7 +252,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Find all players within 100 units of 8032 1216 487
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(8032, 1216, 487), 100)) {
-            if (SpA1WakeupONCE1 == true) {
+            if (SpA1WakeupONCE1) {
                 printl("Wakeup sequence started")
                 EntFire("@glados", "runscriptcode", "sp_a1_wakeup_gantry_door_open()", 0, null)
                 Entities.FindByName(null, "training_door").__KeyValueFromString("targetname", "training_door_open_dis")

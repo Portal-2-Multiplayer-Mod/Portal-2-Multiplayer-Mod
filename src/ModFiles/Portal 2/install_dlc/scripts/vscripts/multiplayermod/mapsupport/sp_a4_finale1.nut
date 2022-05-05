@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         PermaPotato <- true
         // Make elevator start moving on level load
@@ -40,11 +40,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A4_Finale1_One_Time_Beam <- false
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Slow down player so they land on the platform
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8905, -2048, -196), 100)) {

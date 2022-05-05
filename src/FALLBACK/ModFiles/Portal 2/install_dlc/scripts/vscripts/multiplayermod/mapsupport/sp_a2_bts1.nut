@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         // Destroy objects
@@ -35,13 +35,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OneTimeRunSp_A2_Bts1 <- true
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Exit Test Trigger
-        if (OneTimeRunSp_A2_Bts1==true) {
+        if (OneTimeRunSp_A2_Bts1) {
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-3004.51953125, -1652.0881347656, 58.625823974609), 72.800002098083)) {
                 EntFire("jailbreak_chamber_unlit-jailbreak_flashlight", "TurnOff", "", 1, null)

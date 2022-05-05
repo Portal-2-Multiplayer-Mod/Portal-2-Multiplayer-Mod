@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         Entities.FindByName(null, "incinerator_death_fade").Destroy()
         Entities.FindByName(null, "camera_ghostAnim").Destroy()
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
@@ -21,7 +21,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         a1HasPortalGun <- false
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         printl("Ran")
         SpA2IntroViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         SpA2IntroViewcontrol.__KeyValueFromString("targetname", "SpA2IntroViewcontrol")
@@ -40,7 +40,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("start_fall_anim_relay", "trigger", "", 0, null)
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
 
         if (Entities.FindByName(null, "PlayFallSound")) {
             Entities.FindByName(null, "blue").EmitSound("playonce\\scripted_sequences\\incinerator_fall_01.wav")
@@ -91,7 +91,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //             while (ent = Entities.FindByClassnameWithin(ent, "weapon_portalgun", p.GetOrigin(), 2)) {
         //                 PortalGunGiveContinue <- false
         //             }
-        //             if (PortalGunGiveContinue==true) {
+        //             if (PortalGunGiveContinue) {
         //             PortalGun <- Entities.CreateByClassname("weapon_portalgun")
         //             PortalGun.__KeyValueFromString("StartingTeamNum", "0")
         //             PortalGun.__KeyValueFromString("targetname", "CustomPortalGun")
@@ -103,7 +103,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //     }
         // }
 
-        if (a1HasPortalGun == false) {
+        if (!a1HasPortalGun) {
             // Remove Portal Gun
             local ent = null
             while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {

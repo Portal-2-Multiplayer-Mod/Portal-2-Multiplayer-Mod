@@ -7,15 +7,15 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (GetMapName()=="LEVELNAME") {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
 
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
 
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
 
         }
     }

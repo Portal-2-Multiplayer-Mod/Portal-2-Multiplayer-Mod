@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
@@ -29,7 +29,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         DisableLookDisablerSP_A2_BTS2 <- false
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         local ent = null
         while (ent = Entities.FindByModel(ent, "models/anim_wp/room_transform/arm_exterior.mdl")) {
             //ent.__KeyValueFromString("HoldAnimation", "1")
@@ -42,13 +42,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879)) {
             DisableLookDisablerSP_A2_BTS2 <- true
         }
 
-        if (DisableLookDisablerSP_A2_BTS2 == false) {
+        if (!DisableLookDisablerSP_A2_BTS2) {
             // Make a custom trigger to disable player look
             WheatleyPlayerLookSP_A2_BTS2 <- true
             local p = null
@@ -104,7 +104,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // if a player made it teleport everyone into the elevator
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(2207.8967285156, 1452.6505126953, 264.08181762695), 40)) {
-            if (OnlyOnceSp_A2_Bts2AgainV2==true) {
+            if (OnlyOnceSp_A2_Bts2AgainV2) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(2202, 1454, 303))
@@ -117,13 +117,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // if no player made it, show a message and restart the level
         if (!Entities.FindByName(null, "StartDeathEventMPMod")) {
-            if (OnlyOnceSp_A2_Bts2 == true) {
+            if (OnlyOnceSp_A2_Bts2) {
                 PreviousTimeSP_A2_BTS2 <- Time()
                 OnlyOnceSp_A2_Bts2 <- false
             }
             if (PreviousTimeSP_A2_BTS2 + 31 <= Time()) {
                 if (Entities.FindByName(null, "EndDeathEventMPMod")) {
-                    if (NoPlayerMadeItOnlyOnceSp_A2_Bts2 == true) {
+                    if (NoPlayerMadeItOnlyOnceSp_A2_Bts2) {
                         printl("No Player Made It")
                         PreviousTimeSP_A2_BTS2Again <- Time()
                         // Create an on screen text message entity
@@ -158,7 +158,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (NoPlayerMadeItOnlyOnceSp_A2_Bts2 == false) {
+        if (!NoPlayerMadeItOnlyOnceSp_A2_Bts2) {
             if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
                  
                 SendToConsole("changelevel sp_a2_bts2")
@@ -170,7 +170,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
         // Make Wheatley look at nearest player
-        if (WheatleyPlayerLookSP_A2_BTS2==true) {
+        if (WheatleyPlayerLookSP_A2_BTS2) {
             try {
                 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
                 EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
