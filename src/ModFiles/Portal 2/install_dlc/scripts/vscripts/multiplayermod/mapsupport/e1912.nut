@@ -14,7 +14,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
         RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
 
-        // Create env_global's to disable pinging and taunting
+        // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
         env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
@@ -36,50 +36,82 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global03, "turnon", "", 1, null, null)
         EntFireByHandle(env_global04, "turnon", "", 1, null, null)
 
-        EntFire("vehicle_intro", "Unlock", "", 18, null)
-        EntFire("vehicle_intro", "ExitVehicle", "", 18.03, null)
-
-        InIntroVehicle <- true
-
-        //------------------------------------------------------------------------
-
-        EntFire("relay_Intro_setup_view", "Addoutput", "spawnflags 0", 0, null)
-
-        // local ent = null
-        // while (ent = Entities.FindByName(ent, "vehicle_intro")) {
-        //     ent.__KeyValueFromString("DefaultAnim", "")
-        // }
+        HasStartedE1912 <- false
+        EntFireByHandle(Entities.FindByName(null, "timescale"), "SetTimescaleBlendTime", "0.1", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "timescale"), "SetDesiredTimescale", "0.5", 0.5, null, null)
+        Entities.FindByClassnameNearest("info_player_start", Vector(-722, -924, 26), 128).Destroy()
+        Entities.FindByClassnameNearest("logic_auto", Vector(-900, 6110, 11), 16).Destroy()
+        OnlyOnceE1912 <- true
+        DisableJumpmsp <- true
     }
 
-    // p.SetOrigin(Vector(-722, -924, 26))
-    // p.SetVelocity(Vector(0, 0, 0))
-    // p.SetAngles(0, 30, 0)
-
     if (MSPostPlayerSpawn==true) {
-        // EntFire("fade_start", "Fade", "", 0, null)
-        // EntFire("prop_arms_view", "SetAnimation", "wake_up_start", 0, null)
-        EntFire("speedmod", "ModifySpeed", "0.65", 0, null)
-        EntFire("relay_Intro_setup_view", "Trigger", "", 0.10, null)
-        EntFire("timescale", "SetTimescaleBlendTime", "0.1", 0, null)
-        EntFire("timescale", "SetDesiredTimescale", "0.5", 0.10, null)
-        EntFire("timescale", "SetTimescaleBlendTime", "2", 0.30, null)
-        EntFire("timescale", "SetDesiredTimescale", "1", 0.50, null)
+        HasStartedE1912 <- true
+        EntFire("fade_start", "Fade", "", 0)
+        EntFire("speed_mod", "ModifySpeed", "0.65", 0)
+        EntFire("relay_Intro_setup_view", "Trigger", "", 0)
+        EntFire("timescale", "SetTimescaleBlendTime", "2", 0.3)
+        EntFire("timescale", "SetDesiredTimescale", "1", 0.5)
+        EntFire("spr_gunlight", "SetParentAttachment", "lightAttach", 0.5)
+        EntFire("@script_br_trainride", "RunScriptCode", "StartExploreTimer()", 1.5)
+
+        printl("Ran")
+        E1912Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+        E1912Viewcontrol.__KeyValueFromString("targetname", "E1912Viewcontrol")
+        E1912Viewcontrol.__KeyValueFromString("target_team", "-1")
+        E1912Viewcontrol.SetOrigin(Entities.FindByName(null, "vehicle_intro").GetOrigin())
+        E1912Viewcontrol.SetAngles(0, 0, 0)
+        EntFire("E1912Viewcontrol", "setparent", "vehicle_intro", 0, null)
+        EntFire("E1912Viewcontrol", "setparentattachment", "vehicle_driver_eyes", 0, null)
+        EntFire("E1912Viewcontrol", "enable", "", 0, null)
+        EntFire("E1912ViewcontrolTele", "disable", "", 9, null)
+        EntFire("E1912Viewcontrol", "addoutput", "targetname E1912ViewcontrolTele", 0.25, null)
+        EntFire("E1912ViewcontrolTele", "addoutput", "targetname E1912ViewcontrolDone", 9, null)
     }
 
     if (MSLoop==true) {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.GetVelocity().z > 0) {
-                p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, -1))
+        if (HasStartedE1912 == false) {
+            EntFireByHandle(Entities.FindByName(null, "fade_start"), "Fade", "", 0, null, null)
+        }
+
+        if (Entities.FindByName(null, "E1912ViewcontrolTele")) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                p.SetOrigin(Vector(-1362 6818 -190))
+                p.SetVelocity(Vector(0, 0, 0))
             }
         }
 
-        if (Time() >= 18 && InIntroVehicle == true) {
-            while (p = Entities.FindByClassname(p, "player")) {
-                p.SetOrigin(Vector(8548, 1204, 106))
-                p.SetVelocity(Vector(0, 0, 0))
-                InIntroVehicle <- false
+        if (OnlyOnceE1912 == true) {
+            if (Entities.FindByName(null, "E1912ViewcontrolDone")) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-868.607117, 6147.984375, 5))
+                    p.SetAngles(0.033103, -11.502685, 0)
+                }
+                EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+                stoprenable <- true
+                OnlyOnceE1912 <- false
             }
         }
+
+        if (DisableJumpmsp == true) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (p.GetVelocity().z > 0) {
+                    p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, -1))
+                }
+            }
+        }
+
+        // if (SecondToLastTP == true) {
+        //     local p = null
+        //     while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+        //         p.SetOrigin(Vector(-1649, 4376, 3167))
+        //     }
+        // }
     }
 }
