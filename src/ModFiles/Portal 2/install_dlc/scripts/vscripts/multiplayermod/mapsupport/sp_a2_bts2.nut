@@ -161,7 +161,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (!NoPlayerMadeItOnlyOnceSp_A2_Bts2) {
             if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
                  
-                SendToConsoleP232("changelevel sp_a2_bts2")
+                SendToConsoleP2MM("changelevel sp_a2_bts2")
                 if (GetDeveloperLevel()) {
                     printl("stuff=====================")
                 }
@@ -181,7 +181,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 150)) {
              
-            SendToConsoleP232("changelevel sp_a2_bts3")
+            SendToConsoleP2MM("changelevel sp_a2_bts3")
         }
 
         // Fix the player's spawn position

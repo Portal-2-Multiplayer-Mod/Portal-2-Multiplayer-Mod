@@ -15,8 +15,8 @@
 
 if (SafeGuard) {
     try {
-        if ( ::SendToConsole.getinfos().native ) { // Replace SendToConsole with SendToConsoleP232
-            ::SendToConsoleP232 <- ::SendToConsole;;
+        if ( ::SendToConsole.getinfos().native ) { // Replace SendToConsole with SendToConsoleP2MM
+            ::SendToConsoleP2MM <- ::SendToConsole;;
 
             SendToConsole <- function(str) {
                 printl("=======================================")
@@ -37,7 +37,7 @@ if (SafeGuard) {
         }
     } catch (e) {}
 } else {
-    SendToConsoleP232 <- function(str) { SendToConsole(str) }
+    SendToConsoleP2MM <- function(str) { SendToConsole(str) }
 }
 
 ////////////////////////////////////////////

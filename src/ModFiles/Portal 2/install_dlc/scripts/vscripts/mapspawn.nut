@@ -116,15 +116,14 @@ IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
 
-// If we are playing the futbol game mode on this map load, then load another external library with more logic for the minigame
+// Futbol
 if (FutBolGamemode && !Deathmatch) {
     IncludeScript("multiplayermod/gamemodes/futbol/futbolfunctions.nut")
     if (GetDeveloperLevel()) {
         printl("(P2:MM): Futbol mode set!")
     }
 }
-
-// If we are playing the deathmatch game mode on this map load, then load another external library with more logic for the minigame
+// Deathmatch
 if (Deathmatch && !FutBolGamemode) {
     IncludeScript("multiplayermod/gamemodes/deathmatch/deathmatchfunctions.nut")
     if (GetDeveloperLevel()) {

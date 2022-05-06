@@ -81,7 +81,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     if (pclass.laps > GelocityRounds) {
                         GameDoneGelocity <- true
                         EntFire("orange_wins", "trigger")
-                        SendToConsoleP232("say " + pname + " has won the game!")
+                        SendToConsoleP2MM("say " + pname + " has won the game!")
                         EntFire("p2mm_rounds_text_override", "display")
                     }
                 } catch(e) {

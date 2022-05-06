@@ -72,7 +72,7 @@ function Lap(player) {
             Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("holdtime", "8")
             EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Game!", 0.1)
             EntFire("p2mm_laps_text", "display", "", 0.2)
-            SendToConsoleP232("say " + PlayerUsername + " Won The Game!")
+            SendToConsoleP2MM("say " + PlayerUsername + " Won The Game!")
             if (player.GetTeam() == 2) { // red
                 EntFire("orange_wins", "trigger")
                 EntFire("win_door_2_orange", "color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())

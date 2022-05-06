@@ -370,7 +370,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps, 0.1)
                     } else {
                         printl(PlayerUsername + " Won The Race!")
-                        SendToConsoleP232("say " + PlayerUsername + " Won The Race!")
+                        SendToConsoleP2MM("say " + PlayerUsername + " Won The Race!")
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Race!", 0.1)
                         //ent_fire first_blue addoutput "rendercolor 255 0 0"
                         if (p.GetTeam() >= 3) {
