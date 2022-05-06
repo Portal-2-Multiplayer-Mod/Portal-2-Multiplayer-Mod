@@ -86,12 +86,21 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global04, "turnon", "", 1, null, null)
 
         Entities.FindByName(null, "crash-vehicle_outro").__KeyValueFromString("targetname", "p2mmcrashvehicleoutrooverride")
+        Entities.FindByName(null, "crash-movie_logo").__KeyValueFromString("targetname", "p2mmcrashmovielogooverride")
         EntFireByHandle(Entities.FindByName(null, "timescale"), "SetTimescaleBlendTime", "0.1", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "timescale"), "SetDesiredTimescale", "0.5", 0.5, null, null)
         EntFireByHandle(Entities.FindByName(null, "crash-trigger_scare"), "addoutput", "OnStartTouch crash-relay_cannisters_monster_expolode:Trigger::0.1", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "crash-relay_break_out"), "addoutput", "OnTrigger p2mmcrashmovielogooverride:playmovieforallplayers::15.70", 0, null, null)
         Entities.FindByClassnameNearest("info_player_start", Vector(-722, -924, 26), 128).Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-900, 6110, 11), 16).Destroy()
         Entities.FindByName(null, "crash-aisc_monster_car_push").Destroy()
+
+        // Set up viewcontrol function fires
+        EntFire("relay_view_crash", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912CrashViewcontrol():0.1")
+        EntFire("@relay_Intro_setup_view2", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912AfterCrashViewcontrol()")
+        EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912ScareViewcontrol():1.9")
+        EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:changelevel mp_coop_lobby_3:26")
+
         HasStartedE1912 <- false
         OnlyOnceE1912 <- true
         OnlyOnce2E1912 <- true
@@ -122,11 +131,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("E1912Viewcontrol", "addoutput", "targetname E1912ViewcontrolTele", 0.25, null)
         EntFire("E1912ViewcontrolTele", "addoutput", "targetname E1912ViewcontrolDone", 9, null)
 
-        // Set up viewcontrol function fires
-        EntFire("relay_view_crash", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912CrashViewcontrol():0.1")
-        EntFire("@relay_Intro_setup_view2", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912AfterCrashViewcontrol()")
-        EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912ScareViewcontrol():1.9")
-        EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:changelevel mp_coop_lobby_3:26")
+        CanJump(false)
+        CanCrouch(false)
     }
 
     if (MSLoop) {
@@ -205,15 +211,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 p.SetOrigin(Vector(-324, -200, 34))
                 p.SetVelocity(Vector(0, 0, 0))
                 p.SetAngles(-2, -65, 0)
-            }
-        }
-
-        if (DisableJumpmsp) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                if (p.GetVelocity().z > 0) {
-                    p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, -1))
-                }
             }
         }
     }
