@@ -706,7 +706,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         } catch(exception) {}
 
-        if (!HasStartedSp_A1_Intro1e) {
+        if (!HasStartedSp_A1_Intro1) {
             EntFireByHandle(Entities.FindByName(null, "cryo_fade_in_from_white"), "fade", "", 0, null, null)
         }
 
