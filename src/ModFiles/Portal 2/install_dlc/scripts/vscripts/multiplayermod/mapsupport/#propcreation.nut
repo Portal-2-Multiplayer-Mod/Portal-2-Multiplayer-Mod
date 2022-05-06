@@ -105,9 +105,9 @@ if (GetMapName() == "sp_a3_crazy_box") {
 
         local sp_a3_crazy_box_custom_prop_17 = CreateProp("prop_dynamic", Vector(878.23785400391, -1111.7216796875, 2049.7453613281), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
         sp_a3_crazy_box_custom_prop_17.SetAngles(89.999992370605, 90, 180)
-        sp_a3_crazy_box_custom_prop_17.__KeyValueFromString("solid", "0")
+        sp_a3_crazy_box_custom_prop_17.__KeyValueFromString("solid", "6")
         sp_a3_crazy_box_custom_prop_17.__KeyValueFromString("targetname", "genericcustomprop")
-        EntFireByHandle(sp_a3_crazy_box_custom_prop_17, "addoutput", "modelscale 0.8910000026226", 0, null, null)
+        EntFireByHandle(sp_a3_crazy_box_custom_prop_17, "addoutput", "modelscale 0.9", 0, null, null)
         EntFireByHandle(sp_a3_crazy_box_custom_prop_17, "color", "0 0 0 255", 0, null, null)
 
   }
@@ -926,8 +926,6 @@ if (GetMapName() == "sp_a2_triple_laser") {
 
         PrecacheModel("props_lab/glass_observation_2.mdl")
 
-        PrecacheModel("props_factory/factory_panel_metal_chopped_bottom_128x64.mdl")
-
         PrecacheModel("props/ball_button.mdl")
 
         PrecacheModel("props_lab/glass_observation_3.mdl")
@@ -947,110 +945,167 @@ if (GetMapName() == "sp_a2_triple_laser") {
     if (CreateTime) {
         // Create Objects
 
-        local sp_a2_triple_laser_custom_prop_50 = CreateProp("prop_dynamic", Vector(7776.982421875, -5494.6748046875, -0.7366943359375), "models/props_lab/window_256.mdl", 0)
-        sp_a2_triple_laser_custom_prop_50.SetAngles(-3.1268306086712e-12, -90, 1.52587890625e-05)
-        sp_a2_triple_laser_custom_prop_50.__KeyValueFromString("solid", "6")
-        sp_a2_triple_laser_custom_prop_50.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local sp_a2_triple_laser_custom_prop_51 = CreateProp("prop_dynamic", Vector(8321.517578125, -5664.0283203125, 89.195999145508), "models/props/futbol_dispenser.mdl", 0)
-        sp_a2_triple_laser_custom_prop_51.SetAngles(-2.3402319663434e-15, 90, 180)
-        sp_a2_triple_laser_custom_prop_51.__KeyValueFromString("solid", "6")
-        sp_a2_triple_laser_custom_prop_51.__KeyValueFromString("targetname", "dispenser1")
-
-        local sp_a2_triple_laser_custom_prop_52 = CreateProp("prop_dynamic", Vector(7777.3188476562, -5494.859375, 128.2112121582), "models/props_lab/window_256_a.mdl", 0)
-        sp_a2_triple_laser_custom_prop_52.SetAngles(-1.1290127903754e-13, -90, 1.52587890625e-05)
-        sp_a2_triple_laser_custom_prop_52.__KeyValueFromString("solid", "6")
-        sp_a2_triple_laser_custom_prop_52.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local sp_a2_triple_laser_custom_prop_53 = CreateProp("prop_dynamic", Vector(7617.6953125, -5494.6791992188, -0.72720336914062), "models/props_lab/window_64_a.mdl", 0)
-        sp_a2_triple_laser_custom_prop_53.SetAngles(7.5830328627378e-21, -90, 1.52587890625e-05)
-        sp_a2_triple_laser_custom_prop_53.__KeyValueFromString("solid", "6")
-        sp_a2_triple_laser_custom_prop_53.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local sp_a2_triple_laser_custom_prop_54 = CreateProp("prop_dynamic", Vector(7966.7475585938, -5490.5004882812, 0.73605346679688), "models/props_office/sliding_door.mdl", 0)
-        sp_a2_triple_laser_custom_prop_54.SetAngles(7.5830328627378e-21, -90, 1.52587890625e-05)
-        sp_a2_triple_laser_custom_prop_54.__KeyValueFromString("solid", "6")
-        sp_a2_triple_laser_custom_prop_54.__KeyValueFromString("targetname", "genericcustomprop")
-
-        local sp_a2_triple_laser_custom_prop_55 = CreateProp("prop_dynamic", Vector(7936.7827148438, -5490.70703125, 176.44068908691), "models/props_lab/glass_observation_2.mdl", 0)
-        sp_a2_triple_laser_custom_prop_55.SetAngles(-2.132360975483e-15, -90, 1.52587890625e-05)
+        local sp_a2_triple_laser_custom_prop_55 = CreateProp("prop_dynamic", Vector(7904.2065429688, -5471.6762695313, -5.7427673339844), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_55.SetAngles(-90, 90.026954650879, 180)
         sp_a2_triple_laser_custom_prop_55.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_55.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_55.__KeyValueFromString("rendermode", "10")
 
-        local sp_a2_triple_laser_custom_prop_56 = CreateProp("prop_dynamic", Vector(7449.6533203125, -5728.4458007812, 31.576444625854), "models/props_factory/factory_panel_metal_chopped_bottom_128x64.mdl", 0)
-        sp_a2_triple_laser_custom_prop_56.SetAngles(-1.4705283431921e-13, -2.1982020825817e-06, 1.52587890625e-05)
-        sp_a2_triple_laser_custom_prop_56.__KeyValueFromString("solid", "0")
+        local sp_a2_triple_laser_custom_prop_56 = CreateProp("prop_dynamic", Vector(7449.3383789063, -5728.6313476563, 63.514999389648), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_56.SetAngles(-1.2093304135874e-10, 0.022942146286368, 0)
+        sp_a2_triple_laser_custom_prop_56.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_56.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_57 = CreateProp("prop_dynamic", Vector(7776.2314453125, -5664.142578125, 256.77786254883), "models/props/ball_button.mdl", 0)
-        sp_a2_triple_laser_custom_prop_57.SetAngles(-1.8504917379241e-13, 179.99992370605, 180)
+        local sp_a2_triple_laser_custom_prop_57 = CreateProp("prop_dynamic", Vector(7936.7827148438, -5490.70703125, 176.44068908691), "models/props_lab/glass_observation_2.mdl", 0)
+        sp_a2_triple_laser_custom_prop_57.SetAngles(-4.0711105818957e-13, -90, 0)
         sp_a2_triple_laser_custom_prop_57.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_57.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_58 = CreateProp("prop_dynamic", Vector(7773.8110351562, -5490.3608398438, 62.269149780273), "models/props_lab/glass_observation_3.mdl", 0)
-        sp_a2_triple_laser_custom_prop_58.SetAngles(7.5830328627378e-21, -90, 1.52587890625e-05)
+        local sp_a2_triple_laser_custom_prop_58 = CreateProp("prop_dynamic", Vector(7773.8110351563, -5490.3608398438, 62.269149780273), "models/props_lab/glass_observation_3.mdl", 0)
+        sp_a2_triple_laser_custom_prop_58.SetAngles(-4.0711105818957e-13, -90, 0)
         sp_a2_triple_laser_custom_prop_58.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_58.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_59 = CreateProp("prop_dynamic", Vector(7776.7553710938, -5490.5380859375, 191.90145874023), "models/props_lab/glass_observation_3.mdl", 0)
-        sp_a2_triple_laser_custom_prop_59.SetAngles(1.3484940703141e-13, -90, 0)
+        local sp_a2_triple_laser_custom_prop_59 = CreateProp("prop_dynamic", Vector(7454.5869140625, -5727.9619140625, 89.567016601563), "models/props/futbol_dispenser.mdl", 0)
+        sp_a2_triple_laser_custom_prop_59.SetAngles(6.2247279553063e-10, -90, 180)
         sp_a2_triple_laser_custom_prop_59.__KeyValueFromString("solid", "6")
-        sp_a2_triple_laser_custom_prop_59.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_59.__KeyValueFromString("targetname", "dispenser1")
 
-        local sp_a2_triple_laser_custom_prop_60 = CreateProp("prop_dynamic", Vector(7936.7827148438, -5490.70703125, 304.44067382812), "models/props_lab/glass_observation_2.mdl", 0)
-        sp_a2_triple_laser_custom_prop_60.SetAngles(-2.132360975483e-15, -90, 1.52587890625e-05)
+        local sp_a2_triple_laser_custom_prop_60 = CreateProp("prop_dynamic", Vector(8185.3715820313, -5835.6049804688, 63.469100952148), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_60.SetAngles(1.9227852643411e-09, 120.07461547852, 0)
         sp_a2_triple_laser_custom_prop_60.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_60.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_61 = CreateProp("prop_dynamic", Vector(7617.6245117188, -5493.8837890625, 128.40710449219), "models/props_lab/window_64_a.mdl", 0)
-        sp_a2_triple_laser_custom_prop_61.SetAngles(7.5830328627378e-21, -90, 1.52587890625e-05)
+        local sp_a2_triple_laser_custom_prop_61 = CreateProp("prop_dynamic", Vector(7519.736328125, -5530.3818359375, 191.56144714355), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_61.SetAngles(-4.4782211792993e-12, -89.959854125977, 0)
         sp_a2_triple_laser_custom_prop_61.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_61.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_62 = CreateProp("prop_dynamic", Vector(7454.5869140625, -5727.9619140625, 89.567008972168), "models/props/futbol_dispenser.mdl", 0)
-        sp_a2_triple_laser_custom_prop_62.SetAngles(6.225527315884e-10, -90, 180)
+        local sp_a2_triple_laser_custom_prop_62 = CreateProp("prop_dynamic", Vector(7617.6245117188, -5493.8837890625, 128.40710449219), "models/props_lab/window_64_a.mdl", 0)
+        sp_a2_triple_laser_custom_prop_62.SetAngles(-4.0711105818957e-13, -90, 0)
         sp_a2_triple_laser_custom_prop_62.__KeyValueFromString("solid", "6")
-        sp_a2_triple_laser_custom_prop_62.__KeyValueFromString("targetname", "dispenser2")
+        sp_a2_triple_laser_custom_prop_62.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_63 = CreateProp("prop_dynamic", Vector(8031.8120117188, -5489.7236328125, 130.93634033203), "models/props_office/wall_column_128_int_corner.mdl", 0)
-        sp_a2_triple_laser_custom_prop_63.SetAngles(-9.5416635204938e-15, 90, -90)
+        local sp_a2_triple_laser_custom_prop_63 = CreateProp("prop_dynamic", Vector(7937.1323242188, -5494.9916992188, 128.29275512695), "models/props_lab/window_64_a.mdl", 0)
+        sp_a2_triple_laser_custom_prop_63.SetAngles(-4.0711105818957e-13, -90, 0)
         sp_a2_triple_laser_custom_prop_63.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_63.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_64 = CreateProp("prop_dynamic", Vector(7521.6357421875, -5490.4560546875, 127.66311645508), "models/props_office/wall_column_384_ext.mdl", 0)
-        sp_a2_triple_laser_custom_prop_64.SetAngles(-6.3611090136625e-14, -90, -90)
+        local sp_a2_triple_laser_custom_prop_64 = CreateProp("prop_dynamic", Vector(8127.9086914063, -6015.7880859375, -5.7784571647644), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_64.SetAngles(-89.999961853027, 0.028296403586864, 180)
         sp_a2_triple_laser_custom_prop_64.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_64.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_64.__KeyValueFromString("rendermode", "10")
 
-        local sp_a2_triple_laser_custom_prop_65 = CreateProp("prop_dynamic", Vector(7906.7739257812, -5490.62109375, 0.77362060546875), "models/props_office/sliding_door.mdl", 0)
-        sp_a2_triple_laser_custom_prop_65.SetAngles(-7.5830328627378e-21, 90, 1.52587890625e-05)
+        local sp_a2_triple_laser_custom_prop_65 = CreateProp("prop_dynamic", Vector(7966.7475585938, -5490.5004882813, 0.73605167865753), "models/props_office/sliding_door.mdl", 0)
+        sp_a2_triple_laser_custom_prop_65.SetAngles(-4.0711105818957e-13, -90, 0)
         sp_a2_triple_laser_custom_prop_65.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_65.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_66 = CreateProp("prop_dynamic", Vector(7936.8081054688, -5490.4643554688, -0.05926514044404), "models/props_office/wall_door_frame_64a.mdl", 0)
-        sp_a2_triple_laser_custom_prop_66.SetAngles(-2.2793925291496e-36, -90, 0)
+        local sp_a2_triple_laser_custom_prop_66 = CreateProp("prop_dynamic", Vector(7521.6357421875, -5492.7055664063, 127.66311645508), "models/props_office/wall_column_384_ext.mdl", 0)
+        sp_a2_triple_laser_custom_prop_66.SetAngles(0, 89.999977111816, 90.000022888184)
         sp_a2_triple_laser_custom_prop_66.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_66.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_67 = CreateProp("prop_dynamic", Vector(7937.1323242188, -5494.9916992188, 128.29275512695), "models/props_lab/window_64_a.mdl", 0)
-        sp_a2_triple_laser_custom_prop_67.SetAngles(3.9563714517444e-17, -90, 1.52587890625e-05)
+        local sp_a2_triple_laser_custom_prop_67 = CreateProp("prop_dynamic", Vector(8321.517578125, -5664.0283203125, 89.195999145508), "models/props/futbol_dispenser.mdl", 0)
+        sp_a2_triple_laser_custom_prop_67.SetAngles(0, 90, 180)
         sp_a2_triple_laser_custom_prop_67.__KeyValueFromString("solid", "6")
-        sp_a2_triple_laser_custom_prop_67.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_67.__KeyValueFromString("targetname", "dispenser2")
 
-        local sp_a2_triple_laser_custom_prop_68 = CreateProp("prop_dynamic", Vector(8031.8120117188, -5491.4736328125, 130.93634033203), "models/props_office/wall_column_128_int_corner.mdl", 0)
-        sp_a2_triple_laser_custom_prop_68.SetAngles(-89.999961853027, -179.99995422363, 180)
+        local sp_a2_triple_laser_custom_prop_68 = CreateProp("prop_dynamic", Vector(7617.6953125, -5494.6791992188, -0.72720485925674), "models/props_lab/window_64_a.mdl", 0)
+        sp_a2_triple_laser_custom_prop_68.SetAngles(-4.0711105818957e-13, -90, 0)
         sp_a2_triple_laser_custom_prop_68.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_68.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_69 = CreateProp("prop_dynamic", Vector(8185.126953125, -5835.3701171875, 63.867156982422), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
-        sp_a2_triple_laser_custom_prop_69.SetAngles(1.8721375560915e-09, 120.41382598877, 1.52587890625e-05)
-        sp_a2_triple_laser_custom_prop_69.__KeyValueFromString("solid", "0")
+        local sp_a2_triple_laser_custom_prop_69 = CreateProp("prop_dynamic", Vector(8031.8120117188, -5491.4736328125, 130.93634033203), "models/props_office/wall_column_128_int_corner.mdl", 0)
+        sp_a2_triple_laser_custom_prop_69.SetAngles(-89.999977111816, -179.99996948242, 180)
+        sp_a2_triple_laser_custom_prop_69.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_69.__KeyValueFromString("targetname", "genericcustomprop")
 
-        local sp_a2_triple_laser_custom_prop_70 = CreateProp("prop_dynamic", Vector(7521.6357421875, -5492.7055664062, 127.66311645508), "models/props_office/wall_column_384_ext.mdl", 0)
-        sp_a2_triple_laser_custom_prop_70.SetAngles(5.0089556680177e-06, 89.999961853027, 90.000022888184)
+        local sp_a2_triple_laser_custom_prop_70 = CreateProp("prop_dynamic", Vector(7519.736328125, -5530.3818359375, 319.56146240234), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_70.SetAngles(-4.4782211792993e-12, -89.959854125977, 0)
         sp_a2_triple_laser_custom_prop_70.__KeyValueFromString("solid", "6")
         sp_a2_triple_laser_custom_prop_70.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_71 = CreateProp("prop_dynamic", Vector(7936.8081054688, -5490.4643554688, -0.059266727417707), "models/props_office/wall_door_frame_64a.mdl", 0)
+        sp_a2_triple_laser_custom_prop_71.SetAngles(-4.0711105818957e-13, -90, 0)
+        sp_a2_triple_laser_custom_prop_71.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_71.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_72 = CreateProp("prop_dynamic", Vector(7519.736328125, -5530.3818359375, 63.561447143555), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_72.SetAngles(-4.4782211792993e-12, -89.959854125977, 0)
+        sp_a2_triple_laser_custom_prop_72.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_72.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_73 = CreateProp("prop_dynamic", Vector(7776.7553710938, -5490.5380859375, 191.90145874023), "models/props_lab/glass_observation_3.mdl", 0)
+        sp_a2_triple_laser_custom_prop_73.SetAngles(-4.0711105818957e-13, -90, 0)
+        sp_a2_triple_laser_custom_prop_73.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_73.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_74 = CreateProp("prop_dynamic", Vector(7776.2065429688, -5471.7368164063, -5.7427673339844), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_74.SetAngles(-89.999977111816, 90.026969909668, 180)
+        sp_a2_triple_laser_custom_prop_74.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_74.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_74.__KeyValueFromString("rendermode", "10")
+
+        local sp_a2_triple_laser_custom_prop_75 = CreateProp("prop_dynamic", Vector(7906.7739257813, -5490.62109375, 0.77362138032913), "models/props_office/sliding_door.mdl", 0)
+        sp_a2_triple_laser_custom_prop_75.SetAngles(0, 90, 0)
+        sp_a2_triple_laser_custom_prop_75.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_75.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_76 = CreateProp("prop_dynamic", Vector(7839.9091796875, -5664.0927734375, 256.28302001953), "models/props/ball_button.mdl", 0)
+        sp_a2_triple_laser_custom_prop_76.SetAngles(2.0055253013851e-09, -179.99603271484, 180)
+        sp_a2_triple_laser_custom_prop_76.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_76.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_77 = CreateProp("prop_dynamic", Vector(7648.1767578125, -5471.7661132813, 261.37899780273), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_77.SetAngles(90, 90.020225524902, 180)
+        sp_a2_triple_laser_custom_prop_77.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_77.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_77.__KeyValueFromString("rendermode", "10")
+
+        local sp_a2_triple_laser_custom_prop_78 = CreateProp("prop_dynamic", Vector(7777.3188476563, -5494.859375, 128.2112121582), "models/props_lab/window_256_a.mdl", 0)
+        sp_a2_triple_laser_custom_prop_78.SetAngles(-4.0711105818957e-13, -90, 0)
+        sp_a2_triple_laser_custom_prop_78.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_78.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_79 = CreateProp("prop_dynamic", Vector(7904.1767578125, -5471.67578125, 261.37899780273), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_79.SetAngles(89.999954223633, 90.020286560059, 180)
+        sp_a2_triple_laser_custom_prop_79.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_79.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_79.__KeyValueFromString("rendermode", "10")
+
+        local sp_a2_triple_laser_custom_prop_80 = CreateProp("prop_dynamic", Vector(8031.8120117188, -5489.7236328125, 130.93634033203), "models/props_office/wall_column_128_int_corner.mdl", 0)
+        sp_a2_triple_laser_custom_prop_80.SetAngles(0, 90, -90)
+        sp_a2_triple_laser_custom_prop_80.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_80.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_81 = CreateProp("prop_dynamic", Vector(7936.7827148438, -5490.70703125, 304.44067382813), "models/props_lab/glass_observation_2.mdl", 0)
+        sp_a2_triple_laser_custom_prop_81.SetAngles(-4.0711105818957e-13, -90, 0)
+        sp_a2_triple_laser_custom_prop_81.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_81.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_82 = CreateProp("prop_dynamic", Vector(7648.2065429688, -5471.7973632813, -5.7427673339844), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_82.SetAngles(-89.999961853027, 90.026947021484, 180)
+        sp_a2_triple_laser_custom_prop_82.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_82.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_82.__KeyValueFromString("rendermode", "10")
+
+        local sp_a2_triple_laser_custom_prop_83 = CreateProp("prop_dynamic", Vector(7776.1767578125, -5471.7211914063, 261.37899780273), "models/props_factory/factory_panel_metal_chopped_top_128x128.mdl", 0)
+        sp_a2_triple_laser_custom_prop_83.SetAngles(89.999969482422, 90.020278930664, 180)
+        sp_a2_triple_laser_custom_prop_83.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_83.__KeyValueFromString("targetname", "genericcustomprop")
+        sp_a2_triple_laser_custom_prop_83.__KeyValueFromString("rendermode", "10")
+
+        local sp_a2_triple_laser_custom_prop_84 = CreateProp("prop_dynamic", Vector(7776.982421875, -5494.6748046875, -0.73669463396072), "models/props_lab/window_256.mdl", 0)
+        sp_a2_triple_laser_custom_prop_84.SetAngles(-4.478222046661e-12, -90, 0)
+        sp_a2_triple_laser_custom_prop_84.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_84.__KeyValueFromString("targetname", "genericcustomprop")
+
+        local sp_a2_triple_laser_custom_prop_85 = CreateProp("prop_dynamic", Vector(7521.6357421875, -5490.4560546875, 127.66311645508), "models/props_office/wall_column_384_ext.mdl", 0)
+        sp_a2_triple_laser_custom_prop_85.SetAngles(0, -90, -90)
+        sp_a2_triple_laser_custom_prop_85.__KeyValueFromString("solid", "6")
+        sp_a2_triple_laser_custom_prop_85.__KeyValueFromString("targetname", "genericcustomprop")
 
   }
 
