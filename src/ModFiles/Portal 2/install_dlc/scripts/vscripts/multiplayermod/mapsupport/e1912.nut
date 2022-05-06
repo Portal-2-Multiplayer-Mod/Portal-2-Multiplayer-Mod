@@ -37,6 +37,11 @@ function E1912AfterCrashViewcontrol() {
         EntFire("E1912AfterCrashViewcontrolTele", "disable", "", 17.5, null)
         EntFire("E1912AfterCrashViewcontrol", "addoutput", "targetname E1912AfterCrashViewcontrolTele", 0.25, null)
         EntFire("E1912AfterCrashViewcontrolTele", "addoutput", "targetname E1912AfterCrashViewcontrolDone", 17.5, null)
+
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "player")) {
+            EntFireByHandle(Entities.FindByName(null, "crash-speedmod"), "ModifySpeed", "0.6", 0, ent, ent)
+        }
 }
 
 function E1912ScareViewcontrol() {
@@ -131,8 +136,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("E1912Viewcontrol", "addoutput", "targetname E1912ViewcontrolTele", 0.25, null)
         EntFire("E1912ViewcontrolTele", "addoutput", "targetname E1912ViewcontrolDone", 9, null)
 
-        CanJump(false)
-        CanCrouch(false)
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "player")) {
+            EntFireByHandle(Entities.FindByName(null, "speed_mod"), "ModifySpeed", "0.65", 0, ent, ent)
+        }
     }
 
     if (MSLoop) {
