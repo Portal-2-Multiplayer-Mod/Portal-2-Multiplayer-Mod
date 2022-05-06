@@ -109,6 +109,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         HasStartedE1912 <- false
         OnlyOnceE1912 <- true
         OnlyOnce2E1912 <- true
+        OnlyOnce3E1912 <- true
         NewSpawnPoint <- false
         DisableJumpmsp <- true
     }
@@ -171,11 +172,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (Entities.FindByName(null, "E1912CrashViewcontrolTele")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                p.SetOrigin(Vector(-882 6104 166))
-                p.SetVelocity(Vector(0, 0, 0))
+        if (OnlyOnce2E1912) {
+            if (Entities.FindByName(null, "E1912CrashViewcontrolTele")) {
+                local p = null
+                while (p = Entities.FindByClassname(p, "player")) {
+                    p.SetOrigin(Vector(-882 6104 154))
+                }
+                stoprenable <- true
+                OnlyOnce2E1912 <- false
             }
         }
 
@@ -187,7 +191,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnce2E1912) {
+        if (OnlyOnce3E1912) {
             if (Entities.FindByName(null, "E1912AfterCrashViewcontrolDone")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -200,7 +204,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
                 stoprenable <- true
                 NewSpawnPoint <- true
-                OnlyOnce2E1912 <- false
+                OnlyOnce3E1912 <- false
             }
         }
 
