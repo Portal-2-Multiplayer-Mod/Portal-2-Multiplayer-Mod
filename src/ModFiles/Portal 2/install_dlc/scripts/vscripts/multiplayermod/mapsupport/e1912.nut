@@ -6,57 +6,68 @@
 // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
 
 function E1912CrashViewcontrol() {
-        printl("Ran")
-        E1912CrashViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-        E1912CrashViewcontrol.__KeyValueFromString("targetname", "E1912CrashViewcontrol")
-        E1912CrashViewcontrol.__KeyValueFromString("target_team", "-1")
-        E1912CrashViewcontrol.SetOrigin(Entities.FindByName(null, "vehicle_crash").GetOrigin())
-        E1912CrashViewcontrol.SetAngles(0, 0, 0)
-        EntFire("E1912CrashViewcontrol", "setparent", "vehicle_crash", 0, null)
-        EntFire("E1912CrashViewcontrol", "setparentattachment", "vehicle_driver_eyes", 0, null)
-        EntFire("E1912CrashViewcontrol", "enable", "", 0, null)
-        EntFire("E1912CrashViewcontrolTele", "disable", "", 4, null)
-        EntFire("E1912CrashViewcontrol", "addoutput", "targetname E1912CrashViewcontrolTele", 0.1, null)
-        EntFire("E1912CrashViewcontrolTele", "addoutput", "targetname E1912CrashViewcontrolDone", 4, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global01"), "turnon", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global02"), "turnon", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global03"), "turnon", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global04"), "turnon", "", 0, null, null)
+    printl("Ran")
+    E1912CrashViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+    E1912CrashViewcontrol.__KeyValueFromString("targetname", "E1912CrashViewcontrol")
+    E1912CrashViewcontrol.__KeyValueFromString("target_team", "-1")
+    E1912CrashViewcontrol.SetOrigin(Entities.FindByName(null, "vehicle_crash").GetOrigin())
+    E1912CrashViewcontrol.SetAngles(0, 0, 0)
+    EntFire("E1912CrashViewcontrol", "setparent", "vehicle_crash", 0, null)
+    EntFire("E1912CrashViewcontrol", "setparentattachment", "vehicle_driver_eyes", 0, null)
+    EntFire("E1912CrashViewcontrol", "enable", "", 0, null)
+    EntFire("E1912CrashViewcontrolTele", "disable", "", 4, null)
+    EntFire("E1912CrashViewcontrol", "addoutput", "targetname E1912CrashViewcontrolTele", 0.1, null)
+    EntFire("E1912CrashViewcontrolTele", "addoutput", "targetname E1912CrashViewcontrolDone", 4, null)
+    EntFireByHandle(Entities.FindByName(null, "env_global01"), "turnon", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "env_global02"), "turnon", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "env_global03"), "turnon", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "env_global04"), "turnon", "", 0, null, null)
 }
 
 function E1912AfterCrashViewcontrol() {
-        printl("Ran")
-        E1912AfterCrashViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-        E1912AfterCrashViewcontrol.__KeyValueFromString("targetname", "E1912AfterCrashViewcontrol")
-        E1912AfterCrashViewcontrol.__KeyValueFromString("target_team", "-1")
-        E1912AfterCrashViewcontrol.SetOrigin(Entities.FindByName(null, "crash-vehicle_intro").GetOrigin())
-        E1912AfterCrashViewcontrol.SetAngles(0, 0, 0)
-        EntFire("E1912AfterCrashViewcontrol", "setparent", "crash-vehicle_intro", 0, null)
-        EntFire("E1912AfterCrashViewcontrol", "setparentattachment", "vehicle_driver_eyes", 0, null)
-        EntFire("E1912AfterCrashViewcontrol", "enable", "", 0, null)
-        EntFire("E1912AfterCrashViewcontrolTele", "disable", "", 17.5, null)
-        EntFire("E1912AfterCrashViewcontrol", "addoutput", "targetname E1912AfterCrashViewcontrolTele", 0.25, null)
-        EntFire("E1912AfterCrashViewcontrolTele", "addoutput", "targetname E1912AfterCrashViewcontrolDone", 17.5, null)
+    printl("Ran")
+    E1912AfterCrashViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+    E1912AfterCrashViewcontrol.__KeyValueFromString("targetname", "E1912AfterCrashViewcontrol")
+    E1912AfterCrashViewcontrol.__KeyValueFromString("target_team", "-1")
+    E1912AfterCrashViewcontrol.SetOrigin(Entities.FindByName(null, "crash-vehicle_intro").GetOrigin())
+    E1912AfterCrashViewcontrol.SetAngles(0, 0, 0)
+    EntFire("E1912AfterCrashViewcontrol", "setparent", "crash-vehicle_intro", 0, null)
+    EntFire("E1912AfterCrashViewcontrol", "setparentattachment", "vehicle_driver_eyes", 0, null)
+    EntFire("E1912AfterCrashViewcontrol", "enable", "", 0, null)
+    EntFire("E1912AfterCrashViewcontrolTele", "disable", "", 17.5, null)
+    EntFire("E1912AfterCrashViewcontrol", "addoutput", "targetname E1912AfterCrashViewcontrolTele", 0.25, null)
+    EntFire("E1912AfterCrashViewcontrolTele", "addoutput", "targetname E1912AfterCrashViewcontrolDone", 17.5, null)
 
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "player")) {
-            EntFireByHandle(Entities.FindByName(null, "crash-speedmod"), "ModifySpeed", "0.6", 0, ent, ent)
-        }
+    local ent = null
+    while (ent = Entities.FindByClassname(ent, "player")) {
+        EntFireByHandle(Entities.FindByName(null, "crash-speedmod"), "ModifySpeed", "0.6", 0, ent, ent)
+    }
 }
 
 function E1912ScareViewcontrol() {
-        printl("Ran")
-        E1912ScareViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
-        E1912ScareViewcontrol.__KeyValueFromString("targetname", "E1912ScareViewcontrol")
-        E1912ScareViewcontrol.__KeyValueFromString("target_team", "-1")
-        E1912ScareViewcontrol.SetOrigin(Entities.FindByName(null, "p2mmcrashvehicleoutrooverride").GetOrigin())
-        E1912ScareViewcontrol.SetAngles(0, 0, 0)
-        EntFire("E1912ScareViewcontrol", "setparent", "p2mmcrashvehicleoutrooverride", 0, null)
-        EntFire("E1912ScareViewcontrol", "setparentattachment", "vehicle_driver_eyes", 0, null)
-        EntFire("E1912ScareViewcontrol", "enable", "", 0, null)
-        EntFire("E1912ScareViewcontrolTele", "disable", "", 10, null)
-        EntFire("E1912ScareViewcontrol", "addoutput", "targetname E1912ScareViewcontrolTele", 0.1, null)
-        EntFire("E1912ScareViewcontrolTele", "addoutput", "targetname E1912ScareViewcontrolDone", 10, null)
+    printl("Ran")
+    E1912ScareViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+    E1912ScareViewcontrol.__KeyValueFromString("targetname", "E1912ScareViewcontrol")
+    E1912ScareViewcontrol.__KeyValueFromString("target_team", "-1")
+    E1912ScareViewcontrol.SetOrigin(Entities.FindByName(null, "p2mmcrashvehicleoutrooverride").GetOrigin())
+    E1912ScareViewcontrol.SetAngles(0, 0, 0)
+    EntFire("E1912ScareViewcontrol", "setparent", "p2mmcrashvehicleoutrooverride", 0, null)
+    EntFire("E1912ScareViewcontrol", "setparentattachment", "vehicle_driver_eyes", 0, null)
+    EntFire("E1912ScareViewcontrol", "enable", "", 0, null)
+    EntFire("E1912ScareViewcontrolTele", "disable", "", 10, null)
+    EntFire("E1912ScareViewcontrol", "addoutput", "targetname E1912ScareViewcontrolTele", 0.1, null)
+    EntFire("E1912ScareViewcontrolTele", "addoutput", "targetname E1912ScareViewcontrolDone", 10, null)
+    EntFireByHandle(Entities.FindByName(null, "env_global01"), "turnon", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "env_global02"), "turnon", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "env_global03"), "turnon", "", 0, null, null)
+    EntFireByHandle(Entities.FindByName(null, "env_global04"), "turnon", "", 0, null, null)
+}
+
+function E1912PostScare() {
+    EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+    EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+    EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+    EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
@@ -96,15 +107,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "timescale"), "SetDesiredTimescale", "0.5", 0.5, null, null)
         EntFireByHandle(Entities.FindByName(null, "crash-trigger_scare"), "addoutput", "OnStartTouch crash-relay_cannisters_monster_expolode:Trigger::0.1", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "crash-relay_break_out"), "addoutput", "OnTrigger p2mmcrashmovielogooverride:playmovieforallplayers::15.70", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "crash-trigger_scare"), "addoutput", "OnTrigger p2mm_servercommand:command:changelevel mp_coop_lobby_3:26", 0, null, null)
         Entities.FindByClassnameNearest("info_player_start", Vector(-722, -924, 26), 128).Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-900, 6110, 11), 16).Destroy()
         Entities.FindByName(null, "crash-aisc_monster_car_push").Destroy()
 
-        // Set up viewcontrol function fires
+        // Set up function fires
         EntFire("relay_view_crash", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912CrashViewcontrol():0.1")
         EntFire("@relay_Intro_setup_view2", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912AfterCrashViewcontrol()")
         EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912ScareViewcontrol():1.9")
-        EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:changelevel mp_coop_lobby_3:26")
+        EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912PostScare():23")
 
         HasStartedE1912 <- false
         OnlyOnceE1912 <- true
