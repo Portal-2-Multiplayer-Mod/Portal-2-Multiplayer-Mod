@@ -86,7 +86,7 @@ function SetCheats() {
     printl("===== Cheat Detection =====")
     printl("           " + CheatsOn)
     printl("===========================")
-    // SendToConsoleP2MM("sv_cheats 1")
+    // SendToConsoleP232("sv_cheats 1")
     AlwaysPrecachedModels()
 }
 
@@ -571,7 +571,7 @@ function DeleteAmountOfEntities(classname, amount) {
 
 PrecachedProps <- []
 function PrecacheModel(mdl) {
-    SendToConsoleP2MM("script PrecacheModelNoDelay(\"" + mdl + "\")")
+    SendToConsoleP232("script PrecacheModelNoDelay(\"" + mdl + "\")")
 }
 function PrecacheModelNoDelay(mdl) {
         // Add the models/ to the side of the model name if it's not already there
@@ -597,12 +597,12 @@ function PrecacheModelNoDelay(mdl) {
     if (!Entities.FindByModel(null, mdl) && NotPrecached) {
         PrecachedProps.push(minimdl)
         if (!CheatsOn) {
-            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
+            SendToConsoleP232("sv_cheats 1; prop_dynamic_create " + minimdl)
         } else {
-            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
+            SendToConsoleP232("sv_cheats 1; prop_dynamic_create " + minimdl)
         }
         if (!CheatsOn) {
-            SendToConsoleP2MM("sv_cheats 0")
+            SendToConsoleP232("sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
         if (GetDeveloperLevel()) {
@@ -1470,10 +1470,10 @@ function SendClientCommand(command, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            EntFire("clientcommand", "command", command, 0, p)
+            EntFire("p2mm_clientcommand", "command", command, 0, p)
         }
     } else {
-        EntFire("clientcommand", "command", command, 0, player)
+        EntFire("p2mm_clientcommand", "command", command, 0, player)
     }
 }
 
@@ -1861,7 +1861,7 @@ function CreateOurEntities() {
 
     // Create an entity that sends miscellaneous client commands
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
-    clientcommand.__KeyValueFromString("targetname", "clientcommand")
+    clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand")
 }
 
 
@@ -2134,7 +2134,7 @@ function CreateOurEntities() {
 
 
     function SendChatMessage(message) {
-        SendToConsoleP2MM("say " + message)
+        SendToConsoleP232("say " + message)
     }
 
     function RemoveDangerousChars(str) {

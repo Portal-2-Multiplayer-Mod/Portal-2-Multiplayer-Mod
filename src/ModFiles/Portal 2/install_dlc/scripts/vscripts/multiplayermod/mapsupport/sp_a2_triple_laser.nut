@@ -27,7 +27,7 @@ if (!FutBolGamemode) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(6494, -5376, -273), 50)) {
 
-                SendToConsoleP2MM("changelevel sp_a2_bts1")
+                SendToConsoleP232("changelevel sp_a2_bts1")
             }
 
             // Elevator env_projectedtexture
@@ -62,7 +62,7 @@ if (!FutBolGamemode) {
             EntFire("p2mm_servercommand", "command", "script CurrentlySpawningFutBol = false", 0.1)
             if (CanSpawnFutBol) {
                 SpawnFutBol("futbol_in_map", Vector(7777, -5668, 225))
-                SendToConsoleP2MM("script DecEntFireByHandle(Entities.FindByClassname(null, \"prop_glass_futbol\"), \"break\", \"\",30)")
+                SendToConsoleP232("script DecEntFireByHandle(Entities.FindByClassname(null, \"prop_glass_futbol\"), \"break\", \"\",30)")
             }
     }
 
@@ -73,20 +73,20 @@ if (!FutBolGamemode) {
         }
     }
 
-    function StartGame() {
-        GameRunning <- true
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            printl("Player " + p  + " has joined the game.")
-            if (p.GetTeam() == 3) {
-                p.SetOrigin(Vector(8169, -5664, 64))
-                p.SetAngles(0, -180, 0)
-            } else if (p.GetTeam == 2) {
-                p.SetOrigin(Vector(7587, -5726,64))
-                p.SetAngles(0, 0, 0)
+        function StartGame() {
+            GameRunning <- true
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                printl("Player " + p  + " has joined the game.")
+                if (p.GetTeam() == 3) {
+                    p.SetOrigin(Vector(8169, -5664, 64))
+                    p.SetAngles(0, -180, 0)
+                } else {
+                    p.SetOrigin(Vector(7587, -5726,64))
+                    p.SetAngles(0, 0, 0)
+                }
             }
         }
-    }
 
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
         if (MSInstantRun) {
@@ -176,7 +176,7 @@ if (!FutBolGamemode) {
                     if (FutBolTeams[0].score  >= desiredscore) {
                         GameRunning = false
                         CanSpawnFutBol = false
-                        SendToConsoleP2MM("say BLUE WON THE GAME!")
+                        SendToConsoleP232("say BLUE WON THE GAME!")
                         DecEntFireByHandle(BlueGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
                         DecEntFireByHandle(RedGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
                         DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
@@ -184,17 +184,17 @@ if (!FutBolGamemode) {
                     } else if (FutBolTeams[1].score  >= desiredscore) {
                         GameRunning = false
                         CanSpawnFutBol = false
-                        SendToConsoleP2MM("say RED WON THE GAME!")
+                        SendToConsoleP232("say RED WON THE GAME!")
                         DecEntFireByHandle(BlueGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
                         DecEntFireByHandle(RedGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
                         DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
                         DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
                         EntFire("p2mm_servercommand", "command", "say Game Restarts In 5 Seconds", 0)
-                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 4 Seconds", 1)
-                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 3 Seconds", 2)
-                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 2 Seconds", 3)
-                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 1 Second", 4)
-                        EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName(), 5)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 4  Seconds", 1)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 3  Seconds", 2)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 2  Seconds", 3)
+                        EntFire("p2mm_servercommand", "command", "say Game Restarts In 1  Second", 4)
+                        EntFire("p2mm_servercommand", "command", "portal2mpSa8t", 5)
                     }
                 }
 

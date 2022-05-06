@@ -1472,10 +1472,10 @@ function SendClientCommand(command, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            EntFire("clientcommand", "command", command, 0, p)
+            EntFire("p2mm_clientcommand", "command", command, 0, p)
         }
     } else {
-        EntFire("clientcommand", "command", command, 0, player)
+        EntFire("p2mm_clientcommand", "command", command, 0, player)
     }
 }
 
@@ -1863,5 +1863,5 @@ function CreateOurEntities() {
 
     // Create an entity that sends miscellaneous client commands
     clientcommand <- Entities.CreateByClassname("point_clientcommand")
-    clientcommand.__KeyValueFromString("targetname", "clientcommand")
+    clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand")
 }

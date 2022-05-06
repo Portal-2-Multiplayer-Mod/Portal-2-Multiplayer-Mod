@@ -160,10 +160,9 @@ function OnPlayerJoin(p, script_scope) {
 
 // Runs after a player dies
 function OnPlayerDeath(player) {
-    MapSupport(false, false, false, false, false, player, false)
-    
     if (GetDeveloperLevel()) {
         printl("(P2:MM): Player died!")
+        MapSupport(false, false, false, false, false, player, false)
     }
 }
 
@@ -587,7 +586,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
             if (commandrunner == player) {
                 SendToConsole("say " + playername + ": You probably dont want to kick yourself. If you do then use kick " + playername + ".")
             } else {
-                EntFire("clientcommand", "command", "disconnect", 0, player)
+                EntFire("p2mm_clientcommand", "command", "disconnect", 0, player)
             }
         } else {
             local reason = ""
@@ -596,7 +595,7 @@ function ChatCommandRunner(player, playername, command, level, commandrunner = n
             }
             local playertokick = FindPlayerByName(command[1])
             if (playertokick != null) {
-                EntFire("clientcommand", "command", "disconnect" + reason, 0, playertokick)
+                EntFire("p2mm_clientcommand", "command", "disconnect" + reason, 0, playertokick)
             } else {
                 SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
             }
