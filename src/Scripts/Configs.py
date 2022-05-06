@@ -60,6 +60,15 @@ DefaultConfigFile = {
             "warning" : "(only use for public games) may break some functionality",
             "prompt" : "Encrypt cvars?",
         },
+    
+    "SafeGuard":
+        {
+            "value" : "false",
+            "menu" : "portal2",
+            "description" : "Encrypts vscript functions such as \"SendToConsole(\"\")\"", 
+            "warning" : "(only use for public games) may break some functionality",
+            "prompt" : "Encrypt specific vscript functions?",
+        },
 }
 
 # verifies the config file by making sure that the processed data has the same keys as the default 
@@ -79,6 +88,13 @@ def VerifyConfigFileIntegrity(config):
     # if the config keys are the same as the default then just return them
     else:
         return config
+
+def GetConfigList(search, val):
+    lst = []
+    for key in GVars.configData:
+        if GVars.configData[key][search] == val:
+            lst.append(key)
+    return lst
 
 def WriteConfigFile(configs):
     filepath = FindConfigPath()

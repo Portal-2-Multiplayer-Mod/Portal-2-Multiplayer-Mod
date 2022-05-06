@@ -7,6 +7,7 @@ import threading
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
+import Scripts.Configs as cfg
 import subprocess
 import Scripts.BasicFunctions as BF
 import random
@@ -49,19 +50,88 @@ def UnEncryptEncryptions():
     for cmdrep in CommandReplacements:
         cmdrep[2] = cmdrep[1]
     Log("Finished UnEncrypting Encryptions")
+
+def SetVscriptConfigFile(vsconfigfile):
+    Log("")
+    Log("")
+    Log("")
+    Log("")
+    Log("")
+    Log("====================================================")
+    Log("Setting VScript config file: " + vsconfigfile)
+    Log("")
+    p2cfgs = cfg.GetConfigList("menu", "portal2")
+
+    f = open(vsconfigfile, "r", encoding="utf-8")
+    lines = f.readlines()
+    
+    indx = -1
+    for line in lines:
+        indx += 1
+        # remove all spaces
+        line = line.strip().replace(" ", "")
         
+        # if the line contains a // remove it
+        if (line.find("//") != -1):
+            line = line.split("//")[0]
+        # if the line is empty skip it
+        if (line == ""):
+            continue
+        # if the line doesnt contain a = or <- skip it
+        if (line.find("=") == -1 and line.find("<-") == -1):
+            continue
+
+        Before = ""
+        After = ""
+
+        # if the line has a <-
+        if (line.find("<-") != -1):
+            # split the <-
+            Before = line.split("<-")[0]
+            After = line.split("<-")[1]
+
+        # if the line has a =
+        if (line.find("=") != -1):
+            # split the =
+            Before = line.split("=")[0]
+            After = line.split("=")[1]
+
+        for p2cfg in p2cfgs:
+            if (Before == p2cfg):
+                val = GVars.configData[p2cfg]["value"]
+                Log("Setting " + p2cfg + " To " + val)
+                line = Before + " <- " + val
+                Log(line)
+                lines[indx] = line + "\n"
+
+    f.close()
+    f = open(vsconfigfile, "w", encoding="utf-8")
+    f.writelines(lines)
+
+
+
+    Log("====================================================")
+    Log("")
+    Log("")
+    Log("")
+    Log("")
+    Log("")
+    
+
 def MountMod(gamepath, encrypt = False):
     Log("")
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
-    
+
     modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
-    
+
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
-    
+
     destination = BF.CopyFolder(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
     Log("Successfully copied the mod files to "+ destination)
+
+    SetVscriptConfigFile(gamepath + GVars.nf + dlcmountpoint + GVars.nf + "scripts" + GVars.nf + "vscripts" + GVars.nf + "multiplayermod" + GVars.nf + "config.nut")
 
     #### ENCRYPT THE CVARS #####
     Log("____ENCRYPTING CVARS____")
