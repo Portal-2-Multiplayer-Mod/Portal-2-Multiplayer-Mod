@@ -875,7 +875,7 @@ if (GetMapName() == "sp_a1_intro1") {
         //sp_a1_intro1_custom_prop_103.__KeyValueFromString("rendermode", "10")
 
         // ContainerDeskPropCollision
-        local sp_a1_intro1_custom_prop_104 = CreateProp("prop_physics", Vector(-5734, 2030, 138), "models/props_factory/turret_factory_open/turret_factory_open.mdl", 0)
+        local sp_a1_intro1_custom_prop_104 = CreateProp("prop_physics", Vector(-5733, 2028, 138), "models/props_factory/turret_factory_open/turret_factory_open.mdl", 0)
         sp_a1_intro1_custom_prop_104.SetAngles(0, 180, 0)
         sp_a1_intro1_custom_prop_104.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_104.__KeyValueFromString("targetname", "ContainerDeskPropCollision")
