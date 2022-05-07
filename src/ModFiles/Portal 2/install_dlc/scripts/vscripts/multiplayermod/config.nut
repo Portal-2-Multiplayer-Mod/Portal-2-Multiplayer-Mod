@@ -50,8 +50,10 @@ SafeGuard <- false
 TickSpeed <- 0.00
 
 // If the P2:MM plugin loads, then this is the list of players that have access to admin commands, along with admin level
-// The highest number declared is the highest admin level and different people can have the same admin level
-// Format it like this: Admins <- ["[3]MyExactSteamUsername", "[2]MyFriendsUsername", "[1]MyOtherFriendsUsernameWithLessPower"]
+// the highest admin level is (6) and different people can have the same admin level
+// Format it like this:
+// "[AdminLevel]SteamID", // Username
+
 Admins <- [
 "[420]182933216", // kyleraykbs
 "[69]75927374", // Wolƒe Strider Shoσter
