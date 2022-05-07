@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     // Music doesn't play at the end (Moja)
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         PermaPotato <- true
         // GlobalSpawnClass.blue.spawnpoint <- Vector(-609.265137, 1875.096680, -100)
         // GlobalSpawnClass.red.spawnpoint <- Vector(-609.265137, 1875.096680, -100)
@@ -27,11 +27,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
 
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2240, -208, 400), 50)) {

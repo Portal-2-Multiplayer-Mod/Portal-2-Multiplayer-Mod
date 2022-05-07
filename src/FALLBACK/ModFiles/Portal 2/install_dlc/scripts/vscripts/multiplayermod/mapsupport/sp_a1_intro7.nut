@@ -15,7 +15,7 @@ function PutStickInAss() {
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
     //         usesetspawn = false
 
     // // Set SpawnPoint
@@ -73,12 +73,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger @sphere:kill::0.5")
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
     }
 
-    if (MSLoop==true) {
-        if (amogos == true) {
+    if (MSLoop) {
+        if (amogos) {
             try {
                 local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_top_swivel_1").GetOrigin(), 10000)
                 EntFireByHandle(Entities.FindByName(null, "spherebot_1_top_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)

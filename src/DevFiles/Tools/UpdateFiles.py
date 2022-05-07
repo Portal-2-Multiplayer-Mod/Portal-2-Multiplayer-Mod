@@ -27,7 +27,7 @@ def SaveData():
         "Files":[]
     }
 
-    # loop until the given paht is a file (please don't fuck this up just copy the identifier's relative path)
+    # loop until the given path is a file (Just copy the identifier's relative path)
     while not os.path.isfile(filesData["Path"]):
         filesData["Path"] = input("input the relative path for the identifier file ")
     

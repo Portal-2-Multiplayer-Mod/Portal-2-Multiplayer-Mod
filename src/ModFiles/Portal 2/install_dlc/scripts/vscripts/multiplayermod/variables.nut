@@ -17,7 +17,7 @@
 //                  P2:MM codebase
 //---------------------------------------------------
 
-if (RandomPortalSize==true) {
+if (RandomPortalSize) {
     randomportalsize <- 34
     randomportalsizeh <- 34
 }
@@ -103,10 +103,10 @@ fogs <- false
 CurrentPythonOutputID <- 0
 CurrentPythonInputID <- 0
 
-FailSafeEntityCap <- 2010
+FailsafeEntityCap <- 2010
 EntityCap <- 2000
 EntityCapLeeway <- 20
-ExpendableEntitys <- [
+ExpendableEntities <- [
     "logic_auto",
     "logic_autosave",
     "env_viewpunch",
@@ -121,7 +121,6 @@ ExpendableEntitys <- [
     "prop_physics",
     "prop_physics_override",
     "prop_physics_multiplayer",
-    "prop_detail",
     "prop_detail",
     "prop_dynamic_ornament",
     "prop_dynamic_override",
@@ -146,11 +145,12 @@ ConsoleAscii <- [
 "██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░███████╗"
 "╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░╚══════╝"
 ""
-"███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░"
-"████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗"
-"██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║"
-"██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║"
-"██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝"
+"░░░░░░███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░░░░░░"
+"░░░░░░████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗░░░░░"
+"░░░░░░██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║░░░░░"
+"░░░░░░██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║░░░░░"
+"░░░░░░██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝░░░░░"
+"░░░░░░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░╚═╝░░░░░╚═╝░╚════╝░╚═════╝░░░░░░"
 ""
 ]
 
@@ -167,33 +167,36 @@ MPMCoopCreditNames <- [
 "###--------------------------",
 "###P2:MM Head Creators",
 "###--------------------------",
-"kyleraykbs | Team Lead + Scripting",
+"kyleraykbs | Team Lead + Script + Launcher",
 "Vista | Reverse Engineering, Plugin Developer",
 "Bumpy | Script Theory",
-"Wolƒe Strider Shoσter | Scripting + Singleplayer Support",
+"Wolƒe Strider Shoσter | Singleplayer Support",
 "Nanoman2525 | Mapping + Entity Work + Launcher",
 "###--------------------------",
 "###P2:MM Team Members",
 "###--------------------------",
 "cabiste | Scripting + Mod Launcher + Code Refactor",
-"sear | Theorycrafting + Ideas",
-"Jeffrey | Ideas",
 "###--------------------------",
-"###Multiplayer Mod: Contributers",
+"###P2:MM Contributers",
 "###--------------------------",
+"sear | Speedrun Mode Ideas",
+"Dreadnox | Speedrun Mode Ideas",
+"Jeffrey | Previous Code Cleanup",
+"Enator18 | Python Dev"
+"Blub/Vecc | Previous Code Commenting",
 "Darnias | Jumpstarter Code",
-"actu | Remote File Downloads",
-"Blub/Vecc | Code Cleanup + Commenting",
-"AngelPuzzle | Translations for other langauges",
-"SuperSpeed | Heavy playtesting",
 "###--------------------------",
-"###Special thanks to...",
+"###Special Thanks To:",
 "###--------------------------",
-"Dreadnox",
-"Slingexe",
-"nintendude",
-"Souper Marilogi",
-"wol",
+"SuperSpeed",
+"Mystical Ace",
+"ANotSoSpookySkeleton",
+"Panter",
+"tnp|\\n|thewoodster75",
+"ThePineapple",
+"PieCreeper",
+"SuperSpeed",
+"Brawler",
 "###--------------------------",
 "###Valve: Credits",
 "###--------------------------",

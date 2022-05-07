@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun == true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         Entities.FindByName(null, "door_0-door_close_relay").Destroy()
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
@@ -25,12 +25,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         a1HasPortalGun <- false
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
     }
 
-    if (MSLoop==true) {
-        if (a1HasPortalGun == false) {
+    if (MSLoop) {
+        if (!a1HasPortalGun) {
             // Remove Portal Gun
             local ent = null
             while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {

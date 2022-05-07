@@ -7,15 +7,15 @@
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
 
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
 
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
 
         }
     }
@@ -24,18 +24,18 @@
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
             NewApertureStartElevatorFixes()
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
@@ -48,18 +48,18 @@
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
             NewApertureStartElevatorFixes()
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
@@ -72,18 +72,18 @@
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             // Here if we need to ent_fire something
             EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
             // Destroy objects
             Entities.FindByName(null, "NAME").Destroy()
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
 
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             // Make our own changelevel trigger
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 50)) {
@@ -96,18 +96,18 @@
 
     //## MAPNAME ##//
     if (GetMapName()=="LEVELNAME") {
-        if (MSInstantRun==true) {
+        if (MSInstantRun) {
             // Make elevator start moving on level load
             EntFireByHandle(Entities.FindByName(null, "InstanceAuto8-entrance_lift_train"), "StartForward", "", 0, null, null)
             // Destroy objects
             Entities.FindByName(null, "fade_to_death-proxy").Destroy()
         }
 
-        if (MSPostPlayerSpawn==true) {
+        if (MSPostPlayerSpawn) {
 
         }
 
-        if (MSLoop==true) {
+        if (MSLoop) {
             // Elevator changelevel
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(1, 2, 3), 100)) {

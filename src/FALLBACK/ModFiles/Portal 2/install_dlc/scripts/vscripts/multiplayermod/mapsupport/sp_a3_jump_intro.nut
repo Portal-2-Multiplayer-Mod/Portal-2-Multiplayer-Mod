@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
@@ -17,12 +17,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OnlyOnceSp_A3_Jump_Intro <- true
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto12-entrance_lift_train"), "StartForward", "", 2, null, null)
         EntFire("tick", "kill", "", 2, null)
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         if (!Entities.FindByName(null, "tick")) {
             OnlyOnceSp_A3_Jump_Intro <- false
         }
@@ -45,7 +45,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
 
-        if (OnlyOnceSp_A3_Jump_Intro == true) {
+        if (OnlyOnceSp_A3_Jump_Intro) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 p.SetOrigin(Vector(-8880, 2096, -458))

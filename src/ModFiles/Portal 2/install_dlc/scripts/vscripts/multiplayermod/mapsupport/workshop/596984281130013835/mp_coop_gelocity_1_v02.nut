@@ -46,7 +46,7 @@ function RemoveLap() {
 }
 
 function Lap(player) {
-    if (WonGame == false) {
+    if (!WonGame) {
         local playerclass = FindPlayerClass(player)
         try { playerclass.laps } catch(e) { playerclass.laps <- -1 }
         playerclass.laps <- playerclass.laps + 1
@@ -88,7 +88,7 @@ function Lap(player) {
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         local ent = null
         while (ent = Entities.FindByClassname(ent, "info_coop_spawn")) {
             if (ent.GetName() != "blue_dropper-initial_spawn" && ent.GetName() != "red_dropper-initial_spawn" && ent.GetName() != "blue_spawner1" && ent.GetName() != "red_spawner1") {
@@ -115,7 +115,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         
     }
 
@@ -123,7 +123,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     } 
 
-    if (MSLoop==true) {
+    if (MSLoop) {
 
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(2165, -2195, 368), 128)) {

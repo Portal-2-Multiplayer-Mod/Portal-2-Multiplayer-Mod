@@ -73,7 +73,7 @@ PermaDestroyCubesSpA4Intro <- false
 FullDisableOldDropper <- false
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
         PermaPotato <- true
         rollang <- 0
@@ -130,7 +130,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("button_1_solved", "addoutput", "OnTrigger button_1_solved_TURRETNAMECHANGE:kill::17", 0.25, null)
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
         Entities.FindByName(null, "cube_dropper_prop").SetOrigin(Vector(-304.09375, -255.03125, 437.96875))
         Entities.FindByName(null, "cube_dropper_prop").SetAngles(3.4029681046377e-06, -21.125003814697, 29.531248092651)
@@ -144,13 +144,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         SpawnCube = false
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         if (Entities.FindByName(null, "turret_bot4_monster")) {
             CanSpawnCubeInit = true
         }
 
-        if (FullDisableOldDropper == false) {
-            if (SpawnCube == true) {    
+        if (!FullDisableOldDropper) {
+            if (SpawnCube) {    
                 if (CubeBeingSpawned != null) {
                     local output = 0
                     try {
@@ -171,7 +171,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                     CubeBeingSpawned.SetAngles(0, CubeBeingSpawned.GetAngles().y+RandomInt(3, 8), CubeBeingSpawned.GetAngles().z+RandomInt(3, 8))
 
-                    if (output == true) {
+                    if (output) {
                         SpawnCube = false
                         EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
                         EntFireByHandle(CubeBeingSpawned, "BecomeMonster", "", 3, null, null)
@@ -188,11 +188,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (FullDisableOldDropper == false) {
+        if (!FullDisableOldDropper) {
             if (Entities.FindByClassnameNearest("prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800)) {
             } else {
-                if (CanSpawnCubeInit == true) {
-                    if (SpawnCube == false) {
+                if (CanSpawnCubeInit) {
+                    if (!SpawnCube) {
                         SpawnBackupCube()
                     }
                 }
@@ -200,7 +200,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (!Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20)) {
-            if (OnlyOnceSp_A4_Intro_1==true) {
+            if (OnlyOnceSp_A4_Intro_1) {
                 Entities.FindByName(null, "floor_gate1-cover_arm").SetOrigin(Vector(1056, 384, 128))
                 EntFireByHandle(Entities.FindByName(null, "floor_gate1-floor_panel"), "clearparent", "", 0, null, null)
                 Entities.FindByName(null, "floor_gate1-floor_panel").SetAngles(0, 0, 0)
@@ -229,7 +229,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                             canteleport = false
                         }
                     }
-                    if (canteleport==true) {
+                    if (canteleport) {
                         p.SetOrigin(Vector(1056, 384, 512))
                     }
                 }
@@ -268,7 +268,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceSpA4Intro==true) {
+        if (OnlyOnceSpA4Intro) {
             if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
                 printl("(P2:MM): Elevator viewcontrol activated!")
                 // Elevator viewcontrol

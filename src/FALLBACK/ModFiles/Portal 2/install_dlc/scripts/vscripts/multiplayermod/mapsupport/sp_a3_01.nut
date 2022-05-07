@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         stoprenable <- false
 
         // Create env_globals
@@ -45,7 +45,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OnlyOnceSp_A3_01 <- true
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         HasStartedSp_A3_01 <- true
         EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay8", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "knockout_start"), "Trigger", "", 1, null, null)
@@ -65,14 +65,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSOnPlayerJoin != false) {
-        if (stoprenable==true) {
+        if (stoprenable) {
             printl("Player Joined (Reseting Viewcontrols)")
             EntFire("Sp_A3_01Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A3_01Viewcontrol", "enable", "", 0.6, null)
         }
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         local p = Entities.FindByClassnameWithin(null, "player", Vector(-10240, 3072, 36), 128)
         try {
             if (p.GetOrigin().z >= -128) {
@@ -81,7 +81,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         } catch(exception) {}
 
-        if (HasStartedSp_A3_01 == false) {
+        if (!HasStartedSp_A3_01) {
             EntFireByHandle(Entities.FindByName(null, "knockout-fadeout"), "fade", "", 0, null, null)
         }
 
@@ -94,7 +94,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (OnlyOnceSp_A3_01 == true) {
+        if (OnlyOnceSp_A3_01) {
             if (Entities.FindByName(null, "Sp_A3_01ViewcontrolDone")) {
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {

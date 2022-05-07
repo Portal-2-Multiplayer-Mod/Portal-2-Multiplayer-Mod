@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         PermaPotato <- true
         Entities.FindByName(null, "portal_chamber_1").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "portal_chamber_2").__KeyValueFromString("targetname", "moja2")
@@ -33,12 +33,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-3152, -1928, -240), 20).Destroy()
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         EntFireByHandle(Entities.FindByName(null, "entrance_door-open_door"), "Trigger", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "music01"), "PlaySound", "", 0, null, null)
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // Make our own changelevel trigger
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3152, -1928, -240), 100)) {

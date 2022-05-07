@@ -6,7 +6,7 @@
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝ ╚════╝ ╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝   ╚═╝   ╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         // Remove selected pods
         function CreditsRemovePod() {
             local ent = null
@@ -58,7 +58,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         foreach (anim in NOTubeAnimsPB) {
             // this operation gonna work once only that's why i added a break
             // for more optimizations we can also remove the variable 'HasRemovedPod' since it's not doing anything
-            if (AnimationsPB[RandomAnimation] == anim && HasRemovedPod == false) {
+            if (AnimationsPB[RandomAnimation] == anim && !HasRemovedPod) {
                 HasRemovedPod <- true
                 CreditsRemovePod()
                 break
@@ -117,7 +117,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         foreach (anim in NOTubeAnimsAL) {
             // this operation gonna work once only that's why i added a break
             // for more optimizations we can also remove the variable 'HasRemovedPod' since it's not doing anything
-            if (AnimationsAL[RandomAnimation] == anim && HasRemovedPod == false) {
+            if (AnimationsAL[RandomAnimation] == anim && !HasRemovedPod) {
                 HasRemovedPod <- true
                 CreditsRemovePod()
                 ent.SetOrigin(Vector(0, 0, 7.5))
@@ -170,11 +170,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
 
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
         // If mod credits aren't finished change humans to robots
         if (MPMCredits <= MPModCreditNumber) {
             // Change males to Atlases

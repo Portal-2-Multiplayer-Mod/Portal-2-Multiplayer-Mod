@@ -19,7 +19,7 @@ function RoundsButtonRemove1() {
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
 
         // door_start_2_2
         // door_start_2_1
@@ -62,20 +62,20 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("rounds_button_1", "addoutput", "OnPressed p2mm_servercommand:command:script RoundsButtonRemove1()")
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         printl("Removed: " + TotalRemovedEnts + " Entities")
     }
 
-    if (MSLoop==true) {
+    if (MSLoop) {
 
         local p = null
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1150.777283, 792.685608, -191.968750), 500)) {
             local pname = p.GetName()
-            if (PluginLoaded == true) {
+            if (PluginLoaded) {
                 pname = GetPlayerName(p.entindex())
             }
 
-            if (GameDoneGelocity == false) {
+            if (!GameDoneGelocity) {
                 try {
                     local pclass = FindPlayerClass(p)
                     if (pclass.laps > GelocityRounds) {
@@ -93,18 +93,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        if (GameDoneGelocity == false) {
+        if (!GameDoneGelocity) {
             // Finish Line
             local p = null
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1150.777283, 792.685608, -191.968750), 500)) {
                 local pname = p.GetName()
-                if (PluginLoaded == true) {
+                if (PluginLoaded) {
                     pname = GetPlayerName(p.entindex())
                 }
 
                 local pclass = FindPlayerClass(p)
                 try {
-                    if (pclass.hitcheckpoint == true) {
+                    if (pclass.hitcheckpoint) {
                         pclass.laps <- pclass.laps + 1
                         pclass.hitcheckpoint <- false
 
@@ -113,11 +113,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         // Set Message Text
                         local pcolor = GetPlayerColor(p, true)
                         
-                        if (GameDoneGelocity == false) {
+                        if (!GameDoneGelocity) {
                             Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("message", pname +" is on lap " + pclass.laps)
                             Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
                         }
-                        if (PluginLoaded != true) {
+                        if (!PluginLoaded) {
                             if (p.GetName() == "blue") {
                                 Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("message", "player1 is on lap " + pclass.laps)
                             }
@@ -139,7 +139,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             while (p = Entities.FindByClassnameWithin(p, "player", Vector(-2412.738770, -2896.909912, -299.889404), 750)) {
                 local pclass = FindPlayerClass(p)
                 try {
-                    if (pclass.hitcheckpoint == false) {
+                    if (!pclass.hitcheckpoint) {
                         pclass.hitcheckpoint <- true
                         printl("HitCheckpoint: " + pclass.hitcheckpoint)
                     }

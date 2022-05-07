@@ -6,7 +6,7 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝  ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun==true) {
+    if (MSInstantRun) {
         // Make some blackkkkk
         inffade <- true
 
@@ -54,13 +54,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global04, "turnon", "", 1.1, null, null)
     }
 
-    if (MSLoop==true) {
-        if (inffade==true) {
+    if (MSLoop) {
+        if (inffade) {
             EntFire("start_ride_fade", "fade", "", 0, null)
         }
     }
 
-    if (MSPostPlayerSpawn==true) {
+    if (MSPostPlayerSpawn) {
         // Fire every single event in the map
         EntFireByHandle(Entities.FindByName(null, "tube_main_prop_1"), "SetAnimation", "bts6_A5", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "tube_main_prop_2"), "SetAnimation", "bts6_A4", 0, null, null)

@@ -7,6 +7,7 @@ import threading
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
+import Scripts.Configs as cfg
 import subprocess
 import Scripts.BasicFunctions as BF
 import random
@@ -49,19 +50,88 @@ def UnEncryptEncryptions():
     for cmdrep in CommandReplacements:
         cmdrep[2] = cmdrep[1]
     Log("Finished UnEncrypting Encryptions")
+
+def SetVscriptConfigFile(vsconfigfile):
+    Log("")
+    Log("")
+    Log("")
+    Log("")
+    Log("")
+    Log("====================================================")
+    Log("Setting VScript config file: " + vsconfigfile)
+    Log("")
+    p2cfgs = cfg.GetConfigList("menu", "portal2")
+
+    f = open(vsconfigfile, "r", encoding="utf-8")
+    lines = f.readlines()
+    
+    indx = -1
+    for line in lines:
+        indx += 1
+        # remove all spaces
+        line = line.strip().replace(" ", "")
         
+        # if the line contains a // remove it
+        if (line.find("//") != -1):
+            line = line.split("//")[0]
+        # if the line is empty skip it
+        if (line == ""):
+            continue
+        # if the line doesnt contain a = or <- skip it
+        if (line.find("=") == -1 and line.find("<-") == -1):
+            continue
+
+        Before = ""
+        After = ""
+
+        # if the line has a <-
+        if (line.find("<-") != -1):
+            # split the <-
+            Before = line.split("<-")[0]
+            After = line.split("<-")[1]
+
+        # if the line has a =
+        if (line.find("=") != -1):
+            # split the =
+            Before = line.split("=")[0]
+            After = line.split("=")[1]
+
+        for p2cfg in p2cfgs:
+            if (Before == p2cfg):
+                val = GVars.configData[p2cfg]["value"]
+                Log("Setting " + p2cfg + " To " + val)
+                line = Before + " <- " + val
+                Log(line)
+                lines[indx] = line + "\n"
+
+    f.close()
+    f = open(vsconfigfile, "w", encoding="utf-8")
+    f.writelines(lines)
+
+
+
+    Log("====================================================")
+    Log("")
+    Log("")
+    Log("")
+    Log("")
+    Log("")
+    
+
 def MountMod(gamepath, encrypt = False):
     Log("")
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
-    
+
     modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
-    
+
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
-    
+
     destination = BF.CopyFolder(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
     Log("Successfully copied the mod files to "+ destination)
+
+    SetVscriptConfigFile(gamepath + GVars.nf + dlcmountpoint + GVars.nf + "scripts" + GVars.nf + "vscripts" + GVars.nf + "multiplayermod" + GVars.nf + "config.nut")
 
     #### ENCRYPT THE CVARS #####
     Log("____ENCRYPTING CVARS____")
@@ -219,7 +289,7 @@ def PatchBinaries(gamepath):
         # commentary fix (i think)
         data = data.replace(bytes.fromhex("84 c0 0f 84 f5 fc ff ff 8b 06 8d 93 ee 96 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 31 76 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 b7 74 2a 00 5a ff b4 24 88 00 00 00 50 8d 83 44 a0 d5 ff 50 ff b4 24 8c 00 00 00 56 ff d7 83 c4 20 31 ff e9 ff fe ff ff 8d"), bytes.fromhex("84 d8 0f 84 f5 fc ff ff 8b 06 8d 93 ee 96 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 31 76 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 b7 74 2a 00 5a ff b4 24 88 00 00 00 50 8d 83 44 a0 d5 ff 50 ff b4 24 8c 00 00 00 56 ff d7 83 c4 20 31 ff e9 ff fe ff ff 8d"))
         # steam validation removal
-        data = data.replace(bytes.fromhex("83 f8 03 74 6c e8 a7 7d 24 00 83 ec 08 ff 74 24 4c 50 e8 ca 93 24 00 83 c4 10 84 c0 75 20 8b 16 88 44 24 0f 8d 8b 56 94 d5 ff 83 ec 04 51 57 56 ff 92 d0 00 00 00 0f b6 44 24 1f 83 c4 10 83 c4 2c 5b 5e 5f 5d c3 8d 76 00 8b 06 8d 93 26 94 d5 ff"), bytes.fromhex("83 f8 69 74 6c e8 a7 7d 24 00 83 ec 08 ff 74 24 4c 50 e8 ca 93 24 00 83 c4 10 84 c0 75 20 8b 16 88 44 24 0f 8d 8b 56 94 d5 ff 83 ec 04 51 57 56 ff 92 d0 00 00 00 0f b6 44 24 1f 83 c4 10 83 c4 2c 5b 5e 5f 5d c3 8d 76 00 8b 06 8d 93 26 94 d5 ff"))
+        data = data.replace(b"\xFF\x90\xD0\x00\x00\x00\x83\xC4\x10\x31\xC0", b"\x31\xC0\x40\x83\xC4\x10\xEB\x03\x10\x31\xC0")
         # write the data back to the file
         open(gamepath + GVars.nf + "engine.so", "wb").write(data)
 
