@@ -1155,7 +1155,7 @@ function GetAdminLevel(plr) {
         local level = split(admin, "[]")[0]
         local steamid = split(admin, "]")[1]
 
-        if (steamid==FindPlayerClass(plr).steamid) {
+        if (steamid==FindPlayerClass(plr).steamid.tostring()) {
             return level.tointeger()
         }
     }

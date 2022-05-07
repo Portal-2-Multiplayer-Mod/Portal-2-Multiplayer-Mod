@@ -52,4 +52,15 @@ TickSpeed <- 0.00
 // If the P2:MM plugin loads, then this is the list of players that have access to admin commands, along with admin level
 // The highest number declared is the highest admin level and different people can have the same admin level
 // Format it like this: Admins <- ["[3]MyExactSteamUsername", "[2]MyFriendsUsername", "[1]MyOtherFriendsUsernameWithLessPower"]
-Admins <- ["[420]kyleraykbs", "[69]vista", "[12]cabiste", "[12]Bumpy", "[12]Nanoman2525", "[12]Wolƒe Strider Shoσter", "[5]Mystical Λce", "[2]CHARITY", "[2]thewoodster75`", "[6]Dreadnox", "[1]!wol", "[6]sear", "[12]Ayden",  "[2]Eggshell97", "[1]trixie6709"]
+Admins <- [
+"[420]182933216", // kyleraykbs
+"[69]75927374", // Wolƒe Strider Shoσter
+"[12]290760494", // Nanoman2525
+"[12]1106347501", // vista
+"[12]181670710", // Bumpy
+"[12]72399433", // cabiste
+"[6]386105876", // Dreadnox
+"[6]242453954", // sear
+"[3]150199065", // Mystical Λce
+"[12]1053720146", // Ayden
+]
