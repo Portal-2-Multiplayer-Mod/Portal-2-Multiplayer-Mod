@@ -131,7 +131,9 @@ def MountMod(gamepath, encrypt = False):
     destination = BF.CopyFolder(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
     Log("Successfully copied the mod files to "+ destination)
 
-    SetVscriptConfigFile(gamepath + GVars.nf + dlcmountpoint + GVars.nf + "scripts" + GVars.nf + "vscripts" + GVars.nf + "multiplayermod" + GVars.nf + "config.nut")
+    nutConfigFile = gamepath + GVars.nf + dlcmountpoint + GVars.nf + "scripts" + GVars.nf + "vscripts" + GVars.nf + "multiplayermod" + GVars.nf + "config.nut"
+    if os.path.exists(nutConfigFile):
+        SetVscriptConfigFile(nutConfigFile)
 
     #### ENCRYPT THE CVARS #####
     Log("____ENCRYPTING CVARS____")

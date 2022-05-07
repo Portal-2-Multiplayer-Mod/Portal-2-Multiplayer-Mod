@@ -2,6 +2,7 @@ import os
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import ast
+import json
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
@@ -157,8 +158,7 @@ def WriteConfigFile(configs):
 
     Log("Writing to file...")
     with open(filepath, "w", encoding="utf-8") as cfg:
-        for key in configs:
-            cfg.write(key+" = "+str(configs[key]) + "\n")
+        json.dump(configs, cfg)
 
 # why this is a seperate function that only has 2 lines?
 # well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine 
@@ -185,7 +185,7 @@ def ImportConfig():
             WriteConfigFile(DefaultConfigFile)
 
         # read all the lines in the config file
-        config = open(configpath, "r", encoding="utf-8").readlines()
+        config = open(configpath, "r", encoding="utf-8").read().strip()
 
         # if the file is empty then re-create it
         if len(config) == 0:
@@ -194,30 +194,7 @@ def ImportConfig():
         # process the config file into useable data
         Log("Processing config...")
         Log("")
-        processedconfig = {}
-        for line in config:
-            # remove everything after the first #
-            line = line.split("#")[0].strip()
-
-            # if the line contains "=" then it's not empty
-            # and if the is longer or equal to 3 characters then clearly it has some data
-            if ("=" in line and len(line)>=3):
-                # get everything to the left of the = and clean it from whitespaces
-                leftline = line.split("=")[0].strip()
-                # get everything to the right of the = and clean it from whitespaces
-                rightline = line.split("=")[1].strip()
-
-                # if the left line is not empty then add it to the dictionary
-                # if the right line is empty we can handle it later
-                if (leftline != ""):
-                    rl = ast.literal_eval(rightline)
-                    Log("==============================")
-                    Log("WHOLE LINE: " + str(rl))
-                    Log("NAME: " + leftline)
-                    for key in rl:
-                        Log("KEY: " + str(key))
-                        Log("VALUE: " + str(rl[key]))
-                    processedconfig[leftline] = rl
+        processedconfig = json.loads(config)
 
         Log("")
         Log("Configs imported successfully!")
