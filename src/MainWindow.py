@@ -74,6 +74,8 @@ pygame.display.set_icon(p2mmlogo)
 
 selectedpopupbutton = 0
 
+CurrentSelectedPlayer = 0
+
 ###############################################################################
 
 Floaters = []
@@ -307,49 +309,119 @@ def BlitDescription(txt, x = screen.get_width() / 16, y = screen.get_height() / 
         pass
 
 def RefreshSettingsMenu(menu):
-        SettingsButtons.clear()
-        for key in GVars.configData:
-            if GVars.configData[key]["menu"] == menu:
-                Log(key + ": " + GVars.configData[key]["value"])
-                class curkeyButton:
-                    txt = GVars.configData[key]["value"]
-                    mlen = 10
-                    if len(txt) > mlen:
-                        txt = txt[:mlen] + "..."
-                    text = key + ": " + txt
-                    cfgkey = key
-                    cfgvalue = GVars.configData[key]["value"]
-                    keyobj = GVars.configData[key]
-                    activecolor = (255, 255, 0)
-                    inactivecolor = (155, 155, 155)
-                    sizemult = 1
-                    def whileselectedfunction(keyobj = keyobj):
-                        BlitDescription(keyobj["description"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1), (130, 130, 255))
-                        BlitDescription(keyobj["warning"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1.25), (255, 50, 50))
-                    selectanim = "pop"
-                    selectsnd = pwrsnd
-                    hoversnd = blipsnd
-                    curanim = ""
-                    def function(keyobj = keyobj, cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
-                        if cfgvalue == "true" or cfgvalue == "false":
-                            if cfgvalue == "false":
-                                cfg.EditConfig(cfgkey, "true")
-                            # default to false to avoid errors
-                            else:
-                                cfg.EditConfig(cfgkey, "false")
-                            RefreshSettingsMenu(menu)
+    SettingsButtons.clear()
+    for key in GVars.configData:
+        if GVars.configData[key]["menu"] == menu:
+            Log(key + ": " + GVars.configData[key]["value"])
+            class curkeyButton:
+                txt = GVars.configData[key]["value"]
+                mlen = 10
+                if len(txt) > mlen:
+                    txt = txt[:mlen] + "..."
+                text = key + ": " + txt
+                cfgkey = key
+                cfgvalue = GVars.configData[key]["value"]
+                keyobj = GVars.configData[key]
+                activecolor = (255, 255, 0)
+                inactivecolor = (155, 155, 155)
+                sizemult = 1
+                def whileselectedfunction(keyobj = keyobj):
+                    BlitDescription(keyobj["description"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1), (130, 130, 255))
+                    BlitDescription(keyobj["warning"], SelectedButton.x, SelectedButton.y + (SelectedButton.height * 1.25), (255, 50, 50))
+                selectanim = "pop"
+                selectsnd = pwrsnd
+                hoversnd = blipsnd
+                curanim = ""
+                def function(keyobj = keyobj, cfgkey = cfgkey, cfgvalue = cfgvalue, text = text):
+                    if cfgvalue == "true" or cfgvalue == "false":
+                        if cfgvalue == "false":
+                            cfg.EditConfig(cfgkey, "true")
+                        # default to false to avoid errors
                         else:
-                            def AfterInputGenericSetConfig(inp, cfgkey = cfgkey, cfgvalue = cfgvalue):
-                                cfg.EditConfig(cfgkey, inp.strip())
-                                Log("Saved '" + inp.strip() + "' to config " + cfgkey)
-                                Error("Saved!", 5, (75, 200, 75))
-                                RefreshSettingsMenu(menu)
+                            cfg.EditConfig(cfgkey, "false")
+                        RefreshSettingsMenu(menu)
+                    else:
+                        def AfterInputGenericSetConfig(inp, cfgkey = cfgkey, cfgvalue = cfgvalue):
+                            cfg.EditConfig(cfgkey, inp.strip())
+                            Log("Saved '" + inp.strip() + "' to config " + cfgkey)
+                            Error("Saved!", 5, (75, 200, 75))
+                            RefreshSettingsMenu(menu)
 
-                            GetUserInputPYG( AfterInputGenericSetConfig , keyobj["prompt"], cfgvalue)
+                        GetUserInputPYG( AfterInputGenericSetConfig , keyobj["prompt"], cfgvalue)
 
-                    isasync = False
-                SettingsButtons.append(curkeyButton)
-        SettingsButtons.append(BackButton)
+                isasync = False
+            SettingsButtons.append(curkeyButton)
+    SettingsButtons.append(BackButton)
+
+def RefreshPlayersMenu():
+    PlayersMenu.clear()
+    # for player in GVars.configData["Players"]["value"][CurrentSelectedPlayer]:
+    #     Log(player)
+    #     Log(GVars.configData["Players"]["value"][CurrentSelectedPlayer][player])
+    Playerkey = GVars.configData["Players"]["value"][CurrentSelectedPlayer]
+    class CurPlayername:
+        text = "Name: " + Playerkey["name"]
+        activecolor = (255, 255, 120)
+        inactivecolor = (155, 155, 155)
+        sizemult = 1
+        selectanim = "pop"
+        selectsnd = pwrsnd
+        hoversnd = blipsnd
+        curanim = ""
+        def function():
+            def AfterInputPlayerName(inp, Playerkey = Playerkey):
+                Log("Saving Player Name...")
+                Log(inp)
+                curkey = GVars.configData["Players"]
+                curkey["value"][CurrentSelectedPlayer]["name"] = inp.strip()
+                cfg.EditConfig("Players", str(curkey))
+                # Log("Saved '" + inp.strip() + "' to config " + "Players")
+                # Error("Saved!", 5, (75, 200, 75))
+                # RefreshPlayersMenu()
+
+
+            GetUserInputPYG( AfterInputPlayerName , "Enter A Username", Playerkey["name"])
+
+            Log("Name: " + Playerkey["name"])
+        isasync = False
+    class CurSteamID:
+        text = "SteamID: " + Playerkey["steamid"]
+        activecolor = (255, 255, 120)
+        inactivecolor = (155, 155, 155)
+        sizemult = 1
+        selectanim = "pop"
+        selectsnd = pwrsnd
+        hoversnd = blipsnd
+        curanim = ""
+        def function():
+            Log("SteamID: " + Playerkey["steamid"])
+        isasync = False
+    class NextPlayer:
+        text = "Next"
+        activecolor = (255, 255, 120)
+        inactivecolor = (155, 155, 155)
+        sizemult = 1
+        selectanim = "pop"
+        selectsnd = pwrsnd
+        hoversnd = blipsnd
+        curanim = ""
+        def function():
+            global CurrentSelectedPlayer
+            if CurrentSelectedPlayer < len(GVars.configData["Players"]["value"]) - 1:
+                Log("Next Player")
+                CurrentSelectedPlayer += 1
+                RefreshPlayersMenu()
+                ChangeMenu(PlayersMenu)
+            else:
+                Log("No More Players")
+                CurrentSelectedPlayer = 0
+                RefreshPlayersMenu()
+                ChangeMenu(PlayersMenu)
+        isasync = False
+    PlayersMenu.append(CurPlayername)
+    PlayersMenu.append(CurSteamID)
+    PlayersMenu.append(NextPlayer)
+    PlayersMenu.append(BackButton)
 
 def GetUserInputPYG(afterfunc = None, prompt = "", preinput = ""):
     global LookingForInput
@@ -450,6 +522,20 @@ class SettingsButton:
     curanim = ""
     def function():
         ChangeMenu(SettingsMenus)
+    isasync = False
+
+class PlayersButton:
+    text = "Players"
+    activecolor = (0, 255, 255)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        RefreshPlayersMenu()
+        ChangeMenu(PlayersMenu)
     isasync = False
 
 class UpdateButton:
@@ -648,9 +734,11 @@ class BackButton:
 ##############################
 
 ### BUTTONS
-SettingsMenus = [LauncherSettingsButton, Portal2SettingsButton, BackButton]
+SettingsMenus = [LauncherSettingsButton, Portal2SettingsButton, PlayersButton, BackButton]
 
 SettingsButtons = []
+
+PlayersMenu = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 

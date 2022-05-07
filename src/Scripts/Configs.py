@@ -60,7 +60,7 @@ DefaultConfigFile = {
             "warning" : "(only use for public games) may break some functionality",
             "prompt" : "Encrypt cvars?",
         },
-    
+
     "SafeGuard":
         {
             "value" : "false",
@@ -68,6 +68,20 @@ DefaultConfigFile = {
             "description" : "Encrypts vscript functions such as \"SendToConsole(\"\")\"", 
             "warning" : "(only use for public games) may break some functionality",
             "prompt" : "Encrypt specific vscript functions?",
+        },
+
+    "Players":
+        {
+            "value" : [
+                {
+                    "name" : "Example Player",
+                    "steamid" : "123456789",
+                },
+            ],
+            "menu" : "players",
+            "description" : "If You See This Something Is Wrong",
+            "warning" : "If You See This Something Is Wrong",
+            "prompt" : "If you see this something is wrong",
         },
 }
 
@@ -113,6 +127,13 @@ def VerifyConfigFileIntegrity(config):
             Log(f"The key [{key}] is missing, fixing it...")
             config[key] = DefaultConfigFile[key]
             WriteConfigFile(config)
+    ########################### VALIDATE THAT ALL THE KEYS HAVE ALL THE VALUES
+    for key in DefaultConfigFile:
+        for key2 in DefaultConfigFile[key]:
+            if key2 not in config[key]:
+                Log(f"The value for [{key}][{key2}] is missing, fixing it...")
+                config[key][key2] = DefaultConfigFile[key][key2]
+                WriteConfigFile(config)
     Log("=========================")
 
     # if the config keys are the same as the default then just return them
