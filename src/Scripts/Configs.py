@@ -71,23 +71,52 @@ DefaultConfigFile = {
         },
 }
 
+ImmutableKeys = ["description", "warning", "prompt", "menu"]
+
 # verifies the config file by making sure that the processed data has the same keys as the default 
 # if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
 def VerifyConfigFileIntegrity(config):
-    if len(config) != len(DefaultConfigFile) or config.keys() != DefaultConfigFile.keys():
-        DefaultCopy = DefaultConfigFile
-        Log("Some config data is invalid, fixing it...")
-        for key in DefaultCopy:
-            try:
-                DefaultCopy[key] = config[key]
-            except:
-                Log(f"The key [{key}] is missing from the local config file!")
-        WriteConfigFile(DefaultCopy)
-        return DefaultCopy
+    # if len(config) != len(DefaultConfigFile) or config.keys() != DefaultConfigFile.keys():
+    #     DefaultCopy = DefaultConfigFile
+    #     Log("Some config data is invalid, fixing it...")
+    #     for key in DefaultCopy:
+    #         try:
+    #             DefaultCopy[key] = config[key]
+    #         except:
+    #             Log(f"The key [{key}] is missing from the local config file!")
+    #     WriteConfigFile(DefaultCopy)
+    #     return DefaultCopy
+
+    Log("=========================")
+    Log("Validating config data...")
+    copiedconfig = {
+        **config,
+    }
+    ########################### VALIDATE ALL THE KEYS ARE CORRECT
+    for key1 in copiedconfig:
+        if key1 not in DefaultConfigFile:
+            Log(f"The key [{key1}] is invalid, fixing it...")
+            config.pop(key1)
+            WriteConfigFile(config)
+            continue
+
+        for key2 in config[key1]:
+            # validate all the immutable values
+            if key2 in ImmutableKeys:
+                if config[key1][key2] != DefaultConfigFile[key1][key2]:
+                    Log(f"The value for [{key1}][{key2}] is invalid, fixing it...")
+                    config[key1][key2] = DefaultConfigFile[key1][key2]
+                    WriteConfigFile(config)
+    ########################### VALIDATE ALL THE KEYS EXIST
+    for key in DefaultConfigFile:
+        if key not in config:
+            Log(f"The key [{key}] is missing, fixing it...")
+            config[key] = DefaultConfigFile[key]
+            WriteConfigFile(config)
+    Log("=========================")
 
     # if the config keys are the same as the default then just return them
-    else:
-        return config
+    return config
 
 def GetConfigList(search, val):
     lst = []
@@ -124,7 +153,7 @@ def EditConfig(search, newvalue):
 
 # to import the config data from the local config file
 def ImportConfig():
-    try:
+    # try:
         Log("            __________Config Data Start__________")
         Log("Importing Config...")
 
@@ -173,8 +202,9 @@ def ImportConfig():
         Log("Configs imported successfully!")
         # at last pass the data to the verify function to make sure everything is clean
         return VerifyConfigFileIntegrity(processedconfig)
-    except Exception as e:
-        Log("FAILED TO IMPORT CONFIGS!")
-        WriteConfigFile(DefaultConfigFile)
-        GVars.hadtoresetconfig = True
-        return ImportConfig()
+    # except Exception as e:
+    #     Log(f"Error importing config: {str(e)}")
+        # Log("FAILED TO IMPORT CONFIGS!")
+        # WriteConfigFile(DefaultConfigFile)
+        # GVars.hadtoresetconfig = True
+        # return ImportConfig()
