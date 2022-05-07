@@ -73,12 +73,12 @@ DefaultConfigFile = {
 
     "Players":
         {
-            "value" : [
-                {
+            "value" : {
+                "0": {
                     "name" : "Example Player",
                     "steamid" : "123456789",
                 },
-            ],
+            },
             "menu" : "players",
             "description" : "If You See This Something Is Wrong",
             "warning" : "If You See This Something Is Wrong",
@@ -174,7 +174,7 @@ def EditConfig(search, newvalue):
 
 # to import the config data from the local config file
 def ImportConfig():
-    # try:
+    try:
         Log("            __________Config Data Start__________")
         Log("Importing Config...")
 
@@ -194,15 +194,21 @@ def ImportConfig():
         # process the config file into useable data
         Log("Processing config...")
         Log("")
+        # try:
         processedconfig = json.loads(config)
+        # except Exception as e:
+        #     Log(f"Error processing config file: {str(e)}")
+        #     WriteConfigFile(DefaultConfigFile)
+        #     processedconfig = json.loads(config)
+
 
         Log("")
         Log("Configs imported successfully!")
         # at last pass the data to the verify function to make sure everything is clean
         return VerifyConfigFileIntegrity(processedconfig)
-    # except Exception as e:
-    #     Log(f"Error importing config: {str(e)}")
-        # Log("FAILED TO IMPORT CONFIGS!")
-        # WriteConfigFile(DefaultConfigFile)
-        # GVars.hadtoresetconfig = True
-        # return ImportConfig()
+    except Exception as e:
+        Log(f"Error importing config: {str(e)}")
+        Log("FAILED TO IMPORT CONFIGS!")
+        WriteConfigFile(DefaultConfigFile)
+        GVars.hadtoresetconfig = True
+        return ImportConfig()
