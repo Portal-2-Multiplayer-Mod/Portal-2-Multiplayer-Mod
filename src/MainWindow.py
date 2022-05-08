@@ -562,21 +562,7 @@ class UpdateButton:
         global coolDown
         if coolDown <= 0:
             coolDown = int(3 * 60)
-            if up.CheckForNewFiles():
-                class YesButton:
-                    text = "Yes"
-                    function = UpdateMod
-                    activecolor = (75, 200, 75)
-                    inactivecolor = (155, 155, 155)
-
-                class NoButton:
-                    text = "No"
-                    def function():
-                            pass
-                    activecolor = (255, 75, 75)
-                    inactivecolor = (155, 155, 155)
-                PopupBox("Update Available", "Would you like to update?", [YesButton, NoButton])
-            else:
+            if not CheckForUpdates():
                 Error("You are already up to date!", 5, (200, 75, 220))
 
     isasync = True
@@ -1264,11 +1250,13 @@ def OnStart():
     GVars.LoadConfig()
     # Check for first time setup
     IsNew()
-    # Check for updates
-    Log(str(GVars.configData["developer"]["value"] == "false"))
-    if GVars.configData["developer"]["value"] == "false":
+    if not ".py" in str(sys.argv):
         CheckForUpdates()
-
+    else:
+        Log("not checking for updates running through python")
+        # DONT CHANGE THIS CABISTE
+        # if the user has dev mode enabled from a previous version
+        # they may be unaware that they need to update
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):

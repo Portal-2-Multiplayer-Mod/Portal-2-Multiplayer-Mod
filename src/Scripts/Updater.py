@@ -15,7 +15,7 @@ import os
 
 currentVersion = "2.0.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
-repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
+repoName = "TestRepo"  # we can't change this to the id :(
 
 
 # thanks stackOverflow for this solution <3
