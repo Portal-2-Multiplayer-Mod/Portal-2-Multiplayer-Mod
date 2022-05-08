@@ -1130,6 +1130,7 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
     if (distancescore < distance) {
         
         player.SetOrigin(player.GetOrigin() + pushvec)
+        player.SetVelocity(player.GetVelocity() + (pushvec * 10))
         
         DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 255, 75, 255, 0)
 
