@@ -1211,7 +1211,7 @@ def IsNew():
     Log("renaming new client...")
     os.rename(GVars.executable, sys.argv[2])
 
-def UpdateBox(update):
+def ClientUpdateBox(update):
     def YesInput():
         Log("YES INPUT CALLED... FETCHING MOD")
         up.DownloadClient()
@@ -1231,10 +1231,29 @@ def UpdateBox(update):
 
     PopupBox(update["name"], update["message"], [YesButton, NoButton])
 
+def ModFilesUpdateBox():
+    class YesButton:
+        text = "Yes"
+        function = UpdateMod
+        activecolor = (75, 200, 75)
+        inactivecolor = (155, 155, 155)
+
+    class NoButton:
+        text = "No"
+        def function():
+                pass
+        activecolor = (255, 75, 75)
+        inactivecolor = (155, 155, 155)
+    PopupBox("Update Available", "Would you like to update?", [YesButton, NoButton])
+
 def CheckForUpdates():
+    Log("checking for updates...")
     clientUpdate = up.CheckForNewClient()
     if clientUpdate["status"]:
-        UpdateBox(clientUpdate)
+        ClientUpdateBox(clientUpdate)
+    else:
+        if up.CheckForNewFiles():
+            ModFilesUpdateBox()
 
 def OnStart():
     # Load the global variables
@@ -1246,7 +1265,8 @@ def OnStart():
     # Check for first time setup
     IsNew()
     # Check for updates
-    if GVars.configData["developer"] == "false":
+    Log(str(GVars.configData["developer"]["value"] == "false"))
+    if GVars.configData["developer"]["value"] == "false":
         CheckForUpdates()
 
 

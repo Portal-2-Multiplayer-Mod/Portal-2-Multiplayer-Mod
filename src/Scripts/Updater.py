@@ -153,8 +153,10 @@ def DownloadNewFiles():
         downloadLink = f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/"+urllib.parse.quote(r["Path"]+file)
 
         Path(os.path.dirname(tempPath + file.replace("/", GVars.nf))).mkdir(parents=True,exist_ok=True)  # create the folder where the file exists
-        urllib.request.urlretrieve(downloadLink, tempPath + file.replace("/", GVars.nf))
-
+        try:
+            urllib.request.urlretrieve(downloadLink, tempPath + file.replace("/", GVars.nf))
+        except Exception as e:
+            Log(f"failed to download {file}")
     Log("finished downloading")
     try:
         # when downloading is done delete the old mod files
