@@ -37,63 +37,63 @@ function p2mmDropCollision() {
 
     // ContainerBedPropCollision
     ContainerBedPropCollision.SetOrigin(Vector(ContainerBedPropCollision.GetOrigin().x, ContainerBedPropCollision.GetOrigin().y, ContainerBedPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerBedPropCollision", "disable")
-    // EntFire("ContainerBedPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerBedPropCollision", "disablecollision")
+    // EntFire("ContainerBedPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerFloorPropCollision
     ContainerFloorPropCollision.SetOrigin(Vector(ContainerFloorPropCollision.GetOrigin().x, ContainerFloorPropCollision.GetOrigin().y, ContainerFloorPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerFloorPropCollision", "disable")
-    // EntFire("ContainerFloorPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerFloorPropCollision", "disablecollision")
+    // EntFire("ContainerFloorPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerCeilingPropCollision
     ContainerCeilingPropCollision.SetOrigin(Vector(ContainerCeilingPropCollision.GetOrigin().x, ContainerCeilingPropCollision.GetOrigin().y, ContainerCeilingPropCollision.GetOrigin().z - dropamount))
-    EntFire("ContainerCeilingPropCollision", "disable")
-    EntFire("ContainerCeilingPropCollision", "enable", "", ceiltime)
+    EntFire("ContainerCeilingPropCollision", "disablecollision")
+    EntFire("ContainerCeilingPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerRightWallPropCollision
     ContainerRightWallPropCollision.SetOrigin(Vector(ContainerRightWallPropCollision.GetOrigin().x, ContainerRightWallPropCollision.GetOrigin().y, ContainerRightWallPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerRightWallPropCollision", "disable")
-    // EntFire("ContainerRightWallPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerRightWallPropCollision", "disablecollision")
+    // EntFire("ContainerRightWallPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerLeftWallPropCollision
     ContainerLeftWallPropCollision.SetOrigin(Vector(ContainerLeftWallPropCollision.GetOrigin().x, ContainerLeftWallPropCollision.GetOrigin().y, ContainerLeftWallPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerLeftWallPropCollision", "disable")
-    // EntFire("ContainerLeftWallPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerLeftWallPropCollision", "disablecollision")
+    // EntFire("ContainerLeftWallPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerFrontWallPropCollision
     ContainerFrontWallPropCollision.SetOrigin(Vector(ContainerFrontWallPropCollision.GetOrigin().x, ContainerFrontWallPropCollision.GetOrigin().y, ContainerFrontWallPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerFrontWallPropCollision", "disable")
-    // EntFire("ContainerFrontWallPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerFrontWallPropCollision", "disablecollision")
+    // EntFire("ContainerFrontWallPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerNightstandsPropCollision
     ContainerNightstandsPropCollision.SetOrigin(Vector(ContainerNightstandsPropCollision.GetOrigin().x, ContainerNightstandsPropCollision.GetOrigin().y, ContainerNightstandsPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerNightstandsPropCollision", "disable")
-    // EntFire("ContainerNightstandsPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerNightstandsPropCollision", "disablecollision")
+    // EntFire("ContainerNightstandsPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerLightPropCollision
     ContainerLightPropCollision.SetOrigin(Vector(ContainerLightPropCollision.GetOrigin().x, ContainerLightPropCollision.GetOrigin().y, ContainerLightPropCollision.GetOrigin().z - dropamount))
-    EntFire("ContainerLightPropCollision", "disable")
-    EntFire("ContainerLightPropCollision", "enable", "", ceiltime)
+    EntFire("ContainerLightPropCollision", "disablecollision")
+    EntFire("ContainerLightPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerWheatleyPropCollision
     ContainerWheatleyPropCollision.SetOrigin(Vector(ContainerWheatleyPropCollision.GetOrigin().x, ContainerWheatleyPropCollision.GetOrigin().y, ContainerWheatleyPropCollision.GetOrigin().z - dropamount))
-    EntFire("ContainerWheatleyPropCollision", "disable")
-    EntFire("ContainerWheatleyPropCollision", "enable", "", ceiltime)
+    EntFire("ContainerWheatleyPropCollision", "disablecollision")
+    EntFire("ContainerWheatleyPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerDeskPropCollision
     ContainerDeskPropCollision.SetOrigin(Vector(ContainerDeskPropCollision.GetOrigin().x, ContainerDeskPropCollision.GetOrigin().y, ContainerDeskPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerDeskPropCollision", "disable")
-    // EntFire("ContainerDeskPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerDeskPropCollision", "disablecollision")
+    // EntFire("ContainerDeskPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerPlantPropCollision
     ContainerPlantPropCollision.SetOrigin(Vector(ContainerPlantPropCollision.GetOrigin().x, ContainerPlantPropCollision.GetOrigin().y, ContainerPlantPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerPlantPropCollision", "disable")
-    // EntFire("ContainerPlantPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerPlantPropCollision", "disablecollision")
+    // EntFire("ContainerPlantPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerChairPropCollision
     ContainerChairPropCollision.SetOrigin(Vector(ContainerChairPropCollision.GetOrigin().x, ContainerChairPropCollision.GetOrigin().y, ContainerChairPropCollision.GetOrigin().z - dropamount))
-    // EntFire("ContainerChairPropCollision", "disable")
-    // EntFire("ContainerChairPropCollision", "enable", "", ceiltime)
+    // EntFire("ContainerChairPropCollision", "disablecollision")
+    // EntFire("ContainerChairPropCollision", "enablecollision", "", ceiltime)
 
     // Brushes //
 
@@ -245,6 +245,57 @@ function p2mmParentAndStartMath() {
 
         // Props //
 
+        local raiseamount = 45
+
+        local ContainerBedPropCollision = Entities.FindByName(null, "ContainerBedPropCollision")
+        local ContainerFloorPropCollision = Entities.FindByName(null, "ContainerFloorPropCollision")
+        local ContainerCeilingPropCollision = Entities.FindByName(null, "ContainerCeilingPropCollision")
+        local ContainerRightWallPropCollision = Entities.FindByName(null, "ContainerRightWallPropCollision")
+        local ContainerLeftWallPropCollision = Entities.FindByName(null, "ContainerLeftWallPropCollision")
+        local ContainerFrontWallPropCollision = Entities.FindByName(null, "ContainerFrontWallPropCollision")
+        local ContainerNightstandsPropCollision = Entities.FindByName(null, "ContainerNightstandsPropCollision")
+        local ContainerLightPropCollision = Entities.FindByName(null, "ContainerLightPropCollision")
+        local ContainerWheatleyPropCollision = Entities.FindByName(null, "ContainerWheatleyPropCollision")
+        local ContainerDeskPropCollision = Entities.FindByName(null, "ContainerDeskPropCollision")
+        local ContainerPlantPropCollision = Entities.FindByName(null, "ContainerPlantPropCollision")
+        local ContainerChairPropCollision = Entities.FindByName(null, "ContainerChairPropCollision")
+
+        // ContainerBedPropCollision
+        ContainerBedPropCollision.SetOrigin(Vector(ContainerBedPropCollision.GetOrigin().x, ContainerBedPropCollision.GetOrigin().y, ContainerBedPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerFloorPropCollision
+        ContainerFloorPropCollision.SetOrigin(Vector(ContainerFloorPropCollision.GetOrigin().x, ContainerFloorPropCollision.GetOrigin().y, ContainerFloorPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerCeilingPropCollision
+        ContainerCeilingPropCollision.SetOrigin(Vector(ContainerCeilingPropCollision.GetOrigin().x, ContainerCeilingPropCollision.GetOrigin().y, ContainerCeilingPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerRightWallPropCollision
+        ContainerRightWallPropCollision.SetOrigin(Vector(ContainerRightWallPropCollision.GetOrigin().x, ContainerRightWallPropCollision.GetOrigin().y, ContainerRightWallPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerLeftWallPropCollision
+        ContainerLeftWallPropCollision.SetOrigin(Vector(ContainerLeftWallPropCollision.GetOrigin().x, ContainerLeftWallPropCollision.GetOrigin().y, ContainerLeftWallPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerFrontWallPropCollision
+        ContainerFrontWallPropCollision.SetOrigin(Vector(ContainerFrontWallPropCollision.GetOrigin().x, ContainerFrontWallPropCollision.GetOrigin().y, ContainerFrontWallPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerNightstandsPropCollision
+        ContainerNightstandsPropCollision.SetOrigin(Vector(ContainerNightstandsPropCollision.GetOrigin().x, ContainerNightstandsPropCollision.GetOrigin().y, ContainerNightstandsPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerLightPropCollision
+        ContainerLightPropCollision.SetOrigin(Vector(ContainerLightPropCollision.GetOrigin().x, ContainerLightPropCollision.GetOrigin().y, ContainerLightPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerWheatleyPropCollision
+        ContainerWheatleyPropCollision.SetOrigin(Vector(ContainerWheatleyPropCollision.GetOrigin().x, ContainerWheatleyPropCollision.GetOrigin().y, ContainerWheatleyPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerDeskPropCollision
+        ContainerDeskPropCollision.SetOrigin(Vector(ContainerDeskPropCollision.GetOrigin().x, ContainerDeskPropCollision.GetOrigin().y, ContainerDeskPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerPlantPropCollision
+        ContainerPlantPropCollision.SetOrigin(Vector(ContainerPlantPropCollision.GetOrigin().x, ContainerPlantPropCollision.GetOrigin().y, ContainerPlantPropCollision.GetOrigin().z + raiseamount))
+
+        // ContainerChairPropCollision
+        ContainerChairPropCollision.SetOrigin(Vector(ContainerChairPropCollision.GetOrigin().x, ContainerChairPropCollision.GetOrigin().y, ContainerChairPropCollision.GetOrigin().z + raiseamount))
+
         EntFire("ContainerBedPropCollision", "SetParent", "Actor_container_master", 0)
         EntFire("ContainerBedPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         EntFire("ContainerFloorPropCollision", "SetParent", "Actor_container_master", 0)
@@ -257,6 +308,8 @@ function p2mmParentAndStartMath() {
         EntFire("ContainerLeftWallPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         EntFire("ContainerFrontWallPropCollision", "SetParent", "Actor_container_master", 0)
         EntFire("ContainerFrontWallPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+        EntFire("ContainerNightstandsPropCollision", "SetParent", "Actor_container_master", 0)
+        EntFire("ContainerNightstandsPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         EntFire("ContainerLightPropCollision", "SetParent", "Actor_container_master", 0)
         EntFire("ContainerLightPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         EntFire("ContainerWheatleyPropCollision", "SetParent", "Actor_container_master", 0)
@@ -267,6 +320,15 @@ function p2mmParentAndStartMath() {
         EntFire("ContainerPlantPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
         EntFire("ContainerChairPropCollision", "SetParent", "Actor_container_master", 0)
         EntFire("ContainerChairPropCollision", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
+
+        EntFireByHandle(Entities.FindByName(null, "ContainerBedPropCollision"), "disablecollision", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ContainerFloorPropCollision"), "disablecollision", "", 0, null, null)
+
+        EntFireByHandle(Entities.FindByName(null, "ContainerNightstandsPropCollision"), "kill", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ContainerLightPropCollision"), "kill", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ContainerDeskPropCollision"), "kill", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ContainerPlantPropCollision"), "kill", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ContainerChairPropCollision"), "kill", "", 0, null, null)
 
         // Brushes //
 
@@ -347,6 +409,10 @@ function p2mmParentAndStartMath() {
 
 SecondToLastTP <- false
 function StopStickAndTeleport() {
+        EntFireByHandle(Entities.FindByName(null, "ContainerRightWallPropCollision"), "disablecollision", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ContainerLeftWallPropCollision"), "disablecollision", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ContainerFrontWallPropCollision"), "disablecollision", "", 0, null, null)
+
     // EntFire("ContainerBedBrush", "disable", "", 0)
     // EntFire("ContainerFloorBrush", "disable", "", 0)
     // EntFire("ContainerCeilingBrush", "disable", "", 0)

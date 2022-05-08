@@ -816,84 +816,84 @@ if (GetMapName() == "sp_a1_intro1") {
         sp_a1_intro1_custom_prop_95.SetAngles(-6.8249382972717, -0.23543548583984, 0.75763827562332)
         sp_a1_intro1_custom_prop_95.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_95.__KeyValueFromString("targetname", "ContainerBedPropCollision")
-        //sp_a1_intro1_custom_prop_95.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_95.__KeyValueFromString("rendermode", "10")
 
         // ContainerFloorPropCollision
         local sp_a1_intro1_custom_prop_96 = CreateProp("prop_dynamic", Vector(-5755, 1912, 11), "models/props_bts/lab_pod_b_low.mdl", 0)
         sp_a1_intro1_custom_prop_96.SetAngles(0, -90, 0)
         sp_a1_intro1_custom_prop_96.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_96.__KeyValueFromString("targetname", "ContainerFloorPropCollision")
-        //sp_a1_intro1_custom_prop_96.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_96.__KeyValueFromString("rendermode", "10")
 
         // ContainerCeilingPropCollision
         local sp_a1_intro1_custom_prop_97 = CreateProp("prop_dynamic", Vector(-5755, 1912, 346), "models/props_bts/lab_pod_b_low.mdl", 0)
         sp_a1_intro1_custom_prop_97.SetAngles(0, -90, 0)
         sp_a1_intro1_custom_prop_97.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_97.__KeyValueFromString("targetname", "ContainerCeilingPropCollision")
-        //sp_a1_intro1_custom_prop_97.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_97.__KeyValueFromString("rendermode", "10")
 
         // ContainerRightWallPropCollision
         local sp_a1_intro1_custom_prop_98 = CreateProp("prop_dynamic", Vector(-5755, 1705, 176), "models/props_bts/lab_pod_b_low.mdl", 0)
         sp_a1_intro1_custom_prop_98.SetAngles(0, -90, 0)
         sp_a1_intro1_custom_prop_98.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_98.__KeyValueFromString("targetname", "ContainerRightWallPropCollision")
-        //sp_a1_intro1_custom_prop_98.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_98.__KeyValueFromString("rendermode", "10")
 
         // ContainerLeftWallPropCollision
         local sp_a1_intro1_custom_prop_99 = CreateProp("prop_dynamic", Vector(-5755, 2120, 176), "models/props_bts/lab_pod_b_low.mdl", 0)
         sp_a1_intro1_custom_prop_99.SetAngles(0, -90, 0)
         sp_a1_intro1_custom_prop_99.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_99.__KeyValueFromString("targetname", "ContainerLeftWallPropCollision")
-        //sp_a1_intro1_custom_prop_99.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_99.__KeyValueFromString("rendermode", "10")
 
         // ContainerFrontWallPropCollision
         local sp_a1_intro1_custom_prop_100 = CreateProp("prop_dynamic", Vector(-5535, 1912, 282), "models/props_bts/lab_pod_b_low.mdl", 0)
         sp_a1_intro1_custom_prop_100.SetAngles(0, -90, -90)
         sp_a1_intro1_custom_prop_100.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_100.__KeyValueFromString("targetname", "ContainerFrontWallPropCollision")
-        //sp_a1_intro1_custom_prop_100.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_100.__KeyValueFromString("rendermode", "10")
 
         // ContainerNightstandsPropCollision
         local sp_a1_intro1_custom_prop_101 = CreateProp("prop_physics", Vector(-5701, 1780, 113), "models/props_factory/turret_factory_open/turret_factory_open.mdl", 0)
         sp_a1_intro1_custom_prop_101.SetAngles(0, 0, 0)
         sp_a1_intro1_custom_prop_101.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_101.__KeyValueFromString("targetname", "ContainerNightstandsPropCollision")
-        //sp_a1_intro1_custom_prop_101.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_101.__KeyValueFromString("rendermode", "10")
 
         // ContainerLightPropCollision
         local sp_a1_intro1_custom_prop_102 = CreateProp("prop_physics", Vector(-5651, 1912, 313), "models/props_underground/underground_testchamber_button.mdl", 0)
         sp_a1_intro1_custom_prop_102.SetAngles(0, 0, 0)
         sp_a1_intro1_custom_prop_102.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_102.__KeyValueFromString("targetname", "ContainerLightPropCollision")
-        //sp_a1_intro1_custom_prop_102.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_102.__KeyValueFromString("rendermode", "10")
 
         // ContainerWheatleyPropCollision
         local sp_a1_intro1_custom_prop_103 = CreateProp("prop_physics", Vector(-5696, 1882, 320), "models/props_office/cabinet_small_door.mdl", 0)
         sp_a1_intro1_custom_prop_103.SetAngles(0, 0, 0)
         sp_a1_intro1_custom_prop_103.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_103.__KeyValueFromString("targetname", "ContainerWheatleyPropCollision")
-        //sp_a1_intro1_custom_prop_103.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_103.__KeyValueFromString("rendermode", "10")
 
         // ContainerDeskPropCollision
         local sp_a1_intro1_custom_prop_104 = CreateProp("prop_physics", Vector(-5733, 2028, 138), "models/props_factory/turret_factory_open/turret_factory_open.mdl", 0)
         sp_a1_intro1_custom_prop_104.SetAngles(0, 180, 0)
         sp_a1_intro1_custom_prop_104.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_104.__KeyValueFromString("targetname", "ContainerDeskPropCollision")
-        //sp_a1_intro1_custom_prop_104.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_104.__KeyValueFromString("rendermode", "10")
 
         // ContainerPlantPropCollision
         local sp_a1_intro1_custom_prop_105 = CreateProp("prop_physics", Vector(-5520, 2008, 111), "models/props_factory/turret_factory_open/turret_factory_open.mdl", 0)
         sp_a1_intro1_custom_prop_105.SetAngles(0, 180, 0)
         sp_a1_intro1_custom_prop_105.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_105.__KeyValueFromString("targetname", "ContainerPlantPropCollision")
-        //sp_a1_intro1_custom_prop_105.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_105.__KeyValueFromString("rendermode", "10")
 
         // ContainerChairPropCollision
         local sp_a1_intro1_custom_prop_106 = CreateProp("prop_physics", Vector(-5519, 1802, 138), "models/props_factory/turret_factory_open/turret_factory_open.mdl", 0)
         sp_a1_intro1_custom_prop_106.SetAngles(0, 0, 0)
         sp_a1_intro1_custom_prop_106.__KeyValueFromString("solid", "6")
         sp_a1_intro1_custom_prop_106.__KeyValueFromString("targetname", "ContainerChairPropCollision")
-        //sp_a1_intro1_custom_prop_106.__KeyValueFromString("rendermode", "10")
+        sp_a1_intro1_custom_prop_106.__KeyValueFromString("rendermode", "10")
 
   }
 
