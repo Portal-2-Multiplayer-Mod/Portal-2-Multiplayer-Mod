@@ -2170,6 +2170,68 @@ CommandList.push(class {
 })
 ////////////////////////////////////////////
 
+////////////////////////////////////// Bring
+function BringCommand(p, args) {
+    args[0] = Strip(args[0])
+    if (args[0] != "all") {
+        local plr = FindPlayerByName(args[0])
+        if (plr != null) {
+            plr.SetOrigin(p.GetOrigin())
+            plr.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
+        } else {
+            SendChatMessage("[ERROR] Player not found")
+        }
+    } else {
+        local p2 = null
+        while (p2 = Entities.FindByClassname(p2, "player")) {
+            if (p2 != p) {
+                p2.SetOrigin(p.GetOrigin())
+                p2.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
+            }
+        }
+    }
+}
+
+CommandList.push(class {
+    name = "bring"
+    level = 0
+    selectorlevel = 1
+    func = BringCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+
+})
+////////////////////////////////////////////
+
+/////////////////////////////////////// GOTO
+function GotoCommand(p, args) {
+    args[0] = Strip(args[0])
+    local plr = FindPlayerByName(args[0])
+    if (plr != null) {
+        p.SetOrigin(plr.GetOrigin())
+        p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+    } else {
+        SendChatMessage("[ERROR] Player not found")
+    }
+}
+
+CommandList.push(class {
+    name = "goto"
+    level = 0
+    selectorlevel = 1
+    func = GotoCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+
+})
+////////////////////////////////////////////
+
 
 function SendChatMessage(message) {
     SendToConsoleP232("say " + message)

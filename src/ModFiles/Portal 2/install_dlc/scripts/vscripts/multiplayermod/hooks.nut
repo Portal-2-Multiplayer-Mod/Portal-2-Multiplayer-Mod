@@ -466,6 +466,14 @@ function ChatCommands(ccuserid, ccmessage) {
     local UsedRunners = true
 
     foreach (Selector in Selectors) {
+        if (Selector == "all" || Selector == "*" || Selector == "everyone") {
+            Runners = []
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                Runners.push(p)
+            }
+            break
+        }
         local NewRunner = FindPlayerByName(Selector)
 
         if (NewRunner) {
