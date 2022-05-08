@@ -139,6 +139,22 @@ def VerifyConfigFileIntegrity(config):
     # if the config keys are the same as the default then just return them
     return config
 
+def ValidatePlayerKeys():
+    try:
+        indx = -1
+        for player in GVars.configData["Players"]["value"]:
+            indx += 1
+            for key in defaultplayerarray:
+                if key not in player:
+                    Log("ERROR: Player " + str(indx) + " is missing key " + str(key))
+                    GVars.configData["Players"]["value"][indx][key] = defaultplayerarray[key]
+                    WriteConfigFile(GVars.configData)
+    except Exception as e:
+        Log("ERROR: " + str(e))
+        Log("ERROR: Players is not a list, resetting to default")
+        GVars.configData["Players"]["value"] = [defaultplayerarray]
+        WriteConfigFile(GVars.configData)
+
 def GetConfigList(search, val):
     lst = []
     for key in GVars.configData:

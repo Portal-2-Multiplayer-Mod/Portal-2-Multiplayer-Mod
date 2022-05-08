@@ -64,13 +64,13 @@ def SetVscriptConfigFile(vsconfigfile):
 
     f = open(vsconfigfile, "r", encoding="utf-8")
     lines = f.readlines()
-    
+
     indx = -1
     for line in lines:
         indx += 1
         # remove all spaces
         line = line.strip().replace(" ", "")
-        
+
         # if the line contains a // remove it
         if (line.find("//") != -1):
             line = line.split("//")[0]
@@ -104,9 +104,28 @@ def SetVscriptConfigFile(vsconfigfile):
                 Log(line)
                 lines[indx] = line + "\n"
 
+    ################## ADMINS
+    # convert the lines to a string with newlines
+    lines = ''.join(lines)
+    print(lines)
+
+    # find the admins section
+    admins = lines.find("Admins <-")
+    # find the next [ after the admins section
+    nextObrack = lines.find("[", admins)
+    # add the player line after the admins section
+    for player in GVars.configData["Players"]["value"]:
+        name = player["name"]
+        level = player["adminlevel"]
+        steamid = player["steamid"]
+        print("Adding " + name + " to admins")
+
+        lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + steamid + '" // ' + name + lines[nextObrack + 1:]
+    # convert the lines to a list again
+
     f.close()
     f = open(vsconfigfile, "w", encoding="utf-8")
-    f.writelines(lines)
+    f.write(lines)
 
 
 

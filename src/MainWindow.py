@@ -182,6 +182,8 @@ def DEVMOUNT():
     BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
 
 def MountModOnly():
+    cfg.ValidatePlayerKeys()
+
     gamepath = GVars.configData["portal2path"]["value"]
     if not VerifyGamePath(gamepath):
         return
@@ -352,7 +354,10 @@ def RefreshSettingsMenu(menu):
             SettingsButtons.append(curkeyButton)
     SettingsButtons.append(BackButton)
 
+
+
 def RefreshPlayersMenu():
+    cfg.ValidatePlayerKeys()
     global CurrentSelectedPlayer
     PlayersMenu.clear()
     # for player in GVars.configData["Players"]["value"][CurrentSelectedPlayer]:
@@ -1352,6 +1357,8 @@ def OnStart():
     StartLog()
     # load the config file into memmory
     GVars.LoadConfig()
+    # make sure the players config is in tact
+    cfg.ValidatePlayerKeys()
     # Check for first time setup
     IsNew()
     if not ".py" in str(sys.argv):
