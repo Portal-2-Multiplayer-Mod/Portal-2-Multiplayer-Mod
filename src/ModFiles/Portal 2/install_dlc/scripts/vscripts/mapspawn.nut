@@ -25,13 +25,6 @@ IncludeScript("multiplayermod/config.nut")
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
 
-// An extra check to make sure we don't launch two gamemodes at the same time
-if (FutBolGamemode) {
-    Deathmatch <- false
-} else if (Deathmatch) {
-    FutBolGamemode <- false
-}
-
 // init() will run on every map spawn or transition
 // It does a few things:
 // 1. Attempt to load our plugin if it has not been loaded,
@@ -116,22 +109,6 @@ IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
 
-// If we are playing the futbol game mode on this map load, then load another external library with more logic for the minigame
-if (FutBolGamemode && !Deathmatch) {
-    IncludeScript("multiplayermod/gamemodes/futbol/futbolfunctions.nut")
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): Futbol mode set!")
-    }
-}
-
-// If we are playing the deathmatch game mode on this map load, then load another external library with more logic for the minigame
-if (Deathmatch && !FutBolGamemode) {
-    IncludeScript("multiplayermod/gamemodes/deathmatch/deathmatchfunctions.nut")
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): Deathmatch mode set!")
-    }
-}
-
 //   ___           _  _  _  _          _
 //  | __|__ _  __ (_)| |(_)| |_  __ _ | |_  ___
 //  | _|/ _` |/ _|| || || ||  _|/ _` ||  _|/ -_)
@@ -152,19 +129,73 @@ try {
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
     IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut") // Import some generally used map functions to call upon in the map code for ease
     IncludeScript("multiplayermod/mapsupport/#propcreation.nut") // Import a giant function to create props server-side based on map name
-    IncludeScript("multiplayermod/mapsupport/" + MapName.tostring() + ".nut") // Import the map support code
+
+    // Manage all scenarios possible for mapsupport based on player config
+
+    // If we are playing the normal mode of any level on this map load
+    if (!Deathmatch && !FutBolGamemode) {
+        try {
+            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut") // Import the standard map support code
+        } catch (error) {
+            printl("(P2:MM): No standard map support exists for " + Mapname.tostring() + "!")
+        }
+    } else
+
+    // If we are playing the futbol game mode on this map load
+    if (FutBolGamemode && !Deathmatch) {
+        try {
+            if (GetDeveloperLevel()) {
+                printl("(P2:MM): Attempting to load Futbol mapsupport code!")
+            }
+            IncludeScript("multiplayermod/mapsupport/futbol/#futbolfunctions.nut") // Import core futbol functions
+            IncludeScript("multiplayermod/mapsupport/futbol/" + MapName.tostring() + ".nut") // Import the map support code for futbol
+        } catch (error) {
+            if (GetDeveloperLevel()) {
+                print("(P2:MM): No Futbol map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
+            }
+            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
+        }
+    } else
+
+    // If we are playing the deathmatch game mode on this map load
+    if (Deathmatch && !FutBolGamemode) {
+        try {
+            if (GetDeveloperLevel()) {
+                printl("(P2:MM): Attempting to load Deathmatch mapsupport code!")
+            }
+            IncludeScript("multiplayermod/mapsupport/deathmatch/#deathmatchfunctions.nut") // Import core deathmatch functions
+            IncludeScript("multiplayermod/mapsupport/deathmatch/" + MapName.tostring() + ".nut") // Import the map support code for deathmatch
+        } catch (error) {
+            if (GetDeveloperLevel()) {
+                print("(P2:MM): No Deathmatch map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
+            }
+            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
+        }
+    } else
+
+    // Failsafe in case someone sets both Deathmatch and FutBolGamemode to true in their config.nut
+    if (Deathmatch && FutBolGamemode) {
+        printl("(P2:MM): You have both Deathmatch and FutBolGamemode set to true in your config! Attempting to load standard mapsupport code...")
+        try {
+            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
+        } catch (error) {
+            printl("(P2:MM): No standard map support exists for " + Mapname.tostring() + "!")
+        }
+    } else {
+        printl("(P2:MM): Fatal mapsupport error! Check your config.nut and verify valid options for \"Deathmatch\" and/or \"FutBolGamemode\"")
+    }
+
 } catch (error) {
     if (GetDeveloperLevel()) {
-        print("(P2:MM): No map support for " + MapName.tostring())
+        print("(P2:MM): A core map support file is missing!")
     }
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
 }
 
 // Now that we set up everything, all we do is run it
 try {
-DoEntFire("worldspawn", "FireUser1", "", 0.02, null, null)
-Entities.First().ConnectOutput("OnUser1", "init")
+    DoEntFire("worldspawn", "FireUser1", "", 0.02, null, null)
+    Entities.First().ConnectOutput("OnUser1", "init")
 } catch(e) {
-    print("(P2:MM): Initializing our custom support!")
-    print("")
+    printl("(P2:MM): Initializing our custom support!")
 }

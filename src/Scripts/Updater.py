@@ -15,7 +15,7 @@ import os
 
 currentVersion = "2.0.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
-repoName = "TestRepo"  # we can't change this to the id :(
+repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
 
 # thanks stackOverflow for this solution <3
@@ -36,7 +36,7 @@ def CheckForNewClient():
     # do the get request to retrieve the latest release data
     r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
     
-    if not"tag_name" in r:
+    if not "tag_name" in r:
         return {"status": False}
     
     # make sure that the latest release has a different version than the current one and is not a beta release
@@ -65,20 +65,21 @@ def CheckForNewClient():
 def DownloadClient(cType = ""):
     # cType is the Client Type (gui / cli)
     Log("Downloading...")
-
+    cType = cType.upper()
+    
     endpoint = "https://api.github.com/repos"  # github's api endpoint
     r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
     
     # so we can easily edit it in the future if we want to
     if (GVars.iow):
-        packageType = ".exe"  
+        packageType = ".EXE"  
     elif (GVars.iol):
-        packageType = ".sh" 
+        packageType = ".SH" 
 
     downloadLink = ""
     # this goes through all the binaries in the latest release until one of them ends with the package type (.exe, .pkg etc...)
     for i in range(len(r["assets"])):
-        if(r["assets"][i]["browser_download_url"].endswith(cType+packageType)):
+        if(r["assets"][i]["browser_download_url"].upper().endswith(cType+packageType)):
             Log("Found new client to download!")
             downloadLink = r["assets"][i]["browser_download_url"]
             break
@@ -95,16 +96,15 @@ def DownloadClient(cType = ""):
 
     print(sys.argv[0])
 
-    if (GVars.iow):
-        command = [path, "updated"]
-        subprocess.Popen(command)
+    # if (GVars.iow):
+    #     command = [path, "updated", GVars.executable]
+    #     subprocess.Popen(command)
     if (GVars.iol):
         permissioncommand = "chmod +x " + path
-        command = path + " updated " + GVars.executable
-        # def run():
         os.system(permissioncommand)
-        #     os.system(command)
-        subprocess.Popen(command, shell=True)
+    
+    command = path + " updated " + GVars.executable
+    subprocess.Popen(command, shell=True)
     sys.exit(0)
 
 def CheckForNewFiles():

@@ -3,11 +3,8 @@ import os
 import random
 import threading
 import time
-from tkinter import W
 import webbrowser
-import pathlib
 
-from Scripts.EncryptCVars import Encrypt
 
 tk = ""
 try:
@@ -1205,15 +1202,13 @@ def IsNew():
     if (sys.argv[1] != "updated") or (not os.path.exists(sys.argv[2])):
         return
     
-    print(GVars.executable)
-    print(sys.argv[2])
-    
     Log("this is first launch after update")
+    
     Log("deleting old client...")
     os.remove(sys.argv[2])
+    
+    # this will rename the new clien to the old client's name
     Log("renaming new client...")
-    curFile = GVars.executable
-    # only change the name between quotes to whatever you want the client to name itself
     os.rename(GVars.executable, sys.argv[2])
 
 def UpdateBox(update):
@@ -1253,7 +1248,6 @@ def OnStart():
     # Check for updates
     if GVars.configData["developer"] == "false":
         CheckForUpdates()
-
 
 
     # remove old temp files

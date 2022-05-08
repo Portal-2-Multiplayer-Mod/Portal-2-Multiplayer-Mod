@@ -1479,7 +1479,7 @@ function SendClientCommand(command, player = "all") {
 
 function SetSpeed(player, speed) {
     speed = speed.tostring()
-    local ent = Entities.FindByName(null, "player_speedmod")
+    local ent = Entities.FindByName(null, "p2mm_player_speedmod")
     DecEntFireByHandle(ent, "modifyspeed", speed, 0, player, player)
 }
 
@@ -2067,128 +2067,166 @@ function CreateOurEntities() {
     }
 
 ////////////////////////////////////////
+////////////// CHAT COMMANDS ///////////
 
-////////////////////////// CHAT COMMANDS
+ChatCommandErrorList <- [
+    "[ERROR] Command Not Found",
+    "[ERROR] Invalid Syntax",
+    "[ERROR] You do not have permission to use this command",
+    "[ERROR] You cannot use selectors with this command as your admin level is too low",
+]
 
-    ChatCommandErrorList <- [
-        "[ERROR] Command Not Found",
-        "[ERROR] Invalid Syntax",
-        "[ERROR] You do not have permission to use this command",
-        "[ERROR] You cannot use selectors with this command as your admin level is too low",
-    ]
+////////////////////////////////////////////////////////
 
-    ////////////////////////////////////////////////////////
+CommandList <- []
 
-    CommandList <- []
-
-    ////////////
-
+////////////
 
 
-    /////////////////////////////////// NOCLIP
-    function NoclipCommand(plr, args) {
-        local pclass = FindPlayerClass(plr)
-        printl(pclass.noclip)
-        if (pclass.noclip) {
-            EnableNoclip(false, plr)
-        } else {
-            EnableNoclip(true, plr)
+
+/////////////////////////////////// NOCLIP
+function NoclipCommand(plr, args) {
+    local pclass = FindPlayerClass(plr)
+    printl(pclass.noclip)
+    if (pclass.noclip) {
+        EnableNoclip(false, plr)
+    } else {
+        EnableNoclip(true, plr)
+    }
+}
+
+CommandList.push(class {
+    name = "noclip"
+    level = 1
+    selectorlevel = 1
+    func = NoclipCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
+
+/////////////////////////////////////// KILL
+function KillCommand(plr, args) {
+    EntFireByHandle(plr, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, plr, plr)
+}
+
+CommandList.push(class {
+    name = "kill"
+    level = 0
+    selectorlevel = 1
+    func = KillCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+
+})
+////////////////////////////////////////////
+
+//////////////////////////////// Change Team
+function ChangeTeamCommand(p, args) {
+    if (p.GetTeam() == 3) {
+        p.SetTeam(2)
+    } else
+    if (p.GetTeam() == 2) {
+        p.SetTeam(3)
+    }
+}
+
+CommandList.push(class {
+    name = "changeteam"
+    level = 0
+    selectorlevel = 1
+    func = ChangeTeamCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+
+})
+////////////////////////////////////////////
+
+////////////////////////////////// Set Speed
+function ChangeSpeedCommand(p, args) {
+    SetSpeed(p, args[0])
+}
+
+CommandList.push(class {
+    name = "speed"
+    level = 0
+    selectorlevel = 1
+    func = ChangeSpeedCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+
+})
+////////////////////////////////////////////
+
+
+function SendChatMessage(message) {
+    SendToConsoleP232("say " + message)
+}
+
+function RemoveDangerousChars(str) {
+    str = Replace(str, "%n", "")
+    return str
+}
+
+function ShouldIgnoreMessage(str) {
+    if (StartsWith(str, "^")) { return true }
+
+    return false
+}
+
+function GetCommandFromString(str) {
+    foreach (cmd in CommandList) {
+        if (StartsWith(str, cmd.name)) {
+            return cmd
         }
     }
+    return null
+}
 
-    CommandList.push(class {
-        name = "noclip"
-        level = 1
-        selectorlevel = 1
-        func = NoclipCommand
+function ValidateCommand(str) {
+    if (GetCommandFromString(str) != null) { return true }
+    return false
+}
 
-        notfounderror = ChatCommandErrorList[0]
-        syntaxerror = ChatCommandErrorList[1]
-        permerror = ChatCommandErrorList[2]
-        selectorpermerror = ChatCommandErrorList[3]
-    })
-    ////////////////////////////////////////////
+function ValidateCommandAdminLevel(cmd, level) {
+    if (cmd.level <= level) { return true }
+    return false
+}
 
-    /////////////////////////////////////// KILL
-    function KillCommand(plr, args) {
-        EntFireByHandle(plr, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, plr, plr)
+function ErrorOutCommand(level, cmd = null) {
+    if (cmd == null) {
+        SendChatMessage(ChatCommandErrorList[0])
+    } else if (level == 0) {
+        SendChatMessage(cmd.notfounderror)
+    } else if (level == 1) {
+        SendChatMessage(cmd.permerror)
+    } else if (level == 2) {
+        SendChatMessage(cmd.syntaxerror)
+    } else if (level == 3) {
+        SendChatMessage(cmd.selectorpermerror)
     }
+}
 
-    CommandList.push(class {
-        name = "kill"
-        level = 0
-        selectorlevel = 1
-        func = KillCommand
+function ValidateAlowedRunners(cmd, lvl) {
+    if (cmd.selectorlevel <= lvl) { return true }
+    return false
+}
 
-        notfounderror = ChatCommandErrorList[0]
-        syntaxerror = ChatCommandErrorList[1]
-        permerror = ChatCommandErrorList[2]
-        selectorpermerror = ChatCommandErrorList[3]
+function RunChatCommand(cmd, args, plr) {
+    printl("Running command: " + cmd.name)
+    cmd.func(plr, args)
+}
 
-    })
-    ////////////////////////////////////////////
-
-
-
-    ////////////////////////////////////////////////////////
-
-
-    function SendChatMessage(message) {
-        SendToConsoleP232("say " + message)
-    }
-
-    function RemoveDangerousChars(str) {
-        str = Replace(str, "%n", "")
-        return str
-    }
-
-    function ShouldIgnoreMessage(str) {
-        if (StartsWith(str, "^")) { return true }
-
-        return false
-    }
-
-    function GetCommandFromString(str) {
-        foreach (cmd in CommandList) {
-            if (StartsWith(str, cmd.name)) {
-                return cmd
-            }
-        }
-        return null
-    }
-
-    function ValidateCommand(str) {
-        if (GetCommandFromString(str) != null) { return true }
-        return false
-    }
-
-    function ValidateCommandAdminLevel(cmd, level) {
-        if (cmd.level <= level) { return true }
-        return false
-    }
-
-    function ErrorOutCommand(level, cmd = null) {
-        if (cmd == null) {
-            SendChatMessage(ChatCommandErrorList[0])
-        } else if (level == 0) {
-            SendChatMessage(cmd.notfounderror)
-        } else if (level == 1) {
-            SendChatMessage(cmd.permerror)
-        } else if (level == 2) {
-            SendChatMessage(cmd.syntaxerror)
-        } else if (level == 3) {
-            SendChatMessage(cmd.selectorpermerror)
-        }
-    }
-
-    function ValidateAlowedRunners(cmd, lvl) {
-        if (cmd.selectorlevel <= lvl) { return true }
-        return false
-    }
-
-    function RunChatCommand(cmd, args, plr) {
-        printl("Running command: " + cmd.name)
-        cmd.func(plr, args)
-    }
-
-////////////////////////////////////////
+///////////////////////////////////////
