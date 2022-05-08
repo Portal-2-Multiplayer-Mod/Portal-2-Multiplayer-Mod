@@ -99,8 +99,7 @@ The pros and cons are listed below, though **we highly recommend upgrading to an
 
 
 **Running the CLI version**
-
-	- Run `src/cli.py` for the client launcher
+- Run `src/cli.py` 
 
 
 **Running the GUI launcher:**
@@ -118,8 +117,10 @@ The pros and cons are listed below, though **we highly recommend upgrading to an
 1. Install the `pyinstaller` package `pip install pyinstaller`
 2. Run pyinstaller either by adding Python's bin to your $PATH and running the following command
 3. Run the following command:
-	- LINUX: `pyinstaller MainWindow.py -F --add-data GUI:GUI --add-data FALLBACK:FALLBACK`
-	- WINDOWS: `pyinstaller MainWindow.py -F -i GUI/assets/images/p2mm64.ico --noconsole --add-data "GUI;GUI" --add-data "FALLBACK;FALLBACK"`
+	- LINUX: 
+  `pyinstaller MainWindow.py -F --add-data GUI:GUI --add-data FALLBACK:FALLBACK`
+	- WINDOWS: 
+  `pyinstaller MainWindow.py -F -i GUI/assets/images/p2mm64.ico --noconsole --add-data "GUI;GUI" --add-data "FALLBACK;FALLBACK"`
 
 *This will create a package for your OS that has all the GUI files inside of it*
 
