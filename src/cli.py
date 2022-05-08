@@ -1,11 +1,10 @@
-import pathlib
-import sys
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.RunGame as RG
 import Scripts.Configs as cfg
 import Scripts.Updater as up
 import shutil
+import sys
 import os
 
 # set current directory to the directory of this file
@@ -96,12 +95,13 @@ def IsNew():
         return
     
     Log("this is first launch after update")
+    
     Log("deleting old client...")
     os.remove(sys.argv[2])
+    
     Log("renaming new client...")
-    curFile = os.path.abspath(__file__)
     # only change the name between quotes to whatever you want the client to name itself
-    os.rename(curFile, os.path.dirname(curFile) + "MultiplayerModLauncherCLI" + pathlib.Path(curFile).suffix)
+    os.rename(GVars.executable, sys.argv[2])
 
 def OnStart():
     # Populate the global variables
