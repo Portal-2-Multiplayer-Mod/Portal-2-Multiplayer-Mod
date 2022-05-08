@@ -1251,7 +1251,8 @@ def OnStart():
     # Check for first time setup
     IsNew()
     # Check for updates
-    CheckForUpdates()
+    if GVars.configData["developer"] == "false":
+        CheckForUpdates()
 
 
 
