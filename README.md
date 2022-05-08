@@ -16,7 +16,6 @@ The pros and cons are listed below, though **we highly recommend upgrading to an
 ***Version 1.5***
 ```
 + Easy to install
-+ Gets the job done of having multiple players
 - Lacks many features
 - Rushed codebase
 - Existing features may be broken due to binary changes in recent Portal 2 updates
