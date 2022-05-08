@@ -1479,7 +1479,7 @@ function SendClientCommand(command, player = "all") {
 
 function SetSpeed(player, speed) {
     speed = speed.tostring()
-    local ent = Entities.FindByName(null, "player_speedmod")
+    local ent = Entities.FindByName(null, "p2mm_player_speedmod")
     DecEntFireByHandle(ent, "modifyspeed", speed, 0, player, player)
 }
 
@@ -2127,13 +2127,12 @@ CommandList.push(class {
 })
 ////////////////////////////////////////////
 
-
-/////////////////////////////////////// Change Team
+//////////////////////////////// Change Team
 function ChangeTeamCommand(p, args) {
-    if (p.GetTeam == 3) {
+    if (p.GetTeam() == 3) {
         p.SetTeam(2)
     } else
-    if (p.GetTeam == 2) {
+    if (p.GetTeam() == 2) {
         p.SetTeam(3)
     }
 }
@@ -2150,8 +2149,26 @@ CommandList.push(class {
     selectorpermerror = ChatCommandErrorList[3]
 
 })
+////////////////////////////////////////////
 
-////////////////////////////////////////////////////////
+////////////////////////////////// Set Speed
+function ChangeSpeedCommand(p, args) {
+    SetSpeed(p, args[0])
+}
+
+CommandList.push(class {
+    name = "speed"
+    level = 0
+    selectorlevel = 1
+    func = ChangeSpeedCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+
+})
+////////////////////////////////////////////
 
 
 function SendChatMessage(message) {
@@ -2212,4 +2229,4 @@ function RunChatCommand(cmd, args, plr) {
     cmd.func(plr, args)
 }
 
-////////////////////////////////////////
+///////////////////////////////////////

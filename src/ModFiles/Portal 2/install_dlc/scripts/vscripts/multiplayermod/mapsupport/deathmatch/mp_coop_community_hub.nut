@@ -1,0 +1,2 @@
+ShouldRespawnWithoutPortalGunToggle()
+ShouldRespawnWithBaseHLToggle()
