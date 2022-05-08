@@ -7,6 +7,8 @@ import json
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
+defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
+
 DefaultConfigFile = {
     "cfgvariant":
         {
@@ -74,15 +76,7 @@ DefaultConfigFile = {
     "Players":
         {
             "value" : [
-                {
-                    "name" : "Example Player",
-                    "steamid" : "123456789",
-                },
-
-                {
-                    "name" : "2",
-                    "steamid" : "1223456789",
-                },
+                defaultplayerarray,
             ],
             "menu" : "players",
             "description" : "If You See This Something Is Wrong",

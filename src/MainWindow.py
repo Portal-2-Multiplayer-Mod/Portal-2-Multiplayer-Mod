@@ -1,10 +1,11 @@
+from inspect import isasyncgen
 import sys
 import os
 import random
 import threading
 import time
 import webbrowser
-
+from steamid_converter import Converter
 
 tk = ""
 try:
@@ -385,10 +386,10 @@ def RefreshPlayersMenu():
                 Log(inp)
                 curkey = GVars.configData["Players"]
                 curkey["value"][CurrentSelectedPlayer]["name"] = inp.strip()
-                cfg.EditConfig("Players", str(curkey))
+                cfg.WriteConfigFile(GVars.configData)
                 # Log("Saved '" + inp.strip() + "' to config " + "Players")
-                # Error("Saved!", 5, (75, 200, 75))
-                # RefreshPlayersMenu()
+                Error("Saved!", 5, (75, 200, 75))
+                RefreshPlayersMenu()
 
 
             GetUserInputPYG( AfterInputPlayerName , "Enter A Username", PlayerKey["name"])
@@ -405,8 +406,31 @@ def RefreshPlayersMenu():
         hoversnd = blipsnd
         curanim = ""
         def function():
-            Log("SteamID: " + PlayerKey["steamid"])
+            def AfterInputSteamID(inp, PlayerKey = PlayerKey):
+                Log("Saving SteamID...")
+                Log(inp)
+
+                if not (inp.isdigit()):
+                    try:
+                        inp = Converter.to_steamID3(inp.strip())
+                        # replace all [] with ""
+                        inp = inp.replace("[", "")
+                        inp = inp.replace("]", "")
+                        # only get everything after the last ":"
+                        inp = inp.split(":")[-1]
+                        Error("Converted SteamID!", 5, (75, 120, 255))
+                    except Exception as e:
+                        Error("Invalid SteamID!", 5, (255, 50, 50))
+                        return
+
+                curkey = GVars.configData["Players"]
+                curkey["value"][CurrentSelectedPlayer]["steamid"] = inp.strip()
+                cfg.WriteConfigFile(GVars.configData)
+                Error("Saved!", 5, (75, 200, 75))
+                RefreshPlayersMenu()
+            GetUserInputPYG( AfterInputSteamID , "Enter A SteamID", PlayerKey["steamid"])
         isasync = False
+
     class NextPlayer:
         text = "Next"
         activecolor = (255, 255, 120)
@@ -429,9 +453,89 @@ def RefreshPlayersMenu():
                 RefreshPlayersMenu()
                 ChangeMenu(PlayersMenu, False)
         isasync = False
+
+    class AdminLevel:
+        text = "Admin Level: " + PlayerKey["adminlevel"]
+        activecolor = (255, 255, 120)
+        inactivecolor = (155, 155, 155)
+        sizemult = 1
+        selectanim = "pop"
+        selectsnd = pwrsnd
+        hoversnd = blipsnd
+        curanim = ""
+        isasync = False
+        def function():
+            def AfterInputAdminLevel(inp, PlayerKey = PlayerKey):
+                if not inp.isdigit():
+                    Error("Not a number!", 5, (255, 50, 50))
+                    inp = "0"
+                elif int(inp) > 6:
+                    Error("Too high! (max = 6)", 5, (255, 255, 50))
+                    Error("Saved!", 5, (75, 200, 75))
+                    inp = "6"
+                elif int(inp) < 0:
+                    Error("Too low!", 5, (255, 50, 50))
+                    inp = "0"
+                else:
+                    Error("Saved!", 5, (75, 200, 75))
+                Log("Saving Admin Level...")
+                Log(inp)
+                curkey = GVars.configData["Players"]
+                curkey["value"][CurrentSelectedPlayer]["adminlevel"] = inp.strip()
+                cfg.WriteConfigFile(GVars.configData)
+                RefreshPlayersMenu()
+            GetUserInputPYG( AfterInputAdminLevel , "Enter An Admin Level", PlayerKey["adminlevel"])
+
+    class AddPlayer:
+        text = "Add Player"
+        activecolor = (120, 255, 120)
+        inactivecolor = (155, 155, 155)
+        sizemult = 1
+        selectanim = "pop"
+        selectsnd = pwrsnd
+        hoversnd = blipsnd
+        curanim = ""
+        def function():
+            global CurrentSelectedPlayer
+            Log("Adding Blank Player")
+            curkey = GVars.configData["Players"]
+            curkey["value"].append(cfg.defaultplayerarray)
+            cfg.WriteConfigFile(GVars.configData)
+            Log(str(len(GVars.configData["Players"]["value"]) - 1))
+            CurrentSelectedPlayer = len(GVars.configData["Players"]["value"]) - 1
+            RefreshPlayersMenu()
+        isasync = False
+
+    class DeletePlayer:
+        text = "Delete Player"
+        activecolor = (255, 50, 50)
+        inactivecolor = (155, 155, 155)
+        sizemult = 1
+        selectanim = "pop"
+        selectsnd = pwrsnd
+        hoversnd = blipsnd
+        curanim = ""
+        isasync = False
+        def function():
+            if len(GVars.configData["Players"]["value"]) > 1:
+                global CurrentSelectedPlayer
+                Log("Deleting Player")
+                curkey = GVars.configData["Players"]
+                del curkey["value"][CurrentSelectedPlayer]
+                cfg.WriteConfigFile(GVars.configData)
+                if CurrentSelectedPlayer > 0:
+                    CurrentSelectedPlayer -= 1
+                RefreshPlayersMenu()
+            else:
+                Error("There Must Be At Least 1 Player", 5, (255, 50, 50))
+
+
     PlayersMenu.append(CurPlayername)
     PlayersMenu.append(CurSteamID)
+    PlayersMenu.append(AdminLevel)
     PlayersMenu.append(NextPlayer)
+    PlayersMenu.append(AddPlayer)
+    PlayersMenu.append(DeletePlayer)
     PlayersMenu.append(BackButton)
 
 def GetUserInputPYG(afterfunc = None, prompt = "", preinput = ""):
