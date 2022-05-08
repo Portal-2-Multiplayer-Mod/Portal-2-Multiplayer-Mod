@@ -85,28 +85,32 @@ The pros and cons are listed below, though **we highly recommend upgrading to an
 	- At the moment, we only support Windows and Linux, not MacOS users!
 
 ---
-1. Install the global dependencies:
+
+1. Set up virtual environment 
+	- make the environment
+    	- `Python3 -m venv env`
+	- activate the environment
+    	- Windows: `.\env\Scripts\activate.bat`
+    	- Linux: `source ./env/bin/activate`
+
+
+2. Install the global dependencies:
 	- `pip install requests`
 
 
-2. Run the launcher through two methods:
+**Running the CLI version**
+
 	- Run `src/cli.py` for the client launcher
-	- Run the GUI launcher (Steps listed below)
 
 
 **Running the GUI launcher:**
-1. Create a virtual Python environment: (Not needed, although recommended)  
-	- Run this command: `Python3 -m venv env`
-2.  Activate the virtual environment:
-	- Windows: `.\env\Scripts\activate.bat`
-	- Linux: `source ./env/bin/activate`
 
-
-2. Install GUI dependencies 
+1. Install GUI dependencies 
 	- `pip install pygame`
 
 
-3. Run `src/MainWindow.py`
+2. Run `src/MainWindow.py`
+
 
 **How to make a beta distribution:**
 
