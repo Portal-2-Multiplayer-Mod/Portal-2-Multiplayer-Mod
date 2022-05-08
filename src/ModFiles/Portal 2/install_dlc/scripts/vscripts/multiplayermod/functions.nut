@@ -1937,6 +1937,16 @@ function CreateOurEntities() {
 
 /////////////////////////////////////
 
+///////////////////////////////// TABLES
+
+function Join(tbl, str) {
+    local nstr = ""
+    foreach (thing in tbl) {
+        nstr = nstr + thing + str
+    }
+    return nstr
+}
+
 //////////////////////////////// STRINGS
 
     function Len(str) {
@@ -2098,7 +2108,7 @@ function NoclipCommand(plr, args) {
 CommandList.push(class {
     name = "noclip"
     level = 1
-    selectorlevel = 1
+    selectorlevel = 2
     func = NoclipCommand
 
     notfounderror = ChatCommandErrorList[0]
@@ -2123,7 +2133,6 @@ CommandList.push(class {
     syntaxerror = ChatCommandErrorList[1]
     permerror = ChatCommandErrorList[2]
     selectorpermerror = ChatCommandErrorList[3]
-
 })
 ////////////////////////////////////////////
 
@@ -2147,7 +2156,6 @@ CommandList.push(class {
     syntaxerror = ChatCommandErrorList[1]
     permerror = ChatCommandErrorList[2]
     selectorpermerror = ChatCommandErrorList[3]
-
 })
 ////////////////////////////////////////////
 
@@ -2158,15 +2166,14 @@ function ChangeSpeedCommand(p, args) {
 
 CommandList.push(class {
     name = "speed"
-    level = 0
-    selectorlevel = 1
+    level = 2
+    selectorlevel = 2
     func = ChangeSpeedCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
     permerror = ChatCommandErrorList[2]
     selectorpermerror = ChatCommandErrorList[3]
-
 })
 ////////////////////////////////////////////
 
@@ -2194,15 +2201,14 @@ function BringCommand(p, args) {
 
 CommandList.push(class {
     name = "bring"
-    level = 0
-    selectorlevel = 1
+    level = 2
+    selectorlevel = 2
     func = BringCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
     permerror = ChatCommandErrorList[2]
     selectorpermerror = ChatCommandErrorList[3]
-
 })
 ////////////////////////////////////////////
 
@@ -2220,18 +2226,36 @@ function GotoCommand(p, args) {
 
 CommandList.push(class {
     name = "goto"
-    level = 0
-    selectorlevel = 1
+    level = 1
+    selectorlevel = 2
     func = GotoCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
     permerror = ChatCommandErrorList[2]
     selectorpermerror = ChatCommandErrorList[3]
-
 })
 ////////////////////////////////////////////
 
+/////////////////////////////////////// RCON
+function RconCommand(p, args) {
+    args[0] = Strip(args[0])
+    local cmd = Join(args, " ")
+    SendToConsoleP232(cmd)
+}
+
+CommandList.push(class {
+    name = "rcon"
+    level = 3
+    selectorlevel = 3
+    func = RconCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
 
 function SendChatMessage(message) {
     SendToConsoleP232("say " + message)
