@@ -116,7 +116,6 @@ def SetVscriptConfigFile(vsconfigfile):
     Log("")
     Log("")
     Log("")
-    
 
 def MountMod(gamepath, encrypt = False):
     Log("")

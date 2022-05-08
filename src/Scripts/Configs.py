@@ -73,12 +73,17 @@ DefaultConfigFile = {
 
     "Players":
         {
-            "value" : {
-                "0": {
+            "value" : [
+                {
                     "name" : "Example Player",
                     "steamid" : "123456789",
                 },
-            },
+
+                {
+                    "name" : "2",
+                    "steamid" : "1223456789",
+                },
+            ],
             "menu" : "players",
             "description" : "If You See This Something Is Wrong",
             "warning" : "If You See This Something Is Wrong",

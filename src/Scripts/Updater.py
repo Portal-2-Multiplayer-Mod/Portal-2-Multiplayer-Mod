@@ -15,7 +15,7 @@ import os
 
 currentVersion = "2.0.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
-repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
+repoName = "TestRepo"  # we can't change this to the id :(
 
 
 # thanks stackOverflow for this solution <3
@@ -46,18 +46,18 @@ def CheckForNewClient():
 
     results = {
         "status": True,
-        "name": "update available",
-        "message": ""  # we set this after we see what OS the user is on
+        "name": "Client Update",
+        "message": "Would you like to download \n the new client?"
     }
 
-    # if it's windows then we ask if the user want to update or no
-    # and linux users can update using their package manager
-    if GVars.iow:
-        # we can have 2 buttons yes or no for this
-        results["message"] = "There's a new update available! \n do you want to download it?"
-    else:
-        # we only need an "ok" button for this
-        results["message"] = "there's a new update available! \n update through your package manager if you want"
+    # # if it's windows then we ask if the user want to update or no
+    # # and linux users can update using their package manager
+    # if GVars.iow:
+    #     # we can have 2 buttons yes or no for this
+    #     results["message"] = "There's a new update available! \n do you want to download it?"
+    # else:
+    #     # we only need an "ok" button for this
+    #     results["message"] = "there's a new update available! \n update through your package manager if you want"
 
     return results
 
@@ -89,11 +89,22 @@ def DownloadClient(cType = ""):
 
     # download the file in the same directory 
     # i don't want to bother with folders
-    path = os.path.dirname(__main__.__file__) + GVars.nf + "p2mm" + packageType
+    path = os.path.dirname(GVars.executable) + GVars.nf + "p2mm" + packageType
+    print(path)
     urllib.request.urlretrieve(downloadLink, path)
 
-    command = [path, "updated"]
-    subprocess.Popen(command)
+    print(sys.argv[0])
+
+    if (GVars.iow):
+        command = [path, "updated"]
+        subprocess.Popen(command)
+    if (GVars.iol):
+        permissioncommand = "chmod +x " + path
+        command = path + " updated " + GVars.executable
+        # def run():
+        os.system(permissioncommand)
+        #     os.system(command)
+        subprocess.Popen(command, shell=True)
     sys.exit(0)
 
 def CheckForNewFiles():

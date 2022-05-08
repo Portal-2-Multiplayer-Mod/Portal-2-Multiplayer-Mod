@@ -22,6 +22,7 @@ iow = False
 iol = False
 nf = os.sep # this way the logging won't break if someone runs the app on mac
 hadtoresetconfig = False
+executable = os.path.abspath(sys.executable)
 
 def init():
     global appStartDate, modPath, iow, iol, nf, configPath

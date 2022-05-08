@@ -1,10 +1,11 @@
 import sys
-import os 
+import os
 import random
 import threading
 import time
 from tkinter import W
 import webbrowser
+import pathlib
 
 from Scripts.EncryptCVars import Encrypt
 
@@ -186,7 +187,7 @@ def MountModOnly():
     gamepath = GVars.configData["portal2path"]["value"]
     if not VerifyGamePath(gamepath):
         return
-    
+
     if not IsUpdating:
         Error("Mounting Mod!", 5, (75, 255, 75))
         if (GVars.configData["developer"]["value"] == "true"):
@@ -208,13 +209,13 @@ def MountModOnly():
                     def YesInput():
                         Log("YES INPUT CALLED... FETCHING MOD")
                         UpdateMod()
-                        
+
                     class YesButton:
                         text = "Yes"
                         function = YesInput
                         activecolor = (75, 200, 75)
                         inactivecolor = (155, 155, 155)
-                    
+
                     class NoButton:
                         text = "Use Fallbacks"
                         def function():
@@ -354,13 +355,26 @@ def RefreshSettingsMenu(menu):
     SettingsButtons.append(BackButton)
 
 def RefreshPlayersMenu():
+    global CurrentSelectedPlayer
     PlayersMenu.clear()
     # for player in GVars.configData["Players"]["value"][CurrentSelectedPlayer]:
     #     Log(player)
     #     Log(GVars.configData["Players"]["value"][CurrentSelectedPlayer][player])
-    Playerkey = GVars.configData["Players"]["value"][CurrentSelectedPlayer]
+    # PlayerKey = GVars.configData["Players"]["value"]["0"]
+    # indx = 0
+    # for player in GVars.configData["Players"]["value"]:
+    #     Log(player)
+    #     print(GVars.configData["Players"]["value"][player])
+    #     if indx == CurrentSelectedPlayer:
+    #         PlayerKey = GVars.configData["Players"]["value"][player]
+    #     indx += 1
+    # if indx < CurrentSelectedPlayer:
+    #     CurrentSelectedPlayer = 0
+    #     PlayerKey = GVars.configData["Players"]["value"]["0"]
+    PlayerKey = GVars.configData["Players"]["value"][CurrentSelectedPlayer]
+    print(PlayerKey)
     class CurPlayername:
-        text = "Name: " + Playerkey["name"]
+        text = "Name: " + PlayerKey["name"]
         activecolor = (255, 255, 120)
         inactivecolor = (155, 155, 155)
         sizemult = 1
@@ -369,7 +383,7 @@ def RefreshPlayersMenu():
         hoversnd = blipsnd
         curanim = ""
         def function():
-            def AfterInputPlayerName(inp, Playerkey = Playerkey):
+            def AfterInputPlayerName(inp, PlayerKey = PlayerKey):
                 Log("Saving Player Name...")
                 Log(inp)
                 curkey = GVars.configData["Players"]
@@ -380,12 +394,12 @@ def RefreshPlayersMenu():
                 # RefreshPlayersMenu()
 
 
-            GetUserInputPYG( AfterInputPlayerName , "Enter A Username", Playerkey["name"])
+            GetUserInputPYG( AfterInputPlayerName , "Enter A Username", PlayerKey["name"])
 
-            Log("Name: " + Playerkey["name"])
+            Log("Name: " + PlayerKey["name"])
         isasync = False
     class CurSteamID:
-        text = "SteamID: " + Playerkey["steamid"]
+        text = "SteamID: " + PlayerKey["steamid"]
         activecolor = (255, 255, 120)
         inactivecolor = (155, 155, 155)
         sizemult = 1
@@ -394,7 +408,7 @@ def RefreshPlayersMenu():
         hoversnd = blipsnd
         curanim = ""
         def function():
-            Log("SteamID: " + Playerkey["steamid"])
+            Log("SteamID: " + PlayerKey["steamid"])
         isasync = False
     class NextPlayer:
         text = "Next"
@@ -411,12 +425,12 @@ def RefreshPlayersMenu():
                 Log("Next Player")
                 CurrentSelectedPlayer += 1
                 RefreshPlayersMenu()
-                ChangeMenu(PlayersMenu)
+                ChangeMenu(PlayersMenu, False)
             else:
                 Log("No More Players")
                 CurrentSelectedPlayer = 0
                 RefreshPlayersMenu()
-                ChangeMenu(PlayersMenu)
+                ChangeMenu(PlayersMenu, False)
         isasync = False
     PlayersMenu.append(CurPlayername)
     PlayersMenu.append(CurSteamID)
@@ -1183,6 +1197,50 @@ def Main():
     pygame.quit()
     sys.exit()
 
+def IsNew():
+    
+    if len(sys.argv) != 3:
+        return
+    
+    if (sys.argv[1] != "updated") or (not os.path.exists(sys.argv[2])):
+        return
+    
+    print(GVars.executable)
+    print(sys.argv[2])
+    
+    Log("this is first launch after update")
+    Log("deleting old client...")
+    os.remove(sys.argv[2])
+    Log("renaming new client...")
+    curFile = GVars.executable
+    # only change the name between quotes to whatever you want the client to name itself
+    os.rename(GVars.executable, sys.argv[2])
+
+def UpdateBox(update):
+    def YesInput():
+        Log("YES INPUT CALLED... FETCHING MOD")
+        up.DownloadClient()
+
+    class YesButton:
+        text = "Yes"
+        function = YesInput
+        activecolor = (75, 200, 75)
+        inactivecolor = (155, 155, 155)
+
+    class NoButton:
+        text = "No"
+        def function():
+                pass
+        activecolor = (255, 75, 75)
+        inactivecolor = (155, 155, 155)
+
+    PopupBox(update["name"], update["message"], [YesButton, NoButton])
+
+def CheckForUpdates():
+    clientUpdate = up.CheckForNewClient()
+    if clientUpdate["status"]:
+        UpdateBox(clientUpdate)
+
 def OnStart():
     # Load the global variables
     GVars.init()
@@ -1190,11 +1248,17 @@ def OnStart():
     StartLog()
     # load the config file into memmory
     GVars.LoadConfig()
+    # Check for first time setup
+    IsNew()
+    # Check for updates
+    CheckForUpdates()
+
+
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
         BF.DeleteFolder(GVars.modPath + GVars.nf + ".temp")
-    
+
     if (GVars.hadtoresetconfig):
         Log("UH OH CONFIG RESET YELL AT USER.")
         class OkButton:
