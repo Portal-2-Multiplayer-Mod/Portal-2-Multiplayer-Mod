@@ -17,7 +17,6 @@ The pros and cons are listed below, though **we highly recommend upgrading to an
 ```
 + Easy to install
 + Gets the job done of having multiple players
-+ User-friendly launcher
 - Lacks many features
 - Rushed codebase
 - Existing features may be broken due to binary changes in recent Portal 2 updates
@@ -27,6 +26,7 @@ The pros and cons are listed below, though **we highly recommend upgrading to an
 ***Version 2.0***
 ```
 + Presents tons new features that were not in 1.5
++ Much better launcher
 + Makes use of a custom plugin to bring about some of the features
 + Full Linux and Windows support
 + Rewritten codebase to allow for efficiency
@@ -34,7 +34,6 @@ The pros and cons are listed below, though **we highly recommend upgrading to an
 + A lot more stability than v1.5
 + More organized file-structure
 - Will take longer to install (requires that you install Python at this point in time)
-- No pre-compiled launcher
 - Some features may break as we update the pre-release.
 - Not easy to set up
 ```
