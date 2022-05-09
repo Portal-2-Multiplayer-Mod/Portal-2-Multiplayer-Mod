@@ -72,12 +72,14 @@ def TryFindPortal2Path():
                     line=line.strip()
                     # remove the quotes
                     line = line.replace("\"", "")
+                    print(line)
                     if (line.startswith("path")):
                         line = line.replace("path", "")
                         line = line.strip()
                         paths.append(line)
                 
                 for path in paths:
+                    print(path)
                     if (os.path.isdir(path + ConvertPath("/steamapps/common/Portal 2"))):
                         return path + ConvertPath("/steamapps/common/Portal 2")
 
