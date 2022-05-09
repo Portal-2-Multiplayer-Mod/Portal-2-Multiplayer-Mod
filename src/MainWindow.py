@@ -159,7 +159,7 @@ def VerifyGamePath(gamepath):
             tmpp = tmpp.strip()
             # replace \\ with \
             Error("Found path!", 5, (255, 255, 75))
-            tmpp = tmpp.replace("\\\\", "\\")
+            # tmpp = tmpp.replace("\\\\", "\\")
             cfg.EditConfig("portal2path", tmpp.strip())
             Log("Saved '" + tmpp.strip() + "' as the game path!")
             gamepath = GVars.configData["portal2path"]["value"]
