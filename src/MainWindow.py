@@ -511,8 +511,8 @@ def RefreshPlayersMenu():
         def function():
             global CurrentSelectedPlayer
             Log("Adding Blank Player")
-            curkey = GVars.configData["Players"]
-            curkey["value"].append(cfg.defaultplayerarray)
+            print(f"appended: {cfg.defaultplayerarray}")
+            GVars.configData["Players"]["value"].append(cfg.defaultplayerarray)
             cfg.WriteConfigFile(GVars.configData)
             Log(str(len(GVars.configData["Players"]["value"]) - 1))
             CurrentSelectedPlayer = len(GVars.configData["Players"]["value"]) - 1
@@ -1138,7 +1138,6 @@ def Main():
                 if event.type == pygame.KEYDOWN:
                     # get the key and add it to CurInput
                     name = pygame.key.name(event.key)
-                    print(type(name))
                     if name == "backspace" and len(CurInput) >0:
                             CurInput = CurInput[:-1]
                     
@@ -1390,7 +1389,6 @@ def OnStart():
         CheckForUpdates()
     else:
         Log("not checking for updates because we're running through python")
-        print(GVars.configData["Players"]["value"][0].keys())
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
