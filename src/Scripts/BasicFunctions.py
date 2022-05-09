@@ -58,7 +58,7 @@ def TryFindPortal2Path():
             print(hkey)
             steam_path = winreg.QueryValueEx(hkey, "InstallPath")
             print(steam_path)
-            manifestpath = steam_path[0] + ConvertPath("/appmanifest_620.acf")
+            manifestpath = steam_path[0] + ConvertPath("/steamapps/appmanifest_620.acf")
             print(manifestpath)
             if (os.path.isfile(manifestpath)):
                 print("my man gonna die bitch")
