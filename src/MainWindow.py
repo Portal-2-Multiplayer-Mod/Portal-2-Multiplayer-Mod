@@ -838,6 +838,19 @@ class BackButton:
         BackMenu()
     isasync = False
 
+class TestP2PathButton: 
+    text = "Test P2 Path"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        Error(str(BF.TryFindPortal2Path()))
+    isasync = False
+
 ##############################
 
 ### BUTTONS
@@ -849,7 +862,7 @@ PlayersMenu = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, TestingButton, ExitButton]
+MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, TestP2PathButton, ExitButton]
 
 TestingMenu = [InputButton, PopupBoxButton, BackButton]
 ###########
