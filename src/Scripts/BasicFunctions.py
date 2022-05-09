@@ -1,5 +1,7 @@
 import Scripts.GlobalVariables as GVars
 import os
+import sys
+import winreg
 
 ##############
 # CONVERSION #
@@ -35,3 +37,27 @@ def CopyFile(src, dst):
     elif (GVars.iol):
         os.system("cp \"" + src + "\" \"" + dst + "\"")
     return dst
+
+def TryFindPortal2Path():
+    # if C:\Program Files (x86)\Steam\steamapps\common\Portal 2 exists
+    defpathwin = ConvertPath("C:\Program Files (x86)\Steam\steamapps\common\Portal 2")
+    defpathlin = ConvertPath("~/.local/share/Steam/steamapps/common/Portal 2")
+    
+    if (GVars.iol):
+        if (os.path.isdir(defpathlin)):
+            return defpathlin
+    elif (GVars.iow):
+        if (os.path.isdir(defpathwin)):
+            return defpathwin
+
+    if (GVars.iow):
+        try:
+            hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\WOW6432Node\Valve\Steam")
+            print(hkey)
+            steam_path = winreg.QueryValueEx(hkey, "InstallPath")
+            print(steam_path)
+            return steam_path[0] + "steamapps/common/Portal 2"
+        except Exception as e:
+            print("ERROR: " + str(e))
+
+    return False

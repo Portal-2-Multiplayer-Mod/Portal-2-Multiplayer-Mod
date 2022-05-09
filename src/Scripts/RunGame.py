@@ -151,8 +151,9 @@ def MountMod(gamepath, encrypt = False):
         UnEncryptEncryptions()
     path = gamepath + GVars.nf + dlcmountpoint
 
-    for cmdrep in CommandReplacements:
-        EncryptCVars.Encrypt(BF.ConvertPath(path), cmdrep[1], cmdrep[2])
+    if encrypt:
+        for cmdrep in CommandReplacements:
+            EncryptCVars.Encrypt(BF.ConvertPath(path), cmdrep[1], cmdrep[2])
 
     Log("__ENCRYPTING CVARS END__")
 

@@ -30,7 +30,7 @@ DefaultConfigFile = {
     "developer":
         {
             "value": "false",
-            "menu": "launcher",
+            "menu": "hidden",
             "description": "Makes the mods files mount from src/ModFiles",
             "warning": "",
             "prompt": "Enable developer mode?",
