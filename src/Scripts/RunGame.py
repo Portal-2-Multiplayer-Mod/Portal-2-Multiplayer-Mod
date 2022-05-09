@@ -11,7 +11,6 @@ import Scripts.Configs as cfg
 import subprocess
 import Scripts.BasicFunctions as BF
 import random
-import __main__
 
 CommandReplacements = [
     ['restart_level', 'portal2mprslv', 'portal2mprslv'],
@@ -62,8 +61,7 @@ def SetVscriptConfigFile(vsconfigfile):
     Log("")
     p2cfgs = cfg.GetConfigList("menu", "portal2")
 
-    f = open(vsconfigfile, "r", encoding="utf-8")
-    lines = f.readlines()
+    lines = open(vsconfigfile, "r", encoding="utf-8").readlines()
 
     indx = -1
     for line in lines:
@@ -81,26 +79,23 @@ def SetVscriptConfigFile(vsconfigfile):
         if (line.find("=") == -1 and line.find("<-") == -1):
             continue
 
-        Before = ""
-        After = ""
+        key = ""
 
         # if the line has a <-
         if (line.find("<-") != -1):
             # split the <-
-            Before = line.split("<-")[0]
-            After = line.split("<-")[1]
+            key = line.split("<-")[0]
 
         # if the line has a =
         if (line.find("=") != -1):
             # split the =
-            Before = line.split("=")[0]
-            After = line.split("=")[1]
+            key = line.split("=")[0]
 
         for p2cfg in p2cfgs:
-            if (Before == p2cfg):
+            if (key == p2cfg):
                 val = GVars.configData[p2cfg]["value"]
                 Log("Setting " + p2cfg + " To " + val)
-                line = Before + " <- " + val
+                line = key + " <- " + val
                 Log(line)
                 lines[indx] = line + "\n"
 
@@ -120,14 +115,9 @@ def SetVscriptConfigFile(vsconfigfile):
         steamid = player["steamid"]
         print("Adding " + name + " to admins")
 
-        lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + steamid + '" // ' + name + lines[nextObrack + 1:]
-    # convert the lines to a list again
-
-    f.close()
-    f = open(vsconfigfile, "w", encoding="utf-8")
-    f.write(lines)
-
-
+        lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + steamid + '", // ' + name + lines[nextObrack + 1:]
+    
+    open(vsconfigfile, "w", encoding="utf-8").write(lines)
 
     Log("====================================================")
     Log("")
