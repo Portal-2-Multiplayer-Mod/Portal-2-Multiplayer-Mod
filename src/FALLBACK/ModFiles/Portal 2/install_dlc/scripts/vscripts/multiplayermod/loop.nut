@@ -22,7 +22,7 @@ function loop() {
 
     //## Event List ##//
     if (EventList.len() > 0) {
-        SendToConsole("script " + EventList[0])
+        SendToConsoleP232("script " + EventList[0])
         EventList.remove(0)
     }
 
@@ -190,7 +190,7 @@ function loop() {
     if (cnt > EntityCap - EntityCapLeeway) {
         if (cnt >= FailsafeEntityCap) {
             printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
-            SendToConsole("changelevel mp_coop_lobby_3")
+            SendToConsoleP232("changelevel mp_coop_lobby_3")
         }
         printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
         foreach (entclass in ExpendableEntities) {
@@ -349,7 +349,7 @@ function loop() {
         }
     }
 
-    // Random turret models
+    // Random turret models & colors
     if (RandomTurrets && HasSpawned) {
         local ent = null
         while (ent = Entities.FindByClassname(ent, "npc_portal_turret_floor")) {
@@ -446,8 +446,6 @@ function loop() {
         }
     }
 
-    //## Make players' collision elastic ##//
-    EntFire("player", "addoutput", "CollisionGroup 2")
     }
 
     //## If not in multiplayer then disconnect ##//

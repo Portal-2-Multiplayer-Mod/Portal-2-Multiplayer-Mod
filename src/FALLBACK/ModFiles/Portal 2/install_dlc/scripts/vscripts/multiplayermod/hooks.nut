@@ -7,7 +7,7 @@
 //  |_||_|\___/\___/|_\_\_    _                 _ 
 //  | __|_  _  _ _   __ | |_ (_) ___  _ _   ___(_)
 //  | _|| || || ' \ / _||  _|| |/ _ \| ' \ (_-< _ 
-//  |_|  \_,_||_||_|\__| \__||_|\___/|_||_|/__/(_)                  
+//  |_|  \_,_||_||_|\__| \__||_|\___/|_||_|/__/(_)
 //---------------------------------------------------
 // Purpose: Define miscellaneous functions used to
 //          hook onto player info and chat commands
@@ -97,7 +97,7 @@ function OnPlayerJoin(p, script_scope) {
     }
 
     //# Set cvars on joining players' client #//
-    SendToConsole("sv_timeout 3")
+    SendToConsoleP232("sv_timeout 3")
     EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
     EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
     EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
@@ -186,8 +186,8 @@ function PostMapLoad() {
     SendPythonOutput("hookdiscord Portal 2 Playing On: " + GetMapName())
 
     //## Cheat detection ##//
-    SendToConsole("prop_dynamic_create cheatdetectionp2mm")
-    SendToConsole("script SetCheats()")
+    SendToConsoleP232("prop_dynamic_create cheatdetectionp2mm")
+    SendToConsoleP232("script SetCheats()")
 
     // Add a hook to the chat command function
     if (PluginLoaded) {
@@ -195,22 +195,26 @@ function PostMapLoad() {
         AddChatCallback("ChatCommands")
     }
     // Edit cvars & set server name
-    SendToConsole("mp_allowspectators 0")
+    SendToConsoleP232("mp_allowspectators 0")
     if (PluginLoaded) {
-        SendToConsole("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
+        SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
     } else {
-        SendToConsole("hostname Portal 2: Multiplayer Mod Server")
+        SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server")
     }
     // Force spawn players in map
     AddBranchLevelName( 1, "P2 MM" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
     // Enable fast download
-    SendToConsole("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
-    SendToConsole("sv_allowdownload 1")
-    SendToConsole("sv_allowupload 1")
+    SendToConsoleP232("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+    SendToConsoleP232("sv_allowdownload 1")
+    SendToConsoleP232("sv_allowupload 1")
+	
+	// Elastic Player Collision
+	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
+	
     if (DevMode) {
-        SendToConsole("developer 1")
+        SendToConsoleP232("developer 1")
         StartDevModeCheck <- true
     }
 
@@ -220,9 +224,9 @@ function PostMapLoad() {
     }
 
 	// Gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
-	SendToConsole("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
-	SendToConsole("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
-	SendToConsole("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
+	SendToConsoleP232("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
+	SendToConsoleP232("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
+	SendToConsoleP232("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
@@ -243,7 +247,7 @@ function PostMapLoad() {
 // Runs when the second player loads in
 function PostPlayer2Join() {
     if (!CheatsOn) {
-        SendToConsole("sv_cheats 0")
+        SendToConsoleP232("sv_cheats 0")
     }
     Player2Joined <- true
 }
@@ -416,332 +420,92 @@ function GeneralOneTime() {
     }
 
     // Create props after cache
-    SendToConsole("script CreatePropsForLevel(false, true, false)")
+    SendToConsoleP232("script CreatePropsForLevel(false, true, false)")
 
     MapSupport(false, false, true, false, false, false, false)
 }
 
 // Chat command hooks provided by our plugin
 function ChatCommands(ccuserid, ccmessage) {
-    // Get all nessasary data
-    local p = FindByIndex(ccuserid)
-    local pname = GetPlayerName(ccuserid)
-    local adminlevel = GetAdminLevel(ccuserid)
-    local message = split(ccmessage, " ")
-    local commandrunner = p
-    // Print some debug info
-    if (GetDeveloperLevel()) {
-        printl("=========" + pname + " sent a message=========")
 
-        printl("ccuserid: " + ccuserid)
-        printl("ccmessage: " + ccmessage)
-        printl("p: " + p)
-        printl("pname: " + pname)
-        printl("adminlevel: " + adminlevel)
-        printl("message: " + message)
+    ///////////////////////////////////////////
+    local Message = RemoveDangerousChars(ccmessage)
+    ///////////////////////////////////////////
+
+    //////////////////////////////////////////////
+    if (ShouldIgnoreMessage(Message)) { return }
+    //////////////////////////////////////////////
+
+    //////////////////////////////////////////////
+    local Player = GetPlayerFromUserID(ccuserid)
+    local Inputs = SplitBetween(Message, "!@", true)
+    local PlayerClass = FindPlayerClass(Player)
+    local Username = PlayerClass.username
+    local AdminLevel = GetAdminLevel(Player)
+    //////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////
+    function Rem(s) { return Replace(Replace(s, "!", ""), "@", "") }
+    ////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////
+    local Commands = []
+    local Selectors = []
+
+    foreach (Input in Inputs) {
+        if (StartsWith(Input, "!")) {
+            Commands.push(Rem(Input))
+        } else if (StartsWith(Input, "@")) {
+            Selectors.push(Rem(Input))
+        }
     }
+    ////////////////////////////////////////
 
-    // Setup the message
-    local indx = -1
-    local isparseingname = false // Used to check if we are parsing a name
-    local isparsingcommand = false // Used to check if we are parsing a command
-    local parsedname = ""
-    local parsedcommand = ""
-    foreach (submessage in message) {
-        submessage = lstrip(submessage)
-        indx++
-        // If the message starts with a $, then it's a player override
-        if (strip(submessage).slice(0,1) == "$" || isparseingname && strip(submessage).slice(0,1) != "!") {
-            // Make sure we update the parse list
-            isparseingname = true
-            isparsingcommand = false
+    ////////////////////////////////////////////////////
+    local Runners = []
+    local UsedRunners = true
 
-            // Get the name itself
-            local playeroverride = submessage
-            if (submessage.slice(0,1) == "$") {
-                playeroverride = submessage.slice(1)
+    foreach (Selector in Selectors) {
+        if (Selector == "all" || Selector == "*" || Selector == "everyone") {
+            Runners = []
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                Runners.push(p)
             }
-
-            // Add it to the parsed name
-            parsedname = parsedname + playeroverride + " "
+            break
         }
+        local NewRunner = FindPlayerByName(Selector)
 
-        // If the message starts with a !, then it's a command
-        if (strip(submessage).slice(0,1) == "!" || isparsingcommand && strip(submessage).slice(0,1) != "$") {
-            isparseingname = false
-            isparsingcommand = true
-
-            // Get the command itself
-            local command = submessage
-            if (submessage.slice(0,1) == "!") {
-                command = submessage.slice(1)
-            }
-
-            // Add it to the parsed command
-            parsedcommand = parsedcommand + command + " "
+        if (NewRunner) {
+            Runners.push(NewRunner)
         }
     }
 
-    // Strip the last space from the parsed name
-    if (parsedname != "") {
-        parsedname = strip(parsedname)
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Parsed name: " + ExpandName(parsedname))
-        }
-        pname = ExpandName(parsedname)
-        commandrunner = p // Set the commandrunner to the player that sent the command
-        p = FindPlayerByName(ExpandName(parsedname))
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Expanded name: " + pname)
-            printl("(P2:MM): Executing on: " + p)
+    if (Runners.len() == 0) {
+        Runners.push(Player)
+        UsedRunners = false
+    }
+    ////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////
+    foreach (Command in Commands) {
+        printl("(P2:MM): Command: " + Command)
+        Command = Strip(Command)
+
+        if (!ValidateCommand(Command)) { ErrorOutCommand(0) ; continue }
+        local Args = SplitBetween(Command, " ", true); if (Args.len() > 0) { Args.remove(0) }
+        Command = GetCommandFromString(Command)
+
+        if (!ValidateCommandAdminLevel(Command, AdminLevel)) { ErrorOutCommand(1, Command); continue }
+
+        if (UsedRunners) { if (!ValidateAlowedRunners(Command, AdminLevel)) { ErrorOutCommand(3, Command); continue } }
+
+
+        foreach (CurPlayer in Runners) {
+            RunChatCommand(Command, Args, CurPlayer)
         }
     }
-    // Strip the last space from the parsed command
-    if (parsedcommand != "") {
-        parsedcommand = parsedcommand.slice(0, -1)
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Parsed command: " + parsedcommand)
-        }
-        // If it's all
-        if (pname != "all") {
-            // Run the chat command runner if the player isnt null
-            if (p != null) {
-                adminlevel = adminlevel.tointeger() // Make sure the adminlevel is an integer
-                if (adminlevel > 1) {
-                    ChatCommandRunner(p, pname, parsedcommand, adminlevel, commandrunner)
-                }
-            }
-        } else {
-            // If its high enough to use all
-            if (adminlevel > 1) {
-                // Run the chat command for all players
-                local p2 = null
-                while (p2 = Entities.FindByClassname(p2, "player")) {
-                    adminlevel = adminlevel.tointeger() // Make sure the adminlevel is an integer
-                    if (adminlevel > 1) {
-                        local newpname = GetPlayerName(p2.entindex())
-                        ChatCommandRunner(p2, newpname, parsedcommand, adminlevel, commandrunner)
-                    }
-                }
-            } else {
-                SendToConsole("say " + playername + ": You cant use all.")
-            }
-        }
-    }
-    if (GetDeveloperLevel()) {
-        printl("==============================================")
-    }
+    ///////////////////////////////////////////////////////////
+
 }
 
-// Parse the chat commands coming from clients
-function ChatCommandRunner(player, playername, command, level, commandrunner = null) {
-    // Do some variable setup
-    if (commandrunner == null) {
-        commandrunner = player
-    }
-    // Split up the command
-    command = split(command, " ")
-    local action = command[0]
-    local currentplayerclass = FindPlayerClass(player)
-
-    //## Check for the command ##//
-
-    //## NOCLIP ##//
-    if (action == "noclip") {
-        // Update the player's noclip status
-        currentplayerclass.noclip <- player.IsNoclipping()
-        // Inverse the noclip status unless there is a second argument
-        if (command.len() < 2) {
-            if (!currentplayerclass.noclip) {
-                EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
-                currentplayerclass.noclip <- true
-            } else {
-                EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
-                currentplayerclass.noclip <- false
-            }
-        } else {
-            // Set the noclip status to the second argument
-            if (command[1] == "on") {
-                EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
-                currentplayerclass.noclip <- true
-            } else if (command[1] == "off") {
-                EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
-                currentplayerclass.noclip <- false
-            }
-        }
-    }
-
-    //## SPEED ##//
-    if (action == "speed") {
-        if (command.len() > 1) {
-            EntFire("p2mm_player_speedmod", "modifyspeed", command[1], 0, player)
-        } else {
-            SendToConsole("say " + playername + ": You need to specify a speed.")
-        }
-    }
-
-    //## KICK ##//
-    if (action == "kick") {
-        if (command.len() < 2) {
-            if (commandrunner == player) {
-                SendToConsole("say " + playername + ": You probably dont want to kick yourself. If you do then use kick " + playername + ".")
-            } else {
-                EntFire("p2mm_clientcommand", "command", "disconnect", 0, player)
-            }
-        } else {
-            local reason = ""
-            if (command.len() > 2) {
-                reason = " \"" + CombineList(command, 2) + "\""
-            }
-            local playertokick = FindPlayerByName(command[1])
-            if (playertokick != null) {
-                EntFire("p2mm_clientcommand", "command", "disconnect" + reason, 0, playertokick)
-            } else {
-                SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
-            }
-        }
-    }
-
-    //## KILL ##//
-    if (action == "kill") {
-        if (command.len() < 2) {
-            EntFireByHandle(player, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
-        } else {
-            local nm = ExpandName(command[1])
-            local playertorun = FindPlayerByName(command[1])
-            if (command[1] == "all") {
-                local p2 = null
-                while (p2 = Entities.FindByClassname(p2, "player")) {
-                    EntFireByHandle(p2, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
-                }
-                SendToConsole("say " + playername + ": Killed all players.")
-            } else {
-                if (playertorun != null) {
-                    EntFireByHandle(playertorun, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, player, player)
-                    SendToConsole("say " + playername + ": " + nm + " has been killed.")
-                } else {
-                    SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
-                }
-            }
-        }
-    }
-
-    //## ROCKET ##//
-    if (action == "rocket") {
-        if (command.len() < 2) {
-            currentplayerclass.rocket <- !currentplayerclass.rocket
-            //EntFireByHandle(player, "sethealth", "-9999999999999999999999999999999999999999999999999", 5, player, player)
-            player.SetVelocity(Vector(player.GetVelocity().x, player.GetVelocity().y, 1000))
-        } else {
-            local playertorun = FindPlayerByName(command[1])
-            if (playertorun != null) {
-                local tempplayerclass = FindPlayerClass(playertorun)
-                tempplayerclass.rocket <- !tempplayerclass.rocket
-                playertorun.SetVelocity(Vector(playertorun.GetVelocity().x, playertorun.GetVelocity().y, 1000))
-                //EntFireByHandle(playertorun, "sethealth", "-9999999999999999999999999999999999999999999999999", 5, player, player)
-            } else {
-                SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
-            }
-        }
-    }
-
-    //## SLAP ##//
-    if (action == "slap") {
-        if (command.len() < 2) {
-            EntFireByHandle(player, "sethealth", "5", 0, player, player)
-            player.SetVelocity(Vector(RandomInt(-200, 200), RandomInt(-200, 200), RandomInt(200, 500)))
-        } else {
-            local playertorun = FindPlayerByName(command[1])
-            if (playertorun != null) {
-                EntFireByHandle(playertorun, "sethealth", "5", 0, player, player)
-                playertorun.SetVelocity(Vector(RandomInt(-200, 200), RandomInt(-200, 200), RandomInt(200, 500)))
-            } else {
-                SendToConsole("say " + playername + ": " + command[1] + " is not a valid player.")
-            }
-        }
-    }
-
-    //## BRING ##//
-    if (action == "bring") {
-        if (command.len() < 2) {
-            SendToConsole("say " + playername + ": You need to specify a player to bring.")
-        } else {
-            if (command[1] == "all") {
-                local p2 = null
-                while (p2 = Entities.FindByClassname(p2, "player")) {
-                    p2.SetOrigin(player.GetOrigin())
-                }
-                SendToConsole("say " + playername + ": All players have been brought to you.")
-            } else {
-                local nm = ExpandName(command[1])
-                local playertorun = FindPlayerByName(command[1])
-                if (playertorun != null) {
-                    playertorun.SetOrigin(player.GetOrigin())
-                    SendToConsole("say " + playername + ": " + nm + " has been brought.")
-                } else {
-                    SendToConsole("say " + playername + ": " + nm + " is not a valid player.")
-                }
-            }
-        }
-    }
-
-    //## GOTO / TELEPORT ##//
-    if (action == "goto" || action == "teleport") {
-        if (command.len() < 2) {
-            SendToConsole("say " + playername + ": You need to specify a player to teleport to.")
-        } else {
-            local nm = ExpandName(command[1])
-            local playertorun = FindPlayerByName(command[1])
-            if (playertorun != null) {
-                player.SetOrigin(playertorun.GetOrigin())
-                SendToConsole("say " + playername + ": You have been teleported to " + nm + ".")
-            } else {
-                SendToConsole("say " + playername + ": " + nm + " is not a valid player.")
-            }
-        }
-    }
-
-    //## RCON ##//
-    if (action == "rcon") {
-        if (command.len() < 2) {
-            SendToConsole("say " + playername + ": You need to specify a command to run.")
-        } else {
-            local commandtosend = CombineList(command, 2)
-            SendToConsole(commandtosend)
-        }
-    }
-
-    //## CHANGELEVEL ##//
-    if (action == "changelevel") {
-        if (command.len() < 2) {
-            SendToConsole("say " + playername + ": You need to specify a map to change to.")
-        } else {
-            local mapname = CombineList(command, 2)
-            SendToConsole("changelevel " + mapname)
-        }
-    }
-
-    //## SPECTATE ##//
-    if (action == "spectate") {
-        if (command.len() < 2) {
-            local currentplayerclass = FindPlayerClass(player)
-        } else {
-
-        }
-    }
-
-    //## GETPLAYER ##//
-    if (action == "getplayer") {
-        if (command.len() < 2) {
-            SendToConsole("say " + playername + ": You need to specify a player name to get.")
-        } else {
-            local nm = ExpandName(command[1])
-            local playertorun = FindPlayerByName(command[1])
-            if (playertorun != null) {
-                SendToConsole("say " + playername + ": " + nm + "'s index is " + playertorun.entindex() + ".")
-            } else {
-                SendToConsole("say " + playername + ": " + nm + " is not a valid player.")
-            }
-        }
-    }
-}
