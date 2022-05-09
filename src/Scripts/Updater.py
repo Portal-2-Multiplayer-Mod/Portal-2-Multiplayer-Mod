@@ -33,9 +33,11 @@ def CheckForNewClient():
     Log("searching for a new client...")
     endpoint = "https://api.github.com/repos"  # github's api endpoint
     
-    # do the get request to retrieve the latest release data
-    r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
-
+    try:
+        # do the get request to retrieve the latest release data
+        r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
+    except Exception as e:
+        Log(f"error retrieving the latest releases: {str(e)}")
 
     if not "tag_name" in r:
         return {"status": False}
@@ -120,8 +122,12 @@ def CheckForNewFiles():
     
     Log("found local identifier file")
 
-    r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
-    r = r.json()
+    # if there was an error retrieving this file that means most likely that we changed it's name and released a new client
+    try:
+        r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json").json()
+    except Exception as e:
+        Log(f"error getting the index file: {str(e)}")
+        return False
     
     # compare the dates of the local file and the file on the repo
     localDate = datetime.strptime(open(localIdPath, "r").read(), "%Y-%m-%d")
@@ -157,8 +163,8 @@ def DownloadNewFiles():
         Funcs.DeleteFolder(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
         Log("deleted old files")
     except Exception as e:
-        Log(str(e))
         Log("there was no old mod files")
+        Log(str(e))
 
     # then copy the new files there
     shutil.move(tempPath, Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
