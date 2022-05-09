@@ -42,7 +42,7 @@ def CopyFile(src, dst):
 
 def TryFindPortal2Path():
     # if C:\Program Files (x86)\Steam\steamapps\common\Portal 2 exists
-    defpathwin = ConvertPath("C:\Program Files (x86)\Steam\steamapps\common\Portal 2")
+    defpathwin = ConvertPath("D:\Program Files (x86)\Steam\steamapps\common\Portal 2")
     defpathlin = ConvertPath("~/.local/share/Steam/steamapps/common/Portal 2")
     
     if (GVars.iol):
