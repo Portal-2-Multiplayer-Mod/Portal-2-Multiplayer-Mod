@@ -2,9 +2,6 @@ import Scripts.GlobalVariables as GVars
 import os
 import sys
 
-if (GVars.iol):
-    import winreg
-
 ##############
 # CONVERSION #
 ##############
@@ -41,6 +38,9 @@ def CopyFile(src, dst):
     return dst
 
 def TryFindPortal2Path():
+    if (GVars.iow):
+        import winreg
+
     # if C:\Program Files (x86)\Steam\steamapps\common\Portal 2 exists
     defpathwin = ConvertPath("D:\Program Files (x86)\Steam\steamapps\common\Portal 2")
     defpathlin = ConvertPath("~/.local/share/Steam/steamapps/common/Portal 2")
