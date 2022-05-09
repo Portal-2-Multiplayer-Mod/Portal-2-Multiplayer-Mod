@@ -8,7 +8,6 @@ import urllib.request
 import urllib.parse
 import subprocess
 import requests
-import __main__
 import shutil
 import sys
 import os
@@ -29,16 +28,18 @@ def haveInternet():
     finally:
         conn.close()
 
+
 def CheckForNewClient():
     Log("searching for a new client...")
     endpoint = "https://api.github.com/repos"  # github's api endpoint
     
     # do the get request to retrieve the latest release data
     r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
-    
+
+
     if not "tag_name" in r:
         return {"status": False}
-    
+
     # make sure that the latest release has a different version than the current one and is not a beta release
     if (currentVersion == r["tag_name"]) or ("beta" in r["tag_name"]):
         Log("found release but it's old")
@@ -49,15 +50,6 @@ def CheckForNewClient():
         "name": "Client Update",
         "message": "Would you like to download \n the new client?"
     }
-
-    # # if it's windows then we ask if the user want to update or no
-    # # and linux users can update using their package manager
-    # if GVars.iow:
-    #     # we can have 2 buttons yes or no for this
-    #     results["message"] = "There's a new update available! \n do you want to download it?"
-    # else:
-    #     # we only need an "ok" button for this
-    #     results["message"] = "there's a new update available! \n update through your package manager if you want"
 
     return results
 
@@ -91,10 +83,8 @@ def DownloadClient(cType = ""):
     # download the file in the same directory 
     # i don't want to bother with folders
     path = os.path.dirname(GVars.executable) + GVars.nf + "p2mm" + packageType
-    print(path)
     urllib.request.urlretrieve(downloadLink, path)
-
-    print(sys.argv[0])
+    Log(f"Downlaod new client in: {path}")
 
     # if (GVars.iow):
     #     command = [path, "updated", GVars.executable]
@@ -116,26 +106,28 @@ def CheckForNewFiles():
     Log("Checking for new files...")
     # plan
     # download modIndex.json
-    # check if the date is greater than the one saved in the locak identifier file
+    # check if the date is greater than the one saved in the local identifier file
     # ask the user if they want to update
     # if yes read where the files are saved on the github repo
     # download all the files and delete the old ones
 
-    r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
-    r = r.json()
 
     # check if the identifier file exists or no
     localIdPath = GVars.modPath + GVars.nf + f"ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc{GVars.nf}32playermod.identifier"
     if not os.path.isfile(localIdPath):
         Log("identifier file doesn't exist so the mod files are probably unavailable too")
         return True
+    
+    Log("found local identifier file")
 
-    Log("found identifier file")
-    # compare the dates on the local file and the repo
+    r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
+    r = r.json()
+    
+    # compare the dates of the local file and the file on the repo
     localDate = datetime.strptime(open(localIdPath, "r").read(), "%Y-%m-%d")
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
-    # only return false if the remote date is not greater or equal to the local date
-    if not (remoteDate > localDate):
+    # if the remote date is less or equal to the local date that means our client is up to date
+    if (remoteDate <= localDate):
         Log("mod files are up to date")
         return False
 
@@ -147,6 +139,7 @@ def DownloadNewFiles():
     r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
     Log("downloading "+str(len(r["Files"]))+" files...")
+    
     # downlaod the files to a temp folder
     tempPath = GVars.modPath + GVars.nf + ".temp"
     for file in r["Files"]:
@@ -156,8 +149,9 @@ def DownloadNewFiles():
         try:
             urllib.request.urlretrieve(downloadLink, tempPath + file.replace("/", GVars.nf))
         except Exception as e:
-            Log(f"failed to download {file}")
+            Log(f"failed to download a file: {str(e)}")
     Log("finished downloading")
+
     try:
         # when downloading is done delete the old mod files
         Funcs.DeleteFolder(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
