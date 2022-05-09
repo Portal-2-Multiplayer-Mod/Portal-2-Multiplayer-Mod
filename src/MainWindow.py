@@ -209,6 +209,7 @@ def MountModOnly():
     gamepath = GVars.configData["portal2path"]["value"]
     if not VerifyGamePath(gamepath):
         return
+    gamepath = GVars.configData["portal2path"]["value"]
 
     if IsUpdating:
         Error("The Mod Is Updating Please Wait", 5, (255, 75, 75))
