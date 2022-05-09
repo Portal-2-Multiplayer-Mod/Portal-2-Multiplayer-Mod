@@ -1,3 +1,4 @@
+from email.policy import default
 import os
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
@@ -140,15 +141,30 @@ def VerifyConfigFileIntegrity(config):
 
 
 def ValidatePlayerKeys():
+    Log("validating keys...")
     try:
         indx = -1
+        errs = 0
         for player in GVars.configData["Players"]["value"]:
-            indx += 1
-            for key in defaultplayerarray:
-                if key not in player:
-                    Log("ERROR: Player " + str(indx) + " is missing key " + str(key))
-                    GVars.configData["Players"]["value"][indx][key] = defaultplayerarray[key]
-                    WriteConfigFile(GVars.configData)
+            if player.keys() != defaultplayerarray.keys():
+                indx += 1
+                errs += 1
+                defaultPlayer = defaultplayerarray
+                Log(f"found {str(errs)} key errors")
+                print(
+                    f"local keys = {player.keys()} \n saved keys = {defaultPlayer.keys()}")
+                for key in defaultPlayer:
+                    try:
+                        defaultPlayer[key] = player[key]
+                    except Exception as e:
+                        Log(str(e))
+                GVars.configData["Players"]["value"][indx] = defaultPlayer
+            
+        if errs > 0:
+            WriteConfigFile(GVars.configData)
+        else:
+            Log("all keys are validated")
+
     except Exception as e:
         Log("ERROR: " + str(e))
         Log("ERROR: Players is not a list, resetting to default")
