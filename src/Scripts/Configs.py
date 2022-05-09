@@ -83,6 +83,15 @@ DefaultConfigFile = {
             "warning": "If You See This Something Is Wrong",
             "prompt": "If you see this something is wrong",
         },
+
+    "AutoUnmount":
+        {
+            "value": "true",
+            "menu": "launcher",
+            "description": "Automatically unmounts the game when the game is closed",
+            "warning": "",
+            "prompt": "Encrypt specific vscript functions?",
+        },
 }
 
 ImmutableKeys = ["description", "warning", "prompt", "menu"]

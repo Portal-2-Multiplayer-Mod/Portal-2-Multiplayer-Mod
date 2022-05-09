@@ -6,6 +6,7 @@ import threading
 import time
 import webbrowser
 from steamid_converter import Converter
+import psutil
 
 tk = ""
 try:
@@ -607,7 +608,15 @@ def PopupBox(title, text, buttons):
     Log("Creating popup box... Tile: " + str(title) + " Text: " + text + " Buttons: " + str(buttons))
     PopupBoxList.append(PopupBox)
 
-
+def PostExit():
+    Error("Game exited!", 5, (125, 0, 125))
+    if (GVars.configData["AutoUnmount"]["value"] == "true"):
+        UnmountScript()
+        Error("Unmounted!", 5, (125, 0, 125))
+    for proc in psutil.process_iter():
+        # check whether the process name matches
+        if proc.name() == "portal2.exe":
+            proc.kill()
 
 ############ BUTTON CLASSES
 
@@ -739,6 +748,7 @@ class ExitButton:
     def function():
         global running
         running = False
+        PostExit()
         sys.exit()
     isasync = True
 
@@ -861,19 +871,6 @@ class BackButton:
         BackMenu()
     isasync = False
 
-class TestP2PathButton: 
-    text = "Test P2 Path"
-    activecolor = (255, 255, 0)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    def function():
-        Error(str(BF.TryFindPortal2Path()))
-    isasync = False
-
 ##############################
 
 ### BUTTONS
@@ -885,7 +882,7 @@ PlayersMenu = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, TestP2PathButton, ExitButton]
+MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, ExitButton]
 
 TestingMenu = [InputButton, PopupBoxButton, BackButton]
 ###########
@@ -932,7 +929,7 @@ def Update():
 
     for floater in Floaters:
         surf = floater.surf
-        if (SelectedButton.text == "Unmount"):
+        if (SelectedButton.text == "Unmount" or SelectedButton.text == "Exit"):
             surf = angrycube
         elif (SelectedButton.text == "Back"):
             surf = goldencube
@@ -952,7 +949,7 @@ def Update():
                 floater.y = random.randint(0, H)
                 floater.x = (floater.surf.get_width() * 2) + (random.randint(W, W * 2)) * 1
                 floater.negrot = random.randint(0, 1) == 1
-        elif (SelectedButton.text == "Unmount"):
+        elif (SelectedButton.text == "Unmount" or SelectedButton.text == "Exit"):
             floater.y -= H / 60
             if floater.y < (floater.surf.get_height() * -2):
                 floater.y = (floater.surf.get_height() * 2) + (random.randint(H, H * 2))
@@ -1144,6 +1141,8 @@ def Main():
                 BackspaceHasBeenHeld = False
         for event in pygame.event.get():
             if event.type == QUIT:
+                PostExit()
+                sys.exit()
                 running = False
             elif (LookingForInput):
                 CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
@@ -1322,6 +1321,8 @@ def Main():
         if coolDown > 0:
             coolDown -= 1
 
+    PostExit()
+
     pygame.quit()
     sys.exit()
 
@@ -1408,8 +1409,9 @@ def OnStart():
 
     def NewAfterFunction():
         Error("Game exited!", 5, (125, 0, 125))
-        UnmountScript()
-        Error("Unmounted!", 5, (125, 0, 125))
+        if (GVars.configData["AutoUnmount"]["value"] == "true"):
+            UnmountScript()
+            Error("Unmounted!", 5, (125, 0, 125))
 
     GVars.AfterFunction = NewAfterFunction
 
