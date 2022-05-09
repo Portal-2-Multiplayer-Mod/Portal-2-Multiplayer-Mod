@@ -152,6 +152,21 @@ def VerifyGamePath(gamepath):
     gamepath = GVars.configData["portal2path"]["value"]
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Error("Game path is invalid!")
+        Error("Attempting to fetch gamepath", 5, (255, 255, 75))
+        
+        tmpp = BF.TryFindPortal2Path()
+        if tmpp != False:
+            tmpp = tmpp.strip()
+            # replace \\ with \
+            Error("Found path!", 5, (255, 255, 75))
+            tmpp = tmpp.replace("\\\\", "\\")
+            cfg.EditConfig("portal2path", tmpp.strip())
+            Log("Saved '" + tmpp.strip() + "' as the game path!")
+            gamepath = GVars.configData["portal2path"]["value"]
+            Error("Saved path!", 5, (75, 200, 75))
+            return True
+
+
         GetGamePath()
         return False
     return True
