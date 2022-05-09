@@ -13,24 +13,51 @@ function p2mmDestroyedSequence() {
 
 CurrentTeleportOffset <- 0
 DisableJumpmsp <- false
+
+function p2mmSecondDrop() {
+    local ContainerLightPropCollision = Entities.FindByName(null, "ContainerLightPropCollision")
+    local ContainerWheatleyPropCollision = Entities.FindByName(null, "ContainerWheatleyPropCollision")
+    local ContainerCeilingPropCollision = Entities.FindByName(null, "ContainerCeilingPropCollision")
+    local dropamount = 45
+    local ceiltime = 2.6
+
+    // ContainerLightPropCollision
+    ContainerLightPropCollision.SetOrigin(Vector(ContainerLightPropCollision.GetOrigin().x, ContainerLightPropCollision.GetOrigin().y, ContainerLightPropCollision.GetOrigin().z - dropamount))
+    // EntFire("ContainerLightPropCollision", "disablecollision")
+    // EntFire("ContainerLightPropCollision", "enablecollision", "", ceiltime)
+
+    // ContainerWheatleyPropCollision
+    ContainerWheatleyPropCollision.SetOrigin(Vector(ContainerWheatleyPropCollision.GetOrigin().x, ContainerWheatleyPropCollision.GetOrigin().y, ContainerWheatleyPropCollision.GetOrigin().z - dropamount))
+    // EntFire("ContainerWheatleyPropCollision", "disablecollision")
+    // EntFire("ContainerWheatleyPropCollision", "enablecollision", "", ceiltime)
+
+    // ContainerCeilingPropCollision
+    ContainerCeilingPropCollision.SetOrigin(Vector(ContainerCeilingPropCollision.GetOrigin().x, ContainerCeilingPropCollision.GetOrigin().y, ContainerCeilingPropCollision.GetOrigin().z - dropamount))
+    // EntFire("ContainerCeilingPropCollision", "disablecollision")
+    // EntFire("ContainerCeilingPropCollision", "enablecollision", "", ceiltime)
+}
+
 function p2mmDropCollision() {
-    DisableJumpmsp = true
-    EntFire("p2mm_servercommand", "command", "script DisableJumpmsp = false", 3)
     printl("Dropping container collision")
     local dropamount = 45
     local ceiltime = 2.6
+
+    CanJump(false)
+    EntFire("p2mm_servercommand", "command", "script CanJump(true)", 3)
+
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, 0))
+    }
 
     // Props //
 
     local ContainerBedPropCollision = Entities.FindByName(null, "ContainerBedPropCollision")
     local ContainerFloorPropCollision = Entities.FindByName(null, "ContainerFloorPropCollision")
-    local ContainerCeilingPropCollision = Entities.FindByName(null, "ContainerCeilingPropCollision")
     local ContainerRightWallPropCollision = Entities.FindByName(null, "ContainerRightWallPropCollision")
     local ContainerLeftWallPropCollision = Entities.FindByName(null, "ContainerLeftWallPropCollision")
     local ContainerFrontWallPropCollision = Entities.FindByName(null, "ContainerFrontWallPropCollision")
     local ContainerNightstandsPropCollision = Entities.FindByName(null, "ContainerNightstandsPropCollision")
-    local ContainerLightPropCollision = Entities.FindByName(null, "ContainerLightPropCollision")
-    local ContainerWheatleyPropCollision = Entities.FindByName(null, "ContainerWheatleyPropCollision")
     local ContainerDeskPropCollision = Entities.FindByName(null, "ContainerDeskPropCollision")
     local ContainerPlantPropCollision = Entities.FindByName(null, "ContainerPlantPropCollision")
     local ContainerChairPropCollision = Entities.FindByName(null, "ContainerChairPropCollision")
@@ -45,10 +72,7 @@ function p2mmDropCollision() {
     // EntFire("ContainerFloorPropCollision", "disablecollision")
     // EntFire("ContainerFloorPropCollision", "enablecollision", "", ceiltime)
 
-    // ContainerCeilingPropCollision
-    ContainerCeilingPropCollision.SetOrigin(Vector(ContainerCeilingPropCollision.GetOrigin().x, ContainerCeilingPropCollision.GetOrigin().y, ContainerCeilingPropCollision.GetOrigin().z - dropamount))
-    EntFire("ContainerCeilingPropCollision", "disablecollision")
-    EntFire("ContainerCeilingPropCollision", "enablecollision", "", ceiltime)
+    EntFire("p2mm_servercommand", "command", "script p2mmSecondDrop()", 2.8)
 
     // ContainerRightWallPropCollision
     ContainerRightWallPropCollision.SetOrigin(Vector(ContainerRightWallPropCollision.GetOrigin().x, ContainerRightWallPropCollision.GetOrigin().y, ContainerRightWallPropCollision.GetOrigin().z - dropamount))
@@ -69,16 +93,6 @@ function p2mmDropCollision() {
     ContainerNightstandsPropCollision.SetOrigin(Vector(ContainerNightstandsPropCollision.GetOrigin().x, ContainerNightstandsPropCollision.GetOrigin().y, ContainerNightstandsPropCollision.GetOrigin().z - dropamount))
     // EntFire("ContainerNightstandsPropCollision", "disablecollision")
     // EntFire("ContainerNightstandsPropCollision", "enablecollision", "", ceiltime)
-
-    // ContainerLightPropCollision
-    ContainerLightPropCollision.SetOrigin(Vector(ContainerLightPropCollision.GetOrigin().x, ContainerLightPropCollision.GetOrigin().y, ContainerLightPropCollision.GetOrigin().z - dropamount))
-    EntFire("ContainerLightPropCollision", "disablecollision")
-    EntFire("ContainerLightPropCollision", "enablecollision", "", ceiltime)
-
-    // ContainerWheatleyPropCollision
-    ContainerWheatleyPropCollision.SetOrigin(Vector(ContainerWheatleyPropCollision.GetOrigin().x, ContainerWheatleyPropCollision.GetOrigin().y, ContainerWheatleyPropCollision.GetOrigin().z - dropamount))
-    EntFire("ContainerWheatleyPropCollision", "disablecollision")
-    EntFire("ContainerWheatleyPropCollision", "enablecollision", "", ceiltime)
 
     // ContainerDeskPropCollision
     ContainerDeskPropCollision.SetOrigin(Vector(ContainerDeskPropCollision.GetOrigin().x, ContainerDeskPropCollision.GetOrigin().y, ContainerDeskPropCollision.GetOrigin().z - dropamount))
@@ -823,7 +837,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 //p.SetOrigin(Vector(-5700, 1931, 284))
                 // -8622 1768 92
                 // -2956 -163 -180
-                p.SetOrigin(Vector(p.GetOrigin().x+ 2925, p.GetOrigin().y + 166, (p.GetOrigin().z + 190) - CurrentTeleportOffset))
+                p.SetOrigin(Vector(-5757.985352, 1937.990723, 217.8))
+                p.SetAngles(0, 9.997572, 0)
             }
             //  -5559.827637 1843.053467 282.763519;
             if (bumpout) {

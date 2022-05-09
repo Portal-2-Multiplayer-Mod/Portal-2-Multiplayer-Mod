@@ -2089,8 +2089,6 @@ ChatCommandErrorList <- [
     "[ERROR] You cannot use selectors with this command as your admin level is too low",
 ]
 
-HelpList <- ["noclip", "rocket", "changeteam", "bring (someone)", "goto (someone)", "rcon (command)", "speed (value)", "kill (someone)"]
-
 ////////////////////////////////////////////////////////
 
 CommandList <- []
@@ -2218,7 +2216,7 @@ CommandList.push(class {
 ////////////////////////////////////////////
 
 /////////////////////////////////////// GOTO
-function GoToCommand(p, args) {
+function GotoCommand(p, args) {
     args[0] = Strip(args[0])
     local plr = FindPlayerByName(args[0])
     if (plr != null) {
@@ -2233,7 +2231,7 @@ CommandList.push(class {
     name = "goto"
     level = 1
     selectorlevel = 2
-    func = GoToCommand
+    func = GotoCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
@@ -2269,8 +2267,8 @@ function RestartCommand(p, args) {
 
 CommandList.push(class {
     name = "restart"
-    level = 3
-    selectorlevel = 3
+    level = 1
+    selectorlevel = 1
     func = RestartCommand
 
     notfounderror = ChatCommandErrorList[0]
@@ -2280,8 +2278,36 @@ CommandList.push(class {
 })
 ////////////////////////////////////////////
 
-function SendChatMessage(message) {
-    SendToConsoleP232("say " + message)
+/////////////////////////////////////// HELP
+
+function HelpCommand(p, args) {
+    SendChatMessage("[HELP] Available commands:")
+    local dly = 0
+    foreach (cmd in CommandList) {
+        dly = dly + 0
+        if (cmd.level <= GetAdminLevel(p)) {
+            SendChatMessage("[HELP] " + cmd.name, dly)
+        }
+    }
+}
+
+CommandList.push(class {
+    name = "help"
+    level = 3
+    selectorlevel = 3
+    func = HelpCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+
+////////////////////////////////////////////
+
+function SendChatMessage(message, delay = 0) {
+    // SendToConsoleP232("say " + message)
+    EntFire("p2mm_servercommand", "command", "say " + message, delay)
 }
 
 function RemoveDangerousChars(str) {
@@ -2334,7 +2360,7 @@ function ValidateAlowedRunners(cmd, lvl) {
 }
 
 function RunChatCommand(cmd, args, plr) {
-    printl("(P2:MM): Running chat command: " + cmd.name)
+    printl("Running command: " + cmd.name)
     cmd.func(plr, args)
 }
 
