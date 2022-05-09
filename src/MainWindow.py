@@ -1406,6 +1406,13 @@ def OnStart():
     else:
         Log("not checking for updates because we're running through python")
 
+    def NewAfterFunction():
+        Error("Game exited!", 5, (125, 0, 125))
+        UnmountScript()
+        Error("Unmounted!", 5, (125, 0, 125))
+
+    GVars.AfterFunction = NewAfterFunction
+
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
         BF.DeleteFolder(GVars.modPath + GVars.nf + ".temp")

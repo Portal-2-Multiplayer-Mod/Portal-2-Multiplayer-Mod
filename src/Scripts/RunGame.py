@@ -460,6 +460,8 @@ def LaunchGame(gamepath):
                 # start portal 2 with the launch options and dont wait for it to finish
                 subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-condebug", "-console", "-usercon"])
                 Log("Game exited successfully.")
+                # Run The AfterFunction
+                GVars.AfterFunction()
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
