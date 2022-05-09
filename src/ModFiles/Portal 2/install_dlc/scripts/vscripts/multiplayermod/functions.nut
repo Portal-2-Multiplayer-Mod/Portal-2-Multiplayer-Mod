@@ -2086,6 +2086,8 @@ ChatCommandErrorList <- [
     "[ERROR] You cannot use selectors with this command as your admin level is too low",
 ]
 
+HelpList <- ["noclip", "rocket", "changeteam", "bring (someone)", "goto (someone)", "rcon (command)", "speed (value)", "kill (someone)"]
+
 ////////////////////////////////////////////////////////
 
 CommandList <- []
@@ -2213,7 +2215,7 @@ CommandList.push(class {
 ////////////////////////////////////////////
 
 /////////////////////////////////////// GOTO
-function GotoCommand(p, args) {
+function GoToCommand(p, args) {
     args[0] = Strip(args[0])
     local plr = FindPlayerByName(args[0])
     if (plr != null) {
@@ -2228,7 +2230,7 @@ CommandList.push(class {
     name = "goto"
     level = 1
     selectorlevel = 2
-    func = GotoCommand
+    func = GoToCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
@@ -2249,6 +2251,29 @@ CommandList.push(class {
     level = 3
     selectorlevel = 3
     func = RconCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
+
+/////////////////////////////////////// HELP
+function PrintHelpCC() {
+    delay = 0
+    for (item in HelpList) {
+        item = item
+        delay = delay + 1
+        EntFire("p2mm_servercommand", "command", "say " + item, delay)
+    }
+}
+
+CommandList.push(class {
+    name = "help"
+    level = 0
+    selectorlevel = 0
+    func = PrintHelpCC
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
@@ -2311,7 +2336,7 @@ function ValidateAlowedRunners(cmd, lvl) {
 }
 
 function RunChatCommand(cmd, args, plr) {
-    printl("Running command: " + cmd.name)
+    printl("(P2:MM): Running chat command: " + cmd.name)
     cmd.func(plr, args)
 }
 
