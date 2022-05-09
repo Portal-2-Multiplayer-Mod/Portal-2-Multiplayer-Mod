@@ -1118,12 +1118,14 @@ def Main():
                 if event.type == pygame.KEYDOWN:
                     # get the key and add it to CurInput
                     name = pygame.key.name(event.key)
+                    print(name)
                     if name == "backspace" and len(CurInput) >0:
                         # if the last char is a newline, remove it
                         if CurInput[len(CurInput) - 1] == "\n":
                             CurInput = CurInput[:-2]
                         else:
                             CurInput = CurInput[:-1]
+                    
                     elif name == "space":
                         CurInput += " "
                     elif name == "return":
@@ -1154,6 +1156,9 @@ def Main():
                             CurInput += name
                         else:
                             CurInput += name
+                    # support for numpad
+                    else:
+                        CurInput += name[1]
 
             ######################## POPUP BOX INPUT
             elif len(PopupBoxList) > 0:
@@ -1209,7 +1214,7 @@ def Main():
                         CurrentButtonsIndex = len(CurrentMenu) - 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
                         PlaySound(SelectedButton.hoversnd)
-                elif event.key == K_SPACE or event.key == K_RETURN:
+                elif event.key in [K_SPACE, K_RETURN, K_KP_ENTER]:
                     SelectAnimation(SelectedButton, SelectedButton.selectanim)
                     if SelectedButton.function:
                         if SelectedButton.isasync:
