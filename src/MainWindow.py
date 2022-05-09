@@ -188,48 +188,49 @@ def MountModOnly():
     if not VerifyGamePath(gamepath):
         return
 
-    if not IsUpdating:
-        Error("Mounting Mod!", 5, (75, 255, 75))
-        if (GVars.configData["developer"]["value"] == "true"):
-            Error("WARN: Dev Mode Active", 5, (255, 180, 75))
-            DEVMOUNT()
-            RG.MountMod(gamepath)
+    if IsUpdating:
+        Error("The Mod Is Updating Please Wait", 5, (255, 75, 75))
+        return
+        
+    Error("Mounting Mod!", 5, (75, 255, 75))
+    
+    if (GVars.configData["developer"]["value"] == "true"):
+        Error("WARN: Dev Mode Active", 5, (255, 180, 75))
+        DEVMOUNT()
+        RG.MountMod(gamepath)
+        Error("Mounted!", 5, (75, 255, 75))
+        return True
+    
+    if (VerifyModFiles()):
+        DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
+        RG.MountMod(gamepath, DoEncrypt)
+        Error("Mounted!", 5, (75, 255, 75))
+        return True
+    # if the he's not a developer and the mod files don't exist ask him to download the files from the repo
+    else:
+        if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
+            BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
+        if up.haveInternet():
+            def YesInput():
+                Log("YES INPUT CALLED... FETCHING MOD")
+                UpdateMod()
+            class YesButton:
+                text = "Yes"
+                function = YesInput
+                activecolor = (75, 200, 75)
+                inactivecolor = (155, 155, 155)
+            class NoButton:
+                text = "Use Fallbacks"
+                def function():
+                        UseFallbacks(gamepath)
+                activecolor = (255, 75, 75)
+                inactivecolor = (155, 155, 155)
+            PopupBox("Fetch Game Files?", "There are no cached files for the mod!\n\nWould you like to download \nthe latest version?\n\n\nYou can use the fallbacks,\n although it is not recommended.", [YesButton, NoButton])
+        else:
+            Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
+            UseFallbacks(gamepath)
             Error("Mounted!", 5, (75, 255, 75))
             return True
-        else:
-            if (VerifyModFiles()):
-                DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
-                RG.MountMod(gamepath, DoEncrypt)
-                Error("Mounted!", 5, (75, 255, 75))
-                return True
-            else:
-                if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
-                    BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
-                if up.haveInternet():
-                    def YesInput():
-                        Log("YES INPUT CALLED... FETCHING MOD")
-                        UpdateMod()
-
-                    class YesButton:
-                        text = "Yes"
-                        function = YesInput
-                        activecolor = (75, 200, 75)
-                        inactivecolor = (155, 155, 155)
-
-                    class NoButton:
-                        text = "Use Fallbacks"
-                        def function():
-                                UseFallbacks(gamepath)
-                        activecolor = (255, 75, 75)
-                        inactivecolor = (155, 155, 155)
-                    PopupBox("Fetch Game Files?", "There are no cached files for the mod!\n\nWould you like to download \nthe latest version?\n\n\nYou can use the fallbacks,\n although it is not recommended.", [YesButton, NoButton])
-                else:
-                    Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
-                    UseFallbacks(gamepath)
-                    Error("Mounted!", 5, (75, 255, 75))
-                    return True
-    else:
-        Error("The Mod Is Updating Please Wait", 5, (255, 75, 75))
 
 def UpdateMod():
     Error("Fetching Update...", 5, (255, 150, 75))
@@ -1135,7 +1136,6 @@ def Main():
                     elif CTRLHELD and name == "v":
                         try:
                             str1 = str(tk.selection_get(selection="CLIPBOARD"))
-                            Log(str1)
                             str1 = str1.replace("\n", "")
                             Log("=================================")
                             Log(str1)
@@ -1308,7 +1308,7 @@ def IsNew():
 
 def ClientUpdateBox(update):
     def YesInput():
-        Log("YES INPUT CALLED... FETCHING MOD")
+        Log("FETCHING MOD")
         up.DownloadClient()
 
     class YesButton:
@@ -1339,16 +1339,20 @@ def ModFilesUpdateBox():
                 pass
         activecolor = (255, 75, 75)
         inactivecolor = (155, 155, 155)
-    PopupBox("Update Available", "Would you like to update?", [YesButton, NoButton])
+    PopupBox("Update Available", "Would you like to update the mod files?", [YesButton, NoButton])
 
 def CheckForUpdates():
     Log("checking for updates...")
     clientUpdate = up.CheckForNewClient()
     if clientUpdate["status"]:
         ClientUpdateBox(clientUpdate)
-    else:
-        if up.CheckForNewFiles():
-            ModFilesUpdateBox()
+        return True
+    
+    if up.CheckForNewFiles():
+        ModFilesUpdateBox()
+        return True
+    
+    return False
 
 def OnStart():
     # Load the global variables
@@ -1381,7 +1385,7 @@ def OnStart():
                     pass
             activecolor = (75, 255, 75)
             inactivecolor = (155, 155, 155)
-        PopupBox("Config Reset", "We had to reset your config \n this could have been an update \n or you could of had an broken config \n\n PLEASE check your settings", [OkButton])
+        PopupBox("Config Reset", "We had to reset your config \n this could have been an update \n or you could've had a broken config file \n\n PLEASE check your settings", [OkButton])
 
 if __name__ == '__main__':
     OnStart()
