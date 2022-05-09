@@ -634,6 +634,7 @@ function FindEntityClass(ent, createclassifnone = true) {
         CreateEntityClass(ent)
         foreach (curclass in entityclasses) {
             if (curclass.entity == ent) {
+                printl("Created entity class for entity: " + ent)
                 return curclass
             }
         }
@@ -857,6 +858,7 @@ function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "u
     if (GetDistanceScore(entity.GetOrigin(), PointList[entclass.followingpointlistindex]) < Distance) {
         cindx = entclass.followingpointlistindex
         entclass.followingpointlistindex <- entclass.followingpointlistindex + 1
+        printl("Moving to next point: " + entclass.followingpointlistindex)
     }
 
     if (entclass.followingpointlistindex >= PointList.len()) {
@@ -913,6 +915,7 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
 
     // Find the nearest entity
     if (specificclass == null) {
+        printl("PANIK")
         while (ent = Entities.FindInSphere(ent, origin, radius)) {
             // Check if the entity is in the list of entities to exclude
             local exclude = false
@@ -1064,7 +1067,7 @@ function DisplayPlayerColor(player) {
     playercolordisplay.__KeyValueFromString("fadeout", "2")
     playercolordisplay.__KeyValueFromString("fadein", "2")
     // playercolordisplay.__KeyValueFromString("spawnflags", "0")
-    playercolordisplay.__KeyValueFromString("channel", "1")
+    playercolordisplay.__KeyValueFromString("channel", "4")
     // playercolordisplay.__KeyValueFromString("message", )
     playercolordisplay.__KeyValueFromString("x", "0.005")
     playercolordisplay.__KeyValueFromString("y", "1")
@@ -1812,7 +1815,7 @@ function CreateOurEntities() {
     nametagdisplay.__KeyValueFromString("y", "0.2")
     nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
     // onscreendisplay.__KeyValueFromString("spawnflags", "1")
-    nametagdisplay.__KeyValueFromString("holdtime", "0")
+    nametagdisplay.__KeyValueFromString("holdtime", "0.1")
     nametagdisplay.__KeyValueFromString("fadeout", "0.1")
     nametagdisplay.__KeyValueFromString("fadein", "0.1")
     nametagdisplay.__KeyValueFromString("channel", "0")
@@ -2249,6 +2252,24 @@ CommandList.push(class {
     level = 3
     selectorlevel = 3
     func = RconCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
+
+//////////////////////////////////// RESTART
+function RestartCommand(p, args) {
+    SendToConsoleP232("changelevel " + GetMapName())
+}
+
+CommandList.push(class {
+    name = "restart"
+    level = 3
+    selectorlevel = 3
+    func = RestartCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]

@@ -71,6 +71,9 @@ CubeBeingSpawned <- null
 movespeed <- 5
 PermaDestroyCubesSpA4Intro <- false
 FullDisableOldDropper <- false
+GooHurtTimerPred <- 0
+killppl <- false
+
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -141,6 +144,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "setparent", "cube_dropper_prop", 0, null, null)
     //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "clearparent", "", 4, null, null)
     //     EntFireByHandle(Entities.FindByName(null, "cube_dropper_box"), "kill", "", 5, null, null)
+        killppl <- true
         SpawnCube = false
     }
 
@@ -150,12 +154,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (!FullDisableOldDropper) {
-            if (SpawnCube) {    
+            if (SpawnCube) {
                 if (CubeBeingSpawned != null) {
                     local output = 0
                     try {
                         output = MoveEntityOnTrack(CubeBeingSpawned, TrackPoints, movespeed)
                     } catch (e) {
+                        printl("ERROR: " + e + " : SPAWNING BACKUP")
                         SpawnCube = false
                         SpawnBackupCube()
                     }
@@ -171,7 +176,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                     CubeBeingSpawned.SetAngles(0, CubeBeingSpawned.GetAngles().y+RandomInt(3, 8), CubeBeingSpawned.GetAngles().z+RandomInt(3, 8))
 
-                    if (output) {
+                    if (output == true) {
+                        printl("Cube spawned! Output: " + output)
                         SpawnCube = false
                         EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
                         EntFireByHandle(CubeBeingSpawned, "BecomeMonster", "", 3, null, null)
@@ -182,6 +188,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         EntFire("cube_dropper_drop", "trigger")
                     }
                 } else {
+                    printl("ERROR: CubeBeingSpawned is null")
                     SpawnCube = false
                     SpawnBackupCube()
                 }
@@ -236,22 +243,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        // Goo Damage Code
-        try {
-        if (GooHurtTimerPred) { printl()}
-        } catch (exception) {
-            GooHurtTimerPred <- 0
-        }
-
-        if (GooHurtTimerPred<=Time()) {
+        if (GooHurtTimerPred<=Time() && killppl) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 if (p.GetOrigin().z<=-150) {
-                    EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
+                    EntFireByHandle(p, "sethealth", "-100000", 0, null, null)
                 }
             }
             GooHurtTimerPred = Time()+1
         }
+
         // Change ClosedBetaTestingBox Names ;)
         if (!Entities.FindByName(null, "button_1_solved_TURRETNAMECHANGE")) {
             local ent = null
@@ -282,7 +283,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(3136, -128, 914), 50)) {
-             
             SendToConsoleP232("changelevel sp_a4_tb_intro")
         }
     }
