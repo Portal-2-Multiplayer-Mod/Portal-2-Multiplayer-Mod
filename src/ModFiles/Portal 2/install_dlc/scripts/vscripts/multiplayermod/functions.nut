@@ -2089,6 +2089,8 @@ ChatCommandErrorList <- [
     "[ERROR] You cannot use selectors with this command as your admin level is too low",
 ]
 
+HelpList <- ["noclip", "rocket", "changeteam", "bring (someone)", "goto (someone)", "rcon (command)", "speed (value)", "kill (someone)"]
+
 ////////////////////////////////////////////////////////
 
 CommandList <- []
@@ -2216,7 +2218,7 @@ CommandList.push(class {
 ////////////////////////////////////////////
 
 /////////////////////////////////////// GOTO
-function GotoCommand(p, args) {
+function GoToCommand(p, args) {
     args[0] = Strip(args[0])
     local plr = FindPlayerByName(args[0])
     if (plr != null) {
@@ -2231,7 +2233,7 @@ CommandList.push(class {
     name = "goto"
     level = 1
     selectorlevel = 2
-    func = GotoCommand
+    func = GoToCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
@@ -2332,7 +2334,7 @@ function ValidateAlowedRunners(cmd, lvl) {
 }
 
 function RunChatCommand(cmd, args, plr) {
-    printl("Running command: " + cmd.name)
+    printl("(P2:MM): Running chat command: " + cmd.name)
     cmd.func(plr, args)
 }
 
