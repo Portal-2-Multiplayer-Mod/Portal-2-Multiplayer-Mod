@@ -2305,6 +2305,44 @@ CommandList.push(class {
 
 ////////////////////////////////////////////
 
+//////////////////////////////////// CHAPTER
+
+function ChapterCommand(p, args) {
+    args[0] = Strip(args[0])
+    if (args[0] == "1") {
+        SendToConsoleP232("changelevel sp_a1_intro1")
+    } else if (args[0] == "2") {
+        SendToConsoleP232("changelevel sp_a2_laser_intro")
+    } else if (args[0] == "3") {
+        SendToConsoleP232("changelevel sp_a2_sphere_peek")
+    } else if (args[0] == "4") {
+        SendToConsoleP232("changelevel sp_a2_column_blocker")
+    } else if (args[0] == "5") {
+        SendToConsoleP232("changelevel sp_a2_bts3")
+    } else if (args[0] == "6") {
+        SendToConsoleP232("changelevel sp_a3_00")
+    } else if (args[0] == "7") {
+        SendToConsoleP232("changelevel sp_a3_speed_ramp")
+    } else if (args[0] == "8") {
+        SendToConsoleP232("changelevel sp_a4_intro")
+    } else if (args[0] == "9") {
+        SendToConsoleP232("changelevel sp_a4_finale1")
+    }
+}
+
+CommandList.push(class {
+    name = "chapter"
+    level = 3
+    selectorlevel = 3
+    func = ChapterCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
+
 function SendChatMessage(message, delay = 0) {
     // SendToConsoleP232("say " + message)
     EntFire("p2mm_servercommand", "command", "say " + message, delay)
