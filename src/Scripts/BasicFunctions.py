@@ -61,6 +61,8 @@ def TryFindPortal2Path():
             manifestpath = steam_path[0] + ConvertPath("/appmanifest_620.acf")
             print(manifestpath)
             if (os.path.isfile(manifestpath)):
+                print("my man gonna die bitch")
+
                 # read the manifest file
                 f = open(manifestpath, "r", encoding="utf-8")
                 manifest = f.read()
