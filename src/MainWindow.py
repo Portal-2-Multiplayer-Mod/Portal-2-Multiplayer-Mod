@@ -1118,17 +1118,13 @@ def Main():
                 if event.type == pygame.KEYDOWN:
                     # get the key and add it to CurInput
                     name = pygame.key.name(event.key)
-                    print(name)
+                    print(type(name))
                     if name == "backspace" and len(CurInput) >0:
-                        # if the last char is a newline, remove it
-                        if CurInput[len(CurInput) - 1] == "\n":
-                            CurInput = CurInput[:-2]
-                        else:
                             CurInput = CurInput[:-1]
                     
                     elif name == "space":
                         CurInput += " "
-                    elif name == "return":
+                    elif name in ["return", "enter"]:
                         LookingForInput = False
                         AfterInputFunction( CurInput )
                     elif name == "escape":
@@ -1140,7 +1136,7 @@ def Main():
                             str1 = str(tk.selection_get(selection="CLIPBOARD"))
                             str1 = str1.replace("\n", "")
                             Log("=================================")
-                            Log(str1)
+                            Log(f"Pasted {str1}")
                             CurInput += str1
                         except Exception as e:
                             Log(str(e)) # always log the error
@@ -1157,7 +1153,7 @@ def Main():
                         else:
                             CurInput += name
                     # support for numpad
-                    else:
+                    elif len(name) == 3:
                         CurInput += name[1]
 
             ######################## POPUP BOX INPUT
@@ -1368,15 +1364,13 @@ def OnStart():
     GVars.LoadConfig()
     # make sure the players config is in tact
     cfg.ValidatePlayerKeys()
-    # Check for first time setup
-    IsNew()
-    if not ".py" in str(sys.argv):
+    # so it only runs in release mode
+    if not sys.argv[0].endswith(".py"):
+        IsNew()  # Check for first time setup
         CheckForUpdates()
     else:
-        Log("not checking for updates running through python")
-        # DONT CHANGE THIS CABISTE
-        # if the user has dev mode enabled from a previous version
-        # they may be unaware that they need to update
+        Log("not checking for updates because we're running through python")
+        print(GVars.configData["Players"]["value"][0].keys())
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
