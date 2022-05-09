@@ -1,7 +1,9 @@
 import Scripts.GlobalVariables as GVars
 import os
 import sys
-import winreg
+
+if (GVars.iol):
+    import winreg
 
 ##############
 # CONVERSION #
@@ -56,7 +58,7 @@ def TryFindPortal2Path():
             print(hkey)
             steam_path = winreg.QueryValueEx(hkey, "InstallPath")
             print(steam_path)
-            return steam_path[0] + "steamapps/common/Portal 2"
+            return steam_path[0] + "steamapps"
         except Exception as e:
             print("ERROR: " + str(e))
 
