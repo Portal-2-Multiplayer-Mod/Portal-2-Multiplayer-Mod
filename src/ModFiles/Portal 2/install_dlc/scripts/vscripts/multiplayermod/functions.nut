@@ -634,6 +634,7 @@ function FindEntityClass(ent, createclassifnone = true) {
         CreateEntityClass(ent)
         foreach (curclass in entityclasses) {
             if (curclass.entity == ent) {
+                printl("Created entity class for entity: " + ent)
                 return curclass
             }
         }
@@ -857,6 +858,7 @@ function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "u
     if (GetDistanceScore(entity.GetOrigin(), PointList[entclass.followingpointlistindex]) < Distance) {
         cindx = entclass.followingpointlistindex
         entclass.followingpointlistindex <- entclass.followingpointlistindex + 1
+        printl("Moving to next point: " + entclass.followingpointlistindex)
     }
 
     if (entclass.followingpointlistindex >= PointList.len()) {
@@ -913,6 +915,7 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
 
     // Find the nearest entity
     if (specificclass == null) {
+        printl("PANIK")
         while (ent = Entities.FindInSphere(ent, origin, radius)) {
             // Check if the entity is in the list of entities to exclude
             local exclude = false
@@ -1064,7 +1067,7 @@ function DisplayPlayerColor(player) {
     playercolordisplay.__KeyValueFromString("fadeout", "2")
     playercolordisplay.__KeyValueFromString("fadein", "2")
     // playercolordisplay.__KeyValueFromString("spawnflags", "0")
-    playercolordisplay.__KeyValueFromString("channel", "1")
+    playercolordisplay.__KeyValueFromString("channel", "4")
     // playercolordisplay.__KeyValueFromString("message", )
     playercolordisplay.__KeyValueFromString("x", "0.005")
     playercolordisplay.__KeyValueFromString("y", "1")
@@ -1812,7 +1815,7 @@ function CreateOurEntities() {
     nametagdisplay.__KeyValueFromString("y", "0.2")
     nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
     // onscreendisplay.__KeyValueFromString("spawnflags", "1")
-    nametagdisplay.__KeyValueFromString("holdtime", "0")
+    nametagdisplay.__KeyValueFromString("holdtime", "0.1")
     nametagdisplay.__KeyValueFromString("fadeout", "0.1")
     nametagdisplay.__KeyValueFromString("fadein", "0.1")
     nametagdisplay.__KeyValueFromString("channel", "0")
@@ -2257,8 +2260,92 @@ CommandList.push(class {
 })
 ////////////////////////////////////////////
 
-function SendChatMessage(message) {
-    SendToConsoleP232("say " + message)
+//////////////////////////////////// RESTART
+function RestartCommand(p, args) {
+    SendToConsoleP232("changelevel " + GetMapName())
+}
+
+CommandList.push(class {
+    name = "restart"
+    level = 1
+    selectorlevel = 1
+    func = RestartCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
+
+/////////////////////////////////////// HELP
+
+function HelpCommand(p, args) {
+    SendChatMessage("[HELP] Available commands:")
+    local dly = 0
+    foreach (cmd in CommandList) {
+        dly = dly + 0
+        if (cmd.level <= GetAdminLevel(p)) {
+            SendChatMessage("[HELP] " + cmd.name, dly)
+        }
+    }
+}
+
+CommandList.push(class {
+    name = "help"
+    level = 3
+    selectorlevel = 3
+    func = HelpCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+
+////////////////////////////////////////////
+
+//////////////////////////////////// CHAPTER
+
+function ChapterCommand(p, args) {
+    args[0] = Strip(args[0])
+    if (args[0] == "1") {
+        SendToConsoleP232("changelevel sp_a1_intro1")
+    } else if (args[0] == "2") {
+        SendToConsoleP232("changelevel sp_a2_laser_intro")
+    } else if (args[0] == "3") {
+        SendToConsoleP232("changelevel sp_a2_sphere_peek")
+    } else if (args[0] == "4") {
+        SendToConsoleP232("changelevel sp_a2_column_blocker")
+    } else if (args[0] == "5") {
+        SendToConsoleP232("changelevel sp_a2_bts3")
+    } else if (args[0] == "6") {
+        SendToConsoleP232("changelevel sp_a3_00")
+    } else if (args[0] == "7") {
+        SendToConsoleP232("changelevel sp_a3_speed_ramp")
+    } else if (args[0] == "8") {
+        SendToConsoleP232("changelevel sp_a4_intro")
+    } else if (args[0] == "9") {
+        SendToConsoleP232("changelevel sp_a4_finale1")
+    }
+}
+
+CommandList.push(class {
+    name = "chapter"
+    level = 3
+    selectorlevel = 3
+    func = ChapterCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
+
+function SendChatMessage(message, delay = 0) {
+    // SendToConsoleP232("say " + message)
+    EntFire("p2mm_servercommand", "command", "say " + message, delay)
 }
 
 function RemoveDangerousChars(str) {

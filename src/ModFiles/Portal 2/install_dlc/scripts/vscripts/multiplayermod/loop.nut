@@ -115,54 +115,54 @@ function loop() {
         }
     }
 
-    //## Nametags ##//
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        local currentplayerclass = FindPlayerClass(p)
-        if (currentplayerclass != null) {
+    // //## Nametags ##//
+    if (Time() - PreviousNametagItter > 0.1) {
+        PreviousNametagItter = Time()
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            local currentplayerclass = FindPlayerClass(p)
+            if (currentplayerclass != null) {
 
-            // Get number of players in the game
-            local playernums = 0
-            foreach (plr in playerclasses) {
-                playernums = playernums + 1
-            }
+                // Get number of players in the game
+                local playernums = 0
+                foreach (plr in playerclasses) {
+                    playernums = playernums + 1
+                }
 
-            local checkcount = 1
-            // Optimise search based on player count
-            if (playernums <= 6) {
-                checkcount = playernums
-            } else {
-                if (playernums <= 11) {
-                    checkcount = 6
+                local checkcount = 1
+                // Optimise search based on player count
+                if (playernums <= 6) {
+                    checkcount = playernums
                 } else {
-                    if (playernums <= 14) {
-                        checkcount = 4
+                    if (playernums <= 11) {
+                        checkcount = 6
                     } else {
-                        if (playernums <= 17) {
-                            checkcount = 3
+                        if (playernums <= 14) {
+                            checkcount = 4
                         } else {
-                            if (playernums <= 21) {
-                                checkcount = 2
+                            if (playernums <= 17) {
+                                checkcount = 3
                             } else {
-                                if (playernums <= 33) {
-                                    checkcount = 1
+                                if (playernums <= 21) {
+                                    checkcount = 2
+                                } else {
+                                    if (playernums <= 33) {
+                                        checkcount = 1
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
-            if (eyeplayer != null) {
-                local clr = GetPlayerColor(eyeplayer, true)
-                EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
-                if (PluginLoaded) {
-                    EntFireByHandle(nametagdisplay, "settext", GetPlayerName(eyeplayer.entindex()), 0, p, p)
-                } else {
-                    EntFireByHandle(nametagdisplay, "settext", "Player " + eyeplayer.entindex(), 0, p, p)
+                local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
+                if (eyeplayer != null) {
+                    local clr = GetPlayerColor(eyeplayer, true)
+                    local cpc = FindPlayerClass(eyeplayer)
+                    EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
+                    EntFireByHandle(nametagdisplay, "settext", cpc.username, 0, p, p)
+                    EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
                 }
-                EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
             }
         }
     }
@@ -182,41 +182,41 @@ function loop() {
     }
 
 
-    // ENTITY OPTIMIZATION / DELETION ///////////////
-    local cnt = GetEntityCount()
-    local amtpast = cnt - (EntityCap - EntityCapLeeway) // this is the amount of entities we have past the caps leeway amount
-    local amtdeleted = 0
+    // // ENTITY OPTIMIZATION / DELETION ///////////////
+    // local cnt = GetEntityCount()
+    // local amtpast = cnt - (EntityCap - EntityCapLeeway) // this is the amount of entities we have past the caps leeway amount
+    // local amtdeleted = 0
     
-    if (cnt > EntityCap - EntityCapLeeway) {
-        if (cnt >= FailsafeEntityCap) {
-            printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
-            SendToConsoleP232("changelevel mp_coop_lobby_3")
-        }
-        printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
-        foreach (entclass in ExpendableEntities) {
+    // if (cnt > EntityCap - EntityCapLeeway) {
+    //     if (cnt >= FailsafeEntityCap) {
+    //         printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
+    //         SendToConsoleP232("changelevel mp_coop_lobby_3")
+    //     }
+    //     printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
+    //     foreach (entclass in ExpendableEntities) {
 
-            local curdelamt = amtpast - amtdeleted
-            if (amtdeleted < amtpast) { // if we are still over the cap
+    //         local curdelamt = amtpast - amtdeleted
+    //         if (amtdeleted < amtpast) { // if we are still over the cap
 
-                local amt = GetEntityCount(entclass)
-                printl("CURRENT AMOUNT OF " + entclass + ": " + amt)
+    //             local amt = GetEntityCount(entclass)
+    //             printl("CURRENT AMOUNT OF " + entclass + ": " + amt)
                 
-                if (amt > 0) {
-                    if (amt >= curdelamt) {
-                        DeleteAmountOfEntities(entclass, curdelamt)
-                        return
-                    } else {
-                        DeleteAmountOfEntities(entclass, amt)
-                        amtdeleted = amtdeleted + amt
-                    }
-                }
+    //             if (amt > 0) {
+    //                 if (amt >= curdelamt) {
+    //                     DeleteAmountOfEntities(entclass, curdelamt)
+    //                     return
+    //                 } else {
+    //                     DeleteAmountOfEntities(entclass, amt)
+    //                     amtdeleted = amtdeleted + amt
+    //                 }
+    //             }
 
 
-            } else {
-                return
-            }
-        }
-    }
+    //         } else {
+    //             return
+    //         }
+    //     }
+    // }
 
     /////////////////////////////////////////////////
 

@@ -99,6 +99,7 @@ PluginLoaded <- false
 PreviousTime1Sec <- 0
 playerclasses <- []
 entityclasses <- []
+PreviousNametagItter <- 0
 fogs <- false
 CurrentPythonOutputID <- 0
 CurrentPythonInputID <- 0
