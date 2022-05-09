@@ -130,14 +130,21 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
     window.blit( colour_rect, target_rect )
 
 def GetGamePath():
-    def AfterInputGP(inp):
-        cfg.EditConfig("portal2path", inp.strip())
-        Log("Saved '" + inp.strip() + "' as the game path!")
-        Error("Saved path!", 5, (75, 200, 75))
+    tmpp = BF.TryFindPortal2Path()
+    if not tmpp:
+        def AfterInputGP(inp):
+            cfg.EditConfig("portal2path", inp.strip())
+            Log("Saved '" + inp.strip() + "' as the game path!")
+            Error("Saved path!", 5, (75, 200, 75))
+            gamepath = GVars.configData["portal2path"]["value"]
+            VerifyGamePath(gamepath)
+            
+        GetUserInputPYG( AfterInputGP , "Enter Your Portal 2 Game Path")
+    else:
+        cfg.EditConfig("portal2path", tmpp.strip())
+        Log("Saved '" + tmpp.strip() + "' as the game path!")
         gamepath = GVars.configData["portal2path"]["value"]
         VerifyGamePath(gamepath)
-        
-    GetUserInputPYG( AfterInputGP , "Enter Your Portal 2 Game Path")
 
 
 def VerifyGamePath(gamepath):
