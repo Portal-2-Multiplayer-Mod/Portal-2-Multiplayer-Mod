@@ -137,17 +137,17 @@ def GetGamePath():
             Log("Saved '" + inp.strip() + "' as the game path!")
             Error("Saved path!", 5, (75, 200, 75))
             gamepath = GVars.configData["portal2path"]["value"]
-            VerifyGamePath(gamepath)
+            VerifyGamePath()
             
         GetUserInputPYG( AfterInputGP , "Enter Your Portal 2 Game Path")
     else:
         cfg.EditConfig("portal2path", tmpp.strip())
         Log("Saved '" + tmpp.strip() + "' as the game path!")
         gamepath = GVars.configData["portal2path"]["value"]
-        VerifyGamePath(gamepath)
+        VerifyGamePath()
 
 
-def VerifyGamePath(gamepath):
+def VerifyGamePath():
     Log("Verifying game path...")
     gamepath = GVars.configData["portal2path"]["value"]
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
@@ -206,8 +206,7 @@ def DEVMOUNT():
 def MountModOnly():
     cfg.ValidatePlayerKeys()
 
-    gamepath = GVars.configData["portal2path"]["value"]
-    if not VerifyGamePath(gamepath):
+    if not VerifyGamePath():
         return
     gamepath = GVars.configData["portal2path"]["value"]
 
@@ -271,6 +270,7 @@ def UpdateMod():
     thread.start()
 
 def RunGameScript():
+    VerifyGamePath()
     gamepath = GVars.configData["portal2path"]["value"]
     if MountModOnly():
         RG.LaunchGame(gamepath)
@@ -279,7 +279,7 @@ def RunGameScript():
 def UnmountScript():
     Log("___Unmounting Mod___")
     gamepath = GVars.configData["portal2path"]["value"]
-    VerifyGamePath(gamepath)
+    VerifyGamePath()
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
     Log("____DONE UNMOUNTING____")
