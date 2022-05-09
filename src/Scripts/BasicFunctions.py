@@ -58,7 +58,29 @@ def TryFindPortal2Path():
             print(hkey)
             steam_path = winreg.QueryValueEx(hkey, "InstallPath")
             print(steam_path)
-            return steam_path[0] + "steamapps"
+            manifestpath = steam_path[0] + ConvertPath("/appmanifest_620.acf")
+            print(manifestpath)
+            if (os.path.isfile(manifestpath)):
+                # read the manifest file
+                f = open(manifestpath, "r", encoding="utf-8")
+                manifest = f.read()
+                f.close()
+
+                paths = []
+
+                for line in manifest.split("\n"):
+                    line=line.strip()
+                    # remove the quotes
+                    line = line.replace("\"", "")
+                    if (line.startswith("path")):
+                        line = line.replace("path", "")
+                        line = line.strip()
+                        paths.append(line)
+                
+                for path in paths:
+                    if (os.path.isdir(path + ConvertPath("/steamapps/common/Portal 2"))):
+                        return path + ConvertPath("/steamapps/common/Portal 2")
+
         except Exception as e:
             print("ERROR: " + str(e))
 
