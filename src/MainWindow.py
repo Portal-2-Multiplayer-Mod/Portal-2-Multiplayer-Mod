@@ -1350,6 +1350,7 @@ def RestartClient(path):
 
     command = path
     subprocess.Popen(command, shell=True)
+    Log("Restarting client")
     sys.exit(0)
 
 def IsNew():
