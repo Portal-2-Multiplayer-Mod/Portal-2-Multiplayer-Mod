@@ -100,6 +100,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Light fix
         Entities.FindByName(null, "@light_shadowed_paintroom").Destroy()
+        Entities.FindByName(null, "@snd_light_inside").Destroy()
+        Entities.FindByName(null, "@snd_light_outside").Destroy()
 
         // Remove orange exit door
         local ent = null
