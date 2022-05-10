@@ -6,7 +6,6 @@ import threading
 import time
 import webbrowser
 from steamid_converter import Converter
-import psutil
 
 tk = ""
 try:
@@ -613,10 +612,7 @@ def PostExit():
     if (GVars.configData["AutoUnmount"]["value"] == "true"):
         UnmountScript()
         Error("Unmounted!", 5, (125, 0, 125))
-    for proc in psutil.process_iter():
-        # check whether the process name matches
-        if proc.name() == "portal2.exe":
-            proc.kill()
+    os.system("taskkill /f /im portal2.exe")
 
 ############ BUTTON CLASSES
 
