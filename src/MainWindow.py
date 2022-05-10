@@ -152,7 +152,7 @@ def VerifyGamePath():
     gamepath = GVars.configData["portal2path"]["value"]
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Error("Game path is invalid!")
-        Error("Attempting to fetch gamepath", 5, (255, 255, 75))
+        Error("Attempting to fetch gamepath...", 5, (255, 255, 75))
         
         tmpp = BF.TryFindPortal2Path()
         if tmpp != False:
@@ -174,12 +174,12 @@ def VerifyGamePath():
 
 def VerifyModFiles():
     modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
-    Log("searching for mod files in: "+ modFilesPath)
+    Log("Searching for mod files in: "+ modFilesPath)
     if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
-        Log("Mod files found")
+        Log("Mod files found!")
         return True
 
-    Log("Mod files not found")
+    Log("Mod files not found!")
     return False
     
 
@@ -197,7 +197,7 @@ def DEVMOUNT():
         # delete the old modfiles
         BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
     except Exception as e:
-        Log("folder doesn't exist: "+GVars.modPath + GVars.nf + "ModFiles")
+        Log("Folder doesn't exist: "+GVars.modPath + GVars.nf + "ModFiles")
         Log(str(e))
 
     # copy the one in the current directory to the modpath
@@ -211,13 +211,13 @@ def MountModOnly():
     gamepath = GVars.configData["portal2path"]["value"]
 
     if IsUpdating:
-        Error("The Mod Is Updating Please Wait", 5, (255, 75, 75))
+        Error("The mod is now updating. Please Wait.", 5, (255, 75, 75))
         return
         
-    Error("Mounting Mod!", 5, (75, 255, 75))
+    Error("Mounting mod!", 5, (75, 255, 75))
     
     if (GVars.configData["developer"]["value"] == "true"):
-        Error("WARN: Dev Mode Active", 5, (255, 180, 75))
+        Error("Dev mode is now active!", 5, (255, 180, 75))
         DEVMOUNT()
         RG.MountMod(gamepath)
         Error("Mounted!", 5, (75, 255, 75))
@@ -234,7 +234,7 @@ def MountModOnly():
             BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
         if up.haveInternet():
             def YesInput():
-                Log("YES INPUT CALLED... FETCHING MOD")
+                Log("Yes input has been called! Fetching mod...")
                 UpdateMod()
             class YesButton:
                 text = "Yes"
@@ -249,21 +249,21 @@ def MountModOnly():
                 inactivecolor = (155, 155, 155)
             PopupBox("Fetch Game Files?", "There are no cached files for the mod!\n\nWould you like to download \nthe latest version?\n\n\nYou can use the fallbacks,\n although it is not recommended.", [YesButton, NoButton])
         else:
-            Error("NO INTERNET CONNECTION! \n Using Fallback Files...", 5, (255, 75, 75))
+            Error("No internet connection detected! \n Resorting to Fallback files...", 5, (255, 75, 75))
             UseFallbacks(gamepath)
             Error("Mounted!", 5, (75, 255, 75))
             return True
 
 def UpdateMod():
-    Error("Fetching Update...", 5, (255, 150, 75))
-    Log("Thread Starting..")
+    Error("Fetching update...", 5, (255, 150, 75))
+    Log("Thread starting...")
 
     def UpdateThread():
         Log("Updating...")
         global IsUpdating
         IsUpdating = True
         up.DownloadNewFiles()
-        Error("Update Complete!", 5, (75, 255, 75))
+        Error("Update complete!", 5, (75, 255, 75))
         IsUpdating = False
 
     thread = threading.Thread(target=UpdateThread)
@@ -274,7 +274,7 @@ def RunGameScript():
     gamepath = GVars.configData["portal2path"]["value"]
     if MountModOnly():
         RG.LaunchGame(gamepath)
-        Error("Launched Game!", 5, (75, 255, 75))
+        Error("Launched game!", 5, (75, 255, 75))
 
 def UnmountScript():
     Log("___Unmounting Mod___")
@@ -411,7 +411,7 @@ def RefreshPlayersMenu():
         curanim = ""
         def function():
             def AfterInputPlayerName(inp, PlayerKey = PlayerKey):
-                Log("Saving Player Name...")
+                Log("Saving player name...")
                 Log(inp)
                 curkey = GVars.configData["Players"]
                 curkey["value"][CurrentSelectedPlayer]["name"] = inp.strip()
@@ -472,12 +472,12 @@ def RefreshPlayersMenu():
         def function():
             global CurrentSelectedPlayer
             if CurrentSelectedPlayer < len(GVars.configData["Players"]["value"]) - 1:
-                Log("Next Player")
+                Log("Next player")
                 CurrentSelectedPlayer += 1
                 RefreshPlayersMenu()
                 ChangeMenu(PlayersMenu, False)
             else:
-                Log("No More Players")
+                Log("No more players")
                 CurrentSelectedPlayer = 0
                 RefreshPlayersMenu()
                 ChangeMenu(PlayersMenu, False)
@@ -507,13 +507,13 @@ def RefreshPlayersMenu():
                     inp = "0"
                 else:
                     Error("Saved!", 5, (75, 200, 75))
-                Log("Saving Admin Level...")
+                Log("Saving admin level...")
                 Log(inp)
                 curkey = GVars.configData["Players"]
                 curkey["value"][CurrentSelectedPlayer]["adminlevel"] = inp.strip()
                 cfg.WriteConfigFile(GVars.configData)
                 RefreshPlayersMenu()
-            GetUserInputPYG( AfterInputAdminLevel , "Enter An Admin Level", PlayerKey["adminlevel"])
+            GetUserInputPYG( AfterInputAdminLevel , "Enter an admin level", PlayerKey["adminlevel"])
 
     class AddPlayer:
         text = "Add Player"
@@ -526,7 +526,7 @@ def RefreshPlayersMenu():
         curanim = ""
         def function():
             global CurrentSelectedPlayer
-            Log("Adding Blank Player")
+            Log("Adding blank player...")
             print(f"appended: {cfg.defaultplayerarray}")
             GVars.configData["Players"]["value"].append(cfg.defaultplayerarray)
             cfg.WriteConfigFile(GVars.configData)
@@ -548,7 +548,7 @@ def RefreshPlayersMenu():
         def function():
             if len(GVars.configData["Players"]["value"]) > 1:
                 global CurrentSelectedPlayer
-                Log("Deleting Player")
+                Log("Deleting player...")
                 curkey = GVars.configData["Players"]
                 del curkey["value"][CurrentSelectedPlayer]
                 cfg.WriteConfigFile(GVars.configData)
@@ -556,7 +556,7 @@ def RefreshPlayersMenu():
                     CurrentSelectedPlayer -= 1
                 RefreshPlayersMenu()
             else:
-                Error("There Must Be At Least 1 Player", 5, (255, 50, 50))
+                Error("There must be at least one player!", 5, (255, 50, 50))
 
 
     PlayersMenu.append(CurPlayername)
@@ -572,7 +572,7 @@ def GetUserInputPYG(afterfunc = None, prompt = "", preinput = ""):
     global CurInput
     global AfterInputFunction
     global InputPrompt
-    Log("Getting User INPUT")
+    Log("Getting user input...")
     LookingForInput = True
     CurInput = preinput
     InputPrompt = prompt
@@ -806,9 +806,9 @@ class PopupBoxButton:
     curanim = ""
     def function():
         def YesInput():
-            Error("YES", 3, (75, 255, 75))
+            Error("Yes", 3, (75, 255, 75))
         def NoInput():
-            Error("NO", 3, (255, 75, 75))
+            Error("No", 3, (255, 75, 75))
 
         class YesButton:
             text = "Yes"
@@ -1334,18 +1334,18 @@ def IsNew():
     if (sys.argv[1] != "updated") or (not os.path.exists(sys.argv[2])):
         return
     
-    Log("this is first launch after update")
+    Log("This is first launch after a successful update")
     
-    Log("deleting old client...")
+    Log("Deleting old client...")
     os.remove(sys.argv[2])
     
     # this will rename the new clien to the old client's name
-    Log("renaming new client...")
+    Log("Renaming new client...")
     os.rename(GVars.executable, sys.argv[2])
 
 def ClientUpdateBox(update):
     def YesInput():
-        Log("FETCHING MOD")
+        Log("Fetching mod...")
         up.DownloadClient()
 
     class YesButton:
@@ -1379,7 +1379,7 @@ def ModFilesUpdateBox():
     PopupBox("Update Available", "Would you like to update the mod files?", [YesButton, NoButton])
 
 def CheckForUpdates():
-    Log("checking for updates...")
+    Log("Checking for updates...")
     clientUpdate = up.CheckForNewClient()
     if clientUpdate["status"]:
         ClientUpdateBox(clientUpdate)
@@ -1405,7 +1405,7 @@ def OnStart():
         IsNew()  # Check for first time setup
         CheckForUpdates()
     else:
-        Log("not checking for updates because we're running through python")
+        Log("Running through Python! Not checking for updates.")
 
     def NewAfterFunction():
         Error("Game exited!", 5, (125, 0, 125))
@@ -1420,7 +1420,7 @@ def OnStart():
         BF.DeleteFolder(GVars.modPath + GVars.nf + ".temp")
 
     if (GVars.hadtoresetconfig):
-        Log("UH OH CONFIG RESET YELL AT USER.")
+        Log("Config has been reset to default settings!")
         class OkButton:
             text = "Ok"
             def function():
