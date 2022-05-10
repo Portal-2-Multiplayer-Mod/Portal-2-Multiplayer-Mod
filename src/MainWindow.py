@@ -358,7 +358,7 @@ def RefreshSettingsMenu(menu):
     SettingsButtons.clear()
     for key in GVars.configData:
         if GVars.configData[key]["menu"] == menu:
-            Log(key + ": " + GVars.configData[key]["value"])
+            Log(str(key) + ": " + str(GVars.configData[key]["value"]))
             class curkeyButton:
                 txt = GVars.configData[key]["value"]
                 mlen = 10
@@ -927,8 +927,6 @@ class BackButton:
 
 ### BUTTONS
 SettingsMenus = [LauncherSettingsButton, Portal2SettingsButton, PlayersButton, BackButton]
-if (GVars.configData["developer"]["value"] == "true"):
-    SettingsMenus.push(HiddenSettingsButton)
 
 SettingsButtons = []
 
@@ -1484,6 +1482,11 @@ def OnStart():
             Error("Unmounted!", 5, (125, 0, 125))
 
     GVars.AfterFunction = NewAfterFunction
+
+    if (GVars.configData["developer"]["value"] == "true"):
+        SettingsMenus.pop()
+        SettingsMenus.append(HiddenSettingsButton)
+        SettingsMenus.append(BackButton)
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
