@@ -674,6 +674,20 @@ class LauncherSettingsButton:
         ChangeMenu(SettingsButtons)
     isasync = False
 
+class HiddenSettingsButton:
+    text = "Hidden Config"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        RefreshSettingsMenu("hidden")
+        ChangeMenu(SettingsButtons)
+    isasync = False
+
 class Portal2SettingsButton:
     text = "Portal 2 Config"
     activecolor = (255, 255, 0)
@@ -913,6 +927,8 @@ class BackButton:
 
 ### BUTTONS
 SettingsMenus = [LauncherSettingsButton, Portal2SettingsButton, PlayersButton, BackButton]
+if (GVars.configData["developer"]["value"] == "true"):
+    SettingsMenus.push(HiddenSettingsButton)
 
 SettingsButtons = []
 
@@ -1457,7 +1473,7 @@ def OnStart():
         CheckForUpdates()
     else:
         Log("Running through Python! Not checking for updates.")
-        # cfg.EditConfig("developer", "false")
+        cfg.EditConfig("developer", "true")
 
     VerifyGamePath()
 
