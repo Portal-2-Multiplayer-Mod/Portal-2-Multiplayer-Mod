@@ -235,7 +235,7 @@ def MountModOnly():
         if up.haveInternet():
             def YesInput():
                 Log("Yes input has been called! Fetching mod...")
-                UpdateMod()
+                UpdateModFiles()
             class YesButton:
                 text = "Yes"
                 function = YesInput
@@ -254,7 +254,7 @@ def MountModOnly():
             Error("Mounted!", 5, (75, 255, 75))
             return True
 
-def UpdateMod():
+def UpdateModFiles():
     Error("Fetching update...", 5, (255, 150, 75))
     Log("Thread starting...")
 
@@ -263,6 +263,21 @@ def UpdateMod():
         global IsUpdating
         IsUpdating = True
         up.DownloadNewFiles()
+        Error("Update complete!", 5, (75, 255, 75))
+        IsUpdating = False
+
+    thread = threading.Thread(target=UpdateThread)
+    thread.start()
+
+def UpdateModClient():
+    Error("Fetching update...", 5, (255, 150, 75))
+    Log("Thread starting...")
+
+    def UpdateThread():
+        Log("Updating...")
+        global IsUpdating
+        IsUpdating = True
+        up.DownloadClient()
         Error("Update complete!", 5, (75, 255, 75))
         IsUpdating = False
 
@@ -1374,7 +1389,7 @@ def IsNew():
 def ClientUpdateBox(update):
     def YesInput():
         Log("Fetching mod...")
-        up.DownloadClient()
+        UpdateModClient()
 
     class YesButton:
         text = "Yes"
@@ -1394,7 +1409,7 @@ def ClientUpdateBox(update):
 def ModFilesUpdateBox():
     class YesButton:
         text = "Yes"
-        function = UpdateMod
+        function = UpdateModFiles
         activecolor = (75, 200, 75)
         inactivecolor = (155, 155, 155)
 
