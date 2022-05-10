@@ -12,7 +12,7 @@ import shutil
 import sys
 import os
 
-currentVersion = "2.0.0" # change this before releasing a new version
+currentVersion = "2.0.1" # change this before releasing a new version
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
