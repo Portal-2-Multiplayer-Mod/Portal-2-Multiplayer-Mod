@@ -35,7 +35,6 @@
 13. Support for Linux, Windows 11, 10, 8.1, 8, 7, Vista, and XP
 
 ## Features on the table
-- Dedicated servers
 - Sixense support
 - Player specific colored portals
 
