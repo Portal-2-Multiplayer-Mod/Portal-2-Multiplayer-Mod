@@ -11,6 +11,7 @@ import Scripts.Configs as cfg
 import subprocess
 import Scripts.BasicFunctions as BF
 import random
+import time
 
 CommandReplacements = [
     ['restart_level', 'portal2mprslv', 'portal2mprslv'],
@@ -465,9 +466,28 @@ def LaunchGame(gamepath):
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
-        else:
-            os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -condebug -console -usercon")
-            Log("Game launch successful!")
+        elif (GVars.iol):
+            def RunGame():
+                def RunSteam():
+                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -condebug -console -usercon")
+                threading.Thread(target=RunSteam).start()
+
+                def CheckForGame():
+                    shouldcheck = True
+                    lached = False
+                    while shouldcheck:
+                        gamerunning = str(os.system("pidof portal2_linux"))
+                        if gamerunning == "256":
+                            if lached == True:
+                                GVars.AfterFunction()
+                                shouldcheck = False
+                        elif not lached:
+                            lached = True
+                        time.sleep(1)
+                CheckForGame()
+            thread = threading.Thread(target=RunGame)
+            thread.start()
+
 
     except Exception as e:
         Log("Failed to launch Portal 2!")

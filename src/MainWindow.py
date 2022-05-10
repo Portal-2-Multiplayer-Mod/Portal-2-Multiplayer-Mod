@@ -617,7 +617,7 @@ def PostExit():
         os.system("taskkill /f /im portal2.exe")
     if (GVars.iol):
         # linux
-        os.system("killall -9 portal2")
+        os.system("killall -9 portal2_linux")
 
 ############ BUTTON CLASSES
 
