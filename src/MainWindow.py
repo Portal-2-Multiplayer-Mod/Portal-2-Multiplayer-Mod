@@ -739,7 +739,7 @@ class GuideButton:
 
 class ExitButton:
     text = "Exit"
-    activecolor = (255, 75, 75)
+    activecolor = (255, 50, 50)
     inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "none"
