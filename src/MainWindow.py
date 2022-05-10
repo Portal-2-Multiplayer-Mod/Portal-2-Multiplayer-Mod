@@ -1415,10 +1415,12 @@ def OnStart():
     cfg.ValidatePlayerKeys()
     # so it only runs in release mode
     if not sys.argv[0].endswith(".py"):
+        cfg.EditConfig("developer", "false")
         IsNew()  # Check for first time setup
         CheckForUpdates()
     else:
         Log("Running through Python! Not checking for updates.")
+        # cfg.EditConfig("developer", "false")
 
     VerifyGamePath()
 
