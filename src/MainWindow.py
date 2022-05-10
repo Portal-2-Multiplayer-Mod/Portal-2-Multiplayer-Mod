@@ -1,4 +1,3 @@
-from inspect import isasyncgen
 import sys
 import os
 import random
