@@ -608,7 +608,6 @@ def PopupBox(title, text, buttons):
     PopupBoxList.append(PopupBox)
 
 def PostExit():
-    Error("Game exited!", 5, (125, 0, 125))
     if (GVars.configData["AutoUnmount"]["value"] == "true"):
         UnmountScript()
         Error("Unmounted!", 5, (125, 0, 125))
@@ -739,7 +738,7 @@ class GuideButton:
 
 class ExitButton:
     text = "Exit"
-    activecolor = (255, 75, 75)
+    activecolor = (255, 50, 50)
     inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "none"
