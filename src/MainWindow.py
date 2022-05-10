@@ -255,7 +255,7 @@ def MountModOnly():
             return True
 
 def UpdateModFiles():
-    Error("Fetching update...", 5, (255, 150, 75))
+    Error("Fetching update...", 5000, (255, 150, 75))
     Log("Thread starting...")
 
     def UpdateThread():
@@ -265,6 +265,9 @@ def UpdateModFiles():
         up.DownloadNewFiles()
         Error("Update complete!", 5, (75, 255, 75))
         IsUpdating = False
+        for thing in ERRORLIST:
+            if thing[0] == "Fetching update...":
+                ERRORLIST.remove(thing)
 
     thread = threading.Thread(target=UpdateThread)
     thread.start()
