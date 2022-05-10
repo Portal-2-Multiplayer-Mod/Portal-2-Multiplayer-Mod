@@ -91,7 +91,7 @@ function SetCheats() {
 }
 
 function AlwaysPrecachedModels() {
-    PrecacheModel("props/portal_gap.mdl")
+    //PrecacheModel("props/portal_gap.mdl")
 }
 
 // TODO: Make sure all SteamIDs are correct -vistr
