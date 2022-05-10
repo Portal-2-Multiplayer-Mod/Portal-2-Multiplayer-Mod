@@ -1420,6 +1420,8 @@ def OnStart():
     else:
         Log("Running through Python! Not checking for updates.")
 
+    VerifyGamePath()
+
     def NewAfterFunction():
         Error("Game exited!", 5, (125, 0, 125))
         if (GVars.configData["AutoUnmount"]["value"] == "true"):
