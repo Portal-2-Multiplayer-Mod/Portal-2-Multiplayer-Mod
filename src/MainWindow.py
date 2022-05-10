@@ -607,15 +607,15 @@ def PopupBox(title, text, buttons):
     PopupBoxList.append(PopupBox)
 
 def PostExit():
-    if (GVars.configData["AutoUnmount"]["value"] == "true"):
-        UnmountScript()
-        Error("Unmounted!", 5, (125, 0, 125))
     if (GVars.iow):
         # windows
         os.system("taskkill /f /im portal2.exe")
     if (GVars.iol):
         # linux
         os.system("killall -9 portal2_linux")
+    if (GVars.configData["AutoUnmount"]["value"] == "true"):
+        UnmountScript()
+        Error("Unmounted!", 5, (125, 0, 125))
 
 ############ BUTTON CLASSES
 
