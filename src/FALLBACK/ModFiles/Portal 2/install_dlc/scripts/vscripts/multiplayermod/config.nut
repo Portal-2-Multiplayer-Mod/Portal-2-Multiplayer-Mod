@@ -55,6 +55,7 @@ TickSpeed <- 0.00
 // "[AdminLevel]SteamID", // Username
 
 Admins <- [
+"[6]0", // New Player
 "[420]182933216", // kyleraykbs
 "[69]75927374", // Wolƒe Strider Shoσter
 "[12]290760494", // Nanoman2525
