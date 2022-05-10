@@ -724,7 +724,7 @@ class ManualButton:
 
 class GuideButton:
     text = "Steam Guide"
-    activecolor = (255, 255, 0)
+    activecolor = (35, 35, 50)
     inactivecolor = (155, 155, 155)
     sizemult = 1
     selectanim = "pop"
@@ -764,6 +764,20 @@ class DiscordButton:
     def function():
         # open the discord invite in the default browser
         webbrowser.open("https://discord.com/invite/kW3nG6GKpF")
+    isasync = True
+
+class GitHubButton:
+    text = "GitHub"
+    activecolor = (255, 255 , 255)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        # open the discord invite in the default browser
+        webbrowser.open("https://github.com/kyleraykbs/Portal2-32PlayerMod#readme")
     isasync = True
 
 class TestingButton:
@@ -882,7 +896,7 @@ PlayersMenu = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GuideButton, DiscordButton, ExitButton]
+MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GitHubButton, GuideButton, DiscordButton, ExitButton]
 
 TestingMenu = [InputButton, PopupBoxButton, BackButton]
 ###########
