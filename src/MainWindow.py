@@ -1,3 +1,4 @@
+import subprocess
 import sys
 import os
 import random
@@ -1342,6 +1343,15 @@ def Main():
     pygame.quit()
     sys.exit()
 
+def RestartClient(path):
+    if (GVars.iol):
+        permissioncommand = "chmod +x " + path
+        os.system(permissioncommand)
+
+    command = path
+    subprocess.Popen(command, shell=True)
+    sys.exit(0)
+
 def IsNew():
     
     if len(sys.argv) != 3:
@@ -1358,6 +1368,7 @@ def IsNew():
     # this will rename the new clien to the old client's name
     Log("Renaming new client...")
     os.rename(GVars.executable, sys.argv[2])
+    RestartClient(sys.argv[2])
 
 def ClientUpdateBox(update):
     def YesInput():
@@ -1420,6 +1431,7 @@ def OnStart():
     if not sys.argv[0].endswith(".py"):
         cfg.EditConfig("developer", "false")
         IsNew()  # Check for first time setup
+        time.sleep(1)
         CheckForUpdates()
     else:
         Log("Running through Python! Not checking for updates.")
