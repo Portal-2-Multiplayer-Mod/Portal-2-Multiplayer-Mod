@@ -14,7 +14,10 @@ def Log(message):
         
     # Only write to the console if the message is not empty
     if len(message) > 0:
-        print("(P2:MM): " + message)
+        try:
+            print("(P2:MM): " + message)
+        except Exception as e:
+            print(str(e))
     else:
         print("")
         
