@@ -255,6 +255,7 @@ def MountModOnly():
             return True
 
 def UpdateModFiles():
+    PostExit()
     Error("Fetching update...", 5000, (255, 150, 75))
     Log("Thread starting...")
 
@@ -273,6 +274,7 @@ def UpdateModFiles():
     thread.start()
 
 def UpdateModClient():
+    PostExit()
     Error("Downloading Client Update...", 5000, (255, 150, 75))
     Log("Thread starting...")
 
@@ -281,6 +283,10 @@ def UpdateModClient():
         global IsUpdating
         IsUpdating = True
         up.DownloadClient()
+        running = False
+        Log("KILLED TASK")
+        os._exit(0)
+        Log("RAN os._exit(0) WHY CAN YOU SEE THIS???!!!")
 
     thread = threading.Thread(target=UpdateThread)
     thread.start()
@@ -292,10 +298,10 @@ def RunGameScript():
         RG.LaunchGame(gamepath)
         Error("Launched game!", 5, (75, 255, 75))
 
-def UnmountScript():
+def UnmountScript(shouldgetpath = True):
     Log("___Unmounting Mod___")
     gamepath = GVars.configData["portal2path"]["value"]
-    VerifyGamePath()
+    VerifyGamePath(shouldgetpath)
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
     Log("____DONE UNMOUNTING____")
@@ -634,7 +640,7 @@ def PostExit():
     # 1 second should be enough for it to die
     time.sleep(1)
     if (GVars.configData["AutoUnmount"]["value"] == "true"):
-        UnmountScript()
+        UnmountScript(False)
         Error("Unmounted!", 5, (125, 0, 125))
 
 ############ BUTTON CLASSES
@@ -782,7 +788,7 @@ class ExitButton:
         global running
         running = False
         PostExit()
-        sys.exit()
+        os._exit(0)
     isasync = True
 
 class DiscordButton:
@@ -1188,8 +1194,7 @@ def Main():
                 BackspaceHasBeenHeld = False
         for event in pygame.event.get():
             if event.type == QUIT:
-                PostExit()
-                sys.exit()
+                os._exit(0)
                 running = False
             elif (LookingForInput):
                 CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
@@ -1371,7 +1376,7 @@ def Main():
     PostExit()
 
     pygame.quit()
-    sys.exit()
+    os._exit(0)
 
 def RestartClient(path):
     if (GVars.iol):
@@ -1381,7 +1386,7 @@ def RestartClient(path):
     command = path
     subprocess.Popen(command, shell=True)
     Log("Restarting client")
-    sys.exit()
+    os._exit(0)
 
 def IsNew():
     
