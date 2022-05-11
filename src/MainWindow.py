@@ -147,7 +147,7 @@ def GetGamePath():
         VerifyGamePath()
 
 
-def VerifyGamePath():
+def VerifyGamePath(shouldgetpath = True):
     Log("Verifying game path...")
     gamepath = GVars.configData["portal2path"]["value"]
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
@@ -166,8 +166,8 @@ def VerifyGamePath():
             Error("Saved path!", 5, (75, 200, 75))
             return True
 
-
-        GetGamePath()
+        if (shouldgetpath):
+            GetGamePath()
         return False
     return True
     
@@ -273,7 +273,7 @@ def UpdateModFiles():
     thread.start()
 
 def UpdateModClient():
-    Error("Fetching update...", 5000, (255, 150, 75))
+    Error("Downloading Client Update...", 5000, (255, 150, 75))
     Log("Thread starting...")
 
     def UpdateThread():
@@ -281,11 +281,6 @@ def UpdateModClient():
         global IsUpdating
         IsUpdating = True
         up.DownloadClient()
-        Error("Update complete!", 5, (75, 255, 75))
-        IsUpdating = False
-        for thing in ERRORLIST:
-            if thing[0] == "Fetching update...":
-                ERRORLIST.remove(thing)
 
     thread = threading.Thread(target=UpdateThread)
     thread.start()
@@ -1386,7 +1381,7 @@ def RestartClient(path):
     command = path
     subprocess.Popen(command, shell=True)
     Log("Restarting client")
-    sys.exit(0)
+    sys.exit()
 
 def IsNew():
     
@@ -1473,7 +1468,7 @@ def OnStart():
         Log("Running through Python! Not checking for updates.")
         cfg.EditConfig("developer", "true")
 
-    VerifyGamePath()
+    VerifyGamePath(False)
 
     def NewAfterFunction():
         Error("Game exited!", 5, (125, 0, 125))

@@ -100,7 +100,7 @@ def DownloadClient(cType = ""):
     command = path + " updated " + GVars.executable
     subprocess.Popen(command, shell=True)
     Log("launched the new client")
-    sys.exit(0)
+    sys.exit()
 
 def CheckForNewFiles():
     
