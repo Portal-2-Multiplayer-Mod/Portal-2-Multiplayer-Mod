@@ -10,6 +10,15 @@ import json
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
 
 DefaultConfigFile = {
+    "cfgvariant":
+        {
+            "value": 18,
+            "menu": "hidden",
+            "description": "DO NOT CHANGE THIS NUMBER WILL AUTO-UPDATE",
+            "warning": "IF YOU CHANGE THIS NUMBER YOU MAY LOSE YOUR CONFIG FILE!",
+            "prompt": "DONT CHANGE THIS VALUE",
+        },
+
     "portal2path":
         {
             "value": "undefined",

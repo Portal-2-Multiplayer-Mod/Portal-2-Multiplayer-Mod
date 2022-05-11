@@ -1,4 +1,3 @@
-import subprocess
 import sys
 import os
 import random
@@ -147,7 +146,7 @@ def GetGamePath():
         VerifyGamePath()
 
 
-def VerifyGamePath(shouldgetpath = True):
+def VerifyGamePath():
     Log("Verifying game path...")
     gamepath = GVars.configData["portal2path"]["value"]
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
@@ -166,8 +165,8 @@ def VerifyGamePath(shouldgetpath = True):
             Error("Saved path!", 5, (75, 200, 75))
             return True
 
-        if (shouldgetpath):
-            GetGamePath()
+
+        GetGamePath()
         return False
     return True
     
@@ -235,7 +234,7 @@ def MountModOnly():
         if up.haveInternet():
             def YesInput():
                 Log("Yes input has been called! Fetching mod...")
-                UpdateModFiles()
+                UpdateMod()
             class YesButton:
                 text = "Yes"
                 function = YesInput
@@ -254,9 +253,8 @@ def MountModOnly():
             Error("Mounted!", 5, (75, 255, 75))
             return True
 
-def UpdateModFiles():
-    PostExit()
-    Error("Fetching update...", 5000, (255, 150, 75))
+def UpdateMod():
+    Error("Fetching update...", 5, (255, 150, 75))
     Log("Thread starting...")
 
     def UpdateThread():
@@ -266,27 +264,6 @@ def UpdateModFiles():
         up.DownloadNewFiles()
         Error("Update complete!", 5, (75, 255, 75))
         IsUpdating = False
-        for thing in ERRORLIST:
-            if thing[0] == "Fetching update...":
-                ERRORLIST.remove(thing)
-
-    thread = threading.Thread(target=UpdateThread)
-    thread.start()
-
-def UpdateModClient():
-    PostExit()
-    Error("Downloading Client Update...", 5000, (255, 150, 75))
-    Log("Thread starting...")
-
-    def UpdateThread():
-        Log("Updating...")
-        global IsUpdating
-        IsUpdating = True
-        up.DownloadClient()
-        running = False
-        Log("KILLED TASK")
-        os._exit(0)
-        Log("RAN os._exit(0) WHY CAN YOU SEE THIS???!!!")
 
     thread = threading.Thread(target=UpdateThread)
     thread.start()
@@ -298,10 +275,10 @@ def RunGameScript():
         RG.LaunchGame(gamepath)
         Error("Launched game!", 5, (75, 255, 75))
 
-def UnmountScript(shouldgetpath = True):
+def UnmountScript():
     Log("___Unmounting Mod___")
     gamepath = GVars.configData["portal2path"]["value"]
-    VerifyGamePath(shouldgetpath)
+    VerifyGamePath()
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
     Log("____DONE UNMOUNTING____")
@@ -359,7 +336,7 @@ def RefreshSettingsMenu(menu):
     SettingsButtons.clear()
     for key in GVars.configData:
         if GVars.configData[key]["menu"] == menu:
-            Log(str(key) + ": " + str(GVars.configData[key]["value"]))
+            Log(key + ": " + GVars.configData[key]["value"])
             class curkeyButton:
                 txt = GVars.configData[key]["value"]
                 mlen = 10
@@ -630,18 +607,15 @@ def PopupBox(title, text, buttons):
     PopupBoxList.append(PopupBox)
 
 def PostExit():
+    if (GVars.configData["AutoUnmount"]["value"] == "true"):
+        UnmountScript()
+        Error("Unmounted!", 5, (125, 0, 125))
     if (GVars.iow):
         # windows
         os.system("taskkill /f /im portal2.exe")
     if (GVars.iol):
         # linux
         os.system("killall -9 portal2_linux")
-    # this is to make sure the portal 2 thread is dead
-    # 1 second should be enough for it to die
-    time.sleep(1)
-    if (GVars.configData["AutoUnmount"]["value"] == "true"):
-        UnmountScript(False)
-        Error("Unmounted!", 5, (125, 0, 125))
 
 ############ BUTTON CLASSES
 
@@ -672,20 +646,6 @@ class LauncherSettingsButton:
     curanim = ""
     def function():
         RefreshSettingsMenu("launcher")
-        ChangeMenu(SettingsButtons)
-    isasync = False
-
-class HiddenSettingsButton:
-    text = "Hidden Config"
-    activecolor = (255, 255, 0)
-    inactivecolor = (155, 155, 155)
-    sizemult = 1
-    selectanim = "pop"
-    selectsnd = pwrsnd
-    hoversnd = blipsnd
-    curanim = ""
-    def function():
-        RefreshSettingsMenu("hidden")
         ChangeMenu(SettingsButtons)
     isasync = False
 
@@ -788,7 +748,7 @@ class ExitButton:
         global running
         running = False
         PostExit()
-        os._exit(0)
+        sys.exit()
     isasync = True
 
 class DiscordButton:
@@ -1194,7 +1154,8 @@ def Main():
                 BackspaceHasBeenHeld = False
         for event in pygame.event.get():
             if event.type == QUIT:
-                os._exit(0)
+                PostExit()
+                sys.exit()
                 running = False
             elif (LookingForInput):
                 CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
@@ -1376,17 +1337,7 @@ def Main():
     PostExit()
 
     pygame.quit()
-    os._exit(0)
-
-def RestartClient(path):
-    if (GVars.iol):
-        permissioncommand = "chmod +x " + path
-        os.system(permissioncommand)
-
-    command = path
-    subprocess.Popen(command, shell=True)
-    Log("Restarting client")
-    os._exit(0)
+    sys.exit()
 
 def IsNew():
     
@@ -1404,12 +1355,11 @@ def IsNew():
     # this will rename the new clien to the old client's name
     Log("Renaming new client...")
     os.rename(GVars.executable, sys.argv[2])
-    RestartClient(sys.argv[2])
 
 def ClientUpdateBox(update):
     def YesInput():
         Log("Fetching mod...")
-        UpdateModClient()
+        up.DownloadClient()
 
     class YesButton:
         text = "Yes"
@@ -1429,7 +1379,7 @@ def ClientUpdateBox(update):
 def ModFilesUpdateBox():
     class YesButton:
         text = "Yes"
-        function = UpdateModFiles
+        function = UpdateMod
         activecolor = (75, 200, 75)
         inactivecolor = (155, 155, 155)
 
@@ -1467,13 +1417,12 @@ def OnStart():
     if not sys.argv[0].endswith(".py"):
         cfg.EditConfig("developer", "false")
         IsNew()  # Check for first time setup
-        time.sleep(1)
         CheckForUpdates()
     else:
         Log("Running through Python! Not checking for updates.")
-        cfg.EditConfig("developer", "true")
+        # cfg.EditConfig("developer", "false")
 
-    VerifyGamePath(False)
+    VerifyGamePath()
 
     def NewAfterFunction():
         Error("Game exited!", 5, (125, 0, 125))
@@ -1482,11 +1431,6 @@ def OnStart():
             Error("Unmounted!", 5, (125, 0, 125))
 
     GVars.AfterFunction = NewAfterFunction
-
-    if (GVars.configData["developer"]["value"] == "true"):
-        SettingsMenus.pop()
-        SettingsMenus.append(HiddenSettingsButton)
-        SettingsMenus.append(BackButton)
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
