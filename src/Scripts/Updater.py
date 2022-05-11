@@ -12,7 +12,7 @@ import shutil
 import sys
 import os
 
-currentVersion = "2.0.0" # change this before releasing a new version
+currentVersion = "2.0.2" # change this before releasing a new version
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
@@ -38,6 +38,7 @@ def CheckForNewClient():
         r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
     except Exception as e:
         Log(f"error retrieving the latest releases: {str(e)}")
+        return {"status": False}
 
     if not "tag_name" in r:
         return {"status": False}
@@ -86,18 +87,19 @@ def DownloadClient(cType = ""):
     # i don't want to bother with folders
     path = os.path.dirname(GVars.executable) + GVars.nf + "p2mm" + packageType
     urllib.request.urlretrieve(downloadLink, path)
-    Log(f"Downlaod new client in: {path}")
+    Log(f"Downloaded new client in: {path}")
 
     # if (GVars.iow):
     #     command = [path, "updated", GVars.executable]
     #     subprocess.Popen(command)
     if (GVars.iol):
+        Log("Linix detected, gotta chmod that bad boy")
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
     
     command = path + " updated " + GVars.executable
     subprocess.Popen(command, shell=True)
-    sys.exit(0)
+    Log("launched the new client")
 
 def CheckForNewFiles():
     

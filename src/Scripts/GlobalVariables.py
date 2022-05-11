@@ -4,11 +4,10 @@
 
 import os
 import sys
-import __main__
+import ctypes.wintypes
 from datetime import datetime
 import Scripts.Configs as cfg
 from Scripts.BasicLogger import Log
-
 #//////////////////////////////////////////#
 #//#    Global Variables Declarations   #//#
 #//////////////////////////////////////////#
@@ -34,9 +33,18 @@ def init():
 
     if (sys.platform == "win32"):
         iow = True
+        
+        # again thanks stackOverflow for this
+        # this code allows us to get the document's folder on any windows pc with any language
+        CSIDL_PERSONAL = 5       # My Documents
+        SHGFP_TYPE_CURRENT = 0   # Get current, not default value
+
+        buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+        ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
+        
         # set the modpath to the users documents folder
-        modPath = os.path.expanduser("~") + nf + "Documents/p2mm"
-        configPath = os.path.expanduser("~") + nf + "Documents/p2mm"
+        modPath = buf.value + nf + "p2mm"
+        configPath = buf.value + nf + "p2mm"
     elif (sys.platform.startswith("linux")):
         iol = True
         # set the modpath the the users home directory
