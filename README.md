@@ -13,7 +13,6 @@
 + Coded in a way to more likely work with future Portal 2 updates.
 + A lot more stability than v1.5
 + More organized file-structure
-- Doesn't take long to install (requires that you install Python at this point in time)
 - Easy to set up
 ```
 
@@ -39,7 +38,7 @@
 
 # Installation & use
 
-- Latest version released: https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/2.0.3
+- Latest version released: https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
 
 The build guide & default installation is on the steam guide
 - Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
