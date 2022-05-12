@@ -28,19 +28,19 @@
 - Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
 
 *If you have* ***ANY*** *problems feel free to join our community we are happy to troubleshoot and fix any bugs*
-https://discord.gg/kW3nG6GKpF
+- https://discord.gg/kW3nG6GKpF
 
 # Credits
 **Founders**
-kyleraykbs *(Team Lead, Main Vscript Dev, Singleplayer Support, Launcher Dev, Exploit Finder, Minor Reverse Engineering)*
-Bumpy *(Minor Vscript, Exploit Finder)*
+- kyleraykbs *(Team Lead, Main Vscript Dev, Singleplayer Support, Launcher Dev, Exploit Finder, Minor Reverse Engineering)*
+- Bumpy *(Minor Vscript, Exploit Finder)*
 
 **Head Creators**
-Vista *(Main C++ Dev, Plugin Dev, Reverse Engineering)*
-Wolƒe Strider Shoσter *(Singleplayer Support, Vscript Dev)*
-cabiste *(Launcher Dev)*
-Nanoman2525 *(Community Manager, Exploit Finder, Minor Vscript)*
+- Vista *(Main C++ Dev, Plugin Dev, Reverse Engineering)*
+- Wolƒe Strider Shoσter *(Singleplayer Support, Vscript Dev)*
+- cabiste *(Launcher Dev)*
+- Nanoman2525 *(Community Manager, Exploit Finder, Minor Vscript)*
 
 **Team Members**
-sear
-Jeffrey
+- sear
+- Jeffrey
