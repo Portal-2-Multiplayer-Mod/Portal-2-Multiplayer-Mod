@@ -12,7 +12,7 @@
   Full cooperative support
   Full singleplayer support (needs minor polishing)
   Full Gelocity support
-  Encryption of game-breaking cvars to random characters on each game launch
+  Encryption system
   Support for Linux and Windows 7-11
   Ground up VScript development enviornment
 ```
