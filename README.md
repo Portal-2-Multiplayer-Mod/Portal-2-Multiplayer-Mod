@@ -5,7 +5,7 @@
 
 ***Version 2.0***
 ```
-+ Presents tons new features that were not in 1.5
++ Presents tons of new features that were not in 1.5
 + Much better launcher
 + Makes use of a custom plugin to bring about some of the features
 + Full Linux and Windows support
@@ -13,9 +13,7 @@
 + Coded in a way to more likely work with future Portal 2 updates.
 + A lot more stability than v1.5
 + More organized file-structure
-- Will take longer to install (requires that you install Python at this point in time)
-- Some features may break as we update the pre-release.
-- Not easy to set up
+- Easy to set up
 ```
 
 
@@ -40,7 +38,7 @@
 
 # Installation & use
 
-- Latest version released: https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/2.0.0
+- Latest version released: https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
 
 The build guide & default installation is on the steam guide
 - Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
