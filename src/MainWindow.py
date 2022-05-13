@@ -129,183 +129,6 @@ def gradientRect( window, left_colour, right_colour, target_rect ):
     colour_rect = pygame.transform.smoothscale( colour_rect, ( target_rect.width, target_rect.height ) )  # stretch!
     window.blit( colour_rect, target_rect )
 
-def GetGamePath():
-    tmpp = BF.TryFindPortal2Path()
-    if not tmpp:
-        def AfterInputGP(inp):
-            cfg.EditConfig("portal2path", inp.strip())
-            Log("Saved '" + inp.strip() + "' as the game path!")
-            Error("Saved path!", 5, (75, 200, 75))
-            gamepath = GVars.configData["portal2path"]["value"]
-            VerifyGamePath()
-            
-        GetUserInputPYG( AfterInputGP , "Enter Your Portal 2 Game Path")
-    else:
-        cfg.EditConfig("portal2path", tmpp.strip())
-        Log("Saved '" + tmpp.strip() + "' as the game path!")
-        gamepath = GVars.configData["portal2path"]["value"]
-        VerifyGamePath()
-
-
-def VerifyGamePath(shouldgetpath = True):
-    Log("Verifying game path...")
-    gamepath = GVars.configData["portal2path"]["value"]
-    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
-        Error("Game path is invalid!")
-        Error("Attempting to fetch gamepath...", 5, (255, 255, 75))
-        
-        tmpp = BF.TryFindPortal2Path()
-        if tmpp != False:
-            tmpp = tmpp.strip()
-            # replace \\ with \
-            Error("Found path!", 5, (255, 255, 75))
-            tmpp = tmpp.replace("\\\\", "\\")
-            cfg.EditConfig("portal2path", tmpp.strip())
-            Log("Saved '" + tmpp.strip() + "' as the game path!")
-            gamepath = GVars.configData["portal2path"]["value"]
-            Error("Saved path!", 5, (75, 200, 75))
-            return True
-
-        if (shouldgetpath):
-            GetGamePath()
-        return False
-    return True
-    
-
-def VerifyModFiles():
-    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
-    Log("Searching for mod files in: "+ modFilesPath)
-    if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
-        Log("Mod files found!")
-        return True
-
-    Log("Mod files not found!")
-    return False
-    
-
-def UseFallbacks(gamepath):
-    # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
-    BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
-    DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
-    RG.MountMod(gamepath, DoEncrypt)
-    Error("Mount Complete!", 5, (75, 255, 75))
-    # Error("Launching Game...", 5, (75, 255, 75))
-    # RG.LaunchGame(gamepath)
-
-def DEVMOUNT():
-    try:
-        # delete the old modfiles
-        BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
-    except Exception as e:
-        Log("Folder doesn't exist: "+GVars.modPath + GVars.nf + "ModFiles")
-        Log(str(e))
-
-    # copy the one in the current directory to the modpath
-    BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
-
-def MountModOnly():
-    cfg.ValidatePlayerKeys()
-
-    if not VerifyGamePath():
-        return
-    gamepath = GVars.configData["portal2path"]["value"]
-
-    if IsUpdating:
-        Error("The mod is now updating. Please Wait.", 5, (255, 75, 75))
-        return
-        
-    Error("Mounting mod!", 5, (75, 255, 75))
-    
-    if (GVars.configData["developer"]["value"] == "true"):
-        Error("Dev mode is now active!", 5, (255, 180, 75))
-        DEVMOUNT()
-        RG.MountMod(gamepath)
-        Error("Mounted!", 5, (75, 255, 75))
-        return True
-    
-    if (VerifyModFiles()):
-        DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
-        RG.MountMod(gamepath, DoEncrypt)
-        Error("Mounted!", 5, (75, 255, 75))
-        return True
-    # if the he's not a developer and the mod files don't exist ask him to download the files from the repo
-    else:
-        if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
-            BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
-        if up.haveInternet():
-            def YesInput():
-                Log("Yes input has been called! Fetching mod...")
-                UpdateModFiles()
-            class YesButton:
-                text = "Yes"
-                function = YesInput
-                activecolor = (75, 200, 75)
-                inactivecolor = (155, 155, 155)
-            class NoButton:
-                text = "Use Fallbacks"
-                def function():
-                        UseFallbacks(gamepath)
-                activecolor = (255, 75, 75)
-                inactivecolor = (155, 155, 155)
-            PopupBox("Fetch Game Files?", "There are no cached files for the mod!\n\nWould you like to download \nthe latest version?\n\n\nYou can use the fallbacks,\n although it is not recommended.", [YesButton, NoButton])
-        else:
-            Error("No internet connection detected! \n Resorting to Fallback files...", 5, (255, 75, 75))
-            UseFallbacks(gamepath)
-            Error("Mounted!", 5, (75, 255, 75))
-            return True
-
-def UpdateModFiles():
-    PostExit()
-    Error("Fetching update...", 5000, (255, 150, 75))
-    Log("Thread starting...")
-
-    def UpdateThread():
-        Log("Updating...")
-        global IsUpdating
-        IsUpdating = True
-        up.DownloadNewFiles()
-        Error("Update complete!", 5, (75, 255, 75))
-        IsUpdating = False
-        for thing in ERRORLIST:
-            if thing[0] == "Fetching update...":
-                ERRORLIST.remove(thing)
-
-    thread = threading.Thread(target=UpdateThread)
-    thread.start()
-
-def UpdateModClient():
-    PostExit()
-    Error("Downloading Client Update...", 5000, (255, 150, 75))
-    Log("Thread starting...")
-
-    def UpdateThread():
-        Log("Updating...")
-        global IsUpdating
-        IsUpdating = True
-        up.DownloadClient()
-        running = False
-        Log("KILLED TASK")
-        os._exit(0)
-        Log("RAN os._exit(0) WHY CAN YOU SEE THIS???!!!")
-
-    thread = threading.Thread(target=UpdateThread)
-    thread.start()
-
-def RunGameScript():
-    VerifyGamePath()
-    gamepath = GVars.configData["portal2path"]["value"]
-    if MountModOnly():
-        RG.LaunchGame(gamepath)
-        Error("Launched game!", 5, (75, 255, 75))
-
-def UnmountScript(shouldgetpath = True):
-    Log("___Unmounting Mod___")
-    gamepath = GVars.configData["portal2path"]["value"]
-    VerifyGamePath(shouldgetpath)
-    RG.DeleteUnusedDlcs(gamepath)
-    RG.UnpatchBinaries(gamepath)
-    Log("____DONE UNMOUNTING____")
-
 def SelectAnimation(btn, anim):
     if anim == "pop":
         btn.curanim = "pop1"
@@ -628,20 +451,6 @@ def PopupBox(title, text, buttons):
     PopupBox = [title, text, buttons] # TITLE, TEXT, BUTTONS
     Log("Creating popup box... Tile: " + str(title) + " Text: " + text + " Buttons: " + str(buttons))
     PopupBoxList.append(PopupBox)
-
-def PostExit():
-    if (GVars.iow):
-        # windows
-        os.system("taskkill /f /im portal2.exe")
-    if (GVars.iol):
-        # linux
-        os.system("killall -9 portal2_linux")
-    # this is to make sure the portal 2 thread is dead
-    # 1 second should be enough for it to die
-    time.sleep(1)
-    if (GVars.configData["AutoUnmount"]["value"] == "true"):
-        UnmountScript(False)
-        Error("Unmounted!", 5, (125, 0, 125))
 
 ############ BUTTON CLASSES
 
@@ -1195,6 +1004,7 @@ def Main():
         for event in pygame.event.get():
             if event.type == QUIT:
                 os._exit(0)
+                global running
                 running = False
             elif (LookingForInput):
                 CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
@@ -1377,6 +1187,208 @@ def Main():
 
     pygame.quit()
     os._exit(0)
+    
+#!######################################################
+#!                       Logic
+#!######################################################
+
+def PostExit():
+    if (GVars.iow):
+        # windows
+        os.system("taskkill /f /im portal2.exe")
+    if (GVars.iol):
+        # linux
+        os.system("killall -9 portal2_linux")
+    # this is to make sure the portal 2 thread is dead
+    # 1 second should be enough for it to die
+    time.sleep(1)
+    if (GVars.configData["AutoUnmount"]["value"] == "true"):
+        UnmountScript(False)
+        Error("Unmounted!", 5, (125, 0, 125))
+
+
+def GetGamePath():
+    tmpp = BF.TryFindPortal2Path()
+    if not tmpp:
+        def AfterInputGP(inp):
+            cfg.EditConfig("portal2path", inp.strip())
+            Log("Saved '" + inp.strip() + "' as the game path!")
+            Error("Saved path!", 5, (75, 200, 75))
+            VerifyGamePath()
+
+        GetUserInputPYG(AfterInputGP, "Enter Your Portal 2 Game Path")
+    else:
+        cfg.EditConfig("portal2path", tmpp.strip())
+        Log("Saved '" + tmpp.strip() + "' as the game path!")
+        VerifyGamePath()
+
+
+def VerifyGamePath(shouldgetpath=True):
+    Log("Verifying game path...")
+    gamepath = GVars.configData["portal2path"]["value"]
+    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+        Error("Game path is invalid!")
+        Error("Attempting to fetch gamepath...", 5, (255, 255, 75))
+
+        tmpp = BF.TryFindPortal2Path()
+        if tmpp != False:
+            tmpp = tmpp.strip()
+            # replace \\ with \
+            Error("Found path!", 5, (255, 255, 75))
+            tmpp = tmpp.replace("\\\\", "\\")
+            cfg.EditConfig("portal2path", tmpp)
+            Log("Saved '" + tmpp + "' as the game path!")
+            Error("Saved path!", 5, (75, 200, 75))
+            return True
+
+        if (shouldgetpath):
+            GetGamePath()
+        return False
+    return True
+
+
+def VerifyModFiles():
+    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    Log("Searching for mod files in: " + modFilesPath)
+    if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
+        Log("Mod files found!")
+        return True
+
+    Log("Mod files not found!")
+    return False
+
+
+def UseFallbacks(gamepath):
+    # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
+    BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
+    RG.MountMod(gamepath, DoEncrypt)
+    Error("Mount Complete!", 5, (75, 255, 75))
+    # RG.LaunchGame(gamepath)
+
+
+def DEVMOUNT():
+    try:
+        # delete the old modfiles
+        BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
+    except Exception as e:
+        Log("Error deleting mod files in dev mount")
+        Log(str(e))
+
+    # copy the one in the current directory to the modpath
+    BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+
+
+def MountModOnly():
+    cfg.ValidatePlayerKeys()
+
+    if not VerifyGamePath():
+        return
+    gamepath = GVars.configData["portal2path"]["value"]
+
+    if IsUpdating:
+        Error("The mod is now updating. Please Wait.", 5, (255, 75, 75))
+        return
+
+    Error("Mounting mod!", 5, (75, 255, 75))
+
+    if (GVars.configData["developer"]["value"] == "true"):
+        Error("Dev mode is now active!", 5, (255, 180, 75))
+        DEVMOUNT()
+        Error("copied mod files from the local repo!", 5, (75, 255, 75))
+
+    if (VerifyModFiles()):
+        DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
+        RG.MountMod(gamepath, DoEncrypt)
+        Error("Mounted!", 5, (75, 255, 75))
+        return True
+    
+    # if the he's not a developer and the mod files don't exist ask him to download the files from the repo
+    else:
+        if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
+            BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
+        if up.haveInternet():
+            def YesInput():
+                Log("Yes input has been called! Fetching mod...")
+                UpdateModFiles()
+
+            class YesButton:
+                text = "Yes"
+                function = YesInput
+                activecolor = (75, 200, 75)
+                inactivecolor = (155, 155, 155)
+
+            class NoButton:
+                text = "Use Fallbacks"
+
+                def function():
+                    UseFallbacks(gamepath)
+                activecolor = (255, 75, 75)
+                inactivecolor = (155, 155, 155)
+            PopupBox("Fetch Game Files?", "There are no cached files for the mod!\n\nWould you like to download \nthe latest version?\n\n\nYou can use the fallbacks,\n although it is not recommended.", [YesButton, NoButton])
+        else:
+            Error("No internet connection detected! \n Resorting to Fallback files...", 5, (255, 75, 75))
+            UseFallbacks(gamepath)
+            Error("Mounted!", 5, (75, 255, 75))
+            return True
+
+
+def UpdateModFiles():
+    PostExit()
+    Error("Fetching update...", 5000, (255, 150, 75))
+
+    def UpdateThread():
+        Log("Updating...")
+        global IsUpdating
+        IsUpdating = True
+        up.DownloadNewFiles()
+        Error("Update complete!", 5, (75, 255, 75))
+        IsUpdating = False
+        for thing in ERRORLIST:
+            if thing[0] == "Fetching update...":
+                ERRORLIST.remove(thing)
+
+    Log("Thread starting...")
+    thread = threading.Thread(target=UpdateThread)
+    thread.start()
+
+
+def UpdateModClient():
+    PostExit()
+    Error("Downloading Client Update...", 5000, (255, 150, 75))
+    Log("Thread starting...")
+
+    def UpdateThread():
+        Log("Updating...")
+        global IsUpdating
+        IsUpdating = True
+        up.DownloadClient()
+        global running
+        running = False
+        Log("KILLED TASK")
+        os._exit(0)
+        Log("RAN os._exit(0) WHY CAN YOU SEE THIS???!!!")
+
+    thread = threading.Thread(target=UpdateThread)
+    thread.start()
+
+
+def RunGameScript():
+    VerifyGamePath()
+    gamepath = GVars.configData["portal2path"]["value"]
+    if MountModOnly():
+        RG.LaunchGame(gamepath)
+        Error("Launched game!", 5, (75, 255, 75))
+
+
+def UnmountScript(shouldgetpath=True):
+    Log("___Unmounting Mod___")
+    gamepath = GVars.configData["portal2path"]["value"]
+    VerifyGamePath(shouldgetpath)
+    RG.DeleteUnusedDlcs(gamepath)
+    RG.UnpatchBinaries(gamepath)
+    Log("____DONE UNMOUNTING____")
+
 
 def RestartClient(path):
     if (GVars.iol):
