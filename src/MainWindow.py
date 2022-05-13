@@ -1001,11 +1001,11 @@ def Main():
                     LastBackspace = time.time()
             else:
                 BackspaceHasBeenHeld = False
+                
         for event in pygame.event.get():
             if event.type == QUIT:
                 os._exit(0)
-                global running
-                running = False
+                
             elif (LookingForInput):
                 CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
                 CTRLHELD = CTRLHELD > 0
@@ -1037,6 +1037,7 @@ def Main():
                         except Exception as e:
                             Log(str(e)) # always log the error
                             pass
+                        
                     elif len(name) == 1:
                         if SHIFTHELD:
                             # if the name doesnt contain a letter
@@ -1063,14 +1064,17 @@ def Main():
                             if btn == selectedpopupbutton:
                                 if PopupBoxList[0][2].index(btn) < boxlen - 1:
                                     selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) + 1]
+                                    
                     elif event.key == K_LEFT:
                         for btn in PopupBoxList[0][2]:
                             if btn == selectedpopupbutton:
                                 if PopupBoxList[0][2].index(btn) > 0:
                                     selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) - 1]
+                                    
                     elif event.key == K_SPACE or event.key == K_RETURN:
                         selectedpopupbutton.function()
                         PopupBoxList.pop()
+                        
                 elif event.type == MOUSEBUTTONDOWN:
                     mouse = pygame.mouse.get_pos()
                     mousex = mouse[0]
@@ -1082,6 +1086,7 @@ def Main():
                             selectedpopupbutton.function()
                             PopupBoxList.pop()
                             break
+                        
             ######################## NORMAL INPUT
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
@@ -1114,8 +1119,8 @@ def Main():
                         else:
                             SelectedButton.function()
 
-
                     PlaySound(SelectedButton.selectsnd)
+                    
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 ############################ LMB
                 if event.button == 1:
@@ -1135,8 +1140,8 @@ def Main():
                                 PlaySound(SelectedButton.selectsnd)
                         except:
                             pass
+                        
                 ###############################
-
             elif event.type == pygame.MOUSEMOTION:
                 # loop through every button in the current menu
                 for button in CurrentMenu:
