@@ -1404,7 +1404,7 @@ def IsNew():
     # this will rename the new clien to the old client's name
     Log("Renaming new client...")
     os.rename(GVars.executable, sys.argv[2])
-    RestartClient(sys.argv[2])
+    RestartClient("\"" + sys.argv[2] + "\"")
 
 def ClientUpdateBox(update):
     def YesInput():
