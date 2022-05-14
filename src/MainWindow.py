@@ -20,6 +20,7 @@ except Exception as e:
 import pygame
 from pygame.locals import *
 import Scripts.GlobalVariables as GVars
+import Scripts.Workshop as workshop
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.Configs as cfg
 import Scripts.Updater as up
@@ -761,6 +762,19 @@ class ManualButton:
         ChangeMenu(ManualButtons)
     isasync = False
 
+class WorkshopButton:
+    text = "Workshop"
+    activecolor = (50, 50, 255)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        ChangeMenu(WorkshopButtons)
+    isasync = False
+
 class GuideButton:
     text = "Steam Guide"
     activecolor = (35, 35, 50)
@@ -924,9 +938,48 @@ class BackButton:
         BackMenu()
     isasync = False
 
+class GetChangelevelButton:
+    text = "Get Level"
+    activecolor = (255, 255, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        def AfterInput(input):
+            map = workshop.MapFromSteamID(input)
+            if map != False:
+                Error("Changelevel Command", 3, (255, 0, 255))
+                Error("Copied To Clipboard", 3, (0, 255, 0))
+            else:
+                Error("NO MAP FOUND")
+                Error("Make sure you are subscribed", 6, (255, 255, 0))
+                Error("to the map and have played it", 6, (255, 255, 0))
+                Error("at least once.", 6, (255, 255, 0))
+
+        GetUserInputPYG(AfterInput, "Enter a workshop link")
+    isasync = False
+
+class ResourcesButton:
+    text = "Resources"
+    activecolor = (75, 0, 255)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
+    selectanim = "pop"
+    selectsnd = pwrsnd
+    hoversnd = blipsnd
+    curanim = ""
+    def function():
+        ChangeMenu(RecourcesButtons)
+    isasync = False
+
 ##############################
 
 ### BUTTONS
+WorkshopButtons = [GetChangelevelButton, BackButton]
+
 SettingsMenus = [LauncherSettingsButton, Portal2SettingsButton, PlayersButton, BackButton]
 
 SettingsButtons = []
@@ -935,7 +988,9 @@ PlayersMenu = []
 
 ManualButtons = [RunButton, StopButton, BackButton]
 
-MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, GitHubButton, GuideButton, DiscordButton, ExitButton]
+MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, WorkshopButton, ResourcesButton, ExitButton]
+
+RecourcesButtons = [GitHubButton, GuideButton, DiscordButton, BackButton]
 
 TestingMenu = [InputButton, PopupBoxButton, BackButton]
 ###########
