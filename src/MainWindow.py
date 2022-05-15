@@ -176,7 +176,7 @@ def BlitDescription(txt, x = screen.get_width() / 16, y = screen.get_height() / 
             if not (LookingForInput):
                 screen.blit(text1, (x, y))
     except Exception as e:
-        pass
+        Log(str(e))
 
 def RefreshSettingsMenu(menu):
     SettingsButtons.clear()
@@ -295,6 +295,7 @@ def RefreshPlayersMenu():
                         Error("Converted SteamID!", 5, (75, 120, 255))
                     except Exception as e:
                         Error("Invalid SteamID!", 5, (255, 50, 50))
+                        Log(str(e))
                         return
 
                 curkey = GVars.configData["Players"]
@@ -596,8 +597,6 @@ class ExitButton:
     def function():
         global running
         running = False
-        PostExit()
-        os._exit(0)
     isasync = True
 
 class DiscordButton:
@@ -770,10 +769,6 @@ def Update():
     global LookingForInput
     global AfterInputFunction
     global SecAgo
-
-    mouse = pygame.mouse.get_pos()
-    mousex = mouse[0]
-    mousey = mouse[1]
 
     W = screen.get_width()
     H = screen.get_height()
@@ -981,77 +976,64 @@ def Main():
     IsUpdating = False
     coolDown = 0
     LastBackspace = 0
-    BackspaceHasBeenHeld = False
 
     while running:
-
-        ############################ INPUT BOX INPUT
+        
+        # so you can hold backspace to delete
         if (LookingForInput):
             BACKSPACEHELD = pygame.key.get_pressed()[pygame.K_BACKSPACE]
-            BACKSPACEHELD = BACKSPACEHELD > 0
-
             if (BACKSPACEHELD):
-                if BackspaceHasBeenHeld == False:
-                    LastBackspace = time.time() + 0.5
-                    BackspaceHasBeenHeld = True
-                # if its been a second since the last backspace, delete the last character
-                elif (time.time() - LastBackspace > 0.05):
-                    if (len(CurInput) > 0):
-                        CurInput = CurInput[:-1]
-                    LastBackspace = time.time()
-            else:
-                BackspaceHasBeenHeld = False
-                
+                LastBackspace += 0.3
+            # if its been a second since the last backspace, delete the last character
+            if (LastBackspace > 1):
+                if (len(CurInput) > 0):
+                    CurInput = CurInput[:-1]
+                LastBackspace = 0
+                    
         for event in pygame.event.get():
             if event.type == QUIT:
-                os._exit(0)
-                
-            elif (LookingForInput):
+                running = False
+            
+            ############################ INPUT BOX INPUT
+            if (LookingForInput):
                 CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
-                CTRLHELD = CTRLHELD > 0
                 SHIFTHELD = pygame.key.get_mods() & pygame.KMOD_SHIFT
-                SHIFTHELD = SHIFTHELD > 0
 
                 if event.type == pygame.KEYDOWN:
                     # get the key and add it to CurInput
                     name = pygame.key.name(event.key)
-                    if name == "backspace" and len(CurInput) >0:
-                            CurInput = CurInput[:-1]
-                    
-                    elif name == "space":
-                        CurInput += " "
+                    if name == "space":
+                       CurInput += " "
                     elif name in ["return", "enter"]:
-                        LookingForInput = False
-                        AfterInputFunction( CurInput )
+                       LookingForInput = False
+                       AfterInputFunction(CurInput)
                     elif name == "escape":
-                        LookingForInput = False
+                       LookingForInput = False
                     elif name == "tab":
-                        CurInput += "   "
+                       CurInput += "    "
                     elif CTRLHELD and name == "v":
-                        try:
-                            str1 = str(tk.selection_get(selection="CLIPBOARD"))
-                            str1 = str1.replace("\n", "")
-                            Log("=================================")
-                            Log(f"Pasted {str1}")
-                            CurInput += str1
-                        except Exception as e:
-                            Log(str(e)) # always log the error
-                            pass
-                        
+                       try:
+                          str1 = str(tk.selection_get(selection="CLIPBOARD")).replace("\n", "")
+                          Log(f"Pasted: {str1}")
+                          CurInput += str1
+                       except Exception as e:
+                          Log(str(e))  # always log the error
+                          pass
                     elif len(name) == 1:
-                        if SHIFTHELD:
-                            # if the name doesnt contain a letter
-                            if not name.isalpha():
-                                name = name.replace("1", "!").replace("2", "@").replace("3", "#").replace("4", "$").replace("5", "%").replace("6", "^").replace("7", "&").replace("8", "*").replace("9", "(").replace("0", ")").replace("`", "~").replace("-", "_").replace("=", "+").replace("[", "{").replace("]", "}").replace("\\", "|").replace(";", ":").replace("'", "\"").replace(",", "<").replace(".", ">").replace("/", "?")
-                            # convert lowercase to uppercase
-                            else:
-                                name = name.upper()
-                            CurInput += name
-                        else:
-                            CurInput += name
+                       if SHIFTHELD:
+                          # if the name doesnt contain a letter
+                          if not name.isalpha():
+                             name = name.replace("1", "!").replace("2", "@").replace("3", "#").replace("4", "$").replace("5", "%").replace("6", "^").replace("7", "&").replace("8", "*").replace("9", "(").replace("0", ")").replace("`", "~").replace("-", "_").replace("=", "+").replace("[", "{").replace("]", "}").replace("\\", "|").replace(";", ":").replace("'", "\"").replace(",", "<").replace(".", ">").replace("/", "?")
+                          # convert lowercase to uppercase
+                          else:
+                             name = name.upper()
+                          CurInput += name
+                       else:
+                           CurInput += name
                     # support for numpad
                     elif len(name) == 3:
-                        CurInput += name[1]
+                       CurInput += name[1]
+                
 
             ######################## POPUP BOX INPUT
             elif len(PopupBoxList) > 0:
@@ -1089,11 +1071,9 @@ def Main():
                         
             ######################## NORMAL INPUT
             elif event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
+                if event.key in [K_ESCAPE, K_BACKSPACE]:
                     BackMenu()
-                elif event.key == K_BACKSPACE:
-                    BackMenu()
-                elif event.key == K_DOWN or event.key == K_s:
+                elif event.key in [K_DOWN, K_s]:
                     if CurrentButtonsIndex < len(CurrentMenu) - 1:
                         CurrentButtonsIndex += 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
@@ -1102,7 +1082,7 @@ def Main():
                         CurrentButtonsIndex = 0
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
                         PlaySound(SelectedButton.hoversnd)
-                elif event.key == K_UP or event.key == K_w:
+                elif event.key in [K_UP, K_w]:
                     if CurrentButtonsIndex > 0:
                         CurrentButtonsIndex -= 1
                         SelectedButton = CurrentMenu[CurrentButtonsIndex]
@@ -1128,7 +1108,7 @@ def Main():
                     for button in CurrentMenu:
                         try:
                             # if the mouse is over the button
-                            if mousex > button.x and mousex < button.x + button.width and mousey > button.y and mousey < button.y + button.height:
+                            if (mousex > button.x and mousex < button.x + button.width) and (mousey > button.y and mousey < button.y + button.height):
                                 if SelectedButton.function:
                                     if SelectedButton.isasync:
                                         threading.Thread(target=SelectedButton.function).start()
@@ -1138,11 +1118,15 @@ def Main():
                                 SelectAnimation(SelectedButton, SelectedButton.selectanim)
 
                                 PlaySound(SelectedButton.selectsnd)
-                        except:
-                            pass
+                        except Exception as e:
+                            Log(str(e))
                         
-                ###############################
+            ###############################
             elif event.type == pygame.MOUSEMOTION:
+                
+                mouse = pygame.mouse.get_pos()
+                mousex = mouse[0]
+                mousey = mouse[1]
                 # loop through every button in the current menu
                 for button in CurrentMenu:
                     try:
@@ -1156,13 +1140,9 @@ def Main():
                                 CurrentButtonsIndex = CurrentMenu.index(button)
                                 # play the hover sound
                                 PlaySound(hvrclksnd)
-                    except:
-                        pass
+                    except Exception as e:
+                        Log(str(e))
 
-        ###### MOUSE UPDATE
-        mouse = pygame.mouse.get_pos()
-        mousex = mouse[0]
-        mousey = mouse[1]
 
         if len(PopupBoxList) > 0:
             # loop through every button in the current popupbox list
@@ -1173,9 +1153,8 @@ def Main():
                         if button != selectedpopupbutton:
                             selectedpopupbutton = button
                             PlaySound(button.hoversnd)
-                except:
-                    pass
-        ###################
+                except Exception as e:
+                    Log(str(e))
 
 
         # make the screen a gradient
@@ -1289,13 +1268,14 @@ def MountModOnly():
 
     if not VerifyGamePath():
         return
-    gamepath = GVars.configData["portal2path"]["value"]
 
     if IsUpdating:
         Error("The mod is now updating. Please Wait.", 5, (255, 75, 75))
         return
 
     Error("Mounting mod!", 5, (75, 255, 75))
+    
+    gamepath = GVars.configData["portal2path"]["value"]
 
     if (GVars.configData["developer"]["value"] == "true"):
         Error("Dev mode is now active!", 5, (255, 180, 75))
@@ -1353,7 +1333,6 @@ def UpdateModFiles():
             if thing[0] == "Fetching update...":
                 ERRORLIST.remove(thing)
 
-    Log("Thread starting...")
     thread = threading.Thread(target=UpdateThread)
     thread.start()
 
@@ -1361,7 +1340,6 @@ def UpdateModFiles():
 def UpdateModClient():
     PostExit()
     Error("Downloading Client Update...", 5000, (255, 150, 75))
-    Log("Thread starting...")
 
     def UpdateThread():
         Log("Updating...")
@@ -1370,9 +1348,7 @@ def UpdateModClient():
         up.DownloadClient()
         global running
         running = False
-        Log("KILLED TASK")
-        os._exit(0)
-        Log("RAN os._exit(0) WHY CAN YOU SEE THIS???!!!")
+        Log("running set to false")
 
     thread = threading.Thread(target=UpdateThread)
     thread.start()
@@ -1403,7 +1379,8 @@ def RestartClient(path):
     command = path
     subprocess.Popen(command, shell=True)
     Log("Restarting client")
-    os._exit(0)
+    global running
+    running = False
 
 def IsNew():
     

@@ -1,6 +1,6 @@
 import os
-import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
+import Scripts.GlobalVariables as GVars
 
 def Encrypt(path, search, replace):
     enc = "utf-8"

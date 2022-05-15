@@ -9,7 +9,6 @@ import urllib.parse
 import subprocess
 import requests
 import shutil
-import sys
 import os
 
 currentVersion = "2.0.3" # change this before releasing a new version
