@@ -5,6 +5,7 @@ import os
 import threading
 
 from Scripts.BasicLogger import Log
+import Scripts.Workshop as workshop
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
 import Scripts.Configs as cfg
