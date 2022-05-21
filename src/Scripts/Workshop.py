@@ -6,8 +6,12 @@ def UpdateMapList(workshoppath):
     global maplist
     maplist = []
     for root, dirs, files in os.walk(workshoppath):
-        if ".jpg" in str(files) and ".bsp" in str(files):
-            CMap = {}
+        if (".jpg" in str(files)) and (".bsp" in str(files)):
+            CMap = {
+                "name" : "",
+                "bsp" : "",
+                "id" : ""
+            }
 
             for file in files:
                 if ".bsp" in file:

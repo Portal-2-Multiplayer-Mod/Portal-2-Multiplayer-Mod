@@ -1,8 +1,7 @@
-from email.policy import default
 import os
+import json
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
-import json
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░

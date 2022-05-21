@@ -1,6 +1,5 @@
 import Scripts.GlobalVariables as GVars
 import os
-import sys
 
 ##############
 # CONVERSION #
