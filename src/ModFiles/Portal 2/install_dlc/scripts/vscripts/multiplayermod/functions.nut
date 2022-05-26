@@ -2154,43 +2154,33 @@ function ChangeTeamCommand(p, args) {
         if (p.GetTeam() == 0) {
             p.SetTeam(2)
             return SendChatMessage("Toggled to Red team.")
-        } else if (p.GetTeam() == 2) {
+        }
+        if (p.GetTeam() == 2) {
             p.SetTeam(3)
             return SendChatMessage("Toggled to Blue team.")
-        } else if (p.GetTeam() == 3) {
+        }
+        // if the pkayer is in team 3 or above it will just reset them to team 0
+        else {
             p.SetTeam(0)
             return SendChatMessage("Toggled to Singleplayer team.")
         }
-    } else {
-        args[0] = Strip(args[0])
     }
-    if (args[0] == "0") {
-        if (p.GetTeam() == 0) {
-            return SendChatMessage("You are already on the Singleplayer team.")
-        } else {
-            p.SetTeam(0)
-            return SendChatMessage("Team is now set to Singleplayer.")   
-        }
+
+    args[0] = Strip(args[0])
+
+    local teams = {};
+    teams[0] <- "singlplayer";
+    teams[1] <- "spectator"; // this is not used rn but you can add it in the if below
+    teams[2] <- "reb";
+    teams[3] <- "blue";
+
+    if (args[0] == "0" || args[0] == "2" ||args[0] == "3" ){
+
+        p.SetTeam(args[0].tointeger());
+        return SendChatMessage("Team is now set to ", teams[args[0].tointeger()])
     }
-    else if (args[0] == "2") {
-        if (p.GetTeam() == 2) {
-            return SendChatMessage("You are already on the Red team.")
-        } else {
-            p.SetTeam(2)
-            return SendChatMessage("Team is now set to Red.")
-        }
-    }
-    else if (args[0] == "3") {
-        if (p.GetTeam() == 3) {
-            return SendChatMessage("You are already on the Blue team.")
-        } else {
-            p.SetTeam(3)
-            return SendChatMessage("Team is now set to Blue.")
-        }
-    }
-    else {
-        SendChatMessage("Enter a valid number: 0, 2, or 3.")
-    }
+
+    SendChatMessage("Enter a valid number: 0, 2, or 3.")
 }
 
 CommandList.push(class {
