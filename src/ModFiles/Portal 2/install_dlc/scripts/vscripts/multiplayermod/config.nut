@@ -55,12 +55,12 @@ TickSpeed <- 0.00
 // "[AdminLevel]SteamID", // Username
 
 Admins <- [
-"[6]182933216", // kyleraykbs
-"[6]75927374", // Wolƒe Strider Shoσter
-"[6]290760494", // Nanoman2525
-"[6]1106347501", // vista
-"[6]181670710", // Bumpy
-"[6]72399433", // cabiste
+"[500]182933216", // kyleraykbs
+"[400]75927374", // Wolƒe Strider Shoσter
+"[400]290760494", // Nanoman2525
+"[400]1106347501", // vista
+"[400]181670710", // Bumpy
+"[400]72399433", // cabiste
 "[6]386105876", // Dreadnox
 "[6]242453954", // sear
 "[6]150199065", // Mystical Λce
