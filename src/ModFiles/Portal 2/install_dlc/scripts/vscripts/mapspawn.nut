@@ -34,8 +34,6 @@ IncludeScript("multiplayermod/safeguard.nut")
 
 function init() {
 
-    SendPythonReset()
-
     // Show the console ascii art
     foreach (line in ConsoleAscii) {
         printl(line)
@@ -82,7 +80,7 @@ function init() {
             printl("")
             printl("")
             EntFire("p2mm_servercommand", "command", "clear", 0)
-            EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
+            EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName(), 0.2)
         }
     }
 
@@ -151,7 +149,7 @@ try {
             IncludeScript("multiplayermod/mapsupport/futbol/" + MapName.tostring() + ".nut") // Import the map support code for futbol
         } catch (error) {
             if (GetDeveloperLevel()) {
-                print("(P2:MM): No Futbol map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
+                printl("(P2:MM): No Futbol map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
             }
             IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
         }
@@ -167,7 +165,7 @@ try {
             IncludeScript("multiplayermod/mapsupport/deathmatch/" + MapName.tostring() + ".nut") // Import the map support code for deathmatch
         } catch (error) {
             if (GetDeveloperLevel()) {
-                print("(P2:MM): No Deathmatch map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
+                printl("(P2:MM): No Deathmatch map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
             }
             IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
         }
@@ -187,13 +185,15 @@ try {
 
 } catch (error) {
     if (GetDeveloperLevel()) {
-        print("(P2:MM): A core map support file is missing!")
+        printl("(P2:MM): A core map support file is missing!")
     }
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
 }
 
-// Now that we set up everything, all we do is run it
+// Run everything
 try {
+    MakeSPCheck() // Make sure that the user is in multiplayer mode before loading anything else
+    SendPythonReset()
     DoEntFire("worldspawn", "FireUser1", "", 0.02, null, null)
     Entities.First().ConnectOutput("OnUser1", "init")
 } catch(e) {

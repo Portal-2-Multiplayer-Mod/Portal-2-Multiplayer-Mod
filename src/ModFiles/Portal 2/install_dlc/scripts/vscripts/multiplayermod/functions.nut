@@ -13,6 +13,15 @@
 //                  upon later in the code
 //---------------------------------------------------
 
+//## If not in multiplayer then disconnect immediately ##//
+function MakeSPCheck() {
+    if (!IsMultiplayer()) {
+        printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
+        Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_forcedisconnectclient")
+        EntFire("p2mm_forcedisconnectclient", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"", 0, null)
+    }
+}
+
 //## Hacky solutions ##//
 function DecEntFireByHandle(target, action, value = "", delay = 0, activator = null, caller = null) {
     EntFireByHandle(target, action, value, delay, activator, caller);
@@ -132,7 +141,7 @@ function SetCosmetics(p) {
         }
 
         //## Bumpy customization ##//
-        // It's not even a torus. Its a Trefoil Knot. 
+        // It's not even a torus. Its a Trefoil Knot.
         if (psteamid == 90835355) {
             SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
         }
@@ -551,7 +560,7 @@ function DeleteAmountOfEntities(classname, amount) {
         if (indx >= amount) {
             break
         }
-        
+
         local delthis = true
         foreach (thing in InvalidRootMoveParents) {
             if (p.GetRootMoveParent().GetClassname() == thing) {
@@ -563,7 +572,7 @@ function DeleteAmountOfEntities(classname, amount) {
         if (delthis) {
             p.Destroy()
             indx += 1
-        }  
+        }
     }
     printl("Deleted " + indx + " " + classname + "'s")
     return indx
@@ -1473,10 +1482,10 @@ function SendClientCommand(command, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            EntFire("p2mm_clientcommand", "command", command, 0, p)
+            EntFire(p2mm_clientcommand, "command", command, 0, p)
         }
     } else {
-        EntFire("p2mm_clientcommand", "command", command, 0, player)
+        EntFire(p2mm_clientcommand, "command", command, 0, player)
     }
 }
 
@@ -1863,80 +1872,80 @@ function CreateOurEntities() {
     playerspeedmod.__KeyValueFromString("targetname", "p2mm_player_speedmod")
 
     // Create an entity that sends miscellaneous client commands
-    clientcommand <- Entities.CreateByClassname("point_clientcommand")
-    clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand")
+    p2mm_clientcommand <- Entities.CreateByClassname("point_clientcommand")
+    p2mm_clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand") // Using the targetname in outputs causes invalid entity instance errors ??
 }
 
 
 ///////////////////////////// PLAYERS
 
-    function GetPlayerFromUserID(userid) {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.entindex() == userid) {
-                return p
-            }
+function GetPlayerFromUserID(userid) {
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        if (p.entindex() == userid) {
+            return p
         }
-        return null
     }
+    return null
+}
 
-    function FindPlayerByName(name) {
-        name = name.tolower()
-        local best = null
-        local bestnamelen = 99999
-        local bestfullname = ""
+function FindPlayerByName(name) {
+    name = name.tolower()
+    local best = null
+    local bestnamelen = 99999
+    local bestfullname = ""
 
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local username = FindPlayerClass(p).username
-            username = username.tolower()
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        local username = FindPlayerClass(p).username
+        username = username.tolower()
 
-            if (username == name) {
-                return p
-            }
+        if (username == name) {
+            return p
+        }
 
-            if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) < bestnamelen) {
+        if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) < bestnamelen) {
+            best = p
+            bestnamelen = Len(Replace(username, name, ""))
+            bestfullname = username
+        } else if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) == bestnamelen) {
+            if (Find(username, name) < Find(bestfullname, name)) {
                 best = p
                 bestnamelen = Len(Replace(username, name, ""))
                 bestfullname = username
-            } else if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) == bestnamelen) {
-                if (Find(username, name) < Find(bestfullname, name)) {
-                    best = p
-                    bestnamelen = Len(Replace(username, name, ""))
-                    bestfullname = username
-                }
             }
         }
-        return best
     }
+    return best
+}
 
 /////////////////////////////////////
 
 //////////////////////////////// DATA
 
-    function GetType(var, simplify = true) {
-        local type = typeof(var)
+function GetType(var, simplify = true) {
+    local type = typeof(var)
 
-        if (!simplify) {
-            return type
+    if (!simplify) {
+        return type
+    } else {
+        if (type == "float" || type == "integer") {
+            return "number"
+        } else if (type == "string") {
+            return "string"
+        } else if (type == "bool") {
+            return "bool"
+        } else if (type == "table" || type == "array") {
+            return "table"
+        } else if (type == "instance") {
+            return "entity"
+        } else if (type == "function") {
+            return "function"
         } else {
-            if (type == "float" || type == "integer") {
-                return "number"
-            } else if (type == "string") {
-                return "string"
-            } else if (type == "bool") {
-                return "bool"
-            } else if (type == "table" || type == "array") {
-                return "table"
-            } else if (type == "instance") {
-                return "entity"
-            } else if (type == "function") {
-                return "function"
-            } else {
-                return "unknown"
-            }
+            return "unknown"
         }
     }
+}
 
 /////////////////////////////////////
 
@@ -1952,132 +1961,132 @@ function Join(tbl, str) {
 
 //////////////////////////////// STRINGS
 
-    function Len(str) {
-        return str.len()
-    }
+function Len(str) {
+    return str.len()
+}
 
-    function Find(str, substr) {
-        return str.find(substr)
-    }
+function Find(str, substr) {
+    return str.find(substr)
+}
 
-    function Slice(str, start, end = null) {
-        if (end == null) {
-            end = Len(str)
-        }
-        try {
-            str = str.slice(start, end)
-        } catch (e) {
-            str = ""
-        }
+function Slice(str, start, end = null) {
+    if (end == null) {
+        end = Len(str)
+    }
+    try {
+        str = str.slice(start, end)
+    } catch (e) {
+        str = ""
+    }
+    return str
+}
+
+function Contains(out, find = "") {
+    local type = GetType(out)
+
+    if (type == "null") {
+        return false
+    } else if (type == "number") {
+        return true
+    } else if (type == "string") {
+        return Contains(Find(out, find))
+    }
+    return false
+}
+
+function Replace(str, find, replace) {
+    if (find == replace) {
         return str
     }
 
-    function Contains(out, find = "") {
-        local type = GetType(out)
-
-        if (type == "null") {
-            return false
-        } else if (type == "number") {
-            return true
-        } else if (type == "string") {
-            return Contains(Find(out, find))
+    local findlen = Find(str, find)
+    local len = Len(find)
+    if (Contains(findlen)) {
+        str = Slice(str, 0, findlen) + replace + Slice(str, findlen + len)
+        if (Contains(str, find)) {
+            str = Replace(str, find, replace)
         }
+        return str
+    } else {
+        return str
+    }
+}
+
+function StartsWith(str, substr) {
+    str = Slice(str, 0, Len(substr))
+    if (str == substr) {
+        return true
+    } else {
         return false
     }
+}
 
-    function Replace(str, find, replace) {
-        if (find == replace) {
-            return str
-        }
+function StrToList(str) {
+    local list = []
+    local i = 0
+    while (i < Len(str)) {
+        list.push( Slice(str, i, i + 1) )
+        i = i + 1
+    }
+    return list
+}
 
-        local findlen = Find(str, find)
-        local len = Len(find)
-        if (Contains(findlen)) {
-            str = Slice(str, 0, findlen) + replace + Slice(str, findlen + len)
-            if (Contains(str, find)) {
-                str = Replace(str, find, replace)
-            }
-            return str
-        } else {
-            return str
+function Strip(str) {
+    return strip(str)
+}
+
+function SplitBetween(str, keysymbols, preserve = false) { //preserve = true : means that the symbol at the beginning of the string will be included in the first part
+    local keys = StrToList(keysymbols)
+    local lst = StrToList(str)
+
+    local contin = false
+    foreach (key in keys) {
+        if (Contains(str, key)) {
+            contin = true
         }
     }
 
-    function StartsWith(str, substr) {
-        str = Slice(str, 0, Len(substr))
-        if (str == substr) {
-            return true
-        } else {
-            return false
-        }
+    if (!contin) {
+        return []
     }
 
-    function StrToList(str) {
-        local list = []
-        local i = 0
-        while (i < Len(str)) {
-            list.push( Slice(str, i, i + 1) )
-            i = i + 1
-        }
-        return list
-    }
 
-    function Strip(str) {
-        return strip(str)
-    }
+    // FOUND SOMETHING
 
-    function SplitBetween(str, keysymbols, preserve = false) { //preserve = true : means that the symbol at the beginning of the string will be included in the first part
-        local keys = StrToList(keysymbols)
-        local lst = StrToList(str)
+    local split = []
+    local curslice = ""
 
-        local contin = false
+    foreach (indx, letter in lst) {
+        local contains = false
         foreach (key in keys) {
-            if (Contains(str, key)) {
-                contin = true
-            }
-        }
-
-        if (!contin) {
-            return []
-        }
-
-
-        // FOUND SOMETHING
-
-        local split = []
-        local curslice = ""
-
-        foreach (indx, letter in lst) {
-            local contains = false
-            foreach (key in keys) {
-                if (letter == key) {
-                    contains = key
-                    if (indx == 0 && preserve) {
-                        curslice = curslice + letter
-                    }
+            if (letter == key) {
+                contains = key
+                if (indx == 0 && preserve) {
+                    curslice = curslice + letter
                 }
             }
+        }
 
-            if (contains != false) {
-                if (Len(curslice) > 0 && indx > 0) {
-                    split.push(curslice)
-                    if (preserve) {
-                        curslice = contains
-                    } else {
-                        curslice = ""
-                    }
+        if (contains != false) {
+            if (Len(curslice) > 0 && indx > 0) {
+                split.push(curslice)
+                if (preserve) {
+                    curslice = contains
+                } else {
+                    curslice = ""
                 }
-            } else {
-                curslice = curslice + letter
             }
+        } else {
+            curslice = curslice + letter
         }
-
-        if (Len(curslice) > 0) {
-            split.push(curslice)
-        }
-
-        return split
     }
+
+    if (Len(curslice) > 0) {
+        split.push(curslice)
+    }
+
+    return split
+}
 
 ////////////////////////////////////////
 ////////////// CHAT COMMANDS ///////////
@@ -2123,7 +2132,7 @@ CommandList.push(class {
 
 /////////////////////////////////////// KILL
 function KillCommand(plr, args) {
-    EntFireByHandle(plr, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, plr, plr)
+    EntFireByHandle(plr, "sethealth", "-91", 0, plr, plr)
 }
 
 CommandList.push(class {
@@ -2141,11 +2150,46 @@ CommandList.push(class {
 
 //////////////////////////////// Change Team
 function ChangeTeamCommand(p, args) {
-    if (p.GetTeam() == 3) {
-        p.SetTeam(2)
-    } else
-    if (p.GetTeam() == 2) {
-        p.SetTeam(3)
+    if (args.len() == 0) {
+        if (p.GetTeam() == 0) {
+            p.SetTeam(2)
+            return SendChatMessage("Toggled to Red team.")
+        } else if (p.GetTeam() == 2) {
+            p.SetTeam(3)
+            return SendChatMessage("Toggled to Blue team.")
+        } else if (p.GetTeam() == 3) {
+            p.SetTeam(0)
+            return SendChatMessage("Toggled to Singleplayer team.")
+        }
+    } else {
+        args[0] = Strip(args[0])
+    }
+    if (args[0] == "0") {
+        if (p.GetTeam() == 0) {
+            return SendChatMessage("You are already on the Singleplayer team.")
+        } else {
+            p.SetTeam(0)
+            return SendChatMessage("Team is now set to Singleplayer.")   
+        }
+    }
+    else if (args[0] == "2") {
+        if (p.GetTeam() == 2) {
+            return SendChatMessage("You are already on the Red team.")
+        } else {
+            p.SetTeam(2)
+            return SendChatMessage("Team is now set to Red.")
+        }
+    }
+    else if (args[0] == "3") {
+        if (p.GetTeam() == 3) {
+            return SendChatMessage("You are already on the Blue team.")
+        } else {
+            p.SetTeam(3)
+            return SendChatMessage("Team is now set to Blue.")
+        }
+    }
+    else {
+        SendChatMessage("Enter a valid number: 0, 2, or 3.")
     }
 }
 
@@ -2188,8 +2232,9 @@ function BringCommand(p, args) {
         if (plr != null) {
             plr.SetOrigin(p.GetOrigin())
             plr.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
+            SendChatMessage("Brought player.")
         } else {
-            SendChatMessage("[ERROR] Player not found")
+            SendChatMessage("[ERROR] Player not found.")
         }
     } else {
         local p2 = null
@@ -2197,6 +2242,7 @@ function BringCommand(p, args) {
             if (p2 != p) {
                 p2.SetOrigin(p.GetOrigin())
                 p2.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
+                SendChatMessage("Brought all players.")
             }
         }
     }
@@ -2222,8 +2268,9 @@ function GotoCommand(p, args) {
     if (plr != null) {
         p.SetOrigin(plr.GetOrigin())
         p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+        SendChatMessage("Teleported to player.")
     } else {
-        SendChatMessage("[ERROR] Player not found")
+        SendChatMessage("[ERROR] Player not found.")
     }
 }
 
@@ -2244,7 +2291,11 @@ CommandList.push(class {
 function RconCommand(p, args) {
     args[0] = Strip(args[0])
     local cmd = Join(args, " ")
-    SendToConsoleP232(cmd)
+    if (args.len() == 0) {
+        SendChatMessage("Input a command.")
+    } else {
+        SendToConsoleP232(cmd)
+    }
 }
 
 CommandList.push(class {
@@ -2262,7 +2313,11 @@ CommandList.push(class {
 
 //////////////////////////////////// RESTART
 function RestartCommand(p, args) {
-    SendToConsoleP232("changelevel " + GetMapName())
+    local p = null
+    while (p = Entities.FindByClassname(p, "player")) {
+        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, p, p)
+        EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName(), 0.5, null)
+    }
 }
 
 CommandList.push(class {
@@ -2281,12 +2336,38 @@ CommandList.push(class {
 /////////////////////////////////////// HELP
 
 function HelpCommand(p, args) {
-    SendChatMessage("[HELP] Available commands:")
-    local dly = 0
-    foreach (cmd in CommandList) {
-        dly = dly + 0
-        if (cmd.level <= GetAdminLevel(p)) {
-            SendChatMessage("[HELP] " + cmd.name, dly)
+    local commandtable = {}
+    commandtable["noclip"] <- "Toggles noclip mode."
+    commandtable["kill"] <- "Kill yourself, others, or @all."
+    commandtable["changeteam"] <- "Changes your current team color."
+    commandtable["speed"] <- "Changes your player speed."
+    commandtable["bring"] <- "Brings a specific player or \"all\" to you."
+    commandtable["goto"] <- "Brings yourself or @all to a specified person."
+    commandtable["rcon"] <- "Execute commands on the server console."
+    commandtable["restart"] <- "Reset the current map."
+    commandtable["help"] <- "Prints help descriptions for chat commands."
+    commandtable["spchapter"] <- "Changes the level to a specified singleplayer chapter."
+    commandtable["mpcourse"] <- "Changes the level to a specified cooperative course."
+    commandtable["changelevel"] <- "Changes the current level to a specified map (if valid)."
+
+    // cab was here
+    if (args.len() == 0) {
+        SendChatMessage("[HELP] Available commands:")
+        local dly = 0
+        foreach (command in CommandList) {
+            dly = dly + 0
+            if (command.level <= GetAdminLevel(p)) {
+                SendChatMessage("[HELP] " + command.name, dly)
+            }
+        }
+    }
+    else {
+        args[0] = Strip(args[0])
+        if (commandtable.rawin(args[0])) {
+            SendChatMessage(args[0] + ": " + commandtable[args[0]])
+        }
+        else {
+            SendChatMessage("Unknown chat command: " + args[0])
         }
     }
 }
@@ -2305,10 +2386,14 @@ CommandList.push(class {
 
 ////////////////////////////////////////////
 
-//////////////////////////////////// CHAPTER
+///////////////////////////////// SP CHAPTER
 
-function ChapterCommand(p, args) {
-    args[0] = Strip(args[0])
+function SPChapterCommand(p, args) {
+    if (args.len() == 0) {
+        SendChatMessage("Type in a valid number from 1 to 9.")
+    } else {
+        args[0] = Strip(args[0])
+    }
     if (args[0] == "1") {
         SendToConsoleP232("changelevel sp_a1_intro1")
     } else if (args[0] == "2") {
@@ -2331,10 +2416,53 @@ function ChapterCommand(p, args) {
 }
 
 CommandList.push(class {
-    name = "chapter"
+    name = "spchapter"
     level = 3
     selectorlevel = 3
-    func = ChapterCommand
+    func = SPChapterCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
+
+///////////////////////////////// MP COURSE
+
+function MPCourseCommand(p, args) {
+    local allp = Entities.FindByClassname(null, "player")
+    if (args.len() == 0) {
+        SendChatMessage("Type in a valid number from 1 to 6.")
+    } else {
+        args[0] = Strip(args[0])
+    }
+    if (args[0] == "1") {
+        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
+        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_doors", 0.25, null)
+    } else if (args[0] == "2") {
+        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
+        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_fling_3", 0.25, null)
+    } else if (args[0] == "3") {
+        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
+        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_wall_intro", 0.25, null)
+    } else if (args[0] == "4") {
+        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
+        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_tbeam_redirect", 0.25, null)
+    } else if (args[0] == "5") {
+        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
+        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_paint_come_along", 0.25, null)
+    } else if (args[0] == "6") {
+        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
+        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_separation_1", 0.25, null)
+    }
+}
+
+CommandList.push(class {
+    name = "mpcourse"
+    level = 3
+    selectorlevel = 3
+    func = MPCourseCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
@@ -2398,7 +2526,7 @@ function ValidateAlowedRunners(cmd, lvl) {
 }
 
 function RunChatCommand(cmd, args, plr) {
-    printl("Running command: " + cmd.name)
+    printl("(P2:MM): Running command: " + cmd.name)
     cmd.func(plr, args)
 }
 

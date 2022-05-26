@@ -50,20 +50,19 @@ SafeGuard <- false
 TickSpeed <- 0.00
 
 // If the P2:MM plugin loads, then this is the list of players that have access to admin commands, along with admin level
-// the highest admin level is (6) and different people can have the same admin level
+// The highest admin level is [6] and different people can have the same admin level
 // Format it like this:
 // "[AdminLevel]SteamID", // Username
 
 Admins <- [
-"[6]0", // New Player
-"[420]182933216", // kyleraykbs
-"[69]75927374", // Wolƒe Strider Shoσter
-"[12]290760494", // Nanoman2525
-"[12]1106347501", // vista
-"[12]181670710", // Bumpy
-"[12]72399433", // cabiste
+"[6]182933216", // kyleraykbs
+"[6]75927374", // Wolƒe Strider Shoσter
+"[6]290760494", // Nanoman2525
+"[6]1106347501", // vista
+"[6]181670710", // Bumpy
+"[6]72399433", // cabiste
 "[6]386105876", // Dreadnox
 "[6]242453954", // sear
-"[3]150199065", // Mystical Λce
-"[12]1053720146", // Ayden
+"[6]150199065", // Mystical Λce
+"[6]1053720146", // Ayden
 ]

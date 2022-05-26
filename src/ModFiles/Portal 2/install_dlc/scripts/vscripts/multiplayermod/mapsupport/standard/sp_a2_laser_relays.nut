@@ -36,7 +36,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Find all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+            EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
             EntFireByHandle(p, "setfogcontroller", "@environment_mines_fog", 0, null, null)
         }
     }
@@ -84,7 +84,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Reset r_flashlightbrightness
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 0.25", 0, p, p)
+                EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 0.25", 0, p, p)
             }
              
             SendToConsoleP232("changelevel sp_a2_turret_blocker")

@@ -343,7 +343,7 @@ function loop() {
         local currentplayerclass = FindPlayerClass(p)
         if (currentplayerclass.rocket) {
             if (p.GetVelocity().z <= 1) {
-                EntFireByHandle(p, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, p, p)
+                EntFireByHandle(p, "sethealth", "-91", 0, p, p)
                 currentplayerclass.rocket <- false
             }
         }
@@ -408,54 +408,43 @@ function loop() {
     if (Time() >= PreviousTime1Sec + 1) {
     PreviousTime1Sec <- Time()
 
-    // Random portal sizes
-
-    if (RandomPortalSize) {
-        randomportalsize <- RandomInt(1, 100 ).tostring()
-        randomportalsizeh <- RandomInt(1, 100 ).tostring()
-    }
-
-    if (RandomPortalSize) {
-        try {
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "prop_portal")) {
-            // printl(ent)
-            // printl(ent.GetOrigin())
-            // printl(ent.GetAngles())
-            // printl("=================")
-            ent.__KeyValueFromString("HalfWidth", randomportalsize)
-            ent.__KeyValueFromString("HalfHeight", randomportalsizeh)
+        // Random portal sizes
+        if (RandomPortalSize) {
+            randomportalsize <- RandomInt(1, 100 ).tostring()
+            randomportalsizeh <- RandomInt(1, 100 ).tostring()
         }
-        } catch(exception) {
-            // printl("(P2:MM): Error: " + exception)
-        }
-        // printl("################################")
-    }
 
-    //## Detect respawn ##//
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        if (p.GetHealth() >= 1) {
-            // Get the players from the dead players array
-            foreach (index, player in CurrentlyDead) {
-                if (player == p) {
-                    CurrentlyDead.remove(index)
-                    OnPlayerRespawn(p)
+        if (RandomPortalSize) {
+            try {
+            local ent = null
+            while (ent = Entities.FindByClassname(ent, "prop_portal")) {
+                // printl(ent)
+                // printl(ent.GetOrigin())
+                // printl(ent.GetAngles())
+                // printl("=================")
+                ent.__KeyValueFromString("HalfWidth", randomportalsize)
+                ent.__KeyValueFromString("HalfHeight", randomportalsizeh)
+            }
+            } catch(exception) {
+                // printl("(P2:MM): Error: " + exception)
+            }
+            // printl("################################")
+        }
+
+        //## Detect respawn ##//
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            if (p.GetHealth() >= 1) {
+                // Get the players from the dead players array
+                foreach (index, player in CurrentlyDead) {
+                    if (player == p) {
+                        CurrentlyDead.remove(index)
+                        OnPlayerRespawn(p)
+                    }
                 }
             }
         }
     }
-
-    }
-
-    //## If not in multiplayer then disconnect ##//
-    try {
-        if (Entities.FindByClassname(null, "player").GetName() == "") {
-            printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
-            Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "forcedisconnectclient")
-            EntFire("forcedisconnectclient", "command", "disconnect \"You cannot play singleplayer games when Portal 2 is launched from the Multiplayer Mod launcher. Please close the game and start it from Steam.\"", 1, null)
-        }
-    } catch (exception) { }
 
     // // Following box
     // local lenp = null
@@ -485,17 +474,19 @@ function loop() {
     //     //DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
     // }
 
-    if ("PythonHookIs" in this) { if (PythonHookIs) {
-        try {
+    if ("PythonHookIs" in this) {
+        if (PythonHookIs) {
             try {
-                OldPyInputNum <- PyInputNum
-            } catch(e) { 
-                PyInputNum <- 0
-                OldPyInputNum <- PyInputNum
-            }
-            IncludeScript("PyInput")
-        } catch(e) { }
-    }}
+                try {
+                    OldPyInputNum <- PyInputNum
+                } catch(e) { 
+                    PyInputNum <- 0
+                    OldPyInputNum <- PyInputNum
+                }
+                IncludeScript("PyInput")
+            } catch(e) {}
+        }
+    }
 
     if (HasSpawned && MinecraftMode) {
         if (Time() >= PreviousTime01Sec + 0.2) {

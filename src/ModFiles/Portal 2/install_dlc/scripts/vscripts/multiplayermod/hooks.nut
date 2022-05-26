@@ -98,9 +98,9 @@ function OnPlayerJoin(p, script_scope) {
 
     //# Set cvars on joining players' client #//
     SendToConsoleP232("sv_timeout 3")
-    EntFireByHandle(clientcommand, "Command", "stopvideos", 0, p, p)
-    EntFireByHandle(clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
-    EntFireByHandle(clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+    EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos", 0, p, p)
+    EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
+    EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
     MapSupport(false, false, false, false, true, false, false)
 
     //# Say join message on HUD #//
@@ -142,7 +142,7 @@ function OnPlayerJoin(p, script_scope) {
             printl(thing)
         }
         printl("=================================")
-        print("")
+        printl("")
     }
 
     /////////////////////////////////////
@@ -191,7 +191,9 @@ function PostMapLoad() {
 
     // Add a hook to the chat command function
     if (PluginLoaded) {
-        printl("(P2:MM): Plugin Loaded")
+        if (GetDeveloperLevel()) {
+            printl("(P2:MM): Plugin Loaded")
+        }
         AddChatCallback("ChatCommands")
     }
     // Edit cvars & set server name
@@ -415,7 +417,7 @@ function GeneralOneTime() {
         foreach (DoorType in DoorEntities) {
             try {
                 Entities.FindByName(null, DoorType).Destroy()
-            } catch(exception) { }
+            } catch(exception) {}
         }
     }
 
@@ -489,7 +491,6 @@ function ChatCommands(ccuserid, ccmessage) {
 
     ///////////////////////////////////////////////////////////
     foreach (Command in Commands) {
-        printl("(P2:MM): Command: " + Command)
         Command = Strip(Command)
 
         if (!ValidateCommand(Command)) { ErrorOutCommand(0) ; continue }

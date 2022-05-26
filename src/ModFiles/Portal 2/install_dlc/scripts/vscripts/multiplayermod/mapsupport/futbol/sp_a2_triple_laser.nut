@@ -141,7 +141,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     DecEntFireByHandle(BlueGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
                     DecEntFireByHandle(RedGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
                     DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
+                    DecEntFireByHandle(RedGoalCounter, "Display", "", 0.1)
                 } else if (FutBolTeams[1].score  >= desiredscore) {
                     GameRunning = false
                     CanSpawnFutBol = false
@@ -149,7 +149,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     DecEntFireByHandle(BlueGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
                     DecEntFireByHandle(RedGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
                     DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
+                    DecEntFireByHandle(RedGoalCounter, "Display", "", 0.1)
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 5 Seconds", 0)
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 4 Seconds", 1)
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 3 Seconds", 2)
@@ -166,7 +166,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     DecEntFireByHandle(BlueGoalCounter, "SetText", "Blue: " + FutBolTeams[0].score + "/" + desiredscore)
                     DecEntFireByHandle(RedGoalCounter, "SetText", "Red: " + FutBolTeams[1].score + "/" + desiredscore)
                     DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
+                    DecEntFireByHandle(RedGoalCounter, "Display", "", 0.1)
                 }
 
                 futent = Entities.FindByClassname(null, "prop_glass_futbol")
