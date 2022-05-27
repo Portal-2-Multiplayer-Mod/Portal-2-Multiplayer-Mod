@@ -1069,24 +1069,39 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     }
 }
 
-function DisplayPlayerColor(player) {
-    if (!Entities.FindByName(null, "playercolordisplay"))
-    playercolordisplay <- Entities.CreateByClassname("game_text")
-    playercolordisplay.__KeyValueFromString("targetname", "playercolordisplay")
-    playercolordisplay.__KeyValueFromString("holdtime", "5")
-    playercolordisplay.__KeyValueFromString("fadeout", "2")
-    playercolordisplay.__KeyValueFromString("fadein", "2")
-    // playercolordisplay.__KeyValueFromString("spawnflags", "0")
-    playercolordisplay.__KeyValueFromString("channel", "4")
-    // playercolordisplay.__KeyValueFromString("message", )
-    playercolordisplay.__KeyValueFromString("x", "0.005")
-    playercolordisplay.__KeyValueFromString("y", "1")
+function DoesPlayerColorEntityExist() {
+    if (!Entities.FindByName(null, "p2mm_playercolordisplay")) {
+        p2mm_playercolordisplay <- Entities.CreateByClassname("game_text")
+        p2mm_playercolordisplay.__KeyValueFromString("targetname", "p2mm_playercolordisplay")
+        p2mm_playercolordisplay.__KeyValueFromString("holdtime", "5")
+        p2mm_playercolordisplay.__KeyValueFromString("fadeout", "2")
+        p2mm_playercolordisplay.__KeyValueFromString("fadein", "2")
+        // p2mm_playercolordisplay.__KeyValueFromString("spawnflags", "0")
+        p2mm_playercolordisplay.__KeyValueFromString("channel", "4")
+        // p2mm_playercolordisplay.__KeyValueFromString("message", "")
+        p2mm_playercolordisplay.__KeyValueFromString("x", "0.005")
+        p2mm_playercolordisplay.__KeyValueFromString("y", "1")
+    }
+}
 
-    EntFireByHandle(playercolordisplay, "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
-    EntFireByHandle(playercolordisplay, "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
-    EntFireByHandle(playercolordisplay, "display", "", 0, player, player)
-    EntFireByHandle(playercolordisplay, "display", "", 0, player, player)
-    EntFireByHandle(playercolordisplay, "kill", "", 0.1, player, player)
+function DisplayPlayerColor(player) {
+    DoesPlayerColorEntityExist()
+
+    EntFireByHandle("p2mm_playercolordisplay", "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
+    EntFireByHandle("p2mm_playercolordisplay", "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
+    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
+    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
+    EntFireByHandle("p2mm_playercolordisplay", "kill", "", 0.1, player, player)
+}
+
+function UpdatePlayerColor(player, inputR, inputG, inputB) {
+    DoesPlayerColorEntityExist()
+
+    EntFireByHandle("p2mm_playercolordisplay", "SetText", "Your color: Custom", 0, player, player)
+    EntFireByHandle("p2mm_playercolordisplay", "SetTextColor", inputR.tostring() + " " + inputG.tostring() + " " + inputB.tostring(), 0, player, player)
+    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
+    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
+    EntFireByHandle("p2mm_playercolordisplay", "kill", "", 0.1, player, player)
 }
 
 function FindAndReplace(inputstr, findstr, replacestr) {
@@ -2455,6 +2470,62 @@ CommandList.push(class {
     level = 3
     selectorlevel = 3
     func = MPCourseCommand
+
+    notfounderror = ChatCommandErrorList[0]
+    syntaxerror = ChatCommandErrorList[1]
+    permerror = ChatCommandErrorList[2]
+    selectorpermerror = ChatCommandErrorList[3]
+})
+////////////////////////////////////////////
+
+////////////////////////////// PLAYER COLOR
+
+function PlayerColorCommand(p, args) {
+
+    function IsCustomColorIntegerValid(x) {
+        // if x is a string it will throw an erro so we'll set it to -1 so it retrns false
+        try {
+            x = x.tointeger()
+        } catch (err){
+            x = -1
+        }
+
+        if (x >= 0 && x <= 255) {
+            return true
+        }
+        return false
+    }
+
+    if (args.len() < 3) {
+        SendChatMessage("Type in three valid numbers from 0 to 255 seperated by a space.")
+        return
+    }
+
+    // make sure that all args are ints
+    for (local i = 0; i < args.len() ; i += 1){
+        if (IsCustomColorIntegerValid(args[i]) != true ){
+            SendChatMessage("Type in three valid numbers from 0 to 255 seperated by a space.")
+            return
+        }
+        args[i] = args[i].tointeger()
+    }
+
+    class pcolor {
+        r = args[0]
+        g = args[1]
+        b = args[2]
+        a = 220
+    }
+    currentplayerclass.color <- pcolor
+    EntFireByHandle(p, "Color", (inputR + " " + inputG + " " + inputB), 0, null, null)
+    SendChatMessage("Successfully changed color!")
+}
+
+CommandList.push(class {
+    name = "playercolor"
+    level = 3
+    selectorlevel = 3
+    func = PlayerColorCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
