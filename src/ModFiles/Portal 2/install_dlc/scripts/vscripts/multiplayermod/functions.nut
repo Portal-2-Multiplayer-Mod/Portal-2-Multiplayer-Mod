@@ -325,24 +325,25 @@ function GetPlayerColor(p, multiply = true) {
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; colorname = "white";      break;
-            case 2 : R <- 180, G <- 255, B <- 180; colorname = "green";      break;
-            case 3 : R <- 120, G <- 140, B <- 255; colorname = "blue";       break;
-            case 4 : R <- 255, G <- 170, B <- 120; colorname = "orange";     break;
-            case 5 : R <- 255, G <- 100, B <- 100; colorname = "red";        break;
-            case 6 : R <- 255, G <- 180, B <- 255; colorname = "pink";       break;
-            case 7 : R <- 255, G <- 255, B <- 180; colorname = "yellow";     break;
-            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "aqua";       break;
-            case 9 : R <-  60, G <-  15, B <-   0; colorname = "crimson";      break;
-            case 10: R <-   0, G <- 255, B <- 200; colorname = "ocean green";break;
-            case 11: R <-  80, G <-  99, B <-   0; colorname = "olive";      break;
-            case 12: R <-  40, G <-  40, B <-  80; colorname = "violet";     break;
-            case 13: R <-  75, G <-  75, B <-  75; colorname = "gray";       break;
-            case 14: R <-  64, G <-   0, B <-   0; colorname = "dark red";   break;
-            case 15: R <-   0, G <-  64, B <-   0; colorname = "dark green"; break;
-            case 16: R <-   0, G <-   0, B <-  64; colorname = "dark blue";  break;
+            case 1 : R <- 255; G <- 255; B <- 255; colorname = "white";         break;
+            case 2 : R <- 180, G <- 255, B <- 180; colorname = "green";         break;
+            case 3 : R <- 120, G <- 140, B <- 255; colorname = "blue";          break;
+            case 4 : R <- 255, G <- 170, B <- 120; colorname = "orange";        break;
+            case 5 : R <- 255, G <- 100, B <- 100; colorname = "red";           break;
+            case 6 : R <- 255, G <- 180, B <- 255; colorname = "pink";          break;
+            case 7 : R <- 255, G <- 255, B <- 180; colorname = "yellow";        break;
+            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "aqua";          break;
+            case 9 : R <-  60, G <-  15, B <-   0; colorname = "crimson";       break;
+            case 10: R <-   0, G <- 255, B <- 200; colorname = "ocean green";   break;
+            case 11: R <-  80, G <-  99, B <-   0; colorname = "olive";         break;
+            case 12: R <-  40, G <-  40, B <-  80; colorname = "violet";        break;
+            case 13: R <-  75, G <-  75, B <-  75; colorname = "gray";          break;
+            case 14: R <-  64, G <-   0, B <-   0; colorname = "dark red";      break;
+            case 15: R <-   0, G <-  64, B <-   0; colorname = "dark green";    break;
+            case 16: R <-   0, G <-   0, B <-  64; colorname = "dark blue";     break;
         }
     } catch(e) { }
+
     if (PlayerID > 16) {
         // If you have more than 16 players then you gotta bear the consequences of your own actions
         local randomColor = RandomColor()
@@ -2150,6 +2151,7 @@ CommandList.push(class {
 
 //////////////////////////////// Change Team
 function ChangeTeamCommand(p, args) {
+
     if (args.len() == 0) {
         if (p.GetTeam() == 0) {
             p.SetTeam(2)
@@ -2169,15 +2171,15 @@ function ChangeTeamCommand(p, args) {
     args[0] = Strip(args[0])
 
     local teams = {};
-    teams[0] <- "singlplayer";
-    teams[1] <- "spectator"; // this is not used rn but you can add it in the if below
-    teams[2] <- "reb";
-    teams[3] <- "blue";
+    teams[0] <- "Singleplayer"
+    teams[1] <- "Spectator" // this is not used rn but you can add it in the if below
+    teams[2] <- "Red"
+    teams[3] <- "Blue"
 
     if (args[0] == "0" || args[0] == "2" ||args[0] == "3" ){
 
-        p.SetTeam(args[0].tointeger());
-        return SendChatMessage("Team is now set to ", teams[args[0].tointeger()])
+        p.SetTeam(args[0].tointeger())
+        return SendChatMessage("Team is now set to " + teams[args[0].tointeger()])
     }
 
     SendChatMessage("Enter a valid number: 0, 2, or 3.")
@@ -2329,16 +2331,16 @@ function HelpCommand(p, args) {
     local commandtable = {}
     commandtable["noclip"] <- "Toggles noclip mode."
     commandtable["kill"] <- "Kill yourself, others, or @all."
-    commandtable["changeteam"] <- "Changes your current team color."
+    commandtable["changeteam"] <- "Changes your current team."
     commandtable["speed"] <- "Changes your player speed."
     commandtable["bring"] <- "Brings a specific player or \"all\" to you."
-    commandtable["goto"] <- "Brings yourself or @all to a specified person."
+    commandtable["goto"] <- "teleports you to a specified person."
     commandtable["rcon"] <- "Execute commands on the server console."
     commandtable["restart"] <- "Reset the current map."
-    commandtable["help"] <- "Prints help descriptions for chat commands."
     commandtable["spchapter"] <- "Changes the level to a specified singleplayer chapter."
     commandtable["mpcourse"] <- "Changes the level to a specified cooperative course."
     commandtable["changelevel"] <- "Changes the current level to a specified map (if valid)."
+    commandtable["playercolor"] <- "Changes your model's color through valid RGB values."
 
     // cab was here
     if (args.len() == 0) {
