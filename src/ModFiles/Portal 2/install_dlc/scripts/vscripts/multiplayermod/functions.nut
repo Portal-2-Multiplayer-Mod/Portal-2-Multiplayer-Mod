@@ -2198,8 +2198,8 @@ function ChangeTeamCommand(p, args) {
     }
 
     SendChatMessage("Enter a valid number: 0, 2, or 3.")
-}
 
+}
 CommandList.push(class {
     name = "changeteam"
     level = 0
