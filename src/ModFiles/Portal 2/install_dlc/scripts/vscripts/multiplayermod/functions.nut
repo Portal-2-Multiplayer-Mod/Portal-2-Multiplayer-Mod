@@ -472,12 +472,35 @@ function SetPlayerModel(p, mdl) {
     playerclass.playermodel <- mdl
 }
 
-function CreateGenericPlayerClass(p) {
+// playerclass <- {
+//     player = null,
+//     id = 0,
+//     username = "",
+//     steamid = 0,
+//     color = {
+//         r = 0,
+//         g = 0,
+//         b = 0,
+//         a = 220
+//     },
+//     eyeangles = Vector(0, 0, 0),
+//     eyeforwardvector = Vector(0, 0, 0),
+//     potatogun = "true",
+//     noclip = false,
+//     rocket = false,
+//     portal1 = null,
+//     portal2 = null,
+//     playermodel = null
+// }
+
+function CreateGenericPlayerClass(p, color = false) {
+    SendChatMessage(color == false)
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
         if (curlclass.player == p) {
             // If there is, remove it
             playerclasses.remove(indx)
+            break
         }
     }
 
@@ -503,9 +526,13 @@ function CreateGenericPlayerClass(p) {
         }
 
     ////////////
+    if (color == false){
+        // Player color
+        currentplayerclass.color <- GetPlayerColor(p)
+    } else{
+        currentplayerclass.color <- color
+    }
 
-    // Player color
-    currentplayerclass.color <- GetPlayerColor(p)
 
     // Player angles
     currentplayerclass.eyeangles <- Vector(0, 0, 0)
@@ -2514,10 +2541,9 @@ function PlayerColorCommand(p, args) {
         r = args[0]
         g = args[1]
         b = args[2]
-        a = 220
+        name = "custom color"
     }
-    currentplayerclass.color <- pcolor
-    EntFireByHandle(p, "Color", (inputR + " " + inputG + " " + inputB), 0, null, null)
+    CreateGenericPlayerClass(p, pcolor)
     SendChatMessage("Successfully changed color!")
 }
 
