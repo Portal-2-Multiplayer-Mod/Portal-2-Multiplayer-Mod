@@ -690,7 +690,7 @@ class PopupBoxButton:
             function = YesInput
             activecolor = (75, 200, 75)
             inactivecolor = (155, 155, 155)
-        
+
         class NoButton:
             text = "No"
             function = NoInput
@@ -936,7 +936,7 @@ def Update():
         bh = boxbackground.get_height()
         bx = W / 2 - (bw / 2)
         by = H / 2 - (bh / 2)
-        
+
         # put the title in the box
         boxtitle = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(PopupBoxList[0][0], True, (255, 255, 0))
         titlew = boxtitle.get_width()
@@ -962,7 +962,7 @@ def Update():
         indx = 0
         for button in PopupBoxList[0][2]:
             buttonsurf = pygame.surface.Surface(((bw / amtob) / 1.2, (bh / 5)))
-            if (button == selectedpopupbutton): 
+            if (button == selectedpopupbutton):
                 buttonsurf.fill(button.activecolor)
             else:
                 buttonsurf.fill(button.inactivecolor)
@@ -1007,7 +1007,7 @@ def Update():
         surf2 = pygame.Surface((W / 1.5, W / 100))
         blitpos = ((W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
         screen.blit(surf1, blitpos)
-        
+
         surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(InputPrompt, True, (255, 255, 255))
         # blit it right below the surf1
         screen.blit(surfInputPrompt, (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2), blitpos[1] + surfInputPrompt.get_height()))
@@ -1033,7 +1033,7 @@ def Main():
     LastBackspace = 0
 
     while running:
-        
+
         # so you can hold backspace to delete
         if (LookingForInput):
             BACKSPACEHELD = pygame.key.get_pressed()[pygame.K_BACKSPACE]
@@ -1044,11 +1044,11 @@ def Main():
                 if (len(CurInput) > 0):
                     CurInput = CurInput[:-1]
                 LastBackspace = 0
-                    
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
-            
+
             ############################ INPUT BOX INPUT
             if (LookingForInput):
                 CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
@@ -1088,7 +1088,7 @@ def Main():
                     # support for numpad
                     elif len(name) == 3:
                        CurInput += name[1]
-                
+
 
             ######################## POPUP BOX INPUT
             elif len(PopupBoxList) > 0:
@@ -1101,17 +1101,17 @@ def Main():
                             if btn == selectedpopupbutton:
                                 if PopupBoxList[0][2].index(btn) < boxlen - 1:
                                     selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) + 1]
-                                    
+
                     elif event.key == K_LEFT:
                         for btn in PopupBoxList[0][2]:
                             if btn == selectedpopupbutton:
                                 if PopupBoxList[0][2].index(btn) > 0:
                                     selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) - 1]
-                                    
+
                     elif event.key == K_SPACE or event.key == K_RETURN:
                         selectedpopupbutton.function()
                         PopupBoxList.pop()
-                        
+
                 elif event.type == MOUSEBUTTONDOWN:
                     mouse = pygame.mouse.get_pos()
                     mousex = mouse[0]
@@ -1123,7 +1123,7 @@ def Main():
                             selectedpopupbutton.function()
                             PopupBoxList.pop()
                             break
-                        
+
             ######################## NORMAL INPUT
             elif event.type == KEYDOWN:
                 if event.key in [K_ESCAPE, K_BACKSPACE]:
@@ -1155,7 +1155,7 @@ def Main():
                             SelectedButton.function()
 
                     PlaySound(SelectedButton.selectsnd)
-                    
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 ############################ LMB
                 if event.button == 1:
@@ -1175,10 +1175,10 @@ def Main():
                                 PlaySound(SelectedButton.selectsnd)
                         except Exception as e:
                             Log(str(e))
-                        
+
             ###############################
             elif event.type == pygame.MOUSEMOTION:
-                
+
                 mouse = pygame.mouse.get_pos()
                 mousex = mouse[0]
                 mousey = mouse[1]
@@ -1218,7 +1218,7 @@ def Main():
         Update()
         pygame.display.update()
         fpsclock.tick(fps)
-        
+
         if coolDown > 0:
             coolDown -= 1
 
@@ -1226,7 +1226,7 @@ def Main():
 
     pygame.quit()
     os._exit(0)
-    
+
 #!######################################################
 #!                       Logic
 #!######################################################
@@ -1329,7 +1329,7 @@ def MountModOnly():
         return
 
     Error("Mounting mod!", 5, (75, 255, 75))
-    
+
     gamepath = GVars.configData["portal2path"]["value"]
 
     if (GVars.configData["developer"]["value"] == "true"):
@@ -1342,7 +1342,7 @@ def MountModOnly():
         RG.MountMod(gamepath, DoEncrypt)
         Error("Mounted!", 5, (75, 255, 75))
         return True
-    
+
     # if the he's not a developer and the mod files don't exist ask him to download the files from the repo
     else:
         if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
@@ -1438,18 +1438,18 @@ def RestartClient(path):
     running = False
 
 def IsNew():
-    
+
     if len(sys.argv) != 3:
         return
-    
+
     if (sys.argv[1] != "updated") or (not os.path.exists(sys.argv[2])):
         return
-    
+
     Log("This is first launch after a successful update")
-    
+
     Log("Deleting old client...")
     os.remove(sys.argv[2])
-    
+
     # this will rename the new clien to the old client's name
     Log("Renaming new client...")
     os.rename(GVars.executable, sys.argv[2])
@@ -1496,11 +1496,11 @@ def CheckForUpdates():
     if clientUpdate["status"]:
         ClientUpdateBox(clientUpdate)
         return True
-    
+
     if up.CheckForNewFiles():
         ModFilesUpdateBox()
         return True
-    
+
     return False
 
 def OnStart():
@@ -1552,5 +1552,8 @@ def OnStart():
         PopupBox("Config Reset", "We had to reset your config \n this could have been an update \n or you could've had a broken config file \n\n PLEASE check your settings", [OkButton])
 
 if __name__ == '__main__':
-    OnStart()
-    Main()
+    try:
+        OnStart()
+        Main()
+    except Exception as e:
+        Log("Exception encountered: "+ str(e))

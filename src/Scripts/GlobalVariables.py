@@ -33,7 +33,7 @@ def init():
 
     if (sys.platform == "win32"):
         iow = True
-        
+
         # again thanks stackOverflow for this
         # this code allows us to get the document's folder on any windows pc with any language
         CSIDL_PERSONAL = 5       # My Documents
@@ -41,15 +41,17 @@ def init():
 
         buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
         ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
-        
+
         # set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
         configPath = buf.value + nf + "p2mm"
+
     elif (sys.platform.startswith("linux")):
         iol = True
         # set the modpath the the users home directory
         modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
         configPath = os.path.expanduser("~") + nf + ".config/p2mm"
+
     else:
         # feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")
