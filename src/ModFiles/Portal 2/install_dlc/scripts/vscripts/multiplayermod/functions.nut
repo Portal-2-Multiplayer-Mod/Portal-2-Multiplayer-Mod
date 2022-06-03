@@ -2086,6 +2086,7 @@ function SplitBetween(str, keysymbols, preserve = false) { //preserve = true : m
     foreach (key in keys) {
         if (Contains(str, key)) {
             contin = true
+            break
         }
     }
 
@@ -2423,30 +2424,29 @@ CommandList.push(class {
 ///////////////////////////////// SP CHAPTER
 
 function SPChapterCommand(p, args) {
-    if (args.len() == 0) {
+    try{
+        args[0] = args[0].tointeger()
+    } catch (err){
         SendChatMessage("Type in a valid number from 1 to 9.")
-    } else {
-        args[0] = Strip(args[0])
+        return
     }
-    if (args[0] == "1") {
-        SendToConsoleP232("changelevel sp_a1_intro1")
-    } else if (args[0] == "2") {
-        SendToConsoleP232("changelevel sp_a2_laser_intro")
-    } else if (args[0] == "3") {
-        SendToConsoleP232("changelevel sp_a2_sphere_peek")
-    } else if (args[0] == "4") {
-        SendToConsoleP232("changelevel sp_a2_column_blocker")
-    } else if (args[0] == "5") {
-        SendToConsoleP232("changelevel sp_a2_bts3")
-    } else if (args[0] == "6") {
-        SendToConsoleP232("changelevel sp_a3_00")
-    } else if (args[0] == "7") {
-        SendToConsoleP232("changelevel sp_a3_speed_ramp")
-    } else if (args[0] == "8") {
-        SendToConsoleP232("changelevel sp_a4_intro")
-    } else if (args[0] == "9") {
-        SendToConsoleP232("changelevel sp_a4_finale1")
+
+    if (args[0].tointeger() < 1 || args[0].tointeger() > 9) {
+        SendChatMessage("Type in a valid number from 1 to 9.")
+        return
     }
+    mapnames <- [
+        "sp_a1_intro1",
+        "sp_a2_laser_intro",
+        "sp_a2_sphere_peek",
+        "sp_a2_column_blocker",
+        "sp_a2_bts3",
+        "sp_a3_00",
+        "sp_a3_speed_ramp",
+        "sp_a4_intro",
+        "sp_a4_finale1"
+    ]
+    SendToConsoleP232("changelevel "+ mapnames[args[0]-1])
 }
 
 CommandList.push(class {
@@ -2465,31 +2465,30 @@ CommandList.push(class {
 ///////////////////////////////// MP COURSE
 
 function MPCourseCommand(p, args) {
-    local allp = Entities.FindByClassname(null, "player")
-    if (args.len() == 0) {
+    try{
+        args[0] = args[0].tointeger()
+    } catch (err){
         SendChatMessage("Type in a valid number from 1 to 6.")
-    } else {
-        args[0] = Strip(args[0])
+        return
     }
-    if (args[0] == "1") {
-        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
-        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_doors", 0.25, null)
-    } else if (args[0] == "2") {
-        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
-        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_fling_3", 0.25, null)
-    } else if (args[0] == "3") {
-        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
-        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_wall_intro", 0.25, null)
-    } else if (args[0] == "4") {
-        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
-        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_tbeam_redirect", 0.25, null)
-    } else if (args[0] == "5") {
-        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
-        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_paint_come_along", 0.25, null)
-    } else if (args[0] == "6") {
-        EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
-        EntFire("p2mm_servercommand", "command", "changelevel mp_coop_separation_1", 0.25, null)
+
+    local allp = Entities.FindByClassname(null, "player")
+
+    if (args.len() == 0 || args[0].tointeger() < 1 || args[0].tointeger() > 6) {
+        SendChatMessage("Type in a valid number from 1 to 6.")
+        return
     }
+
+    mapnames <- [
+        "mp_coop_doors",
+        "mp_coop_fling_3",
+        "mp_coop_wall_intro",
+        "mp_coop_tbeam_redirect",
+        "mp_coop_paint_come_along",
+        "mp_coop_separation_1",
+    ]
+    EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
+    EntFire("p2mm_servercommand", "command", "changelevel " + mapnames[args[0]-1], 0.25, null)
 }
 
 CommandList.push(class {
