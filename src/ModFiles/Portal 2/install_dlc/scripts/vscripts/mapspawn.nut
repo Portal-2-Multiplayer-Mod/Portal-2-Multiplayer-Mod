@@ -46,19 +46,18 @@ function init() {
     // Load plugin if it exists and compensate if it doesn't
     // Also change the level once it has succeeded this
     if ("GetPlayerName" in this) {
-        if (GetDeveloperLevel()) {
-            printl("=====================================")
-            printl("P2:MM plugin has already been loaded!")
-            printl("=====================================")
-        }
+        printl("=====================================")
+        printl("P2:MM plugin has already been loaded!")
+        printl("=====================================")
+
         PluginLoaded <- true
     } else {
         MakePluginReplacementFunctions()
-        if (GetDeveloperLevel()) {
-            printl("=================================")
-            printl("P2:MM plugin has not been loaded!")
-            printl("=================================")
-        }
+
+        printl("=================================")
+        printl("P2:MM plugin has not been loaded!")
+        printl("=================================")
+
         EntFire("p2mm_servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.03)
         EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetDeveloperLevel() == 918612) {
@@ -66,7 +65,6 @@ function init() {
                 EntFire("p2mm_servercommand", "command", "developer 1", 0.01)
             } else {
                 EntFire("p2mm_servercommand", "command", "developer 0", 0.01)
-                EntFire("p2mm_servercommand", "command", "clear", 0.02)
             }
             printl("Resetting map so that the plugin has an effect! (if it loaded)")
             printl("")
@@ -130,52 +128,10 @@ try {
 
     // Manage all scenarios possible for mapsupport based on player config
 
-    // If we are playing the normal mode of any level on this map load
-    if (!Deathmatch && !FutBolGamemode) {
+    // default
+    if ((!Deathmatch && !FutBolGamemode) || (Deathmatch && FutBolGamemode)) {
         try {
             IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut") // Import the standard map support code
-        } catch (error) {
-            printl("(P2:MM): No standard map support exists for " + Mapname.tostring() + "!")
-        }
-    } else
-
-    // If we are playing the futbol game mode on this map load
-    if (FutBolGamemode && !Deathmatch) {
-        try {
-            if (GetDeveloperLevel()) {
-                printl("(P2:MM): Attempting to load Futbol mapsupport code!")
-            }
-            IncludeScript("multiplayermod/mapsupport/futbol/#futbolfunctions.nut") // Import core futbol functions
-            IncludeScript("multiplayermod/mapsupport/futbol/" + MapName.tostring() + ".nut") // Import the map support code for futbol
-        } catch (error) {
-            if (GetDeveloperLevel()) {
-                printl("(P2:MM): No Futbol map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
-            }
-            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
-        }
-    } else
-
-    // If we are playing the deathmatch game mode on this map load
-    if (Deathmatch && !FutBolGamemode) {
-        try {
-            if (GetDeveloperLevel()) {
-                printl("(P2:MM): Attempting to load Deathmatch mapsupport code!")
-            }
-            IncludeScript("multiplayermod/mapsupport/deathmatch/#deathmatchfunctions.nut") // Import core deathmatch functions
-            IncludeScript("multiplayermod/mapsupport/deathmatch/" + MapName.tostring() + ".nut") // Import the map support code for deathmatch
-        } catch (error) {
-            if (GetDeveloperLevel()) {
-                printl("(P2:MM): No Deathmatch map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
-            }
-            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
-        }
-    } else
-
-    // Failsafe in case someone sets both Deathmatch and FutBolGamemode to true in their config.nut
-    if (Deathmatch && FutBolGamemode) {
-        printl("(P2:MM): You have both Deathmatch and FutBolGamemode set to true in your config! Attempting to load standard mapsupport code...")
-        try {
-            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
         } catch (error) {
             printl("(P2:MM): No standard map support exists for " + Mapname.tostring() + "!")
         }
@@ -183,10 +139,36 @@ try {
         printl("(P2:MM): Fatal mapsupport error! Check your config.nut and verify valid options for \"Deathmatch\" and/or \"FutBolGamemode\"")
     }
 
-} catch (error) {
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): A core map support file is missing!")
+    // If we are playing the futbol game mode on this map load
+    if (FutBolGamemode && !Deathmatch) {
+        try {
+            printl("(P2:MM): Attempting to load Futbol mapsupport code!")
+            IncludeScript("multiplayermod/mapsupport/futbol/#futbolfunctions.nut") // Import core futbol functions
+            IncludeScript("multiplayermod/mapsupport/futbol/" + MapName.tostring() + ".nut") // Import the map support code for futbol
+        } catch (error) {
+            printl("(P2:MM): No Futbol map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
+            printl("error: "+ error)
+            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
+        }
     }
+
+    // If we are playing the deathmatch game mode on this map load
+    if (Deathmatch && !FutBolGamemode) {
+        try {
+            printl("(P2:MM): Attempting to load Deathmatch mapsupport code!")
+            IncludeScript("multiplayermod/mapsupport/deathmatch/#deathmatchfunctions.nut") // Import core deathmatch functions
+            IncludeScript("multiplayermod/mapsupport/deathmatch/" + MapName.tostring() + ".nut") // Import the map support code for deathmatch
+        } catch (error) {
+            printl("(P2:MM): No Deathmatch map support exists for " + MapName.tostring() + ", reverting to normal mapsupport!")
+            printl("error: "+error)
+            IncludeScript("multiplayermod/mapsupport/standard/" + MapName.tostring() + ".nut")
+        }
+    }
+
+} catch (error) {
+    printl("(P2:MM): A core map support file is missing!")
+    printl(error)
+
     function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) { }
 }
 

@@ -118,7 +118,7 @@ def SetVscriptConfigFile(vsconfigfile):
         print("Adding " + name + " to admins")
 
         lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + steamid + '", // ' + name + lines[nextObrack + 1:]
-    
+
     open(vsconfigfile, "w", encoding="utf-8").write(lines)
 
     Log("====================================================")
@@ -227,9 +227,9 @@ def PatchBinaries(gamepath):
     if (os.path.isfile(gamepath + GVars.nf + "engine.dll")):
         Log("")
         Log("Patching engine.dll...")
-        
+
         data = open(gamepath + GVars.nf + "engine.dll", "rb").read()
-        
+
         # Delete the file
         os.remove(gamepath + GVars.nf + "engine.dll")
         # replace the data
@@ -242,9 +242,9 @@ def PatchBinaries(gamepath):
     ###/// SERVER.DLL ///###
     if (os.path.isfile(gamepath + GVars.nf + "server.dll")):
         Log("Patching server.dll...")
-        
+
         data = open(gamepath + GVars.nf + "server.dll", "rb").read()
-        
+
         # Delete the file
         os.remove(gamepath + GVars.nf + "server.dll")
         # replace the data
@@ -281,7 +281,7 @@ def PatchBinaries(gamepath):
         # write the data back to the file
         open(gamepath + GVars.nf + "server.dll", "wb").write(data)
         Log("")
-        
+
     # we don't need to patch the other files since they don't exist on windows
     if GVars.iow:
         # rename the files so the new files are used
@@ -293,9 +293,9 @@ def PatchBinaries(gamepath):
     if (os.path.isfile(gamepath + GVars.nf + "engine.so")):
         Log("")
         Log("Patching engine.so...")
-        
+
         data = open(gamepath + GVars.nf + "engine.so", "rb").read()
-        
+
         # remove the file
         os.remove(gamepath + GVars.nf + "engine.so")
         # replace the data
@@ -309,9 +309,9 @@ def PatchBinaries(gamepath):
     ###/// SERVER.SO ///###
     if (os.path.isfile(gamepath + GVars.nf + "server.so")):
         Log("Patching server.so...")
-        
+
         data = open(gamepath + GVars.nf + "server.so", "rb").read()
-        
+
         # remove the file
         os.remove(gamepath + GVars.nf + "server.so")
         # replace the data
@@ -398,11 +398,11 @@ def UnRenameBinaries(gamepath, binarys):
 def DeleteUnusedDlcs(gamepath):
     Log("")
     Log("            _________Dealing with Folders________")
-    
+
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Log("Portal 2 game path not found!")
         return "undefined"
-    
+
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
@@ -413,7 +413,7 @@ def DeleteUnusedDlcs(gamepath):
                 # delete the folder even if it's not empty
                 BF.DeleteFolder(gamepath + GVars.nf + file)
                 Log("Deleted old DLC: " + file)
-    
+
     return True
 
 def FindAvailableDLC(gamepath):
@@ -453,7 +453,7 @@ def FindAvailableDLC(gamepath):
 def LaunchGame(gamepath):
     Log("")
     Log("Running Game...")
-    
+
     # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console -usercon
     try:
         if (GVars.iow):
