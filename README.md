@@ -43,4 +43,4 @@
 
 **Team Members**
 - sear
-- Jeffrey
+- QuantumCoded (Jeffrey)
