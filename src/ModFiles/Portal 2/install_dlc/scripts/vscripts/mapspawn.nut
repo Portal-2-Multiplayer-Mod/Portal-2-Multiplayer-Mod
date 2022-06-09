@@ -24,6 +24,7 @@ printl("")
 IncludeScript("multiplayermod/config.nut")
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
+IncludeScript("multiplayermod/kyleplaysgod.nut")
 
 // init() will run on every map spawn or transition
 // It does a few things:
@@ -33,6 +34,8 @@ IncludeScript("multiplayermod/safeguard.nut")
 // 3. Create map-specific entities after a delay
 
 function init() {
+
+    pawninit()
 
     // Show the console ascii art
     foreach (line in ConsoleAscii) {
