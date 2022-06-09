@@ -494,7 +494,6 @@ function SetPlayerModel(p, mdl) {
 // }
 
 function CreateGenericPlayerClass(p, color = false) {
-    SendChatMessage(color == false)
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
         if (curlclass.player == p) {
@@ -1114,21 +1113,21 @@ function DoesPlayerColorEntityExist() {
 function DisplayPlayerColor(player) {
     DoesPlayerColorEntityExist()
 
-    EntFireByHandle("p2mm_playercolordisplay", "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "kill", "", 0.1, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
 function UpdatePlayerColor(player, inputR, inputG, inputB) {
     DoesPlayerColorEntityExist()
 
-    EntFireByHandle("p2mm_playercolordisplay", "SetText", "Your color: Custom", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "SetTextColor", inputR.tostring() + " " + inputG.tostring() + " " + inputB.tostring(), 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "kill", "", 0.1, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: Custom", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", inputR.tostring() + " " + inputG.tostring() + " " + inputB.tostring(), 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
 function FindAndReplace(inputstr, findstr, replacestr) {
