@@ -493,6 +493,16 @@ function SetPlayerModel(p, mdl) {
 //     playermodel = null
 // }
 
+function ForwardAngle(y,p,r) {
+    if (!Entities.FindByName(null, "angledummy")) {
+        local ent = Entities.CreateByClassname("prop_dynamic")
+        ent.__KeyValueFromString("targetname", "angledummy")
+    }
+    local ent = Entities.FindByName(null, "angledummy")
+    ent.SetAngles(y,p,r)
+    return ent.GetForwardVector()
+}
+
 function CreateGenericPlayerClass(p, color = false) {
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
@@ -1999,6 +2009,33 @@ function Join(tbl, str) {
         nstr = nstr + thing + str
     }
     return nstr
+}
+
+function Set(tbl, key, val) {
+    foreach (thing in tbl) {
+        if (thing[0] == key) {
+            thing[1] = val
+            return
+        }
+    }
+    tbl.push([key, val])
+}
+
+function Get(tbl, key) {
+    foreach (thing in tbl) {
+        if (thing[0] == key) {
+            return thing[1]
+        }
+    }
+    return null
+}
+
+function GetAll(tbl) {
+    local ntbl = []
+    foreach (thing in tbl) {
+        ntbl.push(thing[0] + ":" + thing[1])
+    }
+    return ntbl
 }
 
 //////////////////////////////// STRINGS
