@@ -2259,9 +2259,8 @@ function ChangeTeamCommand(p, args) {
 
         p.SetTeam(args[0].tointeger())
         return SendChatMessage("Team is now set to " + teams[args[0].tointeger()] + ".")
-    } else {
-        SendChatMessage("Enter a valid team number: 0, 2, or 3.")
     }
+    SendChatMessage("Enter a valid team number: 0, 2, or 3.")
 }
 CommandList.push(class {
     name = "changeteam"

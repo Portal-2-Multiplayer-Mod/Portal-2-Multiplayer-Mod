@@ -24,7 +24,7 @@ printl("")
 IncludeScript("multiplayermod/config.nut")
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
-// IncludeScript("multiplayermod/kyleminigame.nut")
+IncludeScript("multiplayermod/kyleminigame.nut")
 
 // init() will run on every map spawn or transition
 // It does a few things:
