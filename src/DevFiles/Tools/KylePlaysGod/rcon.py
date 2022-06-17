@@ -110,7 +110,7 @@ prey = 0
 x = 0
 y = 0
 window = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("KylePlaysGod")
+pygame.display.set_caption("KyleMinigame")
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
