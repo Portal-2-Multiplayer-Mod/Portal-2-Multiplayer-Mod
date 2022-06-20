@@ -68,5 +68,7 @@
   "game_path_error-saved": "Saved path!",
   "devmod_is_active": "Dev mode is now active!",
   "devmod_copied_from_local_repo": "copied mod files from the local repo!",
-  "testing_button": "Testing"
+  "testing_button": "Testing",
+  "language_error0_language_update": "Language Set, ",
+  "language_error0_relaunch_game": "Please Relaunch Your Launcher"
 }

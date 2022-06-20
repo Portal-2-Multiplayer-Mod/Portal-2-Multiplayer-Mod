@@ -937,6 +937,12 @@ class LanguagesButtonDef:
         print("Language set: " + self.code)
         GVars.configData["activeLanguage"]["value"] = self.code
         cfg.WriteConfigFile(GVars.configData)
+        restart_game_text0 = json.load(open(LanguagesIndex.get(GVars.configData["activeLanguage"]["value"]).get('file'),
+                                           "r", encoding="utf8"))["language_error0_language_update"]
+        restart_game_text1 = json.load(open(LanguagesIndex.get(GVars.configData["activeLanguage"]["value"]).get('file'),
+                                           "r", encoding="utf8"))["language_error0_relaunch_game"]
+        Error(restart_game_text0)
+        Error(restart_game_text1)
         LanguageButton()
 
 

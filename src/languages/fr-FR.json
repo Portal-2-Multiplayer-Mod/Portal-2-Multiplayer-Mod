@@ -68,5 +68,7 @@
   "game_path_error-saved": "Chemin sauvegardé!",
   "devmod_is_active": "Dev mode est maintenant actif!",
   "devmod_copied_from_local_repo": "fichiers du mod copiés à partir du repo local!",
-  "testing_button": "Test"
+  "testing_button": "Test",
+  "language_error0_language_update": "Langage Mis A Jour,",
+  "language_error0_relaunch_game": "Relancez Votre Lanceur"
 }
