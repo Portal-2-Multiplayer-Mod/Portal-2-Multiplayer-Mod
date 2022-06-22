@@ -493,6 +493,16 @@ function SetPlayerModel(p, mdl) {
 //     playermodel = null
 // }
 
+function ForwardAngle(y,p,r) {
+    if (!Entities.FindByName(null, "angledummy")) {
+        local ent = Entities.CreateByClassname("prop_dynamic")
+        ent.__KeyValueFromString("targetname", "angledummy")
+    }
+    local ent = Entities.FindByName(null, "angledummy")
+    ent.SetAngles(y,p,r)
+    return ent.GetForwardVector()
+}
+
 function CreateGenericPlayerClass(p, color = false) {
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
@@ -1113,21 +1123,21 @@ function DoesPlayerColorEntityExist() {
 function DisplayPlayerColor(player) {
     DoesPlayerColorEntityExist()
 
-    EntFireByHandle("p2mm_playercolordisplay", "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "kill", "", 0.1, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
 function UpdatePlayerColor(player, inputR, inputG, inputB) {
     DoesPlayerColorEntityExist()
 
-    EntFireByHandle("p2mm_playercolordisplay", "SetText", "Your color: Custom", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "SetTextColor", inputR.tostring() + " " + inputG.tostring() + " " + inputB.tostring(), 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "display", "", 0, player, player)
-    EntFireByHandle("p2mm_playercolordisplay", "kill", "", 0.1, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: Custom", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", inputR.tostring() + " " + inputG.tostring() + " " + inputB.tostring(), 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
 function FindAndReplace(inputstr, findstr, replacestr) {
@@ -2001,6 +2011,33 @@ function Join(tbl, str) {
     return nstr
 }
 
+function Set(tbl, key, val) {
+    foreach (thing in tbl) {
+        if (thing[0] == key) {
+            thing[1] = val
+            return
+        }
+    }
+    tbl.push([key, val])
+}
+
+function Get(tbl, key) {
+    foreach (thing in tbl) {
+        if (thing[0] == key) {
+            return thing[1]
+        }
+    }
+    return null
+}
+
+function GetAll(tbl) {
+    local ntbl = []
+    foreach (thing in tbl) {
+        ntbl.push(thing[0] + ":" + thing[1])
+    }
+    return ntbl
+}
+
 //////////////////////////////// STRINGS
 
 function Len(str) {
@@ -2175,7 +2212,7 @@ CommandList.push(class {
 
 /////////////////////////////////////// KILL
 function KillCommand(plr, args) {
-    EntFireByHandle(plr, "sethealth", "-91", 0, plr, plr)
+    EntFireByHandle(plr, "sethealth", "-100", 0, plr, plr)
 }
 
 CommandList.push(class {
@@ -2203,7 +2240,7 @@ function ChangeTeamCommand(p, args) {
             p.SetTeam(3)
             return SendChatMessage("Toggled to Blue team.")
         }
-        // if the pkayer is in team 3 or above it will just reset them to team 0
+        // if the player is in team 3 or above it will just reset them to team 0
         else {
             p.SetTeam(0)
             return SendChatMessage("Toggled to Singleplayer team.")
@@ -2212,20 +2249,18 @@ function ChangeTeamCommand(p, args) {
 
     args[0] = Strip(args[0])
 
-    local teams = {};
-    teams[0] <- "Singleplayer"
-    teams[1] <- "Spectator" // this is not used rn but you can add it in the if below
-    teams[2] <- "Red"
-    teams[3] <- "Blue"
+    if (args[0] == "0" || args[0] == "2" ||args[0] == "3" ) {
 
-    if (args[0] == "0" || args[0] == "2" ||args[0] == "3" ){
+        local teams = {}
+        teams[0] <- "Singleplayer"
+        teams[1] <- "Spectator" // this is not used rn but you can add it in the if below
+        teams[2] <- "Red"
+        teams[3] <- "Blue"
 
         p.SetTeam(args[0].tointeger())
-        return SendChatMessage("Team is now set to " + teams[args[0].tointeger()])
+        return SendChatMessage("Team is now set to " + teams[args[0].tointeger()] + ".")
     }
-
-    SendChatMessage("Enter a valid number: 0, 2, or 3.")
-
+    SendChatMessage("Enter a valid team number: 0, 2, or 3.")
 }
 CommandList.push(class {
     name = "changeteam"
@@ -2242,7 +2277,11 @@ CommandList.push(class {
 
 ////////////////////////////////// Set Speed
 function ChangeSpeedCommand(p, args) {
-    SetSpeed(p, args[0])
+    if (args.len() == 0) {
+        SendChatMessage("Input a number.")
+    } else {
+        SetSpeed(p, args[0])
+    }
 }
 
 CommandList.push(class {
@@ -2260,6 +2299,9 @@ CommandList.push(class {
 
 ////////////////////////////////////// Bring
 function BringCommand(p, args) {
+    if (args.len() == 0) {
+        return SendChatMessage("Input a player name.")
+    }
     args[0] = Strip(args[0])
     if (args[0] != "all") {
         local plr = FindPlayerByName(args[0])
@@ -2276,9 +2318,9 @@ function BringCommand(p, args) {
             if (p2 != p) {
                 p2.SetOrigin(p.GetOrigin())
                 p2.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
-                SendChatMessage("Brought all players.")
             }
         }
+        SendChatMessage("Brought all players.")
     }
 }
 
@@ -2297,14 +2339,18 @@ CommandList.push(class {
 
 /////////////////////////////////////// GOTO
 function GotoCommand(p, args) {
-    args[0] = Strip(args[0])
-    local plr = FindPlayerByName(args[0])
-    if (plr != null) {
-        p.SetOrigin(plr.GetOrigin())
-        p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-        SendChatMessage("Teleported to player.")
+    if (args.len() != 0) {
+        args[0] = Strip(args[0])
+        local plr = FindPlayerByName(args[0])
+        if (plr != null) {
+            p.SetOrigin(plr.GetOrigin())
+            p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+            SendChatMessage("Teleported to player.")
+        } else {
+            SendChatMessage("[ERROR] Player not found.")
+        }
     } else {
-        SendChatMessage("[ERROR] Player not found.")
+        SendChatMessage("Input a player name.")
     }
 }
 
@@ -2323,11 +2369,11 @@ CommandList.push(class {
 
 /////////////////////////////////////// RCON
 function RconCommand(p, args) {
-    args[0] = Strip(args[0])
-    local cmd = Join(args, " ")
     if (args.len() == 0) {
         SendChatMessage("Input a command.")
     } else {
+        args[0] = Strip(args[0])
+        local cmd = Join(args, " ")
         SendToConsoleP232(cmd)
     }
 }
@@ -2370,6 +2416,7 @@ CommandList.push(class {
 /////////////////////////////////////// HELP
 
 function HelpCommand(p, args) {
+
     local commandtable = {}
     commandtable["noclip"] <- "Toggles noclip mode."
     commandtable["kill"] <- "Kill yourself, others, or @all."
@@ -2381,10 +2428,8 @@ function HelpCommand(p, args) {
     commandtable["restart"] <- "Reset the current map."
     commandtable["spchapter"] <- "Changes the level to a specified singleplayer chapter."
     commandtable["mpcourse"] <- "Changes the level to a specified cooperative course."
-    commandtable["changelevel"] <- "Changes the current level to a specified map (if valid)."
     commandtable["playercolor"] <- "Changes your model's color through valid RGB values."
 
-    // cab was here
     if (args.len() == 0) {
         SendChatMessage("[HELP] Available commands:")
         local dly = 0
@@ -2394,8 +2439,7 @@ function HelpCommand(p, args) {
                 SendChatMessage("[HELP] " + command.name, dly)
             }
         }
-    }
-    else {
+    } else {
         args[0] = Strip(args[0])
         if (commandtable.rawin(args[0])) {
             SendChatMessage(args[0] + ": " + commandtable[args[0]])
@@ -2508,7 +2552,7 @@ CommandList.push(class {
 function PlayerColorCommand(p, args) {
 
     function IsCustomColorIntegerValid(x) {
-        // if x is a string it will throw an erro so we'll set it to -1 so it retrns false
+        // if x is a string it will throw an error so we'll set it to -1 so it returns false
         try {
             x = x.tointeger()
         } catch (err){
@@ -2522,15 +2566,13 @@ function PlayerColorCommand(p, args) {
     }
 
     if (args.len() < 3) {
-        SendChatMessage("Type in three valid numbers from 0 to 255 seperated by a space.")
-        return
+        return SendChatMessage("Type in three valid integers from 0 to 255 separated by a space.")
     }
 
     // make sure that all args are ints
     for (local i = 0; i < args.len() ; i += 1){
         if (IsCustomColorIntegerValid(args[i]) != true ){
-            SendChatMessage("Type in three valid numbers from 0 to 255 seperated by a space.")
-            return
+            return SendChatMessage("Type in three valid integers from 0 to 255 separated by a space.")
         }
         args[i] = args[i].tointeger()
     }
@@ -2542,7 +2584,7 @@ function PlayerColorCommand(p, args) {
         name = "custom color"
     }
     CreateGenericPlayerClass(p, pcolor)
-    SendChatMessage("Successfully changed color!")
+    SendChatMessage("Successfully changed color.")
 }
 
 CommandList.push(class {

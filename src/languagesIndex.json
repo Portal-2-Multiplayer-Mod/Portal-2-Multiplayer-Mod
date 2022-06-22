@@ -1,0 +1,12 @@
+{
+  "en-US":
+    {
+      "name":  "English | English",
+      "file":  "languages/en-US.json"
+    },
+  "fr-FR":
+    {
+      "name":  "French | Français",
+      "file":  "languages/fr-FR.json"
+    }
+}

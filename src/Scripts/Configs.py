@@ -82,6 +82,14 @@ DefaultConfigFile = {
             "warning": "",
             "prompt": "Encrypt specific vscript functions?",
         },
+        
+    "activeLanguage":
+        {
+            "value": "en-US",
+            "menu": "launcher",
+            "description": "The current language, it should respect the IETF language tag (check ISO 3166-1 for get "
+                           "your language)",
+        },
 }
 
 ImmutableKeys = ["description", "warning", "prompt", "menu"]
