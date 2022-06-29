@@ -35,8 +35,6 @@ IncludeScript("multiplayermod/kyleminigame.nut")
 
 function init() {
 
-    pawninit()
-
     // Show the console ascii art
     foreach (line in ConsoleAscii) {
         printl(line)
