@@ -19,22 +19,6 @@ MinecraftMode <- false
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 
 function loop() {
-    try {
-        CheckHeartbeat()
-        local pc = FindPlayerClass(Entities.FindByClassname(null, "player"))
-        local pl = Entities.FindByClassname(null, "player")
-        Set(HeldData, "p1o", "(" + Entities.FindByClassname(null, "player").GetOrigin().x.tostring() + "," + Entities.FindByClassname(null, "player").GetOrigin().y.tostring() + ")")
-        local ea1 = ForwardAngle(pc.eyeangles.x, pc.eyeangles.y, pc.eyeangles.z)
-        Set(HeldData, "p1a", "(" + ea1.x.tostring() + "," + ea1.z.tostring() + ")")
-
-
-        DebugDrawLine(pl.GetOrigin(), Vector(linex, liney, -447), 255, 255, 0, true, 0)
-        // Entities.FindByName(null, "red").SetOrigin(Vector(linex, liney, -447))
-        // Entities.FindByName(null, "red").SetVelocity(Vector(0, 0, 0))
-    } catch(e) {
-        printl(e)
-    }
-
     //## Event List ##//
     if (EventList.len() > 0) {
         SendToConsoleP232("script " + EventList[0])

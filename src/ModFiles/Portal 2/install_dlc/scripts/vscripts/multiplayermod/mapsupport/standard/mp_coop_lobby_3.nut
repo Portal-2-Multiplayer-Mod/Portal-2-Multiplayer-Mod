@@ -79,14 +79,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Remove useless entities so that the entity limit does not crash the game
 
         // Remove func_portal_bumper's from the map
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
-            ent.Destroy() // 165 entities removed
+        local e = null
+        while (e = Entities.FindByClassname(e, "func_portal_bumper")) {
+            e.Destroy() // 165 entities removed
         }
         // Remove env_sprite's from the map
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "env_sprite")) {
-            ent.Destroy() // 31 entities removed
+        local e = null
+        while(e = Entities.FindByClassname(e, "env_sprite")) {
+            e.Destroy() // 31 entities removed
         }
 
         // Fix art therapy tube glitches

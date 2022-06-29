@@ -73,9 +73,6 @@ function OnPlayerJoin(p, script_scope) {
     local ent = null
     while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
         EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
-        // printl("(P2:MM): Renamed predicted_viewmodel to viewmodel_player" + ent.GetRootMoveParent().entindex())
-        // printl("" + ent.GetRootMoveParent().entindex() + " rotation " + ent.GetAngles())
-        // printl("" + ent.GetRootMoveParent().entindex() + "    origin " + ent.GetOrigin())
     }
 
     // If the player is the first player to join, fix OrangeOldPlayerPos
@@ -192,7 +189,7 @@ function PostMapLoad() {
     // Add a hook to the chat command function
     if (PluginLoaded) {
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): Plugin Loaded")
+            printl("(P2:MM): Plugin loaded! Adding chat callback for chat commands.")
         }
         AddChatCallback("ChatCommands")
     }
@@ -368,11 +365,7 @@ function GeneralOneTime() {
     }
 
     // Force open the red player droppers
-    printl(OrangeOldPlayerPos)
-    printl(OldPlayerPos)
-
     local radius = 150
-
     if (OrangeCacheFailed) {
         radius = 350
     }
@@ -413,7 +406,16 @@ function GeneralOneTime() {
         "airlock_3-door1-airlock_entry_door_close_rl",  //mp_coop_sx_bounce (Sixense map)
     ]
 
-    if (!IsOnSingleplayer) {
+    if (IsOnSingleplayerMaps) {
+        if (PluginLoaded) {
+            SetPhysTypeConvar(0)// enable real-time physics
+        } else {
+            printl("(P2:MM): Cannot enable real-time grab controller physics, since the plugin is not loaded!")
+        }
+    } else {
+        if (PluginLoaded) {
+            SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
+        }
         foreach (DoorType in DoorEntities) {
             try {
                 Entities.FindByName(null, DoorType).Destroy()
