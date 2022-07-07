@@ -64,6 +64,8 @@ CanCheckAngle <- false
 
 OriginalPosMain <- null
 
+TickSpeed <- 0.00
+
 player1discordhookstr <- ""
 CanHook <- false
 Player2Joined <- false
@@ -77,7 +79,6 @@ MadeSpawnClass <- false
 usefogcontroller <- false
 DevModeConfig <- DevMode
 StartDevModeCheck <- false
-PreviousTimeDeath <- 0
 HasRanGeneralOneTime <- false
 BundgeeHookID <- "none"
 BundgeeHookMessage <- "none"
@@ -89,6 +90,8 @@ HasSpawned <- false
 PlayerColorCached <- []
 CurrentlyDead <- []
 PlayerID <- 0
+PreviousTimeDeath <- 0
+PreviousTime1Sec <- 0
 PreviousTime5Sec <- 0
 amtoffsetclr <- 0
 GBIsMultiplayer <- 0
@@ -96,13 +99,10 @@ cacheoriginalplayerposition <- 0
 DoneWaiting <- false
 IsSingleplayerMap <- false
 PluginLoaded <- false
-PreviousTime1Sec <- 0
 playerclasses <- []
 entityclasses <- []
 PreviousNametagItter <- 0
 fogs <- false
-CurrentPythonOutputID <- 0
-CurrentPythonInputID <- 0
 
 FailsafeEntityCap <- 2010
 EntityCap <- 2000

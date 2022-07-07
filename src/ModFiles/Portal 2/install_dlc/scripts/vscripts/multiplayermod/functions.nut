@@ -66,16 +66,6 @@ function ForceRespawnAll() {
     }
 }
 
-function SendPythonReset() {
-    CurrentPythonOutputID = 0
-    printl("(P2:MM): ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣reset╠═╣")
-}
-
-function SendPythonOutput(text) {
-    CurrentPythonOutputID = CurrentPythonOutputID + 1
-    printl("(P2:MM): ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣" + CurrentPythonOutputID + "╠═╣" + text)
-}
-
 function ToggleCheats() {
     if (CheatsOn == null || !CheatsOn) {
         CheatsOn = true
@@ -92,66 +82,46 @@ function SetCheats() {
         CheatsOn = true
         Entities.FindByModel(null, "models/cheatdetectionp2mm.mdl").Destroy()
     }
-    AlwaysPrecachedModels()
-}
-
-function AlwaysPrecachedModels() {
-    //PrecacheModel("props/portal_gap.mdl")
 }
 
 // TODO: Make sure all SteamIDs are correct -vistr
 function SetCosmetics(p) {
-    if (PluginLoaded) {
-        // Get nessasary data
-        local pclass = FindPlayerClass(p)
-        local psteamid = pclass.steamid
+    // if (PluginLoaded) {
+    //     // Get nessasary data
+    //     local pclass = FindPlayerClass(p)
+    //     local psteamid = pclass.steamid
 
-        //## kyleraykbs customization ##//
-        if (psteamid == 91466608) {
-            SetPlayerModel(p, "models/info_character/info_character_player.mdl")
-        }
+    //     //## kyleraykbs customization ##//
+    //     if (psteamid == 91466608) {
+    //         SetPlayerModel(p, "models/info_character/info_character_player.mdl")
+    //     }
 
-        //## SuperSpeed customization ##//
-        //if (psteamid == "SuperSpeed") {
-            //SetPlayerModel(p, "models/npcs/turret/turretwife.mdl")
-        //}
+    //     //## Dreadnox customization ##//
+    //     if (psteamid == 193052938) {
+    //         SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
+    //     }
 
-        //## Dreadnox customization ##//
-        if (psteamid == 193052938) {
-            SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
-        }
+    //     //## sear customization ##//
+    //     if (psteamid == 18517563) {
+    //         SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl")
+    //     }
 
-        //## sear customization ##//
-        if (psteamid == 18517563) {
-            SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl")
-        }
+    //     //## Mellow customization ##//
+    //     if (psteamid == 149186271) {
+    //         SetPlayerModel(p, "models/props_moon/moonrock_med08.mdl")
+    //     }
 
-        //## Mellow customization ##//
-        if (psteamid == 149186271) {
-            SetPlayerModel(p, "models/props_moon/moonrock_med08.mdl")
-        }
+    //     //## Nanoman2525 customization ##//
+    //     if (psteamid == 145380247) {
+    //         SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
+    //     }
 
-        //## Nanoman2525 customization ##//
-        if (psteamid == 145380247) {
-            SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
-        }
-
-        //## Bumpy customization ##//
-        // It's not even a torus. Its a Trefoil Knot.
-        if (psteamid == 90835355) {
-            SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
-        }
-
-        //## Mystical Λce customization ##//
-        //if (psteamid == "Mystical Λce") {
-            // SetPlayerModel(p, "models/props_underground/geodome_exterior_3072_exo.mdl")
-        //}
-
-        //## Tiddies customization ##//
-        //if (psteamid == "Tiddies") {
-            //SetPlayerModel(p, "models/editor/playerstart.mdl")
-        //}
-    }
+    //     //## Bumpy customization ##//
+    //     // It's not even a torus. Its a Trefoil Knot.
+    //     if (psteamid == 90835355) {
+    //         SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
+    //     }
+    // }
 }
 
 function RandomColor() {
@@ -459,7 +429,7 @@ function SetPlayerModel(p, mdl) {
     PrecacheModelNoDelay(mdl)
     local mdl2 = MinifyModel(mdl)
     local playerclass = FindPlayerClass(p)
-    // EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
+    // EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
     // local pmodelclass = class {
     //     player = p
     //     model = mdl
@@ -646,7 +616,7 @@ function PrecacheModelNoDelay(mdl) {
         if (!CheatsOn) {
             SendToConsoleP232("sv_cheats 0")
         }
-        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
+        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4) // FIXME!! Causes errors in vscript
         if (GetDeveloperLevel()) {
             printl("(P2:MM): Precached model: " + minimdl + " AKA " + mdl)
         }
@@ -1871,7 +1841,7 @@ function CreateOurEntities() {
     nametagdisplay.__KeyValueFromString("x", "-1")
     nametagdisplay.__KeyValueFromString("y", "0.2")
     nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
-    // onscreendisplay.__KeyValueFromString("spawnflags", "1")
+    // nametagdisplay.__KeyValueFromString("spawnflags", "1")
     nametagdisplay.__KeyValueFromString("holdtime", "0.1")
     nametagdisplay.__KeyValueFromString("fadeout", "0.1")
     nametagdisplay.__KeyValueFromString("fadein", "0.1")
@@ -1883,7 +1853,7 @@ function CreateOurEntities() {
     onscreendisplay.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
     onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
     onscreendisplay.__KeyValueFromString("holdtime", (0.01 + TickSpeed * 2).tostring())
-    onscreendisplay.__KeyValueFromString("fadeout", (0.01 + TickSpeed * 2).tostring())
+    onscreendisplay.__KeyValueFromString("fadeout", (0 + TickSpeed * 2).tostring())
     onscreendisplay.__KeyValueFromString("fadein", (0.01 + TickSpeed * 2).tostring())
     onscreendisplay.__KeyValueFromString("spawnflags", "1")
     onscreendisplay.__KeyValueFromString("color", "60 200 60")

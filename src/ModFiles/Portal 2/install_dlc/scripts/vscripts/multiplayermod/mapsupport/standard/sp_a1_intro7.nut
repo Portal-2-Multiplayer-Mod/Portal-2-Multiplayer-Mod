@@ -6,10 +6,9 @@
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝   ╚═╝
 
 amogos <- true
-function PutStickInAss() {
+function SphereBotFix() {
     amogos = false
     EntFire("@sphere", "enablepickup", "", 1)
-    printl("You put the stick in your ass.")
     Entities.FindByName(null, "sphere_filter").__KeyValueFromString("Negated", "1")
     EntFire("spherebot_1_top_swivel_1", "deactivate", "", 0.1)
 }
@@ -64,7 +63,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger @sphere:disablepickup::0.11")
 
 
-        EntFire("sphere_impact_trigger", "addoutput", "OnTrigger p2mm_servercommand:command:script PutStickInAss():0")
+        EntFire("sphere_impact_trigger", "addoutput", "OnTrigger p2mm_servercommand:command:script SphereBotFix():0")
 
         // EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger bts_panel_door-proxy:OnProxyRelay1::5")
         // EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger open_panel_music:PlaySound::5")

@@ -25,14 +25,12 @@ VisualDebug <- false
 //-----------------------------------
 // Game variables
 //-----------------------------------
-// Set to true if you are playing the futbol game mode on the next map load
-// If true, make sure Deathmatch is false, or no gamemode will run!
-FutBolGamemode <- false
-
-// Set to true if you are playing the deathmatch game mode on the next map load
-// If true, make sure FutBolGamemode is false, or no gamemode will run!
-// Note: No implementation just yet
-Deathmatch <- false
+// If you want to change the gamemode on the next map load, set GameMode to...
+// 0 - Standard   : A stable experience
+// 1 - Speedrun   : For those who like to speedrun Portal 2     (No implementation yet)
+// 2 - Deathmatch : Fight to the death in a team battle         (No full implementation yet)
+// 3 - Futbol     : Portal 2 beta minigame restored             (No full implementation yet)
+GameMode <- 0
 
 // Set to true if you want to randomize every Turret's models and colors (for fun lol)
 RandomTurrets <- false
@@ -43,11 +41,8 @@ RandomPortalSize <- false
 //-----------------------------------
 // Server variables
 //-----------------------------------
-// Set to true if you want to enable the SafeGuard against mallicious commands from clients
+// Set to true if you want to enable the SafeGuard against server vscript functions (Nonfunctional currently)
 SafeGuard <- false
-
-// (Highly recommended to keep at 0.00!) Sets the server tick speed that our code depends on, such as disconnect messages and our loop() function
-TickSpeed <- 0.00
 
 // If the P2:MM plugin loads, then this is the list of players that have access to admin commands, along with admin level
 // The highest admin level is [6] and different people can have the same admin level
@@ -55,14 +50,11 @@ TickSpeed <- 0.00
 // "[AdminLevel]SteamID", // Username
 
 Admins <- [
-"[500]182933216", // kyleraykbs
+"[400]182933216", // kyleraykbs
 "[400]75927374", // Wolƒe Strider Shoσter
 "[400]290760494", // Nanoman2525
 "[400]1106347501", // vista
 "[400]181670710", // Bumpy
 "[400]72399433", // cabiste
-"[6]386105876", // Dreadnox
-"[6]242453954", // sear
-"[6]150199065", // Mystical Λce
-"[6]1053720146", // Ayden
+"[400]242453954", // sear
 ]

@@ -15,7 +15,6 @@
 LastCoordGetPlayer <- null
 CoordsAlternate <- false
 PreviousTime01Sec <- 0
-MinecraftMode <- false
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 
 function loop() {
@@ -427,7 +426,6 @@ function loop() {
             } catch(exception) {
                 // printl("(P2:MM): Error: " + exception)
             }
-            // printl("################################")
         }
 
         //## Detect respawn ##//
@@ -444,108 +442,4 @@ function loop() {
             }
         }
     }
-
-    // // Following box
-    // local lenp = null
-    // while (lenp = Entities.FindByName(lenp, "uwu")) {
-    //     local torigin = Vector(0, 0, 0)
-    //     local torigin2 = Vector(0, 0, 0)
-    //     local tent2 = null
-    //     if (Entities.FindByName(null, "blue")) {
-    //         torigin = Entities.FindByName(null, "blue").GetOrigin()
-    //     }
-
-    //     torigin2 = lenp.GetOrigin()
-    //     tent2 = lenp
-
-    //     local uwu = GetDirectionalOffset(torigin, torigin2)
-
-    //     if (tent2 != null) {
-    //         tent2.SetOrigin(torigin2 + uwu)
-    //     }
-
-    //     // printl("(P2:MM)bo: " + bxorigin)
-    //     // printl("(P2:MM)boff: " + (torigin - bxorigin))
-    //     // printl("(P2:MM)bof: " + bxoffset)
-    //     // printl("(P2:MM)h: " + highest)
-
-    //     // draw the box
-    //     //DebugDrawBox(bxorigin, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 175, 150, 25)
-    // }
-
-    if ("PythonHookIs" in this) {
-        if (PythonHookIs) {
-            try {
-                try {
-                    OldPyInputNum <- PyInputNum
-                } catch(e) {
-                    PyInputNum <- 0
-                    OldPyInputNum <- PyInputNum
-                }
-                IncludeScript("PyInput")
-            } catch(e) {}
-        }
-    }
-
-    if (HasSpawned && MinecraftMode) {
-        if (Time() >= PreviousTime01Sec + 0.2) {
-            PreviousTime01Sec = Time()
-
-            local amt = 0
-
-            // local ent = null
-            // while (ent = Entities.FindByModel(ent, "models/props/metal_box.mdl")) {
-            //     ent.Destroy()
-            // }
-
-            IncludeScript("portalcraft.nut")
-            foreach (thing in PortalBlocks) {
-              //  printl("thing: " + thing.name)
-                if (thing.name != "AIR") {
-                    local spacing = 36
-                    local x = ((thing.x - PortalCapture.x) * spacing)
-                    local y = ((thing.y - PortalCapture.y) * spacing)
-                    local z = ((thing.z - PortalCapture.z) * spacing)
-                    local colorr = 100
-                    local colorg = 100
-                    local colorb = 100
-                    local calpha = 1
-                    if (thing.name == "WATER") {
-                        colorr = 0
-                        colorg = 0
-                        colorb = 255
-                    }
-                    if (thing.name == "GRASS_BLOCK") {
-                        colorr = 20
-                        colorg = 255
-                        colorb = 100
-                    }
-                    if (thing.name == "DIRT") {
-                        colorr = 120
-                        colorg = 90
-                        colorb = 00
-                    }
-                    if (thing.name == "STONE") {
-                        colorr = 30
-                        colorg = 30
-                        colorb = 30
-                    }
-                    if (thing.name == "SAND") {
-                        colorr = 150
-                        colorg = 255
-                        colorb = 30
-                    }
-                    DebugDrawBox(Vector(x + setspot.x, y + setspot.y, z + setspot.z), Vector(-16, -16, -16), Vector(16, 16, 16), colorr, colorg, colorb, calpha, 0.218)
-
-                    amt = amt + 1
-                    if (amt < 500) {
-                        local ourent = Entities.FindByName(null, "minecraftblock" + amt)
-                        ourent.SetOrigin(Vector(x + setspot.x, y + setspot.y, z + setspot.z))
-                        EntFireByHandle(ourent, "Color", colorr + " " + colorg + " " + colorb + " " + calpha, 0, null, null)
-                    }
-                }
-            }
-        }
-    }
 }
-oldbx <- Vector(0, 0, 0)

@@ -179,9 +179,6 @@ function OnPlayerRespawn(player) {
 
 // Runs after the host loads in
 function PostMapLoad() {
-    //# Discord Hook #//
-    SendPythonOutput("hookdiscord Portal 2 Playing On: " + GetMapName())
-
     //## Cheat detection ##//
     SendToConsoleP232("prop_dynamic_create cheatdetectionp2mm")
     SendToConsoleP232("script SetCheats()")
@@ -298,7 +295,7 @@ function GeneralOneTime() {
         }
     }
 
-    // Attempt to display chapter title
+    // Attempt to display chapter title (Valve's way of doing it)
     foreach (index, level in CHAPTER_TITLES)
 	{
 		if (level.map == GetMapName() && level.displayOnSpawn )
