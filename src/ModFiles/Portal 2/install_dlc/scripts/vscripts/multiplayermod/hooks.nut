@@ -404,15 +404,8 @@ function GeneralOneTime() {
     ]
 
     if (IsOnSingleplayerMaps) {
-        if (PluginLoaded) {
-            SetPhysTypeConvar(0)// enable real-time physics
-        } else {
-            printl("(P2:MM): Cannot enable real-time grab controller physics, since the plugin is not loaded!")
-        }
+        SendToConsoleP232("script function CoopPingTool(int1, int2) {}") // Not needed in singleplayer
     } else {
-        if (PluginLoaded) {
-            SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
-        }
         foreach (DoorType in DoorEntities) {
             try {
                 Entities.FindByName(null, DoorType).Destroy()

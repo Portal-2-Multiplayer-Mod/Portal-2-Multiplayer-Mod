@@ -441,5 +441,18 @@ function loop() {
                 }
             }
         }
+
+        //## Singleplayer check that must be looped in case sv_cheats was changed ##//
+        if (IsOnSingleplayerMaps) {
+            if (PluginLoaded) {
+                SetPhysTypeConvar(0)// enable real-time physics
+            } else {
+                printl("(P2:MM): Cannot enable real-time grab controller physics, since the plugin is not loaded!")
+            }
+        } else {
+            if (PluginLoaded) {
+                SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
+            }
+        }
     }
 }
