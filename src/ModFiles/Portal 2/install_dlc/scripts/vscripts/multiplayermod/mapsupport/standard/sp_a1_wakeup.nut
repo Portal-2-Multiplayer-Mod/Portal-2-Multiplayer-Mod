@@ -136,7 +136,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
         if (MSLoop) {
-            //IncludeScript("amogman")
             if (TPP1) {
                 if (Entities.FindByName(null, "TPPLAYERS1")) {
                     local p = null

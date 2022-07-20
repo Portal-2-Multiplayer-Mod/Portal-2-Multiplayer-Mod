@@ -25,6 +25,7 @@ executable = os.path.abspath(sys.executable)
 def DefAfterFunction():
     print("after function is null")
 AfterFunction = DefAfterFunction
+translations = {}
 
 def init():
     global appStartDate, modPath, iow, iol, nf, configPath
@@ -68,3 +69,8 @@ def LoadConfig():
     global configData
     configData = cfg.ImportConfig()
     Log("Config data loaded.")
+
+def LoadTranslations():
+    global translations
+    translations = json.load(open(LanguagesIndex.get(configData["activeLanguage"]["value"]).get('file'), "r", encoding="utf8"))
+    LanguagesIndex = json.load(open(r"languagesIndex.json", "r", encoding="utf8"))

@@ -453,7 +453,7 @@ function SetPlayerModel(p, mdl) {
     PrecacheModelNoDelay(mdl)
     local mdl2 = MinifyModel(mdl)
     local playerclass = FindPlayerClass(p)
-    // EntFire("p232servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
+    // EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
     // local pmodelclass = class {
     //     player = p
     //     model = mdl

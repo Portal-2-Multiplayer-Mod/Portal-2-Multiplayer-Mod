@@ -1,78 +1,78 @@
-import subprocess
-import sys
+# this is a file to store all the global variables needed
+# it's initiated only once when the mainwindow is created
+# please don't temper with it
+
 import os
-import json
-import random
-import threading
-import time
-import webbrowser
-from steamid_converter import Converter
-
-tk = ""
-try:
-    from tkinter import Tk
-
-    tk = Tk()
-    tk.withdraw()
-except Exception as e:
-    Log(str(e))
-    pass
-
-import pygame
-from pygame.locals import *
-import Scripts.GlobalVariables as GVars
-import Scripts.Workshop as workshop
-from Scripts.BasicLogger import Log, StartLog
+import sys
+import ctypes.wintypes
+from datetime import datetime
 import Scripts.Configs as cfg
-import Scripts.Updater as up
-import Scripts.RunGame as RG
-import Scripts.BasicFunctions as BF
+from Scripts.BasicLogger import Log
+#//////////////////////////////////////////#
+#//#    Global Variables Declarations   #//#
+#//////////////////////////////////////////#
 
-# populate the global variables
+# appStartDate is the dateTime when the launcher was started, this is used to name the logs
+appStartDate = ""
+configData = {}
+modPath = ""
+configPath = ""
+iow = False
+iol = False
+nf = os.sep # this way the logging won't break if someone runs the app on mac
+hadtoresetconfig = False
+executable = os.path.abspath(sys.executable)
+def DefAfterFunction():
+    print("after function is null")
+AfterFunction = DefAfterFunction
+translations = {}
 
-# set current directory to the directory of this file
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-cwd = os.getcwd()
+def init():
+    global appStartDate, modPath, iow, iol, nf, configPath
 
-pygame.init()
-pygame.mixer.init()
+    appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
-blipsnd = pygame.mixer.Sound("GUI/assets/sounds/blip.wav")
-blipsnd.set_volume(0.25)
+    if (sys.platform == "win32"):
+        iow = True
 
-pwrsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
-pwrsnd.set_volume(0.25)
+        # again thanks stackOverflow for this
+        # this code allows us to get the document's folder on any windows pc with any language
+        CSIDL_PERSONAL = 5       # My Documents
+        SHGFP_TYPE_CURRENT = 0   # Get current, not default value
 
-hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
-hvrclksnd.set_volume(0.05)
+        buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+        ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
 
-startbtnsnd = pygame.mixer.Sound("GUI/assets/sounds/startbtn.wav")
-startbtnsnd.set_volume(0.25)
+        # set the modpath to the users documents folder
+        modPath = buf.value + nf + "p2mm"
+        configPath = buf.value + nf + "p2mm"
 
-angrycube = pygame.image.load("GUI/assets/images/angrycube.png")
+    elif (sys.platform.startswith("linux")):
+        iol = True
+        # set the modpath the the users home directory
+        modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
+        configPath = os.path.expanduser("~") + nf + ".config/p2mm"
 
-goldencube = pygame.image.load("GUI/assets/images/goldencube.png")
+    else:
+        # feel sad for the poor people who are running templeOS :(
+        Log("This operating system is not supported!")
+        Log("We only support Windows and Linux as of current.")
+        quit()
 
-ERRORLIST = []
+    # check if the modpath exists, if not create it
+    if not os.path.exists(modPath):
+        os.makedirs(modPath)
+    if not os.path.exists(configPath):
+        os.makedirs(configPath)
 
-PopupBoxList = []
+def LoadConfig():
+    global configData
+    configData = cfg.ImportConfig()
+    Log("Config data loaded.")
 
-###############################################################################
-
-fps = 60
-fpsclock = pygame.time.Clock()
-
-screen = pygame.display.set_mode((1280, 720), RESIZABLE)
-
-running = True
-
-# Define the name and image of the window
-pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
-
-p2mmlogo = pygame.image.load("GUI/assets/images/p2mm64.png")
-
-pygame.display.set_icon(p2mmlogo)
-
+def LoadTranslations():
+    global translations
+    translations = json.load(open(LanguagesIndex.get(configData["activeLanguage"]["value"]).get('file'), "r", encoding="utf8"))
 selectedpopupbutton = 0
 
 CurrentSelectedPlayer = 0
@@ -137,24 +137,6 @@ def gradientRect(window, left_colour, right_colour, target_rect):
     window.blit(colour_rect, target_rect)
 
 
-# Start of - Translation Functions
-
-LanguagesIndex = json.load(open(r"languagesIndex.json", "r", encoding="utf8"))
-
-
-def SetLanguage():
-    GVars.init()
-    GVars.LoadConfig()
-    global translations
-
-    translations = json.load(open(LanguagesIndex.get(GVars.configData["activeLanguage"]["value"]).get('file'), "r",
-                                  encoding="utf8"))
-
-
-SetLanguage()
-
-
-# End of - Translation Functions
 
 
 def SelectAnimation(btn, anim):
@@ -198,16 +180,15 @@ def ChangeMenu(menu, append=True):
 def BackMenu():
     if len(directorymenu) > 0:
         ChangeMenu(directorymenu.pop(), False)
-        CurrentButtonsIndex = 0
+        # global CurrentButtonsIndex
+        # CurrentButtonsIndex = 0
 
 
 def BlitDescription(txt, x=screen.get_width() / 16, y=screen.get_height() / 16, clr=(255, 255, 255)):
     try:
         if (len(txt) > 0):
             text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(
-                int((int(screen.get_width() / 25) + int(screen.get_height() / 50)) / 1)) / (len(txt) / 10))).render(txt,
-                                                                                                                    True,
-                                                                                                                    clr)
+                int((int(screen.get_width() / 25) + int(screen.get_height() / 50)) / 1)) / (len(txt) / 10))).render(txt, True, clr)
             if not (LookingForInput):
                 screen.blit(text1, (x, y))
     except Exception as e:
@@ -1425,6 +1406,15 @@ def Main():
 # !                       Logic
 # !######################################################
 
+# Start of - Translation Functions
+
+
+
+def SetLanguage():
+    GVars.init()
+    GVars.LoadConfig()
+
+
 def PostExit():
     if (GVars.iow):
         # windows
@@ -1712,6 +1702,7 @@ def CheckForUpdates():
 def OnStart():
     # Load the global variables
     GVars.init()
+    SetLanguage()
     # to do the fancy log thing
     StartLog()
     # load the config file into memmory
