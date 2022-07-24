@@ -2,6 +2,7 @@
 # it's initiated only once when the mainwindow is created
 # please don't temper with it
 
+import json
 import os
 import sys
 import ctypes.wintypes
