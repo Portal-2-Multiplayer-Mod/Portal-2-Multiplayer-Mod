@@ -103,6 +103,7 @@ playerclasses <- []
 entityclasses <- []
 PreviousNametagItter <- 0
 fogs <- false
+GlobalOverridePluginGrabController <- true // By default unless specified in mapsupport
 
 FailsafeEntityCap <- 2010
 EntityCap <- 2000

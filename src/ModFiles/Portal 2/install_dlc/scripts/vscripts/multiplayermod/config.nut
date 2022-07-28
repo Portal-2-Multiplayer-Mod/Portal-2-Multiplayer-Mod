@@ -35,7 +35,7 @@ GameMode <- 0
 // Set to true if you want to randomize every Turret's models and colors (for fun lol)
 RandomTurrets <- false
 
-// Set to true if you want to randomize the portal size
+// Set to true if you want to randomize the portal size every second
 RandomPortalSize <- false
 
 //-----------------------------------
@@ -44,10 +44,25 @@ RandomPortalSize <- false
 // Set to true if you want to enable the SafeGuard against server vscript functions (Nonfunctional currently)
 SafeGuard <- false
 
-// If the P2:MM plugin loads, then this is the list of players that have access to admin commands, along with admin level
-// The highest admin level is [6] and different people can have the same admin level
-// Format it like this:
-// "[AdminLevel]SteamID", // Username
+// * If the P2:MM plugin loads, then this is the list of players that have access to specific chat commands
+// * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well
+// * Permissions stack with increased admin level
+// * The highest admin level available is [6]
+// * Everyone by default has level [0]
+//
+// * These can be accessed with "!" preceding them
+// * Use "!help (commandname)" to print a description of each command in the chat box
+//
+// [0]: help, changeteam
+// [1]: playercolor
+// [2]: kill
+// [3]: 
+// [4]: speed, noclip, teleport
+// [5]: restart, spchapter, mpcourse
+// [6]: rcon
+//
+// Manually format it like this:
+// "[AdminLevel]SteamID", // (Username to keep track)
 
 Admins <- [
 "[400]182933216", // kyleraykbs

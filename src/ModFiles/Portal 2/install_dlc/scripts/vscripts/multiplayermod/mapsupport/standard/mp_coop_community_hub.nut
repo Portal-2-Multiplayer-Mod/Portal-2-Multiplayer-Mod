@@ -5,16 +5,4 @@
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗╚█████╔╝╚█████╔╝██║ ╚═╝ ██║██║ ╚═╝ ██║╚██████╔╝██║ ╚███║██║   ██║      ██║   ██████████╗██║  ██║╚██████╔╝██████╦╝
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝ ╚════╝  ╚════╝ ╚═╝     ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚══╝╚═╝   ╚═╝      ╚═╝   ╚═════════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝
 
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun) {
-
-    }
-
-    if (MSPostPlayerSpawn) {
-
-    }
-
-    if (MSLoop) {
-        
-    }
-}
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {}

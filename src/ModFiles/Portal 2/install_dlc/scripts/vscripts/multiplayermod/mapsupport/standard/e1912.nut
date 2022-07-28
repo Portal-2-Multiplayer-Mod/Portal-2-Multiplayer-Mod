@@ -136,7 +136,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("spr_gunlight", "SetParentAttachment", "lightAttach", 0.5)
         EntFire("@script_br_trainride", "RunScriptCode", "StartExploreTimer()", 1.5)
 
-        printl("Ran")
         E1912Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         E1912Viewcontrol.__KeyValueFromString("targetname", "E1912Viewcontrol")
         E1912Viewcontrol.__KeyValueFromString("target_team", "-1")

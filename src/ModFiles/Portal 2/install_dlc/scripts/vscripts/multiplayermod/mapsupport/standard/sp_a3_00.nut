@@ -1,9 +1,9 @@
-// ██████╗██████╗             █████╗ ██████╗             █████╗  █████╗
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗██╔══██╗
-//╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║██║  ██║
-// ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║██║  ██║
-//██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝╚█████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝  ╚════╝
+//  ██████╗██████╗             █████╗ ██████╗             █████╗  █████╗
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗██╔══██╗
+// ╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║██║  ██║
+//  ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║██║  ██║
+// ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝╚█████╔╝
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝  ╚════╝
 
 // should fix fog sometime
 
@@ -38,7 +38,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
         Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
         Entities.FindByName(null, "@environment_bottomless_pit_falling_fog").__KeyValueFromString("farz", "0")
-        Entities.FindByName(null, "potatos_prop").__KeyValueFromString("solid", "0")
+        // Entities.FindByName(null, "potatos_prop").__KeyValueFromString("solid", "0")
         // Destroy objects
         Entities.FindByClassnameNearest("logic_auto", Vector(144, -4048, 64), 20).Destroy()
         local ent = null
@@ -64,8 +64,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global03, "turnoff", "", 70, null, null)
         EntFireByHandle(env_global04, "turnoff", "", 70, null, null)
 
-        EntFire("Sp_A3_00ServerCommand", "command", "echo Changing level...", 76, null)
-        EntFire("Sp_A3_00ServerCommand", "command", "changelevel sp_a3_01", 76, null)
+        EntFire(p2mm_servercommand, "command", "changelevel sp_a3_01", 76, null)
     }
 
     if (MSLoop) {
@@ -74,7 +73,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while (p = Entities.FindByClassname(p, "player")) {
             p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 8))
             p.SetVelocity(Vector(p.GetVelocity().x/2, p.GetVelocity().y/2, 0))
-            EntFireByHandle(p, "addoutput", "movetype 4", 0, null, null)
+            p.__KeyValueFromString("rendermode", "10")
+            EntFireByHandle(p, "addoutput", "movetype 0", 0, null, null)
         }
         // Make POTATOS tank point at nearest player
         try {

@@ -9,12 +9,28 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
 
     }
+    
+    if (MSLoop) {
+
+    }
 
     if (MSPostPlayerSpawn) {
 
     }
 
-    if (MSLoop) {
+    if (MSPostMapSpawn) {
+
+    }
+
+    if (MSOnPlayerJoin) {
+
+    }
+
+    if (MSOnDeath) {
+
+    }
+
+    if (MSOnRespawn) {
 
     }
 }

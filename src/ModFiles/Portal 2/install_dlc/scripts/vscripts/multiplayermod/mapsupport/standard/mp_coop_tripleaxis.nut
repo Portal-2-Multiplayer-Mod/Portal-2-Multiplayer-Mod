@@ -9,12 +9,4 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         Entities.FindByName(null, "outro_math_counter").Destroy()
     }
-
-    if (MSPostPlayerSpawn) {
-
-    }
-
-    if (MSLoop) {
-
-    }
 }
