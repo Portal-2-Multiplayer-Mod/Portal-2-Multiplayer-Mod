@@ -214,7 +214,7 @@ def PatchBinaries(gamepath):
         # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
             # copy the binary to the gamepath
-            BF.CopyFile(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
+            BF.CopyFile(gamepath + GVars.nf + binary, gamepath + GVars.nf + filename)
             Log("Copied " + binary+" to " + gamepath + GVars.nf + filename)
         except:
             # On Windows there is no "linux32" folder, so we avoid an error.
@@ -363,11 +363,19 @@ def RenameBinaries(gamepath, binarys):
 
     # go through the list of binaries
     for binary in binarys:
+        filename = binary.rsplit(GVars.nf, 1)[1]
         # if the binary exists
+        extra = "Portal2" + GVars.nf + "bin" + GVars.nf
         if (os.path.isfile(gamepath + GVars.nf + binary)):
             # add a ".p2mmoverride" to the end of the binary
             os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary + ".p2mmoverride")
             Log("Renamed " + binary + " to " + binary + ".p2mmoverride")
+
+            if filename.startswith("engine"):
+                extra = "bin" + GVars.nf
+            # copy the binary to the gamepath
+            BF.MoveFile(gamepath + GVars.nf + filename,
+                        gamepath + GVars.nf + extra + filename)
 
 def UnRenameBinaries(gamepath, binarys):
     # binarys = [
