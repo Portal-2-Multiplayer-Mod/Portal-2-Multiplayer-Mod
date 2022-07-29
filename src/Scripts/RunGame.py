@@ -389,19 +389,20 @@ def UnRenameBinaries(gamepath, binarys):
     Log("Un-renaming binaries...")
 
     # Go through the list of binaries
-    for binary in binarys:
+    for Og_binary in binarys:
         # Add a ".p2mmoverride" file extension to the end of the binary
-        binary = binary + ".p2mmoverride"
+        binary = Og_binary + ".p2mmoverride"
         # If the binary exists,
         if (os.path.isfile(gamepath + GVars.nf + binary)):
-            Log("Un-renaming " + binary + " to " + binary[:-13])
+            Log("Un-renaming " + binary + " to " + Og_binary)
             # If a file with the name gamepath + GVars.nf + binary[:-13] exists
-            if (os.path.isfile(gamepath + GVars.nf + binary[:-13])):
+            if (os.path.isfile(gamepath + GVars.nf + Og_binary)):
                 # Remove it
-                os.remove(gamepath + GVars.nf + binary)
+                os.remove(gamepath + GVars.nf + Og_binary)
             else:
                 # Rename the binary back to the original
-                os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary[:-13])
+                os.rename(gamepath + GVars.nf + binary,
+                          gamepath + GVars.nf + Og_binary)
 
 def DeleteUnusedDlcs(gamepath):
     Log("")
