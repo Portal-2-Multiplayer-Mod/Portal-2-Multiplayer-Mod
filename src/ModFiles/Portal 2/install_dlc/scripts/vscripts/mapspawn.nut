@@ -13,12 +13,20 @@ printl("\n-------------------------")
 printl("==== calling mapspawn.nut")
 printl("-------------------------\n")
 
+// Make sure we know whether the plugin is loaded or not before including other files
+if ("GetPlayerName" in this) {
+    PluginLoaded <- true
+} else {
+    PluginLoaded <- false
+}
+
 IncludeScript("multiplayermod/config.nut")
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
 IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
+IncludeScript("multiplayermod/chatcommands.nut")
 
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
@@ -104,9 +112,7 @@ function init() {
 
     // Load plugin if it exists and compensate if it doesn't
     // Also change the level once it has succeeded this
-    if ("GetPlayerName" in this) {
-        PluginLoaded <- true
-    } else {
+    if (!PluginLoaded) {
         MakePluginReplacementFunctions()
 
         printl("\n=========================================")
@@ -115,7 +121,7 @@ function init() {
         printl("=========================================\n")
 
         EntFire("p2mm_servercommand", "command", "clear", 0.03)
-        EntFire("p2mm_servercommand", "command", "echo Attempting to load the P2:MM plugin...", 0.03)
+        EntFire("p2mm_servercommand", "command", "echo (P2:MM): Attempting to load the P2:MM plugin...", 0.03)
         EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
         if (GetDeveloperLevel() == 918612) {
             if (DevMode) {

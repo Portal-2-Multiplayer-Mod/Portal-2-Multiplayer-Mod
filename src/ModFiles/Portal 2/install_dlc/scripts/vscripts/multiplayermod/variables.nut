@@ -98,7 +98,6 @@ GBIsMultiplayer <- 0
 cacheoriginalplayerposition <- 0
 DoneWaiting <- false
 IsSingleplayerMap <- false
-PluginLoaded <- false
 playerclasses <- []
 entityclasses <- []
 PreviousNametagItter <- 0

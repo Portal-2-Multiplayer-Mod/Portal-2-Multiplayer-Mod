@@ -183,13 +183,7 @@ function PostMapLoad() {
     SendToConsoleP232("prop_dynamic_create cheatdetectionp2mm")
     SendToConsoleP232("script SetCheats()")
 
-    // Add a hook to the chat command function
-    if (PluginLoaded) {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Plugin loaded! Adding chat callback for chat commands.")
-        }
-        AddChatCallback("ChatCommands")
-    }
+
     // Edit cvars & set server name
     SendToConsoleP232("mp_allowspectators 0")
     if (PluginLoaded) {
@@ -418,87 +412,3 @@ function GeneralOneTime() {
 
     MapSupport(false, false, true, false, false, false, false)
 }
-
-// Chat command hooks provided by our plugin
-function ChatCommands(ccuserid, ccmessage) {
-
-    ///////////////////////////////////////////
-    local Message = RemoveDangerousChars(ccmessage)
-    ///////////////////////////////////////////
-
-    //////////////////////////////////////////////
-    if (ShouldIgnoreMessage(Message)) { return }
-    //////////////////////////////////////////////
-
-    //////////////////////////////////////////////
-    local Player = GetPlayerFromUserID(ccuserid)
-    local Inputs = SplitBetween(Message, "!@", true)
-    local PlayerClass = FindPlayerClass(Player)
-    local Username = PlayerClass.username
-    local AdminLevel = GetAdminLevel(Player)
-    //////////////////////////////////////////////
-
-    ////////////////////////////////////////////////////////////////
-    function Rem(s) { return Replace(Replace(s, "!", ""), "@", "") }
-    ////////////////////////////////////////////////////////////////
-
-    ////////////////////////////////////////
-    local Commands = []
-    local Selectors = []
-
-    foreach (Input in Inputs) {
-        if (StartsWith(Input, "!")) {
-            Commands.push(Rem(Input))
-        } else if (StartsWith(Input, "@")) {
-            Selectors.push(Rem(Input))
-        }
-    }
-    ////////////////////////////////////////
-
-    ////////////////////////////////////////////////////
-    local Runners = []
-    local UsedRunners = true
-
-    foreach (Selector in Selectors) {
-        if (Selector == "all" || Selector == "*" || Selector == "everyone") {
-            Runners = []
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                Runners.push(p)
-            }
-            break
-        }
-        local NewRunner = FindPlayerByName(Selector)
-
-        if (NewRunner) {
-            Runners.push(NewRunner)
-        }
-    }
-
-    if (Runners.len() == 0) {
-        Runners.push(Player)
-        UsedRunners = false
-    }
-    ////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////////
-    foreach (Command in Commands) {
-        Command = Strip(Command)
-
-        if (!ValidateCommand(Command)) { ErrorOutCommand(0) ; continue }
-        local Args = SplitBetween(Command, " ", true); if (Args.len() > 0) { Args.remove(0) }
-        Command = GetCommandFromString(Command)
-
-        if (!ValidateCommandAdminLevel(Command, AdminLevel)) { ErrorOutCommand(1, Command); continue }
-
-        if (UsedRunners) { if (!ValidateAlowedRunners(Command, AdminLevel)) { ErrorOutCommand(3, Command); continue } }
-
-
-        foreach (CurPlayer in Runners) {
-            RunChatCommand(Command, Args, CurPlayer)
-        }
-    }
-    ///////////////////////////////////////////////////////////
-
-}
-
