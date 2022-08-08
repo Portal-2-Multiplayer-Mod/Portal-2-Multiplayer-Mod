@@ -5,11 +5,6 @@
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗███████╗╚█████╔╝██████╦╝██████╦╝   ██║   ██████████╗███████╗
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚══════╝ ╚════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚═════════╝╚══════╝
 
-IsLobby3 <- false
-if (GetMapName() == "mp_coop_lobby_3") {
-    IsLobby3 <- true
-}
-
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         Entities.FindByName(null, "robo_rampa_01b").__KeyValueFromString("mincpulevel", "0")
@@ -23,16 +18,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("trigger_run_script", "addoutput", "OnStartTouchBluePlayer coop_man_enter_hub:SetStateBTrue", 0, null)
         EntFire("trigger_quick_spawn", "addoutput", "OnStartTouchBluePlayer coop_man_quick_open:SetStateBTrue", 0, null)
         EntFire("trigger_set_course", "addoutput", "OnStartTouchBluePlayer coop_man_set_course:SetStateBTrue", 0, null)
-
-        if (IsLobby3) {
-            // Enable extra course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-
-            // Fix art therapy tube glitches
-            Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()
-            Entities.FindByName(null, "dlc_room_fall_push_left").Destroy()
-        }
     }
 
     if (MSPostPlayerSpawn) {
@@ -149,58 +134,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             while(APLent = Entities.FindByClassname(APLent, "player")) {
                 APLent.SetOrigin(Vector(2495, -7451, 410))
             }
-        }
-
-        if (IsLobby3) {
-            // Art therapy left chute enabler
-            local vectorEEL
-            vectorEEL = Vector(5727, 3336, -441)
-            local EELent = null
-            while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) {
-                local LCatEn = null
-                while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
-                    DoEntFire("!self", "enable", "", 0.0, null, LCatEn)
-                    DoEntFire("!self", "trigger", "", 0.0, null, LCatEn)
-                }
-            }
-
-            // Art therapy left chute teleporter
-            TeleportPlayerWithinDistance(Vector(5729, 3336, 1005), 30, Vector(3194, -1069, 1676))
-
-            // Art therapy right chute enabler
-            local vectorEER
-            vectorEER = Vector(5727, 3192, -441)
-            local EERent = null
-            while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) {
-                local RCatEn = null
-                while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
-                    DoEntFire("!self", "enable", "", 0.0, null, RCatEn)
-                    DoEntFire("!self", "trigger", "", 0.0, null, RCatEn)
-                }
-            }
-
-            // Art therapy right chute teleporter
-            TeleportPlayerWithinDistance(Vector(5727, 3180, 1005), 30, Vector(3191, -1228, 1682))
-
-            // Disable art therapy chutes
-            local vectorE
-            vectorE = Vector(3201, -1152, 1272)
-            local Aent = null
-            while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) {
-                local LCatDis = null
-                while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
-                    DoEntFire("!self", "enable", "", 0.0, null, LCatDis)
-                    DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
-                }
-                local RCatDis = null
-                while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
-                    DoEntFire("!self", "enable", "", 0.0, null, RCatDis)
-                    DoEntFire("!self", "trigger", "", 0.0, null, RCatDis)
-                }
-            }
-
-            // Teleport exiting player out of art therapy
-            TeleportPlayerWithinDistance(Vector(3584, -1669, 466), 30, Vector(3919, 3352, 158))
         }
     }
 }

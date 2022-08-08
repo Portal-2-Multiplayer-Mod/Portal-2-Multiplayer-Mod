@@ -2138,10 +2138,10 @@ function SplitBetween(str, keysymbols, preserve = false) { //preserve = true : m
 ////////////// CHAT COMMANDS ///////////
 
 ChatCommandErrorList <- [
-    "[ERROR] Command Not Found",
-    "[ERROR] Invalid Syntax",
-    "[ERROR] You do not have permission to use this command",
-    "[ERROR] You cannot use selectors with this command as your admin level is too low",
+    "[ERROR] Command not found.",
+    "[ERROR] Invalid syntax.",
+    "[ERROR] You do not have permission to use this command.",
+    "[ERROR] You cannot use selectors with this command since your admin level is too low.",
 ]
 
 ////////////////////////////////////////////////////////
@@ -2164,7 +2164,7 @@ function NoclipCommand(plr, args) {
 
 CommandList.push(class {
     name = "noclip"
-    level = 1
+    level = 4
     selectorlevel = 2
     func = NoclipCommand
 
@@ -2177,12 +2177,32 @@ CommandList.push(class {
 
 /////////////////////////////////////// KILL
 function KillCommand(plr, args) {
-    EntFireByHandle(plr, "sethealth", "-100", 0, plr, plr)
+    try {
+        args[0] = Strip(args[0])
+
+        if (args[0] != "all") {
+            local q = FindPlayerByName(args[0])
+            if (q != null) {
+                EntFireByHandle(q, "sethealth", "-100", 0, q, q)
+                SendChatMessage("Killed player.")
+            } else {
+                SendChatMessage("[ERROR] Player not found.")
+            }
+        } else {
+            local p2 = null
+            while (p2 = Entities.FindByClassname(p2, "player")) {
+                EntFireByHandle(p2, "sethealth", "-100", 0, p2, p2)
+            }
+            SendChatMessage("Killed all players.")
+        }
+    } catch (exception) {
+        EntFireByHandle(plr, "sethealth", "-100", 0, plr, plr)
+    }
 }
 
 CommandList.push(class {
     name = "kill"
-    level = 0
+    level = 2
     selectorlevel = 1
     func = KillCommand
 
@@ -2195,37 +2215,42 @@ CommandList.push(class {
 
 //////////////////////////////// Change Team
 function ChangeTeamCommand(p, args) {
+    try {
+        args[0] = Strip(args[0])
 
-    if (args.len() == 0) {
-        if (p.GetTeam() == 0) {
-            p.SetTeam(2)
-            return SendChatMessage("Toggled to Red team.")
+        if (args[0] == "0" || args[0] == "2" ||args[0] == "3" ) {
+
+            local teams = {}
+            teams[0] <- "Singleplayer"
+            teams[1] <- "Spectator" // this is not used rn but you can add it in the if below
+            teams[2] <- "Red"
+            teams[3] <- "Blue"
+
+            if (p.GetTeam() == args[0].tointeger()) {
+                return EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] You are already on this team.", 0, p, p)
+            } else {
+                p.SetTeam(args[0].tointeger())
+                return EntFireByHandle(p2mm_clientcommand, "Command", "say Team is now set to " + teams[args[0].tointeger()] + ".", 0, p, p)
+            }
         }
-        if (p.GetTeam() == 2) {
-            p.SetTeam(3)
-            return SendChatMessage("Toggled to Blue team.")
-        }
-        // if the player is in team 3 or above it will just reset them to team 0
-        else {
-            p.SetTeam(0)
-            return SendChatMessage("Toggled to Singleplayer team.")
+        EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Enter a valid team number: 0, 2, or 3.", 0, p, p)
+    } catch (exception) {
+        if (args.len() == 0) {
+            if (p.GetTeam() == 0) {
+                p.SetTeam(2)
+                EntFireByHandle(p2mm_clientcommand, "Command", "say Toggled to Red team.", 0, p, p)
+            }
+            else if (p.GetTeam() == 2) {
+                p.SetTeam(3)
+                EntFireByHandle(p2mm_clientcommand, "Command", "say Toggled to Blue team.", 0, p, p)
+            }
+            // if the player is in team 3 or above it will just reset them to team 0
+            else {
+                p.SetTeam(0)
+                EntFireByHandle(p2mm_clientcommand, "Command", "say Toggled to Singleplayer team.", 0, p, p)
+            }
         }
     }
-
-    args[0] = Strip(args[0])
-
-    if (args[0] == "0" || args[0] == "2" ||args[0] == "3" ) {
-
-        local teams = {}
-        teams[0] <- "Singleplayer"
-        teams[1] <- "Spectator" // this is not used rn but you can add it in the if below
-        teams[2] <- "Red"
-        teams[3] <- "Blue"
-
-        p.SetTeam(args[0].tointeger())
-        return SendChatMessage("Team is now set to " + teams[args[0].tointeger()] + ".")
-    }
-    SendChatMessage("Enter a valid team number: 0, 2, or 3.")
 }
 CommandList.push(class {
     name = "changeteam"
@@ -2242,16 +2267,24 @@ CommandList.push(class {
 
 ////////////////////////////////// Set Speed
 function ChangeSpeedCommand(p, args) {
-    if (args.len() == 0) {
-        SendChatMessage("Input a number.")
-    } else {
-        SetSpeed(p, args[0])
+    try {
+        args[0] = Strip(args[0])
+        if (args[0].tointeger().tostring() != args[0]) {
+            EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Input a number.", 0, p, p)
+        }
+        else if (args[0].tointeger() >= 1 && args[0].tointeger() <= 10) {
+            SetSpeed(p, args[0])
+        } else {
+            EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Number cannot be less than 1 or greater than 10.", 0, p, p)
+        }
+    } catch (exception) {
+        EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Input a number.", 0, p, p)
     }
 }
 
 CommandList.push(class {
     name = "speed"
-    level = 2
+    level = 4
     selectorlevel = 2
     func = ChangeSpeedCommand
 
@@ -2262,68 +2295,72 @@ CommandList.push(class {
 })
 ////////////////////////////////////////////
 
-////////////////////////////////////// Bring
-function BringCommand(p, args) {
-    if (args.len() == 0) {
-        return SendChatMessage("Input a player name.")
-    }
-    args[0] = Strip(args[0])
-    if (args[0] != "all") {
-        local plr = FindPlayerByName(args[0])
-        if (plr != null) {
-            plr.SetOrigin(p.GetOrigin())
-            plr.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
-            SendChatMessage("Brought player.")
-        } else {
-            SendChatMessage("[ERROR] Player not found.")
-        }
-    } else {
-        local p2 = null
-        while (p2 = Entities.FindByClassname(p2, "player")) {
-            if (p2 != p) {
-                p2.SetOrigin(p.GetOrigin())
-                p2.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
-            }
-        }
-        SendChatMessage("Brought all players.")
-    }
-}
-
-CommandList.push(class {
-    name = "bring"
-    level = 2
-    selectorlevel = 2
-    func = BringCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-/////////////////////////////////////// GOTO
-function GotoCommand(p, args) {
+/////////////////////////////////// TELEPORT
+function TeleportCommand(p, args) {
     if (args.len() != 0) {
         args[0] = Strip(args[0])
         local plr = FindPlayerByName(args[0])
         if (plr != null) {
-            p.SetOrigin(plr.GetOrigin())
-            p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-            SendChatMessage("Teleported to player.")
+            try {
+                // See if there's a third argument
+                args[1] = Strip(args[1])
+                local plr2 = FindPlayerByName(args[1])
+                if (args[1] == "all") {
+                    // Third argument was "all"
+                    local q = null
+                    while (q = Entities.FindByClassname(q, "player")) {
+                        // Don't modify the player we are teleporting to
+                        if (q != plr) {
+                            q.SetOrigin(plr.GetOrigin())
+                            q.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                        }
+                    }
+                    if (plr == p) {
+                        SendChatMessage("Brought all players.")
+                    } else {
+                        SendChatMessage("Teleported all players.")
+                    }
+                }
+                else if (plr2 != null) {
+                    // We found a username in the third argument
+                    if (plr2 != plr) {
+                        plr2.SetOrigin(plr.GetOrigin())
+                        plr2.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                        if (plr2 == p) {
+                            return SendChatMessage("Teleported to player.")
+                        } else {
+                            return SendChatMessage("Teleported player.")
+                        }
+                    }
+                    if (plr == p || plr == plr2) {
+                        return SendChatMessage("[ERROR] Can't teleport player to the same player.")
+                    }
+                } else {
+                    SendChatMessage("[ERROR] Third argument is invalid! Use \"all\" or a player's username.")
+                }
+            } catch (exception) {
+                // There was no third argument
+                if (plr == p) {
+                    SendChatMessage("[ERROR] You are already here lol.")
+                } else {
+                    p.SetOrigin(plr.GetOrigin())
+                    p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                    SendChatMessage("Teleported to player.")
+                }
+            }
         } else {
             SendChatMessage("[ERROR] Player not found.")
         }
     } else {
-        SendChatMessage("Input a player name.")
+        SendChatMessage("[ERROR] Input a player name.")
     }
 }
 
 CommandList.push(class {
-    name = "goto"
-    level = 1
+    name = "teleport"
+    level = 4
     selectorlevel = 2
-    func = GotoCommand
+    func = TeleportCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
@@ -2334,18 +2371,18 @@ CommandList.push(class {
 
 /////////////////////////////////////// RCON
 function RconCommand(p, args) {
-    if (args.len() == 0) {
-        SendChatMessage("Input a command.")
-    } else {
+    try {
         args[0] = Strip(args[0])
-        local cmd = Join(args, " ")
+        local cmd = Join(args, "")
         SendToConsoleP232(cmd)
+    } catch (exception) {
+        EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Input a command.", 0, p, p)
     }
 }
 
 CommandList.push(class {
     name = "rcon"
-    level = 3
+    level = 6
     selectorlevel = 3
     func = RconCommand
 
@@ -2356,8 +2393,8 @@ CommandList.push(class {
 })
 ////////////////////////////////////////////
 
-//////////////////////////////////// RESTART
-function RestartCommand(p, args) {
+////////////////////////////// RESTART LEVEL
+function RestartLevelCommand(p, args) {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, p, p)
@@ -2366,10 +2403,10 @@ function RestartCommand(p, args) {
 }
 
 CommandList.push(class {
-    name = "restart"
-    level = 1
+    name = "restartlevel"
+    level = 5
     selectorlevel = 1
-    func = RestartCommand
+    func = RestartLevelCommand
 
     notfounderror = ChatCommandErrorList[0]
     syntaxerror = ChatCommandErrorList[1]
@@ -2383,20 +2420,20 @@ CommandList.push(class {
 function HelpCommand(p, args) {
 
     local commandtable = {}
+    commandtable["help"] <- "List available commands or print a description of a specific one."
     commandtable["noclip"] <- "Toggles noclip mode."
-    commandtable["kill"] <- "Kill yourself, others, or @all."
+    commandtable["kill"] <- "Kill yourself, others, or \"all\"."
     commandtable["changeteam"] <- "Changes your current team."
     commandtable["speed"] <- "Changes your player speed."
-    commandtable["bring"] <- "Brings a specific player or \"all\" to you."
-    commandtable["goto"] <- "teleports you to a specified person."
+    commandtable["teleport"] <- "Teleports a specific player or \"all\" to you or another player."
     commandtable["rcon"] <- "Execute commands on the server console."
-    commandtable["restart"] <- "Reset the current map."
-    commandtable["spchapter"] <- "Changes the level to a specified singleplayer chapter."
-    commandtable["mpcourse"] <- "Changes the level to a specified cooperative course."
+    commandtable["restartlevel"] <- "Reset the current map."
+    commandtable["spchapter"] <- "Changes the level to the first level in a specified singleplayer chapter."
+    commandtable["mpcourse"] <- "Changes the level to the first level in a specified cooperative course."
     commandtable["playercolor"] <- "Changes your model's color through valid RGB values."
 
     if (args.len() == 0) {
-        SendChatMessage("[HELP] Available commands:")
+        SendChatMessage("[HELP] Your available commands:")
         local dly = 0
         foreach (command in CommandList) {
             dly = dly + 0
@@ -2404,20 +2441,21 @@ function HelpCommand(p, args) {
                 SendChatMessage("[HELP] " + command.name, dly)
             }
         }
+        SendChatMessage("[HELP] \"help\" can also print a description for a command if supplied with it.", dly)
     } else {
         args[0] = Strip(args[0])
         if (commandtable.rawin(args[0])) {
-            SendChatMessage(args[0] + ": " + commandtable[args[0]])
+            EntFireByHandle(p2mm_clientcommand, "Command", "say [HELP] " + args[0] + ": " + commandtable[args[0]], 0, p, p)
         }
         else {
-            SendChatMessage("Unknown chat command: " + args[0])
+            EntFireByHandle(p2mm_clientcommand, "Command", "say [HELP] Unknown chat command: " + args[0], 0, p, p)
         }
     }
 }
 
 CommandList.push(class {
     name = "help"
-    level = 3
+    level = 0
     selectorlevel = 3
     func = HelpCommand
 
@@ -2459,7 +2497,7 @@ function SPChapterCommand(p, args) {
 
 CommandList.push(class {
     name = "spchapter"
-    level = 3
+    level = 5
     selectorlevel = 3
     func = SPChapterCommand
 
@@ -2501,7 +2539,7 @@ function MPCourseCommand(p, args) {
 
 CommandList.push(class {
     name = "mpcourse"
-    level = 3
+    level = 5
     selectorlevel = 3
     func = MPCourseCommand
 
@@ -2554,7 +2592,7 @@ function PlayerColorCommand(p, args) {
 
 CommandList.push(class {
     name = "playercolor"
-    level = 3
+    level = 1
     selectorlevel = 3
     func = PlayerColorCommand
 
@@ -2621,6 +2659,7 @@ function ValidateAlowedRunners(cmd, lvl) {
 
 function RunChatCommand(cmd, args, plr) {
     printl("(P2:MM): Running chat command: " + cmd.name)
+    printl("(P2:MM): Player: " + plr)
     cmd.func(plr, args)
 }
 

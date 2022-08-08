@@ -36,6 +36,14 @@ def CopyFile(src, dst):
         os.system("cp \"" + src + "\" \"" + dst + "\"")
     return dst
 
+
+def MoveFile(src, dst):
+    if (GVars.iow):
+        os.system("move \"" + src + "\" \"" + dst + "\"")
+    elif (GVars.iol):
+        os.system("mv \"" + src + "\" \"" + dst + "\"")
+    return dst
+
 def TryFindPortal2Path():
     if (GVars.iow):
         import winreg

@@ -1,9 +1,9 @@
-// ██████╗██████╗             █████╗ ██████╗                 ██╗██╗   ██╗███╗   ███╗██████╗            ██╗███╗  ██╗████████╗██████╗  █████╗
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗                ██║██║   ██║████╗ ████║██╔══██╗           ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗
-//╚█████╗ ██████╔╝           ███████║ █████╔╝                ██║██║   ██║██╔████╔██║██████╔╝           ██║██╔██╗██║   ██║   ██████╔╝██║  ██║
-// ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██╗  ██║██║   ██║██║╚██╔╝██║██╔═══╝            ██║██║╚████║   ██║   ██╔══██╗██║  ██║
-//██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝╚██████╔╝██║ ╚═╝ ██║██║     ██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
+//  ██████╗██████╗             █████╗ ██████╗                 ██╗██╗   ██╗███╗   ███╗██████╗            ██╗███╗  ██╗████████╗██████╗  █████╗
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗                ██║██║   ██║████╗ ████║██╔══██╗           ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗
+// ╚█████╗ ██████╔╝           ███████║ █████╔╝                ██║██║   ██║██╔████╔██║██████╔╝           ██║██╔██╗██║   ██║   ██████╔╝██║  ██║
+//  ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██╗  ██║██║   ██║██║╚██╔╝██║██╔═══╝            ██║██║╚████║   ██║   ██╔══██╗██║  ██║
+// ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝╚██████╔╝██║ ╚═╝ ██║██║     ██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -15,11 +15,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-676, 896, 448), 20).Destroy()
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "tick")
         OnlyOnceSp_A3_Jump_Intro <- true
+        ElevatorFinishMoving <- null
+        GooHurtTimerPred <- 0
     }
 
     if (MSPostPlayerSpawn) {
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto12-entrance_lift_train"), "StartForward", "", 2, null, null)
         EntFire("tick", "kill", "", 2, null)
+        ElevatorFinishMoving <- Time() + 5
     }
 
     if (MSLoop) {
@@ -27,21 +30,23 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             OnlyOnceSp_A3_Jump_Intro <- false
         }
 
-        // Goo Damage Code
-        try {
-        if (GooHurtTimerPred) { printl()}
-        } catch (exception) {
-            GooHurtTimerPred <- 0
+        // Box check
+        if (ElevatorFinishMoving <= Time()) {
+            local boxp = null
+            while (boxp = Entities.FindByClassnameWithin(boxp, "player", Vector(-704, -9152, -335.97), 64)) {
+                boxp.SetOrigin(Vector(-8880, 2096, -57.97))
+            }
         }
 
-        if (GooHurtTimerPred<=Time()) {
+        // Goo Damage Code
+        if (GooHurtTimerPred + 0.8 <= Time()) {
             local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-667, 977, 1004), 6000)) {
-                if (p.GetOrigin().z<=-300) {
-                    EntFireByHandle(p, "sethealth", "-20", 0, null, null)
+            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-667, 977, 1100), 6000)) {
+                if (p.GetOrigin().z <= -350) {
+                    EntFireByHandle(p, "sethealth", "-100", 0, null, null)
                 }
             }
-            GooHurtTimerPred = Time()+1
+            GooHurtTimerPred = Time()
         }
 
 
@@ -55,7 +60,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-668, 2080, 2314), 100)) {
-             
             SendToConsoleP232("changelevel sp_a3_bomb_flings")
         }
     }

@@ -73,19 +73,14 @@ function LoadMapSupportCode(gametype) {
 }
 
 // Now, we load what mapsupport we need based on config.nut:
-if (GameMode == 0) {
-    LoadMapSupportCode("standard")
-}
-else if (GameMode == 1) {
-    LoadMapSupportCode("speedrun")
-}
-else if (GameMode == 2) {
-    LoadMapSupportCode("deathmatch")
-}
-else if (GameMode == 3) {
-    LoadMapSupportCode("futbol")
-}
-else {
+try {
+    switch (GameMode) {
+        case 0: LoadMapSupportCode("standard");     break;
+        case 1: LoadMapSupportCode("speedrun");     break;
+        case 2: LoadMapSupportCode("deathmatch");   break;
+        case 3: LoadMapSupportCode("futbol");       break;
+    }
+} catch (exception) {
     printl("(P2:MM): \"GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
     LoadMapSupportCode("standard")
 }

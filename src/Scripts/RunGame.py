@@ -214,7 +214,7 @@ def PatchBinaries(gamepath):
         # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
             # copy the binary to the gamepath
-            BF.CopyFile(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
+            BF.CopyFile(gamepath + GVars.nf + binary, gamepath + GVars.nf + filename)
             Log("Copied " + binary+" to " + gamepath + GVars.nf + filename)
         except:
             # On Windows there is no "linux32" folder, so we avoid an error.
@@ -363,11 +363,19 @@ def RenameBinaries(gamepath, binarys):
 
     # go through the list of binaries
     for binary in binarys:
+        filename = binary.rsplit(GVars.nf, 1)[1]
         # if the binary exists
+        extra = "Portal2" + GVars.nf + "bin" + GVars.nf
         if (os.path.isfile(gamepath + GVars.nf + binary)):
             # add a ".p2mmoverride" to the end of the binary
             os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary + ".p2mmoverride")
             Log("Renamed " + binary + " to " + binary + ".p2mmoverride")
+
+            if filename.startswith("engine"):
+                extra = "bin" + GVars.nf
+            # copy the binary to the gamepath
+            BF.MoveFile(gamepath + GVars.nf + filename,
+                        gamepath + GVars.nf + extra + filename)
 
 def UnRenameBinaries(gamepath, binarys):
     # binarys = [
@@ -381,19 +389,19 @@ def UnRenameBinaries(gamepath, binarys):
     Log("Un-renaming binaries...")
 
     # Go through the list of binaries
-    for binary in binarys:
-        # Add a ".p2mmoverride" file extension to the end of the binary
-        binary = binary + ".p2mmoverride"
-        # If the binary exists,
+    for Og_binary in binarys:
+        # Add a ".p2mmoverride" file extension to the end of the binary's name
+        binary = Og_binary + ".p2mmoverride"
+        # If the binary exists
         if (os.path.isfile(gamepath + GVars.nf + binary)):
-            Log("Un-renaming " + binary + " to " + binary[:-13])
-            # If a file with the name gamepath + GVars.nf + binary[:-13] exists
-            if (os.path.isfile(gamepath + GVars.nf + binary[:-13])):
-                # Remove it
-                os.remove(gamepath + GVars.nf + binary)
-            else:
-                # Rename the binary back to the original
-                os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary[:-13])
+            Log("Un-renaming " + binary + " to " + Og_binary)
+            
+            # If a file with the original binary's name exist delete it
+            if (os.path.isfile(gamepath + GVars.nf + Og_binary)):
+                os.remove(gamepath + GVars.nf + Og_binary)
+            
+            # Rename the binary back to it's original name
+            os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + Og_binary)
 
 def DeleteUnusedDlcs(gamepath):
     Log("")

@@ -11,10 +11,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "portal_close_second_puzzle").__KeyValueFromString("targetname", "moja")
     }
 
-    if (MSPostPlayerSpawn) {
-
-    }
-
     if (MSLoop) {
         TeleportPlayerWithinDistance(Vector(1224, -1984, 565), 100, Vector(1208, -1989, 315))
     }

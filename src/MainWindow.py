@@ -1,78 +1,78 @@
-# this is a file to store all the global variables needed
-# it's initiated only once when the mainwindow is created
-# please don't temper with it
-
-import os
-import sys
-import ctypes.wintypes
-from datetime import datetime
+import Scripts.BasicFunctions as BF
+import Scripts.RunGame as RG
+import Scripts.Updater as up
 import Scripts.Configs as cfg
-from Scripts.BasicLogger import Log
-#//////////////////////////////////////////#
-#//#    Global Variables Declarations   #//#
-#//////////////////////////////////////////#
+from Scripts.BasicLogger import Log, StartLog
+import Scripts.Workshop as workshop
+import Scripts.GlobalVariables as GVars
+from pygame.locals import *
+import pygame
+import subprocess
+import sys
+import os
+import json
+import random
+import threading
+import time
+import webbrowser
+from steamid_converter import Converter
 
-# appStartDate is the dateTime when the launcher was started, this is used to name the logs
-appStartDate = ""
-configData = {}
-modPath = ""
-configPath = ""
-iow = False
-iol = False
-nf = os.sep # this way the logging won't break if someone runs the app on mac
-hadtoresetconfig = False
-executable = os.path.abspath(sys.executable)
-def DefAfterFunction():
-    print("after function is null")
-AfterFunction = DefAfterFunction
-translations = {}
+tk = ""
+try:
+    from tkinter import Tk
 
-def init():
-    global appStartDate, modPath, iow, iol, nf, configPath
+    tk = Tk()
+    tk.withdraw()
+except Exception as e:
+    Log(str(e))
+    pass
 
-    appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
-    if (sys.platform == "win32"):
-        iow = True
+# populate the global variables
 
-        # again thanks stackOverflow for this
-        # this code allows us to get the document's folder on any windows pc with any language
-        CSIDL_PERSONAL = 5       # My Documents
-        SHGFP_TYPE_CURRENT = 0   # Get current, not default value
+# set current directory to the directory of this file
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+cwd = os.getcwd()
 
-        buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
-        ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
+pygame.init()
+pygame.mixer.init()
 
-        # set the modpath to the users documents folder
-        modPath = buf.value + nf + "p2mm"
-        configPath = buf.value + nf + "p2mm"
+blipsnd = pygame.mixer.Sound("GUI/assets/sounds/blip.wav")
+blipsnd.set_volume(0.25)
 
-    elif (sys.platform.startswith("linux")):
-        iol = True
-        # set the modpath the the users home directory
-        modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
-        configPath = os.path.expanduser("~") + nf + ".config/p2mm"
+pwrsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
+pwrsnd.set_volume(0.25)
 
-    else:
-        # feel sad for the poor people who are running templeOS :(
-        Log("This operating system is not supported!")
-        Log("We only support Windows and Linux as of current.")
-        quit()
+hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
+hvrclksnd.set_volume(0.05)
 
-    # check if the modpath exists, if not create it
-    if not os.path.exists(modPath):
-        os.makedirs(modPath)
-    if not os.path.exists(configPath):
-        os.makedirs(configPath)
+startbtnsnd = pygame.mixer.Sound("GUI/assets/sounds/startbtn.wav")
+startbtnsnd.set_volume(0.25)
 
-def LoadConfig():
-    global configData
-    configData = cfg.ImportConfig()
-    Log("Config data loaded.")
+angrycube = pygame.image.load("GUI/assets/images/angrycube.png")
 
-def LoadTranslations():
-    global translations
-    translations = json.load(open(LanguagesIndex.get(configData["activeLanguage"]["value"]).get('file'), "r", encoding="utf8"))
+goldencube = pygame.image.load("GUI/assets/images/goldencube.png")
+
+ERRORLIST = []
+
+PopupBoxList = []
+
+###############################################################################
+
+fps = 60
+fpsclock = pygame.time.Clock()
+
+screen = pygame.display.set_mode((1280, 720), RESIZABLE)
+
+running = True
+
+# Define the name and image of the window
+pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
+
+p2mmlogo = pygame.image.load("GUI/assets/images/p2mm64.png")
+
+pygame.display.set_icon(p2mmlogo)
+
 selectedpopupbutton = 0
 
 CurrentSelectedPlayer = 0
@@ -131,12 +131,33 @@ AddFloater(50, 50, 20, 75, 75)
 
 def gradientRect(window, left_colour, right_colour, target_rect):
     colour_rect = pygame.Surface((2, 2))  # tiny! 2x2 bitmap
-    pygame.draw.line(colour_rect, left_colour, (0, 0), (0, 1))  # left colour line
-    pygame.draw.line(colour_rect, right_colour, (1, 0), (1, 1))  # right colour line
-    colour_rect = pygame.transform.smoothscale(colour_rect, (target_rect.width, target_rect.height))  # stretch!
+    pygame.draw.line(colour_rect, left_colour, (0, 0),
+                     (0, 1))  # left colour line
+    pygame.draw.line(colour_rect, right_colour, (1, 0),
+                     (1, 1))  # right colour line
+    colour_rect = pygame.transform.smoothscale(
+        colour_rect, (target_rect.width, target_rect.height))  # stretch!
     window.blit(colour_rect, target_rect)
 
 
+# Start of - Translation Functions
+
+LanguagesIndex = json.load(open(r"languagesIndex.json", "r", encoding="utf8"))
+
+
+def SetLanguage():
+    GVars.init()
+    GVars.LoadConfig()
+    global translations
+
+    translations = json.load(open(LanguagesIndex.get(GVars.configData["activeLanguage"]["value"]).get('file'), "r",
+                                  encoding="utf8"))
+
+
+SetLanguage()
+
+
+# End of - Translation Functions
 
 
 def SelectAnimation(btn, anim):
@@ -180,15 +201,17 @@ def ChangeMenu(menu, append=True):
 def BackMenu():
     if len(directorymenu) > 0:
         ChangeMenu(directorymenu.pop(), False)
-        # global CurrentButtonsIndex
-        # CurrentButtonsIndex = 0
+        global CurrentButtonsIndex
+        CurrentButtonsIndex = 0
 
 
 def BlitDescription(txt, x=screen.get_width() / 16, y=screen.get_height() / 16, clr=(255, 255, 255)):
     try:
         if (len(txt) > 0):
             text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(
-                int((int(screen.get_width() / 25) + int(screen.get_height() / 50)) / 1)) / (len(txt) / 10))).render(txt, True, clr)
+                int((int(screen.get_width() / 25) + int(screen.get_height() / 50)) / 1)) / (len(txt) / 10))).render(txt,
+                                                                                                                    True,
+                                                                                                                    clr)
             if not (LookingForInput):
                 screen.blit(text1, (x, y))
     except Exception as e:
@@ -236,11 +259,14 @@ def RefreshSettingsMenu(menu):
                     else:
                         def AfterInputGenericSetConfig(inp, cfgkey=cfgkey, cfgvalue=cfgvalue):
                             cfg.EditConfig(cfgkey, inp.strip())
-                            Log("Saved '" + inp.strip() + "' to config " + cfgkey)
-                            Error(translations["error_saved"], 5, (75, 200, 75))
+                            Log("Saved '" + inp.strip() +
+                                "' to config " + cfgkey)
+                            Error(translations["error_saved"],
+                                  5, (75, 200, 75))
                             RefreshSettingsMenu(menu)
 
-                        GetUserInputPYG(AfterInputGenericSetConfig, keyobj["prompt"], cfgvalue)
+                        GetUserInputPYG(AfterInputGenericSetConfig,
+                                        keyobj["prompt"], cfgvalue)
 
                 isasync = False
 
@@ -290,7 +316,8 @@ def RefreshPlayersMenu():
                 Error(translations["error_saved"], 5, (75, 200, 75))
                 RefreshPlayersMenu()
 
-            GetUserInputPYG(AfterInputPlayerName, translations["players_enter_username"], PlayerKey["name"])
+            GetUserInputPYG(
+                AfterInputPlayerName, translations["players_enter_username"], PlayerKey["name"])
 
             Log("Name: " + PlayerKey["name"])
 
@@ -319,9 +346,11 @@ def RefreshPlayersMenu():
                         inp = inp.replace("]", "")
                         # only get everything after the last ":"
                         inp = inp.split(":")[-1]
-                        Error(translations["players_converted_steamid"], 5, (75, 120, 255))
+                        Error(
+                            translations["players_converted_steamid"], 5, (75, 120, 255))
                     except Exception as e:
-                        Error(translations["players_invalid_steamid"], 5, (255, 50, 50))
+                        Error(
+                            translations["players_invalid_steamid"], 5, (255, 50, 50))
                         Log(str(e))
                         return
 
@@ -331,7 +360,8 @@ def RefreshPlayersMenu():
                 Error(translations["error_saved"], 5, (75, 200, 75))
                 RefreshPlayersMenu()
 
-            GetUserInputPYG(AfterInputSteamID, "Enter A SteamID", PlayerKey["steamid"])
+            GetUserInputPYG(AfterInputSteamID,
+                            "Enter A SteamID", PlayerKey["steamid"])
 
         isasync = False
 
@@ -374,14 +404,17 @@ def RefreshPlayersMenu():
         def function():
             def AfterInputAdminLevel(inp, PlayerKey=PlayerKey):
                 if not inp.isdigit():
-                    Error(translations["players_admin_error_not-a-number"], 5, (255, 50, 50))
+                    Error(
+                        translations["players_admin_error_not-a-number"], 5, (255, 50, 50))
                     inp = "0"
                 elif int(inp) > 6:
-                    Error(translations["players_admin_error_too-high"], 5, (255, 255, 50))
+                    Error(
+                        translations["players_admin_error_too-high"], 5, (255, 255, 50))
                     Error(translations["error_saved"], 5, (75, 200, 75))
                     inp = "6"
                 elif int(inp) < 0:
-                    Error(translations["players_admin_error_too-low"], 5, (255, 50, 50))
+                    Error(
+                        translations["players_admin_error_too-low"], 5, (255, 50, 50))
                     inp = "0"
                 else:
                     Error(translations["error_saved"], 5, (75, 200, 75))
@@ -412,7 +445,8 @@ def RefreshPlayersMenu():
             GVars.configData["Players"]["value"].append(cfg.defaultplayerarray)
             cfg.WriteConfigFile(GVars.configData)
             Log(str(len(GVars.configData["Players"]["value"]) - 1))
-            CurrentSelectedPlayer = len(GVars.configData["Players"]["value"]) - 1
+            CurrentSelectedPlayer = len(
+                GVars.configData["Players"]["value"]) - 1
             RefreshPlayersMenu()
 
         isasync = False
@@ -439,7 +473,8 @@ def RefreshPlayersMenu():
                     CurrentSelectedPlayer -= 1
                 RefreshPlayersMenu()
             else:
-                Error(translations["players_error_must_be_at_least_one_player"], 5, (255, 50, 50))
+                Error(
+                    translations["players_error_must_be_at_least_one_player"], 5, (255, 50, 50))
 
     PlayersMenu.append(CurPlayername)
     PlayersMenu.append(CurSteamID)
@@ -488,7 +523,8 @@ def PopupBox(title, text, buttons):
     selectedpopupbutton = buttons[0]
 
     PopupBox = [title, text, buttons]  # TITLE, TEXT, BUTTONS
-    Log("Creating popup box... Tile: " + str(title) + " Text: " + text + " Buttons: " + str(buttons))
+    Log("Creating popup box... Tile: " + str(title) +
+        " Text: " + text + " Buttons: " + str(buttons))
     PopupBoxList.append(PopupBox)
 
 
@@ -612,7 +648,8 @@ class UpdateButton:
         if coolDown <= 0:
             coolDown = int(3 * 60)
             if not CheckForUpdates():
-                Error(translations["update_already_up_to_date"], 5, (200, 75, 220))
+                Error(
+                    translations["update_already_up_to_date"], 5, (200, 75, 220))
 
     isasync = True
 
@@ -661,7 +698,8 @@ class GuideButton:
 
     def function():
         # open the steam guide in the default browser
-        webbrowser.open("https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
+        webbrowser.open(
+            "https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
 
     isasync = True
 
@@ -712,7 +750,8 @@ class GitHubButton:
 
     def function():
         # open the discord invite in the default browser
-        webbrowser.open("https://github.com/kyleraykbs/Portal2-32PlayerMod#readme")
+        webbrowser.open(
+            "https://github.com/kyleraykbs/Portal2-32PlayerMod#readme")
 
     isasync = True
 
@@ -872,13 +911,18 @@ class GetChangelevelButton:
         def AfterInput(input):
             map = workshop.MapFromSteamID(input)
             if map != False:
-                Error(translations["workshop_changelevel_command"], 3, (255, 0, 255))
-                Error(translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
+                Error(
+                    translations["workshop_changelevel_command"], 3, (255, 0, 255))
+                Error(
+                    translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
             else:
                 Error(translations["workshop_map_not_found"])
-                Error(translations["workshop_sentence0_sure-you-are-sub"], 6, (255, 255, 0))
-                Error(translations["workshop_sentence0_to-map-and-play-it"], 6, (255, 255, 0))
-                Error(translations["workshop_sentence0_least-once"], 6, (255, 255, 0))
+                Error(
+                    translations["workshop_sentence0_sure-you-are-sub"], 6, (255, 255, 0))
+                Error(
+                    translations["workshop_sentence0_to-map-and-play-it"], 6, (255, 255, 0))
+                Error(
+                    translations["workshop_sentence0_least-once"], 6, (255, 255, 0))
 
         GetUserInputPYG(AfterInput, translations["workshop_link"])
 
@@ -919,21 +963,24 @@ class LanguagesButtonDef:
         GVars.configData["activeLanguage"]["value"] = self.code
         cfg.WriteConfigFile(GVars.configData)
         restart_game_text0 = json.load(open(LanguagesIndex.get(GVars.configData["activeLanguage"]["value"]).get('file'),
-                                           "r", encoding="utf8"))["language_error0_language_update"]
+                                            "r", encoding="utf8"))["language_error0_language_update"]
         restart_game_text1 = json.load(open(LanguagesIndex.get(GVars.configData["activeLanguage"]["value"]).get('file'),
-                                           "r", encoding="utf8"))["language_error0_relaunch_game"]
+                                            "r", encoding="utf8"))["language_error0_relaunch_game"]
         Error(restart_game_text0)
         Error(restart_game_text1)
         LanguageButton()
+        RestartClient()
 
 
 def LanguageButton():
     LanguagesMenu.clear()
     for x in LanguagesIndex:
         if GVars.configData["activeLanguage"]["value"] == x:
-            LanguagesMenu.append(LanguagesButtonDef("→ " + LanguagesIndex[x].get('name'), x))
+            LanguagesMenu.append(LanguagesButtonDef(
+                "→ " + LanguagesIndex[x].get('name'), x))
         else:
-            LanguagesMenu.append(LanguagesButtonDef(LanguagesIndex[x].get('name'), x))
+            LanguagesMenu.append(LanguagesButtonDef(
+                LanguagesIndex[x].get('name'), x))
     LanguagesMenu.append(BackButton)
 
 
@@ -942,7 +989,8 @@ def LanguageButton():
 ### BUTTONS
 WorkshopButtons = [GetChangelevelButton, BackButton]
 
-SettingsMenus = [LauncherSettingsButton, Portal2SettingsButton, PlayersButton, BackButton]
+SettingsMenus = [LauncherSettingsButton,
+                 Portal2SettingsButton, PlayersButton, BackButton]
 
 SettingsButtons = []
 
@@ -1016,18 +1064,21 @@ def Update():
             floater.x -= W / 60
             if floater.x < (floater.surf.get_width() * -2):
                 floater.y = random.randint(0, H)
-                floater.x = (floater.surf.get_width() * 2) + (random.randint(W, W * 2)) * 1
+                floater.x = (floater.surf.get_width() * 2) + \
+                    (random.randint(W, W * 2)) * 1
                 floater.negrot = random.randint(0, 1) == 1
         elif (SelectedButton.text == translations["unmount_button"] or SelectedButton.text == translations["exit_button"]):
             floater.y -= H / 60
             if floater.y < (floater.surf.get_height() * -2):
-                floater.y = (floater.surf.get_height() * 2) + (random.randint(H, H * 2))
+                floater.y = (floater.surf.get_height() * 2) + \
+                    (random.randint(H, H * 2))
                 floater.x = random.randint(0, W)
                 floater.negrot = random.randint(0, 1) == 1
         else:
             floater.y += H / 60
             if floater.y > (H + floater.surf.get_height() * 2):
-                floater.y = (floater.surf.get_height() * -2) + (random.randint(0, H)) * -1
+                floater.y = (floater.surf.get_height() * -2) + \
+                    (random.randint(0, H)) * -1
                 floater.x = random.randint(0, W)
                 floater.negrot = random.randint(0, 1) == 1
 
@@ -1052,7 +1103,8 @@ def Update():
                                  int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text,
                                                                                                        True, clr)
         if not (LookingForInput):
-            screen.blit(text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
+            screen.blit(
+                text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
         button.x = W / 16
         button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
         button.width = text1.get_width()
@@ -1067,7 +1119,8 @@ def Update():
         errortext = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(W / 60) + int(H / 85))).render(error[0],
                                                                                                           True,
                                                                                                           error[2])
-        screen.blit(errortext, (W / 30, ((errortext.get_height() * indx) * -1) + (H / 1.05)))
+        screen.blit(
+            errortext, (W / 30, ((errortext.get_height() * indx) * -1) + (H / 1.05)))
 
     # every 1 second go through each error and remove it if it's been there for more than 1 second
     if (time.time() - SecAgo) > 1:
@@ -1090,7 +1143,8 @@ def Update():
         boxbackground = pygame.Surface((W / sz, W / (sz * 2)))
         boxbackground.fill((255, 255, 255))
         boxbackground.set_alpha(175)
-        screen.blit(boxbackground, (W / 2 - (boxbackground.get_width() / 2), H / 2 - (boxbackground.get_height() / 2)))
+        screen.blit(boxbackground, (W / 2 - (boxbackground.get_width() / 2),
+                    H / 2 - (boxbackground.get_height() / 2)))
 
         bw = boxbackground.get_width()
         bh = boxbackground.get_height()
@@ -1110,7 +1164,8 @@ def Update():
         ctext = PopupBoxList[0][1].split("\n")
         indx = 0
         for line in ctext:
-            text = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(fntsize / 1.5)).render(line, True, (0, 0, 0))
+            text = pygame.font.Font(
+                "GUI/assets/fonts/pixel.ttf", int(fntsize / 1.5)).render(line, True, (0, 0, 0))
             textw = text.get_width()
             texth = text.get_height()
             textx = bx + (bw / 2) - (textw / 2)
@@ -1141,7 +1196,8 @@ def Update():
                                                                                              (255, 255, 255))
             textw = text.get_width()
             texth = text.get_height()
-            textx = bx + (bw / amtob) * (indx) + ((bw / amtob) / 2) - (textw / 2)
+            textx = bx + (bw / amtob) * (indx) + \
+                ((bw / amtob) / 2) - (textw / 2)
             texty = by + bh - (bh / 5) + (texth / 2)
             screen.blit(text, (textx, texty))
             indx += 1
@@ -1158,16 +1214,17 @@ def Update():
 
         InputText = ""
         for i in range(len(lines)):
-            InputText = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(lines[i], True, (255, 255, 175))
+            InputText = pygame.font.Font(
+                "GUI/assets/fonts/pixel.ttf", fntsize).render(lines[i], True, (255, 255, 175))
             screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (
-            (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - (
-                                    (((text1.get_height() * 1.25) * (len(lines) / 2))))))
+                (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - (
+                (((text1.get_height() * 1.25) * (len(lines) / 2))))))
 
         surf1 = pygame.Surface((W / 1.5, W / 100))
         surf1.fill((255, 255, 255))
         surf2 = pygame.Surface((W / 1.5, W / 100))
         blitpos = (
-        (W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
+            (W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
         screen.blit(surf1, blitpos)
 
         surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(InputPrompt, True,
@@ -1196,8 +1253,7 @@ def Main():
     coolDown = 0
     LastBackspace = 0
 
-    LanguageButton()
-    SetLanguage()
+    # SetLanguage()
 
     while running:
 
@@ -1235,7 +1291,8 @@ def Main():
                         CurInput += "    "
                     elif CTRLHELD and name == "v":
                         try:
-                            str1 = str(tk.selection_get(selection="CLIPBOARD")).replace("\n", "")
+                            str1 = str(tk.selection_get(
+                                selection="CLIPBOARD")).replace("\n", "")
                             Log(f"Pasted: {str1}")
                             CurInput += str1
                         except Exception as e:
@@ -1264,7 +1321,6 @@ def Main():
                     elif len(name) == 3:
                         CurInput += name[1]
 
-
             ######################## POPUP BOX INPUT
             elif len(PopupBoxList) > 0:
                 boxlen = len(PopupBoxList[0][2])
@@ -1275,13 +1331,15 @@ def Main():
                         for btn in PopupBoxList[0][2]:
                             if btn == selectedpopupbutton:
                                 if PopupBoxList[0][2].index(btn) < boxlen - 1:
-                                    selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) + 1]
+                                    selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(
+                                        btn) + 1]
 
                     elif event.key == K_LEFT:
                         for btn in PopupBoxList[0][2]:
                             if btn == selectedpopupbutton:
                                 if PopupBoxList[0][2].index(btn) > 0:
-                                    selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(btn) - 1]
+                                    selectedpopupbutton = PopupBoxList[0][2][PopupBoxList[0][2].index(
+                                        btn) - 1]
 
                     elif event.key == K_SPACE or event.key == K_RETURN:
                         selectedpopupbutton.function()
@@ -1325,7 +1383,8 @@ def Main():
                     SelectAnimation(SelectedButton, SelectedButton.selectanim)
                     if SelectedButton.function:
                         if SelectedButton.isasync:
-                            threading.Thread(target=SelectedButton.function).start()
+                            threading.Thread(
+                                target=SelectedButton.function).start()
                         else:
                             SelectedButton.function()
 
@@ -1342,11 +1401,13 @@ def Main():
                                     mousey > button.y and mousey < button.y + button.height):
                                 if SelectedButton.function:
                                     if SelectedButton.isasync:
-                                        threading.Thread(target=SelectedButton.function).start()
+                                        threading.Thread(
+                                            target=SelectedButton.function).start()
                                     else:
                                         SelectedButton.function()
 
-                                SelectAnimation(SelectedButton, SelectedButton.selectanim)
+                                SelectAnimation(
+                                    SelectedButton, SelectedButton.selectanim)
 
                                 PlaySound(SelectedButton.selectsnd)
                         except Exception as e:
@@ -1388,7 +1449,8 @@ def Main():
 
         # make the screen a gradient
         screen.fill((0, 0, 0))
-        gradientRect(screen, (0, 2, 10), (2, 2, 10), pygame.Rect(0, 0, screen.get_width(), screen.get_height()))
+        gradientRect(screen, (0, 2, 10), (2, 2, 10), pygame.Rect(
+            0, 0, screen.get_width(), screen.get_height()))
         Update()
         pygame.display.update()
         fpsclock.tick(fps)
@@ -1405,15 +1467,6 @@ def Main():
 # !######################################################
 # !                       Logic
 # !######################################################
-
-# Start of - Translation Functions
-
-
-
-def SetLanguage():
-    GVars.init()
-    GVars.LoadConfig()
-
 
 def PostExit():
     if (GVars.iow):
@@ -1471,7 +1524,8 @@ def VerifyGamePath(shouldgetpath=True):
 
 
 def VerifyModFiles():
-    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + \
+        GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     Log("Searching for mod files in: " + modFilesPath)
     if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
         Log("Mod files found!")
@@ -1483,7 +1537,8 @@ def VerifyModFiles():
 
 def UseFallbacks(gamepath):
     # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
-    BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf +
+                  "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
     DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
     RG.MountMod(gamepath, DoEncrypt)
     Error(translations["mount_complete"], 5, (75, 255, 75))
@@ -1499,7 +1554,8 @@ def DEVMOUNT():
         Log(str(e))
 
     # copy the one in the current directory to the modpath
-    BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    BF.CopyFolder(cwd + GVars.nf + "ModFiles",
+                  GVars.modPath + GVars.nf + "ModFiles")
 
 
 def MountModOnly():
@@ -1554,7 +1610,8 @@ def MountModOnly():
             PopupBox(translations["game_files_fetch_game"], translations["game_files_no_cached_files"],
                      [YesButton, NoButton])
         else:
-            Error(translations["update_error_connection_problem"], 5, (255, 75, 75))
+            Error(
+                translations["update_error_connection_problem"], 5, (255, 75, 75))
             UseFallbacks(gamepath)
             Error(translations["mounted"], 5, (75, 255, 75))
             return True
@@ -1613,7 +1670,7 @@ def UnmountScript(shouldgetpath=True):
     Log("____DONE UNMOUNTING____")
 
 
-def RestartClient(path):
+def RestartClient(path=sys.executable):
     if (GVars.iol):
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
@@ -1682,7 +1739,8 @@ def ModFilesUpdateBox():
         activecolor = (255, 75, 75)
         inactivecolor = (155, 155, 155)
 
-    PopupBox(translations["update_available"], translations["update_would_you_like_to"], [YesButton, NoButton])
+    PopupBox(translations["update_available"],
+             translations["update_would_you_like_to"], [YesButton, NoButton])
 
 
 def CheckForUpdates():
@@ -1702,7 +1760,6 @@ def CheckForUpdates():
 def OnStart():
     # Load the global variables
     GVars.init()
-    SetLanguage()
     # to do the fancy log thing
     StartLog()
     # load the config file into memmory
@@ -1720,6 +1777,7 @@ def OnStart():
         cfg.EditConfig("developer", "true")
 
     VerifyGamePath(False)
+    LanguageButton()
 
     def NewAfterFunction():
         Error(translations["game_exited"], 5, (125, 0, 125))
@@ -1750,7 +1808,8 @@ def OnStart():
             activecolor = (75, 255, 75)
             inactivecolor = (155, 155, 155)
 
-        PopupBox(translations["launcher_config_reset"], translations["launcher_had_to_reset"], [OkButton])
+        PopupBox(translations["launcher_config_reset"],
+                 translations["launcher_had_to_reset"], [OkButton])
 
 
 if __name__ == '__main__':
