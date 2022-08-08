@@ -41,20 +41,20 @@ RandomPortalSize <- false
 //-----------------------------------
 // Server variables
 //-----------------------------------
-// Set to true if you want to enable the SafeGuard against server vscript functions (Nonfunctional currently)
+// Set to true if you want to enable the SafeGuard against server vscript functions
 SafeGuard <- false
 
 // * If the P2:MM plugin loads, then this is the list of players that have access to specific chat commands
 // * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well
 // * Permissions stack with increased admin level
-// * The highest admin level available is [6]
+// * The highest admin level available is [6] and is assigned automatically to the host
 // * Everyone by default has level [0]
 //
 // * These can be accessed with "!" preceding them
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
 // [0]: help, changeteam
-// [1]: playercolor
+// [1]: playercolor (nonfunctional currently)
 // [2]: kill
 // [3]: 
 // [4]: speed, noclip, teleport

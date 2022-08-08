@@ -15,19 +15,20 @@ import random
 import time
 
 CommandReplacements = [
-    ['restart_level', 'portal2mprslv', 'portal2mprslv'],
-    ['mp_restart_level', 'portal2mpmprslev', 'portal2mpmprslev'],
-    ['mp_earn_taunt', 'portal2mpmper', 'portal2mpmper'],
-    ['pre_go_to_calibration', 'portal2multiplayrpgtc', 'portal2multiplayrpgtc'],
-    ['erase_mp_progress', 'portal2multiemppg', 'portal2multiemppg'],
-    ['mp_mark_all_maps_complete', 'portal2multiplayermpmamcp', 'portal2multiplayermpmamcp'],
-    ['mp_mark_all_maps_incomplete', 'portal2multiplayermodmpmami', 'portal2multiplayermodmpmami'],
-    ['pre_go_to_hub', 'portal2mppgth', 'portal2mppgth'],
-    ['transition_map', 'portal2mptrmap', 'portal2mptrmap'],
-    ['select_map', 'p2mpselmap', 'p2mpselmap'],
-    ['mp_select_level', 'portal2mpmpsell', 'portal2mpmpsell'],
-    ['mp_mark_course_complete', 'portal2multiplayermpmcc', 'portal2multiplayermpmcc'],
-    ['script_execute', 'script_execute', 'script_execute'],
+    # ['go_to_hub', 'p2mm__gth', 'p2mm__gth'], # This is internally called in maps so we can't patch it
+    ['go_to_calibration', 'p2mm_go_to_calibr', 'p2mm_go_to_calibr'],
+    ['restart_level', 'p2mm__restart', 'p2mm__restart'],
+    ['mp_restart_level', 'p2mm__mp_restart', 'p2mm__mp_restart'],
+    ['mp_earn_taunt', 'p2mm_earn_tnt', 'p2mm_earn_tnt'],
+    ['pre_go_to_calibration', 'p2mm_tran_calibration', 'p2mm_tran_calibration'],
+    ['erase_mp_progress', 'p2mm_cut_progress', 'p2mm_cut_progress'],
+    ['mp_mark_all_maps_complete', 'p2mm_label_coop_completed', 'p2mm_label_coop_completed'],
+    ['mp_mark_all_maps_incomplete', 'p2mm_label_coop_incompleted', 'p2mm_label_coop_incompleted'],
+    ['pre_go_to_hub', 'p2mm_tran_hub', 'p2mm_tran_hub'],
+    ['transition_map', 'p2mm_next_maps', 'p2mm_next_maps'],
+    ['select_map', 'p2mmselmap', 'p2mmselmap'],
+    ['mp_select_level', 'p2mm_goto_level', 'p2mm_goto_level'],
+    ['mp_mark_course_complete', 'p2mm_course_#_completed', 'p2mm_course_#_completed'],
 ]
 
 
@@ -248,7 +249,7 @@ def PatchBinaries(gamepath):
         # Delete the file
         os.remove(gamepath + GVars.nf + "server.dll")
         # replace the data
-        # 33 player cap edit
+        # 32 player cap edit
         data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15', b'\x8bM\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
         data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]', b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0 \x89\x01]')
         data = data.replace(b'\xff\xd0\x85\xc0t\x05\xbe\x03\x00\x00\x00\x8b', b'\xff\xd0\x85\xc0t\x05\xbe\x21\x00\x00\x00\x8b')
@@ -265,18 +266,6 @@ def PatchBinaries(gamepath):
             Log("Replacing " + cmdrep[0] + " with " + cmdrep[2])
             data = data.replace(bytes(cmdrep[0], 'utf-8'), bytes(cmdrep[2], 'utf-8'))
         Log("==========Done=========")
-        # data = data.replace(b'restart_level', b'portal2mprslv')
-        # data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
-        # data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
-        # data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
-        # data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
-        # data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
-        # data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
-        # data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
-        # data = data.replace(b'transition_map', b'portal2mptrmap')
-        # data = data.replace(b'select_map', b'p2mpselmap')
-        # data = data.replace(b'mp_select_level', b'portal2mpmpsell')
-        # data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
         # write the data back to the file
         open(gamepath + GVars.nf + "server.dll", "wb").write(data)
@@ -315,7 +304,7 @@ def PatchBinaries(gamepath):
         # remove the file
         os.remove(gamepath + GVars.nf + "server.so")
         # replace the data
-        # 33 player cap edit
+        # 32 player cap edit
         data = data.replace(b'\x01\x00\x00\x00\x8bD$\x14\xc7\x00\x01', b'\x1f\x00\x00\x00\x8bD$\x14\xc7\x00\x1f')
         data = data.replace(b'\xc0\x0f\xb6\xc0\x83\xc0\x02\x89\x02\x83\xc4', b'\xc0\x0f\xb6\xc0\x83\xc0 \x89\x02\x83\xc4')
         data = data.replace(b'\x0f\xb6\xc0\x83\xc0\x02\x83\xec\x04\x89\xf3', b'\x0f\xb6\xc0\x83\xc0 \x83\xec\x04\x89\xf3')
@@ -332,18 +321,6 @@ def PatchBinaries(gamepath):
             Log("Replacing " + cmdrep[0] + " with " + cmdrep[2])
             data = data.replace(bytes(cmdrep[0], 'utf-8'), bytes(cmdrep[2], 'utf-8'))
         Log("==========Done=========")
-        # data = data.replace(b'restart_level', b'portal2mprslv')
-        # data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
-        # data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
-        # data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
-        # data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
-        # data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
-        # data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
-        # data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
-        # data = data.replace(b'transition_map', b'portal2mptrmap')
-        # data = data.replace(b'select_map', b'p2mpselmap')
-        # data = data.replace(b'mp_select_level', b'portal2mpmpsell')
-        # data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
         # write the data back to the file
         open(gamepath + GVars.nf + "server.so", "wb").write(data)
@@ -468,7 +445,7 @@ def LaunchGame(gamepath):
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame():
                 # start portal 2 with the launch options and dont wait for it to finish
-                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-condebug", "-console", "-usercon"])
+                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-usercon"])
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
@@ -478,7 +455,7 @@ def LaunchGame(gamepath):
         elif (GVars.iol):
             def RunGame():
                 def RunSteam():
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -condebug -console -usercon")
+                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -usercon")
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame():
