@@ -969,6 +969,7 @@ class LanguagesButtonDef:
         Error(restart_game_text0)
         Error(restart_game_text1)
         LanguageButton()
+        RestartClient()
 
 
 def LanguageButton():
@@ -1252,8 +1253,7 @@ def Main():
     coolDown = 0
     LastBackspace = 0
 
-    LanguageButton()
-    SetLanguage()
+    # SetLanguage()
 
     while running:
 
@@ -1670,7 +1670,7 @@ def UnmountScript(shouldgetpath=True):
     Log("____DONE UNMOUNTING____")
 
 
-def RestartClient(path):
+def RestartClient(path=sys.executable):
     if (GVars.iol):
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
@@ -1777,6 +1777,7 @@ def OnStart():
         cfg.EditConfig("developer", "true")
 
     VerifyGamePath(False)
+    LanguageButton()
 
     def NewAfterFunction():
         Error(translations["game_exited"], 5, (125, 0, 125))
