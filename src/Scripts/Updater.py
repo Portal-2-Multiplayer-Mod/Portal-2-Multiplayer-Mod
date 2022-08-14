@@ -91,8 +91,9 @@ def DownloadClient(cType = ""):
     # if (GVars.iow):
     #     command = [path, "updated", GVars.executable]
     #     subprocess.Popen(command)
+    #     \n was here, how DARE you misspell linux!
     if (GVars.iol):
-        Log("Linix detected, gotta chmod that bad boy")
+        Log("Linux detected, gotta chmod that bad boy")
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
     
