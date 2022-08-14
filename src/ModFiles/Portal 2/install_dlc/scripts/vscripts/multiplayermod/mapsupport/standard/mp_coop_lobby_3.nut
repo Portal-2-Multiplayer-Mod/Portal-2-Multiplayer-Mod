@@ -55,7 +55,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
             Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
             Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
-
+            
             // Enable retrigger for all logic_relay entities except for those defined otherwise
             // in the bsp to prevent desync on clients and remove errors from the console
             local ent = null
