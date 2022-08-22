@@ -18,18 +18,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "fall_fade").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(624, 448, 960), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(704, 448, 968), 20).Destroy()
+
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_tb_wall_button:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
-    }
-
-    if (MSLoop) {
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(1120, 448, 1328), 50)) {
-             
-            SendToConsoleP232("changelevel sp_a4_tb_wall_button")
-        }
     }
 }

@@ -15,18 +15,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "blast_door").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(64, 1704, 64), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(64, 1776, 40), 1024).Destroy()
+                    
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_laser_vs_turret:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
-    }
-
-        if (MSLoop) {
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(63, 2185, -265), 50)) {
-             
-            SendToConsoleP232("changelevel sp_a2_laser_vs_turret")
-        }
     }
 }

@@ -20,6 +20,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
             ent.__KeyValueFromString("CheckAllIDs", "1")
         }
+                    
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_turret_intro:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -30,12 +33,5 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make Wheatley look at nearest player
         local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "@sphere_bottom_swivel_1").GetOrigin(), 10000)
         EntFireByHandle(Entities.FindByName(null, "@sphere_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(321, 1374, 561), 50)) {
-             
-            SendToConsoleP232("changelevel sp_a2_turret_intro")
-        }
     }
 }

@@ -10,7 +10,7 @@
 //  |_|  \_,_||_||_|\__| \__||_|\___/|_||_|/__/(_)
 //---------------------------------------------------
 // Purpose: Here, we declare some functions to call
-//                  upon later in the code
+//                upon later in the code.
 //---------------------------------------------------
 
 //## If not in multiplayer then disconnect immediately ##//
@@ -25,17 +25,6 @@ function MakeSPCheck() {
 //## Hacky solutions ##//
 function DecEntFireByHandle(target, action, value = "", delay = 0, activator = null, caller = null) {
     EntFireByHandle(target, action, value, delay, activator, caller);
-}
-
-//## Replace Plugin Functions ##//
-// If the plugin isn't loaded then we make some replacements
-function MakePluginReplacementFunctions() {
-    function GetPlayerName(entinx) {
-        return "player" + entinx
-    }
-    function AddChatCallback(func) {
-        printl("(P2:MM): Plugin not loaded. Unable to add chat callback for chat commands!")
-    }
 }
 
 function GetHighest(inpvec) {
@@ -291,29 +280,29 @@ function GetPlayerColor(p, multiply = true) {
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; colorname = "white";         break;
-            case 2 : R <- 180, G <- 255, B <- 180; colorname = "green";         break;
-            case 3 : R <- 120, G <- 140, B <- 255; colorname = "blue";          break;
-            case 4 : R <- 255, G <- 170, B <- 120; colorname = "orange";        break;
-            case 5 : R <- 255, G <- 100, B <- 100; colorname = "red";           break;
-            case 6 : R <- 255, G <- 180, B <- 255; colorname = "pink";          break;
-            case 7 : R <- 255, G <- 255, B <- 180; colorname = "yellow";        break;
-            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "aqua";          break;
-            case 9 : R <-  60, G <-  15, B <-   0; colorname = "crimson";       break;
-            case 10: R <-   0, G <- 255, B <- 200; colorname = "ocean green";   break;
-            case 11: R <-  80, G <-  99, B <-   0; colorname = "olive";         break;
-            case 12: R <-  40, G <-  40, B <-  80; colorname = "violet";        break;
-            case 13: R <-  75, G <-  75, B <-  75; colorname = "gray";          break;
-            case 14: R <-  64, G <-   0, B <-   0; colorname = "dark red";      break;
-            case 15: R <-   0, G <-  64, B <-   0; colorname = "dark green";    break;
-            case 16: R <-   0, G <-   0, B <-  64; colorname = "dark blue";     break;
+            case 1 : R <- 255; G <- 255; B <- 255; colorname = "White";         break;
+            case 2 : R <- 180, G <- 255, B <- 180; colorname = "Green";         break;
+            case 3 : R <- 120, G <- 140, B <- 255; colorname = "Blue";          break;
+            case 4 : R <- 255, G <- 170, B <- 120; colorname = "Orange";        break;
+            case 5 : R <- 255, G <- 100, B <- 100; colorname = "Red";           break;
+            case 6 : R <- 255, G <- 180, B <- 255; colorname = "Pink";          break;
+            case 7 : R <- 255, G <- 255, B <- 180; colorname = "Yellow";        break;
+            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "Aqua";          break;
+            case 9 : R <-  60, G <-  15, B <-   0; colorname = "Crimson";       break;
+            case 10: R <-   0, G <- 255, B <- 200; colorname = "Ocean green";   break;
+            case 11: R <-  80, G <-  99, B <-   0; colorname = "Olive";         break;
+            case 12: R <-  40, G <-  40, B <-  80; colorname = "Violet";        break;
+            case 13: R <-  75, G <-  75, B <-  75; colorname = "Gray";          break;
+            case 14: R <-  64, G <-   0, B <-   0; colorname = "Dark red";      break;
+            case 15: R <-   0, G <-  64, B <-   0; colorname = "Dark green";    break;
+            case 16: R <-   0, G <-   0, B <-  64; colorname = "Dark blue";     break;
         }
-    } catch(e) { }
+    } catch(e) {}
 
     if (PlayerID > 16) {
         // If you have more than 16 players then you gotta bear the consequences of your own actions
         local randomColor = RandomColor()
-        R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; colorname = "random";
+        R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; colorname = "Random";
     }
 
     if (multiply) {
@@ -358,7 +347,7 @@ function GetPlayerColor(p, multiply = true) {
 }
 
 function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
-    if (DevMode){
+    if (GetDeveloperLevel()){
         DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
     }
 
@@ -882,7 +871,7 @@ function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "u
     local offset = MultiplyVector(GetDirectionalOffset(entity.GetOrigin(), PointList[entclass.followingpointlistindex]), Speed)
     entity.SetOrigin(entity.GetOrigin() - offset)
 
-    if (VisualDebug) {
+    if (Config_VisualDebug) {
         DebugDrawLine(entity.GetOrigin(), PointList[entclass.followingpointlistindex], 255, 255, 0, true, 0)
         if (entclass.followingpointlistindex == 0) {
             DebugDrawLine(entity.GetOrigin(), PointList[PointList.len() - 1], 0, 255, 0, true, 0)
@@ -1035,7 +1024,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         clradd = clradd + 50
         opadd = opadd + 1
         if (Entities.FindByName(null, "blue") != entitiestoexclude[0]) {
-            if (VisualDebug) {
+            if (Config_VisualDebug) {
                 DebugDrawBox(origin + originoffset, Vector(deboogdatalarb / -1, deboogdatalarb / -1, deboogdatalarb / -1), Vector(deboogdatalarb, deboogdatalarb, deboogdatalarb), 255 - clradd, 0, clradd, 0 + opadd, 0.1)
                 DebugDrawBox(origin + originoffset, Vector(-10, -10, -10), Vector(10, 10, 10), 0, 255, 255, 10, 0.1)
             }
@@ -1047,7 +1036,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         // After getting the end point, we need to see if we hit anything
         local newnearest = FindNearest(origin + originoffset, maxreldist, entitiestoexclude, specificclass)
         if (newnearest != null) {
-            if (VisualDebug) {
+            if (Config_VisualDebug) {
                 DebugDrawLine(origorigin, origin + originoffset, 0, 255, 0, false, 0.1)
             }
             return newnearest
@@ -1057,7 +1046,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     }
 
     outputorigin = origin + originoffset
-    if (VisualDebug) {
+    if (Config_VisualDebug) {
         DebugDrawLine(origorigin, outputorigin, 0, 255, 0, false, 0.1)
     }
 }
@@ -1080,7 +1069,7 @@ function DoesPlayerColorEntityExist() {
 function DisplayPlayerColor(player) {
     DoesPlayerColorEntityExist()
 
-    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: " + GetPlayerColor(player).name, 0, player, player)
     EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
     EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
     EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
@@ -1776,17 +1765,20 @@ function TeleportToSpawnPoint(p, SpawnClass) {
         SpawnClass = BestGuessSpawnpoint()
     }
 
-    if (p.GetTeam() >= 3) {
+    if (p.GetTeam() == 3) {
         // Blue team
         p.SetOrigin(SpawnClass.blue.spawnpoint)
         p.SetAngles(SpawnClass.blue.rotation.x, SpawnClass.blue.rotation.y, SpawnClass.blue.rotation.z)
         p.SetVelocity(SpawnClass.blue.velocity)
-    } else {
+    }
+    else if (p.GetTeam() == 2) {
         // Red team
         p.SetOrigin(SpawnClass.red.spawnpoint)
         p.SetAngles(SpawnClass.red.rotation.x, SpawnClass.red.rotation.y, SpawnClass.red.rotation.z)
         p.SetVelocity(SpawnClass.red.velocity)
     }
+    // If someone respawns after dying on the singleplayer team, they will automatically
+    // be switched to the native team that they joined the server with
 }
 
 function CombineList(list, startlength, inbetweenchars = " ") {
@@ -1849,15 +1841,17 @@ function CreateOurEntities() {
     disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected")
     EntFireByHandle(disconnectmessagedisplay, "display", "", 0.0, null, null)
 
-    // Create a join message entity
-    joinmessagedisplay <- Entities.CreateByClassname("game_text")
-    joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
-    joinmessagedisplay.__KeyValueFromString("holdtime", "3")
-    joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
-    joinmessagedisplay.__KeyValueFromString("fadein", "0.2")
-    joinmessagedisplay.__KeyValueFromString("spawnflags", "1")
-    joinmessagedisplay.__KeyValueFromString("color", "255 200 0")
-    joinmessagedisplay.__KeyValueFromString("channel", "3")
+    if (Config_UseJoinIndicator) {
+        // Create a join message entity
+        joinmessagedisplay <- Entities.CreateByClassname("game_text")
+        joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
+        joinmessagedisplay.__KeyValueFromString("holdtime", "3")
+        joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
+        joinmessagedisplay.__KeyValueFromString("fadein", "0.2")
+        joinmessagedisplay.__KeyValueFromString("spawnflags", "1")
+        joinmessagedisplay.__KeyValueFromString("color", "255 200 0")
+        joinmessagedisplay.__KeyValueFromString("channel", "3")
+    }
 
     // Create a player_speedmod entity to modify a player's movement speed
     playerspeedmod <- Entities.CreateByClassname("player_speedmod")
@@ -1868,52 +1862,9 @@ function CreateOurEntities() {
     p2mm_clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand") // Using the targetname in outputs causes invalid entity instance errors ??
 }
 
-
-///////////////////////////// PLAYERS
-
-function GetPlayerFromUserID(userid) {
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        if (p.entindex() == userid) {
-            return p
-        }
-    }
-    return null
-}
-
-function FindPlayerByName(name) {
-    name = name.tolower()
-    local best = null
-    local bestnamelen = 99999
-    local bestfullname = ""
-
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        local username = FindPlayerClass(p).username
-        username = username.tolower()
-
-        if (username == name) {
-            return p
-        }
-
-        if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) < bestnamelen) {
-            best = p
-            bestnamelen = Len(Replace(username, name, ""))
-            bestfullname = username
-        } else if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) == bestnamelen) {
-            if (Find(username, name) < Find(bestfullname, name)) {
-                best = p
-                bestnamelen = Len(Replace(username, name, ""))
-                bestfullname = username
-            }
-        }
-    }
-    return best
-}
-
-/////////////////////////////////////
-
-//////////////////////////////// DATA
+//--------------------------------------
+// Data functions
+//--------------------------------------
 
 function GetType(var, simplify = true) {
     local type = typeof(var)
@@ -1939,9 +1890,9 @@ function GetType(var, simplify = true) {
     }
 }
 
-/////////////////////////////////////
-
-///////////////////////////////// TABLES
+//--------------------------------------
+// Table functions
+//--------------------------------------
 
 function Join(tbl, str) {
     local nstr = ""
@@ -1951,7 +1902,9 @@ function Join(tbl, str) {
     return nstr
 }
 
-//////////////////////////////// STRINGS
+//--------------------------------------
+// String functions
+//--------------------------------------
 
 function Len(str) {
     return str.len()
@@ -2025,58 +1978,4 @@ function StrToList(str) {
 
 function Strip(str) {
     return strip(str)
-}
-
-function SplitBetween(str, keysymbols, preserve = false) { //preserve = true : means that the symbol at the beginning of the string will be included in the first part
-    local keys = StrToList(keysymbols)
-    local lst = StrToList(str)
-
-    local contin = false
-    foreach (key in keys) {
-        if (Contains(str, key)) {
-            contin = true
-            break
-        }
-    }
-
-    if (!contin) {
-        return []
-    }
-
-
-    // FOUND SOMETHING
-
-    local split = []
-    local curslice = ""
-
-    foreach (indx, letter in lst) {
-        local contains = false
-        foreach (key in keys) {
-            if (letter == key) {
-                contains = key
-                if (indx == 0 && preserve) {
-                    curslice = curslice + letter
-                }
-            }
-        }
-
-        if (contains != false) {
-            if (Len(curslice) > 0 && indx > 0) {
-                split.push(curslice)
-                if (preserve) {
-                    curslice = contains
-                } else {
-                    curslice = ""
-                }
-            }
-        } else {
-            curslice = curslice + letter
-        }
-    }
-
-    if (Len(curslice) > 0) {
-        split.push(curslice)
-    }
-
-    return split
 }

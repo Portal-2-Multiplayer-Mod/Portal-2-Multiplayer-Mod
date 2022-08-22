@@ -10,8 +10,8 @@
 //  |_|  \_,_||_||_|\__| \__||_|\___/|_||_|/__/(_)
 //---------------------------------------------------
 // Purpose: Define miscellaneous functions used to
-//          hook onto player info and chat commands
-//             supplied directly from our plugin
+// hook onto player info and chat commands supplied
+//          directly from our plugin.
 //---------------------------------------------------
 
 // Runs when a player enters the server
@@ -72,7 +72,7 @@ function OnPlayerJoin(p, script_scope) {
     //# Set viewmodel targetnames so we can tell them apart #//
     local ent = null
     while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
-        EntFireByHandle(ent, "addoutput", "targetname viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
+        EntFireByHandle(ent, "addoutput", "targetname predicted_viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
     }
 
     // If the player is the first player to join, fix OrangeOldPlayerPos
@@ -98,20 +98,29 @@ function OnPlayerJoin(p, script_scope) {
     EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos", 0, p, p)
     EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
     EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+    // Motion blur is very intense for some reason
+    EntFireByHandle(p2mm_clientcommand, "Command", "mat_motion_blur_forward_enabled 0", 0, p, p)
     MapSupport(false, false, false, false, true, false, false)
 
-    //# Say join message on HUD #//
-    if (PluginLoaded) {
-        JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
-    } else {
-        JoinMessage <- "Player " + PlayerID + " joined the game"
-    }
-    // Set join message to player name
-    JoinMessage = JoinMessage.tostring()
-    joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
-    EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
-    if (PlayerID >= 2) {
-        onscreendisplay.__KeyValueFromString("y", "0.075")
+    if (Config_UseJoinIndicator) {
+        //# Say join message on HUD #//
+        if (PluginLoaded) {
+            // An extra check in case the GetPlayerName() plugin function breaks
+            if (GetPlayerName(PlayerID) == "") {
+                JoinMessage <- "Player " + PlayerID + " joined the game"
+            } else {
+                JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
+            }
+        } else {
+            JoinMessage <- "Player " + PlayerID + " joined the game"
+        }
+        // Set join message to player name
+        JoinMessage = JoinMessage.tostring()
+        joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
+        EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+        if (PlayerID >= 2) {
+            onscreendisplay.__KeyValueFromString("y", "0.075")
+        }
     }
 
     //# Set player color #//
@@ -185,7 +194,7 @@ function PostMapLoad() {
 
 
     // Edit cvars & set server name
-    SendToConsoleP232("mp_allowspectators 0")
+    SendToConsoleP232("mp_allowspectators 1")
     if (PluginLoaded) {
         SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
     } else {
@@ -203,12 +212,12 @@ function PostMapLoad() {
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
-    if (DevMode) {
+    if (Config_DevMode) {
         SendToConsoleP232("developer 1")
         StartDevModeCheck <- true
     }
 
-    if (RandomTurrets) {
+    if (Config_RandomTurrets) {
         PrecacheModel("npcs/turret/turret_skeleton.mdl")
         PrecacheModel("npcs/turret/turret_backwards.mdl")
     }
@@ -289,15 +298,12 @@ function GeneralOneTime() {
         }
     }
 
-    // Attempt to display chapter title (Valve's way of doing it)
-    foreach (index, level in CHAPTER_TITLES)
-	{
-		if (level.map == GetMapName() && level.displayOnSpawn )
-		{
-            foreach (index, level in CHAPTER_TITLES)
-            {
-                if (level.map == GetMapName() )
-                {
+    // Attempt to display chapter title
+    // Credit: Valve
+    foreach (index, level in CHAPTER_TITLES) {
+		if (level.map == GetMapName() && level.displayOnSpawn ) {
+            foreach (index, level in CHAPTER_TITLES) {
+                if (level.map == GetMapName() ) {
                     EntFire( "@chapter_title_text", "SetTextColor", "210 210 210 128", 0.0 )
                     EntFire( "@chapter_title_text", "SetTextColor2", "50 90 116 128", 0.0 )
                     EntFire( "@chapter_title_text", "SetPosY", "0.32", 0.0 )
@@ -313,9 +319,6 @@ function GeneralOneTime() {
             }
 		}
 	}
-
-    // Clear all cached models from our temp cache as they are already cached
-    // CanClearCache <- true
 
     // Set a variable to tell the map loaded
     HasSpawned <- true
