@@ -25,18 +25,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
             ent.__KeyValueFromString("CheckAllIDs", "1")
         }
-    }
 
-    if (MSPostPlayerSpawn) {
-
-    }
-
-    if (MSLoop) {
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-2240, -208, 400), 50)) {
-             
-            SendToConsoleP232("changelevel sp_a4_jump_polarity")
-        }
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_jump_polarity:0.3", 0, null)
     }
 }

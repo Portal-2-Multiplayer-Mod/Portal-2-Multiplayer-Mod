@@ -31,6 +31,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "emitter_orange_mtg").Destroy()
         a1HasDestroyedTargetPortalGun <- false
         a1AlreadyGavePortalGun <- false
+        
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro4:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -47,12 +50,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 a1HasDestroyedTargetPortalGun <- true
                 a1HasPortalGun()
             }
-        }
-
-        // Ending "trigger"
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1344, 4304, -784), 50)) {
-            SendToConsoleP232("changelevel sp_a1_intro4")
         }
 
         // Make Wheatley look at nearest player

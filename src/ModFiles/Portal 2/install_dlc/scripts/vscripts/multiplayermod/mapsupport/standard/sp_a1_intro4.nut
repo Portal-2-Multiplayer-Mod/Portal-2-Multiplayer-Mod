@@ -25,6 +25,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "room_2_portal_activate_rl").Destroy()
         Entities.FindByName(null, "room_3_portal_activate_rl").Destroy()
         Entities.FindByName(null, "door_2-close_door_rl").Destroy()
+
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro5:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -36,12 +39,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
         } catch(exception) {}
         local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(806, -528, 64), 150)) {
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(806, -528, 64), 50)) {
             EntFire("projected_texture_03", "TurnOn", "", 0, null)
-        }
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(2151, -527, -499), 50)) {
-            SendToConsoleP232("changelevel sp_a1_intro5")
         }
     }
 }

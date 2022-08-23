@@ -21,6 +21,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_1-close_door_rl").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(2552, -1056, 142.82), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(2432, -1056, 72), 1024).Destroy()
+
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_catapult_intro:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -57,14 +60,5 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "entry_landing_open_relay"), "addoutput", "OnTrigger P2MM_Wall_Panel_2-Robo_Powerup_Corridor_06_override:DisableDraw::7.65", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "entry_landing_open_relay"), "addoutput", "OnTrigger P2MM_Wall_Panel_2-Robo_Powerup_Corridor_07_override:DisableDraw::7.65", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "entry_landing_open_relay"), "addoutput", "OnTrigger P2MM_Wall_Panel_2-Robo_Powerup_Corridor_08_override:DisableDraw::7.65", 0, null, null)
-    }
-
-    if (MSLoop) {
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(2008, -1055, -328), 50)) {
-             
-            SendToConsoleP232("changelevel sp_a2_catapult_intro")
-        }
     }
 }

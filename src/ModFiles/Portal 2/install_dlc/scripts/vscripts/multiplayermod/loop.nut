@@ -7,9 +7,9 @@
 //  |____|\___/\___/| .__/(_)
 //                  |_|
 //---------------------------------------------------
-// Purpose: Set up a giant function to loop
-//          every 0.1 second (by default) in case
-//          of changes and events that occur midgame
+// Purpose: Set up a giant function to loop every
+// 0.1 second (by default) in case of changes and
+//          events that occur midgame.
 //---------------------------------------------------
 
 LastCoordGetPlayer <- null
@@ -269,12 +269,6 @@ function loop() {
     if (PostMapLoadDone) {
         if (!DoneWaiting) {
             if (CanHook) {
-                // if (OriginalPosMain != null && OriginalPosMain.x == Entities.FindByClassname(null, "player").GetOrigin().x && OriginalPosMain.y == Entities.FindByClassname(null, "player").GetOrigin().y) {
-                //     DoneWaiting <- true
-                //     GeneralOneTime()
-                //     printl("==============================POSITION SPAWN")
-                // }
-
                 if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
                     DoneWaiting <- true
                     GeneralOneTime()
@@ -282,24 +276,6 @@ function loop() {
                         printl("=================================HEALTH SPAWN")
                     }
                 }
-
-                // if (UnNegative(Entities.FindByName(null, "blue").GetVelocity().x) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().y) > 3 || UnNegative(Entities.FindByName(null, "blue").GetVelocity().z) > 10) {
-                //     DoneWaiting <- true
-                //     GeneralOneTime()
-                //     printl("==============================VELOCITY SPAWN")
-                // }
-
-                // if (hasbeenremoved && Entities.FindByName(null, "weapon_portalgun_player1")) {
-                //     DoneWaiting <- true
-                //     GeneralOneTime()
-                //     printl("==============================PORTALGUN SPAWN")
-                // }
-
-                // if (OriginalAngle != null && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.x == OriginalAngle.x && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.y == OriginalAngle.y && FindPlayerClass(Entities.FindByName(null, "blue")).eyeangles.z == OriginalAngle.z) {
-                //     DoneWaiting <- true
-                //     GeneralOneTime()
-                //     printl("==============================ANGLE SPAWN")
-                // }
             }
             DoEntFire("p2mm_wait_for_players_text", "display", "", 0.0, null, null)
         }
@@ -323,13 +299,13 @@ function loop() {
 
     //## Config developer mode loop ##//
     if (DevModeConfig) {
-        // Change DevMode variable based on convar "developer"
+        // Change Config_DevMode variable based on convar "developer"
         if (!GetDeveloperLevel()) {
             if (StartDevModeCheck) {
-                DevMode <- false
+                Config_DevMode <- false
             }
         } else {
-            DevMode <- true
+            Config_DevMode <- true
         }
     }
 
@@ -348,7 +324,7 @@ function loop() {
     }
 
     // Random turret models & colors
-    if (RandomTurrets && HasSpawned) {
+    if (Config_RandomTurrets && HasSpawned) {
         local ent = null
         while (ent = Entities.FindByClassname(ent, "npc_portal_turret_floor")) {
             local script_scope = ent.GetScriptScope()
@@ -372,14 +348,6 @@ function loop() {
                 if (model == 2) {
                     ent.SetModel("models/npcs/turret/turret_backwards.mdl")
                 }
-                // if (model == 3) {
-                //     ent.SetModel("models/npcs/turret/turret_boxed.mdl")
-                // }
-                // // if (model == 4) { }
-                // if (model == 4) {
-                //     ent.SetModel("models/npcs/turret/turret_fx_laser_gib4.mdl")
-                // }
-
 
                 EntFireByHandle(ent, "Color", (R + " " + G + " " + R), 0, null, null)
                 ent.SetTeam(69420)
@@ -387,15 +355,19 @@ function loop() {
         }
     }
 
-    /////////////////////////
-    // RUNS EVERY 5 SECONDS//
-    /////////////////////////
+    //////////////////////////
+    // RUNS EVERY 5 SECONDS //
+    //////////////////////////
+
     if (Time() >= PreviousTime5Sec + 5) {
         PreviousTime5Sec = Time()
+        
         // Color display
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            DisplayPlayerColor(p)
+        if (Config_UseColorIndicator) {
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                DisplayPlayerColor(p)
+            }
         }
     }
 
@@ -404,28 +376,20 @@ function loop() {
     ///////////////////////
 
     if (Time() >= PreviousTime1Sec + 1) {
-    PreviousTime1Sec <- Time()
+        PreviousTime1Sec <- Time()
 
         // Random portal sizes
-        if (RandomPortalSize) {
+        if (Config_RandomPortalSize) {
             randomportalsize <- RandomInt(1, 100 ).tostring()
             randomportalsizeh <- RandomInt(1, 100 ).tostring()
-        }
 
-        if (RandomPortalSize) {
             try {
-            local ent = null
-            while (ent = Entities.FindByClassname(ent, "prop_portal")) {
-                // printl(ent)
-                // printl(ent.GetOrigin())
-                // printl(ent.GetAngles())
-                // printl("=================")
-                ent.__KeyValueFromString("HalfWidth", randomportalsize)
-                ent.__KeyValueFromString("HalfHeight", randomportalsizeh)
-            }
-            } catch(exception) {
-                // printl("(P2:MM): Error: " + exception)
-            }
+                local ent = null
+                while (ent = Entities.FindByClassname(ent, "prop_portal")) {
+                    ent.__KeyValueFromString("HalfWidth", randomportalsize)
+                    ent.__KeyValueFromString("HalfHeight", randomportalsizeh)
+                }
+            } catch (exception) {}
         }
 
         //## Detect respawn ##//
@@ -443,16 +407,11 @@ function loop() {
         }
 
         //## Singleplayer check that must be looped in case sv_cheats was changed ##//
-        
         if (GlobalOverridePluginGrabController) {
-            if (IsOnSingleplayerMaps) {
-                if (PluginLoaded) {
-                    SetPhysTypeConvar(0)// enable real-time physics
+            if (PluginLoaded) {
+                if (IsOnSingleplayerMaps) {
+                    SetPhysTypeConvar(0) // enable real-time physics
                 } else {
-                    printl("(P2:MM): Cannot enable real-time grab controller physics, since the plugin is not loaded!")
-                }
-            } else {
-                if (PluginLoaded) {
                     SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
                 }
             }
