@@ -7,6 +7,8 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_intro:0.29", 0, null)
 
         // Create env_globals
         env_global01 <- Entities.CreateByClassname("env_global")
@@ -92,8 +94,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         Entities.FindByClassnameNearest("trigger_once", Vector(8032, 1216, 487), 100).Destroy()
-
-        Entities.FindByClassnameNearest("trigger_once", Vector(6144, 3456, 904), 100).Destroy()
 
         Entities.FindByName(null, "do_not_touch_anything_trigger").Destroy()
 
@@ -272,12 +272,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
                 p.SetAngles(5, 90, 0)
             }
-        }
-
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(6144, 3456, 904), 120)) {
-            SendToConsoleP232("changelevel sp_a2_intro")
         }
     }
 }

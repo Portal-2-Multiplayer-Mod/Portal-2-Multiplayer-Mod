@@ -485,6 +485,9 @@ function StopStickAndTeleport() {
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro3:0.3", 0, null)
+
         ContainerFloorBrush <- false
         currentCartCache <- false
         stoprenable <- false
@@ -577,7 +580,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("announcer_ding_on_wav", "PlaySound", "", 1.5)
         EntFire("good_morning_vcd", "Start", "", 3)
 
-        printl("Ran")
         Sp_A1_Intro1Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         Sp_A1_Intro1Viewcontrol.__KeyValueFromString("targetname", "Sp_A1_Intro1Viewcontrol")
         Sp_A1_Intro1Viewcontrol.__KeyValueFromString("target_team", "-1")
@@ -776,7 +778,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
-            printl("Player joined (Reseting viewcontrol)")
+            if (GetDeveloperLevel()) {
+                printl("Player joined (Resetting viewcontrol)")
+            }
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
         }
@@ -851,13 +855,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5556.693848, 1838.821411, 280.240265), 35)) {
                     p.SetOrigin(Vector(-5556.693848, 1838.821411, 270))
-                    printl("Bumped out")
                 }
                 // // Bump desk
                 // local p = null
                 // while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5811.007813 1989.968750 282.031250), 35)) {
                 //     p.SetOrigin(Vector(-5825.083008, 1979.134399, 270))
-                //     printl("Bumped out")
                 // }
 
                 //-5811.007813 1989.968750 282.031250;
@@ -927,7 +929,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             rotval <- 2
             cartrotoffset1 <- 100
             rotval1 <- 2
-            //printl(offsettick)
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 EntFireByHandle(p, "addoutput", "MoveType 4", 0, null, null)
@@ -1107,12 +1108,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 //////////////////////////
             }
-        }
-
-        // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-685, 3112, 2400), 100)) {
-            SendToConsole("changelevel sp_a1_intro2")
         }
     }
 }

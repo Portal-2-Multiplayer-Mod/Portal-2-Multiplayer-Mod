@@ -115,6 +115,9 @@ game_sounds_manifest
 	"precache_file"		"scripts/game_sounds_dlc2_cave.txt"
 	"precache_file"		"scripts/game_sounds_editor.txt"
 
+	// sixense
+	"precache_file"		"scripts/sixense_sounds.txt"
+
 	//P2:MM Server-side Sounds
 	"precache_file"		"scripts/game_sounds_p2mm.txt"
 }

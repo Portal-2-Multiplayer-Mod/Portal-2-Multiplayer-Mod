@@ -15,19 +15,24 @@ import random
 import time
 
 CommandReplacements = [
+    ['pre_go_to_hub', 'p2mm_tran_hub', 'p2mm_tran_hub'],
+    ['pre_go_to_calibration', 'p2mm_tran_calibration', 'p2mm_tran_calibration'],
+
     # ['go_to_hub', 'p2mm__gth', 'p2mm__gth'], # This is internally called in maps so we can't patch it
     ['go_to_calibration', 'p2mm_go_to_calibr', 'p2mm_go_to_calibr'],
+
     ['restart_level', 'p2mm__restart', 'p2mm__restart'],
     ['mp_restart_level', 'p2mm__mp_restart', 'p2mm__mp_restart'],
-    ['mp_earn_taunt', 'p2mm_earn_tnt', 'p2mm_earn_tnt'],
-    ['pre_go_to_calibration', 'p2mm_tran_calibration', 'p2mm_tran_calibration'],
-    ['erase_mp_progress', 'p2mm_cut_progress', 'p2mm_cut_progress'],
-    ['mp_mark_all_maps_complete', 'p2mm_label_coop_completed', 'p2mm_label_coop_completed'],
-    ['mp_mark_all_maps_incomplete', 'p2mm_label_coop_incompleted', 'p2mm_label_coop_incompleted'],
-    ['pre_go_to_hub', 'p2mm_tran_hub', 'p2mm_tran_hub'],
+
     ['transition_map', 'p2mm_next_maps', 'p2mm_next_maps'],
+
     ['select_map', 'p2mmselmap', 'p2mmselmap'],
     ['mp_select_level', 'p2mm_goto_level', 'p2mm_goto_level'],
+
+    ['erase_mp_progress', 'p2mm_cut_progress', 'p2mm_cut_progress'],
+    ['mp_earn_taunt', 'p2mm_earn_tnt', 'p2mm_earn_tnt'],
+    ['mp_mark_all_maps_complete', 'p2mm_label_coop_completed', 'p2mm_label_coop_completed'],
+    ['mp_mark_all_maps_incomplete', 'p2mm_label_coop_incompleted', 'p2mm_label_coop_incompleted'],
     ['mp_mark_course_complete', 'p2mm_course_#_completed', 'p2mm_course_#_completed'],
 ]
 

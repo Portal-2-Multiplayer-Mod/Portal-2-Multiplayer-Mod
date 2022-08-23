@@ -21,18 +21,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByName(null, "fall_fade").Destroy()
         Entities.FindByName(null, "puzzle_completed_relay").Destroy()
+
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_stop_the_box:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
-    }
-
-    if (MSLoop) {
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(1440, 896, 688), 50)) {
-             
-            SendToConsoleP232("changelevel sp_a4_stop_the_box")
-        }
     }
 }

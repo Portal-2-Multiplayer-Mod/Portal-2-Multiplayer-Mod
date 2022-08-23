@@ -27,7 +27,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //Entities.FindByName(null, "tbeam_crusher_delivery").__KeyValueFromString("targetname", "beam_override_mp")
         EntFire("relay_hatch", "addoutput", "OnTrigger areaportal_disable_mp:open", 1, null)
         Entities.FindByClassnameNearest("trigger_once", Vector(-10792, -2048.01, 144), 20).Destroy()
-        Entities.FindByClassnameNearest("trigger_once", Vector(-12832, -3040, -112), 20).Destroy()
         Entities.FindByName(null, "backstop").Destroy()
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "spawnpoint1")
@@ -38,6 +37,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("hurt_crushers", "addoutput", "OnHurtPlayer hurt_crushers:kill::0.2", 1, null)
 
         Sp_A4_Finale1_One_Time_Beam <- false
+
+        // Make changing levels work
+        Entities.FindByClassnameNearest("trigger_once", Vector(-12832, -3040, -112), 20).__KeyValueFromString("targetname", "transition_trigger")
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_finale2:0.45", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -71,14 +74,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetAngles(18, 37, -0)
                 }
             }
-        }
-
-
-        // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-12832, -3040, -112), 100)) {
-             
-            SendToConsoleP232("changelevel sp_a4_finale2")
         }
     }
 }

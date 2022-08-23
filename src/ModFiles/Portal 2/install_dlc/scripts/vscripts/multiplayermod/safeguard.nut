@@ -8,14 +8,13 @@
 //                       |___/                           
 //---------------------------------------------------
 // Purpose: Set up a security measure against
-//          abusive commands from clients
+//           abusive commands from clients.
 //---------------------------------------------------
 
-/////////////////////// VScript COMMAND REPLACEMENTS
-
-if (SafeGuard) {
+if (Config_SafeGuard) {
     try {
-        if ( ::SendToConsole.getinfos().native ) { // Replace SendToConsole with SendToConsoleP232
+        if ( ::SendToConsole.getinfos().native ) {
+            // Replace SendToConsole with SendToConsoleP232
             ::SendToConsoleP232 <- ::SendToConsole;;
 
             SendToConsole <- function(str) {
@@ -35,9 +34,9 @@ if (SafeGuard) {
                 }
             }
         }
-    } catch (e) {}
+    } catch (e) {
+        // Should never have an exception
+    }
 } else {
     SendToConsoleP232 <- function(str) { SendToConsole(str) }
 }
-
-////////////////////////////////////////////

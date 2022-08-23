@@ -491,7 +491,7 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
     }
   }
 
-  if (GameMode == 3) {
+  if (Config_GameMode == 3) {
 
   //=====================================//
   //CREATE OBJECTS FOR sp_a2_triple_laser//
