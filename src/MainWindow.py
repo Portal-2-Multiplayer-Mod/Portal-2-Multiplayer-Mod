@@ -1,21 +1,24 @@
-import Scripts.BasicFunctions as BF
-import Scripts.RunGame as RG
-import Scripts.Updater as up
-import Scripts.Configs as cfg
-from Scripts.BasicLogger import Log, StartLog
-import Scripts.Workshop as workshop
-import Scripts.GlobalVariables as GVars
-from pygame.locals import *
-import pygame
+import json
+import os
+import random
 import subprocess
 import sys
-import os
-import json
-import random
 import threading
 import time
 import webbrowser
+import __main__
+
+import pygame
+from pygame.locals import *
 from steamid_converter import Converter
+
+import Scripts.BasicFunctions as BF
+import Scripts.Configs as cfg
+import Scripts.GlobalVariables as GVars
+import Scripts.RunGame as RG
+import Scripts.Updater as up
+import Scripts.Workshop as workshop
+from Scripts.BasicLogger import Log, StartLog
 
 tk = ""
 try:
@@ -25,7 +28,6 @@ try:
     tk.withdraw()
 except Exception as e:
     Log(str(e))
-    pass
 
 
 # populate the global variables
@@ -758,9 +760,9 @@ class GitHubButton:
 
 class LanguagesButton:
     text = translations["languages_button"]
-    activecolor = (255, 255, 255)
-    inactivecolor = (215, 215, 255)
-    sizemult = 0.725
+    activecolor = (175, 75, 0)
+    inactivecolor = (155, 155, 155)
+    sizemult = 1
     selectanim = "pop"
     selectsnd = pwrsnd
     hoversnd = blipsnd
@@ -770,7 +772,7 @@ class LanguagesButton:
         # for choosing a languages
         ChangeMenu(LanguagesMenu)
 
-    isasync = True
+    isasync = False
 
 
 class TestingButton:
@@ -972,9 +974,18 @@ class LanguagesButtonDef:
         RestartClient()
 
 
+def GetAvailableLanguages():
+    print("searching for available languages")
+    langs = []
+    for file in os.listdir(os.path.dirname(__main__.__file__)+"/languages"):
+        langs.append(file[:-5])
+
+    return langs
+
 def LanguageButton():
     LanguagesMenu.clear()
-    for x in LanguagesIndex:
+    Languages = GetAvailableLanguages()
+    for x in Languages:
         if GVars.configData["activeLanguage"]["value"] == x:
             LanguagesMenu.append(LanguagesButtonDef(
                 "→ " + LanguagesIndex[x].get('name'), x))
@@ -990,7 +1001,7 @@ def LanguageButton():
 WorkshopButtons = [GetChangelevelButton, BackButton]
 
 SettingsMenus = [LauncherSettingsButton,
-                 Portal2SettingsButton, PlayersButton, BackButton]
+                 Portal2SettingsButton, PlayersButton, LanguagesButton, BackButton]
 
 SettingsButtons = []
 
@@ -999,7 +1010,7 @@ PlayersMenu = []
 ManualButtons = [RunButton, StopButton, BackButton]
 
 MainButtons = [LaunchGameButton, SettingsButton, UpdateButton, ManualButton, WorkshopButton, ResourcesButton,
-               ExitButton, LanguagesButton]
+               ExitButton]
 
 RecourcesButtons = [GitHubButton, GuideButton, DiscordButton, BackButton]
 
