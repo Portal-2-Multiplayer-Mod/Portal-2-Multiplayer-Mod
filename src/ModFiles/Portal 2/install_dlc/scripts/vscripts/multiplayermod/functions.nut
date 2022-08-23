@@ -459,7 +459,8 @@ function ForwardAngle(y,p,r) {
 }
 
 function CreateGenericPlayerClass(p, color = false) {
-    SendChatMessage(color == false)
+    // cabiste was here >:)
+
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
         if (curlclass.player == p) {
