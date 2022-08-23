@@ -1,0 +1,17 @@
+2v2coopbattle Todo List:
+1. Finish custombot start animation
+2. Add func_brushes and player clips to custombot platform
+3. Fix and finish lighting in start area
+4. Setup team select hallway and buttons
+5. Create moving test chamber on the outside
+6. Fix start area outside textures
+5. Test vpk packing for hammer
+6. Add prop_indicators to glass for each side
+7. Add functionality to prop_indicators and prop_buttons at team start area
+8. Fork P2:MM and add 2v2coopbattle
+9. Setup Source Multitool
+
+Custombot Name Ideas:
+Sheldon: Self Human Experimenting Learning Demonstrate Overwatch Node
+Sheldom: Self Human Experimenting Learning Demonstrate Overwatch Machine
+Eltan: Easy Learning Teaching And Navigation

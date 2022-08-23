@@ -200,4 +200,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+#2v2coopbattle unneeded files/dirs Added By: Orsell
+src/ModFiles/Portal 2/install_dlc/maps/2v2coopbattlewip/animations/*
+src/ModFiles/Portal 2/install_dlc/maps/2v2coopbattlewip/pak01_dir.vpk
+*.prt
+*.vmx
 
