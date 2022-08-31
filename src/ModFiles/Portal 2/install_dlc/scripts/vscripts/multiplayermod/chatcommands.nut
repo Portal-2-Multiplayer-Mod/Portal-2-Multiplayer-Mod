@@ -12,6 +12,10 @@
 // Purpose: Enable commands through the chat box.
 //---------------------------------------------------
 
+// TODO:
+// 1. Fix how we work out arguments for
+//    players with spaces in their names
+
 if (Config_UseChatCommands) {
     // This can only be enabled when the plugin is loaded
     if (PluginLoaded) {
@@ -35,13 +39,6 @@ if (Config_UseChatCommands) {
 
 // The whole filtering process for the chat commands
 function ChatCommands(ccuserid, ccmessage) {
-
-    ccmessage = Replace(ccmessage, "%n", "")
-    if (StartsWith(ccmessage, "^")) {
-        return
-    }
-
-    //--------------------------------------------------
 
     local Message = RemoveDangerousChars(ccmessage)
     local Player = GetPlayerFromUserID(ccuserid)
@@ -359,6 +356,7 @@ CommandList <- [
             commandtable["spchapter"] <- "Changes the level to the specified singleplayer chapter."
             commandtable["mpcourse"] <- "Changes the level to the specified cooperative course."
             commandtable["playercolor"] <- "Changes your player model's color through valid RGB values."
+            commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
 
             try {
                 args[0] = Strip(args[0])
@@ -447,15 +445,15 @@ CommandList <- [
     ,
     class {
         name = "playercolor"
-        level = 1
+        level = 0
 
-        // !playercolor (r) (g) (b)
+        // !playercolor (r) (g) (b) (optional: someone's name)
         function CC(p, args) {
             function IsCustomColorIntegerValid(x) {
                 // if x is a string it will throw an error so we'll set it to -1 so it returns false
                 try {
                     x = x.tointeger()
-                } catch (err){
+                } catch (err) {
                     x = -1
                 }
 
@@ -470,8 +468,8 @@ CommandList <- [
             }
 
             // make sure that all args are ints
-            for (local i = 0; i < args.len() ; i += 1){
-                if (IsCustomColorIntegerValid(args[i]) != true ){
+            for (local i = 0; i < 3 ; i++) {
+                if (IsCustomColorIntegerValid(args[i]) != true ) {
                     return SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space.")
                 }
                 args[i] = args[i].tointeger()
@@ -481,8 +479,59 @@ CommandList <- [
             local g = args[1]
             local b = args[2]
 
+            // Is there a name specified?
+            try {
+                args[3] = Strip(args[3])
+                if (GetAdminLevel(p) >= 2) {
+                    local plr = FindPlayerByName(args[3])
+                    if (plr != null) {
+                        p = plr
+                    } else {
+                        return SendChatMessage("[ERROR] Player not found.")
+                    }
+                } else {
+                    return SendChatMessage("[ERROR] You need to have admin level 2 or higher to use on others.")
+                }
+            } catch (exception) {}
+
+            // TODO: Change the player class stuff
+
             EntFireByHandle(p, "color", r + " " + g + " " + b, 0, p, p)
             SendChatMessage("Successfully changed color.")
+        }
+    }
+    ,
+    class {
+        name = "adminmodify"
+        level = 6
+
+        // !adminmodify (player name) (new admin level)
+        function CC(p, args) {
+            try {
+                args[0] = Strip(args[0])
+                local plr = FindPlayerByName(args[0])
+                try {
+                    args[1] = Strip(args[1])
+                    try {
+                        if (typeof(args[1].tointeger()) == "integer") {
+                            if (args[1].tointeger() >= 0 && args[1].tointeger() <= 6) {
+                                Admins.push("[" + args[1].tointeger().tostring() + "]" + GetSteamID(plr.entindex()))
+                            }
+                        }
+                    } catch (exception) {
+                        SendChatMessage("[ERROR] Input a number after the player name to set a new admin level.")
+                        return
+                    }
+                } catch (exception) {
+                    if (plr != null) {
+                        SendChatMessage(GetPlayerName(plr.entindex()) + "'s admin level: " + GetAdminLevel(plr))
+                    } else {
+                        SendChatMessage("[ERROR] Player not found.")
+                    }
+                }
+            } catch (exception) {
+                EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Input a player name.", 0, p, p)
+            }
         }
     }
     // ,
@@ -530,6 +579,9 @@ function GetPlayerFromUserID(userid) {
 
 function RemoveDangerousChars(str) {
     str = Replace(str, "%n", "") // Can cause crashes!
+    if (StartsWith(str, "^")) {
+        return ""
+    }
     return str
 }
 
