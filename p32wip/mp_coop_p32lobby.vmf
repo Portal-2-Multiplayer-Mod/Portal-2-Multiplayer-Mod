@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8997"
-	"mapversion" "81"
+	"mapversion" "82"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "1"
+	"mapversion" "82"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -1056,7 +1056,7 @@ entity
 	"maxdxlevel" "0"
 	"mindxlevel" "0"
 	"movedir" "90 0 0"
-	"movedistance" "100"
+	"movedistance" "500"
 	"origin" "0 0 448"
 	"renderamt" "255"
 	"rendercolor" "255 255 255"
@@ -1065,7 +1065,7 @@ entity
 	"shadowdepthnocache" "0"
 	"solid" "6"
 	"spawnflags" "0"
-	"speed" "500"
+	"speed" "100"
 	"startposition" "0"
 	"startsound" "plats/platform_start_lp_01.wav"
 	"stopsound" "plats/platform_stop_01.wav"
