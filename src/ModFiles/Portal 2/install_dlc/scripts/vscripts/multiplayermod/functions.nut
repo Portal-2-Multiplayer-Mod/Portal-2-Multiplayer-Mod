@@ -73,44 +73,15 @@ function SetCheats() {
     }
 }
 
-// TODO: Make sure all SteamIDs are correct -vistr
 function SetCosmetics(p) {
-    // if (PluginLoaded) {
-    //     // Get nessasary data
-    //     local pclass = FindPlayerClass(p)
-    //     local psteamid = pclass.steamid
-
-    //     //## kyleraykbs customization ##//
-    //     if (psteamid == 91466608) {
-    //         SetPlayerModel(p, "models/info_character/info_character_player.mdl")
-    //     }
-
-    //     //## Dreadnox customization ##//
-    //     if (psteamid == 193052938) {
-    //         SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
-    //     }
-
-    //     //## sear customization ##//
-    //     if (psteamid == 18517563) {
-    //         SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl")
-    //     }
-
-    //     //## Mellow customization ##//
-    //     if (psteamid == 149186271) {
-    //         SetPlayerModel(p, "models/props_moon/moonrock_med08.mdl")
-    //     }
-
-    //     //## Nanoman2525 customization ##//
-    //     if (psteamid == 145380247) {
-    //         SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
-    //     }
-
-    //     //## Bumpy customization ##//
-    //     // It's not even a torus. Its a Trefoil Knot.
-    //     if (psteamid == 90835355) {
-    //         SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
-    //     }
-    // }
+    if (PluginLoaded) {
+        switch (FindPlayerClass(p).steamid) {
+            case 290760494: SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl");       break; // Nanoman2525
+            case 182933216: SetPlayerModel(p, "models/info_character/info_character_player.mdl");   break; // kyleraykbs
+            case 242453954: SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl");         break; // sear
+            case 181670710: SetPlayerModel(p, "models/handles_map_editor/torus.mdl");               break; // Bumpy
+        }
+    }
 }
 
 function RandomColor() {
@@ -1647,7 +1618,9 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                printl("(P2:MM): " + currentscore)
+                if (GetDeveloperLevel()) {
+                    printl("(P2:MM): " + currentscore)
+                }
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1662,18 +1635,20 @@ function BestGuessSpawnpoint() {
 
             spawnmiddle_ang_vec = spawnmiddle_ang_vec * 126.5
 
-            printl("(P2:MM): " + spawnmiddle_ang_vec)
-
-
+            if (GetDeveloperLevel()) {
+                printl("(P2:MM): " + spawnmiddle_ang_vec)
+            }
 
             // Now get the back front left and right spawnpoints
             local spawnfront = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x, spawnmiddle_ang_vec.y, height)
             local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, height)
             local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, height)
             local spawnleft = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y/-1, spawnmiddle_ang_vec.x, height)
-            printl("(P2:MM): spawnMiddle: " + spawnmiddle)
-            printl("(P2:MM): spawnOrigin: " + spawnmiddle.GetOrigin())
-            printl("(P2:MM): ourClosest: " + ourclosest)
+            if (GetDeveloperLevel()) {
+                printl("(P2:MM): spawnMiddle: " + spawnmiddle)
+                printl("(P2:MM): spawnOrigin: " + spawnmiddle.GetOrigin())
+                printl("(P2:MM): ourClosest: " + ourclosest)
+            }
 
             // Output the spawnpoints
             FinalRotationBlue = spawnmiddle_ang + Vector(0, 0, 0)
@@ -1697,7 +1672,9 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                printl("(P2:MM): " + currentscore)
+                if (GetDeveloperLevel()) {
+                    printl("(P2:MM): " + currentscore)
+                }
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1708,11 +1685,15 @@ function BestGuessSpawnpoint() {
             // Find the highest path_track next to the spawnpoint
             local tallestpathtrack = null
             if (spawnmiddle == null) {
-                printl("(P2:MM): Failed to find spawnmiddle for path_track spawnpoint!")
+                if (GetDeveloperLevel()) {
+                    printl("(P2:MM): Failed to find spawnmiddle for path_track spawnpoint!")
+                }
             } else {
                 local pathtracks = null
                 while (pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600)) {
-                    printl("(P2:MM): pathtracks: " + pathtracks)
+                    if (GetDeveloperLevel()) {
+                        printl("(P2:MM): pathtracks: " + pathtracks)
+                    }
                     if (tallestpathtrack == null) {
                         tallestpathtrack = pathtracks
                     } else {
@@ -1794,39 +1775,40 @@ function CombineList(list, startlength, inbetweenchars = " ") {
 }
 
 function CreateOurEntities() {
-    // Create an entity to measure player eye angles
-    measuremovement <- Entities.CreateByClassname("logic_measure_movement")
-    measuremovement.__KeyValueFromString( "measuretype", "1")
-    measuremovement.__KeyValueFromString( "measurereference", "" )
-    measuremovement.__KeyValueFromString( "measureretarget", "" )
-    measuremovement.__KeyValueFromString( "targetscale", "1.0" )
-    measuremovement.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement" )
-    measuremovement.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement" )
-    measuremovement.__KeyValueFromString( "target", "p2mm_logic_measure_movement" )
-    EntFireByHandle(measuremovement, "SetMeasureReference", "p2mm_logic_measure_movement", 0.0, null, null)
-    EntFireByHandle(measuremovement, "enable", "", 0.0, null, null)
 
-    // Create an entity to display player nametags
-    nametagdisplay <- Entities.CreateByClassname("game_text")
-    nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
-    nametagdisplay.__KeyValueFromString("x", "-1")
-    nametagdisplay.__KeyValueFromString("y", "0.2")
-    nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
-    nametagdisplay.__KeyValueFromString("holdtime", "0.1")
-    nametagdisplay.__KeyValueFromString("fadeout", "0.1")
-    nametagdisplay.__KeyValueFromString("fadein", "0.1")
-    nametagdisplay.__KeyValueFromString("channel", "0")
-    nametagdisplay.__KeyValueFromString("color", "60 200 60")
+    if (Config_UseNametags) {
+        // Create an entity to measure player eye angles
+        measuremovement <- Entities.CreateByClassname("logic_measure_movement")
+        measuremovement.__KeyValueFromString( "measuretype", "1")
+        measuremovement.__KeyValueFromString( "measurereference", "" )
+        measuremovement.__KeyValueFromString( "measureretarget", "" )
+        measuremovement.__KeyValueFromString( "targetscale", "1.0" )
+        measuremovement.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement" )
+        measuremovement.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement" )
+        measuremovement.__KeyValueFromString( "target", "p2mm_logic_measure_movement" )
+        EntFireByHandle(measuremovement, "SetMeasureReference", "p2mm_logic_measure_movement", 0.0, null, null)
+        EntFireByHandle(measuremovement, "enable", "", 0.0, null, null)
+
+        // Create an entity to display player nametags when aiming at them
+        nametagdisplay <- Entities.CreateByClassname("game_text")
+        nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
+        nametagdisplay.__KeyValueFromString("x", "-1")
+        nametagdisplay.__KeyValueFromString("y", "0.2")
+        nametagdisplay.__KeyValueFromString("holdtime", "0.1")
+        nametagdisplay.__KeyValueFromString("fadeout", "0.2")
+        nametagdisplay.__KeyValueFromString("fadein", "0.2")
+        nametagdisplay.__KeyValueFromString("channel", "0")
+    }
 
     // Create an display entity for the host to wait for another player to load in
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
     onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
-    onscreendisplay.__KeyValueFromString("holdtime", (0.01 + TickSpeed * 2).tostring())
-    onscreendisplay.__KeyValueFromString("fadeout", (0 + TickSpeed * 2).tostring())
-    onscreendisplay.__KeyValueFromString("fadein", (0.01 + TickSpeed * 2).tostring())
+    onscreendisplay.__KeyValueFromString("holdtime", "0.05")
+    onscreendisplay.__KeyValueFromString("fadeout", "0")
+    onscreendisplay.__KeyValueFromString("fadein", "0")
     onscreendisplay.__KeyValueFromString("spawnflags", "1")
-    onscreendisplay.__KeyValueFromString("color", "60 200 60")
+    onscreendisplay.__KeyValueFromString("color", "50 190 50")
     onscreendisplay.__KeyValueFromString("channel", "1")
 
     // Create a player disconnect message entity

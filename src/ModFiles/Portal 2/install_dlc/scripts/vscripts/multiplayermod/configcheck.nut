@@ -92,6 +92,16 @@ try {
 }
 
 try {
+    if (typeof(Config_UseNametags) != "bool") {
+        Config_UseNametags <- true
+        ConfigValueError("Invalid", "Config_UseNametags")
+    }
+} catch (exception) {
+    Config_UseNametags <- true
+    ConfigValueError("Undefined", "Config_UseNametags")
+}
+
+try {
     if (typeof(Config_SafeGuard) != "bool") {
         Config_SafeGuard <- false
         ConfigValueError("Invalid", "Config_SafeGuard")

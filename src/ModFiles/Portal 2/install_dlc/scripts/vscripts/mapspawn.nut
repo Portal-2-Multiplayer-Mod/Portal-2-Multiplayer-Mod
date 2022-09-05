@@ -51,7 +51,7 @@ foreach (line in ConsoleAscii) {
 
 //---------------------------------------------------
 
-// First, manage what gamemode we are running in
+// First, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
 
 // This is how we communicate with all mapsupport files. By default, no support is loaded
@@ -87,7 +87,6 @@ function LoadMapSupportCode(gametype) {
     }
 }
 
-// Now, we load what mapsupport we need based on config.nut:
 try {
     switch (Config_GameMode) {
         case 0: LoadMapSupportCode("standard");     break;
@@ -109,9 +108,6 @@ try {
 // 1. Attempt to load our plugin if it has not been loaded
 // 2. Trigger our map-specific code and loop the loop() function
 // 3. Create map-specific entities after a delay
-
-// TODO: Figure out how ot get players into either the hub
-// or the calibration course depending on their progress
 
 function init() {
 
@@ -138,22 +134,8 @@ function init() {
             } else {
                 EntFire("p2mm_servercommand", "command", "developer 0", 0.01)
             }
-
-            EntFire("p2mm_servercommand", "command", "clear", 0)
-            EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
-
-            // This is commented since it is called too early before players spawn
-            // to actually check coop progress correctly
-            
-            // for (local course = 1; course <= 6; course++) {
-            //     // 9 levels is the highest that a course has
-            //     for (local level = 1; level <= 9; level++) {
-            //         if (IsLevelComplete(course - 1, level - 1)) {
-            //             EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0.2)
-            //         }
-            //     }
-            // }
-            // EntFire("p2mm_servercommand", "command", "changelevel mp_coop_start", 0.2)
+            // Must be delayed
+            EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1)
         }
     }
 
@@ -170,6 +152,19 @@ function init() {
 
     // Delay the creation of our entities before so that we don't get an engine error from the entity limit
     EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
+}
+
+function MakeProgressCheck() {
+    for (local course = 1; course <= 6; course++) {
+        // 9 levels is the highest that a course has
+        for (local level = 1; level <= 9; level++) {
+            if (IsLevelComplete(course - 1, level - 1)) {
+                EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0)
+                return
+            }
+        }
+    }
+    EntFire("p2mm_servercommand", "command", "changelevel mp_coop_start", 0)
 }
 
 //---------------------------------------------------

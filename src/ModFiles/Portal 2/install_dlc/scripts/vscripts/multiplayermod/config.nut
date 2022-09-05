@@ -43,6 +43,9 @@ Config_UseColorIndicator <- true
 // Set true/false if you want the player join messages to appear in the top left corner in-game (affects all players)
 Config_UseJoinIndicator <- true
 
+// Set true/false if you want to see the player's name when you aim at them (affects all players)
+Config_UseNametags <- true
+
 //-----------------------------------
 // Server variables
 //-----------------------------------
@@ -62,13 +65,13 @@ Config_UseChatCommands <- true
 // * These can be accessed with "!" preceding them
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
-// [0]: "help", "changeteam", "kill"
-// [1]: "playercolor"
+// [0]: "help", "changeteam", "kill", "playercolor"
+// [1]: 
 // [2]: "kill (someone)"
-// [3]: 
+// [3]: "playercolor (for someone else)"
 // [4]: "speed", "noclip", "teleport"
 // [5]: "restartlevel", "spchapter", "mpcourse"
-// [6]: "rcon"
+// [6]: "rcon", "adminmodify"
 //
 // Manually format it like this:
 // "[AdminLevel]SteamID", // (Username to keep track)
@@ -81,5 +84,4 @@ Admins <- [
 "[400]181670710", // Bumpy
 "[400]72399433", // cabiste
 "[400]242453954", // sear
-"[5]1036968556", // DrSirr
 ]
