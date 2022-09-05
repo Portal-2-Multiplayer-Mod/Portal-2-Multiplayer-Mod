@@ -5,31 +5,30 @@ import os
 # CONVERSION #
 ##############
 
-def ConvertPath(path):
+def ConvertPath(path: str) -> str:
     if (GVars.iol):
         path = path.replace("\\", GVars.nf)
-        path = path.replace("/", GVars.nf)
         path = path.replace("~", os.path.expanduser("~"))
-        return path
+    
     elif (GVars.iow):
-        path = path.replace("\\", GVars.nf)
         path = path.replace("/", GVars.nf)
-        return path
+        
+    return path
 
-def DeleteFolder(path):
+def DeleteFolder(path: str) -> None:
     if (GVars.iow):
         os.system("rmdir /s /q \"" + path + "\"")
     elif (GVars.iol):
         os.system("rm -rf \"" + path + "\"")
 
-def CopyFolder(src, dst):
+def CopyFolder(src : str, dst : str) -> str:
     if (GVars.iow):
         os.system("xcopy /E /H /C /I \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
 
-def CopyFile(src, dst):
+def CopyFile(src : str, dst : str) -> str:
     if (GVars.iow):
         os.system("copy \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol):
@@ -37,7 +36,7 @@ def CopyFile(src, dst):
     return dst
 
 
-def MoveFile(src, dst):
+def MoveFile(src : str, dst : str) -> str:
     if (GVars.iow):
         os.system("move \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol):

@@ -2,7 +2,6 @@
 # it's initiated only once when the mainwindow is created
 # please don't temper with it
 
-import json
 import os
 import sys
 import ctypes.wintypes
@@ -14,19 +13,17 @@ from Scripts.BasicLogger import Log
 #//////////////////////////////////////////#
 
 # appStartDate is the dateTime when the launcher was started, this is used to name the logs
-appStartDate = ""
-configData = {}
-modPath = ""
-configPath = ""
-iow = False
-iol = False
-nf = os.sep # this way the logging won't break if someone runs the app on mac
-hadtoresetconfig = False
-executable = os.path.abspath(sys.executable)
-def DefAfterFunction():
-    print("after function is null")
-AfterFunction = DefAfterFunction
-translations = {}
+appStartDate : str
+configData : dict[str, dict[str, str]]
+modPath : str
+configPath : str
+iow : bool = False
+iol : bool = False
+nf : str = os.sep # this way the logging won't break if someone runs the app on mac
+hadtoresetconfig : bool = False
+executable : str = os.path.abspath(sys.executable)
+translations : dict[str, str]
+AfterFunction : None
 
 def init():
     global appStartDate, modPath, iow, iol, nf, configPath
@@ -70,8 +67,3 @@ def LoadConfig():
     global configData
     configData = cfg.ImportConfig()
     Log("Config data loaded.")
-
-def LoadTranslations():
-    global translations
-    translations = json.load(open(LanguagesIndex.get(configData["activeLanguage"]["value"]).get('file'), "r", encoding="utf8"))
-    LanguagesIndex = json.load(open(r"languagesIndex.json", "r", encoding="utf8"))
