@@ -39,13 +39,13 @@ class Gui:
 
         # blipsnd = pygame.mixer.Sound("GUI/assets/sounds/blip.wav")
         # blipsnd.set_volume(0.25)
-        # 
+        
         # pwrsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
         # pwrsnd.set_volume(0.25)
-        # 
+        
         self.hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
         self.hvrclksnd.set_volume(0.05)
-        # 
+        
         # startbtnsnd = pygame.mixer.Sound("GUI/assets/sounds/startbtn.wav")
         # startbtnsnd.set_volume(0.25)
 
@@ -53,7 +53,7 @@ class Gui:
 
         self.goldencube = pygame.image.load("GUI/assets/images/goldencube.png")
 
-    #! public variables
+        #! public variables
         self.coolDown : int = 0
         self.CurInput : str = ""
         self.ERRORLIST : list = []
@@ -214,7 +214,6 @@ class Gui:
     def BackMenu(self):
         if len(self.directorymenu) > 0:
             self.ChangeMenu(self.directorymenu.pop(), False)
-            self.CurrentButtonsIndex = 0
         
     ############ BUTTON CLASSES
     class ButtonTemplate:
@@ -606,12 +605,16 @@ class Gui:
 #! END OF BUTTON FUNCTIONS
 
 
-    def ChangeMenu(self, menu, append=True):
+    def ChangeMenu(self, menu : list, append=True):
         if append:
             self.directorymenu.append(self.CurrentMenu)
+            
         self.CurrentMenu = menu
-        self.CurrentButtonsIndex = 0
-        self.SelectedButton = self.CurrentMenu[0]
+        
+        if self.CurrentButtonsIndex >= len(menu): 
+            self.CurrentButtonsIndex = len(menu) - 1
+            
+        self.SelectedButton = self.CurrentMenu[self.CurrentButtonsIndex]
         
     ####################
 
@@ -1153,7 +1156,7 @@ class Gui:
             if self.coolDown > 0:
                 self.coolDown -= 1
 
-        PostExit()
+        PreExit()
 
         pygame.quit()
         os._exit(0)
@@ -1163,13 +1166,15 @@ class Gui:
 # !                       Logic
 # !######################################################
 
-def PostExit():
+def PreExit():
+    # windows
     if (GVars.iow):
-        # windows
         os.system("taskkill /f /im portal2.exe")
+        
+    # linux
     if (GVars.iol):
-        # linux
         os.system("killall -9 portal2_linux")
+    
     # this is to make sure the portal 2 thread is dead
     # 1 second should be enough for it to die
     time.sleep(1)
@@ -1180,47 +1185,40 @@ def PostExit():
 
 def GetGamePath():
     tmpp = BF.TryFindPortal2Path()
-    if not tmpp:
-        def AfterInputGP(inp):
-            cfg.EditConfig("portal2path", inp.strip())
-            Log("Saved '" + inp.strip() + "' as the game path!")
-            Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
-            VerifyGamePath()
-
-        Ui.GetUserInputPYG(AfterInputGP, translations["game_path_enter_path"])
-    else:
+    
+    if tmpp:
         cfg.EditConfig("portal2path", tmpp.strip())
         Log("Saved '" + tmpp.strip() + "' as the game path!")
+        Ui.Error(translations["game_path_error-founded"], 5, (255, 255, 75))
         VerifyGamePath()
+        return
+    
+    def AfterInputGP(inp):
+        cfg.EditConfig("portal2path", inp.strip())
+        Log("Saved '" + inp.strip() + "' as the game path!")
+        Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
+        VerifyGamePath()
+
+    Ui.GetUserInputPYG(AfterInputGP, translations["game_path_enter_path"])
 
 
 def VerifyGamePath(shouldgetpath=True):
     Log("Verifying game path...")
     gamepath = GVars.configData["portal2path"]["value"]
+    
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
-        # Ui.Error(translations["game_path-is-invalid"])
-        # Ui.Error(translations["game_path-attempt-to-fetch"], 5, (255, 255, 75))
-
-        tmpp = BF.TryFindPortal2Path()
-        if tmpp != False:
-            tmpp = tmpp.strip()
-            # replace \\ with \
-            # Ui.Error(translations["game_path_error-founded"], 5, (255, 255, 75))
-            tmpp = tmpp.replace("\\\\", "\\")
-            cfg.EditConfig("portal2path", tmpp)
-            Log("Saved '" + tmpp + "' as the game path!")
-            # Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
-            return True
-
+        Ui.Error(translations["game_path-is-invalid"])
+        Ui.Error(translations["game_path-attempt-to-fetch"], 5, (255, 255, 75))
+        
         if (shouldgetpath):
             GetGamePath()
+            
         return False
     return True
 
 
 def VerifyModFiles():
-    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + \
-        GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     Log("Searching for mod files in: " + modFilesPath)
     if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
         Log("Mod files found!")
@@ -1253,15 +1251,15 @@ def DEVMOUNT():
                   GVars.modPath + GVars.nf + "ModFiles")
 
 
-def MountModOnly():
+def MountModOnly() -> bool:
     cfg.ValidatePlayerKeys()
-
-    if not VerifyGamePath():
-        return
 
     if Ui.IsUpdating:
         Ui.Error(translations["update_is-updating"], 5, (255, 75, 75))
-        return
+        return False
+
+    if not VerifyGamePath():
+        return False
 
     Ui.Error(translations["mounting_mod"], 5, (75, 255, 75))
 
@@ -1279,80 +1277,81 @@ def MountModOnly():
         return True
 
     # if the he's not a developer and the mod files don't exist ask him to download the files from the repo
-    else:
-        if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
-            BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
-        if up.haveInternet():
-            def YesInput():
-                Log("Yes input has been called! Fetching mod...")
-                UpdateModFiles()
+    if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
+        BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
+        
+    if not up.haveInternet():
+        Ui.Error(
+            translations["update_error_connection_problem"], 5, (255, 75, 75))
+        UseFallbacks(gamepath)
+        Ui.Error(translations["mounted"], 5, (75, 255, 75))
+        return True
+    
+    def YesInput():
+        Log("User agreed to download the mod files! Fetching mod...")
+        UpdateModFiles()
 
-            class YesButton:
-                text = translations["error_yes"]
-                function = YesInput
-                activecolor = (75, 200, 75)
-                inactivecolor = (155, 155, 155)
+    class YesButton:
+        text = translations["error_yes"]
+        function = YesInput
+        activecolor = (75, 200, 75)
+        inactivecolor = (155, 155, 155)
 
-            class NoButton:
-                text = translations["game_files_use_fallbacks"]
+    class NoButton:
+        text = translations["game_files_use_fallbacks"]
 
-                def function():
-                    UseFallbacks(gamepath)
-
-                activecolor = (255, 75, 75)
-                inactivecolor = (155, 155, 155)
-
-            Ui.PopupBox(translations["game_files_fetch_game"], translations["game_files_no_cached_files"],
-                     [YesButton, NoButton])
-        else:
-            Ui.Error(
-                translations["update_error_connection_problem"], 5, (255, 75, 75))
+        def function():
             UseFallbacks(gamepath)
-            Ui.Error(translations["mounted"], 5, (75, 255, 75))
-            return True
+
+        activecolor = (255, 75, 75)
+        inactivecolor = (155, 155, 155)
+
+    Ui.PopupBox(translations["game_files_fetch_game"], translations["game_files_no_cached_files"], [YesButton, NoButton])
+    
+    return True
 
     
 def GetAvailableLanguages() -> list[str]:
-        print("searching for available languages")
-        langs : list[str] = []
+        Log("searching for available languages")
+        langs = []
         for file in os.listdir("languages"):
             langs.append(file[:-5])
 
         return langs
 
+
 def LoadTranslations() -> dict: 
     global translations
     translations = json.load(open("languages/"+GVars.configData["activeLanguage"]["value"]+ ".json", "r", encoding="utf8"))
-    
 
 
-def UpdateModFiles(self):
-    PostExit()
+def UpdateModFiles():
+    PreExit()
     Ui.Error(translations["update_fetching"], 5000, (255, 150, 75))
 
-    def UpdateThread(self:Gui):
+    def UpdateThread():
         Log("Updating...")
-        self.IsUpdating = True
+        Ui.IsUpdating = True
         up.DownloadNewFiles()
         Ui.Error(translations["update_complete"], 5, (75, 255, 75))
-        self.IsUpdating = False
+        Ui.IsUpdating = False
         for thing in Ui.ERRORLIST:
             if thing[0] == translations["update_fetching"]:
                 Ui.ERRORLIST.remove(thing)
 
-    thread = threading.Thread(target=UpdateThread(self))
+    thread = threading.Thread(target=UpdateThread)
     thread.start()
 
 
 def UpdateModClient():
-    PostExit()
+    PreExit()
     Ui.Error(translations["updating_client"], 5000, (255, 150, 75))
 
     def UpdateThread():
         Log("Updating...")
         Ui.IsUpdating = True
         up.DownloadClient()
-        Ui.self.running = False
+        Ui.running = False
         Log("self.running set to false")
 
     thread = threading.Thread(target=UpdateThread)
@@ -1360,34 +1359,38 @@ def UpdateModClient():
 
 
 def RunGameScript():
-    VerifyGamePath()
-    gamepath = GVars.configData["portal2path"]["value"]
     if MountModOnly():
+        gamepath = GVars.configData["portal2path"]["value"]
         RG.LaunchGame(gamepath)
         Ui.Error(translations["game_launched"], 5, (75, 255, 75))
 
 
 def UnmountScript(shouldgetpath=True):
     Log("___Unmounting Mod___")
-    gamepath = GVars.configData["portal2path"]["value"]
     VerifyGamePath(shouldgetpath)
+    gamepath = GVars.configData["portal2path"]["value"]
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
     Log("____DONE UNMOUNTING____")
 
 
-def RestartClient(path=sys.executable):
+def RestartClient(path = sys.executable):
     if (GVars.iol):
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
 
     command = path
-    subprocess.Popen(command, shell=True)
+    subprocess.Popen(command, shell = True)
     Log("Restarting client")
     Ui.running = False
 
-
+# checks if the client was downloaded by a previous version of itself
 def IsNew():
+    # we pass 2 arguments when we update the client
+    # 1- the word "updated"
+    # 2- the path of the previous version
+    # argument 0 is always the command to start the app so we don't need that
+    
     if len(sys.argv) != 3:
         return
 
@@ -1451,6 +1454,7 @@ def ModFilesUpdateBox():
 def CheckForUpdates():
     Log("Checking for updates...")
     clientUpdate = up.CheckForNewClient()
+    
     if clientUpdate["status"]:
         ClientUpdateBox(clientUpdate)
         return True
@@ -1469,19 +1473,23 @@ def Initialize():
     StartLog()
     # load the config file into memmory
     GVars.LoadConfig()
-    
-    # only checks for updates in release 
-    if not sys.argv[0].endswith(".py"):
-        cfg.EditConfig("developer", "false")
-        IsNew()  # Check for first time setup
-        time.sleep(1)
-        CheckForUpdates()
-    # else enable developer mode   
-    else:
-        Log("Running through Python! Not checking for updates.")
-        cfg.EditConfig("developer", "true")
-
+    # load the client's translations
     LoadTranslations()            
+    
+    # checks if this is debug or release mode
+    if sys.argv[0].endswith(".py"):
+        Log("Running through Python! Not checking for updates.")
+        if GVars.configData["developer"]["value"] != "true":
+            cfg.EditConfig("developer", "true")
+        return
+
+    
+    if GVars.configData["developer"]["value"] != "false":
+        cfg.EditConfig("developer", "false")
+    
+    IsNew()  # Check for first time setup after update
+    # time.sleep(1) # i have no idea why did i add sleep here
+    CheckForUpdates()
 
 
 def PostInitialize():
@@ -1523,4 +1531,4 @@ if __name__ == '__main__':
         PostInitialize()
         Ui.Main()
     except Exception as e:
-         Log("Exception encountered: " + str(e))
+        Log("Exception encountered: " + str(e))

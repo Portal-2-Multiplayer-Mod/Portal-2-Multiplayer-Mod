@@ -13,7 +13,7 @@ DefaultConfigFile = {
         {
             "value": "undefined",
             "menu": "launcher",
-            "description": "Path to the Portal 2 Folder",
+            "description": "Path of the Portal 2 Folder",
             "warning": "",
             "prompt": "Enter the path to the Portal 2 folder",
         },
@@ -78,7 +78,7 @@ DefaultConfigFile = {
         {
             "value": "true",
             "menu": "launcher",
-            "description": "Automatically unmounts the game when the game is closed",
+            "description": "Automatically unmounts the mod when the game is closed",
             "warning": "",
             "prompt": "Encrypt specific vscript functions?",
         },
@@ -87,52 +87,55 @@ DefaultConfigFile = {
         {
             "value": "English",
             "menu": "launcher",
-            "description": "The current language, it should respect the IETF language tag (check ISO 3166-1 for get "
-                           "your language)",
+            "description": "the language of the p2mm client and not the game",
+            "warning": "",
+            "prompt": "",
         },
 }
 
-ImmutableKeys = ["description", "warning", "prompt", "menu"]
+ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
 
 # verifies the config file by making sure that the processed data has the same keys as the default
 # if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
-def VerifyConfigFileIntegrity(config):
+def VerifyConfigFileIntegrity(config : dict):
     Log("=========================")
     Log("Validating config data...")
-    copiedconfig = {
-        **config,
-    }
+    
+    copiedConfigKeys = config.keys()
+    errors = 0
     # VALIDATE ALL THE KEYS ARE CORRECT
-    for key1 in copiedconfig:
-        if key1 not in DefaultConfigFile:
-            Log(f"The key [{key1}] is invalid, fixing it...")
-            config.pop(key1)
-            WriteConfigFile(config)
-            continue
+    for key in copiedConfigKeys:
+        if key not in DefaultConfigFile.keys():
+            Log(f"The key [{key}] is invalid, fixing it...")
+            config.pop(key)
+            errors +=1
 
-        for key2 in config[key1]:
-            # validate all the immutable values
-            if key2 in ImmutableKeys:
-                if config[key1][key2] != DefaultConfigFile[key1][key2]:
-                    Log(f"The value for [{key1}][{key2}] is invalid, fixing it...")
-                    config[key1][key2] = DefaultConfigFile[key1][key2]
-                    WriteConfigFile(config)
+        # validate all the immutable values
+        for property in config[key]:
+            if property not in ImmutableKeys:
+                if config[key][property] != DefaultConfigFile[key][property]:
+                    Log(f"The value for [{key}][{property}] is invalid, fixing it...")
+                    config[key][property] = DefaultConfigFile[key][property]
+                    errors +=1
+                    
     # VALIDATE ALL THE KEYS EXIST
-    for key in DefaultConfigFile:
-        if key not in config:
+    for key in DefaultConfigFile.keys():
+        if key not in config.keys():
             Log(f"The key [{key}] is missing, fixing it...")
             config[key] = DefaultConfigFile[key]
-            WriteConfigFile(config)
+            errors +=1
+    
     # VALIDATE THAT ALL THE KEYS HAVE ALL THE VALUES
     for key in DefaultConfigFile:
-        for key2 in DefaultConfigFile[key]:
-            if key2 not in config[key]:
-                Log(f"The value for [{key}][{key2}] is missing, fixing it...")
-                config[key][key2] = DefaultConfigFile[key][key2]
-                WriteConfigFile(config)
+        for property in DefaultConfigFile[key]:
+            if property not in config[key]:
+                Log(f"The value for [{key}][{property}] is missing, fixing it...")
+                config[key][property] = DefaultConfigFile[key][property]
+                errors +=1
     Log("=========================")
-
     
+    if errors > 0:
+        WriteConfigFile(config)
     
     # if the config keys are the same as the default then just return them
     return config
@@ -141,15 +144,13 @@ def VerifyConfigFileIntegrity(config):
 def ValidatePlayerKeys():
     Log("validating player keys...")
     try:
-        indx = -1
+        indx = 0
         errs = 0
         player : dict
         for player in GVars.configData["Players"]["value"]:
             if player.keys() != defaultplayerarray.keys():
-                indx += 1
                 errs += 1
                 tempPlayer = defaultplayerarray
-                Log(f"found {str(errs)} key errors")
                 print(f"local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
                 for key in tempPlayer.keys():
                     try:
@@ -157,6 +158,11 @@ def ValidatePlayerKeys():
                     except Exception as e:
                         Log(str(e))
                 GVars.configData["Players"]["value"][indx] = tempPlayer
+                
+            if errs > 0:
+                Log(f"found {str(errs)} key errors in a player property")
+                
+            indx += 1
             
         if errs > 0:
             WriteConfigFile(GVars.configData)
@@ -215,6 +221,7 @@ def ImportConfig():
 
         # if the file doesn't exist then create it
         if not os.path.exists(configpath):
+            print("here")
             WriteConfigFile(DefaultConfigFile)
 
         # read all the lines in the config file
@@ -222,6 +229,7 @@ def ImportConfig():
 
         # if the file is empty then re-create it
         if len(config) == 0:
+            print("here2")
             WriteConfigFile(DefaultConfigFile)
 
         # process the config file into useable data
@@ -237,5 +245,6 @@ def ImportConfig():
     except Exception as e:
         Log(f"Error importing the config file: {str(e)}")
         WriteConfigFile(DefaultConfigFile)
+        print("here3")
         GVars.hadtoresetconfig = True
         return ImportConfig()

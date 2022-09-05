@@ -1,15 +1,17 @@
-import Scripts.GlobalVariables as GVars
-import Scripts.BasicFunctions as Funcs
-from Scripts.BasicLogger import Log
 import http.client as httplib
+import os
+import shutil
+import subprocess
+import urllib.parse
+import urllib.request
 from datetime import datetime
 from pathlib import Path
-import urllib.request
-import urllib.parse
-import subprocess
+
 import requests
-import shutil
-import os
+
+import Scripts.BasicFunctions as Funcs
+import Scripts.GlobalVariables as GVars
+from Scripts.BasicLogger import Log
 
 currentVersion = "2.0.3" # change this before releasing a new version
 ownerName = "kyleraykbs"
@@ -28,7 +30,7 @@ def haveInternet():
         conn.close()
 
 
-def CheckForNewClient():
+def CheckForNewClient() -> dict:
     Log("searching for a new client...")
     endpoint = "https://api.github.com/repos"  # github's api endpoint
     
