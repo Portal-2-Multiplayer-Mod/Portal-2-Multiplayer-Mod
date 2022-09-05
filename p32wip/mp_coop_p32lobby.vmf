@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8997"
-	"mapversion" "63"
+	"mapversion" "81"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "63"
+	"mapversion" "1"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -576,15 +576,177 @@ world
 			"visgroupautoshown" "1"
 		}
 	}
-	group
+}
+entity
+{
+	"id" "16239"
+	"classname" "info_overlay"
+	"angles" "0 0 0"
+	"BasisNormal" "0 0 -1"
+	"BasisOrigin" "-0.818516 -0.834623 248"
+	"BasisU" "1 0 0"
+	"BasisV" "0 -1 0"
+	"endu" "0"
+	"endv" "1"
+	"fademindist" "-1"
+	"material" "overlays/command_target"
+	"sides" "12375"
+	"startu" "1"
+	"startv" "0"
+	"targetname" "start_ping_target"
+	"uv0" "-32 -32 0"
+	"uv1" "-32 32 0"
+	"uv2" "32 32 0"
+	"uv3" "32 -32 0"
+	"origin" "-0.818516 -0.834623 248"
+	editor
 	{
-		"id" "10342"
+		"color" "80 150 225"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "16264"
+	"classname" "env_texturetoggle"
+	"angles" "0 0 0"
+	"target" "start_ping_target"
+	"targetname" "start_ping_target_switch"
+	"origin" "2.21804 24 232"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "16026"
+	"classname" "trigger_ping_detector"
+	"origin" "0 0 252"
+	"solid" "0"
+	"spawnflags" "4097"
+	"startdisabled" "1"
+	"targetname" "start_ping_detector"
+	connections
+	{
+		"OnBluePlayerPinged" "start_ping_target_switchSetTextureIndexcommand_target_orange0-1"
+		"OnOrangePlayerPinged" "start_ping_target_switchSetTextureIndexcommand_target_orange0-1"
+		"OnOrangePlayerPinged" "start_ping_detector_textKill0-1"
+		"OnBluePlayerPinged" "start_ping_detector_textKill0-1"
+		"OnBluePlayerPinged" "start_wallsOpen2-1"
+		"OnOrangePlayerPinged" "start_wallsOpen2-1"
+	}
+	solid
+	{
+		"id" "16024"
+		side
+		{
+			"id" "12795"
+			"plane" "(-64 64 256) (64 64 256) (64 -64 256)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 0] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "12794"
+			"plane" "(-64 -64 248) (64 -64 248) (64 64 248)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 0] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "12793"
+			"plane" "(-64 64 256) (-64 -64 256) (-64 -64 248)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 0] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "12792"
+			"plane" "(64 64 248) (64 -64 248) (64 -64 256)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 0] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "12791"
+			"plane" "(64 64 256) (-64 64 256) (-64 64 248)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 0] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "12790"
+			"plane" "(64 -64 248) (-64 -64 248) (-64 -64 256)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 0] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
 		editor
 		{
-			"color" "220 220 220"
+			"color" "220 30 220"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "16047"
+	"classname" "env_instructor_hint"
+	"angles" "0 0 0"
+	"hint_allow_nodraw_target" "1"
+	"hint_alphaoption" "1"
+	"hint_caption" "Please Ping Here Once All Players Have Joinned"
+	"hint_color" "255 255 255"
+	"hint_icon_offscreen" "icon_tip"
+	"hint_icon_onscreen" "icon_tip"
+	"hint_pulseoption" "1"
+	"hint_range" "360"
+	"hint_target" "start_ping_detector"
+	"targetname" "start_ping_detector_text"
+	"origin" "-3.46811 0 232"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1500]"
 	}
 }
 entity
@@ -695,7 +857,8 @@ entity
 	"targetname" "start_players_trigger_tracker"
 	connections
 	{
-		"OnChangeToAllTrue" "0-1"
+		"OnChangeToAllTrue" "start_ping_detectorEnable0-1"
+		"OnChangeToAllTrue" "start_ping_detector_textShowHint0-1"
 	}
 	"origin" "-192 -48 16"
 	editor
@@ -892,7 +1055,7 @@ entity
 	"effects" "0"
 	"maxdxlevel" "0"
 	"mindxlevel" "0"
-	"movedir" "0 0 0"
+	"movedir" "90 0 0"
 	"movedistance" "100"
 	"origin" "0 0 448"
 	"renderamt" "255"
@@ -902,10 +1065,11 @@ entity
 	"shadowdepthnocache" "0"
 	"solid" "6"
 	"spawnflags" "0"
-	"speed" "100"
+	"speed" "500"
 	"startposition" "0"
 	"startsound" "plats/platform_start_lp_01.wav"
 	"stopsound" "plats/platform_stop_01.wav"
+	"targetname" "start_walls"
 	"vrad_brush_cast_shadows" "0"
 	solid
 	{
@@ -15883,7 +16047,7 @@ entity
 	"shadowcastdist" "0"
 	"shadowdepthnocache" "0"
 	"skin" "0"
-	"solid" "6"
+	"solid" "0"
 	"spawnflags" "0"
 	"startdisabled" "0"
 	"suppressanimsounds" "0"
@@ -15935,7 +16099,7 @@ entity
 	"shadowcastdist" "0"
 	"shadowdepthnocache" "0"
 	"skin" "0"
-	"solid" "6"
+	"solid" "0"
 	"spawnflags" "0"
 	"startdisabled" "0"
 	"suppressanimsounds" "0"
@@ -15987,7 +16151,7 @@ entity
 	"shadowcastdist" "0"
 	"shadowdepthnocache" "0"
 	"skin" "0"
-	"solid" "6"
+	"solid" "0"
 	"spawnflags" "0"
 	"startdisabled" "0"
 	"suppressanimsounds" "0"
@@ -16039,7 +16203,7 @@ entity
 	"shadowcastdist" "0"
 	"shadowdepthnocache" "0"
 	"skin" "0"
-	"solid" "6"
+	"solid" "0"
 	"spawnflags" "0"
 	"startdisabled" "0"
 	"suppressanimsounds" "0"
