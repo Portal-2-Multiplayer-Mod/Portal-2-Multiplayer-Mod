@@ -85,7 +85,7 @@ DefaultConfigFile = {
         
     "activeLanguage":
         {
-            "value": "en-US",
+            "value": "English",
             "menu": "launcher",
             "description": "The current language, it should respect the IETF language tag (check ISO 3166-1 for get "
                            "your language)",
@@ -97,17 +97,6 @@ ImmutableKeys = ["description", "warning", "prompt", "menu"]
 # verifies the config file by making sure that the processed data has the same keys as the default
 # if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
 def VerifyConfigFileIntegrity(config):
-    # if len(config) != len(DefaultConfigFile) or config.keys() != DefaultConfigFile.keys():
-    #     DefaultCopy = DefaultConfigFile
-    #     Log("Some config data is invalid, fixing it...")
-    #     for key in DefaultCopy:
-    #         try:
-    #             DefaultCopy[key] = config[key]
-    #         except:
-    #             Log(f"The key [{key}] is missing from the local config file!")
-    #     WriteConfigFile(DefaultCopy)
-    #     return DefaultCopy
-
     Log("=========================")
     Log("Validating config data...")
     copiedconfig = {
@@ -143,38 +132,39 @@ def VerifyConfigFileIntegrity(config):
                 WriteConfigFile(config)
     Log("=========================")
 
+    
+    
     # if the config keys are the same as the default then just return them
     return config
 
 
 def ValidatePlayerKeys():
-    Log("validating keys...")
+    Log("validating player keys...")
     try:
         indx = -1
         errs = 0
+        player : dict
         for player in GVars.configData["Players"]["value"]:
             if player.keys() != defaultplayerarray.keys():
                 indx += 1
                 errs += 1
-                defaultPlayer = defaultplayerarray
+                tempPlayer = defaultplayerarray
                 Log(f"found {str(errs)} key errors")
-                print(
-                    f"local keys = {player.keys()} \n saved keys = {defaultPlayer.keys()}")
-                for key in defaultPlayer:
+                print(f"local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
+                for key in tempPlayer.keys():
                     try:
-                        defaultPlayer[key] = player[key]
+                        tempPlayer[key] = player[key]
                     except Exception as e:
                         Log(str(e))
-                GVars.configData["Players"]["value"][indx] = defaultPlayer
+                GVars.configData["Players"]["value"][indx] = tempPlayer
             
         if errs > 0:
             WriteConfigFile(GVars.configData)
-        else:
-            Log("all keys are validated")
+            
+        Log("validated all keys!")
 
     except Exception as e:
         Log("ERROR: " + str(e))
-        Log("ERROR: Players is not a list, resetting to default")
         GVars.configData["Players"]["value"] = [defaultplayerarray]
         WriteConfigFile(GVars.configData)
 

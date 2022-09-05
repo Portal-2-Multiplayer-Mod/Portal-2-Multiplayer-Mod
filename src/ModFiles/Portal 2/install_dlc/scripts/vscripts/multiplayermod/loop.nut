@@ -65,41 +65,40 @@ function loop() {
     }
 
     //## Update eye angles ##//
-    if (!CoordsAlternate) {
-        // Alternate so our timings space out correctly
-        if (LastCoordGetPlayer != null) {
-            LastCoordGetPlayer <- Entities.FindByClassname(LastCoordGetPlayer, "player")
-        } else {
-            LastCoordGetPlayer <- Entities.FindByClassname(null, "player")
-        }
-        if (LastCoordGetPlayer != null) {
-            EntFireByHandle(measuremovement, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
+    if (Config_UseNametags) {
+        if (!CoordsAlternate) {
             // Alternate so our timings space out correctly
-            CoordsAlternate <- true
+            if (LastCoordGetPlayer != null) {
+                LastCoordGetPlayer <- Entities.FindByClassname(LastCoordGetPlayer, "player")
+            } else {
+                LastCoordGetPlayer <- Entities.FindByClassname(null, "player")
+            }
+            if (LastCoordGetPlayer != null) {
+                EntFireByHandle(measuremovement, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
+                // Alternate so our timings space out correctly
+                CoordsAlternate <- true
+            }
+        } else {
+            if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
+                local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
+                if (currentplayerclass != null) {
+                    if (OriginalAngle == null && CanCheckAngle) {
+                        OriginalAngle <- measuremovement.GetAngles()
+                        Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
+                    }
+
+                    currentplayerclass.eyeangles <- measuremovement.GetAngles()
+                    currentplayerclass.eyeforwardvector <- measuremovement.GetForwardVector()
+                }
+            }
+            // Alternate so our timings space out correctly
+            CoordsAlternate <- false
         }
     } else {
-        if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
-            local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
-            if (currentplayerclass != null) {
-                if (OriginalAngle == null && CanCheckAngle) {
-                    OriginalAngle <- measuremovement.GetAngles()
-                    Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
-                }
-
-                currentplayerclass.eyeangles <- measuremovement.GetAngles()
-                currentplayerclass.eyeforwardvector <- measuremovement.GetForwardVector()
-            }
-        }
-        // Alternate so our timings space out correctly
-        CoordsAlternate <- false
-    }
-    // Print out the data
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        local currentplayerclass = FindPlayerClass(p)
-        if (currentplayerclass != null) {
-            //printl("player" + p.entindex() + "'s angles " + currentplayerclass.eyeangles)
-            //printl("player" + p.entindex() + "'s vector " + currentplayerclass.eyeforwardvector)
+        local p = null
+        while (p = Entities.FindByClassname(p, "player")) {
+            FindPlayerClass(p).eyeangles <- Vector(0, 0, 0)
+            FindPlayerClass(p).eyeforwardvector <- Vector(0, 0, 0)
         }
     }
 
@@ -114,54 +113,55 @@ function loop() {
     }
 
     // //## Nametags ##//
-    if (Time() - PreviousNametagItter > 0.1) {
-        PreviousNametagItter = Time()
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local currentplayerclass = FindPlayerClass(p)
-            if (currentplayerclass != null) {
+    if (Config_UseNametags) {
+        if (Time() - PreviousNametagItter > 0.1) {
+            PreviousNametagItter = Time()
+            local p = null
+            while (p = Entities.FindByClassname(p, "player")) {
+                local currentplayerclass = FindPlayerClass(p)
+                if (currentplayerclass != null) {
 
-                // Get number of players in the game
-                local playernums = 0
-                foreach (plr in playerclasses) {
-                    playernums = playernums + 1
-                }
+                    // Get number of players in the game
+                    local playernums = 0
+                    foreach (plr in playerclasses) {
+                        playernums = playernums + 1
+                    }
 
-                local checkcount = 1
-                // Optimise search based on player count
-                if (playernums <= 6) {
-                    checkcount = playernums
-                } else {
-                    if (playernums <= 11) {
-                        checkcount = 6
+                    local checkcount = 1
+                    // Optimise search based on player count
+                    if (playernums <= 6) {
+                        checkcount = playernums
                     } else {
-                        if (playernums <= 14) {
-                            checkcount = 4
+                        if (playernums <= 11) {
+                            checkcount = 6
                         } else {
-                            if (playernums <= 17) {
-                                checkcount = 3
+                            if (playernums <= 14) {
+                                checkcount = 4
                             } else {
-                                if (playernums <= 21) {
-                                    checkcount = 2
+                                if (playernums <= 17) {
+                                    checkcount = 3
                                 } else {
-                                    if (playernums <= 33) {
-                                        checkcount = 1
+                                    if (playernums <= 21) {
+                                        checkcount = 2
+                                    } else {
+                                        if (playernums <= 33) {
+                                            checkcount = 1
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
+                    if (eyeplayer != null) {
+                        local clr = GetPlayerColor(eyeplayer, true)
+                        local cpc = FindPlayerClass(eyeplayer)
+                        EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
+                        EntFireByHandle(nametagdisplay, "settext", cpc.username, 0, p, p)
+                        EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
+                    }
                 }
-
-                local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
-                if (eyeplayer != null) {
-                    local clr = GetPlayerColor(eyeplayer, true)
-                    local cpc = FindPlayerClass(eyeplayer)
-                    EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
-                    EntFireByHandle(nametagdisplay, "settext", cpc.username, 0, p, p)
-                    EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
-                }
-            }
+            }   
         }
     }
 

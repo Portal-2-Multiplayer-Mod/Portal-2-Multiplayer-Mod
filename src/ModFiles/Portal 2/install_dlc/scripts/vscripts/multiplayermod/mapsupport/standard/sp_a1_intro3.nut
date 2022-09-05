@@ -31,6 +31,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "emitter_orange_mtg").Destroy()
         a1HasDestroyedTargetPortalGun <- false
         a1AlreadyGavePortalGun <- false
+        startwheatleycheck <- false
         
         // Make changing levels work
         EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro4:0.3", 0, null)
@@ -38,12 +39,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
+
+        startwheatleycheck <- true
     }
 
     if (MSLoop) {
         // Someone picked up the portal gun
-        if (!Entities.FindByName(null, "portalgun")) {
-            if (!a1HasDestroyedTargetPortalGun) {
+        if (!a1HasDestroyedTargetPortalGun) {
+            if (!Entities.FindByName(null, "portalgun")) {
                 // Allow respawn with dual gun
                 Entities.FindByName(null, "supress_blue_portalgun_spawn").Destroy()
                 Entities.FindByName(null, "supress_orange_portalgun_spawn").Destroy()
@@ -52,13 +55,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        // Make Wheatley look at nearest player
-        local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
-        EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
+        if (startwheatleycheck) {
+            // Make Wheatley look at nearest player
+            local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
+            EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
 
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch (exception) {}
+            try {
+                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
+            } catch (exception) {}
+        }
     }
 }
 
