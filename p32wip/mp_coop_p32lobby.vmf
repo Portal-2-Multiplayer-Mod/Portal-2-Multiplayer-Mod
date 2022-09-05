@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8997"
-	"mapversion" "98"
+	"mapversion" "100"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "98"
+	"mapversion" "100"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -8181,7 +8181,6 @@ entity
 		"OnMapSpawn" "@command_startCommandsv_cheats 101"
 		"OnMapSpawn" "@command_startCommandsv_downloadurl https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/tree/dev/WebFiles/FastDL/portal20-1"
 		"OnMapSpawn" "@command_startCommandsv_allowdownload 10-1"
-		"OnMapSpawn" "@command_startCommandsv_allowupload 10-1"
 	}
 	"origin" "-192 -32 64"
 	editor
