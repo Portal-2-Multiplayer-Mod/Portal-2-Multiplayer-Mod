@@ -208,7 +208,7 @@ function PostMapLoad() {
     // Enable fast download
     SendToConsoleP232("sv_allowdownload 1")
     SendToConsoleP232("sv_allowupload 1")
-    SendToConsoleP232("sv_downloadurl https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2")
+    SendToConsoleP232("sv_downloadurl https://github.com/kyleraykbs/Portal2-32PlayerMod/tree/dev/WebFiles/FastDL/portal2")
     
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
