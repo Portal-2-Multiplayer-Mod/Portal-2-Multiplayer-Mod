@@ -64,7 +64,7 @@
   "game_path_enter_path": "Enter your Portal 2 game path",
   "game_path-is-invalid": "Game path is invalid!",
   "game_path-attempt-to-fetch": "Attempting to fetch gamepath...",
-  "game_path_error-founded": "Found path!",
+  "game_path_error-founded": "Found game path!",
   "game_path_error-saved": "Saved path!",
   "devmod_is_active": "Dev mode is now active!",
   "devmod_copied_from_local_repo": "Copied mod files from src/ModFiles!",
