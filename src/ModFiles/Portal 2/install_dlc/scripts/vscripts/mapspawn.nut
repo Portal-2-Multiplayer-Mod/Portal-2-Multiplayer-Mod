@@ -159,12 +159,12 @@ function MakeProgressCheck() {
         // 9 levels is the highest that a course has
         for (local level = 1; level <= 9; level++) {
             if (IsLevelComplete(course - 1, level - 1)) {
-                EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0)
+                //EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0)
                 return
             }
         }
     }
-    EntFire("p2mm_servercommand", "command", "changelevel mp_coop_start", 0)
+    //EntFire("p2mm_servercommand", "command", "changelevel mp_coop_start", 0)
 }
 
 //---------------------------------------------------
