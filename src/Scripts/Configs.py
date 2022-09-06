@@ -24,7 +24,16 @@ DefaultConfigFile = {
             "menu": "hidden",
             "description": "Makes the mods files mount from src/ModFiles",
             "warning": "",
-            "prompt": "Enable developer mode?",
+            "prompt": "",
+        },
+    
+    "CustomLaunchOptions":
+        {
+            "value": "+map mp_coop_lobby_3",
+            "menu": "hidden",
+            "description": "Please type your custom launch options. Example (+map 'mapname'). Leave blank to launch into menu.",
+            "warning": "",
+            "prompt": "Custom launch options for debugging.",
         },
 
     "LauncherSFX":

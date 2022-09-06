@@ -445,21 +445,21 @@ def LaunchGame(gamepath: str) -> None:
 
     # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console -usercon
     try:
-        if (GVars.iow):
+        if (GVars.iow): #launching for windows
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-usercon"])
+                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["CustomLaunchOptions"]["value"]])
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
-        elif (GVars.iol):
-            def RunGame() -> None:
-                def RunSteam() -> None:
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -usercon")
+        elif (GVars.iol): #launching for linux
+            def RunGame():
+                def RunSteam():
+                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["CustomLaunchOptions"]["value"])
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:

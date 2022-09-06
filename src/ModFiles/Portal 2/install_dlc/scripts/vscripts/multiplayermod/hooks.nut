@@ -192,7 +192,6 @@ function PostMapLoad() {
     SendToConsoleP232("prop_dynamic_create cheatdetectionp2mm")
     SendToConsoleP232("script SetCheats()")
 
-
     // Edit cvars & set server name
     SendToConsoleP232("mp_allowspectators 1")
     if (PluginLoaded) {
@@ -200,15 +199,17 @@ function PostMapLoad() {
     } else {
         SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server")
     }
+
     // Force spawn players in map
     AddBranchLevelName( 1, "P2 MM" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
+
     // Enable fast download
-    SendToConsoleP232("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
     SendToConsoleP232("sv_allowdownload 1")
     SendToConsoleP232("sv_allowupload 1")
-
+    SendToConsoleP232("sv_downloadurl https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/dev/WebFiles/FastDL/portal2")
+    
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
@@ -226,6 +227,8 @@ function PostMapLoad() {
 	SendToConsoleP232("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	SendToConsoleP232("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsoleP232("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
+    SendToConsoleP232("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle") //For easy accsess to 2v2coopbattle, will remove later in development
+    SendToConsoleP232("alias p32lobby changelevel mp_coop_p32lobby") //For easy accsess to the custom lobby, lobby stil wip will fail
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
