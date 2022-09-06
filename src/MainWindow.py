@@ -240,6 +240,10 @@ class Gui:
             self.blipsnd.set_volume(0.25)
             self.selectsnd = self.pwrsnd
             self.hoversnd = self.blipsnd
+            self.x = 0
+            self.y = 0
+            self.width = 0
+            self.height = 0
             
             
             
@@ -751,6 +755,29 @@ class Gui:
         # tempsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5))).render("CuM", True, (255, 100, 255))
         # screen.blit(tempsurf, (mousex - tempsurf.get_width()/2, mousey - tempsurf.get_height()/2))
 
+
+        ###### MENU 2 ELECTRIC BOOGALOO
+        # loop through all buttons
+        indx = 0
+        for button in self.CurrentMenu:
+            indx += 1
+            clr = (0, 0, 0)
+            if button == self.SelectedButton:
+                clr = button.activecolor
+            else:
+                clr = button.inactivecolor
+            self.RunAnimation(button, button.curanim)
+            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
+                                    int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text,
+                                                                                                        True, clr)
+            if not (self.LookingForInput):
+                self.screen.blit(
+                    text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
+            button.x = W / 16
+            button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
+            button.width = text1.get_width()
+            button.height = text1.get_height()
+
         ########### BACKGROUND
         for floater in self.Floaters:
             surf = floater.surf
@@ -797,26 +824,6 @@ class Gui:
 
         ########### MENU
 
-        # loop through all buttons
-        indx = 0
-        for button in self.CurrentMenu:
-            indx += 1
-            clr = (0, 0, 0)
-            if button == self.SelectedButton:
-                clr = button.activecolor
-            else:
-                clr = button.inactivecolor
-            self.RunAnimation(button, button.curanim)
-            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
-                                    int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text,
-                                                                                                        True, clr)
-            if not (self.LookingForInput):
-                self.screen.blit(
-                    text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
-            button.x = W / 16
-            button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
-            button.width = text1.get_width()
-            button.height = text1.get_height()
         self.SelectedButton = self.CurrentMenu[self.CurrentButtonsIndex]
 
         ############# OVERLAY
