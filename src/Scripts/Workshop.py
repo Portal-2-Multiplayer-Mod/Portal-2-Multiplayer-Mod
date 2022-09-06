@@ -2,7 +2,7 @@ import Scripts.GlobalVariables as GVars
 import Scripts.BasicFunctions as BF
 import os
 
-def UpdateMapList(workshoppath):
+def UpdateMapList(workshoppath) -> None:
     global maplist
     maplist = []
     for root, dirs, files in os.walk(workshoppath):
@@ -21,7 +21,7 @@ def UpdateMapList(workshoppath):
                     CMap["id"] = file.replace("thumb", "").replace(".jpg", "")
             maplist.append(CMap)
 
-def SteamIDFromLink(link : str):
+def SteamIDFromLink(link : str) -> str:
     # remove the usual url
     link = link.replace("https://steamcommunity.com/sharedfiles/filedetails/?id=", "")
     # removes the searchtext
@@ -37,13 +37,14 @@ def SteamIDFromLink(link : str):
     
     return link
 
-def MapFromSteamID(SteamID, workshoppath = False):
-    if workshoppath == False:
+def MapFromSteamID(workshopLink: str, workshoppath: str = None) -> str:
+    if workshoppath is None:
         workshoppath = GVars.configData["portal2path"]["value"] + BF.ConvertPath("/portal2/maps/workshop")
-    SteamID = SteamIDFromLink(SteamID)
+    
+    SteamID = SteamIDFromLink(workshopLink)
     UpdateMapList(workshoppath)
 
     for map in maplist:
         if map["id"] == SteamID:
             return map
-    return False
+    return None

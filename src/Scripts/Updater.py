@@ -19,7 +19,7 @@ repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
 
 # thanks stackOverflow for this solution <3
-def haveInternet():
+def haveInternet() -> bool:
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
     try:
         conn.request("HEAD", "/")
@@ -58,7 +58,7 @@ def CheckForNewClient() -> dict:
     return results
 
 
-def DownloadClient(cType = ""):
+def DownloadClient(cType: str = "") -> bool:
     # cType is the Client Type (gui / cli)
     Log("Downloading...")
     cType = cType.upper()
@@ -103,7 +103,7 @@ def DownloadClient(cType = ""):
     subprocess.Popen(command, shell=True)
     Log("launched the new client")
 
-def CheckForNewFiles():
+def CheckForNewFiles() -> bool:
     
     if not haveInternet():
         Log("No internet Connection")
@@ -145,7 +145,7 @@ def CheckForNewFiles():
     
     return True
 
-def DownloadNewFiles():
+def DownloadNewFiles() -> None:
     r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
     Log("downloading "+str(len(r["Files"]))+" files...")

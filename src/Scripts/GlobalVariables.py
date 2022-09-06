@@ -13,19 +13,19 @@ from Scripts.BasicLogger import Log
 #//////////////////////////////////////////#
 
 # appStartDate is the dateTime when the launcher was started, this is used to name the logs
-appStartDate : str
-configData : dict[str, dict[str, str]]
-modPath : str
-configPath : str
-iow : bool = False
-iol : bool = False
-nf : str = os.sep # this way the logging won't break if someone runs the app on mac
-hadtoresetconfig : bool = False
-executable : str = os.path.abspath(sys.executable)
-translations : dict[str, str]
-AfterFunction : None
+appStartDate: str
+configData: dict[str, dict[str, str]]
+modPath: str
+configPath: str
+iow: bool = False
+iol: bool = False
+nf: str = os.sep # this way the logging won't break if someone runs the app on mac
+hadtoresetconfig: bool = False
+executable: str = os.path.abspath(sys.executable)
+translations: dict[str, str]
+AfterFunction: None
 
-def init():
+def init() -> None:
     global appStartDate, modPath, iow, iol, nf, configPath
 
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
@@ -63,7 +63,7 @@ def init():
     if not os.path.exists(configPath):
         os.makedirs(configPath)
 
-def LoadConfig():
+def LoadConfig() -> None:
     global configData
     configData = cfg.ImportConfig()
     Log("Config data loaded.")

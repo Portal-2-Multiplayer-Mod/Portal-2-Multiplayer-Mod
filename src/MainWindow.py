@@ -33,7 +33,7 @@ except Exception as e:
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 class Gui:
-    def __init__(self, devMode : bool) -> None:
+    def __init__(self, devMode: bool) -> None:
         pygame.init()
         pygame.mixer.init()
 
@@ -54,30 +54,30 @@ class Gui:
         self.goldencube = pygame.image.load("GUI/assets/images/goldencube.png")
 
         #! public variables
-        self.coolDown : int = 0
-        self.CurInput : str = ""
-        self.ERRORLIST : list = []
-        self.InputPrompt : str = ""
-        self.PlayersMenu : list = []
-        self.directorymenu : list= []
-        self.PopupBoxList : list = []
-        self.LanguagesMenu : list = []
-        self.IsUpdating : bool = False
+        self.coolDown: int = 0
+        self.CurInput: str = ""
+        self.ERRORLIST: list = []
+        self.InputPrompt: str = ""
+        self.PlayersMenu: list = []
+        self.directorymenu: list= []
+        self.PopupBoxList: list = []
+        self.LanguagesMenu: list = []
+        self.IsUpdating: bool = False
         self.AfterInputFunction = None
-        self.SettingsButtons : list = []
-        self.SecAgo : float = time.time()
-        self.selectedpopupbutton : int = 0
-        self.LookingForInput : bool = False
-        self.CurrentSelectedPlayer : int = 0
-        self.Floaters : list[self.Floater] = []
+        self.SettingsButtons: list = []
+        self.SecAgo: float = time.time()
+        self.selectedpopupbutton: int = 0
+        self.LookingForInput: bool = False
+        self.CurrentSelectedPlayer: int = 0
+        self.Floaters: list[self.Floater] = []
 
 
     ###############################################################################
         self.screen = pygame.display.set_mode((1280, 720), RESIZABLE)
         self.fpsclock = pygame.time.Clock()
-        self.devMode : bool = devMode
-        self.running : bool = True
-        self.FPS : int = 60
+        self.devMode: bool = devMode
+        self.running: bool = True
+        self.FPS: int = 60
         
         # Define the name and image of the window
         pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
@@ -93,9 +93,9 @@ class Gui:
         self.DefineResourcesButtons()
         self.DefineTestingMenuButtons()
         
-        self.CurrentButtonsIndex : int = 0
-        self.CurrentMenu : list = self.MainButtons
-        self.SelectedButton : self.ButtonTemplate = self.CurrentMenu[self.CurrentButtonsIndex]
+        self.CurrentButtonsIndex: int = 0
+        self.CurrentMenu: list = self.MainButtons
+        self.SelectedButton: self.ButtonTemplate = self.CurrentMenu[self.CurrentButtonsIndex]
         
         for i in range(9):
             self.AddFloater(50, 50, 20, 75, 75)
@@ -106,21 +106,21 @@ class Gui:
     #     surf.fill((255, 255, 255))
     #     surf = pygame.transform.rotate(surf, 19)
 
-    def PlaySound(self, sound : pygame.mixer.Sound) -> None:
+    def PlaySound(self, sound: pygame.mixer.Sound) -> None:
         LauncherSFX = GVars.configData["LauncherSFX"]["value"] == "true"
         if LauncherSFX:
             pygame.mixer.Sound.play(sound)
 
     class Floater:
-        def __init__(self, rot : float, surf : pygame.Surface, x : float, y : float, negrot : bool) -> None:
-            self.rot : float = rot
-            self.surf : pygame.Surface = surf
-            self.x : float = x
-            self.y : float = y
-            self.negrot : bool = negrot
+        def __init__(self, rot: float, surf: pygame.Surface, x: float, y: float, negrot: bool) -> None:
+            self.rot: float = rot
+            self.surf: pygame.Surface = surf
+            self.x: float = x
+            self.y: float = y
+            self.negrot: bool = negrot
 
 
-    def AddFloater(self, width : float, height : float, rot : float, x : float, y : float) -> None:
+    def AddFloater(self, width: float, height: float, rot: float, x: float, y: float) -> None:
         # random bool
         surf = pygame.image.load("GUI/assets/images/button.png")
         surf = pygame.transform.scale(surf, (width, height))
@@ -200,7 +200,7 @@ class Gui:
     
 #######################################################################
 
-    def gradientRect(self, window : pygame.Surface, left_colour : tuple, right_colour : tuple, target_rect: pygame.Rect) -> None:
+    def gradientRect(self, window: pygame.Surface, left_colour: tuple, right_colour: tuple, target_rect: pygame.Rect) -> None:
         colour_rect = pygame.Surface((2, 2))  # tiny! 2x2 bitmap
         pygame.draw.line(colour_rect, left_colour, (0, 0),
                         (0, 1))  # left colour line
@@ -247,7 +247,7 @@ class Gui:
     def Button_Back_func(self) -> None:
         self.BackMenu()
     
-    def RefreshSettingsMenu(self, menu : str) -> None:
+    def RefreshSettingsMenu(self, menu: str) -> None:
         self.SettingsButtons.clear()
 
         class curkeyButton:
@@ -285,7 +285,7 @@ class Gui:
                         cfg.EditConfig(self.cfgkey, "false")
                     self.outerSelf.RefreshSettingsMenu(menu)
                 else:
-                    def AfterInputGenericSetConfig(inp : str) -> None:
+                    def AfterInputGenericSetConfig(inp: str) -> None:
                         cfg.EditConfig(self.cfgkey, inp.strip())
                         Log("Saved '" + inp.strip() + "' to config " + self.cfgkey)
                         self.outerSelf.Error(translations["error_saved"], 5, (75, 200, 75))
@@ -370,7 +370,7 @@ class Gui:
 
         # sets the admin level for th player
         def Button_AdminLevel_func() -> None:
-            def AfterInputAdminLevel(inp : str) -> None:
+            def AfterInputAdminLevel(inp: str) -> None:
                 if not inp.isdigit():
                     self.Error(
                         translations["players_admin_error_not-a-number"], 5, (255, 50, 50))
@@ -553,10 +553,10 @@ class Gui:
 
     # get's the id from a map's url then copies the changelevel command to the clipboard
     def Button_ChangeLevel_func(self) -> None:
-        def AfterInput(input : str):
+        def AfterInput(input: str):
             map = workshop.MapFromSteamID(input)
             
-            if map != False:
+            if map is not None:
                 self.Error(translations["workshop_changelevel_command"], 3, (255, 0, 255))
                 self.Error(translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
                 #TODO: figure out a way to copy "map" to the clipboard 
@@ -605,7 +605,7 @@ class Gui:
 #! END OF BUTTON FUNCTIONS
 
 
-    def ChangeMenu(self, menu : list, append : bool = True) -> None:
+    def ChangeMenu(self, menu: list, append: bool = True) -> None:
         if append:
             self.directorymenu.append(self.CurrentMenu)
             
@@ -642,12 +642,12 @@ class Gui:
 
 
     ################################
-    def SelectAnimation(self, btn : ButtonTemplate, anim: str) -> None:
+    def SelectAnimation(self, btn: ButtonTemplate, anim: str) -> None:
         if anim == "pop":
             btn.curanim = "pop1"
 
 
-    def RunAnimation(self, button : ButtonTemplate, anim: str) -> None:
+    def RunAnimation(self, button: ButtonTemplate, anim: str) -> None:
         if anim == "pop1":
             if button.sizemult < 1.3:
                 button.sizemult += 0.1
@@ -661,7 +661,7 @@ class Gui:
                 button.curanim = ""
 
 
-    def BlitDescription(self, txt : str, x : float = None , y : float = None , clr : tuple= (255, 255, 255)) -> None:
+    def BlitDescription(self, txt: str, x: float = None , y: float = None , clr: tuple= (255, 255, 255)) -> None:
         if x is None:
             x = self.screen.get_width() / 16
         if y is None:
@@ -677,7 +677,7 @@ class Gui:
             Log(str(e))
 
 
-    def GetUserInputPYG(self, afterfunc=None, prompt : str ="", preinput : str="") -> None:
+    def GetUserInputPYG(self, afterfunc=None, prompt: str ="", preinput: str="") -> None:
         Log("Getting user input...")
         self.LookingForInput = True
         self.CurInput = preinput
@@ -717,7 +717,7 @@ class Gui:
 
     # the language button (english, french etc...)
     def Button_Language_func(self) -> None:
-        lang : str = self.LanguagesMenu[self.CurrentButtonsIndex].text.replace("→ ", "")
+        lang: str = self.LanguagesMenu[self.CurrentButtonsIndex].text.replace("→ ", "")
         Log("Language set: " + lang)
         cfg.EditConfig("activeLanguage", lang)
         LoadTranslations()
@@ -742,7 +742,7 @@ class Gui:
     def Update(self) -> None:
         W = self.screen.get_width()
         H = self.screen.get_height()
-        fntdiv : int = 32
+        fntdiv: int = 32
         fntsize = int(W / fntdiv)
         mindiv = int(fntdiv / 1.25)
 
@@ -1199,7 +1199,7 @@ def GetGamePath() -> None:
     Ui.GetUserInputPYG(AfterInputGP, translations["game_path_enter_path"])
 
 
-def VerifyGamePath(shouldgetpath : bool = True) -> bool:
+def VerifyGamePath(shouldgetpath: bool = True) -> bool:
     Log("Verifying game path...")
     gamepath = GVars.configData["portal2path"]["value"]
     
@@ -1225,7 +1225,7 @@ def VerifyModFiles() -> bool:
     return False
 
 
-def UseFallbacks(gamepath : str) -> None:
+def UseFallbacks(gamepath: str) -> None:
     # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
     BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf +
                   "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
@@ -1347,7 +1347,11 @@ def UpdateModClient() -> None:
     def UpdateThread() -> None:
         Log("Updating...")
         Ui.IsUpdating = True
-        up.DownloadClient()
+        
+        if not up.DownloadClient():
+            Ui.Error("Couldn't find the download link \nplease visit our github to update")
+            return
+        
         Ui.running = False
         Log("self.running set to false")
 
@@ -1362,7 +1366,7 @@ def RunGameScript() -> None:
         Ui.Error(translations["game_launched"], 5, (75, 255, 75))
 
 
-def UnmountScript(shouldgetpath : bool = True) -> None:
+def UnmountScript(shouldgetpath: bool = True) -> None:
     Log("___Unmounting Mod___")
     VerifyGamePath(shouldgetpath)
     gamepath = GVars.configData["portal2path"]["value"]
@@ -1371,7 +1375,7 @@ def UnmountScript(shouldgetpath : bool = True) -> None:
     Log("____DONE UNMOUNTING____")
 
 
-def RestartClient(path : str = sys.executable) -> None:
+def RestartClient(path: str = sys.executable) -> None:
     if (GVars.iol):
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
@@ -1515,7 +1519,7 @@ def PostInitialize() -> None:
 
             activecolor = (75, 255, 75)
             inactivecolor = (155, 155, 155)
-    
+
         Ui.PopupBox(translations["launcher_config_reset"],
                  translations["launcher_had_to_reset"], [OkButton])
 
