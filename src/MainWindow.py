@@ -1319,7 +1319,11 @@ def GetAvailableLanguages() -> list[str]:
 
 def LoadTranslations() -> dict: 
     global translations
-    translations = json.load(open("languages/"+GVars.configData["activeLanguage"]["value"]+ ".json", "r", encoding="utf8"))
+    langPath = "languages/"+GVars.configData["activeLanguage"]["value"]+ ".json"
+    if not os.path.exists(langPath):
+        langPath = "languages/"+cfg.DefaultConfigFile["activeLanguage"]["value"] + ".json"
+        
+    translations = json.load(open(langPath, "r", encoding="utf8"))
 
 
 def UpdateModFiles() -> None:
