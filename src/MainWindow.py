@@ -1205,9 +1205,9 @@ def VerifyGamePath(shouldgetpath: bool = True) -> bool:
     
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Ui.Error(translations["game_path-is-invalid"])
-        Ui.Error(translations["game_path-attempt-to-fetch"], 5, (255, 255, 75))
         
-        if (shouldgetpath):
+        if shouldgetpath:
+            Ui.Error(translations["game_path-attempt-to-fetch"], 5, (255, 255, 75))
             GetGamePath()
             
         return False

@@ -376,11 +376,11 @@ def UnRenameBinaries(gamepath: str, binarys: list[str]) -> None:
         # If the binary exists
         if (os.path.isfile(gamepath + GVars.nf + binary)):
             Log("Un-renaming " + binary + " to " + Og_binary)
-            
+
             # If a file with the original binary's name exist delete it
             if (os.path.isfile(gamepath + GVars.nf + Og_binary)):
                 os.remove(gamepath + GVars.nf + Og_binary)
-            
+
             # Rename the binary back to it's original name
             os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + Og_binary)
 
@@ -459,7 +459,7 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol): #launching for linux
             def RunGame():
                 def RunSteam():
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["CustomLaunchOptions"]["value"])
+                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon " + GVars.configData["CustomLaunchOptions"]["value"])
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:

@@ -22,55 +22,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSPostPlayerSpawn) {
-<<<<<<< Updated upstream
-        // Enable the hub entirely
-        try {
-            // Enable team building course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
-
-            // Enable tbeam course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
-
-            // Enable mass and velocity course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_bridge"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_bridge"))
-
-            // Enable paint course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
-
-            // Enable fling course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
-
-            // Enable extra course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-
-            // Enable all finished course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
-
-            // Enable music
-            DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
-            Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
-            Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
-            
-            // Enable retrigger for all logic_relay entities except for those defined otherwise
-            // in the bsp to prevent desync on clients and remove errors from the console
-            local ent = null
-            while (ent = Entities.FindByClassname(ent, "logic_relay")) {
-                ent.__KeyValueFromString("spawnflags", "2")
-=======
         for (local course = 1; course <= 6; course++) {
             // 9 levels is the highest that a course has
             for (local level = 1; level <= 9; level++) {
                 if (IsLevelComplete(course - 1, level - 1)) {
                     enablehub <- true
                 }
->>>>>>> Stashed changes
             }
         }
 
@@ -83,7 +40,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 // Enable music
                 DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
-                
+
             } catch (exception) {}
         }
 
