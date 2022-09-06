@@ -51,7 +51,7 @@ GlobalSpawnClass <- class {
 // Booleans
 //---------------
 IsOnSingleplayerMaps <- false
-if (GetMapName().len() >= 7 && GetMapName().slice(0,7) != "mp_coop") {
+if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) != "mp_coop") {
     IsOnSingleplayerMaps = true
 }
 CanCheckAngle <- false
@@ -94,21 +94,19 @@ TotalRemovedEnts <- 0
 // Arrays/Tables
 //---------------
 ConsoleAscii <- [
-""
-"██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░░██████╗░"
-"██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░░╚════██╗"
-"██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░░░░███╔═╝"
-"██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░░██╔══╝░░"
-"██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░░███████╗"
-"╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░░╚══════╝"
-""
-"░░░░░░███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░░░░░░░"
-"░░░░░░████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗░░░░░░"
-"░░░░░░██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║░░░░░░"
-"░░░░░░██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║░░░░░░"
-"░░░░░░██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝░░░░░░"
-"░░░░░░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░╚═╝░░░░░╚═╝░╚════╝░╚═════╝░░░░░░░"
-""
+"\n██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░░██████╗░"
+  "██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░░╚════██╗"
+  "██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░░░░███╔═╝"
+  "██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░░██╔══╝░░"
+  "██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░░███████╗"
+  "╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░░╚══════╝"
+  ""
+  "░░░░░░███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░░░░░░░"
+  "░░░░░░████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗░░░░░░"
+  "░░░░░░██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║░░░░░░"
+  "░░░░░░██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║░░░░░░"
+  "░░░░░░██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝░░░░░░"
+  "░░░░░░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░╚═╝░░░░░╚═╝░╚════╝░╚═════╝░░░░░░░\n"
 ]
 CurrentlyDead <- []
 entityclasses <- []
@@ -142,72 +140,90 @@ InvalidRootMoveParents <- [
     "worldspawn",
     ""
 ]
-MPMCoopCreditNames <- [ // Add names to coop credits map
-    "### ",
-    "### ",
-    "### ",
-    "### ",
-    "###Portal 2: Multiplayer Mod ~ Credits",
-    "### ",
-    "###--------------------------",
-    "###P2:MM Head Creators",
-    "###--------------------------",
-    "kyleraykbs | Team Lead + Script + Launcher",
-    "Nanoman2525 | Mapping + Entity Work + Launcher + Script",
-    "Vista | Reverse Engineering, Plugin Developer",
-    "Bumpy | Script Theory",
-    "Wolƒe Strider Shoσter | Singleplayer Support",
-    "cabiste | Scripting + Mod Launcher + Code Refactor",
-    "###--------------------------",
-    "###P2:MM Team Members",
-    "###--------------------------",
-    "sear | Speedrun Mode Ideas",
-    "Jeffrey | Previous Code Cleanup",
-    "###--------------------------",
-    "###P2:MM Contributers",
-    "###--------------------------",
-    "Dreadnox | Speedrun Mode Ideas",
-    "Enator18 | Python Dev"
-    "Blub/Vecc | Previous Code Commenting",
-    "Darnias | Jumpstarter Code",
-    "PieCreeper | Promotion of the mod",
-    "###--------------------------",
-    "###Special Thanks To:",
-    "###--------------------------",
-    "SuperSpeed",
-    "Mystical Ace",
-    "ANotSoSpookySkeleton",
-    "Panter",
-    "tnp|\\n|thewoodster75",
-    "ThePineapple",
-    "Areng",
-    "SuperSpeed",
-    "Brawler",
-    "X man",
-    "###--------------------------",
-    "###Valve: Credits",
-    "###--------------------------",
-]
-mpcoursenames <- [
-    "mp_coop_doors",
-    "mp_coop_fling_3",
-    "mp_coop_wall_intro",
-    "mp_coop_tbeam_redirect",
-    "mp_coop_paint_come_along",
-    "mp_coop_separation_1",
-]
+if (GetMapName() == "mp_coop_credits") {
+    MPMCoopCreditNames <- [ // Add names to coop credits map
+        "### ",
+        "### ",
+        "### ",
+        "### ",
+        "###Portal 2: Multiplayer Mod ~ Credits",
+        "### ",
+        "###--------------------------",
+        "###P2:MM Head Creators",
+        "###--------------------------",
+        "kyleraykbs | Team Lead + Script + Launcher",
+        "Nanoman2525 | Mapping + Entity Work + Launcher + Script",
+        "Vista | Reverse Engineering, Plugin Developer",
+        "Bumpy | Script Theory",
+        "Wolƒe Strider Shoσter | Singleplayer Support",
+        "cabiste | Scripting + Mod Launcher + Code Refactor",
+        "###--------------------------",
+        "###P2:MM Team Members",
+        "###--------------------------",
+        "sear | Speedrun Mode Ideas",
+        "Jeffrey | Previous Code Cleanup",
+        "###--------------------------",
+        "###P2:MM Contributers",
+        "###--------------------------",
+        "Dreadnox | Speedrun Mode Ideas",
+        "Enator18 | Python Dev"
+        "Blub/Vecc | Previous Code Commenting",
+        "Darnias | Jumpstarter Code",
+        "PieCreeper | Promotion of the mod",
+        "###--------------------------",
+        "###Special Thanks To:",
+        "###--------------------------",
+        "SuperSpeed",
+        "Mystical Ace",
+        "ANotSoSpookySkeleton",
+        "Panter",
+        "tnp|\\n|thewoodster75",
+        "ThePineapple",
+        "Areng",
+        "SuperSpeed",
+        "Brawler",
+        "X man",
+        "###--------------------------",
+        "###Valve: Credits",
+        "###--------------------------",
+    ]
+}
+
+if (Config_UseChatCommands) {
+    mpcoursenames <- [
+        "mp_coop_doors",
+        "mp_coop_fling_3",
+        "mp_coop_wall_intro",
+        "mp_coop_tbeam_redirect",
+        "mp_coop_paint_come_along",
+        "mp_coop_separation_1",
+    ]
+    spchapternames <- [
+        "sp_a1_intro1",
+        "sp_a2_laser_intro",
+        "sp_a2_sphere_peek",
+        "sp_a2_column_blocker",
+        "sp_a2_bts3",
+        "sp_a3_00",
+        "sp_a3_speed_ramp",
+        "sp_a4_intro",
+        "sp_a4_finale1"
+    ]
+    commandtable <- {}
+    commandtable["help"] <- "List available commands or print a description of a specific one."
+    commandtable["noclip"] <- "Toggles noclip mode."
+    commandtable["kill"] <- "Kill yourself, others, or \"all\"."
+    commandtable["changeteam"] <- "Changes your current team."
+    commandtable["speed"] <- "Changes your player speed."
+    commandtable["teleport"] <- "Teleports a specific player or \"all\" to you or another player."
+    commandtable["rcon"] <- "Execute commands on the server console."
+    commandtable["restartlevel"] <- "Reset the current map."
+    commandtable["spchapter"] <- "Changes the level to the specified singleplayer chapter."
+    commandtable["mpcourse"] <- "Changes the level to the specified cooperative course."
+    commandtable["playercolor"] <- "Changes your player model's color through valid RGB values."
+    commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
+}
 playerclasses <- []
-spchapternames <- [
-    "sp_a1_intro1",
-    "sp_a2_laser_intro",
-    "sp_a2_sphere_peek",
-    "sp_a2_column_blocker",
-    "sp_a2_bts3",
-    "sp_a3_00",
-    "sp_a3_speed_ramp",
-    "sp_a4_intro",
-    "sp_a4_finale1"
-]
 
 //---------------
 // Others
