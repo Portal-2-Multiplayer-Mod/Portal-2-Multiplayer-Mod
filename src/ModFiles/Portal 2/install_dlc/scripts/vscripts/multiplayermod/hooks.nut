@@ -228,7 +228,7 @@ function PostMapLoad() {
 	SendToConsoleP232("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsoleP232("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
     SendToConsoleP232("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle") //For easy accsess to 2v2coopbattle, will remove later in development
-    SendToConsoleP232("alias p32lobby changelevel mp_coop_p32lobby") //For easy accsess to the custom lobby
+    SendToConsoleP232("alias p32lobby changelevel mp_coop_p32lobby") //For easy accsess to the custom lobby, mp_coop_p32lobby
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
