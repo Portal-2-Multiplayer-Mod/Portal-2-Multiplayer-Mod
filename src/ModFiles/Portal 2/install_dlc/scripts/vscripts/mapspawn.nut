@@ -164,7 +164,7 @@ function MakeProgressCheck() {
             }
         }
     }
-    //EntFire("p2mm_servercommand", "command", "changelevel mp_coop_start", 0)
+    EntFire("p2mm_servercommand", "command", "changelevel mp_coop_start", 0)
 }
 
 //---------------------------------------------------
