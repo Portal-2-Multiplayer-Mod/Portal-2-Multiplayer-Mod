@@ -70,9 +70,8 @@ function OnPlayerJoin(p, script_scope) {
     }
 
     //# Set viewmodel targetnames so we can tell them apart #//
-    local ent = null
-    while (ent=Entities.FindByClassname(ent, "predicted_viewmodel")) {
-        EntFireByHandle(ent, "addoutput", "targetname predicted_viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
+    for (local ent; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
+        EntFireByHandle(ent, "addoutput", "targetname predicted_viewmodel_player" + ent.entindex(), 0, null, null)
     }
 
     // If the player is the first player to join, fix OrangeOldPlayerPos
@@ -83,17 +82,11 @@ function OnPlayerJoin(p, script_scope) {
         }
     }
 
-    // Run general map code after a player loads into the game
-    if (PlayerID == 1) {
-        PostMapLoad()
+    switch (PlayerID) {
+        case 1:     PostMapLoad();      break;  // Run general map code after a player loads into the game
+        case 2:     PostPlayer2Join();  break;  // Run code after player 2 joins
     }
 
-    // Run code after player 2 joins
-    if (PlayerID == 2) {
-        PostPlayer2Join()
-    }
-
-    //# Set cvars on joining players' client #//
     SendToConsoleP232("sv_timeout 3")
     EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos", 0, p, p)
     EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
@@ -105,22 +98,17 @@ function OnPlayerJoin(p, script_scope) {
     if (Config_UseJoinIndicator) {
         //# Say join message on HUD #//
         if (PluginLoaded) {
-            // An extra check in case the GetPlayerName() plugin function breaks
-            if (GetPlayerName(PlayerID) == "") {
-                JoinMessage <- "Player " + PlayerID + " joined the game"
-            } else {
-                JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
-            }
+            JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
         } else {
             JoinMessage <- "Player " + PlayerID + " joined the game"
         }
         // Set join message to player name
         JoinMessage = JoinMessage.tostring()
         joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
-        EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
-        if (PlayerID >= 2) {
+        if (PlayerID > 1) {
             onscreendisplay.__KeyValueFromString("y", "0.075")
         }
+        EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
     }
 
     //# Set player color #//
@@ -199,17 +187,16 @@ function PostMapLoad() {
     } else {
         SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server")
     }
-
     // Force spawn players in map
     AddBranchLevelName( 1, "P2 MM" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
-
     // Enable fast download
+    //SendToConsoleP232("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
     SendToConsoleP232("sv_allowdownload 1")
     SendToConsoleP232("sv_allowupload 1")
-    SendToConsoleP232("sv_downloadurl https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/tree/dev/WebFiles/FastDL/portal2")
-    
+    SendToConsoleP232("sv_downloadurl https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/raw/dev/WebFiles/FastDL/portal2")
+
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
@@ -227,18 +214,16 @@ function PostMapLoad() {
 	SendToConsoleP232("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	SendToConsoleP232("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsoleP232("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
-    SendToConsoleP232("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle") //For easy accsess to 2v2coopbattle, will remove later in development
-    SendToConsoleP232("alias p32lobby changelevel mp_coop_p32lobby") //For easy accsess to the custom lobby, mp_coop_p32lobby
+  SendToConsoleP232("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle") //For easy accsess to 2v2coopbattle, will remove later in development
+  SendToConsoleP232("alias p32lobby changelevel mp_coop_p32lobby") //For easy accsess to the custom lobby, mp_coop_p32lobby
+
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
 
     local plr = Entities.FindByClassname(null, "player")
-    // OriginalPosMain <- Entities.FindByClassname(null, "player").GetOrigin()
-    // Entities.FindByClassname(null, "player").SetOrigin(Vector(plr.GetOrigin().x + 0.24526, plr.GetOrigin().y + 0.23458, OriginalPosMain.z + 0.26497))
 
     plr.SetHealth(230053963)
-
     EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
 
     EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
@@ -258,20 +243,6 @@ function PostPlayer2Join() {
 // (Two players have loaded in by now)
 function GeneralOneTime() {
     EntFire("p2mm_servercommand", "command", "script ForceRespawnAll()", 1)
-
-    // Single player maps with chapter titles
-    local CHAPTER_TITLES =
-    [
-        { map = "sp_a1_intro1", title_text = "#portal2_Chapter1_Title", subtitle_text = "#portal2_Chapter1_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
-        { map = "sp_a2_laser_intro", title_text = "#portal2_Chapter2_Title", subtitle_text = "#portal2_Chapter2_Subtitle", displayOnSpawn = true,	displaydelay = 2.5 },
-        { map = "sp_a2_sphere_peek", title_text = "#portal2_Chapter3_Title", subtitle_text = "#portal2_Chapter3_Subtitle", displayOnSpawn = true,	displaydelay = 2.5 },
-        { map = "sp_a2_column_blocker", title_text = "#portal2_Chapter4_Title", subtitle_text = "#portal2_Chapter4_Subtitle", displayOnSpawn = true, displaydelay = 2.5 },
-        { map = "sp_a2_bts3", title_text = "#portal2_Chapter5_Title", subtitle_text = "#portal2_Chapter5_Subtitle", displayOnSpawn = true,			displaydelay = 1.0 },
-        { map = "sp_a3_00", title_text = "#portal2_Chapter6_Title", subtitle_text = "#portal2_Chapter6_Subtitle", displayOnSpawn = true,			displaydelay = 1.5 },
-        { map = "sp_a3_speed_ramp", title_text = "#portal2_Chapter7_Title", subtitle_text = "#portal2_Chapter7_Subtitle", displayOnSpawn = true,	displaydelay = 1.0 },
-        { map = "sp_a4_intro", title_text = "#portal2_Chapter8_Title", subtitle_text = "#portal2_Chapter8_Subtitle", displayOnSpawn = true,			displaydelay = 2.5 },
-        { map = "sp_a4_finale1", title_text = "#portal2_Chapter9_Title", subtitle_text = "#portal2_Chapter9_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
-    ]
 
     local ent = Entities.FindByName(null, "blue")
     local playerclass = FindPlayerClass(ent)
@@ -300,6 +271,20 @@ function GeneralOneTime() {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
         }
     }
+
+    // Single player maps with chapter titles
+    // Credit: Valve
+    local CHAPTER_TITLES = [
+        { map = "sp_a1_intro1", title_text = "#portal2_Chapter1_Title", subtitle_text = "#portal2_Chapter1_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
+        { map = "sp_a2_laser_intro", title_text = "#portal2_Chapter2_Title", subtitle_text = "#portal2_Chapter2_Subtitle", displayOnSpawn = true,	displaydelay = 2.5 },
+        { map = "sp_a2_sphere_peek", title_text = "#portal2_Chapter3_Title", subtitle_text = "#portal2_Chapter3_Subtitle", displayOnSpawn = true,	displaydelay = 2.5 },
+        { map = "sp_a2_column_blocker", title_text = "#portal2_Chapter4_Title", subtitle_text = "#portal2_Chapter4_Subtitle", displayOnSpawn = true, displaydelay = 2.5 },
+        { map = "sp_a2_bts3", title_text = "#portal2_Chapter5_Title", subtitle_text = "#portal2_Chapter5_Subtitle", displayOnSpawn = true,			displaydelay = 1.0 },
+        { map = "sp_a3_00", title_text = "#portal2_Chapter6_Title", subtitle_text = "#portal2_Chapter6_Subtitle", displayOnSpawn = true,			displaydelay = 1.5 },
+        { map = "sp_a3_speed_ramp", title_text = "#portal2_Chapter7_Title", subtitle_text = "#portal2_Chapter7_Subtitle", displayOnSpawn = true,	displaydelay = 1.0 },
+        { map = "sp_a4_intro", title_text = "#portal2_Chapter8_Title", subtitle_text = "#portal2_Chapter8_Subtitle", displayOnSpawn = true,			displaydelay = 2.5 },
+        { map = "sp_a4_finale1", title_text = "#portal2_Chapter9_Title", subtitle_text = "#portal2_Chapter9_Subtitle", displayOnSpawn = false,		displaydelay = 1.0 },
+    ]
 
     // Attempt to display chapter title
     // Credit: Valve

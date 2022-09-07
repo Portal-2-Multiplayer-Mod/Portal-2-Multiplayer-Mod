@@ -21,14 +21,14 @@ def DeleteFolder(path: str) -> None:
     elif (GVars.iol):
         os.system("rm -rf \"" + path + "\"")
 
-def CopyFolder(src : str, dst : str) -> str:
+def CopyFolder(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("xcopy /E /H /C /I \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
 
-def CopyFile(src : str, dst : str) -> str:
+def CopyFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("copy \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol):
@@ -36,7 +36,7 @@ def CopyFile(src : str, dst : str) -> str:
     return dst
 
 
-def MoveFile(src : str, dst : str) -> str:
+def MoveFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("move \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol):

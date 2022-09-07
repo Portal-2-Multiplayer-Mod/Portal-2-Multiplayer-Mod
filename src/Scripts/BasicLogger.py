@@ -25,7 +25,7 @@ def Log(message: str) -> None:
 #////////////////////////////////////////#
 #//# Cool text to start the log with  #//#
 #////////////////////////////////////////#
-def StartLog():
+def StartLog() -> None:
     Log("")
     Log("")
     Log("")

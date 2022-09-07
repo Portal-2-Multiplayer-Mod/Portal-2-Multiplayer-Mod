@@ -106,7 +106,7 @@ ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
 
 # verifies the config file by making sure that the processed data has the same keys as the default
 # if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
-def VerifyConfigFileIntegrity(config : dict):
+def VerifyConfigFileIntegrity(config: dict) -> dict:
     Log("=========================")
     Log("Validating config data...")
     
@@ -150,12 +150,12 @@ def VerifyConfigFileIntegrity(config : dict):
     return config
 
 
-def ValidatePlayerKeys():
+def ValidatePlayerKeys() -> None:
     Log("validating player keys...")
     try:
         indx = 0
         errs = 0
-        player : dict
+        player: dict
         for player in GVars.configData["Players"]["value"]:
             if player.keys() != defaultplayerarray.keys():
                 errs += 1
@@ -184,7 +184,7 @@ def ValidatePlayerKeys():
         WriteConfigFile(GVars.configData)
 
 
-def GetConfigList(search, val):
+def GetConfigList(search: str, val: str) -> list:
     lst = []
     for key in GVars.configData:
         if GVars.configData[key][search] == val:
@@ -192,7 +192,7 @@ def GetConfigList(search, val):
     return lst
 
 
-def WriteConfigFile(configs):
+def WriteConfigFile(configs: dict) -> None:
     filepath = FindConfigPath()
     # just to make sure the file doesn't exist
     try:
@@ -208,20 +208,20 @@ def WriteConfigFile(configs):
 
 # why this is a seperate function that only has 2 lines?
 # well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
-def FindConfigPath():
+def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
     return GVars.configPath + GVars.nf + "configs.cfg"
 
 
 # since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
-def EditConfig(search, newvalue):
+def EditConfig(search: str, newvalue: str) -> None:
     GVars.configData[search]["value"] = newvalue
     WriteConfigFile(GVars.configData)
 
 
 # to import the config data from the local config file
-def ImportConfig():
+def ImportConfig() -> dict:
     try:
         Log("            __________Config Data Start__________")
         Log("Importing Config...")
