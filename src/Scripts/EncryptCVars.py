@@ -19,7 +19,7 @@ def Encrypt(path: str, search: str, replace: str) -> None:
                     data = f.read()
                     f.close()
                     data = data.replace(search, replace)
-                    
+
                     ###############
                     f = open(root + GVars.nf + file, wt, encoding=enc)
                     ###############
@@ -33,18 +33,18 @@ def Encrypt(path: str, search: str, replace: str) -> None:
                     # Log("Could not encrypt file: " + os.path.join(root, file))
                     # Log("=======ERROR======")
                     pass
-                
+
     elif os.path.isfile(path):
         try:
             Log("Encrypting file: " + file + " With encoding: " + enc + " and read mode: " + rt + " and write mode: " + wt)
-            
+
             ###############
             f = open(root + GVars.nf + file, rt, encoding=enc)
             ###############
             data = f.read()
             f.close()
             data = data.replace(search, replace)
-            
+
             ###############
             f = open(root + GVars.nf + file, wt, encoding=enc)
             ###############

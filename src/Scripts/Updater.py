@@ -33,7 +33,7 @@ def haveInternet() -> bool:
 def CheckForNewClient() -> dict:
     Log("searching for a new client...")
     endpoint = "https://api.github.com/repos"  # github's api endpoint
-    
+
     try:
         # do the get request to retrieve the latest release data
         r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
@@ -62,15 +62,15 @@ def DownloadClient(cType: str = "") -> bool:
     # cType is the Client Type (gui / cli)
     Log("Downloading...")
     cType = cType.upper()
-    
+
     endpoint = "https://api.github.com/repos"  # github's api endpoint
     r = requests.get(f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
-    
+
     # so we can easily edit it in the future if we want to
     if (GVars.iow):
-        packageType = ".EXE"  
+        packageType = ".EXE"
     elif (GVars.iol):
-        packageType = ".SH" 
+        packageType = ".SH"
 
     downloadLink = ""
     # this goes through all the binaries in the latest release until one of them ends with the package type (.exe, .pkg etc...)
@@ -84,7 +84,7 @@ def DownloadClient(cType: str = "") -> bool:
     if downloadLink == "":
         return False
 
-    # download the file in the same directory 
+    # download the file in the same directory
     # i don't want to bother with folders
     path = os.path.dirname(GVars.executable) + GVars.nf + "p2mm" + packageType
     urllib.request.urlretrieve(downloadLink, path)
@@ -98,17 +98,17 @@ def DownloadClient(cType: str = "") -> bool:
         Log("Linux detected, gotta chmod that bad boy")
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
-    
+
     command = path + " updated " + GVars.executable
     subprocess.Popen(command, shell=True)
     Log("launched the new client")
 
 def CheckForNewFiles() -> bool:
-    
+
     if not haveInternet():
         Log("No internet Connection")
         return False
-    
+
     Log("Checking for new files...")
     # plan
     # download modIndex.json
@@ -123,7 +123,7 @@ def CheckForNewFiles() -> bool:
     if not os.path.isfile(localIdPath):
         Log("identifier file doesn't exist so the mod files are probably unavailable too")
         return True
-    
+
     Log("found local identifier file")
 
     # if there was an error retrieving this file that means most likely that we changed it's name and released a new client
@@ -132,7 +132,7 @@ def CheckForNewFiles() -> bool:
     except Exception as e:
         Log(f"error getting the index file: {str(e)}")
         return False
-    
+
     # compare the dates of the local file and the file on the repo
     localDate = datetime.strptime(open(localIdPath, "r").read(), "%Y-%m-%d")
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
@@ -142,14 +142,14 @@ def CheckForNewFiles() -> bool:
         return False
 
     Log(f"the remote date {remoteDate} is greater than the local date {localDate}")
-    
+
     return True
 
 def DownloadNewFiles() -> None:
     r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
     Log("downloading "+str(len(r["Files"]))+" files...")
-    
+
     # downlaod the files to a temp folder
     tempPath = GVars.modPath + GVars.nf + ".temp"
     for file in r["Files"]:
@@ -173,4 +173,4 @@ def DownloadNewFiles() -> None:
     # then copy the new files there
     shutil.move(tempPath, Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
     Log("copied new files to " + GVars.modPath + Funcs.ConvertPath("/ModFiles/Portal 2/install_dlc"))
-    
+

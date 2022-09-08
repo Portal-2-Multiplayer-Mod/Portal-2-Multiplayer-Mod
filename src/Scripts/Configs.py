@@ -18,22 +18,13 @@ DefaultConfigFile = {
             "prompt": "Enter the path to the Portal 2 folder",
         },
 
-    "developer":
+    "AutoUnmount":
         {
-            "value": "false",
-            "menu": "hidden",
-            "description": "Makes the mods files mount from src/ModFiles",
+            "value": "true",
+            "menu": "launcher",
+            "description": "Automatically unmounts the mod when the game is closed",
             "warning": "",
-            "prompt": "",
-        },
-    
-    "CustomLaunchOptions":
-        {
-            "value": "+map mp_coop_lobby_3",
-            "menu": "hidden",
-            "description": "Please type your custom launch options. Example (+map 'mapname'). Leave blank to launch into menu.",
-            "warning": "",
-            "prompt": "Custom launch options for debugging.",
+            "prompt": "Encrypt specific vscript functions?",
         },
 
     "LauncherSFX":
@@ -83,19 +74,28 @@ DefaultConfigFile = {
             "prompt": "If you see this something is wrong",
         },
 
-    "AutoUnmount":
+    "developer":
         {
-            "value": "true",
-            "menu": "launcher",
-            "description": "Automatically unmounts the mod when the game is closed",
-            "warning": "",
-            "prompt": "Encrypt specific vscript functions?",
+            "value": "false",
+            "menu": "hidden",
+            "description": "Makes the mod's files mount from src/ModFiles",
+            "warning": "only enable this if you know what you're doing!",
+            "prompt": "",
         },
-        
+
+    "CustomLaunchOptions":
+        {
+            "value": "+map mp_coop_lobby_3",
+            "menu": "hidden",
+            "description": "type your custom launch options. Example (+map 'mapname').",
+            "warning": "leave this to default if you don't know what it does!",
+            "prompt": "Custom launch options for debugging.",
+        },
+
     "activeLanguage":
         {
             "value": "English",
-            "menu": "launcher",
+            "menu": "",
             "description": "the language of the p2mm client and not the game",
             "warning": "",
             "prompt": "",
@@ -109,7 +109,7 @@ ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
 def VerifyConfigFileIntegrity(config: dict) -> dict:
     Log("=========================")
     Log("Validating config data...")
-    
+
     copiedConfigKeys = config.keys()
     errors = 0
     # VALIDATE ALL THE KEYS ARE CORRECT
@@ -126,14 +126,14 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
                     Log(f"The value for [{key}][{property}] is invalid, fixing it...")
                     config[key][property] = DefaultConfigFile[key][property]
                     errors +=1
-                    
+
     # VALIDATE ALL THE KEYS EXIST
     for key in DefaultConfigFile.keys():
         if key not in config.keys():
             Log(f"The key [{key}] is missing, fixing it...")
             config[key] = DefaultConfigFile[key]
             errors +=1
-    
+
     # VALIDATE THAT ALL THE KEYS HAVE ALL THE VALUES
     for key in DefaultConfigFile:
         for property in DefaultConfigFile[key]:
@@ -142,10 +142,10 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
                 config[key][property] = DefaultConfigFile[key][property]
                 errors +=1
     Log("=========================")
-    
+
     if errors > 0:
         WriteConfigFile(config)
-    
+
     # if the config keys are the same as the default then just return them
     return config
 
@@ -167,15 +167,15 @@ def ValidatePlayerKeys() -> None:
                     except Exception as e:
                         Log(str(e))
                 GVars.configData["Players"]["value"][indx] = tempPlayer
-                
+
             if errs > 0:
                 Log(f"found {str(errs)} key errors in a player property")
-                
+
             indx += 1
-            
+
         if errs > 0:
             WriteConfigFile(GVars.configData)
-            
+
         Log("validated all keys!")
 
     except Exception as e:
@@ -191,7 +191,6 @@ def GetConfigList(search: str, val: str) -> list:
             lst.append(key)
     return lst
 
-
 def WriteConfigFile(configs: dict) -> None:
     filepath = FindConfigPath()
     # just to make sure the file doesn't exist
@@ -205,6 +204,24 @@ def WriteConfigFile(configs: dict) -> None:
     with open(filepath, "w", encoding="utf-8") as cfg:
         json.dump(configs, cfg)
 
+# since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
+def EditConfig(search: str, newvalue: str) -> None:
+    GVars.configData[search]["value"] = newvalue
+    WriteConfigFile(GVars.configData)
+
+def EditPlayer(index: int, name: str = None, steamId: str = None, level: str = None):
+    if name is not None:
+        GVars.configData["Players"]["value"][index]["name"] = name
+    if steamId is not None:
+        GVars.configData["Players"]["value"][index]["steamid"] = steamId
+    if level is not None:
+        GVars.configData["Players"]["value"][index]["adminlevel"] = level
+
+    WriteConfigFile(GVars.configData)
+
+def DeletePlayer(index: int):
+    GVars.configData["Players"]["value"].pop(index)
+    WriteConfigFile(GVars.configData)
 
 # why this is a seperate function that only has 2 lines?
 # well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
@@ -212,13 +229,6 @@ def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
     return GVars.configPath + GVars.nf + "configs.cfg"
-
-
-# since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
-def EditConfig(search: str, newvalue: str) -> None:
-    GVars.configData[search]["value"] = newvalue
-    WriteConfigFile(GVars.configData)
-
 
 # to import the config data from the local config file
 def ImportConfig() -> dict:

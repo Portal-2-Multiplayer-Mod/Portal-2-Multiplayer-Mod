@@ -113,7 +113,7 @@ def ProcessData(data: list[str]) -> list[str]:
                 Portal2InputNumber = number
                 print("Portal2InputNumber: " + str(Portal2InputNumber))
                 commands.append(line)
-        
+
     return commands
 
 def RunCommands(commands: list[str]) -> None:
