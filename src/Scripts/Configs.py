@@ -26,12 +26,12 @@ DefaultConfigFile = {
             "warning": "",
             "prompt": "",
         },
-    
+
     "CustomLaunchOptions":
         {
             "value": "+map mp_coop_lobby_3",
             "menu": "hidden",
-            "description": "Please type your custom launch options. Example (+map 'mapname'). Leave blank to launch into menu.",
+            "description": "Please type your custom launch options. \n Example (+map 'mapname'). Leave blank to launch into menu.",
             "warning": "",
             "prompt": "Custom launch options for debugging.",
         },
@@ -91,7 +91,7 @@ DefaultConfigFile = {
             "warning": "",
             "prompt": "Encrypt specific vscript functions?",
         },
-        
+
     "activeLanguage":
         {
             "value": "English",
@@ -109,7 +109,7 @@ ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
 def VerifyConfigFileIntegrity(config : dict):
     Log("=========================")
     Log("Validating config data...")
-    
+
     copiedConfigKeys = config.keys()
     errors = 0
     # VALIDATE ALL THE KEYS ARE CORRECT
@@ -126,14 +126,14 @@ def VerifyConfigFileIntegrity(config : dict):
                     Log(f"The value for [{key}][{property}] is invalid, fixing it...")
                     config[key][property] = DefaultConfigFile[key][property]
                     errors +=1
-                    
+
     # VALIDATE ALL THE KEYS EXIST
     for key in DefaultConfigFile.keys():
         if key not in config.keys():
             Log(f"The key [{key}] is missing, fixing it...")
             config[key] = DefaultConfigFile[key]
             errors +=1
-    
+
     # VALIDATE THAT ALL THE KEYS HAVE ALL THE VALUES
     for key in DefaultConfigFile:
         for property in DefaultConfigFile[key]:
@@ -142,10 +142,10 @@ def VerifyConfigFileIntegrity(config : dict):
                 config[key][property] = DefaultConfigFile[key][property]
                 errors +=1
     Log("=========================")
-    
+
     if errors > 0:
         WriteConfigFile(config)
-    
+
     # if the config keys are the same as the default then just return them
     return config
 
@@ -167,15 +167,15 @@ def ValidatePlayerKeys():
                     except Exception as e:
                         Log(str(e))
                 GVars.configData["Players"]["value"][indx] = tempPlayer
-                
+
             if errs > 0:
                 Log(f"found {str(errs)} key errors in a player property")
-                
+
             indx += 1
-            
+
         if errs > 0:
             WriteConfigFile(GVars.configData)
-            
+
         Log("validated all keys!")
 
     except Exception as e:

@@ -53,7 +53,7 @@ hammer/
 steam_input/
 sar.pdb
 
-# added by cabiste ;) 
+# added by cabiste ;)
 tests/
 Logs/
 configs.cfg
@@ -199,7 +199,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#2v2coopbattle unneeded files/dirs Added By: Orsell
+# 2v2coopbattle unneeded files/dirs Added By: Orsell
 p32wip/animations/*
+p32wip/p2cetest/*
 *.prt
 *.vmx

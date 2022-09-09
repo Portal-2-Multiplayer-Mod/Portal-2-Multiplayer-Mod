@@ -208,7 +208,7 @@ function PostMapLoad() {
     // Enable fast download
     SendToConsoleP232("sv_allowdownload 1")
     SendToConsoleP232("sv_allowupload 1")
-    SendToConsoleP232("sv_downloadurl https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/tree/dev/WebFiles/FastDL/portal2")
+    SendToConsoleP232("sv_downloadurl https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/raw/dev/WebFiles/FastDL/portal2")
     
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
@@ -227,8 +227,12 @@ function PostMapLoad() {
 	SendToConsoleP232("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	SendToConsoleP232("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsoleP232("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
-    SendToConsoleP232("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle") //For easy accsess to 2v2coopbattle, will remove later in development
-    SendToConsoleP232("alias p32lobby changelevel mp_coop_p32lobby") //For easy accsess to the custom lobby, mp_coop_p32lobby
+    //Alias used to load 2v2coopbattle and mp_coop_p32lobby for easy accsess
+    SendToConsoleP232("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
+    SendToConsoleP232("alias p32lobby changelevel mp_coop_p32lobby")
+    //Loads testroom living only on Orsell's computer
+    //Will fail for anyone else unless they create the p32wip directory in portal2/maps and compile the mp_coop_testroom.vmf placing it into p32wip
+    SendToConsoleP232("alias testroom changelevel p32wip/mp_coop_testroom")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)

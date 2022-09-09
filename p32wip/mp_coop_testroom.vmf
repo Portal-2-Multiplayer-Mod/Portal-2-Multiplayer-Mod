@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8997"
-	"mapversion" "14"
+	"mapversion" "15"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "14"
+	"mapversion" "15"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -498,6 +498,61 @@ world
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
+	}
+}
+entity
+{
+	"id" "400"
+	"classname" "prop_button"
+	"angles" "0 180 0"
+	"delay" "1"
+	"model" "models/props/switch001.mdl"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"solid" "1"
+	"targetname" "test_file_button"
+	connections
+	{
+		"OnPressed" "test_fileRunScriptCodetest_file_test()0-1"
+	}
+	"origin" "-662.144 211.942 10.2551"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "404"
+	"classname" "logic_script"
+	"angles" "0 0 0"
+	"targetname" "test_file"
+	"vscripts" "multiplayermod/test_nut.nut"
+	"origin" "-645.022 179.418 73"
+	editor
+	{
+		"color" "200 200 200"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "422"
+	"classname" "point_broadcastclientcommand"
+	"angles" "0 0 0"
+	"targetname" "@command_test_file"
+	"origin" "-660.351 173.038 19"
+	editor
+	{
+		"color" "200 0 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
 	}
 }
 entity

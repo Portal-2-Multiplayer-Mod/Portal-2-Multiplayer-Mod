@@ -32,7 +32,7 @@ Config_VisualDebug <- false
 Config_GameMode <- 0
 
 // Set true/false if you want to randomize every Turret's models and colors (for fun lol)
-Config_RandomTurrets <- false
+Config_RandomTurrets <-true
 
 // Set true/false if you want to randomize the size of all portals every second
 Config_RandomPortalSize <- false
@@ -66,7 +66,7 @@ Config_UseChatCommands <- true
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
 // [0]: "help", "changeteam", "kill", "playercolor"
-// [1]: 
+// [1]:
 // [2]: "kill (someone)"
 // [3]: "playercolor (for someone else)"
 // [4]: "speed", "noclip", "teleport"
