@@ -343,21 +343,6 @@ CommandList <- [
 
         // !help (optionally with command name arg)
         function CC(p, args) {
-
-            local commandtable = {}
-            commandtable["help"] <- "List available commands or print a description of a specific one."
-            commandtable["noclip"] <- "Toggles noclip mode."
-            commandtable["kill"] <- "Kill yourself, others, or \"all\"."
-            commandtable["changeteam"] <- "Changes your current team."
-            commandtable["speed"] <- "Changes your player speed."
-            commandtable["teleport"] <- "Teleports a specific player or \"all\" to you or another player."
-            commandtable["rcon"] <- "Execute commands on the server console."
-            commandtable["restartlevel"] <- "Reset the current map."
-            commandtable["spchapter"] <- "Changes the level to the specified singleplayer chapter."
-            commandtable["mpcourse"] <- "Changes the level to the specified cooperative course."
-            commandtable["playercolor"] <- "Changes your player model's color through valid RGB values."
-            commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
-
             try {
                 args[0] = Strip(args[0])
                 if (commandtable.rawin(args[0])) {
@@ -395,18 +380,8 @@ CommandList <- [
                 SendChatMessage("Type in a valid number from 1 to 9.")
                 return
             }
-            spmapnames <- [
-                "sp_a1_intro1",
-                "sp_a2_laser_intro",
-                "sp_a2_sphere_peek",
-                "sp_a2_column_blocker",
-                "sp_a2_bts3",
-                "sp_a3_00",
-                "sp_a3_speed_ramp",
-                "sp_a4_intro",
-                "sp_a4_finale1"
-            ]
-            EntFire("p2mm_servercommand", "command", "changelevel " + spmapnames[args[0]-1], 0, p)
+
+            EntFire("p2mm_servercommand", "command", "changelevel " + spchapternames[args[0]-1], 0, p)
         }
     }
     ,
@@ -430,16 +405,8 @@ CommandList <- [
                 return
             }
 
-            mpmapnames <- [
-                "mp_coop_doors",
-                "mp_coop_fling_3",
-                "mp_coop_wall_intro",
-                "mp_coop_tbeam_redirect",
-                "mp_coop_paint_come_along",
-                "mp_coop_separation_1",
-            ]
             EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
-            EntFire("p2mm_servercommand", "command", "changelevel " + mpmapnames[args[0]-1], 0.25, p)
+            EntFire("p2mm_servercommand", "command", "changelevel " + mpcoursenames[args[0]-1], 0.25, p)
         }
     }
     ,

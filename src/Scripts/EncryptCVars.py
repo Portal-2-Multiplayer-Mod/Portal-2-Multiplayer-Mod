@@ -2,7 +2,7 @@ import os
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 
-def Encrypt(path, search, replace):
+def Encrypt(path: str, search: str, replace: str) -> None:
     enc = "utf-8"
     rt = "r"
     wt = "w"

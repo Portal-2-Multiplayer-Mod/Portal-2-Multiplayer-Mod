@@ -20,6 +20,12 @@
 //                 fixes for 3+ MP.
 //---------------------------------------------------
 
+// mapspawn.nut is called twice on map transitions for some reason...
+// Prevent the second run
+if (!("Entities" in this)) {
+    return
+}
+
 printl("\n-------------------------")
 printl("==== calling mapspawn.nut")
 printl("-------------------------\n")
@@ -167,7 +173,7 @@ function MakeProgressCheck() {
         // 9 levels is the highest that a course has
         for (local level = 1; level <= 9; level++) {
             if (IsLevelComplete(course - 1, level - 1)) {
-                //EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0)
+                EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0)
                 return
             }
         }
@@ -183,6 +189,6 @@ try {
     MakeSPCheck() // Make sure that the user is in multiplayer mode before loading anything else
     DoEntFire("worldspawn", "FireUser1", "", 0.02, null, null) // init() must be delayed
     Entities.First().ConnectOutput("OnUser1", "init")
-} catch(e) {
+} catch (e) {
     printl("(P2:MM): Initializing our custom support!\n")
 }

@@ -33,15 +33,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (enablehub) {
             // If any level was completed outside of calibration, enable the hub entirely
-            try {
-                // Enable all finished course
-                DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
-                DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
-
-                // Enable music
-                DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
-
-            } catch (exception) {}
+            EntFire("case_open_course", "invalue", "7", 0, null)
         }
 
         // Allow the players to drop from spawn tube

@@ -57,12 +57,12 @@ links = [
 ]
 
 # define functions
-def FetchData():
+def FetchData() -> list[str]:
     with open(path, "r") as file:
         data = file.readlines()
     return data
 
-def ClearFile():
+def ClearFile() -> None:
     newdata = FetchData()
     for index, line in enumerate(newdata):
         # if it doesnt have the prefix, delete it
@@ -75,17 +75,17 @@ def ClearFile():
     with open(path, "w") as file:
         file.write(newdata)
 
-def ResetFile():
+def ResetFile() -> None:
     with open(path, "w") as file:
         file.write("")
     print("__File reset__")
 
-def SendHook(message):
+def SendHook(message: str) -> None:
     print("__Sending hook__")
     print(message)
     hook.send(message)
 
-def ProcessData(data):
+def ProcessData(data: list[str]) -> list[str]:
     global Portal2InputNumber
 
     commands = []
@@ -116,7 +116,7 @@ def ProcessData(data):
         
     return commands
 
-def RunCommands(commands):
+def RunCommands(commands: list[str]) -> None:
     for command in commands:
         print(command)
         if (command.startswith("hookdiscord")):

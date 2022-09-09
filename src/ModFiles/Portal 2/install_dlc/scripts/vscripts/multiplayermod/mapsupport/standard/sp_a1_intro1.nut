@@ -486,7 +486,7 @@ function StopStickAndTeleport() {
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro3:0.3", 0, null)
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro2:0.3", 0, null)
 
         ContainerFloorBrush <- false
         currentCartCache <- false

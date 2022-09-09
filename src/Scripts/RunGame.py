@@ -5,7 +5,6 @@ import os
 import threading
 
 from Scripts.BasicLogger import Log
-import Scripts.Workshop as workshop
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
 import Scripts.Configs as cfg
@@ -40,7 +39,7 @@ CommandReplacements = [
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
 
-def SetNewEncryptions():
+def SetNewEncryptions() -> None:
     # set the new encryptions
     Log("Setting new encryptions...")
     Log("")
@@ -52,13 +51,13 @@ def SetNewEncryptions():
         Log("New CVAR:      " + cmdrep[2])
         Log("===========")
 
-def UnEncryptEncryptions():
+def UnEncryptEncryptions() -> None:
     Log("UnEncrypting Encryptions...")
     for cmdrep in CommandReplacements:
         cmdrep[2] = cmdrep[1]
     Log("Finished UnEncrypting Encryptions")
 
-def SetVscriptConfigFile(vsconfigfile):
+def SetVscriptConfigFile(vsconfigfile: str) -> None:
     Log("")
     Log("")
     Log("")
@@ -134,7 +133,7 @@ def SetVscriptConfigFile(vsconfigfile):
     Log("")
     Log("")
 
-def MountMod(gamepath, encrypt = False):
+def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     Log("")
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
@@ -173,7 +172,7 @@ def MountMod(gamepath, encrypt = False):
     Log("            ___________Mounting Mod End__________")
     return True
 
-def UnpatchBinaries(gamepath):
+def UnpatchBinaries(gamepath: str) -> None:
     binarys = [
         "bin" + GVars.nf + "linux32" + GVars.nf + "engine.so",
         "bin" + GVars.nf + "engine.dll",
@@ -195,7 +194,7 @@ def UnpatchBinaries(gamepath):
     # unrename the binaries so we can move them
     UnRenameBinaries(gamepath, binarys)
 
-def PatchBinaries(gamepath):
+def PatchBinaries(gamepath: str) -> None:
     Log("")
     Log("Patching binaries...")
 
@@ -335,7 +334,7 @@ def PatchBinaries(gamepath):
     Log("Renaming binaries...")
     RenameBinaries(gamepath, binarys)
 
-def RenameBinaries(gamepath, binarys):
+def RenameBinaries(gamepath: str, binarys: list[str]) -> None:
     # binarys = [
     #     "bin/linux32/engine.so",
     #     "bin/engine.dll",
@@ -359,7 +358,7 @@ def RenameBinaries(gamepath, binarys):
             BF.MoveFile(gamepath + GVars.nf + filename,
                         gamepath + GVars.nf + extra + filename)
 
-def UnRenameBinaries(gamepath, binarys):
+def UnRenameBinaries(gamepath: str, binarys: list[str]) -> None:
     # binarys = [
     #     "bin/linux32/engine.so",
     #     "bin/engine.dll",
@@ -377,21 +376,21 @@ def UnRenameBinaries(gamepath, binarys):
         # If the binary exists
         if (os.path.isfile(gamepath + GVars.nf + binary)):
             Log("Un-renaming " + binary + " to " + Og_binary)
-            
+
             # If a file with the original binary's name exist delete it
             if (os.path.isfile(gamepath + GVars.nf + Og_binary)):
                 os.remove(gamepath + GVars.nf + Og_binary)
-            
+
             # Rename the binary back to it's original name
             os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + Og_binary)
 
-def DeleteUnusedDlcs(gamepath):
+def DeleteUnusedDlcs(gamepath: str) -> None:
     Log("")
     Log("            _________Dealing with Folders________")
 
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Log("Portal 2 game path not found!")
-        return "undefined"
+        return
 
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
@@ -404,9 +403,8 @@ def DeleteUnusedDlcs(gamepath):
                 BF.DeleteFolder(gamepath + GVars.nf + file)
                 Log("Deleted old DLC: " + file)
 
-    return True
 
-def FindAvailableDLC(gamepath):
+def FindAvailableDLC(gamepath: str) -> str:
     Log("Finding the next increment in DLC folders...")
     dlcs = []
     DeleteUnusedDlcs(gamepath)
@@ -441,7 +439,7 @@ def FindAvailableDLC(gamepath):
 # █ █▄░█ █ ▀█▀
 # █ █░▀█ █ ░█░
 
-def LaunchGame(gamepath):
+def LaunchGame(gamepath: str) -> None:
     Log("")
     Log("Running Game...")
 
@@ -449,7 +447,7 @@ def LaunchGame(gamepath):
     try:
         if (GVars.iow): #launching for windows
             # start portal 2 with the launch options and dont wait for it to finish
-            def RunGame():
+            def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
                 subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["CustomLaunchOptions"]["value"]])
                 Log("Game exited successfully.")
@@ -461,10 +459,10 @@ def LaunchGame(gamepath):
         elif (GVars.iol): #launching for linux
             def RunGame():
                 def RunSteam():
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["CustomLaunchOptions"]["value"])
+                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon " + GVars.configData["CustomLaunchOptions"]["value"])
                 threading.Thread(target=RunSteam).start()
 
-                def CheckForGame():
+                def CheckForGame() -> None:
                     shouldcheck = True
                     lached = False
                     while shouldcheck:
