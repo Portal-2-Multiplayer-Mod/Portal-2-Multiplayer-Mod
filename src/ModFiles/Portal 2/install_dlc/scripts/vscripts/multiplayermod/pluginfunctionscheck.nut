@@ -10,7 +10,7 @@
 //  |_|  \_,_||_||_|\__| \__||_|\___/|_||_|/__/
 //    ___  _              _    _
 //   / __|| |_   ___  __ | |__(_)
-//  | (__ | ' \ / -_)/ _|| / / _ 
+//  | (__ | ' \ / -_)/ _|| / / _
 //   \___||_||_|\___|\__||_\_\(_)
 //---------------------------------------------------
 // Purpose: If the plugin isn't loaded or some broke
@@ -80,6 +80,9 @@ ReplaceGetSteamID()
 ReplaceAddChatCallback()
 ReplaceSetPhysTypeConvar()
 
+PluginLoaded <- true
+
+/*
 if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded) {
     // Something loaded, so the plugin must be as well
     PluginLoaded <- true
@@ -88,3 +91,4 @@ else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && 
     // Nothing loaded
     PluginLoaded <- false
 }
+*/

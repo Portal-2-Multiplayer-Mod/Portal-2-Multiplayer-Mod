@@ -50,13 +50,8 @@ IncludeScript("multiplayermod/chatcommands.nut")
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
-// Testing for mp_coop_p32lobby
-try {
-    IncludeScript("multiplayermod/test_nut.nut")
-} catch (e) {
-    throw e
-    return e
-}
+//Testing for test file creation
+IncludeScript("mutliplayermod/test_nut.nut")
 
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) {
