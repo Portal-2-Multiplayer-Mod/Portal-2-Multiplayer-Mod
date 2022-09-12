@@ -34,13 +34,13 @@ def SteamIDFromLink(link : str) -> str:
             link = link[0:i]
             break
         i += 1
-    
+
     return link
 
 def MapFromSteamID(workshopLink: str, workshoppath: str = None) -> str:
     if workshoppath is None:
         workshoppath = GVars.configData["portal2path"]["value"] + BF.ConvertPath("/portal2/maps/workshop")
-    
+
     SteamID = SteamIDFromLink(workshopLink)
     UpdateMapList(workshoppath)
 

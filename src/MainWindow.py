@@ -37,17 +37,8 @@ class Gui:
         pygame.init()
         pygame.mixer.init()
 
-        # blipsnd = pygame.mixer.Sound("GUI/assets/sounds/blip.wav")
-        # blipsnd.set_volume(0.25)
-
-        # pwrsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
-        # pwrsnd.set_volume(0.25)
-
         self.hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
         self.hvrclksnd.set_volume(0.05)
-
-        # startbtnsnd = pygame.mixer.Sound("GUI/assets/sounds/startbtn.wav")
-        # startbtnsnd.set_volume(0.25)
 
         self.angrycube = pygame.image.load("GUI/assets/images/angrycube.png")
 
@@ -121,7 +112,6 @@ class Gui:
 
 
     def AddFloater(self, width: float, height: float, rot: float, x: float, y: float) -> None:
-        # random bool
         surf = pygame.image.load("GUI/assets/images/button.png")
         surf = pygame.transform.scale(surf, (width, height))
         surf = pygame.transform.rotate(surf, 0)
@@ -132,90 +122,7 @@ class Gui:
 
         self.Floaters.append(floater)
 
-    #!############################
-    #! Declaring buttons
-    #!############################
-
-    def DefineMainMenuButtons(self) -> None:
-        self.Button_LaunchGame = self.ButtonTemplate(translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120))
-        self.Button_Settings = self.ButtonTemplate(translations["settings_button"], self.Button_Settings_func)
-        self.Button_Update = self.ButtonTemplate(translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
-        self.Button_ManualMode = self.ButtonTemplate(translations["manual_mounting_button"], self.Button_ManualMode_func)
-        self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (50, 50, 255))
-        self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
-        self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
-
-        self.MainButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
-                            self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
-
-        if self.devMode:
-            self.Button_Test = self.ButtonTemplate("test", self.Button_Test_func)
-            self.MainButtons.append(self.Button_Test)
-
-        self.MainButtons.append(self.Button_Exit)
-        # we don't need the back button in the main menu but i thought it will be better the declare it here
-        self.Button_Back = self.ButtonTemplate(translations["back_button"], self.Button_Back_func)
-
-
-
-    def DefineSettingsMenuButtons(self)->None:
-        self.Button_LauncherSettingsMenu = self.ButtonTemplate(translations["launcher_settings_button"], self.Button_LauncherSettingsMenu_func)
-        self.Button_Portal2Settings = self.ButtonTemplate(translations["portal2_config_button"], self.Button_Portal2Settings_func)
-        self.Button_AdminsMenu = self.ButtonTemplate(translations["player_button"], self.Button_AdminsMenu_func, (0, 255, 255))
-        self.Button_LanguageMenu = self.ButtonTemplate(translations["languages_button"], self.Button_LanguageMenu_func, (175, 75, 0))
-
-        self.SettingsMenus = [self.Button_LauncherSettingsMenu, self.Button_Portal2Settings,
-                               self.Button_AdminsMenu, self.Button_LanguageMenu]
-
-        if self.devMode:
-            self.Button_HiddenSettings = self.ButtonTemplate(translations["hidden_config_button"], self.Button_HiddenSettings_func)
-            self.SettingsMenus.append(self.Button_HiddenSettings)
-
-        self.SettingsMenus.append(self.Button_Back)
-
-    def DefineWorkshopButtons(self) -> None:
-        self.Button_ChangeLevel = self.ButtonTemplate(translations["get_level_button"], self.Button_ChangeLevel_func)
-
-        self.WorkshopButtons = [self.Button_ChangeLevel, self.Button_Back]
-
-
-    def DefineManualMountingButtons(self)-> None:
-        self.Button_ManualMount = self.ButtonTemplate(translations["mount_button"], self.Button_ManualMount_func, (50, 255, 120), isasync=True)
-        self.Button_ManualUnmount = self.ButtonTemplate(translations["unmount_button"], self.Button_ManualUnmount_func, (255, 50, 50), isasync=True)
-
-        self.ManualButtons = [self.Button_ManualMount, self.Button_ManualUnmount, self.Button_Back]
-
-
-    def DefineResourcesButtons(self)-> None:
-        self.Button_GitHub = self.ButtonTemplate(translations["github_button"], self.Button_GitHub_func, (255, 255, 255), isasync=True)
-        self.Button_Guide = self.ButtonTemplate(translations["guide_button"], self.Button_Guide_func, (35, 35, 50), isasync=True)
-        self.Button_Discord = self.ButtonTemplate(translations["discord_server_button"], self.Button_Discord_func, (75, 75, 150), isasync=True)
-
-        self.RecourcesButtons = [self.Button_GitHub, self.Button_Guide, self.Button_Discord, self.Button_Back]
-
-    def DefineTestingMenuButtons(self)-> None:
-        self.Button_InputField = self.ButtonTemplate("User Input", self.Button_InputField_func)
-        self.PopupBox_gui = self.ButtonTemplate("Popup Box", self.PopupBox_gui_func)
-        self.TestingMenu = [self.Button_InputField, self.PopupBox_gui, self.Button_Back]
-
-#######################################################################
-
-    def gradientRect(self, window: pygame.Surface, left_colour: tuple, right_colour: tuple, target_rect: pygame.Rect) -> None:
-        colour_rect = pygame.Surface((2, 2))  # tiny! 2x2 bitmap
-        pygame.draw.line(colour_rect, left_colour, (0, 0),
-                        (0, 1))  # left colour line
-        pygame.draw.line(colour_rect, right_colour, (1, 0),
-                        (1, 1))  # right colour line
-        colour_rect = pygame.transform.smoothscale(
-            colour_rect, (target_rect.width, target_rect.height))  # stretch!
-        window.blit(colour_rect, target_rect)
-
-
-    def BackMenu(self) -> None:
-        if len(self.directorymenu) > 0:
-            self.ChangeMenu(self.directorymenu.pop(), False)
-
-    ############ BUTTON CLASSES
+    ############ BUTTON CLASS
     class ButtonTemplate:
         def __init__(self,text: str,
                     func,
@@ -245,7 +152,89 @@ class Gui:
             self.width = 0
             self.height = 0
 
+    #!############################
+    #! Declaring buttons
+    #!############################
 
+    def DefineMainMenuButtons(self) -> None:
+        self.Button_LaunchGame = self.ButtonTemplate(translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120))
+        self.Button_Settings = self.ButtonTemplate(translations["settings_button"], self.Button_Settings_func)
+        self.Button_Update = self.ButtonTemplate(translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
+        self.Button_ManualMode = self.ButtonTemplate(translations["manual_mounting_button"], self.Button_ManualMode_func)
+        self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (50, 50, 255))
+        self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
+        self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
+
+        self.MainButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
+                            self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
+
+        if self.devMode:
+            self.Button_Test = self.ButtonTemplate("test", self.Button_Test_func)
+            self.MainButtons.append(self.Button_Test)
+
+        self.MainButtons.append(self.Button_Exit)
+        # we don't need the back button in the main menu but i thought it will be better the declare it here
+        self.Button_Back = self.ButtonTemplate(translations["back_button"], self.Button_Back_func)
+
+
+    def DefineSettingsMenuButtons(self)->None:
+        self.Button_LauncherSettingsMenu = self.ButtonTemplate(translations["launcher_settings_button"], self.Button_LauncherSettingsMenu_func)
+        self.Button_Portal2Settings = self.ButtonTemplate(translations["portal2_config_button"], self.Button_Portal2Settings_func)
+        self.Button_AdminsMenu = self.ButtonTemplate(translations["player_button"], self.Button_AdminsMenu_func, (0, 255, 255))
+        self.Button_LanguageMenu = self.ButtonTemplate(translations["languages_button"], self.Button_LanguageMenu_func, (175, 75, 0))
+
+        self.SettingsMenus = [self.Button_LauncherSettingsMenu, self.Button_Portal2Settings,
+                               self.Button_AdminsMenu, self.Button_LanguageMenu]
+
+        if self.devMode:
+            self.Button_HiddenSettings = self.ButtonTemplate(translations["hidden_config_button"], self.Button_HiddenSettings_func)
+            self.SettingsMenus.append(self.Button_HiddenSettings)
+
+        self.SettingsMenus.append(self.Button_Back)
+
+
+    def DefineWorkshopButtons(self) -> None:
+        self.Button_ChangeLevel = self.ButtonTemplate(translations["get_level_button"], self.Button_ChangeLevel_func)
+
+        self.WorkshopButtons = [self.Button_ChangeLevel, self.Button_Back]
+
+
+    def DefineManualMountingButtons(self)-> None:
+        self.Button_ManualMount = self.ButtonTemplate(translations["mount_button"], self.Button_ManualMount_func, (50, 255, 120), isasync=True)
+        self.Button_ManualUnmount = self.ButtonTemplate(translations["unmount_button"], self.Button_ManualUnmount_func, (255, 50, 50), isasync=True)
+
+        self.ManualButtons = [self.Button_ManualMount, self.Button_ManualUnmount, self.Button_Back]
+
+
+    def DefineResourcesButtons(self)-> None:
+        self.Button_GitHub = self.ButtonTemplate(translations["github_button"], self.Button_GitHub_func, (255, 255, 255), isasync=True)
+        self.Button_Guide = self.ButtonTemplate(translations["guide_button"], self.Button_Guide_func, (35, 35, 50), isasync=True)
+        self.Button_Discord = self.ButtonTemplate(translations["discord_server_button"], self.Button_Discord_func, (75, 75, 150), isasync=True)
+
+        self.RecourcesButtons = [self.Button_GitHub, self.Button_Guide, self.Button_Discord, self.Button_Back]
+
+
+    def DefineTestingMenuButtons(self)-> None:
+        self.Button_InputField = self.ButtonTemplate("User Input", self.Button_InputField_func)
+        self.PopupBox_gui = self.ButtonTemplate("Popup Box", self.PopupBox_gui_func)
+        self.TestingMenu = [self.Button_InputField, self.PopupBox_gui, self.Button_Back]
+
+#######################################################################
+
+    def gradientRect(self, window: pygame.Surface, left_colour: tuple, right_colour: tuple, target_rect: pygame.Rect) -> None:
+        colour_rect = pygame.Surface((2, 2))  # tiny! 2x2 bitmap
+        pygame.draw.line(colour_rect, left_colour, (0, 0),
+                        (0, 1))  # left colour line
+        pygame.draw.line(colour_rect, right_colour, (1, 0),
+                        (1, 1))  # right colour line
+        colour_rect = pygame.transform.smoothscale(
+            colour_rect, (target_rect.width, target_rect.height))  # stretch!
+        window.blit(colour_rect, target_rect)
+
+
+    def BackMenu(self) -> None:
+        if len(self.directorymenu) > 0:
+            self.ChangeMenu(self.directorymenu.pop(), False)
 
     # the button to go to the previeus menu
     def Button_Back_func(self) -> None:

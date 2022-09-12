@@ -31,6 +31,11 @@ def haveInternet() -> bool:
 
 
 def CheckForNewClient() -> dict:
+
+    if not haveInternet():
+        Log("No internet Connection")
+        return {"status": False}
+
     Log("searching for a new client...")
     endpoint = "https://api.github.com/repos"  # github's api endpoint
 
