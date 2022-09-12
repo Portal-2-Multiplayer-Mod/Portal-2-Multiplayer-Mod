@@ -51,7 +51,15 @@ IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
 //Testing for test file creation
-IncludeScript("mutliplayermod/test_nut.nut")
+if (MapName.tostring() == "mp_coop_testroom") {
+    try {
+        printl("Loading test_nut")
+        IncludeScript("multiplayermod/test_nut")
+    } catch (e){
+        printl("Test_nut failed to load")
+        throw e
+    }
+}
 
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) {
