@@ -1,6 +1,8 @@
-import Scripts.GlobalVariables as GVars
-import Scripts.BasicFunctions as BF
 import os
+
+import Scripts.BasicFunctions as BF
+import Scripts.GlobalVariables as GVars
+
 
 def UpdateMapList(workshoppath) -> None:
     global maplist
@@ -46,5 +48,5 @@ def MapFromSteamID(workshopLink: str, workshoppath: str = None) -> str:
 
     for map in maplist:
         if map["id"] == SteamID:
-            return map
+            return map["bsp"]
     return None

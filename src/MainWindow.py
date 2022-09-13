@@ -9,6 +9,7 @@ import webbrowser
 
 import __main__
 import pygame
+import pyperclip
 from pygame.locals import *
 from steamid_converter import Converter
 
@@ -194,9 +195,9 @@ class Gui:
 
 
     def DefineWorkshopButtons(self) -> None:
-        self.Button_ChangeLevel = self.ButtonTemplate(translations["get_level_button"], self.Button_ChangeLevel_func)
+        self.Button_GetWorkShopCommand = self.ButtonTemplate(translations["get_level_button"], self.Button_GetWorkShopCommand_func)
 
-        self.WorkshopButtons = [self.Button_ChangeLevel, self.Button_Back]
+        self.WorkshopButtons = [self.Button_GetWorkShopCommand, self.Button_Back]
 
 
     def DefineManualMountingButtons(self)-> None:
@@ -532,14 +533,14 @@ class Gui:
     #!############################
 
     # get's the id from a map's url then copies the changelevel command to the clipboard
-    def Button_ChangeLevel_func(self) -> None:
+    def Button_GetWorkShopCommand_func(self) -> None:
         def AfterInput(input: str):
             map = workshop.MapFromSteamID(input)
 
             if map is not None:
+                pyperclip.copy("changelevel " + map)
                 self.Error(translations["workshop_changelevel_command"], 3, (255, 0, 255))
                 self.Error(translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
-                #TODO: figure out a way to copy "map" to the clipboard
                 return
 
             self.Error(translations["workshop_map_not_found"])
@@ -1316,7 +1317,8 @@ def LoadTranslations() -> dict:
         langPath = GVars.modPath + GVars.nf + "languages/" + GVars.configData["activeLanguage"]["value"]+ ".json"
 
     if not os.path.exists(langPath):
-        langPath = "languages/" + cfg.DefaultConfigFile["activeLanguage"]["value"] + ".json"
+        cfg.EditConfig("activeLanguage", cfg.DefaultConfigFile["activeLanguage"]["value"])
+        langPath = "languages/" + GVars.configData["activeLanguage"]["value"] + ".json"
 
     translations = json.load(open(langPath, "r", encoding="utf8"))
 
