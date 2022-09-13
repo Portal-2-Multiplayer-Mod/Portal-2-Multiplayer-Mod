@@ -124,7 +124,7 @@ class Gui:
 
     ############ BUTTON CLASS
     class ButtonTemplate:
-        def __init__(self,text: str,
+        def __init__(self, text: str,
                     func,
                     activeColor: tuple = (255, 255, 0),
                     inactiveColor: tuple = (155, 155, 155),
@@ -216,8 +216,10 @@ class Gui:
 
     def DefineTestingMenuButtons(self)-> None:
         self.Button_InputField = self.ButtonTemplate("User Input", self.Button_InputField_func)
-        self.PopupBox_gui = self.ButtonTemplate("Popup Box", self.PopupBox_gui_func)
-        self.TestingMenu = [self.Button_InputField, self.PopupBox_gui, self.Button_Back]
+        self.PopupBox_gui = self.ButtonTemplate("Popup Box", self.PopupBox_test_func)
+        self.Button_PrintToConsole = self.ButtonTemplate("print to console", self.Button_PrintToConsole_func)
+
+        self.TestingMenu = [self.Button_InputField, self.PopupBox_gui, self.Button_PrintToConsole, self.Button_Back]
 
 #######################################################################
 
@@ -604,8 +606,8 @@ class Gui:
 
     #######################
 
-    # pop up box for the update notification or anything else
-    def PopupBox_gui_func(self) -> None:
+    # this is a test for the popup box
+    def PopupBox_test_func(self) -> None:
         def YesInput() -> None:
             self.Error(translations["error_yes"], 3, (75, 255, 75))
 
@@ -616,6 +618,10 @@ class Gui:
         Button_Decline = self.ButtonTemplate(translations["error_no"], NoInput, (255, 75, 75))
         self.PopupBox("Are You A Mogus?", "have you done 1 sussy thing \n and or have done a VENT, SUS?",
                 [Button_Confirm, Button_Decline])
+
+    def Button_PrintToConsole_func(self) -> None:
+        print(GVars.modPath)
+        print(GVars.configPath)
 
 
     ################################
@@ -1293,15 +1299,24 @@ def GetAvailableLanguages() -> list[str]:
         for file in os.listdir("languages"):
             langs.append(file[:-5])
 
+        customTranslationsPath = GVars.modPath + GVars.nf + "languages"
+
+        if os.path.exists(customTranslationsPath):
+            for file in os.listdir(customTranslationsPath):
+                langs.append(file[:-5])
+
         return langs
 
 
 def LoadTranslations() -> dict:
     global translations
-    langPath = "languages/"+GVars.configData["activeLanguage"]["value"]+ ".json"
+    langPath = "languages/" + GVars.configData["activeLanguage"]["value"] + ".json"
 
     if not os.path.exists(langPath):
-        langPath = "languages/"+cfg.DefaultConfigFile["activeLanguage"]["value"] + ".json"
+        langPath = GVars.modPath + GVars.nf + "languages/" + GVars.configData["activeLanguage"]["value"]+ ".json"
+
+    if not os.path.exists(langPath):
+        langPath = "languages/" + cfg.DefaultConfigFile["activeLanguage"]["value"] + ".json"
 
     translations = json.load(open(langPath, "r", encoding="utf8"))
 
