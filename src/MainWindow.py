@@ -39,22 +39,8 @@ class Gui:
         pygame.init()
         pygame.mixer.init()
 
-<<<<<<< HEAD
-        # blipsnd = pygame.mixer.Sound("GUI/assets/sounds/blip.wav")
-        # blipsnd.set_volume(0.25)
-
-        # pwrsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
-        # pwrsnd.set_volume(0.25)
-
         self.hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
         self.hvrclksnd.set_volume(0.05)
-
-        # startbtnsnd = pygame.mixer.Sound("GUI/assets/sounds/startbtn.wav")
-        # startbtnsnd.set_volume(0.25)
-=======
-        self.hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
-        self.hvrclksnd.set_volume(0.05)
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
 
         self.angrycube = pygame.image.load("GUI/assets/images/angrycube.png")
 
@@ -138,8 +124,6 @@ class Gui:
 
         self.Floaters.append(floater)
 
-<<<<<<< HEAD
-=======
     ############ BUTTON CLASS
     class ButtonTemplate:
         def __init__(self, text: str,
@@ -170,7 +154,6 @@ class Gui:
             self.width = 0
             self.height = 0
 
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
     #!############################
     #! Declaring buttons
     #!############################
@@ -196,10 +179,6 @@ class Gui:
         self.Button_Back = self.ButtonTemplate(translations["back_button"], self.Button_Back_func)
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
     def DefineSettingsMenuButtons(self)->None:
         self.Button_LauncherSettingsMenu = self.ButtonTemplate(translations["launcher_settings_button"], self.Button_LauncherSettingsMenu_func)
         self.Button_Portal2Settings = self.ButtonTemplate(translations["portal2_config_button"], self.Button_Portal2Settings_func)
@@ -215,18 +194,11 @@ class Gui:
 
         self.SettingsMenus.append(self.Button_Back)
 
-<<<<<<< HEAD
-    def DefineWorkshopButtons(self) -> None:
-        self.Button_ChangeLevel = self.ButtonTemplate(translations["get_level_button"], self.Button_ChangeLevel_func)
-
-        self.WorkshopButtons = [self.Button_ChangeLevel, self.Button_Back]
-=======
 
     def DefineWorkshopButtons(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(translations["get_level_button"], self.Button_GetWorkShopCommand_func)
 
         self.WorkshopButtons = [self.Button_GetWorkShopCommand, self.Button_Back]
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
 
 
     def DefineManualMountingButtons(self)-> None:
@@ -246,15 +218,10 @@ class Gui:
 
     def DefineTestingMenuButtons(self)-> None:
         self.Button_InputField = self.ButtonTemplate("User Input", self.Button_InputField_func)
-<<<<<<< HEAD
-        self.PopupBox_gui = self.ButtonTemplate("Popup Box", self.PopupBox_gui_func)
-        self.TestingMenu = [self.Button_InputField, self.PopupBox_gui, self.Button_Back]
-=======
         self.PopupBox_gui = self.ButtonTemplate("Popup Box", self.PopupBox_test_func)
         self.Button_PrintToConsole = self.ButtonTemplate("print to console", self.Button_PrintToConsole_func)
 
         self.TestingMenu = [self.Button_InputField, self.PopupBox_gui, self.Button_PrintToConsole, self.Button_Back]
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
 
 #######################################################################
 
@@ -273,41 +240,6 @@ class Gui:
         if len(self.directorymenu) > 0:
             self.ChangeMenu(self.directorymenu.pop(), False)
 
-<<<<<<< HEAD
-    ############ BUTTON CLASSES
-    class ButtonTemplate:
-        def __init__(self,text: str,
-                    func,
-                    activeColor: tuple = (255, 255, 0),
-                    inactiveColor: tuple = (155, 155, 155),
-                    sizemult: float = 1,
-                    selectanim: str = "pop",
-                    curanim: str = "",
-                    isasync: bool = False) -> None:
-
-            self.text = text
-            self.function = func
-            self.activecolor = activeColor
-            self.inactivecolor = inactiveColor
-            self.sizemult = sizemult
-            self.selectanim = selectanim
-            self.curanim = curanim
-            self.isasync = isasync
-            self.pwrsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
-            self.pwrsnd.set_volume(0.25)
-            self.blipsnd = pygame.mixer.Sound("GUI/assets/sounds/blip.wav")
-            self.blipsnd.set_volume(0.25)
-            self.selectsnd = self.pwrsnd
-            self.hoversnd = self.blipsnd
-            self.x = 0
-            self.y = 0
-            self.width = 0
-            self.height = 0
-
-
-
-=======
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
     # the button to go to the previeus menu
     def Button_Back_func(self) -> None:
         self.BackMenu()
@@ -452,38 +384,6 @@ class Gui:
 
         Button_NextPlayer = self.ButtonTemplate(translations["players_next_button"], Button_NextPlayer_func, (255, 255, 120))
 
-<<<<<<< HEAD
-        # sets the admin level for th player
-        def Button_AdminLevel_func() -> None:
-            def AfterInputAdminLevel(inp: str) -> None:
-                if not inp.isdigit():
-                    self.Error(
-                        translations["players_admin_error_not-a-number"], 5, (255, 50, 50))
-                    inp = "0"
-                elif int(inp) > 6:
-                    self.Error(
-                        translations["players_admin_error_too-high"], 5, (255, 255, 50))
-                    self.Error(translations["error_saved"], 5, (75, 200, 75))
-                    inp = "6"
-                elif int(inp) < 0:
-                    self.Error(
-                        translations["players_admin_error_too-low"], 5, (255, 50, 50))
-                    inp = "0"
-                else:
-                    self.Error(translations["error_saved"], 5, (75, 200, 75))
-                Log("Saving admin level...")
-                Log(inp)
-                curkey = GVars.configData["Players"]
-                curkey["value"][self.CurrentSelectedPlayer]["adminlevel"] = inp.strip()
-                cfg.WriteConfigFile(GVars.configData)
-                self.RefreshPlayersMenu()
-
-            self.GetUserInputPYG(AfterInputAdminLevel, translations["players_admin-enter-admin-level"], PlayerKey["adminlevel"])
-
-        Button_AdminLevel = self.ButtonTemplate(translations["players_admin_level"] + PlayerKey["adminlevel"], Button_AdminLevel_func, (255, 255, 120))
-
-=======
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
        # adds a player to the list
         def Button_AddPlayer_func() -> None:
 
@@ -500,11 +400,7 @@ class Gui:
         # deletes a player from the list
         def Button_DeletePlayer_func() -> None:
 
-<<<<<<< HEAD
-            if len(GVars.configData["Players"]["value"]) == 1:
-=======
             if len(GVars.configData["Players"]["value"]) <= 1:
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
                 self.Error(translations["players_error_must_be_at_least_one_player"], 5, (255, 50, 50))
                 return
 
@@ -527,10 +423,6 @@ class Gui:
 
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
     #!############################
     #! MAIN BUTTONS FUNCTIONS
     #!############################
@@ -551,10 +443,6 @@ class Gui:
 
     # launcher update button
     def Button_Update_func(self) -> None:
-<<<<<<< HEAD
-
-=======
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
         if self.coolDown > 0:
             return
 
@@ -654,10 +542,6 @@ class Gui:
                 pyperclip.copy("changelevel " + map)
                 self.Error(translations["workshop_changelevel_command"], 3, (255, 0, 255))
                 self.Error(translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
-<<<<<<< HEAD
-                #TODO: figure out a way to copy "map" to the clipboard
-=======
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
                 return
 
             self.Error(translations["workshop_map_not_found"])
@@ -675,12 +559,7 @@ class Gui:
     # opens the github repo in the browser
     def Button_GitHub_func(self) -> None:
         # open the discord invite in the default browser
-<<<<<<< HEAD
-        webbrowser.open(
-            "https://github.com/kyleraykbs/Portal2-32PlayerMod#readme")
-=======
         webbrowser.open("https://github.com/kyleraykbs/Portal2-32PlayerMod#readme")
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
 
 
     # this simply opens the steam guide
@@ -1436,15 +1315,11 @@ def LoadTranslations() -> dict:
     langPath = "languages/" + GVars.configData["activeLanguage"]["value"] + ".json"
 
     if not os.path.exists(langPath):
-<<<<<<< HEAD
-        langPath = "languages/"+cfg.DefaultConfigFile["activeLanguage"]["value"] + ".json"
-=======
         langPath = GVars.modPath + GVars.nf + "languages/" + GVars.configData["activeLanguage"]["value"]+ ".json"
 
     if not os.path.exists(langPath):
         cfg.EditConfig("activeLanguage", cfg.DefaultConfigFile["activeLanguage"]["value"])
         langPath = "languages/" + GVars.configData["activeLanguage"]["value"] + ".json"
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
 
     translations = json.load(open(langPath, "r", encoding="utf8"))
 
@@ -1603,12 +1478,9 @@ def Initialize() -> None:
     GVars.LoadConfig()
     # load the client's translations
     LoadTranslations()
-
-<<<<<<< HEAD
+    # Starts up the custom save system
     SS.init()
 
-=======
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
     # checks if this is debug or release mode
     if sys.argv[0].endswith(".py"):
         Log("Running through Python! Not checking for updates.")
