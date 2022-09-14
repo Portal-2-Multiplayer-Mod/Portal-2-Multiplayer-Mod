@@ -1,3 +1,4 @@
+from inspect import _void
 import json
 import os
 import random
@@ -126,7 +127,7 @@ class Gui:
     ############ BUTTON CLASS
     class ButtonTemplate:
         def __init__(self, text: str,
-                    func,
+                    func = _void,
                     activeColor: tuple = (255, 255, 0),
                     inactiveColor: tuple = (155, 155, 155),
                     sizemult: float = 1,
@@ -937,6 +938,9 @@ class Gui:
         LastBackspace = 0
 
         while self.running:
+            mouse = pygame.mouse.get_pos()
+            mousex = mouse[0]
+            mousey = mouse[1]
 
             # so you can hold backspace to delete
             if (self.LookingForInput):
@@ -1096,9 +1100,6 @@ class Gui:
                 ###############################
                 elif event.type == pygame.MOUSEMOTION:
 
-                    mouse = pygame.mouse.get_pos()
-                    mousex = mouse[0]
-                    mousey = mouse[1]
                     # loop through every button in the current menu
                     for button in self.CurrentMenu:
                         try:
@@ -1274,20 +1275,8 @@ def MountModOnly() -> bool:
         Log("User agreed to download the mod files! Fetching mod...")
         UpdateModFiles()
 
-    class YesButton:
-        text = translations["error_yes"]
-        function = YesInput
-        activecolor = (75, 200, 75)
-        inactivecolor = (155, 155, 155)
-
-    class NoButton:
-        text = translations["game_files_use_fallbacks"]
-
-        def function() -> None:
-            UseFallbacks(gamepath)
-
-        activecolor = (255, 75, 75)
-        inactivecolor = (155, 155, 155)
+    YesButton = Ui.ButtonTemplate(translations["error_yes"], YesInput, (75, 200, 75))
+    NoButton = Ui.ButtonTemplate(translations["game_files_use_fallbacks"], 0, (255, 75, 75))
 
     Ui.PopupBox(translations["game_files_fetch_game"], translations["game_files_no_cached_files"], [YesButton, NoButton])
 
@@ -1346,7 +1335,7 @@ def UpdateModClient() -> None:
     Ui.Error(translations["updating_client"], 5000, (255, 150, 75))
 
     def UpdateThread() -> None:
-        Log("Updating...")
+        Log("Updating client...")
         Ui.IsUpdating = True
 
         if not up.DownloadClient():
@@ -1411,46 +1400,17 @@ def IsNew() -> None:
 
 
 def ClientUpdateBox(update: dict) -> None:
-    def YesInput() -> None:
-        Log("Fetching mod...")
-        UpdateModClient()
-
-    class YesButton:
-        text = translations["error_yes"]
-        function = YesInput
-        activecolor = (75, 200, 75)
-        inactivecolor = (155, 155, 155)
-
-    class NoButton:
-        text = translations["error_no"]
-
-        def function() -> None:
-            pass
-
-        activecolor = (255, 75, 75)
-        inactivecolor = (155, 155, 155)
+    YesButton = Ui.ButtonTemplate(translations["error_yes"], UpdateModClient, (75, 200, 75))
+    NoButton = Ui.ButtonTemplate(translations["error_no"], activeColor=(255, 75, 75))
 
     Ui.PopupBox(update["name"], update["message"], [YesButton, NoButton])
 
 
 def ModFilesUpdateBox() -> None:
-    class YesButton:
-        text = translations["error_yes"]
-        function = UpdateModFiles
-        activecolor = (75, 200, 75)
-        inactivecolor = (155, 155, 155)
+    YesButton = Ui.ButtonTemplate(translations["error_yes"], UpdateModFiles, (75, 200, 75))
+    NoButton = Ui.ButtonTemplate(translations["error_no"], activeColor=(255, 75, 75))
 
-    class NoButton:
-        text = translations["error_no"]
-
-        def function() -> None:
-            pass
-
-        activecolor = (255, 75, 75)
-        inactivecolor = (155, 155, 155)
-
-    Ui.PopupBox(translations["update_available"],
-             translations["update_would_you_like_to"], [YesButton, NoButton])
+    Ui.PopupBox(translations["update_available"], translations["update_would_you_like_to"], [YesButton, NoButton])
 
 
 def CheckForUpdates() -> bool:
@@ -1492,7 +1452,6 @@ def Initialize() -> None:
     IsNew()  # Check for first time setup after update
     # time.sleep(1) # i have no idea why did i add sleep here
 
-    CheckForUpdates()
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
@@ -1500,6 +1459,7 @@ def Initialize() -> None:
 
 
 def PostInitialize() -> None:
+    CheckForUpdates()
     VerifyGamePath(False)
 
     def NewAfterFunction() -> None:
@@ -1512,18 +1472,8 @@ def PostInitialize() -> None:
 
     if (GVars.hadtoresetconfig):
         Log("Config has been reset to default settings!")
-
-        class OkButton:
-            text = translations["error_ok"]
-
-            def function() -> None:
-                pass
-
-            activecolor = (75, 255, 75)
-            inactivecolor = (155, 155, 155)
-
-        Ui.PopupBox(translations["launcher_config_reset"],
-                 translations["launcher_had_to_reset"], [OkButton])
+        OkButton = Ui.ButtonTemplate(translations["error_ok"], activeColor=(75, 255, 75))
+        Ui.PopupBox(translations["launcher_config_reset"], translations["launcher_had_to_reset"], [OkButton])
 
 
 if __name__ == '__main__':
