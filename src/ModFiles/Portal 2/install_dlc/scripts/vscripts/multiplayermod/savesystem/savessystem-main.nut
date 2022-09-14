@@ -27,14 +27,16 @@ function saveLoad() {
 function onSave(event) { // Triggers when a map calls for a certain event to be saved
     SendToConsoleP232("_record SAVE/" + GetMapName().tostring + "-" + event + "-save")
     SendToConsoleP232("stop")
-    printl(GetMapName().tostring + "-" + event + "-save.dem has been created")
     try {
         IncludeScript("multiplayermod/savesystem/" + GetMapName().tostring + "-" + event + "-save.nut")
-        printl("Save completed!")
-        SendToConsoleP232("say Map progress saved....")
+        printl(GetMapName().tostring + "-" + event + "-save.dem has been created")
+        SendChatMessage("Map progress saved....")
         SendToConsoleP232("_record SAVE/savesystemcheck-mapsaved")
+        SendToConsoleP232("stop")
     } catch (e){
+        SendChatMessage("Map failed to save, check console...")
         printl("Save system check failed to complete...")
+        printl(e)
     }
 }
 

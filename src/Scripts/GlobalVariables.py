@@ -1,6 +1,6 @@
 # this is a file to store all the global variables needed
 # it's initiated only once when the mainwindow is created
-# please don't temper with it
+# please don't tammper with it
 
 import os
 import sys
@@ -17,6 +17,11 @@ appStartDate: str
 configData: dict[str, dict[str, str]]
 modPath: str
 configPath: str
+# Paths defined for the save system
+# saveSystemPath directs toward the VScript multiplayer mod folder
+# masterSaveJSON directs to the JSON created by the save system in the src folder
+saveSystemNutPath: str
+masterSaveJSONPath: str
 iow: bool = False
 iol: bool = False
 nf: str = os.sep # this way the logging won't break if someone runs the app on mac
@@ -26,7 +31,7 @@ translations: dict[str, str]
 AfterFunction: None
 
 def init() -> None:
-    global appStartDate, modPath, iow, iol, nf, configPath
+    global appStartDate, modPath, iow, iol, nf, configPath, saveSystemNutPath, masterSaveJSONPath
 
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
@@ -44,13 +49,16 @@ def init() -> None:
         # set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
         configPath = buf.value + nf + "p2mm"
+        saveSystemNutPath = buf.value + nf + "p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem"
+        masterSaveJSONPath = buf.value + nf + "p2mm"
 
     elif (sys.platform.startswith("linux")):
         iol = True
         # set the modpath the the users home directory
         modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
         configPath = os.path.expanduser("~") + nf + ".config/p2mm"
-
+        saveSystemNutPath = os.path.expanduser("~") + nf + ".cache/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem"
+        masterSaveJSONPath = os.path.expanduser("~") + nf + ".config/p2mm"
     else:
         # feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")

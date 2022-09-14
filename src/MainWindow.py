@@ -19,6 +19,7 @@ import Scripts.RunGame as RG
 import Scripts.Updater as up
 import Scripts.Workshop as workshop
 from Scripts.BasicLogger import Log, StartLog
+import Scripts.SaveSystem as SS
 
 tk = ""
 try:
@@ -1487,6 +1488,8 @@ def Initialize() -> None:
     GVars.LoadConfig()
     # load the client's translations
     LoadTranslations()
+
+    SS.init()
 
     # checks if this is debug or release mode
     if sys.argv[0].endswith(".py"):
