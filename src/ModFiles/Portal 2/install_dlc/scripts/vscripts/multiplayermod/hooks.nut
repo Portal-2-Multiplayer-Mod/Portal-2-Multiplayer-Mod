@@ -187,14 +187,18 @@ function PostMapLoad() {
     } else {
         SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server")
     }
+
     // Force spawn players in map
     AddBranchLevelName( 1, "P2 MM" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
-    // Enable fast download
-    //SendToConsoleP232("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+
+    // Custom asset download commands
     SendToConsoleP232("sv_allowdownload 1")
     SendToConsoleP232("sv_allowupload 1")
+    // Original sv_downloadurl, will be reimplemented when custom downloading fucntion works as intended
+    //SendToConsoleP232("sv_downloadurl https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2")
+    //Temporary sv_downloadurl, pulling from Orsell's fork of the mod, mainly for testing custom assets
     SendToConsoleP232("sv_downloadurl https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/raw/dev/WebFiles/FastDL/portal2")
 
 	// Elastic Player Collision

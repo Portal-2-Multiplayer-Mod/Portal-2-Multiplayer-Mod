@@ -36,6 +36,15 @@ DefaultConfigFile = {
             "prompt": "Custom launch options for debugging.",
         },
 
+    "MakeSaveFiles?":
+        {
+            "value": "true",
+            "menu": "hidden",
+            "description": "Enable save file creation?",
+            "warning": "Disabling this will can cause your next play session to act weird",
+            "prompt": "",
+        },
+
     "LauncherSFX":
         {
             "value": "true",

@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "8997"
-	"mapversion" "16"
+	"mapversion" "17"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "16"
+	"mapversion" "17"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -930,6 +930,42 @@ entity
 }
 entity
 {
+	"id" "95"
+	"classname" "comp_vactube_object"
+	"angles" "0 0 0"
+	"group" "vactubetestcube"
+	"model" "models/bee2/cube_color/clean_sphere.mdl"
+	"offset" "-279.74 -512 64"
+	"skin" "0"
+	"tv_skin" "3"
+	"weight" "1"
+	"origin" "-279.739 -512 64"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 2500]"
+	}
+}
+entity
+{
+	"id" "127"
+	"classname" "comp_vactube_junction"
+	"angles" "90 0 0"
+	"model" "models/editor/vactubes/curve_6.mdl"
+	"persist_tv" "0"
+	"origin" "150 -544 38"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1500]"
+	}
+}
+entity
+{
 	"id" "26"
 	"classname" "light"
 	"_light" "255 255 255 1000"
@@ -959,6 +995,108 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 2000]"
+	}
+}
+entity
+{
+	"id" "65"
+	"classname" "comp_vactube_start"
+	"angles" "0 180 0"
+	"group" "vactubetestcube"
+	"speed" "800.0"
+	"time_max" "0.5"
+	"time_min" "0.15"
+	"timer" "1"
+	"origin" "384 -827 38"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "67"
+	"classname" "comp_vactube_junction"
+	"angles" "0 180 0"
+	"model" "models/editor/vactubes/straight.mdl"
+	"persist_tv" "0"
+	"origin" "277 -832 38"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1500]"
+	}
+}
+entity
+{
+	"id" "69"
+	"classname" "comp_vactube_junction"
+	"angles" "-90 90 0"
+	"model" "models/editor/vactubes/curve_1.mdl"
+	"persist_tv" "0"
+	"origin" "215 -831 42"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1500]"
+	}
+}
+entity
+{
+	"id" "71"
+	"classname" "comp_vactube_junction"
+	"angles" "0 90 0"
+	"model" "models/editor/vactubes/straight.mdl"
+	"persist_tv" "0"
+	"origin" "150 -687 38"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1500]"
+	}
+}
+entity
+{
+	"id" "73"
+	"classname" "comp_vactube_end"
+	"angles" "0 0 0"
+	"autorespawn" "1"
+	"origin" "-330 -160 38"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "76"
+	"classname" "comp_vactube_object"
+	"angles" "0 0 0"
+	"group" "vactubetestcube"
+	"model" "models/bee2/cube_color/clean_standard.mdl"
+	"offset" "-198.97 -512 64"
+	"skin" "0"
+	"tv_skin" "3"
+	"weight" "1"
+	"origin" "-198.972 -512 64"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 2500]"
 	}
 }
 cameras

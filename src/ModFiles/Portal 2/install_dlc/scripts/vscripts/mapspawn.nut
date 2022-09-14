@@ -50,16 +50,8 @@ IncludeScript("multiplayermod/chatcommands.nut")
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
-//Testing for test file creation
-if (MapName.tostring() == "mp_coop_testroom") {
-    try {
-        printl("Loading test_nut")
-        IncludeScript("multiplayermod/test_nut")
-    } catch (e){
-        printl("Test_nut failed to load")
-        throw e
-    }
-}
+// Load the custom save system after everything else has been loaded
+IncludeScript("multiplayermod/savesystem.nut")
 
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) {
@@ -72,7 +64,7 @@ foreach (line in ConsoleAscii) {
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
 
 // This is how we communicate with all mapsupport files. By default, no support is loaded
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {}
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, saveCheck) {}
 
 // Import map support code
 function LoadMapSupportCode(gametype) {
@@ -157,7 +149,7 @@ function init() {
     }
 
     // Trigger mapsupport code
-    MapSupport(true, false, false, false, false, false, false)
+    MapSupport(true, false, false, false, false, false, false, false)
 
     // Create an entity to run the loop() function every 0.1 second
     p2mm_timer <- Entities.CreateByClassname("logic_timer")
