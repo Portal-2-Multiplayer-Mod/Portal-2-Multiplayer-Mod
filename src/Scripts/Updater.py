@@ -13,7 +13,7 @@ import Scripts.BasicFunctions as Funcs
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
-currentVersion = "2.0.3" # change this before releasing a new version
+currentVersion = "2.1.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
