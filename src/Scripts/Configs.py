@@ -18,12 +18,13 @@ DefaultConfigFile = {
             "prompt": "Enter the path to the Portal 2 folder",
         },
 
-    "developer":
+    "AutoUnmount":
         {
-            "value": "false",
-            "menu": "hidden",
-            "description": "Makes the mods files mount from src/ModFiles",
+            "value": "true",
+            "menu": "launcher",
+            "description": "Automatically unmounts the mod when the game is closed",
             "warning": "",
+<<<<<<< HEAD
             "prompt": "",
         },
 
@@ -34,6 +35,9 @@ DefaultConfigFile = {
             "description": "Please type your custom launch options. \n Example (+map 'mapname'). Leave blank to launch into menu.",
             "warning": "",
             "prompt": "Custom launch options for debugging.",
+=======
+            "prompt": "Encrypt specific vscript functions?",
+>>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
         },
 
     "MakeSaveFiles?":
@@ -92,19 +96,31 @@ DefaultConfigFile = {
             "prompt": "If you see this something is wrong",
         },
 
-    "AutoUnmount":
+    "developer":
         {
-            "value": "true",
-            "menu": "launcher",
-            "description": "Automatically unmounts the mod when the game is closed",
-            "warning": "",
-            "prompt": "Encrypt specific vscript functions?",
+            "value": "false",
+            "menu": "hidden",
+            "description": "Makes the mod's files mount from src/ModFiles",
+            "warning": "only enable this if you know what you're doing!",
+            "prompt": "",
         },
 
+<<<<<<< HEAD
+=======
+    "CustomLaunchOptions":
+        {
+            "value": "+map mp_coop_lobby_3",
+            "menu": "hidden",
+            "description": "type your custom launch options. Example (+map 'mapname').",
+            "warning": "leave this to default if you don't know what it does!",
+            "prompt": "Custom launch options for debugging.",
+        },
+
+>>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
     "activeLanguage":
         {
             "value": "English",
-            "menu": "launcher",
+            "menu": "",
             "description": "the language of the p2mm client and not the game",
             "warning": "",
             "prompt": "",
@@ -200,7 +216,6 @@ def GetConfigList(search: str, val: str) -> list:
             lst.append(key)
     return lst
 
-
 def WriteConfigFile(configs: dict) -> None:
     filepath = FindConfigPath()
     # just to make sure the file doesn't exist
@@ -214,6 +229,24 @@ def WriteConfigFile(configs: dict) -> None:
     with open(filepath, "w", encoding="utf-8") as cfg:
         json.dump(configs, cfg)
 
+# since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
+def EditConfig(search: str, newvalue: str) -> None:
+    GVars.configData[search]["value"] = newvalue
+    WriteConfigFile(GVars.configData)
+
+def EditPlayer(index: int, name: str = None, steamId: str = None, level: str = None):
+    if name is not None:
+        GVars.configData["Players"]["value"][index]["name"] = name
+    if steamId is not None:
+        GVars.configData["Players"]["value"][index]["steamid"] = steamId
+    if level is not None:
+        GVars.configData["Players"]["value"][index]["adminlevel"] = level
+
+    WriteConfigFile(GVars.configData)
+
+def DeletePlayer(index: int):
+    GVars.configData["Players"]["value"].pop(index)
+    WriteConfigFile(GVars.configData)
 
 # why this is a seperate function that only has 2 lines?
 # well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
@@ -221,13 +254,6 @@ def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
     return GVars.configPath + GVars.nf + "configs.cfg"
-
-
-# since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
-def EditConfig(search: str, newvalue: str) -> None:
-    GVars.configData[search]["value"] = newvalue
-    WriteConfigFile(GVars.configData)
-
 
 # to import the config data from the local config file
 def ImportConfig() -> dict:

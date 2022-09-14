@@ -9,10 +9,10 @@ def ConvertPath(path: str) -> str:
     if (GVars.iol):
         path = path.replace("\\", GVars.nf)
         path = path.replace("~", os.path.expanduser("~"))
-    
+
     elif (GVars.iow):
         path = path.replace("/", GVars.nf)
-        
+
     return path
 
 def DeleteFolder(path: str) -> None:
@@ -50,7 +50,7 @@ def TryFindPortal2Path():
     # if C:\Program Files (x86)\Steam\steamapps\common\Portal 2 exists
     defpathwin = ConvertPath("D:\Program Files (x86)\Steam\steamapps\common\Portal 2")
     defpathlin = ConvertPath("~/.local/share/Steam/steamapps/common/Portal 2")
-    
+
     if (GVars.iol):
         if (os.path.isdir(defpathlin)):
             return defpathlin
@@ -67,7 +67,6 @@ def TryFindPortal2Path():
             manifestpath = steam_path[0] + ConvertPath("/steamapps/libraryfolders.vdf")
             print(manifestpath)
             if (os.path.isfile(manifestpath)):
-
                 # read the manifest file
                 f = open(manifestpath, "r", encoding="utf-8")
                 manifest = f.read()
@@ -84,7 +83,7 @@ def TryFindPortal2Path():
                         line = line.replace("path", "")
                         line = line.strip()
                         paths.append(line)
-                
+
                 for path in paths:
                     print(path)
                     if (os.path.isdir(path + ConvertPath("/steamapps/common/Portal 2"))):

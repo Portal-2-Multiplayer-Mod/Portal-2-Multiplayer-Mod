@@ -1,6 +1,8 @@
-import Scripts.GlobalVariables as GVars
-import Scripts.BasicFunctions as BF
 import os
+
+import Scripts.BasicFunctions as BF
+import Scripts.GlobalVariables as GVars
+
 
 def UpdateMapList(workshoppath) -> None:
     global maplist
@@ -34,17 +36,17 @@ def SteamIDFromLink(link : str) -> str:
             link = link[0:i]
             break
         i += 1
-    
+
     return link
 
 def MapFromSteamID(workshopLink: str, workshoppath: str = None) -> str:
     if workshoppath is None:
         workshoppath = GVars.configData["portal2path"]["value"] + BF.ConvertPath("/portal2/maps/workshop")
-    
+
     SteamID = SteamIDFromLink(workshopLink)
     UpdateMapList(workshoppath)
 
     for map in maplist:
         if map["id"] == SteamID:
-            return map
+            return map["bsp"]
     return None

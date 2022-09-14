@@ -18,7 +18,7 @@
 ```
 
 ## Features Coming Eventually
-- Player specific colored portals
+- Player specific colored portals (this one gonna take a lot of time to implement)
 
 # Installation & use
 
