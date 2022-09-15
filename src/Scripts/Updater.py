@@ -13,7 +13,7 @@ import Scripts.BasicFunctions as Funcs
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
-currentVersion = "2.0.3" # change this before releasing a new version
+currentVersion = "2.1.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
@@ -64,6 +64,11 @@ def CheckForNewClient() -> dict:
 
 
 def DownloadClient(cType: str = "") -> bool:
+
+    if not haveInternet():
+        Log("No internet Connection")
+        return False
+
     # cType is the Client Type (gui / cli)
     Log("Downloading...")
     cType = cType.upper()
@@ -107,6 +112,7 @@ def DownloadClient(cType: str = "") -> bool:
     command = path + " updated " + GVars.executable
     subprocess.Popen(command, shell=True)
     Log("launched the new client")
+    return True
 
 def CheckForNewFiles() -> bool:
 
@@ -151,6 +157,11 @@ def CheckForNewFiles() -> bool:
     return True
 
 def DownloadNewFiles() -> None:
+
+    if not haveInternet():
+        Log("No internet Connection")
+        return False
+
     r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
     Log("downloading "+str(len(r["Files"]))+" files...")
