@@ -30,6 +30,22 @@
 *If you have* ***ANY*** *problems feel free to join our community we are happy to troubleshoot and fix any bugs*
 - https://discord.gg/kW3nG6GKpF
 
+
+# How to build
+### Dependencies
+- pygame
+- requests
+- steamid-converter
+- pyperclip
+
+### Compilation
+*you need `pyinstaller` to compile the code*
+Windows: `pyinstaller src/MainWindow.py -F -i src/GUI/assets/images/p2mm64.ico --noconsole --add-data "src/GUI;GUI" --add-data "src/FALLBACK;FALLBACK" --add-data "src/languages;languages"`
+Linux: `pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/FALLBACK:FALLBACK" --add-data "src/languages:languages"`
+
+**Note: if you want to fork the project and do your own releases you need to changes the variables at the top of `Udater.py` to your own information**
+
+
 # Credits
 **Founders**
 - kyleraykbs *(Team Lead, Main Vscript Dev, Singleplayer Support, Launcher Dev, Exploit Finder, Minor Reverse Engineering)*
