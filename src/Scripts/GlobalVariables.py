@@ -49,16 +49,13 @@ def init() -> None:
         # set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
         configPath = buf.value + nf + "p2mm"
-        saveSystemNutPath = buf.value + nf + "p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem"
-        masterSaveJSONPath = buf.value + nf + "p2mm"
-
+        saveSystemNutPath = buf.value + nf + "p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem/savesystem-main.nut"
     elif (sys.platform.startswith("linux")):
         iol = True
         # set the modpath the the users home directory
         modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
         configPath = os.path.expanduser("~") + nf + ".config/p2mm"
-        saveSystemNutPath = os.path.expanduser("~") + nf + ".cache/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem"
-        masterSaveJSONPath = os.path.expanduser("~") + nf + ".config/p2mm"
+        saveSystemNutPath = os.path.expanduser("~") + nf + ".cache/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem/savesystem-main.nut"
     else:
         # feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")

@@ -200,7 +200,7 @@ dmypy.json
 .pyre/
 
 # 2v2coopbattle unneeded files/dirs Added By: Orsell
-p32wip/animations/*
-p32wip/p2cetest/*
+p32wip/animations
+p32wip/p2cetest
 *.prt
 *.vmx

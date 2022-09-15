@@ -24,28 +24,6 @@ DefaultConfigFile = {
             "menu": "launcher",
             "description": "Automatically unmounts the mod when the game is closed",
             "warning": "",
-<<<<<<< HEAD
-            "prompt": "",
-        },
-
-    "CustomLaunchOptions":
-        {
-            "value": "+map mp_coop_lobby_3",
-            "menu": "hidden",
-            "description": "Please type your custom launch options. \n Example (+map 'mapname'). Leave blank to launch into menu.",
-            "warning": "",
-            "prompt": "Custom launch options for debugging.",
-=======
-            "prompt": "Encrypt specific vscript functions?",
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
-        },
-
-    "MakeSaveFiles?":
-        {
-            "value": "true",
-            "menu": "hidden",
-            "description": "Enable save file creation?",
-            "warning": "Disabling this will can cause your next play session to act weird",
             "prompt": "",
         },
 
@@ -105,24 +83,29 @@ DefaultConfigFile = {
             "prompt": "",
         },
 
-<<<<<<< HEAD
-=======
     "CustomLaunchOptions":
         {
             "value": "+map mp_coop_lobby_3",
             "menu": "hidden",
-            "description": "type your custom launch options. Example (+map 'mapname').",
-            "warning": "leave this to default if you don't know what it does!",
+            "description": "Type your custom launch options. Example (+map 'mapname').",
+            "warning": "Leave this to default if you don't know what it does!",
             "prompt": "Custom launch options for debugging.",
         },
 
->>>>>>> 59d9d609901e093cdd27f382814b69353ed34349
     "activeLanguage":
         {
             "value": "English",
             "menu": "",
             "description": "the language of the p2mm client and not the game",
             "warning": "",
+            "prompt": "",
+        },
+    "MakeSaveFiles?":
+        {
+            "value": "true",
+            "menu": "hidden",
+            "description": "Enable save file creation?",
+            "warning": "Disabling this will can cause your next play session to act weird",
             "prompt": "",
         },
 }
