@@ -282,6 +282,10 @@ class Gui:
                 self.inactivecolor = (155, 155, 155)
                 self.sizemult = 1
                 self.outerSelf = outerSelf
+                self.x = 0
+                self.y = 0
+                self.width = 0
+                self.height = 0
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
                 outerSelf.BlitDescription(self.keyobj["description"], self.outerSelf.SelectedButton.x,
@@ -968,7 +972,7 @@ class Gui:
                 (W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
             self.screen.blit(surf1, blitpos)
 
-            surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(self.InputPrompt, True,
+            surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(fntsize/1.5)).render(self.InputPrompt, True,
                                                                                              (255, 255, 255))
             # blit it right below the surf1
             self.screen.blit(surfInputPrompt, (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2),
