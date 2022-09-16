@@ -84,6 +84,7 @@ class Gui:
 
         self.DefineMainMenuButtons()
         self.DefineSettingsMenuButtons()
+        self.DefineSavesButton()
         self.DefineWorkshopButtons()
         self.DefineManualMountingButtons()
         self.DefineResourcesButtons()
@@ -160,27 +161,20 @@ class Gui:
     #!############################
 
     def DefineMainMenuButtons(self) -> None:
-        self.Button_LaunchGame = self.ButtonTemplate(
-            translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120))
-        self.Button_Settings = self.ButtonTemplate(
-            translations["settings_button"], self.Button_Settings_func)
-        self.Button_Update = self.ButtonTemplate(
-            translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
-        self.Button_ManualMode = self.ButtonTemplate(
-            translations["manual_mounting_button"], self.Button_ManualMode_func)
-        self.Button_Workshop = self.ButtonTemplate(
-            translations["workshop_button"], self.Button_Workshop_func, (50, 50, 255))
-        self.Button_ResourcesMenu = self.ButtonTemplate(
-            translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
-        self.Button_Exit = self.ButtonTemplate(
-            translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
+        self.Button_LaunchGame = self.ButtonTemplate(translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120))
+        self.Button_Settings = self.ButtonTemplate(translations["settings_button"], self.Button_Settings_func)
+        self.Button_Saves = self.ButtonTemplate(translations["saves-button"], self.Button_Saves_func, (235, 172, 14))
+        self.Button_Update = self.ButtonTemplate(translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
+        self.Button_ManualMode = self.ButtonTemplate(translations["manual_mounting_button"], self.Button_ManualMode_func)
+        self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
+        self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
+        self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
 
-        self.MainButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
+        self.MainButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Saves, self.Button_Update,
                             self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
 
         if self.devMode:
-            self.Button_Test = self.ButtonTemplate(
-                "test", self.Button_Test_func)
+            self.Button_Test = self.ButtonTemplate("test", self.Button_Test_func)
             self.MainButtons.append(self.Button_Test)
 
         self.MainButtons.append(self.Button_Exit)
@@ -207,6 +201,12 @@ class Gui:
             self.SettingsMenus.append(self.Button_HiddenSettings)
 
         self.SettingsMenus.append(self.Button_Back)
+
+    def DefineSavesButton(self) -> None:
+        self.Button_SaveSystemState = self.ButtonTemplate(
+            translations["save_system_state"] + SS.saveSystemEnabled)
+        self.SavesMenu = [self.Button_SaveSystemState, self.Button_Back]
+
 
     def DefineWorkshopButtons(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(
@@ -262,7 +262,7 @@ class Gui:
         if len(self.directorymenu) > 0:
             self.ChangeMenu(self.directorymenu.pop(), False)
 
-    # the button to go to the previeus menu
+    # the button to go to the previous menu
     def Button_Back_func(self) -> None:
         self.BackMenu()
 
@@ -476,6 +476,10 @@ class Gui:
 
     def Button_Settings_func(self) -> None:
         self.ChangeMenu(self.SettingsMenus)
+
+    # switches to the saves menu
+    def Button_Saves_func(self) -> None:
+        self.ChangeMenu(self.SavesMenu)
 
     # launcher update button
 

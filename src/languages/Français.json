@@ -70,5 +70,7 @@
   "devmod_copied_from_local_repo": "fichiers du mod copiés à partir du repo local!",
   "testing_button": "Test",
   "language_error0_language_update": "Langage Mis A Jour,",
-  "language_error0_relaunch_game": "Relancez Votre Lanceur"
+  "language_error0_relaunch_game": "Relancez Votre Lanceur",
+  "saves-button": "Sauve",
+  "save_test_button": "Bouton Test dans le menu Enregistrer"
 }

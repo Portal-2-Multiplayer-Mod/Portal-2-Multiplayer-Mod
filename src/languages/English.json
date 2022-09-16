@@ -70,5 +70,7 @@
   "devmod_copied_from_local_repo": "Copied mod files from src/ModFiles!",
   "testing_button": "Testing",
   "language_error0_language_update": "Language Set, ",
-  "language_error0_relaunch_game": "Please reboot the launcher."
+  "language_error0_relaunch_game": "Please reboot the launcher.",
+  "saves-button": "Saves",
+  "save_system_state": "Save System Enabled? "
 }

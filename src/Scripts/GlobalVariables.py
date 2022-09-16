@@ -8,6 +8,7 @@ import ctypes.wintypes
 from datetime import datetime
 import Scripts.Configs as cfg
 from Scripts.BasicLogger import Log
+import Scripts.SaveSystem as SS
 #//////////////////////////////////////////#
 #//#    Global Variables Declarations   #//#
 #//////////////////////////////////////////#
@@ -17,11 +18,7 @@ appStartDate: str
 configData: dict[str, dict[str, str]]
 modPath: str
 configPath: str
-# Paths defined for the save system
-# saveSystemPath directs toward the VScript multiplayer mod folder
-# masterSaveJSON directs to the JSON created by the save system in the src folder
-saveSystemNutPath: str
-masterSaveJSONPath: str
+saveSystemNutPath: str # Path defined for the savesystem-main.nut file
 iow: bool = False
 iol: bool = False
 nf: str = os.sep # this way the logging won't break if someone runs the app on mac
@@ -31,7 +28,7 @@ translations: dict[str, str]
 AfterFunction: None
 
 def init() -> None:
-    global appStartDate, modPath, iow, iol, nf, configPath, saveSystemNutPath, masterSaveJSONPath
+    global appStartDate, modPath, iow, iol, nf, configPath, saveSystemNutPath, saveSystemEnabled
 
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
@@ -49,13 +46,13 @@ def init() -> None:
         # set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
         configPath = buf.value + nf + "p2mm"
-        saveSystemNutPath = buf.value + nf + "p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem/savesystem-main.nut"
+        saveSystemNutPath = buf.value + nf + "p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem"
     elif (sys.platform.startswith("linux")):
         iol = True
         # set the modpath the the users home directory
         modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
         configPath = os.path.expanduser("~") + nf + ".config/p2mm"
-        saveSystemNutPath = os.path.expanduser("~") + nf + ".cache/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem/savesystem-main.nut"
+        saveSystemNutPath = os.path.expanduser("~") + nf + ".cache/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem"
     else:
         # feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")
