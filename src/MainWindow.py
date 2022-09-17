@@ -130,8 +130,8 @@ class Gui:
     class ButtonTemplate:
         def __init__(self,
                      text: str,
-                     secondaryText: str,
-                     func=_void,
+                     secondaryText: str = "",
+                     func= _void,
                      activeColor: tuple = (255, 255, 0),
                      inactiveColor: tuple = (155, 155, 155),
                      sizemult: float = 1,
@@ -209,18 +209,16 @@ class Gui:
         self.SettingsMenus.append(self.Button_Back)
 
     def DefineSavesButton(self) -> None:
-        self.Button_SaveSystemStateTxt = self.ButtonTemplate(
-            (translations["save_system_state_txt"]))
         self.Button_SaveSystemState = self.ButtonTemplate(
-            (translations["saves_enabled"], (21, 255, 0)))
+            (translations["save_system_state_txt"] + translations["saves_enabled"]), (21, 255, 0))
 
-        self.Button_SaveSystemStateTxt = self.ButtonTemplate(
-            (translations["save_system_state_txt"]))
         self.Button_SaveSystemState = self.ButtonTemplate(
-            (translations["saves_disabled"], (21, 255, 0)))
+            (translations["save_system_state_txt"] + translations["saves_disabled"]), (21, 255, 0))
+        #This is old but it worked before, keeping it just in case i need it again
         #self.Button_SaveSystemState = self.ButtonTemplate(
         #    translations["save_system_state"] + SS.saveSystemEnabled)
-        self.SavesMenu = [self.Button_SaveSystemStateTxt, self.Button_SaveSystemState, self.Button_Back]
+        
+        self.SavesMenu = [self.Button_SaveSystemState, self.Button_Back]
 
     def DefineWorkshopButtons(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(
