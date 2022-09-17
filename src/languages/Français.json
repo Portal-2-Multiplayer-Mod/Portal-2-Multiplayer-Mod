@@ -71,6 +71,8 @@
   "testing_button": "Test",
   "language_error0_language_update": "Langage Mis A Jour,",
   "language_error0_relaunch_game": "Relancez Votre Lanceur",
-  "saves-button": "Sauve",
-  "save_test_button": "Bouton Test dans le menu Enregistrer"
+  "saves_button": "Sauve",
+  "save_system_state_txt": "Bouton Test dans le menu Enregistrer",
+  "saves_enabled": "Activé",
+  "saves_disabled": "Désactivé"
 }

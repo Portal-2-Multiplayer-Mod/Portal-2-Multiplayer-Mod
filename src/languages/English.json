@@ -71,6 +71,8 @@
   "testing_button": "Testing",
   "language_error0_language_update": "Language Set, ",
   "language_error0_relaunch_game": "Please reboot the launcher.",
-  "saves-button": "Saves",
-  "save_system_state": "Save System Enabled? "
+  "saves_button": "Saves",
+  "save_system_state_txt": "Save System Enabled? ",
+  "saves_enabled": "Enabled",
+  "saves_disabled": "Disabled"
 }

@@ -128,16 +128,23 @@ class Gui:
 
     # BUTTON CLASS
     class ButtonTemplate:
-        def __init__(self, text: str,
+        def __init__(self,
+                     text: str,
+                     secondaryText: str,
                      func=_void,
                      activeColor: tuple = (255, 255, 0),
                      inactiveColor: tuple = (155, 155, 155),
                      sizemult: float = 1,
                      selectanim: str = "pop",
                      curanim: str = "",
-                     isasync: bool = False) -> None:
+                     isasync: bool = False,
+                     x: float = 0,
+                     y: float = 0,
+                     width: float = 0,
+                     height: float = 0) -> None:
 
             self.text = text
+            self.secondaryText = secondaryText
             self.function = func
             self.activecolor = activeColor
             self.inactivecolor = inactiveColor
@@ -151,10 +158,10 @@ class Gui:
             self.blipsnd.set_volume(0.25)
             self.selectsnd = self.pwrsnd
             self.hoversnd = self.blipsnd
-            self.x = 0
-            self.y = 0
-            self.width = 0
-            self.height = 0
+            self.x = x
+            self.y = y
+            self.width = width
+            self.height = height
 
     #!############################
     #! Declaring buttons
@@ -163,7 +170,7 @@ class Gui:
     def DefineMainMenuButtons(self) -> None:
         self.Button_LaunchGame = self.ButtonTemplate(translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120))
         self.Button_Settings = self.ButtonTemplate(translations["settings_button"], self.Button_Settings_func)
-        self.Button_Saves = self.ButtonTemplate(translations["saves-button"], self.Button_Saves_func, (235, 172, 14))
+        self.Button_Saves = self.ButtonTemplate(translations["saves_button"], self.Button_Saves_func, (235, 172, 14))
         self.Button_Update = self.ButtonTemplate(translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
         self.Button_ManualMode = self.ButtonTemplate(translations["manual_mounting_button"], self.Button_ManualMode_func)
         self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
@@ -196,17 +203,24 @@ class Gui:
                               self.Button_AdminsMenu, self.Button_LanguageMenu]
 
         if self.devMode:
-            self.Button_HiddenSettings = self.ButtonTemplate(
-                translations["hidden_config_button"], self.Button_HiddenSettings_func)
+            self.Button_HiddenSettings = self.ButtonTemplate(translations["hidden_config_button"], self.Button_HiddenSettings_func)
             self.SettingsMenus.append(self.Button_HiddenSettings)
 
         self.SettingsMenus.append(self.Button_Back)
 
     def DefineSavesButton(self) -> None:
+        self.Button_SaveSystemStateTxt = self.ButtonTemplate(
+            (translations["save_system_state_txt"]))
         self.Button_SaveSystemState = self.ButtonTemplate(
-            translations["save_system_state"] + SS.saveSystemEnabled)
-        self.SavesMenu = [self.Button_SaveSystemState, self.Button_Back]
+            (translations["saves_enabled"], (21, 255, 0)))
 
+        self.Button_SaveSystemStateTxt = self.ButtonTemplate(
+            (translations["save_system_state_txt"]))
+        self.Button_SaveSystemState = self.ButtonTemplate(
+            (translations["saves_disabled"], (21, 255, 0)))
+        #self.Button_SaveSystemState = self.ButtonTemplate(
+        #    translations["save_system_state"] + SS.saveSystemEnabled)
+        self.SavesMenu = [self.Button_SaveSystemStateTxt, self.Button_SaveSystemState, self.Button_Back]
 
     def DefineWorkshopButtons(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(

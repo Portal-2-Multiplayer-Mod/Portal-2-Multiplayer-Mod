@@ -28,7 +28,7 @@ translations: dict[str, str]
 AfterFunction: None
 
 def init() -> None:
-    global appStartDate, modPath, iow, iol, nf, configPath, saveSystemNutPath, saveSystemEnabled
+    global appStartDate, modPath, iow, iol, nf, translations, configPath, saveSystemNutPath, saveSystemEnabled
 
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
