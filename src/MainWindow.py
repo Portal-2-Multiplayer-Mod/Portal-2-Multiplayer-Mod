@@ -130,8 +130,7 @@ class Gui:
     class ButtonTemplate:
         def __init__(self,
                      text: str,
-                     secondaryText: str = "",
-                     func= _void,
+                     func=_void,
                      activeColor: tuple = (255, 255, 0),
                      inactiveColor: tuple = (155, 155, 155),
                      sizemult: float = 1,
@@ -141,7 +140,8 @@ class Gui:
                      x: float = 0,
                      y: float = 0,
                      width: float = 0,
-                     height: float = 0) -> None:
+                     height: float = 0,
+                     secondaryText: str = "") -> None:
 
             self.text = text
             self.secondaryText = secondaryText
@@ -209,11 +209,25 @@ class Gui:
         self.SettingsMenus.append(self.Button_Back)
 
     def DefineSavesButton(self) -> None:
-        self.Button_SaveSystemState = self.ButtonTemplate(
-            (translations["save_system_state_txt"] + translations["saves_enabled"]), (21, 255, 0))
+        if SS.init():
+            self.Button_SaveSystemState = self.ButtonTemplate(
+                translations["save_system_state_txt"],  
+                activeColor = (255, 21, 0),
+                secondaryText = translations["saves_enabled"],
+                width= -10,
+                height= -10,
+                x = 10,
+                y = 10)
+        else:
+            self.Button_SaveSystemState = self.ButtonTemplate(
+                translations["save_system_state_txt"],
+                activeColor = (21, 255, 0),
+                secondaryText = translations["saves_disabled"],
+                width= -10,
+                height= -10,
+                x = 10,
+                y = 10)
 
-        self.Button_SaveSystemState = self.ButtonTemplate(
-            (translations["save_system_state_txt"] + translations["saves_disabled"]), (21, 255, 0))
         #This is old but it worked before, keeping it just in case i need it again
         #self.Button_SaveSystemState = self.ButtonTemplate(
         #    translations["save_system_state"] + SS.saveSystemEnabled)
