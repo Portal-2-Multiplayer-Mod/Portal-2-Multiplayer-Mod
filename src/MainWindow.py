@@ -140,11 +140,9 @@ class Gui:
                      x: float = 0,
                      y: float = 0,
                      width: float = 0,
-                     height: float = 0,
-                     secondaryText: str = "") -> None:
+                     height: float = 0) -> None:
 
             self.text = text
-            self.secondaryText = secondaryText
             self.function = func
             self.activecolor = activeColor
             self.inactivecolor = inactiveColor
@@ -209,24 +207,22 @@ class Gui:
         self.SettingsMenus.append(self.Button_Back)
 
     def DefineSavesButton(self) -> None:
-        if SS.init():
+        if not SS.init():
             self.Button_SaveSystemState = self.ButtonTemplate(
                 translations["save_system_state_txt"],  
                 activeColor = (255, 21, 0),
-                secondaryText = translations["saves_enabled"],
-                width= -10,
-                height= -10,
-                x = 10,
-                y = 10)
+                width= -999,
+                height= -999,
+                x = 999,
+                y = 999)
         else:
             self.Button_SaveSystemState = self.ButtonTemplate(
                 translations["save_system_state_txt"],
                 activeColor = (21, 255, 0),
-                secondaryText = translations["saves_disabled"],
-                width= -10,
-                height= -10,
-                x = 10,
-                y = 10)
+                width= -999,
+                height= -999,
+                x = 999,
+                y = 999)
 
         #This is old but it worked before, keeping it just in case i need it again
         #self.Button_SaveSystemState = self.ButtonTemplate(
@@ -828,6 +824,7 @@ class Gui:
             button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
             button.width = text1.get_width()
             button.height = text1.get_height()
+            
 
         # BACKGROUND
         for floater in self.Floaters:
