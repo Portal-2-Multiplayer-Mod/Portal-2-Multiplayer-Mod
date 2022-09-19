@@ -139,9 +139,15 @@ class Gui:
                      isasync: bool = False,
                      x: float = 0,
                      y: float = 0,
-                     width: float = 0,
-                     height: float = 0) -> None:
-
+                     width: int = 0,
+                     height: int = 0) -> None:
+            
+            
+            #global width, height
+            self.width = width
+            self.height = width
+            #width = 1000
+            #height = 1000
             self.text = text
             self.function = func
             self.activecolor = activeColor
@@ -158,8 +164,7 @@ class Gui:
             self.hoversnd = self.blipsnd
             self.x = x
             self.y = y
-            self.width = width
-            self.height = height
+            
 
     #!############################
     #! Declaring buttons
@@ -211,16 +216,12 @@ class Gui:
             self.Button_SaveSystemState = self.ButtonTemplate(
                 translations["save_system_state_txt"],  
                 activeColor = (255, 21, 0),
-                width= -999,
-                height= -999,
                 x = 999,
                 y = 999)
         else:
             self.Button_SaveSystemState = self.ButtonTemplate(
                 translations["save_system_state_txt"],
                 activeColor = (21, 255, 0),
-                width= -999,
-                height= -999,
                 x = 999,
                 y = 999)
 
@@ -814,9 +815,10 @@ class Gui:
             else:
                 clr = button.inactivecolor
             self.RunAnimation(button, button.curanim)
-            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
-                                     int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text,
-                                                                                                           True, clr)
+            #text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
+                                     #int((int(W / 25) + int(H / 50)) / 1.5)).render(button.text,True, clr)
+            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(self.ButtonTemplate(width) / 25) + int(self.ButtonTemplate(height) / 50) / 1.5)).render(button.text, True, clr)
+
             if not (self.LookingForInput):
                 self.screen.blit(
                     text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
