@@ -128,7 +128,7 @@ class Gui:
         self.Floaters.append(floater)
 
     # BUTTON CLASS
-    class ButtonTemplate():
+    class ButtonTemplate:
         def __init__(self,
                      text: str,
                      func=_void,
