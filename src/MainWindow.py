@@ -7,6 +7,7 @@ import threading
 import time
 import webbrowser
 from inspect import _void
+import traceback
 
 import __main__
 import pygame
@@ -127,7 +128,7 @@ class Gui:
         self.Floaters.append(floater)
 
     # BUTTON CLASS
-    class ButtonTemplate:
+    class ButtonTemplate():
         def __init__(self,
                      text: str,
                      func=_void,
@@ -139,15 +140,9 @@ class Gui:
                      isasync: bool = False,
                      x: float = 0,
                      y: float = 0,
-                     width: int = 0,
-                     height: int = 0) -> None:
+                     width: float = 1000,
+                     height: float = 5000) -> None:
             
-            
-            #global width, height
-            self.width = width
-            self.height = width
-            #width = 1000
-            #height = 1000
             self.text = text
             self.function = func
             self.activecolor = activeColor
@@ -164,7 +159,8 @@ class Gui:
             self.hoversnd = self.blipsnd
             self.x = x
             self.y = y
-            
+            self.width = width
+            self.height = height
 
     #!############################
     #! Declaring buttons
@@ -212,18 +208,20 @@ class Gui:
         self.SettingsMenus.append(self.Button_Back)
 
     def DefineSavesButton(self) -> None:
-        if not SS.init():
+        if SS.init():
+            print("Running")
             self.Button_SaveSystemState = self.ButtonTemplate(
                 translations["save_system_state_txt"],  
-                activeColor = (255, 21, 0),
-                x = 999,
-                y = 999)
+                activeColor = (21, 255, 0),
+                width = 50,
+                height = 50)
         else:
+            print("Not running")
             self.Button_SaveSystemState = self.ButtonTemplate(
                 translations["save_system_state_txt"],
-                activeColor = (21, 255, 0),
-                x = 999,
-                y = 999)
+                activeColor = (255, 21, 0),
+                width = 100,
+                height = 100)
 
         #This is old but it worked before, keeping it just in case i need it again
         #self.Button_SaveSystemState = self.ButtonTemplate(
@@ -793,6 +791,7 @@ class Gui:
     ###############################################################################
 
     def Update(self) -> None:
+        BT = Gui.ButtonTemplate.__init__
         W = self.screen.get_width()
         H = self.screen.get_height()
         fntdiv: int = 32
@@ -810,6 +809,9 @@ class Gui:
         for button in self.CurrentMenu:
             indx += 1
             clr = (0, 0, 0)
+            button.width = BT.width
+            button.height = BT.width
+            size = int((button.width / 25) + (button.height /50))
             if button == self.SelectedButton:
                 clr = button.activecolor
             else:
@@ -817,15 +819,17 @@ class Gui:
             self.RunAnimation(button, button.curanim)
             #text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
                                      #int((int(W / 25) + int(H / 50)) / 1.5)).render(button.text,True, clr)
-            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(self.ButtonTemplate(width) / 25) + int(self.ButtonTemplate(height) / 50) / 1.5)).render(button.text, True, clr)
+            
+            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", size).render(button.text, True, clr)
 
             if not (self.LookingForInput):
                 self.screen.blit(
                     text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
             button.x = W / 16
             button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
-            button.width = text1.get_width()
-            button.height = text1.get_height()
+            #button.width = text1.get_width()
+            #button.height = text1.get_height()
+            
             
 
         # BACKGROUND
@@ -1561,4 +1565,5 @@ if __name__ == '__main__':
         PostInitialize()
         Ui.Main()
     except Exception as e:
-        Log("Exception encountered: " + str(e))
+        traceback.print_exc()
+        #Log("Exception encountered: " + str(e))
