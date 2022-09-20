@@ -791,7 +791,7 @@ class Gui:
     ###############################################################################
 
     def Update(self) -> None:
-        BT = Gui.ButtonTemplate.__init__
+        BT = Gui.ButtonTemplate
         W = self.screen.get_width()
         H = self.screen.get_height()
         fntdiv: int = 32
