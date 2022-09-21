@@ -64,6 +64,7 @@ class Gui:
         self.LookingForInput: bool = False
         self.CurrentSelectedPlayer: int = 0
         self.Floaters: list[self.Floater] = []
+        self.SimpleText: str = ""
 
     ###############################################################################
         self.screen = pygame.display.set_mode((1280, 720), RESIZABLE)
@@ -85,7 +86,7 @@ class Gui:
 
         self.DefineMainMenuButtons()
         self.DefineSettingsMenuButtons()
-        self.DefineSavesButton()
+        self.DefineSaveButtons()
         self.DefineWorkshopButtons()
         self.DefineManualMountingButtons()
         self.DefineResourcesButtons()
@@ -127,6 +128,20 @@ class Gui:
 
         self.Floaters.append(floater)
 
+    # SIMPLE TEXT CLASS
+    class SimpleText:
+        def __init__(self,
+                    text: str,
+                    activeColor: tuple = (255, 255, 0),
+                    xpos: float = 0,
+                    ypos: float = 0,
+                    size: float = 0):
+            self.text = text
+            self.activeColor = activeColor
+            self.xpos = xpos
+            self.ypos = ypos
+            self.size = size
+            
     # BUTTON CLASS
     class ButtonTemplate:
         def __init__(self,
@@ -138,10 +153,9 @@ class Gui:
                      selectanim: str = "pop",
                      curanim: str = "",
                      isasync: bool = False,
-                     x: float = 0,
-                     y: float = 0,
-                     width: float = 1000,
-                     height: float = 5000) -> None:
+                     xpos: float = 16,
+                     ypos: float = 2,
+                     size: float = 700) -> None:
             
             self.text = text
             self.function = func
@@ -157,10 +171,9 @@ class Gui:
             self.blipsnd.set_volume(0.25)
             self.selectsnd = self.pwrsnd
             self.hoversnd = self.blipsnd
-            self.x = x
-            self.y = y
-            self.width = width
-            self.height = height
+            self.xpos = xpos
+            self.ypos = ypos
+            self.size = size
 
     #!############################
     #! Declaring buttons
@@ -180,7 +193,7 @@ class Gui:
                             self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
 
         if self.devMode:
-            self.Button_Test = self.ButtonTemplate("test", self.Button_Test_func)
+            self.Button_Test = self.ButtonTemplate("Test Button", self.Button_Test_func)
             self.MainButtons.append(self.Button_Test)
 
         self.MainButtons.append(self.Button_Exit)
@@ -207,21 +220,21 @@ class Gui:
 
         self.SettingsMenus.append(self.Button_Back)
 
-    def DefineSavesButton(self) -> None:
+    def DefineSaveButtons(self) -> None:
         if SS.init():
             print("Running")
             self.Button_SaveSystemState = self.ButtonTemplate(
-                translations["save_system_state_txt"],  
+                translations["save_system_state_txt"] + translations["saves_enabled"],  
+                inactiveColor = (21, 255, 0),
                 activeColor = (21, 255, 0),
-                width = 50,
-                height = 50)
+                size = 600)
         else:
             print("Not running")
             self.Button_SaveSystemState = self.ButtonTemplate(
-                translations["save_system_state_txt"],
+                translations["save_system_state_txt"] + translations["saves_disabled"],
+                inactiveColor = (255, 21, 0),
                 activeColor = (255, 21, 0),
-                width = 100,
-                height = 100)
+                size = 600)
 
         #This is old but it worked before, keeping it just in case i need it again
         #self.Button_SaveSystemState = self.ButtonTemplate(
@@ -262,10 +275,23 @@ class Gui:
         self.PopupBox_gui = self.ButtonTemplate(
             "Popup Box", self.PopupBox_test_func)
         self.Button_PrintToConsole = self.ButtonTemplate(
-            "print to console", self.Button_PrintToConsole_func)
+            "Print to Console", self.Button_PrintToConsole_func)
+        self.Button_Back = self.ButtonTemplate(
+            translations["back_button"], self.Button_Back_func)
+
+        self.Text_TopRight = self.ButtonTemplate(
+            "This text is at the top right!", 
+            activeColor= (155,155,155), xpos=20, size= 400)
+        self.Text_BottomLeft = self.ButtonTemplate(
+            "This text is at the bottom left! xpos= 200 ypos= 1.25 size= 400", 
+            activeColor= (155,155,155), xpos= 200, ypos= 1.25, size= 400)
+
+        #self.TestingMenu = [self.Button_InputField, self.PopupBox_gui,
+                            #self.Button_PrintToConsole, self.Button_Back]
 
         self.TestingMenu = [self.Button_InputField, self.PopupBox_gui,
-                            self.Button_PrintToConsole, self.Button_Back]
+                            self.Button_PrintToConsole, self.Button_Back,
+                            self.Text_TopRight, self.Text_BottomLeft]
 
 #######################################################################
 
@@ -304,6 +330,9 @@ class Gui:
                 self.inactivecolor = (155, 155, 155)
                 self.sizemult = 1
                 self.outerSelf = outerSelf
+                self.size = 700
+                self.xpos = 16
+                self.ypos = 2
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
                 outerSelf.BlitDescription(self.keyobj["description"], self.outerSelf.SelectedButton.x,
@@ -791,7 +820,6 @@ class Gui:
     ###############################################################################
 
     def Update(self) -> None:
-        BT = Gui.ButtonTemplate
         W = self.screen.get_width()
         H = self.screen.get_height()
         fntdiv: int = 32
@@ -806,32 +834,32 @@ class Gui:
         # MENU 2 ELECTRIC BOOGALOO
         # loop through all buttons
         indx = 0
+        
         for button in self.CurrentMenu:
             indx += 1
             clr = (0, 0, 0)
-            button.width = BT.width
-            button.height = BT.width
-            size = int((button.width / 25) + (button.height /50))
+            button.width = int(button.size / 25)
+            button.height = int(button.size / 50)
+          
             if button == self.SelectedButton:
                 clr = button.activecolor
             else:
                 clr = button.inactivecolor
             self.RunAnimation(button, button.curanim)
-            #text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
-                                     #int((int(W / 25) + int(H / 50)) / 1.5)).render(button.text,True, clr)
             
-            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", size).render(button.text, True, clr)
+            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", 
+            (button.width + button.height)).render(button.text, True, clr)
 
             if not (self.LookingForInput):
                 self.screen.blit(
-                    text1, (W / 16, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
-            button.x = W / 16
-            button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
-            #button.width = text1.get_width()
-            #button.height = text1.get_height()
+                    text1, (W / button.xpos, (H / button.ypos - (text1.get_height() / 2)) * (indx / 5)))
+            #button.x = W / 16
+            #button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
+            button.x = W / button.xpos
+            button.y = ((H / button.ypos) - (text1.get_height() / 2)) * (indx / 5)
+            button.width = text1.get_width()
+            button.height = text1.get_height()
             
-            
-
         # BACKGROUND
         for floater in self.Floaters:
             surf = floater.surf
@@ -875,7 +903,7 @@ class Gui:
         # Put assets/images/keys.png on the top right corner of the screen
         keys = pygame.image.load("GUI/assets/images/keys.png").convert_alpha()
         keys = pygame.transform.scale(keys, (W / 10, W / 10))
-        self.screen.blit(keys, ((W / 1.05) - keys.get_width(), H / 15))
+        self.screen.blit(keys, ((W / 1.05) - keys.get_width(), H / 1.25))
 
         # MENU
 
@@ -1200,7 +1228,7 @@ class Gui:
             if len(self.PopupBoxList) > 0:
                 for button in self.PopupBoxList[0][2]:
                     # if the mouse is over the button
-                    if (mousex > button.x and mousex < button.x + button.width) and (mousey > button.y and mousey < button.y + button.height):
+                    if ((mousex > button.xpos and mousex < button.xpos + (button.size / 25)) and (mousey > button.ypos and mousey < button.ypos + (button.size / 50))):
                         if button != self.selectedpopupbutton:
                             self.selectedpopupbutton = button
                             self.PlaySound(button.hoversnd)

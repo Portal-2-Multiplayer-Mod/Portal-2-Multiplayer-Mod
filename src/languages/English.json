@@ -69,7 +69,7 @@
   "devmod_is_active": "Dev mode is now active!",
   "devmod_copied_from_local_repo": "Copied mod files from src/ModFiles!",
   "testing_button": "Testing",
-  "language_error0_language_update": "Language Set, ",
+  "language_error0_language_update": "Language Set.",
   "language_error0_relaunch_game": "Please reboot the launcher.",
   "saves_button": "Saves",
   "save_system_state_txt": "Save System Enabled? ",
