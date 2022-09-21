@@ -855,8 +855,10 @@ class Gui:
                     text1, (W / button.xpos, (H / button.ypos - (text1.get_height() / 2)) * (indx / 5)))
             #button.x = W / 16
             #button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
-            button.x = W / button.xpos
-            button.y = ((H / button.ypos) - (text1.get_height() / 2)) * (indx / 5)
+            #button.x = W / button.xpos
+            #button.y = ((H / button.ypos) - (text1.get_height() / 2)) * (indx / 5)
+            button.x = button.xpos / W
+            button.y = ((button.ypos / H) - (text1.get_height() / 2)) * (indx / 5)
             button.width = text1.get_width()
             button.height = text1.get_height()
             
