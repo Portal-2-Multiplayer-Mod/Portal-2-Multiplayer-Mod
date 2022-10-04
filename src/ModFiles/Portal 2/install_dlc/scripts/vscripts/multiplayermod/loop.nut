@@ -12,6 +12,8 @@
 //          events that occur midgame.
 //---------------------------------------------------
 
+looptime <- 0.1
+
 LastCoordGetPlayer <- null
 CoordsAlternate <- false
 PreviousTime01Sec <- 0
@@ -161,7 +163,7 @@ function loop() {
                         EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
                     }
                 }
-            }   
+            }
         }
     }
 
@@ -361,7 +363,7 @@ function loop() {
 
     if (Time() >= PreviousTime5Sec + 5) {
         PreviousTime5Sec = Time()
-        
+
         // Color display
         if (Config_UseColorIndicator) {
             local p = null

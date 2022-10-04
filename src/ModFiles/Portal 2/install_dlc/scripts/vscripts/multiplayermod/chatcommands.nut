@@ -46,7 +46,7 @@ function ChatCommands(ccuserid, ccmessage) {
     local PlayerClass = FindPlayerClass(Player)
     local Username = PlayerClass.username
     local AdminLevel = GetAdminLevel(Player)
-    
+
     local Commands = []
     local Runners = []
 
@@ -129,7 +129,7 @@ CommandList <- [
     class {
         name = "noclip"
         level = 4
-        
+
         // !noclip
         function CC(p, args) {
             local pclass = FindPlayerClass(p)
@@ -147,9 +147,22 @@ CommandList <- [
 
         // !kill
         function CC(p, args) {
+            function KillPlayer(player) {
+                EntFireByHandle(player, "sethealth", "-100", 0, player, player)
+            }
+            function KillPlayerMessage(iTextIndex, player) {
+                KillPlayerText <- [
+                    "Killed yourself.",
+                    "Killed player.",
+                    "Killed all players."
+                    "[ERROR] Player not found."
+                ]
+                EntFireByHandle(p2mm_clientcommand, "Command", "say " + KillPlayerText[iTextIndex], 0, player, player)
+            }
+
             if (GetAdminLevel(p) < 2) {
-                EntFireByHandle(p, "sethealth", "-100", 0, p, p)
-                EntFireByHandle(p2mm_clientcommand, "Command", "say Killed yourself.", 0, p, p)
+                KillPlayer(p)
+                KillPlayerMessage(0, p)
             }
             else if (GetAdminLevel(p) >= 2) {
                 try {
@@ -158,21 +171,21 @@ CommandList <- [
                     if (args[0] != "all") {
                         local q = FindPlayerByName(args[0])
                         if (q != null) {
-                            EntFireByHandle(q, "sethealth", "-100", 0, q, q)
-                            EntFireByHandle(p2mm_clientcommand, "Command", "say Killed player.", 0, p, p)
+                            KillPlayer(q)
+                            KillPlayerMessage(1, p)
                         } else {
-                            EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Player not found.", 0, p, p)
+                            KillPlayerMessage(3, p)
                         }
                     } else {
                         local p2 = null
                         while (p2 = Entities.FindByClassname(p2, "player")) {
-                            EntFireByHandle(p2, "sethealth", "-100", 0, p2, p2)
+                            KillPlayer(p2)
                         }
-                        EntFireByHandle(p2mm_clientcommand, "Command", "say Killed all players.", 0, p, p)
+                        KillPlayerMessage(2, p)
                     }
                 } catch (exception) {
-                    EntFireByHandle(p, "sethealth", "-100", 0, p, p)
-                    EntFireByHandle(p2mm_clientcommand, "Command", "say Killed yourself.", 0, p, p)
+                    KillPlayer(p)
+                    KillPlayerMessage(0, p)
                 }
             }
         }
@@ -186,16 +199,7 @@ CommandList <- [
         function CC(p, args) {
             try {
                 args[0] = Strip(args[0])
-
                 if (args[0] == "0" || args[0] == "2" || args[0] == "3" ) {
-
-                    teams <- [
-                        "Singleplayer",
-                        "Spectator", // This is not used at all since respawning is broken
-                        "Red",
-                        "Blue"
-                    ]
-
                     if (p.GetTeam() == args[0].tointeger()) {
                         return EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] You are already on this team.", 0, p, p)
                     } else {
@@ -207,19 +211,15 @@ CommandList <- [
             } catch (exception) {
                 // No argument, so just cycle through the teams
                 if (args.len() == 0) {
-                    if (p.GetTeam() == 0) {
-                        p.SetTeam(2)
-                        EntFireByHandle(p2mm_clientcommand, "Command", "say Toggled to Red team.", 0, p, p)
+                    local iNewTeam = null
+                    switch (p.GetTeam()) {
+                        case 0: iNewTeam = 2;   break;
+                        // case 1: iNewTeam = 2;   break;
+                        case 2: iNewTeam = 3;   break;
+                        case 3: iNewTeam = 0;   break;
                     }
-                    else if (p.GetTeam() == 2) {
-                        p.SetTeam(3)
-                        EntFireByHandle(p2mm_clientcommand, "Command", "say Toggled to Blue team.", 0, p, p)
-                    }
-                    // if the player is in team 3 or above it will just reset them to team 0
-                    else {
-                        p.SetTeam(0)
-                        EntFireByHandle(p2mm_clientcommand, "Command", "say Toggled to Singleplayer team.", 0, p, p)
-                    }
+                    p.SetTeam(iNewTeam)
+                    EntFireByHandle(p2mm_clientcommand, "Command", "say Toggled to " + teams[iNewTeam] + " team.", 0, p, p)
                 }
             }
         }
@@ -327,13 +327,12 @@ CommandList <- [
 
         // !restartlevel
         function CC(p, args) {
-            local p = null
             if (!IsOnSingleplayerMaps) {
-                while (p = Entities.FindByClassname(p, "player")) {
-                    EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, p, p)
+                for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+                    EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load 1", 0, ent, ent)
                 }
             }
-            EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName(), 0.5, null)
+            EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName(), 1, null)
         }
     }
     ,
@@ -394,19 +393,26 @@ CommandList <- [
             try{
                 args[0] = args[0].tointeger()
             } catch (err){
-                SendChatMessage("Type in a valid number from 1 to 6.")
+                SendChatMessage("Type in a valid number from 0 to 6.")
                 return
             }
 
-            local allp = Entities.FindByClassname(null, "player")
-
-            if (args.len() == 0 || args[0].tointeger() < 1 || args[0].tointeger() > 6) {
-                SendChatMessage("Type in a valid number from 1 to 6.")
+            if (args.len() == 0 || args[0].tointeger() < 0 || args[0].tointeger() > 6) {
+                SendChatMessage("Type in a valid number from 0 to 6.")
                 return
             }
 
-            EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition coop_bots_load", 0, allp, allp)
-            EntFire("p2mm_servercommand", "command", "changelevel " + mpcoursenames[args[0]-1], 0.25, p)
+            local videoname;
+            if (args[0] == 0) {
+                videoname = "coop_bots_load_wave"
+            } else {
+                videoname = "coop_bots_load"
+            }
+
+            for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+                EntFireByHandle(p2mm_clientcommand, "Command", "playvideo_end_level_transition " + videoname + " 1", 0, ent, ent)
+            }
+            EntFire("p2mm_servercommand", "command", "changelevel " + mpcoursenames[args[0]], 1, p)
         }
     }
     ,
@@ -479,10 +485,11 @@ CommandList <- [
                 local plr = FindPlayerByName(args[0])
                 try {
                     args[1] = Strip(args[1])
+                    args[1] = args[1].tointeger()
                     try {
-                        if (typeof(args[1].tointeger()) == "integer") {
-                            if (args[1].tointeger() >= 0 && args[1].tointeger() <= 6) {
-                                Admins.push("[" + args[1].tointeger().tostring() + "]" + GetSteamID(plr.entindex()))
+                        if (typeof args[1] == "integer") {
+                            if (args[1] >= 0 && args[1] <= 6) {
+                                SetAdminLevel(args[1].tostring(), plr.entindex())
                             }
                         }
                     } catch (exception) {
@@ -668,4 +675,13 @@ function GetAdminLevel(plr) {
         // Not in Admins array nor are they the host
         return 0
     }
+}
+
+function SetAdminLevel(NewLevel, iPlayerIndex) {
+    if (iPlayerIndex == 1) {
+        SendChatMessage("[ERROR] Cannot change admin level of server operator!")
+        return
+    }
+    Admins.push("[" + NewLevel + "]" + GetSteamID(iPlayerIndex))
+    SendChatMessage("Set " + GetPlayerName(iPlayerIndex) + "'s admin level to " + NewLevel + ".")
 }

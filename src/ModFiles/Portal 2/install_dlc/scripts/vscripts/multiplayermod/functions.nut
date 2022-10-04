@@ -74,7 +74,7 @@ function SetCheats() {
 }
 
 function SetCosmetics(p) {
-    if (PluginLoaded) {
+    if (Config_UseCustomDevModels && PluginLoaded) {
         switch (FindPlayerClass(p).steamid) {
             case 290760494: SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl");       break; // Nanoman2525
             case 182933216: SetPlayerModel(p, "models/info_character/info_character_player.mdl");   break; // kyleraykbs

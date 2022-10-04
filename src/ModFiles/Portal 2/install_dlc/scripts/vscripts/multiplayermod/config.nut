@@ -21,6 +21,9 @@ Config_DevMode <- false
 // Set true/false if you want to see the visual debug lines in-game for ray tracing
 Config_VisualDebug <- false
 
+// Set true/false if you are a developer and wish to load your custom player model in-game
+Config_UseCustomDevModels <- false
+
 //-----------------------------------
 // Game variables
 //-----------------------------------
@@ -66,7 +69,7 @@ Config_UseChatCommands <- true
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
 // [0]: "help", "changeteam", "kill", "playercolor"
-// [1]: 
+// [1]:
 // [2]: "kill (someone)"
 // [3]: "playercolor (for someone else)"
 // [4]: "speed", "noclip", "teleport"

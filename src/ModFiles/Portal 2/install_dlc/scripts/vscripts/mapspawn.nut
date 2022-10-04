@@ -148,13 +148,13 @@ function init() {
     // Trigger mapsupport code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to run the loop() function every 0.1 second
+    // Create an entity to loop the loop() function
     p2mm_timer <- Entities.CreateByClassname("logic_timer")
     p2mm_timer.__KeyValueFromString("targetname", "p2mm_timer")
     EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
     EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
-    EntFireByHandle(p2mm_timer, "Enable", "", 0.1, null, null)
+    EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
 
     // Delay the creation of our entities before so that we don't get an engine error from the entity limit
     EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
