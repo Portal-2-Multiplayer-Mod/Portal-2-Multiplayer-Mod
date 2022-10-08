@@ -19,27 +19,23 @@
 //---------------
 // Classes
 //---------------
-GlobalSpawnClass <- class {
-    // Try To Make All Spawns Global
-    useautospawn = false
-    // Use Set Spawnpoint
-    usesetspawn = false
+class GlobalSpawnClass {
+    useautospawn = false // Try To Make All Spawns Global
+    usesetspawn = false // Use Set Spawnpoint
 
     // Set SpawnPoint
     setspawn = class {
-        // Set SpawnPoint
         position = Vector(0,0,0)
-        // Set Radius
         radius = 0
     }
 
-    // Reds Spawn Parameters
+    // Red's Default Spawn Parameters
     red = class {
         spawnpoint = Vector(0,0,0)
         rotation = Vector(0,0,0)
         velocity = Vector(0,0,0)
     }
-    // Blues Spawn Parameters
+    // Blue's Default Spawn Parameters
     blue = class {
         spawnpoint = Vector(0,0,0)
         rotation = Vector(0,0,0)
@@ -50,10 +46,6 @@ GlobalSpawnClass <- class {
 //---------------
 // Booleans
 //---------------
-IsOnSingleplayerMaps <- false
-if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) != "mp_coop") {
-    IsOnSingleplayerMaps = true
-}
 CanCheckAngle <- false
 CanHook <- false
 CheatsOn <- false
@@ -65,6 +57,12 @@ DoneWaiting <- false
 fogs <- false
 GlobalOverridePluginGrabController <- true // By default unless specified in mapsupport
 HasSpawned <- false
+
+IsOnSingleplayerMaps <- false
+if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) != "mp_coop") {
+    IsOnSingleplayerMaps = true
+}
+
 MadeSpawnClass <- false
 OrangeCacheFailed <- false
 Player2Joined <- false
@@ -85,8 +83,12 @@ PlayerID <- 0
 PreviousNametagItter <- 0
 PreviousTime1Sec <- 0
 PreviousTime5Sec <- 0
-randomportalsize <- 34 // Used if Config_RandomPortalSize is true
-randomportalsizeh <- 34 // Used if Config_RandomPortalSize is true
+
+if (Config_RandomPortalSize) {
+    randomportalsize <- 34
+    randomportalsizeh <- 34
+}
+
 TickSpeed <- 0.00
 TotalRemovedEnts <- 0
 
@@ -141,7 +143,7 @@ InvalidRootMoveParents <- [
     ""
 ]
 if (GetMapName() == "mp_coop_credits") {
-    MPMCoopCreditNames <- [ // Add names to coop credits map
+    MPMCoopCreditNames <- [ // Add names to coop credits map (Max per entry is 128)
         "### ",
         "### ",
         "### ",
@@ -231,6 +233,7 @@ if (Config_UseChatCommands) {
     commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
 }
 playerclasses <- []
+PrecachedProps <- []
 
 //---------------
 // Others

@@ -32,15 +32,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (!Entities.FindByName(null, "mpmoddrop")) {
             if (!Sp_A4_Laser_Platform_1) {
                 Sp_A4_Laser_Platform_1 <- true
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(2318, -600, -142))
                 }
             }
 
             // Set new spawnpoint
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1175, -1248, -78), 600)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1175, -1248, -78), 600);) {
                 p.SetOrigin(Vector(2385, -600, -88))
                 p.SetAngles(0 0 0)
             }

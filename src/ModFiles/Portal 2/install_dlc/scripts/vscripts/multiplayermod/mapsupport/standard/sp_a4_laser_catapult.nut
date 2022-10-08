@@ -33,8 +33,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop) {
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(9268, 9268, 9268), 500)) {
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(9268, 9268, 9268), 500);) {
             if (p.GetTeam()==2) {
                 p.SetOrigin(Vector(-1004, -1146, 35))
                 p.SetAngles(0, 90, 0)

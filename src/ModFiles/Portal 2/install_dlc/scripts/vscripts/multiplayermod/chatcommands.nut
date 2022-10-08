@@ -51,11 +51,11 @@ function ChatCommands(ccuserid, ccmessage) {
     local Runners = []
 
     // The real chat command doesn't have the "!"
-    function Rem(s) {
+    local Rem = function(s) {
         return Replace(s, "!", "")
     }
 
-    function GetCommandFromString(str) {
+    local GetCommandFromString = function(str) {
         foreach (cmd in CommandList) {
             if (StartsWith(str.tolower(), cmd.name)) {
                 return cmd
@@ -103,19 +103,19 @@ function ChatCommands(ccuserid, ccmessage) {
             Args.remove(0)
         }
 
-        // Does the exact command exist?
-        if (GetCommandFromString(Command) == null) {
-            return SendChatMessage("[ERROR] Command not found.")
-        }
-
-        // Do we have the correct admin level for this command?
-        Command = GetCommandFromString(Command)
-        if (!(Command.level <= AdminLevel)) {
-            return SendChatMessage("[ERROR] You do not have permission to use this command.")
-        }
-
         // We met the criteria, run it
         foreach (CurPlayer in Runners) {
+            // Does the exact command exist?
+            if (GetCommandFromString(Command) == null) {
+                return SendChatMessage("[ERROR] Command not found.", CurPlayer)
+            }
+
+            // Do we have the correct admin level for this command?
+            Command = GetCommandFromString(Command)
+            if (!(Command.level <= AdminLevel)) {
+                return SendChatMessage("[ERROR] You do not have permission to use this command.", CurPlayer)
+            }
+
             RunChatCommand(Command, Args, CurPlayer)
         }
     }
@@ -147,10 +147,10 @@ CommandList <- [
 
         // !kill
         function CC(p, args) {
-            function KillPlayer(player) {
+            local KillPlayer = function(player) {
                 EntFireByHandle(player, "sethealth", "-100", 0, player, player)
             }
-            function KillPlayerMessage(iTextIndex, player) {
+            local KillPlayerMessage = function(iTextIndex, player) {
                 KillPlayerText <- [
                     "Killed yourself.",
                     "Killed player.",
@@ -264,9 +264,9 @@ CommandList <- [
                                 }
                             }
                             if (plr == p) {
-                                SendChatMessage("Brought all players.")
+                                SendChatMessage("Brought all players.", p)
                             } else {
-                                SendChatMessage("Teleported all players.")
+                                SendChatMessage("Teleported all players.", p)
                             }
                         }
                         else if (plr2 != null) {
@@ -275,32 +275,32 @@ CommandList <- [
                                 plr2.SetOrigin(plr.GetOrigin())
                                 plr2.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
                                 if (plr2 == p) {
-                                    return SendChatMessage("Teleported to player.")
+                                    return SendChatMessage("Teleported to player.", p)
                                 } else {
-                                    return SendChatMessage("Teleported player.")
+                                    return SendChatMessage("Teleported player.", p)
                                 }
                             }
                             if (plr == p || plr == plr2) {
-                                return SendChatMessage("[ERROR] Can't teleport player to the same player.")
+                                return SendChatMessage("[ERROR] Can't teleport player to the same player.", p)
                             }
                         } else {
-                            SendChatMessage("[ERROR] Third argument is invalid! Use \"all\" or a player's username.")
+                            SendChatMessage("[ERROR] Third argument is invalid! Use \"all\" or a player's username.", p)
                         }
                     } catch (exception) {
                         // There was no third argument
                         if (plr == p) {
-                            SendChatMessage("[ERROR] You are already here lol.")
+                            SendChatMessage("[ERROR] You are already here lol.", p)
                         } else {
                             p.SetOrigin(plr.GetOrigin())
                             p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-                            SendChatMessage("Teleported to player.")
+                            SendChatMessage("Teleported to player.", p)
                         }
                     }
                 } else {
-                    SendChatMessage("[ERROR] Player not found.")
+                    SendChatMessage("[ERROR] Player not found.", p)
                 }
             } else {
-                SendChatMessage("[ERROR] Input a player name.")
+                SendChatMessage("[ERROR] Input a player name.", p)
             }
         }
     }
@@ -314,7 +314,7 @@ CommandList <- [
             try {
                 args[0] = Strip(args[0])
                 local cmd = Join(args, "")
-                SendToConsoleP232(cmd)
+                SendToConsoleP2MM(cmd)
             } catch (exception) {
                 EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Input a command.", 0, p, p)
             }
@@ -351,13 +351,13 @@ CommandList <- [
                     EntFireByHandle(p2mm_clientcommand, "Command", "say [HELP] Unknown chat command: " + args[0], 0, p, p)
                 }
             } catch (exception) {
-                SendChatMessage("[HELP] Your available commands:")
+                SendChatMessage("[HELP] Your available commands:", p)
                 foreach (command in CommandList) {
                     if (command.level <= GetAdminLevel(p)) {
-                        SendChatMessage("[HELP] " + command.name)
+                        SendChatMessage("[HELP] " + command.name, p)
                     }
                 }
-                SendChatMessage("[HELP] This command can also print a description for another if supplied with it.")
+                SendChatMessage("[HELP] This command can also print a description for another if supplied with it.", p)
             }
         }
     }
@@ -371,12 +371,12 @@ CommandList <- [
             try{
                 args[0] = args[0].tointeger()
             } catch (err){
-                SendChatMessage("Type in a valid number from 1 to 9.")
+                SendChatMessage("Type in a valid number from 1 to 9.", p)
                 return
             }
 
             if (args[0].tointeger() < 1 || args[0].tointeger() > 9) {
-                SendChatMessage("Type in a valid number from 1 to 9.")
+                SendChatMessage("Type in a valid number from 1 to 9.", p)
                 return
             }
 
@@ -393,12 +393,12 @@ CommandList <- [
             try{
                 args[0] = args[0].tointeger()
             } catch (err){
-                SendChatMessage("Type in a valid number from 0 to 6.")
+                SendChatMessage("Type in a valid number from 0 to 6.", p)
                 return
             }
 
             if (args.len() == 0 || args[0].tointeger() < 0 || args[0].tointeger() > 6) {
-                SendChatMessage("Type in a valid number from 0 to 6.")
+                SendChatMessage("Type in a valid number from 0 to 6.", p)
                 return
             }
 
@@ -420,14 +420,59 @@ CommandList <- [
         name = "playercolor"
         level = 0
 
-        // !playercolor (r) (g) (b) (optional: someone's name)
+        // !playercolor (r OR reset) (g) (b) (optional: someone's name)
         function CC(p, args) {
-            function IsCustomColorIntegerValid(x) {
-                // if x is a string it will throw an error so we'll set it to -1 so it returns false
+            local ErrorOut = function(p) {
+                SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space OR 'reset'.", p)
+            }
+
+            try {
+                args[0] = Strip(args[0])
+            } catch (exception) {
+                return ErrorOut(p)
+            }
+
+            if (args[0] == "reset") {
+                local pTargetPlayer = p
+                local pTargetPlayerText = "your"
+                try {
+                    args[1] = Strip(args[1])
+                    local plr = FindPlayerByName(args[1])
+                    if (plr != null) {
+                        if (plr != p) {
+                            pTargetPlayer = plr
+                            pTargetPlayerText = FindPlayerClass(pTargetPlayer).username + "'s"
+                        }
+                    } else {
+                        return SendChatMessage("[ERROR] Player not found.", pTargetPlayer)
+                    }
+                } catch (exception) {}
+                // Update the player class (RESET BACK TO DEFAULT WITH MULTIPLYING)
+                FindPlayerClass(pTargetPlayer).color = GetPlayerColor(pTargetPlayer)
+
+                // Color the player without multiplying the value
+                EntFireByHandle(pTargetPlayer, "color", GetPlayerColor(pTargetPlayer, false).r + " " + GetPlayerColor(pTargetPlayer, false).g + " " + GetPlayerColor(pTargetPlayer, false).b, 0, p, p)
+                SendChatMessage("Successfully reset " + pTargetPlayerText + " color.", p)
+                return
+            }
+
+            try {
+                args[1] = Strip(args[1])
+            } catch (exception) {
+                return ErrorOut(p)
+            }
+
+            try {
+                args[2] = Strip(args[2])
+            } catch (exception) {
+                return ErrorOut(p)
+            }
+
+            local IsCustomColorIntegerValid = function(x) {
                 try {
                     x = x.tointeger()
                 } catch (err) {
-                    x = -1
+                    return false
                 }
 
                 if (x >= 0 && x <= 255) {
@@ -436,41 +481,60 @@ CommandList <- [
                 return false
             }
 
-            if (args.len() < 3) {
-                return SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space.")
-            }
-
-            // make sure that all args are ints
+            // Make sure that all args are integers
             for (local i = 0; i < 3 ; i++) {
-                if (IsCustomColorIntegerValid(args[i]) != true ) {
-                    return SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space.")
+                if (!IsCustomColorIntegerValid(args[i])) {
+                    return ErrorOut(p)
                 }
                 args[i] = args[i].tointeger()
             }
 
-            local r = args[0]
-            local g = args[1]
-            local b = args[2]
-
+            local pTargetPlayer = p
+            local pTargetPlayerText = "your"
             // Is there a name specified?
             try {
                 args[3] = Strip(args[3])
+                local plr = FindPlayerByName(args[3])
                 if (GetAdminLevel(p) >= 2) {
-                    local plr = FindPlayerByName(args[3])
                     if (plr != null) {
-                        p = plr
+                        if (plr != p) {
+                            pTargetPlayer = plr
+                            pTargetPlayerText = FindPlayerClass(plr).username + "'s"
+                        }
                     } else {
-                        return SendChatMessage("[ERROR] Player not found.")
+                        return SendChatMessage("[ERROR] Player not found.", p)
                     }
                 } else {
-                    return SendChatMessage("[ERROR] You need to have admin level 2 or higher to use on others.")
+                    if (plr != null) {
+                        if (plr != p) {
+                            return SendChatMessage("[ERROR] You need to have admin level 2 or higher to use on others.", p)
+                        }
+                    } else {
+                        return SendChatMessage("[ERROR] Player not found.", p)
+                    }
                 }
             } catch (exception) {}
 
-            // TODO: Change the player class stuff
+            // Doing this so that if someone picks a color that we actually
+            // have a preset name for, it will switch the name to it
+            local NewColorName = "Custom Color"
+            for (local i = 1; i <= 16; i++) {
+                if (GetPlayerColor(i, false).r == args[0] && GetPlayerColor(i, false).g == args[1] && GetPlayerColor(i, false).b == args[2]) {
+                    NewColorName = GetPlayerColor(i).name
+                }
+            }
 
-            EntFireByHandle(p, "color", r + " " + g + " " + b, 0, p, p)
-            SendChatMessage("Successfully changed color.")
+            // Update the player class
+            // Note that the color member variable stores the MULTIPLIED versions
+            class FindPlayerClass(pTargetPlayer).color {
+                r = MultiplyRGBValue(args[0])
+                g = MultiplyRGBValue(args[1])
+                b = MultiplyRGBValue(args[2])
+                name = NewColorName
+            }
+
+            EntFireByHandle(pTargetPlayer, "color", args[0].tostring() + " " + args[1].tostring() + " " + args[2].tostring(), 0, p, p)
+            SendChatMessage("Successfully changed " + pTargetPlayerText + " color.", p)
         }
     }
     ,
@@ -493,14 +557,14 @@ CommandList <- [
                             }
                         }
                     } catch (exception) {
-                        SendChatMessage("[ERROR] Input a number after the player name to set a new admin level.")
+                        SendChatMessage("[ERROR] Input a number after the player name to set a new admin level.", p)
                         return
                     }
                 } catch (exception) {
                     if (plr != null) {
-                        SendChatMessage(GetPlayerName(plr.entindex()) + "'s admin level: " + GetAdminLevel(plr))
+                        SendChatMessage(GetPlayerName(plr.entindex()) + "'s admin level: " + GetAdminLevel(plr), p)
                     } else {
-                        SendChatMessage("[ERROR] Player not found.")
+                        SendChatMessage("[ERROR] Player not found.", p)
                     }
                 }
             } catch (exception) {
@@ -531,8 +595,15 @@ CommandList <- [
 // if the player chooses not to use CC
 //--------------------------------------
 
-function SendChatMessage(message, delay = 0) {
-    EntFire("p2mm_servercommand", "command", "say " + message, delay)
+function SendChatMessage(message, pActivatorAndCaller = null) {
+    // We try to use server command since that allows the host
+    // to send instant messages without any chat refresh delay
+    local pEntity = Entities.FindByName(null, "p2mm_servercommand")
+    if (pActivatorAndCaller != null && pActivatorAndCaller != Entities.FindByClassname(null, "player")) {
+        // Send messages from a specific client
+        pEntity = p2mm_clientcommand
+    }
+    EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
 }
 
 function RunChatCommand(cmd, args, plr) {

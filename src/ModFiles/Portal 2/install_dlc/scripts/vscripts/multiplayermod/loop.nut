@@ -22,7 +22,7 @@ setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 function loop() {
     //## Event List ##//
     if (EventList.len() > 0) {
-        SendToConsoleP232("script " + EventList[0])
+        SendToConsoleP2MM("script " + EventList[0])
         EventList.remove(0)
     }
 
@@ -156,10 +156,9 @@ function loop() {
                     }
                     local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), currentplayerclass.eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
                     if (eyeplayer != null) {
-                        local clr = GetPlayerColor(eyeplayer, true)
-                        local cpc = FindPlayerClass(eyeplayer)
+                        local clr = FindPlayerClass(eyeplayer).color
                         EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
-                        EntFireByHandle(nametagdisplay, "settext", cpc.username, 0, p, p)
+                        EntFireByHandle(nametagdisplay, "settext", FindPlayerClass(eyeplayer).username, 0, p, p)
                         EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
                     }
                 }
@@ -190,7 +189,7 @@ function loop() {
     // if (cnt > EntityCap - EntityCapLeeway) {
     //     if (cnt >= FailsafeEntityCap) {
     //         printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
-    //         SendToConsoleP232("changelevel mp_coop_lobby_3")
+    //         SendToConsoleP2MM("changelevel mp_coop_lobby_3")
     //     }
     //     printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
     //     foreach (entclass in ExpendableEntities) {

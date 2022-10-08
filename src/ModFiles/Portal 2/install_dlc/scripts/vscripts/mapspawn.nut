@@ -22,9 +22,7 @@
 
 // mapspawn.nut is called twice on map transitions for some reason...
 // Prevent the second run
-if (!("Entities" in this)) {
-    return
-}
+if (!("Entities" in this)) { return }
 
 printl("\n-------------------------")
 printl("==== calling mapspawn.nut")
@@ -39,6 +37,50 @@ IncludeScript("multiplayermod/pluginfunctionscheck.nut")
 IncludeScript("multiplayermod/config.nut")
 IncludeScript("multiplayermod/configcheck.nut")
 
+// Create a global point_servercommand entity for us to pass through commands
+// We don't want to create multiple when it is called on
+Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
+
+// Facilitate first load after game launch
+if (GetDeveloperLevel() == 918612) {
+    // Using a loop here for one cycle so that I can actually use "break"
+    for (local i = 0; i < 1; i++) {
+        // Reset dev level
+        if (Config_DevMode) {
+            EntFire("p2mm_servercommand", "command", "developer 1")
+        } else {
+            EntFire("p2mm_servercommand", "command", "clear; developer 0")
+        }
+        if (PluginLoaded) {
+            // If the plugin VScript functions have loaded, we don't need
+            // to do anything else. Continue this map load normally...
+            break
+        }
+        function MakeProgressCheck() {
+            local ChangeToThisMap = "mp_coop_start"
+            for (local course = 1; course <= 6; course++) {
+                // 9 levels is the highest that a course has
+                for (local level = 1; level <= 9; level++) {
+                    if (IsLevelComplete(course - 1, level - 1)) {
+                        ChangeToThisMap = "mp_coop_lobby_3"
+                    }
+                }
+            }
+            EntFire("p2mm_servercommand", "command", "changelevel " + ChangeToThisMap, 0)
+        }
+        if (!PluginLoaded) {
+            // Remove Portal Gun (Map transition will sound less abrupt)
+            Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+            Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+
+            EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
+            EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
+            EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1) // Must be delayed
+            return
+        }
+    }
+}
+
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
 IncludeScript("multiplayermod/functions.nut")
@@ -51,16 +93,14 @@ IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
 // Print P2:MM game art in console
-foreach (line in ConsoleAscii) {
-    printl(line)
-}
+foreach (line in ConsoleAscii) { printl(line) }
 
 //---------------------------------------------------
 
-// First, manage everything the player has set in config.nut
+// Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
 
-// This is how we communicate with all mapsupport files. By default, no support is loaded
+// This is how we communicate with all mapsupport files. In case no mapsupport file exists, it will fall back to "nothing"
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {}
 
 // Import map support code
@@ -107,80 +147,38 @@ try {
 
 //---------------------------------------------------
 
-// Second, run init()
-
-// init() will run on every map spawn or transition
-// It does a few things:
-// 1. Attempt to load our plugin if it has not been loaded
-// 2. Trigger our map-specific code and loop the loop() function
-// 3. Create map-specific entities after a delay
+// Second, run init() shortly AFTER spawn
 
 function init() {
-
-    // Create a global point_servercommand entity for us to pass through commands
-    p2mm_servercommand <- Entities.CreateByClassname("point_servercommand")
-    p2mm_servercommand.__KeyValueFromString("targetname", "p2mm_servercommand")
-
-    // Load plugin if it exists
-    // Also change the level once it has succeeded this
-    if (!PluginLoaded) {
-        EntFire("p2mm_servercommand", "command", "clear", 0.03)
-
-        printl("\n=========================================")
-        printl("    P2:MM plugin has not been loaded!")
-        printl("Some functionality will not be available!")
-        printl("=========================================\n")
-
-        EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
-        EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
-
-        if (GetDeveloperLevel() == 918612) { // First load after game launch
-            if (Config_DevMode) {
-                EntFire("p2mm_servercommand", "command", "developer 1", 0.01)
-            } else {
-                EntFire("p2mm_servercommand", "command", "developer 0", 0.01)
-            }
-            // Must be delayed
-            EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1)
-        }
-    }
-
-    // Trigger mapsupport code
+    // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to loop the loop() function
-    p2mm_timer <- Entities.CreateByClassname("logic_timer")
-    p2mm_timer.__KeyValueFromString("targetname", "p2mm_timer")
+    // Create an entity to loop the loop() function every 0.1 second
+    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
+    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
+        if (timer.GetName() == "p2mm_timer") {
+            p2mm_timer <- timer
+        }
+    }
     EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
     EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
     EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
 
-    // Delay the creation of our entities before so that we don't get an engine error from the entity limit
+    // Delay the creation of our map-specific entities before so
+    // that we don't get an engine error from the entity limit
     EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
 }
 
-function MakeProgressCheck() {
-    for (local course = 1; course <= 6; course++) {
-        // 9 levels is the highest that a course has
-        for (local level = 1; level <= 9; level++) {
-            if (IsLevelComplete(course - 1, level - 1)) {
-                EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3", 0)
-                return
-            }
-        }
-    }
-    EntFire("p2mm_servercommand", "command", "changelevel mp_coop_start", 0)
-}
-
-//---------------------------------------------------
-
-// Third, make init() run shortly AFTER spawn
-
 try {
-    MakeSPCheck() // Make sure that the user is in multiplayer mode before loading anything else
-    DoEntFire("worldspawn", "FireUser1", "", 0.02, null, null) // init() must be delayed
-    Entities.First().ConnectOutput("OnUser1", "init")
+    // Make sure that the user is in multiplayer mode before initiating everything
+    if (!IsMultiplayer()) {
+        printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
+        EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
+    }
+
+    // init() must be delayed
+    EntFire("p2mm_servercommand", "command", "script init()", 0.02)
 } catch (e) {
     printl("(P2:MM): Initializing our custom support!\n")
 }

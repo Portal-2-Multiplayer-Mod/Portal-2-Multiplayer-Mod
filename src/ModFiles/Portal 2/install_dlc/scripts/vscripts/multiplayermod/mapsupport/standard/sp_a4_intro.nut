@@ -214,8 +214,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFireByHandle(Entities.FindByName(null, "floor_gate1-floor_panel"), "setparent", "test_chamber1_platform", 0, null, null)
                 Entities.FindByName(null, "floor_gate1-floor_panel").__KeyValueFromString("rendermode", "10")
                 Entities.FindByName(null, "floor_gate1-cover_arm").__KeyValueFromString("rendermode", "10")
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(1053, 380, 185))
                     p.SetAngles(0, 0, 0)
                     p.SetVelocity(Vector(0, 0, 0))
@@ -226,8 +225,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Change Spawn
         if (!Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20)) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().z <= 220) {
                     local canteleport = true
                     local p2 = null
@@ -244,8 +242,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (GooHurtTimerPred<=Time() && killppl) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().z<=-150) {
                     EntFireByHandle(p, "sethealth", "-100000", 0, null, null)
                 }
@@ -283,7 +280,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Elevator changelevel
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(3136, -128, 914), 50)) {
-            SendToConsoleP232("changelevel sp_a4_tb_intro")
+            SendToConsoleP2MM("changelevel sp_a4_tb_intro")
         }
     }
 }

@@ -13,18 +13,12 @@
 //                upon later in the code.
 //---------------------------------------------------
 
-//## If not in multiplayer then disconnect immediately ##//
-function MakeSPCheck() {
-    if (!IsMultiplayer()) {
-        printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
-        Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_forcedisconnectclient")
-        EntFire("p2mm_forcedisconnectclient", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"", 0, null)
+function UTIL_PlayerByIndex(index) {
+    for (local player; player = Entities.FindByClassname(player, "player");) {
+        if (player.entindex() == index) {
+            return player
+        }
     }
-}
-
-//## Hacky solutions ##//
-function DecEntFireByHandle(target, action, value = "", delay = 0, activator = null, caller = null) {
-    EntFireByHandle(target, action, value, delay, activator, caller);
 }
 
 function GetHighest(inpvec) {
@@ -52,14 +46,6 @@ function ForceRespawnAll() {
         while (p = Entities.FindByClassname(p, "player")) {
             TeleportToSpawnPoint(p, null)
         }
-    }
-}
-
-function ToggleCheats() {
-    if (CheatsOn == null || !CheatsOn) {
-        CheatsOn = true
-    } else {
-        CheatsOn = false
     }
 }
 
@@ -157,12 +143,11 @@ function RandomColor() {
         rcr = RandomInt(170, 255)
     }
 
-    class ColorBar {
+    return class {
         r = rcr
         g = rcg
         b = rcb
     }
-    return ColorBar
 }
 
 function TeleportPlayerToClass(player, curclass) {
@@ -185,73 +170,95 @@ function p2mmfogswitch(fogname) {
     }
 }
 
-function GetPlayerPortalColor(p, Darken = false) {
-    local PlayerID = p.entindex() + amtoffsetclr
-    local A = 220
-    try {
-        switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; A = A; break; //white
-            case 2 : R <- 50,  G <- 255, B <-  50; A = A; break; //green
-            case 3 : R <- 40,  G <- 60,  B <- 255; A = A; break; //blue
-            case 4 : R <- 255, G <- 255, B <-  50; A = A; break; //orange
-            case 5 : R <- 255, G <-  50, B <-  50; A = A; break; //red
-            case 6 : R <- 255, G <- 100, B <- 255; A = A; break; //pink
-            case 7 : R <- 255, G <- 255, B <-  50; A = A; break; //yellow
-            case 8 : R <-  0 , G <- 255, B <- 255; A = A; break; //aqua
-            case 9 : R <- 100, G <-  50, B <-   0; A = A; break; //brown
-            case 10: R <-   0, G <- 255, B <- 200; A = A; break; //ocean green
-            case 11: R <-  90, G <- 120, B <-   0; A = A; break; //olive
-            case 12: R <-  90, G <-  70, B <- 100; A = A; break; //violet
-            case 13: R <-  75, G <-  75, B <-  75; A = A; break; //gray
-            case 14: R <-  75, G <-   0, B <-   0; A = A; break; //dark red
-            case 15: R <-   0, G <-  75, B <-   0; A = A; break; //dark green
-            case 16: R <-   0, G <-   0, B <-  75; A = A; break; //dark blue
-        }
-    } catch(e) { }
-    if (PlayerID > 16) {
-        // If you have more than 16 players then you gotta bear the consequences of your own actions
-        local randomColor = RandomColor()
-        R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; A = 250;
-    }
+// function GetPlayerPortalColor(p, Darken = false) {
+//     local PlayerID = p.entindex() + amtoffsetclr
+//     local A = 220
+//     try {
+//         switch (PlayerID) {
+//             case 1 : R <- 255; G <- 255; B <- 255; A = A; break; //bright white
+//             case 2 : R <- 50,  G <- 255, B <-  50; A = A; break; //green
+//             case 3 : R <- 40,  G <- 60,  B <- 255; A = A; break; //blue
+//             case 4 : R <- 255, G <- 255, B <-  50; A = A; break; //orange
+//             case 5 : R <- 255, G <-  50, B <-  50; A = A; break; //red
+//             case 6 : R <- 255, G <- 100, B <- 255; A = A; break; //pink
+//             case 7 : R <- 255, G <- 255, B <-  50; A = A; break; //yellow
+//             case 8 : R <-  0 , G <- 255, B <- 255; A = A; break; //aqua
+//             case 9 : R <- 100, G <-  50, B <-   0; A = A; break; //brown
+//             case 10: R <-   0, G <- 255, B <- 200; A = A; break; //ocean green
+//             case 11: R <-  90, G <- 120, B <-   0; A = A; break; //olive
+//             case 12: R <-  90, G <-  70, B <- 100; A = A; break; //violet
+//             case 13: R <-  75, G <-  75, B <-  75; A = A; break; //gray
+//             case 14: R <-  75, G <-   0, B <-   0; A = A; break; //dark red
+//             case 15: R <-   0, G <-  75, B <-   0; A = A; break; //dark green
+//             case 16: R <-   0, G <-   0, B <-  75; A = A; break; //dark blue
+//         }
+//     } catch(e) { }
+//     if (PlayerID > 16) {
+//         // If you have more than 16 players then you gotta bear the consequences of your own actions
+//         local randomColor = RandomColor()
+//         R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; A = 250;
+//     }
 
-    if (Darken) {
-        local amt = 2
-        printl("(P2:MM): Darkening color")
-        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
-        R <- (R / amt);
-        G <- (G / amt);
-        B <- (B / amt);
-        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
-        if (R < 1) {
-            R <- 1;
-        }
-        if (G < 1) {
-            G <- 1;
-        }
-        if (B < 1) {
-            B <- 1;
-        }
+//     if (Darken) {
+//         local amt = 2
+//         printl("(P2:MM): Darkening color")
+//         printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
+//         R <- (R / amt);
+//         G <- (G / amt);
+//         B <- (B / amt);
+//         printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
+//         if (R < 1) {
+//             R <- 1;
+//         }
+//         if (G < 1) {
+//             G <- 1;
+//         }
+//         if (B < 1) {
+//             B <- 1;
+//         }
 
-        // remove the decimal
-        B <- B.tointeger()
-        G <- G.tointeger()
-        R <- R.tointeger()
-    }
+//         // remove the decimal
+//         B <- B.tointeger()
+//         G <- G.tointeger()
+//         R <- R.tointeger()
+//     }
 
-    return class {
-        r = R
-        g = G
-        b = B
-        a = A
+//     return class {
+//         r = R
+//         g = G
+//         b = B
+//         a = A
+//     }
+// }
+
+// Used so that nametags appear less weird
+function MultiplyRGBValue(iRGBValue) {
+    // Multiply the color
+    if (iRGBValue >= 100) {
+        iRGBValue = iRGBValue - 100
     }
+    // cap the color at 255
+    if (iRGBValue > 255) {
+        iRGBValue = 255
+    }
+    // bottom the color at 0
+    if (iRGBValue < 0) {
+        iRGBValue = 0
+    }
+    return iRGBValue
 }
 
 function GetPlayerColor(p, multiply = true) {
-    local PlayerID = p.entindex() + amtoffsetclr
+    local PlayerID
+    if (typeof p == "integer") {
+        PlayerID = p
+    } else {
+        PlayerID = p.entindex() + amtoffsetclr
+    }
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; colorname = "White";         break;
+            case 1 : R <- 255; G <- 255; B <- 255; colorname = "Bright White";  break;
             case 2 : R <- 180, G <- 255, B <- 180; colorname = "Green";         break;
             case 3 : R <- 120, G <- 140, B <- 255; colorname = "Blue";          break;
             case 4 : R <- 255, G <- 170, B <- 120; colorname = "Orange";        break;
@@ -271,44 +278,20 @@ function GetPlayerColor(p, multiply = true) {
     } catch(e) {}
 
     if (PlayerID > 16) {
-        // If you have more than 16 players then you gotta bear the consequences of your own actions
+        // If you have more than 16 players, no dedicated color for those players :(
+        // Using a local for the function so we don't call the function 4 times
         local randomColor = RandomColor()
         R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; colorname = "Random";
     }
 
+    // Do we want to make the color less "bright"?
     if (multiply) {
-        // Multiply the color
-        if (R >= 100) {
-            R <- R - 100
-        }
-        if (G >= 100) {
-            G <- G - 100
-        }
-        if (B >= 100) {
-            B <- B - 100
-        }
-        // cap the color at 255
-        if (R > 255) {
-            R <- 255
-        }
-        if (G > 255) {
-            G <- 255
-        }
-        if (B > 255) {
-            B <- 255
-        }
-        // bottom the color at 0
-        if (R < 0) {
-            R <- 0
-        }
-        if (G < 0) {
-            G <- 0
-        }
-        if (B < 0) {
-            B <- 0
-        }
+        R = MultiplyRGBValue(R)
+        G = MultiplyRGBValue(G)
+        B = MultiplyRGBValue(B)
     }
 
+    // We want the color exactly how we asked for it
     return class {
         r = R
         g = G
@@ -384,18 +367,16 @@ function MinifyModel(mdl) {
     return mdl
 }
 
-AssignedPlayerModels <- []
+// AssignedPlayerModels <- []
 function SetPlayerModel(p, mdl) {
     PrecacheModelNoDelay(mdl)
-    local mdl2 = MinifyModel(mdl)
-    local playerclass = FindPlayerClass(p)
     // EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
     // local pmodelclass = class {
     //     player = p
     //     model = mdl
     // }
     // AssignedPlayerModels.push(pmodelclass)
-    playerclass.playermodel <- mdl
+    FindPlayerClass(p).playermodel <- mdl
 }
 
 // playerclass <- {
@@ -419,21 +400,11 @@ function SetPlayerModel(p, mdl) {
 //     playermodel = null
 // }
 
-function ForwardAngle(y,p,r) {
-    if (!Entities.FindByName(null, "angledummy")) {
-        local ent = Entities.CreateByClassname("prop_dynamic")
-        ent.__KeyValueFromString("targetname", "angledummy")
-    }
-    local ent = Entities.FindByName(null, "angledummy")
-    ent.SetAngles(y,p,r)
-    return ent.GetForwardVector()
-}
-
-function CreateGenericPlayerClass(p, color = false) {
+function CreateGenericPlayerClass(p) {
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
         if (curlclass.player == p) {
-            // If there is, remove it
+            // If there is, remove it (This should never happen)
             playerclasses.remove(indx)
             break
         }
@@ -441,80 +412,46 @@ function CreateGenericPlayerClass(p, color = false) {
 
     local currentplayerclass = {}
 
-    // BASE
-    currentplayerclass.player <- p
-    currentplayerclass.id <- p.entindex()
+    // Base info
+    currentplayerclass.player <- p // The player reference in code
+    currentplayerclass.potatogun <- false // Potatogun
+    currentplayerclass.rocket <- false  // Rocket player status
+    currentplayerclass.portal1 <- null // Player primary portal
+    currentplayerclass.portal2 <- null // Player secondary portal
+    currentplayerclass.playermodel <- null // Cosmetics
+    currentplayerclass.id <- p.entindex() // Player entity index
+    currentplayerclass.eyeangles <- Vector(0, 0, 0) // Player angles
+    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0) // Player angles
+    currentplayerclass.noclip <- p.IsNoclipping() // Player noclip status
+    currentplayerclass.color <- GetPlayerColor(p)  // Player color
 
-    // PLUGIN //
+    // Plugin-specific
+    currentplayerclass.username <- GetPlayerName(currentplayerclass.id) // Player Name
+    currentplayerclass.steamid <- GetSteamID(currentplayerclass.id) // Player Steam ID
 
-        // Player Name
-        if (PluginLoaded) {
-            try {
-                currentplayerclass.username <- GetPlayerName(p.entindex())
-                currentplayerclass.steamid <- GetSteamID(p.entindex())
-            } catch(e) {
-                currentplayerclass.steamid <- RandomInt(-32768, -1)
-            }
-        } else {
-            currentplayerclass.username <- "Player " + p.entindex()
-            currentplayerclass.steamid <- RandomInt(-32768, -1) // invalid steamid
-        }
-
-    ////////////
-    if (color == false){
-        // Player color
-        currentplayerclass.color <- GetPlayerColor(p)
-    } else{
-        currentplayerclass.color <- color
-    }
-
-
-    // Player angles
-    currentplayerclass.eyeangles <- Vector(0, 0, 0)
-    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0)
-
-    // Potatogun
-    currentplayerclass.potatogun <- false
-
-    // Player noclip status
-    currentplayerclass.noclip <- p.IsNoclipping()
-
-    // Rocket player status
-    currentplayerclass.rocket <- false
-
-    // Player Portals
-    currentplayerclass.portal1 <- null
-    currentplayerclass.portal2 <- null
-
-    // COSMETICS /////////////
-
-    currentplayerclass.playermodel <- null
-
-    //////////////////////////////////////////////
-
-    // Add player class to the player class array
+    // Note down the registered player for later reference
     playerclasses.push(currentplayerclass)
 
     return currentplayerclass
 }
 
-function GetEntityCount(classname = null) {
-    if (classname == null) {
-        local p = null
-        local indx = 0
-        while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000)) {
-            indx += 1
-        }
-        return indx
-    } else {
-        local p = null
-        local indx = 0
-        while (p = Entities.FindByClassname(p, classname)) {
-            indx += 1
-        }
-        return indx
-    }
-}
+// function GetEntityCount(classname = null) {
+//     if (classname == null) {
+//         local p = null
+//         local indx = 0
+//         while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000)) {
+//             indx += 1
+//         }
+//         return indx
+//     } else {
+//         local p = null
+//         local indx = 0
+//         while (p = Entities.FindByClassname(p, classname)) {
+//             indx += 1
+//         }
+//         return indx
+//     }
+// }
 
 function DeleteAmountOfEntities(classname, amount) {
     local p = null
@@ -541,9 +478,8 @@ function DeleteAmountOfEntities(classname, amount) {
     return indx
 }
 
-PrecachedProps <- []
 function PrecacheModel(mdl) {
-    SendToConsoleP232("script PrecacheModelNoDelay(\"" + mdl + "\")")
+    SendToConsoleP2MM("script PrecacheModelNoDelay(\"" + mdl + "\")")
 }
 function PrecacheModelNoDelay(mdl) {
         // Add the models/ to the side of the model name if it's not already there
@@ -569,12 +505,12 @@ function PrecacheModelNoDelay(mdl) {
     if (!Entities.FindByModel(null, mdl) && NotPrecached) {
         PrecachedProps.push(minimdl)
         if (!CheatsOn) {
-            SendToConsoleP232("sv_cheats 1; prop_dynamic_create " + minimdl)
+            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
         } else {
-            SendToConsoleP232("sv_cheats 1; prop_dynamic_create " + minimdl)
+            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
         }
         if (!CheatsOn) {
-            SendToConsoleP232("sv_cheats 0")
+            SendToConsoleP2MM("sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4) // FIXME!! Causes errors in vscript
         if (GetDeveloperLevel()) {
@@ -588,6 +524,8 @@ function PrecacheModelNoDelay(mdl) {
 }
 
 function FindPlayerClass(plyr) {
+    // If for whatever reason this function causes errors,
+    // then there is a problem with how we hook onto joining players
     foreach (curclass in playerclasses) {
         if (curclass.player == plyr) {
             return curclass
@@ -629,7 +567,7 @@ function LineIntersect2D(point1start, point1end, point2start, point2end) {
 function CoreExplosion(coords) {
     local core = Entities.CreateByClassname("npc_personality_core")
     core.SetOrigin(coords)
-    DecEntFireByHandle(core, "explode")
+    EntFire(core, "explode")
 }
 
 function TranslatePlayerToWall(wall, playerpos) {
@@ -704,7 +642,6 @@ function LineIntersect2DZTranslation(point1, point2, flatpoint1, flatpoint2, ztr
         flatpoint2 = FlipVectorsZX(point1, flatpoint2)
     }
 
-
     // get the intersection
     local intersect = LineIntersect2D(point1, point2, flatpoint1, flatpoint2)
 
@@ -714,8 +651,6 @@ function LineIntersect2DZTranslation(point1, point2, flatpoint1, flatpoint2, ztr
     } else {
         intersect = FlipVectorsZX(point1, intersect)
     }
-
-
 
     return intersect
 }
@@ -746,48 +681,8 @@ function MultiplyVector(vec, mult) {
     return Vector(vec.x * mult, vec.y * mult, vec.z * mult)
 }
 
-function DivideVector(vec, div) {
-    return Vector(vec.x / div, vec.y / div, vec.z / div)
-}
-
 function AddVectors(vec1, vec2) {
     return Vector(vec1.x + vec2.x, vec1.y + vec2.y, vec1.z + vec2.z)
-}
-
-function GetLastThing(list, thingindx) {
-    if (thingindx > 0) {
-        return list[thingindx - 1]
-    } else {
-        return list[list.len() - 1]
-    }
-}
-
-function VectorAddSinglePart(vec, amt, part) {
-    if (part == 1) {
-        return Vector(vec.x + amt, vec.y, vec.z)
-    } else {
-        if (part == 2) {
-            return Vector(vec.x, vec.y + amt, vec.z)
-        } else {
-            if (part == 3) {
-            return Vector(vec.x, vec.y, vec.z + amt)
-            }
-        }
-    }
-}
-
-function VectorMultiplySinglePart(vec, amt, part) {
-    if (part == 1) {
-        return Vector(vec.x * amt, vec.y, vec.z)
-    } else {
-        if (part == 2) {
-            return Vector(vec.x, vec.y * amt, vec.z)
-        } else {
-            if (part == 3) {
-            return Vector(vec.x, vec.y, vec.z * amt)
-            }
-        }
-    }
 }
 
 function CreateEntityClass(ent) {
@@ -1022,7 +917,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
     }
 }
 
-function DoesPlayerColorEntityExist() {
+function DisplayPlayerColor(player) {
     if (!Entities.FindByName(null, "p2mm_playercolordisplay")) {
         p2mm_playercolordisplay <- Entities.CreateByClassname("game_text")
         p2mm_playercolordisplay.__KeyValueFromString("targetname", "p2mm_playercolordisplay")
@@ -1035,23 +930,8 @@ function DoesPlayerColorEntityExist() {
         p2mm_playercolordisplay.__KeyValueFromString("x", "0.005")
         p2mm_playercolordisplay.__KeyValueFromString("y", "1")
     }
-}
-
-function DisplayPlayerColor(player) {
-    DoesPlayerColorEntityExist()
-
-    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: " + GetPlayerColor(player).name, 0, player, player)
-    EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
-    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
-    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
-    EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
-}
-
-function UpdatePlayerColor(player, inputR, inputG, inputB) {
-    DoesPlayerColorEntityExist()
-
-    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: Custom", 0, player, player)
-    EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", inputR.tostring() + " " + inputG.tostring() + " " + inputB.tostring(), 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: " + FindPlayerClass(player).color.name, 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", FindPlayerClass(player).color.r + " " + FindPlayerClass(player).color.g + " " + FindPlayerClass(player).color.b, 0, player, player)
     EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
     EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
     EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
@@ -1119,32 +999,6 @@ function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
     }
 }
 
-function PlayerWithinDistance(SearchPos, SearchDis) {
-    local ent = null
-    while(ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis)) {
-        return ent
-    }
-}
-
-// Find player by name
-function ExpandName(name) {
-    name = name.tolower()
-    // Go through each player
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        // Get the player's name
-        local plrname = GetPlayerName(p.entindex())
-        // If the name matches the input name
-        try {
-            if (plrname.slice(0, name.len()).tolower() == name.tolower()) {
-                // Return the player
-                return plrname
-            }
-        } catch(e) {} // if the name is too long
-    }
-    return name
-}
-
 // Get directional offset
 function GetDirectionalOffset(org1, org2, multipl = 1) {
 
@@ -1197,16 +1051,6 @@ function GetDirectionalOffset(org1, org2, multipl = 1) {
     return bxoffset
 }
 
-// Find player by index
-function FindByIndex(id)  {
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        if (p.entindex()==id) {
-            return p
-        }
-    }
-}
-
 // Potatogun
 function PotatoIfy(plr) {
     if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
@@ -1227,30 +1071,6 @@ function UnPotatoIfy(plr) {
     }
 }
 
-function CanPing(ison = true) {
-    local env_global = Entities.CreateByClassname("env_global")
-    local env_global2 = Entities.CreateByClassname("env_global")
-
-    env_global.__KeyValueFromString("globalstate", "no_pinging_blue")
-    env_global2.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-    // Set the targetname
-    env_global.__KeyValueFromString("targetname", "mpmod_no_pinging_blue")
-    env_global2.__KeyValueFromString("targetname", "mpmod_no_pinging_orange")
-
-
-    local entFireByHandleState = "turnon"
-    if (ison){
-        entFireByHandleState = "turnoff"
-    }
-    EntFireByHandle(env_global, entFireByHandleState, "", 0.1, null, null)
-    EntFireByHandle(env_global2, entFireByHandleState, "", 0.1, null, null)
-
-    // Delete the entities
-    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
-    EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
-}
-
 function CanJump(enable = false, player = "all") {
     local name = "p2mmtemp_CanJump"
     local mainent = Entities.FindByName(null, name)
@@ -1267,10 +1087,10 @@ function CanJump(enable = false, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+            EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
-        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+        EntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
     }
 }
 
@@ -1290,10 +1110,10 @@ function CanUse(enable = false, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+            EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
-        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+        EntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
     }
 }
 
@@ -1313,10 +1133,10 @@ function CanCrouch(enable = false, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+            EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
-        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+        EntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
     }
 }
 
@@ -1336,10 +1156,10 @@ function EnableHud(enable = false, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+            EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
-        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+        EntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
     }
 }
 
@@ -1357,16 +1177,16 @@ function EnablePortalGun(enable = false, player = "all") {
             local entviewmodel = Entities.FindByName(null, "viewmodel_player" + p.entindex())
             ent.__KeyValueFromString("CanFirePortal1", set)
             ent.__KeyValueFromString("CanFirePortal2", set)
-            DecEntFireByHandle(ent, draw)
-            DecEntFireByHandle(entviewmodel, draw)
+            EntFire(ent, draw)
+            EntFire(entviewmodel, draw)
         }
     } else {
         local ent = Entities.FindByName(null, "weapon_portalgun_player" + player.entindex())
         local entviewmodel = Entities.FindByName(null, "viewmodel_player" + player.entindex())
         ent.__KeyValueFromString("CanFirePortal1", set)
         ent.__KeyValueFromString("CanFirePortal2", set)
-        DecEntFireByHandle(ent, draw)
-        DecEntFireByHandle(entviewmodel, draw)
+        EntFire(ent, draw)
+        EntFire(entviewmodel, draw)
     }
 }
 
@@ -1384,21 +1204,21 @@ function EnableSpectator(enable = true, player = "all") {
             CanCrouch(enable, p)
             CanJump(enable, p)
             CanUse(enable, p)
-            DecEntFireByHandle(p, draw)
+            EntFire(p, draw)
             EnableNoclip(!enable, p)
             EnablePortalGun(enable, p)
             SetSpeed(p, 1.2)
-            SendClientCommand("cl_fov " + fov.tostring(), p)
+            EntFireByHandle(p2mm_clientcommand, "command", "cl_fov " + fov.tostring(), 0, p, p)
         }
     } else {
         CanCrouch(enable, player)
         CanJump(enable, player)
         CanUse(enable, player)
-        DecEntFireByHandle(player, draw)
+        EntFire(player, draw)
         EnableNoclip(!enable, player)
         EnablePortalGun(enable, player)
         SetSpeed(player, 1.2)
-        SendClientCommand("cl_fov " + fov.tostring(), player)
+        EntFireByHandle(p2mm_clientcommand, "command", "cl_fov " + fov.tostring(), 0, player, player)
     }
 }
 
@@ -1427,62 +1247,8 @@ function EnableNoclip(enable, player = "all") {
     }
 }
 
-function SendClientCommand(command, player = "all") {
-    if (player == "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            EntFire(p2mm_clientcommand, "command", command, 0, p)
-        }
-    } else {
-        EntFire(p2mm_clientcommand, "command", command, 0, player)
-    }
-}
-
 function SetSpeed(player, speed) {
-    speed = speed.tostring()
-    local ent = Entities.FindByName(null, "p2mm_player_speedmod")
-    DecEntFireByHandle(ent, "modifyspeed", speed, 0, player, player)
-}
-
-function CanTaunt(ison = true) {
-    local env_global = Entities.CreateByClassname("env_global")
-    local env_global2 = Entities.CreateByClassname("env_global")
-
-    env_global.__KeyValueFromString("globalstate", "no_taunting_blue")
-    env_global2.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-    // Set the targetname
-    env_global.__KeyValueFromString("targetname", "mpmod_no_taunting_blue")
-    env_global2.__KeyValueFromString("targetname", "mpmod_no_taunting_orange")
-
-    local entFireByHandleState = "turnon"
-    if (ison){
-        entFireByHandleState = "turnoff"
-    }
-    EntFireByHandle(env_global, entFireByHandleState, "", 0.1, null, null)
-    EntFireByHandle(env_global2, entFireByHandleState, "", 0.1, null, null)
-
-    // Delete the entities
-    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
-    EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
-}
-
-function PortalGunSpawn(ison = true) {
-    local env_global = Entities.CreateByClassname("env_global")
-
-    env_global.__KeyValueFromString("globalstate", "portalgun_nospawn")
-
-    // Set the targetname
-    env_global.__KeyValueFromString("targetname", "mpmod_portalgun_nospawn")
-
-    if (ison) {
-            EntFireByHandle(env_global, "turnoff", "", 0.1, null, null)
-    } else {
-            EntFireByHandle(env_global, "turnon", "", 0.1, null, null)
-    }
-
-    // Delete the entities
-    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
+    EntFireByHandle(Entities.FindByName(null, "p2mm_player_speedmod"), "modifyspeed", speed.tostring(), 0, player, player)
 }
 
 // Find the spawn point for the map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}

@@ -12,31 +12,27 @@
 //---------------------------------------------------
 
 if (Config_SafeGuard) {
-    try {
-        if ( ::SendToConsole.getinfos().native ) {
-            // Replace SendToConsole with SendToConsoleP232
-            ::SendToConsoleP232 <- ::SendToConsole;;
+    if (::SendToConsole.getinfos().native) {
+        // Replace SendToConsole with SendToConsoleP2MM
+        ::SendToConsoleP2MM <- ::SendToConsole
 
-            SendToConsole <- function(str) {
-                if (str.slice(0, 16) != "snd_ducktovolume") {
-                    printl("=========================================")
-                    printl("=========================================")
-                    printl("    PATCHED COMMAND ATTEMPTED TO RUN!    ")
-                    printl("                                         ")
-                    printl("  Command: " + str                        )
-                    printl("                                         ")
-                    printl("   This could be game logic running in   ")
-                    printl("  the background. But it could also be   ")
-                    printl("  a player that is attempting to exploit ")
-                    printl("   the game. So we're going to stop it.  ")
-                    printl("=========================================")
-                    printl("=========================================")
-                }
+        function SendToConsole(str) {
+            if (str.slice(0, 16) != "snd_ducktovolume") {
+                printl("=========================================")
+                printl("=========================================")
+                printl("    PATCHED COMMAND ATTEMPTED TO RUN!    ")
+                printl("                                         ")
+                printl("  Command: " + str                        )
+                printl("                                         ")
+                printl("   This could be game logic running in   ")
+                printl("  the background. But it could also be   ")
+                printl("  a player that is attempting to exploit ")
+                printl("   the game. So we're going to stop it.  ")
+                printl("=========================================")
+                printl("=========================================")
             }
         }
-    } catch (e) {
-        // Should never have an exception
     }
 } else {
-    SendToConsoleP232 <- function(str) { SendToConsole(str) }
+    function SendToConsoleP2MM(str) { SendToConsole(str) }
 }
