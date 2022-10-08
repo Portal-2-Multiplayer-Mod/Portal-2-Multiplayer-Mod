@@ -49,8 +49,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSLoop) {
         // Slow down player so they land on the platform
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8905, -2048, -196), 100)) {
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-8905, -2048, -196), 100);) {
             try {
             Entities.FindByName(null, "spawnpoint1").Destroy()
             } catch (e) {}
@@ -62,14 +61,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Set spawn to be on the platform
         if (!Entities.FindByName(null, "spawnpoint1")) {
             if (Entities.FindByName(null, "hurt_crushers")) {
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1596, -7680, 0), 1200)) {
+                for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1596, -7680, 0), 1200);) {
                     p.SetOrigin(Vector(-8903, -2055, -196))
                     p.SetAngles(-16, -167, 0)
                 }
             } else {
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1596, -7680, 0), 1200)) {
+                for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1596, -7680, 0), 1200);) {
                     p.SetOrigin(Vector(-9622, -2460, 141))
                     p.SetAngles(18, 37, -0)
                 }

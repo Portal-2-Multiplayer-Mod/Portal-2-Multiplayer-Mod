@@ -67,9 +67,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop) {
-
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1150.777283, 792.685608, -191.968750), 500)) {
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1150.777283, 792.685608, -191.968750), 500);) {
             local pname = p.GetName()
             if (PluginLoaded) {
                 pname = GetPlayerName(p.entindex())
@@ -81,7 +79,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     if (pclass.laps > GelocityRounds) {
                         GameDoneGelocity <- true
                         EntFire("orange_wins", "trigger")
-                        SendToConsoleP232("say " + pname + " has won the game!")
+                        SendToConsoleP2MM("say " + pname + " has won the game!")
                         EntFire("p2mm_rounds_text_override", "display")
                     }
                 } catch(e) {
@@ -95,8 +93,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!GameDoneGelocity) {
             // Finish Line
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1150.777283, 792.685608, -191.968750), 500)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1150.777283, 792.685608, -191.968750), 500);) {
                 local pname = p.GetName()
                 if (PluginLoaded) {
                     pname = GetPlayerName(p.entindex())
@@ -109,10 +106,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         pclass.hitcheckpoint <- false
 
                         printl("Lap: " + pclass.laps)
-                        
+
                         // Set Message Text
                         local pcolor = GetPlayerColor(p, true)
-                        
+
                         if (!GameDoneGelocity) {
                             Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("message", pname +" is on lap " + pclass.laps)
                             Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
@@ -135,8 +132,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
 
             // Checkpoint
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-2412.738770, -2896.909912, -299.889404), 750)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-2412.738770, -2896.909912, -299.889404), 750);) {
                 local pclass = FindPlayerClass(p)
                 try {
                     if (!pclass.hitcheckpoint) {

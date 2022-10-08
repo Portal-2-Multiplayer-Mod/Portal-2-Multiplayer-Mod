@@ -23,7 +23,7 @@ function FinishingSpawnFutbolInMap() {
         EntFire("p2mm_servercommand", "command", "script CurrentlySpawningFutBol = false", 0.1)
         if (CanSpawnFutBol) {
             SpawnFutBol("futbol_in_map", Vector(7777, -5668, 225))
-            SendToConsoleP232("script DecEntFireByHandle(Entities.FindByClassname(null, \"prop_glass_futbol\"), \"break\", \"\",30)")
+            SendToConsoleP2MM("script EntFire(Entities.FindByClassname(null, \"prop_glass_futbol\"), \"break\", \"\",30)")
         }
 }
 
@@ -107,8 +107,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("p2mm_servercommand", "command", "say Game starts in 1 second", 29)
         EntFire("p2mm_servercommand", "command", "say Game starting!", 30)
         EntFire("p2mm_servercommand", "command", "script StartGame()", 30)
-                    DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "Display", "",0.1)
+                    EntFire(BlueGoalCounter, "Display", "", 0.1)
+                    EntFire(RedGoalCounter, "Display", "",0.1)
     }
 
     if (MSLoop) {
@@ -137,19 +137,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 if (FutBolTeams[0].score  >= desiredscore) {
                     GameRunning = false
                     CanSpawnFutBol = false
-                    SendToConsoleP232("say BLUE WON THE GAME!")
-                    DecEntFireByHandle(BlueGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
-                    DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "Display", "", 0.1)
+                    SendToConsoleP2MM("say BLUE WON THE GAME!")
+                    EntFire(BlueGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
+                    EntFire(RedGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
+                    EntFire(BlueGoalCounter, "Display", "", 0.1)
+                    EntFire(RedGoalCounter, "Display", "", 0.1)
                 } else if (FutBolTeams[1].score  >= desiredscore) {
                     GameRunning = false
                     CanSpawnFutBol = false
-                    SendToConsoleP232("say RED WON THE GAME!")
-                    DecEntFireByHandle(BlueGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
-                    DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "Display", "", 0.1)
+                    SendToConsoleP2MM("say RED WON THE GAME!")
+                    EntFire(BlueGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
+                    EntFire(RedGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
+                    EntFire(BlueGoalCounter, "Display", "", 0.1)
+                    EntFire(RedGoalCounter, "Display", "", 0.1)
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 5 Seconds", 0)
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 4 Seconds", 1)
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 3 Seconds", 2)
@@ -163,10 +163,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 if (CounterRefreshTimer < Time() - 2) {
                     CounterRefreshTimer = Time()
-                    DecEntFireByHandle(BlueGoalCounter, "SetText", "Blue: " + FutBolTeams[0].score + "/" + desiredscore)
-                    DecEntFireByHandle(RedGoalCounter, "SetText", "Red: " + FutBolTeams[1].score + "/" + desiredscore)
-                    DecEntFireByHandle(BlueGoalCounter, "Display", "", 0.1)
-                    DecEntFireByHandle(RedGoalCounter, "Display", "", 0.1)
+                    EntFire(BlueGoalCounter, "SetText", "Blue: " + FutBolTeams[0].score + "/" + desiredscore)
+                    EntFire(RedGoalCounter, "SetText", "Red: " + FutBolTeams[1].score + "/" + desiredscore)
+                    EntFire(BlueGoalCounter, "Display", "", 0.1)
+                    EntFire(RedGoalCounter, "Display", "", 0.1)
                 }
 
                 futent = Entities.FindByClassname(null, "prop_glass_futbol")
@@ -180,25 +180,25 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 if (disp1&& disp2&&futent&&strip(futent.GetName()) == "futbol_in_map") {
                     if (CheckFutBolGoal(0, disp1, futent)) {
                         futent.__KeyValueFromString("targetname", "futbol_in_map_done")
-                        DecEntFireByHandle(futent, "disablemotion", "", 0.05)
+                        EntFire(futent, "disablemotion", "", 0.05)
                         EntFire("p2mm_servercommand", "command", "script futent.SetOrigin(GetGoalPoint(disp1))", 0.1)
                         EntFire("p2mm_servercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
-                        DecEntFireByHandle(futent, "break", "", 1)
-                        DecEntFireByHandle(FutBolGoalText, "SetText", "Blue Scored!", 0)
-                        DecEntFireByHandle(FutBolGoalText, "SetTextColor", "0 80 255", 0.1)
-                        DecEntFireByHandle(FutBolGoalText, "Display", "", 0.2)
+                        EntFire(futent, "break", "", 1)
+                        EntFire(FutBolGoalText, "SetText", "Blue Scored!", 0)
+                        EntFire(FutBolGoalText, "SetTextColor", "0 80 255", 0.1)
+                        EntFire(FutBolGoalText, "Display", "", 0.2)
                         FutBolTeams[0].score <- FutBolTeams[0].score + 1
 
                     } else {
                     if (CheckFutBolGoal(1, disp2, futent)) {
                             futent.__KeyValueFromString("targetname", "futbol_in_map_done")
-                            DecEntFireByHandle(futent, "disablemotion", "", 0.05)
+                            EntFire(futent, "disablemotion", "", 0.05)
                             EntFire("p2mm_servercommand", "command", "script futent.SetOrigin(GetGoalPoint(disp2))", 0.1)
-                        EntFire("p2mm_servercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
-                            DecEntFireByHandle(futent, "break", "", 1)
-                            DecEntFireByHandle(FutBolGoalText, "SetText", "Red Scored!", 0)
-                            DecEntFireByHandle(FutBolGoalText, "SetTextColor", "255 100 0", 0.1)
-                            DecEntFireByHandle(FutBolGoalText, "Display", "", 0.2)
+                            EntFire("p2mm_servercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
+                            EntFire(futent, "break", "", 1)
+                            EntFire(FutBolGoalText, "SetText", "Red Scored!", 0)
+                            EntFire(FutBolGoalText, "SetTextColor", "255 100 0", 0.1)
+                            EntFire(FutBolGoalText, "Display", "", 0.2)
 
 
                             FutBolTeams[1].score <- FutBolTeams[1].score + 1

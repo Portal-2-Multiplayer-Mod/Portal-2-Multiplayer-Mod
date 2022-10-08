@@ -51,7 +51,7 @@ WeaponData
 				"character"	"a"
 		}
 		"weapon_s"
-		{	
+		{
 				"font"		"WeaponIconsSelected"
 				"character"	"a"
 		}

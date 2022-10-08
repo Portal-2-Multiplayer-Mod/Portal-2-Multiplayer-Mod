@@ -87,12 +87,21 @@ function OnPlayerJoin(p, script_scope) {
         case 2:     PostPlayer2Join();  break;  // Run code after player 2 joins
     }
 
-    SendToConsoleP232("sv_timeout 3")
+    SendToConsoleP2MM("sv_timeout 3")
     EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos", 0, p, p)
     EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
     EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+
     // Motion blur is very intense for some reason
     EntFireByHandle(p2mm_clientcommand, "Command", "mat_motion_blur_forward_enabled 0", 0, p, p)
+
+    if (!Player2Joined || IsLocalSplitScreen()) {
+        EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
+    } else {
+        EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
+        EntFireByHandle(p2mm_clientcommand, "Command", "-score", 1, p, p) // Is this the best way to turn it off for clients?
+    }
+
     MapSupport(false, false, false, false, true, false, false)
 
     if (Config_UseJoinIndicator) {
@@ -177,30 +186,30 @@ function OnPlayerRespawn(player) {
 // Runs after the host loads in
 function PostMapLoad() {
     //## Cheat detection ##//
-    SendToConsoleP232("prop_dynamic_create cheatdetectionp2mm")
-    SendToConsoleP232("script SetCheats()")
+    SendToConsoleP2MM("prop_dynamic_create cheatdetectionp2mm")
+    SendToConsoleP2MM("script SetCheats()")
 
     // Edit cvars & set server name
-    SendToConsoleP232("mp_allowspectators 1")
+    SendToConsoleP2MM("mp_allowspectators 1")
     if (PluginLoaded) {
-        SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
+        SendToConsoleP2MM("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
     } else {
-        SendToConsoleP232("hostname Portal 2: Multiplayer Mod Server")
+        SendToConsoleP2MM("hostname Portal 2: Multiplayer Mod Server")
     }
     // Force spawn players in map
     AddBranchLevelName( 1, "P2 MM" )
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
     // Enable fast download
-    SendToConsoleP232("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
-    SendToConsoleP232("sv_allowdownload 1")
-    SendToConsoleP232("sv_allowupload 1")
+    SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+    SendToConsoleP2MM("sv_allowdownload 1")
+    SendToConsoleP2MM("sv_allowupload 1")
 
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
     if (Config_DevMode) {
-        SendToConsoleP232("developer 1")
+        SendToConsoleP2MM("developer 1")
         StartDevModeCheck <- true
     }
 
@@ -210,9 +219,9 @@ function PostMapLoad() {
     }
 
 	// Gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
-	SendToConsoleP232("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
-	SendToConsoleP232("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
-	SendToConsoleP232("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
+	SendToConsoleP2MM("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
+	SendToConsoleP2MM("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
+	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
@@ -230,7 +239,7 @@ function PostMapLoad() {
 // Runs when the second player loads in
 function PostPlayer2Join() {
     if (!CheatsOn) {
-        SendToConsoleP232("sv_cheats 0")
+        SendToConsoleP2MM("sv_cheats 0")
     }
     Player2Joined <- true
 }
@@ -385,7 +394,7 @@ function GeneralOneTime() {
     ]
 
     if (IsOnSingleplayerMaps) {
-        SendToConsoleP232("script function CoopPingTool(int1, int2) {}") // Not needed in singleplayer
+        SendToConsoleP2MM("script function CoopPingTool(int1, int2) {}") // Not needed in singleplayer
     } else {
         foreach (DoorType in DoorEntities) {
             try {
@@ -395,7 +404,11 @@ function GeneralOneTime() {
     }
 
     // Create props after cache
-    SendToConsoleP232("script CreatePropsForLevel(false, true, false)")
+    SendToConsoleP2MM("script CreatePropsForLevel(false, true, false)")
+
+    for (local p; p = Entities.FindByClassname(p, "player");) {
+        EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, p, p)
+    }
 
     MapSupport(false, false, true, false, false, false, false)
 }
