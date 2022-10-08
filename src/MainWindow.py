@@ -101,6 +101,12 @@ class Gui:
     #     surf = pygame.transform.rotate(surf, 19)
 
     def PlaySound(self, sound: pygame.mixer.Sound) -> None:
+        """Plays the launcher's sounds when hovering / clicking on a buttong
+
+        Args:
+            sound (pygame.mixer.Sound): the sound to play
+        """
+
         LauncherSFX = GVars.configData["LauncherSFX"]["value"] == "true"
         if LauncherSFX:
             pygame.mixer.Sound.play(sound)
@@ -114,6 +120,15 @@ class Gui:
             self.negrot: bool = negrot
 
     def AddFloater(self, width: float, height: float, rot: float, x: float, y: float) -> None:
+        """creates the falling cubes and adds them to a list of floaters
+
+        Args:
+            width (float): the widh of the cube's image
+            height (float): the height of the cube's image
+            rot (float): the rotation of the cube on the z axis when it spawns
+            x (float): the x position where it first spawns
+            y (float): the y position where it first spawns
+        """
         surf = self.greenCube
         surf = pygame.transform.scale(surf, (width, height))
         surf = pygame.transform.rotate(surf, 0)
