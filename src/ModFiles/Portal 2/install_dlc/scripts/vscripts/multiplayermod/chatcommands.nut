@@ -36,19 +36,6 @@ if (Config_UseChatCommands) {
     function ChatCommands(ccuserid, ccmessage) {}
     return
 }
-// The real chat command doesn't have the "!"
-function RemoveCommandPrefix (s) {
-    return Replace(s, "!", "")
-}
-
-function GetCommandFromString(str) {
-    foreach (cmd in CommandList) {
-        if (StartsWith(str.tolower(), cmd.name)) {
-            return cmd
-        }
-    }
-    return null
-}
 
 // The whole filtering process for the chat commands
 function ChatCommands(ccuserid, ccmessage) {
@@ -63,7 +50,19 @@ function ChatCommands(ccuserid, ccmessage) {
     local Commands = []
     local Runners = []
 
+    // The real chat command doesn't have the "!"
+    local RemoveCommandPrefix = function(s) {
+        return Replace(s, "!", "")
+    }
 
+    local GetCommandFromString = function(str) {
+        foreach (cmd in CommandList) {
+            if (StartsWith(str.tolower(), cmd.name)) {
+                return cmd
+            }
+        }
+        return null
+    }
 
     //--------------------------------------------------
 
@@ -142,11 +141,10 @@ CommandList <- [
 
         // !kill
         function CC(p, args) {
-            function KillPlayer(player) {
+            local KillPlayer = function(player) {
                 EntFireByHandle(player, "sethealth", "-100", 0, player, player)
             }
-
-            function KillPlayerMessage(iTextIndex, player) {
+            local KillPlayerMessage = function(iTextIndex, player) {
                 KillPlayerText <- [
                     "Killed yourself.",
                     "Killed player.",
@@ -241,70 +239,62 @@ CommandList <- [
 
         // !teleport (going to this username) (bring this player or "all")
         function CC(p, args) {
-
-            if (args.len() == 0) {
-                SendChatMessage("[ERROR] Input a player name.", p)
-                return
-            }
-
-            args[0] = Strip(args[0])
-            local plr = FindPlayerByName(args[0])
-
-            if (plr == null) {
-                SendChatMessage("[ERROR] Player not found.", p)
-                return
-            }
-
-            try {
-                // See if there's a second argument
-                args[1] = Strip(args[1])
-                local plr2 = FindPlayerByName(args[1])
-
-                if (args[1] != "all" || plr2 == null){
-                    SendChatMessage("[ERROR] Third argument is invalid! Use \"all\" or a player's username.", p)
-                    return
-                }
-
-                // if second argument was "all"
-                if (args[1] == "all") {
-                    local q = null
-                    while (q = Entities.FindByClassname(q, "player")) {
-                        // Don't modify the player we are teleporting to
-                        if (q != plr) {
-                            q.SetOrigin(plr.GetOrigin())
-                            q.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+            if (args.len() != 0) {
+                args[0] = Strip(args[0])
+                local plr = FindPlayerByName(args[0])
+                if (plr != null) {
+                    try {
+                        // See if there's a third argument
+                        args[1] = Strip(args[1])
+                        local plr2 = FindPlayerByName(args[1])
+                        if (args[1] == "all") {
+                            // Third argument was "all"
+                            local q = null
+                            while (q = Entities.FindByClassname(q, "player")) {
+                                // Don't modify the player we are teleporting to
+                                if (q != plr) {
+                                    q.SetOrigin(plr.GetOrigin())
+                                    q.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                                }
+                            }
+                            if (plr == p) {
+                                SendChatMessage("Brought all players.", p)
+                            } else {
+                                SendChatMessage("Teleported all players.", p)
+                            }
+                        }
+                        else if (plr2 != null) {
+                            // We found a username in the third argument
+                            if (plr2 != plr) {
+                                plr2.SetOrigin(plr.GetOrigin())
+                                plr2.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                                if (plr2 == p) {
+                                    return SendChatMessage("Teleported to player.", p)
+                                } else {
+                                    return SendChatMessage("Teleported player.", p)
+                                }
+                            }
+                            if (plr == p || plr == plr2) {
+                                return SendChatMessage("[ERROR] Can't teleport player to the same player.", p)
+                            }
+                        } else {
+                            SendChatMessage("[ERROR] Third argument is invalid! Use \"all\" or a player's username.", p)
+                        }
+                    } catch (exception) {
+                        // There was no third argument
+                        if (plr == p) {
+                            SendChatMessage("[ERROR] You are already here lol.", p)
+                        } else {
+                            p.SetOrigin(plr.GetOrigin())
+                            p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                            SendChatMessage("Teleported to player.", p)
                         }
                     }
-                    if (plr == p) {
-                        SendChatMessage("Brought all players.", p)
-                    } else {
-                        SendChatMessage("Teleported all players.", p)
-                    }
-                    return
-                }
-
-                if (plr == p || plr == plr2) {
-                    return SendChatMessage("[ERROR] Can't teleport player to the same player.", p)
-                }
-
-                // if the second argument is a player
-                plr2.SetOrigin(plr.GetOrigin())
-                plr2.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-                if (plr2 == p) {
-                    return SendChatMessage("Teleported to player.", p)
                 } else {
-                    return SendChatMessage("Teleported player.", p)
+                    SendChatMessage("[ERROR] Player not found.", p)
                 }
-
-            } catch (exception) {
-                // There was no third argument
-                if (plr == p) {
-                    SendChatMessage("[ERROR] You are already here lol.", p)
-                } else {
-                    p.SetOrigin(plr.GetOrigin())
-                    p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-                    SendChatMessage("Teleported to player.", p)
-                }
+            } else {
+                SendChatMessage("[ERROR] Input a player name.", p)
             }
         }
     }
@@ -473,7 +463,7 @@ CommandList <- [
                 return ErrorOut(p)
             }
 
-            function IsNumberValidRGBvalue(x) {
+            local IsCustomRGBIntegerValid = function(x) {
                 try {
                     x = x.tointeger()
                 } catch (err) {
@@ -488,7 +478,7 @@ CommandList <- [
 
             // Make sure that all args are integers
             for (local i = 0; i < 3 ; i++) {
-                if (!IsNumberValidRGBvalue(args[i])) {
+                if (!IsCustomRGBIntegerValid(args[i])) {
                     return ErrorOut(p)
                 }
                 args[i] = args[i].tointeger()
