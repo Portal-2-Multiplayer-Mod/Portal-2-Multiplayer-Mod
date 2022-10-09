@@ -246,8 +246,15 @@ CommandList <- [
                 SendChatMessage("[ERROR] Input a player name.", p)
                 return
             }
+            if (args.len() > 2) {
+                SendChatMessage("[ERROR] Too many arguments given", p)
+                return
+            }
 
+            // args[0] -> player to teleport to
+            // args[1] if exist -> player to bring
             args[0] = Strip(args[0])
+
             local plr = FindPlayerByName(args[0])
 
             if (plr == null) {
@@ -255,56 +262,55 @@ CommandList <- [
                 return
             }
 
-            try {
-                // See if there's a second argument
-                args[1] = Strip(args[1])
-                local plr2 = FindPlayerByName(args[1])
-
-                if (args[1] != "all" || plr2 == null){
-                    SendChatMessage("[ERROR] Third argument is invalid! Use \"all\" or a player's username.", p)
-                    return
-                }
-
-                // if second argument was "all"
-                if (args[1] == "all") {
-                    local q = null
-                    while (q = Entities.FindByClassname(q, "player")) {
-                        // Don't modify the player we are teleporting to
-                        if (q != plr) {
-                            q.SetOrigin(plr.GetOrigin())
-                            q.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-                        }
-                    }
-                    if (plr == p) {
-                        SendChatMessage("Brought all players.", p)
-                    } else {
-                        SendChatMessage("Teleported all players.", p)
-                    }
-                    return
-                }
-
-                if (plr == p || plr == plr2) {
-                    return SendChatMessage("[ERROR] Can't teleport player to the same player.", p)
-                }
-
-                // if the second argument is a player
-                plr2.SetOrigin(plr.GetOrigin())
-                plr2.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-                if (plr2 == p) {
-                    return SendChatMessage("Teleported to player.", p)
-                } else {
-                    return SendChatMessage("Teleported player.", p)
-                }
-
-            } catch (exception) {
-                // There was no third argument
+            if (args.len() == 1){
                 if (plr == p) {
-                    SendChatMessage("[ERROR] You are already here lol.", p)
-                } else {
-                    p.SetOrigin(plr.GetOrigin())
-                    p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-                    SendChatMessage("Teleported to player.", p)
+                    SendChatMessage("[ERROR] Can't teleport to yourself", p)
+                    return
                 }
+
+                p.SetOrigin(plr.GetOrigin())
+                p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                SendChatMessage("Teleported to player.", p)
+                return
+            }
+
+            args[1] = Strip(args[1])
+            local plr2 = FindPlayerByName(args[1])
+
+            if (args[1] != "all" && plr2 == null){
+                SendChatMessage("[ERROR] Third argument is invalid! Use \"all\" or a player's username.", p)
+                return
+            }
+
+            // if second argument was "all"
+            if (args[1] == "all") {
+                local q = null
+                while (q = Entities.FindByClassname(q, "player")) {
+                    // Don't modify the player we are teleporting to
+                    if (q != plr) {
+                        q.SetOrigin(plr.GetOrigin())
+                        q.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                    }
+                }
+                if (plr == p) {
+                    SendChatMessage("Brought all players.", p)
+                } else {
+                    SendChatMessage("Teleported all players.", p)
+                }
+                return
+            }
+
+            if (plr == p && plr == plr2) {
+                return SendChatMessage("[ERROR] Can't teleport player to the same player.", p)
+            }
+
+            // if the second argument is a player
+            plr2.SetOrigin(plr.GetOrigin())
+            plr2.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+            if (plr2 == p) {
+                return SendChatMessage("Teleported to player.", p)
+            } else {
+                return SendChatMessage("Teleported player.", p)
             }
         }
     }
