@@ -41,43 +41,38 @@ IncludeScript("multiplayermod/configcheck.nut")
 // We don't want to create multiple when it is called on
 Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 
+function MakeProgressCheck() {
+    local ChangeToThisMap = "mp_coop_start"
+    for (local course = 1; course <= 6; course++) {
+        // 9 levels is the highest that a course has
+        for (local level = 1; level <= 9; level++) {
+            if (IsLevelComplete(course - 1, level - 1)) {
+                ChangeToThisMap = "mp_coop_lobby_3"
+            }
+        }
+    }
+    EntFire("p2mm_servercommand", "command", "changelevel " + ChangeToThisMap, 0)
+}
+
 // Facilitate first load after game launch
 if (GetDeveloperLevel() == 918612) {
-    // Using a loop here for one cycle so that I can actually use "break"
-    for (local i = 0; i < 1; i++) {
-        // Reset dev level
-        if (Config_DevMode) {
-            EntFire("p2mm_servercommand", "command", "developer 1")
-        } else {
-            EntFire("p2mm_servercommand", "command", "clear; developer 0")
-        }
-        if (PluginLoaded) {
-            // If the plugin VScript functions have loaded, we don't need
-            // to do anything else. Continue this map load normally...
-            break
-        }
-        function MakeProgressCheck() {
-            local ChangeToThisMap = "mp_coop_start"
-            for (local course = 1; course <= 6; course++) {
-                // 9 levels is the highest that a course has
-                for (local level = 1; level <= 9; level++) {
-                    if (IsLevelComplete(course - 1, level - 1)) {
-                        ChangeToThisMap = "mp_coop_lobby_3"
-                    }
-                }
-            }
-            EntFire("p2mm_servercommand", "command", "changelevel " + ChangeToThisMap, 0)
-        }
-        if (!PluginLoaded) {
-            // Remove Portal Gun (Map transition will sound less abrupt)
-            Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
-            Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+    // Reset dev level
+    if (Config_DevMode) {
+        EntFire("p2mm_servercommand", "command", "developer 1")
+    }
+    else {
+        EntFire("p2mm_servercommand", "command", "clear; developer 0")
+    }
 
-            EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
-            EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
-            EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1) // Must be delayed
-            return
-        }
+    if (!PluginLoaded) {
+        // Remove Portal Gun (Map transition will sound less abrupt)
+        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+
+        EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
+        EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
+        EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1) // Must be delayed
+        return
     }
 }
 
@@ -158,6 +153,7 @@ function init() {
     for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
         if (timer.GetName() == "p2mm_timer") {
             p2mm_timer <- timer
+            break
         }
     }
     EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
