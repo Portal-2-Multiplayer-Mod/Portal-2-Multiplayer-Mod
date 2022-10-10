@@ -56,6 +56,8 @@ function MakeProgressCheck() {
 
 // Facilitate first load after game launch
 if (GetDeveloperLevel() == 918612) {
+    // This function is called only once under this developer level condition
+    // No need to use it any other time!
     // Reset dev level
     if (Config_DevMode) {
         EntFire("p2mm_servercommand", "command", "developer 1")

@@ -36,19 +36,6 @@ if (Config_UseChatCommands) {
     function ChatCommands(ccuserid, ccmessage) {}
     return
 }
-// The real chat command doesn't have the "!"
-function RemoveCommandPrefix (s) {
-    return Replace(s, "!", "")
-}
-
-function GetCommandFromString(str) {
-    foreach (cmd in CommandList) {
-        if (StartsWith(str.tolower(), cmd.name)) {
-            return cmd
-        }
-    }
-    return null
-}
 
 // The whole filtering process for the chat commands
 function ChatCommands(ccuserid, ccmessage) {
@@ -63,7 +50,19 @@ function ChatCommands(ccuserid, ccmessage) {
     local Commands = []
     local Runners = []
 
+    // The real chat command doesn't have the "!"
+    function RemoveCommandPrefix(s) {
+        return Replace(s, "!", "")
+    }
 
+    function GetCommandFromString(str) {
+        foreach (cmd in CommandList) {
+            if (StartsWith(str.tolower(), cmd.name)) {
+                return cmd
+            }
+        }
+        return null
+    }
 
     //--------------------------------------------------
 
@@ -145,7 +144,6 @@ CommandList <- [
             function KillPlayer(player) {
                 EntFireByHandle(player, "sethealth", "-100", 0, player, player)
             }
-
             function KillPlayerMessage(iTextIndex, player) {
                 KillPlayerText <- [
                     "Killed yourself.",
@@ -432,7 +430,7 @@ CommandList <- [
 
         // !playercolor (r OR reset) (g) (b) (optional: someone's name)
         function CC(p, args) {
-            local ErrorOut = function(p) {
+            function ErrorOut(p) {
                 SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space OR 'reset'.", p)
             }
 
