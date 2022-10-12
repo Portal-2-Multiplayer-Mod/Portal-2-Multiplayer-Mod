@@ -54,6 +54,7 @@ class Gui:
         self.InputPrompt: str = ""
         self.PlayersMenu: list = []
         self.directorymenu: list = []
+        self.directorymenutext: list = []
         self.PopupBoxList: list = []
         self.LanguagesMenu: list = []
         self.IsUpdating: bool = False
@@ -64,7 +65,6 @@ class Gui:
         self.LookingForInput: bool = False
         self.CurrentSelectedPlayer: int = 0
         self.Floaters: list[self.Floater] = []
-        self.SimpleText: str = ""
 
     ###############################################################################
         self.screen = pygame.display.set_mode((1280, 720), RESIZABLE)
@@ -84,17 +84,19 @@ class Gui:
 
         ###############################################################################
 
-        self.DefineMainMenuButtons()
-        self.DefineSettingsMenuButtons()
-        self.DefineSaveButtons()
-        self.DefineWorkshopButtons()
-        self.DefineManualMountingButtons()
-        self.DefineResourcesButtons()
-        self.DefineTestingMenuButtons()
+        self.DefineMainMenu()
+        self.DefineSettingsMenu()
+        self.DefineSaveMenu()
+        self.DefineWorkshopMenu()
+        self.DefineManualMountingMenu()
+        self.DefineResourcesMenu()
+        self.DefineTestingMenu()
 
         self.CurrentButtonsIndex: int = 0
-        self.CurrentMenu: list = self.MainButtons
-        self.SelectedButton: self.ButtonTemplate = self.CurrentMenu[self.CurrentButtonsIndex]
+        self.CurrentMenuTextIndex: int = 0
+        self.CurrentMenuButtons: list = self.MainMenuButtons
+        self.CurrentMenuText: list = self.MainMenuText
+        self.SelectedButton: self.ButtonTemplate = self.CurrentMenuButtons[self.CurrentButtonsIndex]
 
         for i in range(9):
             self.AddFloater(50, 50, 20, 75, 75)
@@ -143,17 +145,23 @@ class Gui:
 
         self.Floaters.append(floater)
 
-    # SIMPLE TEXT CLASS
-    class SimpleText:
+    # DISPLAY TEXT CLASS
+    class DisplayText:
         def __init__(self,
                     text: str,
-                    activeColor: tuple = (255, 255, 0),
+                    font: str = "GUI/assets/fonts/pixel.ttf",
+                    textColor: tuple = (155, 155, 155),
                     xpos: float = 0,
+                    xstart: float = 100,
+                    xend: float = 100,
                     ypos: float = 0,
-                    size: float = 0):
+                    size: float = 300) -> None:
             self.text = text
-            self.activeColor = activeColor
+            self.font = font
+            self.textColor = textColor
             self.xpos = xpos
+            self.xstart = xstart
+            self.xend = xend
             self.ypos = ypos
             self.size = size
 
@@ -169,10 +177,11 @@ class Gui:
                      curanim: str = "",
                      isasync: bool = False,
                      xpos: float = 16,
-                     ypos: float = 2,
-                     size: float = 700) -> None:
+                     size: float = 700,
+                     font: str = "GUI/assets/fonts/pixel.ttf") -> None:
 
             self.text = text
+            self.font = font
             self.function = func
             self.activecolor = activeColor
             self.inactivecolor = inactiveColor
@@ -187,15 +196,14 @@ class Gui:
             self.selectsnd = self.pwrsnd
             self.hoversnd = self.blipsnd
             self.xpos = xpos
-            self.ypos = ypos
             self.size = size
 
     #!############################
     #! Declaring buttons
     #!############################
 
-    def DefineMainMenuButtons(self) -> None:
-        self.Button_LaunchGame = self.ButtonTemplate(translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120))
+    def DefineMainMenu(self) -> None:
+        self.Button_LaunchGame = self.ButtonTemplate(translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120), isasync=True)
         self.Button_Settings = self.ButtonTemplate(translations["settings_button"], self.Button_Settings_func)
         self.Button_Saves = self.ButtonTemplate(translations["saves_button"], self.Button_Saves_func, (235, 172, 14))
         self.Button_Update = self.ButtonTemplate(translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
@@ -204,19 +212,19 @@ class Gui:
         self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
         self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
 
-        self.MainButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Saves, self.Button_Update,
+        self.MainMenuButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Saves, self.Button_Update,
                             self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
 
         if self.devMode:
             self.Button_Test = self.ButtonTemplate("Test Button", self.Button_Test_func)
-            self.MainButtons.append(self.Button_Test)
+            self.MainMenuButtons.append(self.Button_Test)
 
-        self.MainButtons.append(self.Button_Exit)
+        self.MainMenuButtons.append(self.Button_Exit)
         # we don't need the back button in the main menu but i thought it will be better the declare it here
         self.Button_Back = self.ButtonTemplate(
             translations["back_button"], self.Button_Back_func)
 
-    def DefineSettingsMenuButtons(self) -> None:
+    def DefineSettingsMenu(self) -> None:
         self.Button_LauncherSettingsMenu = self.ButtonTemplate(
             translations["launcher_settings_button"], self.Button_LauncherSettingsMenu_func)
         self.Button_Portal2Settings = self.ButtonTemplate(
@@ -235,16 +243,14 @@ class Gui:
 
         self.SettingsMenus.append(self.Button_Back)
 
-    def DefineSaveButtons(self) -> None:
-        if SS.init():
-            print("Running")
+    def DefineSaveMenu(self) -> None:
+        if SS.saveSystemState:
             self.Button_SaveSystemState = self.ButtonTemplate(
                 translations["save_system_state_txt"] + translations["saves_enabled"],
                 inactiveColor = (21, 255, 0),
                 activeColor = (21, 255, 0),
                 size = 600)
         else:
-            print("Not running")
             self.Button_SaveSystemState = self.ButtonTemplate(
                 translations["save_system_state_txt"] + translations["saves_disabled"],
                 inactiveColor = (255, 21, 0),
@@ -257,14 +263,14 @@ class Gui:
 
         self.SavesMenu = [self.Button_SaveSystemState, self.Button_Back]
 
-    def DefineWorkshopButtons(self) -> None:
+    def DefineWorkshopMenu(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(
             translations["get_level_button"], self.Button_GetWorkShopCommand_func)
 
         self.WorkshopButtons = [
             self.Button_GetWorkShopCommand, self.Button_Back]
 
-    def DefineManualMountingButtons(self) -> None:
+    def DefineManualMountingMenu(self) -> None:
         self.Button_ManualMount = self.ButtonTemplate(
             translations["mount_button"], self.Button_ManualMount_func, (50, 255, 120), isasync=True)
         self.Button_ManualUnmount = self.ButtonTemplate(
@@ -273,7 +279,7 @@ class Gui:
         self.ManualButtons = [self.Button_ManualMount,
                               self.Button_ManualUnmount, self.Button_Back]
 
-    def DefineResourcesButtons(self) -> None:
+    def DefineResourcesMenu(self) -> None:
         self.Button_GitHub = self.ButtonTemplate(
             translations["github_button"], self.Button_GitHub_func, (255, 255, 255), isasync=True)
         self.Button_Guide = self.ButtonTemplate(
@@ -284,7 +290,7 @@ class Gui:
         self.RecourcesButtons = [
             self.Button_GitHub, self.Button_Guide, self.Button_Discord, self.Button_Back]
 
-    def DefineTestingMenuButtons(self) -> None:
+    def DefineTestingMenu(self) -> None:
         self.Button_InputField = self.ButtonTemplate(
             "User Input", self.Button_InputField_func)
         self.PopupBox_gui = self.ButtonTemplate(
@@ -293,20 +299,16 @@ class Gui:
             "Print to Console", self.Button_PrintToConsole_func)
         self.Button_Back = self.ButtonTemplate(
             translations["back_button"], self.Button_Back_func)
+        
+        self.Text_MainMenuTextTest1 = self.DisplayText(
+            "testtext")
+        self.Text_MainMenuTextTest2 = self.DisplayText(
+            "testtext2", textColor= (52, 67, 235), xpos= 200, ypos=200)
 
-        self.Text_TopRight = self.ButtonTemplate(
-            "This text is at the top right!",
-            activeColor= (155,155,155), xpos=20, size= 400)
-        self.Text_BottomLeft = self.ButtonTemplate(
-            "This text is at the bottom left! xpos= 200 ypos= 1.25 size= 400",
-            activeColor= (155,155,155), xpos= 200, ypos= 1.25, size= 400)
-
-        #self.TestingMenu = [self.Button_InputField, self.PopupBox_gui,
-                            #self.Button_PrintToConsole, self.Button_Back]
+        self.MainMenuText = [self.Text_MainMenuTextTest1, self.Text_MainMenuTextTest2]
 
         self.TestingMenu = [self.Button_InputField, self.PopupBox_gui,
-                            self.Button_PrintToConsole, self.Button_Back,
-                            self.Text_TopRight, self.Text_BottomLeft]
+                            self.Button_PrintToConsole, self.Button_Back]
 
 #######################################################################
 
@@ -322,6 +324,8 @@ class Gui:
 
     def BackMenu(self) -> None:
         if len(self.directorymenu) > 0:
+            self.ChangeMenu(self.directorymenu.pop(), False)
+        if len(self.directorymenutext) > 0:
             self.ChangeMenu(self.directorymenu.pop(), False)
 
     # the button to go to the previous menu
@@ -702,14 +706,15 @@ class Gui:
 
     def ChangeMenu(self, menu: list, append: bool = True) -> None:
         if append:
-            self.directorymenu.append(self.CurrentMenu)
+            self.directorymenu.append(self.CurrentMenuButtons)
+            #self.directorymenutext.append(self.CurrentMenuText)
 
-        self.CurrentMenu = menu
+        self.CurrentMenuButtons = menu 
 
         if self.CurrentButtonsIndex >= len(menu):
             self.CurrentButtonsIndex = len(menu) - 1
 
-        self.SelectedButton = self.CurrentMenu[self.CurrentButtonsIndex]
+        self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
 
     ####################
 
@@ -734,7 +739,7 @@ class Gui:
             translations["error_yes"], YesInput, (75, 200, 75))
         Button_Decline = self.ButtonTemplate(
             translations["error_no"], NoInput, (255, 75, 75))
-        self.PopupBox("Are You A Mogus?", "have you done 1 sussy thing \n and or have done a VENT, SUS?",
+        self.PopupBox("Are You A Mogus?", "Have you done 1 sussy thing \n and or have done a VENT, SUS?",
                       [Button_Confirm, Button_Decline])
 
     def Button_PrintToConsole_func(self) -> None:
@@ -837,6 +842,7 @@ class Gui:
     def Update(self) -> None:
         W = self.screen.get_width()
         H = self.screen.get_height()
+        clr = (0, 0, 0)
         fntdiv: int = 32
         fntsize = int(W / fntdiv)
         mindiv = int(fntdiv / 1.25)
@@ -850,9 +856,8 @@ class Gui:
         # loop through all buttons
         indx = 0
 
-        for button in self.CurrentMenu:
+        for button in self.CurrentMenuButtons:
             indx += 1
-            clr = (0, 0, 0)
             button.width = int(button.size / 25)
             button.height = int(button.size / 50)
 
@@ -867,15 +872,21 @@ class Gui:
 
             if not (self.LookingForInput):
                 self.screen.blit(
-                    text1, (W / button.xpos, (H / button.ypos - (text1.get_height() / 2)) * (indx / 5)))
+                    text1, (W / button.xpos, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
             #button.x = W / 16
             #button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
-            #button.x = W / button.xpos
-            #button.y = ((H / button.ypos) - (text1.get_height() / 2)) * (indx / 5)
-            button.x = button.xpos / W
-            button.y = ((button.ypos / H) - (text1.get_height() / 2)) * (indx / 5)
+            button.x = W / button.xpos
+            button.y = ((H / 2) - (text1.get_height() / 2)) * (indx / 5)
             button.width = text1.get_width()
             button.height = text1.get_height()
+
+        # TEXT DISPLAYED ON MENU
+        for displaytext in self.CurrentMenuText:
+            displaytext.width = int(W / displaytext.size)
+            displaytext.height = int(H / displaytext.size)
+            text = pygame.font.Font(displaytext.font, (displaytext.width + displaytext.height)).render(displaytext.text, True, displaytext.textColor)
+            self.screen.blit(text, (displaytext.xpos, displaytext.ypos))
+            
 
         # BACKGROUND
         for floater in self.Floaters:
@@ -924,7 +935,7 @@ class Gui:
 
         # MENU
 
-        self.SelectedButton = self.CurrentMenu[self.CurrentButtonsIndex]
+        self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
 
         # OVERLAY
 
@@ -1176,23 +1187,23 @@ class Gui:
                     if event.key in [K_ESCAPE, K_BACKSPACE]:
                         self.BackMenu()
                     elif event.key in [K_DOWN, K_s]:
-                        if self.CurrentButtonsIndex < len(self.CurrentMenu) - 1:
+                        if self.CurrentButtonsIndex < len(self.CurrentMenuButtons) - 1:
                             self.CurrentButtonsIndex += 1
-                            self.SelectedButton = self.CurrentMenu[self.CurrentButtonsIndex]
+                            self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
                             self.PlaySound(self.SelectedButton.hoversnd)
                         else:
                             self.CurrentButtonsIndex = 0
-                            self.SelectedButton = self.CurrentMenu[self.CurrentButtonsIndex]
+                            self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
                             self.PlaySound(self.SelectedButton.hoversnd)
                     elif event.key in [K_UP, K_w]:
                         if self.CurrentButtonsIndex > 0:
                             self.CurrentButtonsIndex -= 1
-                            self.SelectedButton = self.CurrentMenu[self.CurrentButtonsIndex]
+                            self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
                             self.PlaySound(self.SelectedButton.hoversnd)
                         else:
                             self.CurrentButtonsIndex = len(
-                                self.CurrentMenu) - 1
-                            self.SelectedButton = self.CurrentMenu[self.CurrentButtonsIndex]
+                                self.CurrentMenuButtons) - 1
+                            self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
                             self.PlaySound(self.SelectedButton.hoversnd)
                     elif event.key in [K_SPACE, K_RETURN, K_KP_ENTER]:
                         self.SelectAnimation(
@@ -1227,7 +1238,7 @@ class Gui:
                 ###############################
                 # changes the `SelectedButton` and the `CurrentButtonsIndex` to the button the mouse is on
                 if event.type == pygame.MOUSEMOTION:
-                    for button in self.CurrentMenu:
+                    for button in self.CurrentMenuButtons:
                         # if the mouse is over the button
                         if (mousex > button.x and mousex < button.x + button.width) and (mousey > button.y and mousey < button.y + button.height):
                             # if the button isnt already selected
@@ -1235,7 +1246,7 @@ class Gui:
                                 # select the button
                                 self.SelectedButton = button
                                 # set current buttons index to the button
-                                self.CurrentButtonsIndex = self.CurrentMenu.index(
+                                self.CurrentButtonsIndex = self.CurrentMenuButtons.index(
                                     button)
                                 # play the hover sound
                                 self.PlaySound(self.hvrclksnd)
@@ -1245,7 +1256,7 @@ class Gui:
             if len(self.PopupBoxList) > 0:
                 for button in self.PopupBoxList[0][2]:
                     # if the mouse is over the button
-                    if ((mousex > button.xpos and mousex < button.xpos + (button.size / 25)) and (mousey > button.ypos and mousey < button.ypos + (button.size / 50))):
+                    if ((mousex > button.xpos and mousex < button.xpos + (button.size / 25)) and (mousey > button.y and mousey < button.y + (button.size / 50))):
                         if button != self.selectedpopupbutton:
                             self.selectedpopupbutton = button
                             self.PlaySound(button.hoversnd)
@@ -1439,6 +1450,10 @@ def UpdateModFiles() -> None:
         Ui.IsUpdating = True
         up.DownloadNewFiles()
         Ui.Error(translations["update_complete"], 5, (75, 255, 75))
+        
+        # We need to refresh the save system after a update to make sure that all the files are there and it will still continue to work
+        SS.refreshSaveSystem()
+
         Ui.IsUpdating = False
         for thing in Ui.ERRORLIST:
             if thing[0] == translations["update_fetching"]:
@@ -1564,7 +1579,7 @@ def Initialize() -> None:
     # load the client's translations
     LoadTranslations()
     # Starts up the custom save system
-    SS.init()
+    SS.saveSystemInitalization()
 
     # checks if this is debug or release mode
     if sys.argv[0].endswith(".py"):
@@ -1572,7 +1587,7 @@ def Initialize() -> None:
         return
 
     IsNew()  # Check for first time setup after update
-    # time.sleep(1) # i have no idea why did i add sleep here
+
 
     # remove old temp files
     if (os.path.exists(GVars.modPath + GVars.nf + ".temp")):
@@ -1609,6 +1624,5 @@ if __name__ == '__main__':
         Ui = Gui(GVars.configData["developer"]["value"] == "true")
         PostInitialize()
         Ui.Main()
-    except Exception as e:
-        traceback.print_exc()
-        #Log("Exception encountered: " + str(e))
+    except Exception as a_funni_wacky_error_occured:
+        Log("Exception encountered:\n" + traceback.format_exc())

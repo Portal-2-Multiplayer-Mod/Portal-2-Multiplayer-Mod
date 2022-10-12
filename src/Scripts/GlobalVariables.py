@@ -8,7 +8,7 @@ import ctypes.wintypes
 from datetime import datetime
 import Scripts.Configs as cfg
 from Scripts.BasicLogger import Log
-import Scripts.SaveSystem as SS
+
 #//////////////////////////////////////////#
 #//#    Global Variables Declarations   #//#
 #//////////////////////////////////////////#
@@ -28,7 +28,7 @@ translations: dict[str, str]
 AfterFunction: None
 
 def init() -> None:
-    global appStartDate, modPath, iow, iol, nf, translations, configPath, saveSystemNutPath, saveSystemEnabled
+    global appStartDate, modPath, modFilesPath, iow, iol, nf, translations, configPath, saveSystemNutPath, saveSystemEnabled
 
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
@@ -45,14 +45,16 @@ def init() -> None:
 
         # set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
+        modFilesPath = buf.value + nf + "p2mm\ModFiles"
         configPath = buf.value + nf + "p2mm"
-        saveSystemNutPath = buf.value + nf + "p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem"
+        saveSystemNutPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod\savesystem"
     elif (sys.platform.startswith("linux")):
         iol = True
         # set the modpath the the users home directory
-        modPath = os.path.expanduser("~") + nf + ".cache/p2mm"
-        configPath = os.path.expanduser("~") + nf + ".config/p2mm"
-        saveSystemNutPath = os.path.expanduser("~") + nf + ".cache/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscripts/multiplayermod/savesystem"
+        modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
+        modFilesPath = os.path.expanduser("~") + nf + ".cache\p2mm\Modfiles"
+        configPath = os.path.expanduser("~") + nf + ".config\p2mm"
+        saveSystemNutPath = os.path.expanduser("~") + nf + ".cache\p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod\savesystem"
     else:
         # feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")

@@ -18,7 +18,12 @@
 // Will not be avaliable for maps that don't use it.
 // THIS SCRIPT IS STILL A WIP, ISSUES MIGHT OCCUR!
 //---------------------------------------------------
-
+//
+// Save System Terminology:
+// Enabled: The save system has started successfully on the python scripts end
+// Disabled: The save system didn't start successfully on the python scripts end
+// Running: By default the save system is set to run with every play session
+// Not Running: The user has defined they do not want the save system to run next play session or the system is disabled
 
 function saveLoad() {
 
@@ -73,7 +78,8 @@ try {
     }
 
     if (savesystemcheckerrors = 3) {
-        printl("Save System check detection failed! Will not be avaliable for this map...")
+        printl("Save System check detection failed after checking three times!")
+        printl("The save system will not be avaliable for this map...")
         saveCheck <- false
         SendToConsoleP232("_record SAVE/savesystemcheck-nutfail")
         SendToConsoleP232("stop")

@@ -92,6 +92,15 @@ DefaultConfigFile = {
             "prompt": "Custom launch options for debugging.",
         },
 
+    "ManualSaveOveride":
+        {
+            "value": "true",
+            "menu": "hidden",
+            "description": "Manually overide if the save system operates for the next play session.",
+            "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
+            "prompt": "",
+        },
+
     "activeLanguage":
         {
             "value": "English",
@@ -99,15 +108,7 @@ DefaultConfigFile = {
             "description": "the language of the p2mm client and not the game",
             "warning": "",
             "prompt": "",
-        },
-    "MakeSaveFiles?":
-        {
-            "value": "true",
-            "menu": "hidden",
-            "description": "Enable save file creation?",
-            "warning": "Disabling this will can cause your next play session to act weird",
-            "prompt": "",
-        },
+        }
 }
 
 ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
@@ -210,7 +211,7 @@ def WriteConfigFile(configs: dict) -> None:
 
     Log("Writing to file...")
     with open(filepath, "w", encoding="utf-8") as cfg:
-        json.dump(configs, cfg)
+        json.dump(configs, cfg, indent=4)
 
 # since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
 def EditConfig(search: str, newvalue: str) -> None:
