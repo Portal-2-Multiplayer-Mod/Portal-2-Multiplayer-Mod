@@ -55,10 +55,30 @@ mapKeys = {"verificationStatus", "mapFileName", "mapsupportFile", "data"}
 
 # All the custom excpetions are defined here, we aren't doing anything special so its all pass
 class p2mmNotFoundError(Exception):
-    pass
+    Log("")
+    Log("            __________!!!FATAL: SAVE SYSTEM p2mmNotFoundError!!!__________")
+    Log("FATAL SAVE SYSTEM ERROR!!! The main p2mm directory couldn't be found!")
+    Log("This shouldn't happen at all! If this happens again please reinstall the mod!")
+    Log("If the issue persists then please let us know in our discord!")
+    Log("This error has to do with the save system so please ping Orsell (aka zwexit\) in #mod-help in our discord.")
+    Log("He must have fricked up something if this appears. Like this shouldn't be possible.")
+    Log("The launcher has been stopped...")
+    Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
+    Log("            __________!!!FATAL: SAVE SYSTEM p2mmNotFoundError!!!__________")
+    Log("")
+    saveSystemState = False
+    quit()
 
 class firstStartError(Exception):
-    pass
+    Log("")
+    Log("            __________Warning: SAVE SYSTEM firstStartWarning__________")
+    Log("The ModFiles folder has not been found.")
+    Log("We are assuming that this is the first time someone has launched the launcher.")
+    Log("This folder is required for the save system to make its start check.")
+    Log("The save system will start disabled but should be fixed when the launcher is updated...")
+    Log("            __________Warning: SAVE SYSTEM firstStartWarning__________")
+    Log("")
+    saveSystemState = False
 
 class masterSaveCreationError(Exception):
     Log("")
@@ -71,7 +91,14 @@ class masterSaveCreationError(Exception):
     saveSystemState = False
 
 class saveSystemNutNotFoundError(Exception):
-   pass
+    Log("")
+    Log("            __________ERROR: SAVE SYSTEM saveSystemNutNotError!!!__________")
+    Log("The savesystem-main.nut file has not been found in the ModFiles! The save system can't work without it!")
+    Log("Try to update or reinstall the launcher if you recieve this, the file will be retrieved again...")
+    Log("Launcher will continue but the save system will be disabled for the next play session...")
+    Log("            __________ERROR: SAVE SYSTEM saveSystemNutNotError!!!__________")
+    Log("")
+    saveSystemState = False
 
 def masterSaveStructureCheck() -> None:
     Log("SS: Performing masterSave structure check...")
@@ -131,7 +158,7 @@ def createNewMasterSave() -> None:
     if os.path.exists(GVars.modPath + "\masterSave.cfg"):
         Log("SS: New masterSave.cfg created and checked in p2mm directory...")
     else:
-        raise masterSaveCreationError()
+        raise masterSaveCreationError
 
 def saveSystemInitalization() -> bool:
     global saveSystemState
@@ -168,54 +195,21 @@ def saveSystemInitalization() -> bool:
         Log("SS: Checking on our main save system Squirrel file...")
         if not os.path.exists(GVars.saveSystemNutPath + "\savesystem-main.nut"):
             raise saveSystemNutNotFoundError
-        Log("SS: Our Squirrel file exists...")
-
-        # If the save system gets past all this then it should have initialized succesfully
-
-    #All the exceptions for the initilization of the save system are defined before, this occurs if something else happens
-    except p2mmNotFoundError:
-        Log("")
-        Log("            __________!!!FATAL: SAVE SYSTEM p2mmNotFoundError!!!__________")
-        Log("FATAL SAVE SYSTEM ERROR!!! The main p2mm directory couldn't be found!")
-        Log("This shouldn't happen at all! If this happens again please reinstall the mod!")
-        Log("If the issue persists then please let us know in our discord!")
-        Log("This error has to do with the save system so please ping Orsell (aka zwexit\) in #mod-help in our discord.")
-        Log("He must have fricked up something if this appears. Like this shouldn't be possible.")
-        Log("The launcher has been stopped...")
-        Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
-        Log("            __________!!!FATAL: SAVE SYSTEM p2mmNotFoundError!!!__________")
-        Log("")
-        saveSystemState = False
-        quit()
-
-    except firstStartWarning:
-        Log("")
-        Log("            __________Warning: SAVE SYSTEM firstStartWarning__________")
-        Log("The ModFiles folder has not been found.")
-        Log("We are assuming that this is the first time someone has launched the launcher.")
-        Log("This folder is required for the save system to make its start check.")
-        Log("The save system will start disabled but should be fixed when the launcher is updated...")
-        Log("            __________Warning: SAVE SYSTEM firstStartWarning__________")
-        Log("")
-        saveSystemState = False
-
-    except saveSystemNutNotFoundError:
-        Log("")
-        Log("            __________ERROR: SAVE SYSTEM saveSystemNutNotError!!!__________")
-        Log("The savesystem-main.nut file has not been found in the ModFiles! The save system can't work without it!")
-        Log("Try to update or reinstall the launcher if you recieve this, the file will be retrieved again...")
-        Log("Launcher will continue but the save system will be disabled for the next play session...")
-        Log("            __________ERROR: SAVE SYSTEM saveSystemNutNotError!!!__________")
-        Log("")
-        saveSystemState = False
+        else:
+            Log("SS: Our Squirrel file exists...")
 
     # If some miscelanous or unaccounted for error occurs this will throw, Orsell fricked up something too if this happens :)
     except:
-        Log("An unknown error that hasn't been accounted for in the development of this script has occured...\n" + traceback.format_exc())
+        Log("")
+        Log("            __________SAVE SYSTEM ERROR!!!__________")
+        Log("An unknown error that hasn't been accounted for in the development of this script has occured...")
         Log("This error has to do with the save system so please ping Orsell (aka zwexit\) in #mod-help in our discord.")
         Log("He must have fricked up something if this appears.")
+        Log("To make sure nothing else fricks up the save system will be disabled...")
         Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
-
+        Log("            __________SAVE SYSTEM ERROR!!!__________")
+        Log("")
+        saveSystemState = False
 
     # This will run only if the save system sucessfully initilized
     else:
@@ -223,7 +217,7 @@ def saveSystemInitalization() -> bool:
         Log("SS: The system will be enabled for the next play session...")
         saveSystemState = True
 
-    # Now we clean up the system and create the files needed for the savesystem-main.nut file to read when its called
+    # Now we clean up the system and create the files needed for the savesystem-main.nut file to read when its called on later when a map loads
     finally:
         try:
             if (saveSystemState == True):
@@ -239,6 +233,7 @@ def saveSystemInitalization() -> bool:
                 Log("SS: The system will be disabled for the next play session...")
 
                 saveSystemState = False
+
         # This exception should only occur is either the p2mm or Modfiles folder wasn't found
         except FileNotFoundError:
             Log("")
@@ -248,16 +243,17 @@ def saveSystemInitalization() -> bool:
             Log("The system will be disabled for the next play session...")
             Log("            __________SAVE SYSTEM FileNotFoundError!!!__________")
             Log("")
-
             saveSystemState = False
+
         # This exception should only happen if Orsell fricked something up :)
         except:
             Log("")
             Log("            __________SAVE SYSTEM ERROR!!!__________")
-            Log("An unknown error that hasn't been accounted for in the development of this script has occured...\n" + traceback.format_exc())
+            Log("An unknown error that hasn't been accounted for in the development of this script has occured...")
             Log("This error has to do with the save system so please ping Orsell (aka zwexit\) in #mod-help in our discord.")
             Log("He must have fricked up something if this appears.")
             Log("To make sure nothing else fricks up the save system will be disabled...")
+            Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
             Log("            __________SAVE SYSTEM ERROR!!!__________")
             Log("")
             saveSystemState = False
@@ -265,8 +261,6 @@ def saveSystemInitalization() -> bool:
             Log("SS: Save system has finished initalizing...")
             Log("            __________Save System Initalization End__________")
             Log("")
-
-
 
 def refreshSaveSystem() -> bool:
     pass

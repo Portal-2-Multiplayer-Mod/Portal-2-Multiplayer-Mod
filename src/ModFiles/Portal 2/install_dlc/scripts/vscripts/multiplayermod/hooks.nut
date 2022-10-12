@@ -202,19 +202,12 @@ function PostMapLoad() {
     MapSupport(false, false, false, true, false, false, false)
     CreatePropsForLevel(true, false, false)
 
-    /* Old fast download references
-    // Custom asset download commands
-    // SendToConsoleP232("sv_allowdownload 1")
-    //SendToConsoleP232("sv_allowupload 1")
     // Original sv_downloadurl, will be reimplemented when custom downloading fucntion works as intended
-    //SendToConsoleP232("sv_downloadurl https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2")
-    //Temporary sv_downloadurl, pulling from Orsell's fork of the mod, mainly for testing custom assets
-    //SendToConsoleP232("sv_downloadurl https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/raw/dev/WebFiles/FastDL/portal2")
-    */
+    //SendToConsoleP2MM("sv_downloadurl https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2")
 
-    // Enable fast download
-    // Updated sv_downloadurl? Still unsure if this one works, did keep the previous two just in case.
-    SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+    // Custom asset download commands
+    // Temporary sv_downloadurl, pulling from Orsell's fork of the mod, mainly for testing custom assets
+    SendToConsoleP2MM("sv_downloadurl https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/raw/dev/WebFiles/FastDL/portal2")
     SendToConsoleP2MM("sv_allowdownload 1")
     SendToConsoleP2MM("sv_allowupload 1")
 
@@ -237,11 +230,11 @@ function PostMapLoad() {
 	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
     //Alias used to load 2v2coopbattle and mp_coop_p32lobby for easy accsess
-    SendToConsoleP232("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
-    SendToConsoleP232("alias p32lobby changelevel mp_coop_p32lobby")
+    SendToConsoleP2MM("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
+    SendToConsoleP2MM("alias p32lobby changelevel mp_coop_p32lobby")
     //Loads mp_coop_testroom living only on Orsell's computer
     //Will fail for anyone else unless they create the p32wip directory in portal2/maps and compile the mp_coop_testroom.vmf placing it into p32wip
-    SendToConsoleP232("alias testroom changelevel p32wip/mp_coop_testroom")
+    SendToConsoleP2MM("alias testroom changelevel p32wip/mp_coop_testroom")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)

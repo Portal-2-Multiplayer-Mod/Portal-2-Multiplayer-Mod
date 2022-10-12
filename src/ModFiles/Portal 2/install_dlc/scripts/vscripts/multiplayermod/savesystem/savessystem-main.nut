@@ -30,14 +30,14 @@ function saveLoad() {
 }
 
 function onSave(event) { // Triggers when a map calls for a certain event to be saved
-    SendToConsoleP232("_record SAVE/" + GetMapName().tostring + "-" + event + "-save")
-    SendToConsoleP232("stop")
+    SendToConsoleP2MM("_record SAVE/" + GetMapName().tostring + "-" + event + "-save")
+    SendToConsoleP2MM("stop")
     try {
         IncludeScript("multiplayermod/savesystem/" + GetMapName().tostring + "-" + event + "-save.nut")
         printl(GetMapName().tostring + "-" + event + "-save.dem has been created")
         SendChatMessage("Map progress saved....")
-        SendToConsoleP232("_record SAVE/savesystemcheck-mapsaved")
-        SendToConsoleP232("stop")
+        SendToConsoleP2MM("_record SAVE/savesystemcheck-mapsaved")
+        SendToConsoleP2MM("stop")
     } catch (e){
         SendChatMessage("Map failed to save, check console...")
         printl("Save system check failed to complete...")
@@ -53,15 +53,15 @@ function onSave(event) { // Triggers when a map calls for a certain event to be 
 
 printl("Starting the custom save system!")
 //Makes a temporary .dem file for our python save system to check
-SendToConsoleP232("_record SAVE/savesystemcheck-test")
-SendToConsoleP232("stop")
+SendToConsoleP2MM("_record SAVE/savesystemcheck-test")
+SendToConsoleP2MM("stop")
 
 try {
     IncludeScript("multiplayermod/savesystem/savesystemcheck-pythonsuccess.nut")
     printl("Save System works! Will be avaliable for the map...")
     saveCheck <- true
-    SendToConsoleP232("_record SAVE/savesystemcheck-nutsuccess")
-    SendToConsoleP232("stop")
+    SendToConsoleP2MM("_record SAVE/savesystemcheck-nutsuccess")
+    SendToConsoleP2MM("stop")
 } catch (e){
     printl("First check detection failed, trying again...")
     printl(e)
@@ -73,7 +73,7 @@ try {
         } catch (e){
             printl("Check detection failed, will try again...")
             printl(e)
-            savesystemcheckerrors = savesystemcheckerrors + 1
+            savesystemcheckerrors += 1
         }
     }
 
@@ -81,14 +81,14 @@ try {
         printl("Save System check detection failed after checking three times!")
         printl("The save system will not be avaliable for this map...")
         saveCheck <- false
-        SendToConsoleP232("_record SAVE/savesystemcheck-nutfail")
-        SendToConsoleP232("stop")
+        SendToConsoleP2MM("_record SAVE/savesystemcheck-nutfail")
+        SendToConsoleP2MM("stop")
         savesystemcheckerrors = 0
     } else {
         printl("Save System works! Will be avaliable for the map...")
         saveCheck <- true
-        SendToConsoleP232("_record SAVE/savesystemcheck-nutsuccess")
-        SendToConsoleP232("stop")
+        SendToConsoleP2MM("_record SAVE/savesystemcheck-nutsuccess")
+        SendToConsoleP2MM("stop")
         savesystemcheckerrors = 0
     }
 }
