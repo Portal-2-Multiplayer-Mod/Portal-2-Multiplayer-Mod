@@ -21,15 +21,15 @@
 				"match_entry" "Bullets.DefaultNearmiss"
 				"input_max_entries" "3.000000"
 				"match_substring" "false"
-			}			
-			
+			}
+
 			"get_random"
-			{	
+			{
 				"input_execute" "1.0"
 				"input_min" "0.0"
-				"input_max" "0.3"			
+				"input_max" "0.3"
 			}
-			
+
 			"block_entries"
 			{
 				"input_duration" "@get_random.output" //in seconds

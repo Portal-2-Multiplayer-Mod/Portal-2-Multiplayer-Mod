@@ -65,11 +65,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Remove useless entities so that the entity limit does not crash the game
 
         // Remove func_portal_bumper's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
+        for (local ent; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
             ent.Destroy() // 165 entities removed
         }
         // Remove env_sprite's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
+        for (local ent; ent = Entities.FindByClassname(ent, "env_sprite");) {
             ent.Destroy() // 31 entities removed
         }
 

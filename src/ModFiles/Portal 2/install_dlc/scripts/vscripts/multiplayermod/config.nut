@@ -21,6 +21,9 @@ Config_DevMode <- false
 // Set true/false if you want to see the visual debug lines in-game for ray tracing
 Config_VisualDebug <- false
 
+// Set true/false if you are a developer and wish to load your custom player model in-game
+Config_UseCustomDevModels <- false
+
 //-----------------------------------
 // Game variables
 //-----------------------------------

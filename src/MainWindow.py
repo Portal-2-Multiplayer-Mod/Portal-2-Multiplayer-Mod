@@ -105,6 +105,12 @@ class Gui:
     #     surf = pygame.transform.rotate(surf, 19)
 
     def PlaySound(self, sound: pygame.mixer.Sound) -> None:
+        """Plays the launcher's sounds when hovering / clicking on a buttong
+
+        Args:
+            sound (pygame.mixer.Sound): the sound to play
+        """
+
         LauncherSFX = GVars.configData["LauncherSFX"]["value"] == "true"
         if LauncherSFX:
             pygame.mixer.Sound.play(sound)
@@ -118,6 +124,15 @@ class Gui:
             self.negrot: bool = negrot
 
     def AddFloater(self, width: float, height: float, rot: float, x: float, y: float) -> None:
+        """creates the falling cubes and adds them to a list of floaters
+
+        Args:
+            width (float): the widh of the cube's image
+            height (float): the height of the cube's image
+            rot (float): the rotation of the cube on the z axis when it spawns
+            x (float): the x position where it first spawns
+            y (float): the y position where it first spawns
+        """
         surf = self.greenCube
         surf = pygame.transform.scale(surf, (width, height))
         surf = pygame.transform.rotate(surf, 0)
@@ -1032,7 +1047,7 @@ class Gui:
                 (W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
             self.screen.blit(surf1, blitpos)
 
-            surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(self.InputPrompt, True,
+            surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(fntsize/1.5)).render(self.InputPrompt, True,
                                                                                              (255, 255, 255))
             # blit it right below the surf1
             self.screen.blit(surfInputPrompt, (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2),

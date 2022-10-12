@@ -64,7 +64,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global03, "turnoff", "", 70, null, null)
         EntFireByHandle(env_global04, "turnoff", "", 70, null, null)
 
-        EntFire(p2mm_servercommand, "command", "changelevel sp_a3_01", 76, null)
+        EntFire("p2mm_servercommand", "command", "changelevel sp_a3_01", 76, null)
     }
 
     if (MSLoop) {
