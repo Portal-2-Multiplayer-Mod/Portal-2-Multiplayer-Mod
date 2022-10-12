@@ -16,7 +16,7 @@ from Scripts.BasicLogger import Log
 
 # Verification Statuses:
 # The point of these statuses is to tell users in the Saves menu the kind of compatibility it is with the p2mm mod
-# Offical: This is an official map designed to work with p2mm and made by someone from the p2mm dev team. No one outside the p2mm dev team should have status with a map they created.
+# Offical: This is an official map by Valve or by a p2mm dev member, it has been made or designed to work with p2mm and has been approved by someone on the p2mm dev team. No one outside the p2mm dev team should have status with a map they created.
 # Verified: The map has been tested and verified by a p2mm dev to work with the p2mm mod.
 # Playable: The map can be run with multiple players, but the map still has issues in certain parts or functionalities. Players should be able to complete the map from start to finish. Mainly minor bugs or glitches put it into this state until they have been resolved.
 # Unplayable: A map can be marked with this if the p2mm breaks the map entirely, making it unplayable with the mod, or the map itself can not function as intended with more than the initial amount of players used to test the map.
