@@ -156,7 +156,7 @@ class Gui:
             self.xpos = xpos
             self.ypos = ypos
             self.size = size
-            
+
     # BUTTON CLASS
     class ButtonTemplate:
         def __init__(self,
@@ -171,7 +171,7 @@ class Gui:
                      xpos: float = 16,
                      ypos: float = 2,
                      size: float = 700) -> None:
-            
+
             self.text = text
             self.function = func
             self.activecolor = activeColor
@@ -239,7 +239,7 @@ class Gui:
         if SS.init():
             print("Running")
             self.Button_SaveSystemState = self.ButtonTemplate(
-                translations["save_system_state_txt"] + translations["saves_enabled"],  
+                translations["save_system_state_txt"] + translations["saves_enabled"],
                 inactiveColor = (21, 255, 0),
                 activeColor = (21, 255, 0),
                 size = 600)
@@ -254,7 +254,7 @@ class Gui:
         #This is old but it worked before, keeping it just in case i need it again
         #self.Button_SaveSystemState = self.ButtonTemplate(
         #    translations["save_system_state"] + SS.saveSystemEnabled)
-        
+
         self.SavesMenu = [self.Button_SaveSystemState, self.Button_Back]
 
     def DefineWorkshopButtons(self) -> None:
@@ -295,10 +295,10 @@ class Gui:
             translations["back_button"], self.Button_Back_func)
 
         self.Text_TopRight = self.ButtonTemplate(
-            "This text is at the top right!", 
+            "This text is at the top right!",
             activeColor= (155,155,155), xpos=20, size= 400)
         self.Text_BottomLeft = self.ButtonTemplate(
-            "This text is at the bottom left! xpos= 200 ypos= 1.25 size= 400", 
+            "This text is at the bottom left! xpos= 200 ypos= 1.25 size= 400",
             activeColor= (155,155,155), xpos= 200, ypos= 1.25, size= 400)
 
         #self.TestingMenu = [self.Button_InputField, self.PopupBox_gui,
@@ -849,20 +849,20 @@ class Gui:
         # MENU 2 ELECTRIC BOOGALOO
         # loop through all buttons
         indx = 0
-        
+
         for button in self.CurrentMenu:
             indx += 1
             clr = (0, 0, 0)
             button.width = int(button.size / 25)
             button.height = int(button.size / 50)
-          
+
             if button == self.SelectedButton:
                 clr = button.activecolor
             else:
                 clr = button.inactivecolor
             self.RunAnimation(button, button.curanim)
-            
-            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf", 
+
+            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
             (button.width + button.height)).render(button.text, True, clr)
 
             if not (self.LookingForInput):
@@ -876,7 +876,7 @@ class Gui:
             button.y = ((button.ypos / H) - (text1.get_height() / 2)) * (indx / 5)
             button.width = text1.get_width()
             button.height = text1.get_height()
-            
+
         # BACKGROUND
         for floater in self.Floaters:
             surf = floater.surf
