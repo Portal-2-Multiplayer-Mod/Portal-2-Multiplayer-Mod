@@ -41,23 +41,24 @@ IncludeScript("multiplayermod/configcheck.nut")
 // We don't want to create multiple when it is called on
 Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 
-function MakeProgressCheck() {
-    local ChangeToThisMap = "mp_coop_start"
-    for (local course = 1; course <= 6; course++) {
-        // 9 levels is the highest that a course has
-        for (local level = 1; level <= 9; level++) {
-            if (IsLevelComplete(course - 1, level - 1)) {
-                ChangeToThisMap = "mp_coop_lobby_3"
-            }
-        }
-    }
-    EntFire("p2mm_servercommand", "command", "changelevel " + ChangeToThisMap, 0)
-}
-
 // Facilitate first load after game launch
 if (GetDeveloperLevel() == 918612) {
-    // This function is called only once under this developer level condition
+    // This function is called only once under this developer
+    // level condition, so we'll define it here
     // No need to use it any other time!
+    function MakeProgressCheck() {
+        local ChangeToThisMap = "mp_coop_start"
+        for (local course = 1; course <= 6; course++) {
+            // 9 levels is the highest that a course has
+            for (local level = 1; level <= 9; level++) {
+                if (IsLevelComplete(course - 1, level - 1)) {
+                    ChangeToThisMap = "mp_coop_lobby_3"
+                }
+            }
+        }
+        EntFire("p2mm_servercommand", "command", "changelevel " + ChangeToThisMap, 0)
+    }
+
     // Reset dev level
     if (Config_DevMode) {
         EntFire("p2mm_servercommand", "command", "developer 1")
@@ -97,7 +98,8 @@ foreach (line in ConsoleAscii) { printl(line) }
 // Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
 
-// This is how we communicate with all mapsupport files. In case no mapsupport file exists, it will fall back to "nothing"
+// This function is how we communicate with all mapsupport files.
+// In case no mapsupport file exists, it will fall back to "nothing" instead of an error
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {}
 
 // Import map support code
