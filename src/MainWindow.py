@@ -1432,14 +1432,18 @@ def LoadTranslations() -> dict:
         langPath = GVars.modPath + GVars.nf + "languages/" + \
             GVars.configData["activeLanguage"]["value"] + ".json"
 
-    if not os.path.exists(langPath):
+    translations = json.load(open(langPath, "r", encoding="utf8"))
+    EnglishOriginal : dict[str, str] = json.load(open("languages/English.json", "r", encoding="utf8"))
+
+    if (not os.path.exists(langPath)) or (translations.keys() != EnglishOriginal.keys()):
         cfg.EditConfig("activeLanguage",
                        cfg.DefaultConfigFile["activeLanguage"]["value"])
         langPath = "languages/" + \
             GVars.configData["activeLanguage"]["value"] + ".json"
 
-    translations = json.load(open(langPath, "r", encoding="utf8"))
+        translations = json.load(open(langPath, "r", encoding="utf8"))
 
+        Log("[ERROR] language file isn't found or key mismatch")
 
 def UpdateModFiles() -> None:
     PreExit()

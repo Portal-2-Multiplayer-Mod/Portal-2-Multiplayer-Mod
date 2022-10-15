@@ -30,6 +30,12 @@
 *If you have* ***ANY*** *problems feel free to join our community we are happy to troubleshoot and fix any bugs*
 - https://discord.gg/kW3nG6GKpF
 
+# Contributions
+
+If you want to contribute to this project you can do so in 3 ways:
+1- Help with the Launcher written in python and using pygame
+2- Help with the vscript (add support to workshop maps or optimize/clean current code)
+3- localize the launcher (you can do this by creating a folder `languages` in your p2mm folder and create json files in it, [base translation file](https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/src/languages/English.json))
 
 # How to build
 ### Dependencies
