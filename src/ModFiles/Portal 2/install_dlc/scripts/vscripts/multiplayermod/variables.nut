@@ -46,9 +46,12 @@ class GlobalSpawnClass {
 //---------------
 // Booleans
 //---------------
+AllowColorIndicator <- true // By default unless specified in mapsupport
+AllowNametags <- true // By default unless specified in mapsupport
 CanCheckAngle <- false
 CanHook <- false
 CheatsOn <- false
+CoordsAlternate <- false
 
 DevModeConfig <- Config_DevMode
 
@@ -66,7 +69,7 @@ if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) != "mp_coop") {
 MadeSpawnClass <- false
 OrangeCacheFailed <- false
 Player2Joined <- false
-PostMapLoadDone <- false
+PostMapSpawnDone <- false
 PermaPotato <- false
 StartDevModeCheck <- false
 usefogcontroller <- false
@@ -79,6 +82,7 @@ cacheoriginalplayerposition <- 0
 EntityCap <- 2000
 EntityCapLeeway <- 20
 FailsafeEntityCap <- 2010
+looptime <- 0.1 // Amount of time in seconds to call Loop() consecutively
 PlayerID <- 0
 PreviousNametagItter <- 0
 PreviousTime1Sec <- 0
@@ -220,7 +224,7 @@ if (Config_UseChatCommands) {
     ]
     commandtable <- {}
     commandtable["help"] <- "List available commands or print a description of a specific one."
-    commandtable["noclip"] <- "Toggles noclip mode."
+    commandtable["noclip"] <- "Toggles your noclip status."
     commandtable["kill"] <- "Kill yourself, others, or \"all\"."
     commandtable["changeteam"] <- "Changes your current team."
     commandtable["speed"] <- "Changes your player speed."
@@ -231,6 +235,8 @@ if (Config_UseChatCommands) {
     commandtable["mpcourse"] <- "Changes the level to the specified cooperative course."
     commandtable["playercolor"] <- "Changes your player model's color through valid RGB values."
     commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
+    commandtable["rocket"] <- "Send yourself, others, or \"all\" into the air for them to blow up."
+    commandtable["slap"] <- "Slap yourself, others, or \"all\" dealing a tiny amount of damage and jolting."
 }
 playerclasses <- []
 PrecachedProps <- []
@@ -238,5 +244,7 @@ PrecachedProps <- []
 //---------------
 // Others
 //---------------
+LastCoordGetPlayer <- null
 OriginalAngle <- null
 OriginalPosMain <- null
+setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)

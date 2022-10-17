@@ -17,7 +17,7 @@ CommandReplacements = [
     ['pre_go_to_hub', 'p2mm_tran_hub', 'p2mm_tran_hub'],
     ['pre_go_to_calibration', 'p2mm_tran_calibration', 'p2mm_tran_calibration'],
 
-    # ['go_to_hub', 'p2mm__gth', 'p2mm__gth'], # This is internally called in maps so we can't patch it
+    ['go_to_hub', 'p2mm__gth', 'p2mm__gth'], # (We are able to patch this through mapsupport for cali, c2, c3, and c4 ending maps)
     ['go_to_calibration', 'p2mm_go_to_calibr', 'p2mm_go_to_calibr'],
 
     ['restart_level', 'p2mm__restart', 'p2mm__restart'],

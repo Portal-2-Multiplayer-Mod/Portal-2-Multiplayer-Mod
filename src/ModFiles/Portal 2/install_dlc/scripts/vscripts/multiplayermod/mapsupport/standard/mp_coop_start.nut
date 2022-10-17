@@ -1,9 +1,9 @@
 // ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗████████╗ █████╗ ██████╗ ████████╗
 // ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝
-// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ╚█████╗    ██║   ███████║██████╔╝   ██║   
-// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝             ╚═══██╗   ██║   ██╔══██║██╔══██╗   ██║   
-// ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗██████╔╝   ██║   ██║  ██║██║  ██║   ██║   
-// ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚═════╝    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   
+// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ╚█████╗    ██║   ███████║██████╔╝   ██║
+// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝             ╚═══██╗   ██║   ██╔══██║██╔══██╗   ██║
+// ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗██████╔╝   ██║   ██║  ██║██║  ██║   ██║
+// ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚═════╝    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -27,8 +27,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("coop_man_close_box2_door", "addoutput" "OnChangeToAnyTrue blue_door_6-airlock_entry_door_close_rl:Disable")
         EntFire("coop_man_close_box2_door", "addoutput" "OnChangeToAnyTrue orange_door_6-airlock_entry_door_close_rl:Disable")
+
+        EntFire("coopman_exit_level", "addoutput", "OnChangeToAllTrue p2mm_servercommand:command:changelevel mp_coop_lobby_3:10")
     }
-    
+
     if (MSLoop) {
         if (!blue_picked_up_gun && !Entities.FindByName(null, "portalgun_blue")) {
             if (Entities.FindByName(null, "p2mm_blue_get_gun_trigger")) {
@@ -66,7 +68,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
             // Someone picked up the orange portal gun
             orange_picked_up_gun <- true
-            coop_startHasPortalGun("orange") 
+            coop_startHasPortalGun("orange")
         }
     }
 

@@ -13,14 +13,6 @@
 //                upon later in the code.
 //---------------------------------------------------
 
-function UTIL_PlayerByIndex(index) {
-    for (local player; player = Entities.FindByClassname(player, "player");) {
-        if (player.entindex() == index) {
-            return player
-        }
-    }
-}
-
 function GetHighest(inpvec) {
     local highest = -99999999
     local highesttemp = -99999999
@@ -415,7 +407,6 @@ function CreateGenericPlayerClass(p) {
     // Base info
     currentplayerclass.player <- p // The player reference in code
     currentplayerclass.potatogun <- false // Potatogun
-    currentplayerclass.rocket <- false  // Rocket player status
     currentplayerclass.portal1 <- null // Player primary portal
     currentplayerclass.portal2 <- null // Player secondary portal
     currentplayerclass.playermodel <- null // Cosmetics
@@ -428,6 +419,13 @@ function CreateGenericPlayerClass(p) {
     // Plugin-specific
     currentplayerclass.username <- GetPlayerName(currentplayerclass.id) // Player Name
     currentplayerclass.steamid <- GetSteamID(currentplayerclass.id) // Player Steam ID
+
+    // Chat commands
+    if (Config_UseChatCommands && PluginLoaded) {
+        currentplayerclass.rocket <- false  // Rocket player status
+        currentplayerclass.startedvote <- false  // Did this player initiate a vote?
+        currentplayerclass.hasvoted <- false  // Did this player vote already?
+    }
 
     // Note down the registered player for later reference
     playerclasses.push(currentplayerclass)
@@ -1542,7 +1540,7 @@ function CombineList(list, startlength, inbetweenchars = " ") {
 
 function CreateOurEntities() {
 
-    if (Config_UseNametags) {
+    if (Config_UseNametags && AllowNametags) {
         // Create an entity to measure player eye angles
         measuremovement <- Entities.CreateByClassname("logic_measure_movement")
         measuremovement.__KeyValueFromString( "measuretype", "1")
@@ -1564,6 +1562,12 @@ function CreateOurEntities() {
         nametagdisplay.__KeyValueFromString("fadeout", "0.2")
         nametagdisplay.__KeyValueFromString("fadein", "0.2")
         nametagdisplay.__KeyValueFromString("channel", "0")
+    }
+
+    if (Config_UseChatCommands) {
+        p2mm_vote_text_title <- Entities.CreateByClassname("game_text").__KeyValueFromString("targetname", "p2mm_vote_text_title")
+        p2mm_vote_for_item <- Entities.CreateByClassname("game_text").__KeyValueFromString("targetname", "p2mm_vote_for_item")
+        p2mm_vote_against_item <- Entities.CreateByClassname("game_text").__KeyValueFromString("targetname", "p2mm_vote_against_item")
     }
 
     // Create an display entity for the host to wait for another player to load in

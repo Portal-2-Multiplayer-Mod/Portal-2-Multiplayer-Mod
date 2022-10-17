@@ -128,15 +128,15 @@ function NewApertureStartElevatorFixes() {
 //## Disable Wheatley Pickup ##//
 function disablewheatleyplayerpickup() {
     try {
-        EntFire("@sphere", "disablepickup", "", 0, null)
-        EntFire("@sphereDummy", "enablepickup", "", 0, null)
+        EntFire("@sphere", "disablepickup")
+        EntFire("@sphereDummy", "enablepickup")
     } catch(exception) {}
 }
 
 //## Enable Wheatley Pickup ##//
 function enablewheatleyplayerpickup() {
     try {
-        EntFire("@sphere", "enablepickup", "", 0, null)
-        EntFire("@sphereDummy", "enablepickup", "", 0, null)
+        EntFire("@sphere", "enablepickup")
+        EntFire("@sphereDummy", "enablepickup")
     } catch(exception) {}
 }

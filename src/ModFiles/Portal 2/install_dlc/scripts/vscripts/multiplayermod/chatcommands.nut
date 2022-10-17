@@ -50,11 +50,6 @@ function ChatCommands(ccuserid, ccmessage) {
     local Commands = []
     local Runners = []
 
-    // The real chat command doesn't have the "!"
-    local RemoveCommandPrefix = function(s) {
-        return Replace(s, "!", "")
-    }
-
     local GetCommandFromString = function(str) {
         foreach (cmd in CommandList) {
             if (StartsWith(str.tolower(), cmd.name)) {
@@ -68,18 +63,19 @@ function ChatCommands(ccuserid, ccmessage) {
 
     // Be able to tell what is and isn't a chat command
     foreach (Input in Inputs) {
-        if (!StartsWith(Input, "!")) {
+        if (!StartsWith(Input, "!") || Message.len() < 2) {
             return
         }
-        if (Message.len() < 3) {
+        if (Message.slice(0, 2) == "!!" && Message.slice(0, 2) == "! ") {
             return
         }
-        if (Message.slice(0, 4) == "!SAR") {
-            return // speedrun plugin events can interfere
+        if (Message.len() > 3) {
+            if (Message.slice(0, 4) == "!SAR") {
+                return // speedrun plugin events can interfere
+            }
         }
-        if (Message.slice(0, 2) != "!!" && Message.slice(0, 2) != "! ") {
-            Commands.push(RemoveCommandPrefix(Input))
-        }
+        // The real chat command doesn't have the "!"
+        Commands.push(Replace(Input, "!", ""))
     }
 
     // Register the activating player
@@ -98,16 +94,16 @@ function ChatCommands(ccuserid, ccmessage) {
 
         Command = GetCommandFromString(Command)
 
-        // We met the criteria, run it
+        // Confirmed that it's a command, now try to run it
         foreach (CurPlayer in Runners) {
-            // Do we have the correct admin level for this command?
-            if (!(Command.level <= AdminLevel)) {
-                return SendChatMessage("[ERROR] You do not have permission to use this command.", CurPlayer)
-            }
-
             // Does the exact command exist?
             if (Command == null) {
                 return SendChatMessage("[ERROR] Command not found.", CurPlayer)
+            }
+
+            // Do we have the correct admin level for this command?
+            if (!(Command.level <= AdminLevel)) {
+                return SendChatMessage("[ERROR] You do not have permission to use this command.", CurPlayer)
             }
 
             RunChatCommand(Command, Args, CurPlayer)
@@ -120,6 +116,154 @@ function ChatCommands(ccuserid, ccmessage) {
 //=======================================
 
 CommandList <- [
+    // class {
+    //     name = "vote"
+    //     level = 0
+
+    //     // !vote
+    //     function CC(p, args) {
+    //         if (args.len() == 0) {
+    //             return SendChatMessage("[ERROR] Voting options are: \"changelevel\", \"kick\", and \"hostgunonly\"", p)
+    //         }
+
+    //         local bVoteInProgress = false
+    //         local bCurrentCCPlayerInitiatedVote = false
+    //         local iCurrentNumberOfPlayers = 0
+    //         for (local player; player = Entities.FindByClassname(player, "player");) {
+    //             iCurrentNumberOfPlayers++
+    //         }
+
+    //         for (local player; player = Entities.FindByClassname(player, "player");) {
+    //             if (FindPlayerClass(player).startedvote) {
+    //                 bVoteInProgress = true
+    //                 if (player == p) {
+    //                     // This player initiated the vote and
+    //                     // is invoking the command again
+    //                     bCurrentCCPlayerInitiatedVote = true
+    //                 }
+    //             }
+    //         }
+
+    //         args[0] = Strip(args[0])
+
+    //         // There is a vote in progress
+    //         if (bVoteInProgress) {
+    //             switch (args[0].lower()) {
+    //             case "cancel":
+    //                 if (p == bCurrentCCPlayerInitiatedVote)
+    //                     FindPlayerClass(player).startedvote = false
+    //                     FindPlayerClass(player).hasvoted = false
+
+    //                 break
+    //             case "changelevel":
+    //                 FindPlayerClass(p).hasvoted = true
+
+    //                 SendChatMessage("Started vote for " + args[0], p)
+    //                 break
+    //             case "kick":
+    //                 FindPlayerClass(p).startedvote = true
+    //                 FindPlayerClass(p).hasvoted = true
+
+    //                 SendChatMessage("Started vote for " + args[0], p)
+    //                 break
+    //             case "kick":
+    //                 FindPlayerClass(p).startedvote = true
+    //                 FindPlayerClass(p).hasvoted = true
+
+    //                 SendChatMessage("Started vote for " + args[0], p)
+    //                 break
+    //             default:
+    //                 SendChatMessage("[ERROR] Voting options are: \"changelevel\" and \"kick\"", p)
+    //                 break
+    //             }
+    //             SendChatMessage("[ERROR] Cannot start a vote if one is already active.", p)
+    //             return
+    //         }
+
+    //         // There was no vote in progress
+    //         switch (args[0].lower()) {
+    //         case "cancel":
+    //             SendChatMessage("Cannot cancel. No vote active.", p)
+    //             break
+    //         case "changelevel":
+    //             FindPlayerClass(p).startedvote = true
+    //             FindPlayerClass(p).hasvoted = true
+
+    //             SendChatMessage("Started vote for " + args[0], p)
+    //             break
+    //         case "kick":
+    //             FindPlayerClass(p).startedvote = true
+    //             FindPlayerClass(p).hasvoted = true
+
+    //             SendChatMessage("Started vote for " + args[0], p)
+    //             break
+    //         default:
+    //             SendChatMessage("[ERROR] Voting options are: \"changelevel\" and \"kick\"", p)
+    //             break
+    //         }
+    //     }
+    // }
+    // ,
+    class {
+        name = "rocket"
+        level = 3
+
+        // !rocket (player or "all")
+        function CC(p, args) {
+            if (args.len() == 0) {
+                return SendChatMessage("[ERROR] Input a player name.", p)
+            }
+
+            local RocketPlayer = function(player) {
+                local currentplayerclass = FindPlayerClass(player)
+                player.SetVelocity(Vector(player.GetVelocity().x, player.GetVelocity().y, 500))
+                currentplayerclass.rocket <- true // loop.nut takes care of the rest of this
+            }
+
+            args[0] = Strip(args[0])
+            if (args[0] == "all") {
+                for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+                    RocketPlayer(ent)
+                }
+            } else {
+                local q = FindPlayerByName(args[0])
+                if (q == null) {
+                    return SendChatMessage("[ERROR] Player not found.", p)
+                } else {
+                    RocketPlayer(q)
+                }
+            }
+        }
+    }
+    ,
+    class {
+        name = "slap"
+        level = 4
+
+        // !slap (player or "all")
+        function CC(p, args) {
+            if (args.len() == 0) {
+                return SendChatMessage("[ERROR] Input a player name.", p)
+            }
+
+            args[0] = Strip(args[0])
+            if (args[0] == "all") {
+                for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+                    EntFireByHandle(ent, "sethealth", "-30", 0, p, p)
+                    ent.SetVelocity(Vector(RandomInt(500, 600), RandomInt(500, 600), RandomInt(500, 600)))
+                }
+            } else {
+                local q = FindPlayerByName(args[0])
+                if (q == null) {
+                    return SendChatMessage("[ERROR] Player not found.", p)
+                } else {
+                    EntFireByHandle(q, "sethealth", "-50", 0, p, p)
+                    q.SetVelocity(Vector(RandomInt(500, 600), RandomInt(500, 600), RandomInt(500, 600)))
+                }
+            }
+        }
+    }
+    ,
     class {
         name = "noclip"
         level = 4
@@ -374,7 +518,7 @@ CommandList <- [
         name = "spchapter"
         level = 5
 
-        // !spchapter (integer arg)
+        // !spchapter (chapter integer arg)
         function CC(p, args) {
             try{
                 args[0] = args[0].tointeger()
@@ -396,7 +540,7 @@ CommandList <- [
         name = "mpcourse"
         level = 5
 
-        // !mpcourse (integer arg)
+        // !mpcourse (course integer arg)
         function CC(p, args) {
             try{
                 args[0] = args[0].tointeger()
@@ -610,15 +754,14 @@ function SendChatMessage(message, pActivatorAndCaller = null) {
 
 function RunChatCommand(cmd, args, plr) {
     printl("(P2:MM): Running chat command: " + cmd.name)
-    printl("(P2:MM): Player: " + GetPlayerName(plr.entindex()))
+    printl("(P2:MM): Player: " + FindPlayerClass(plr).username)
     cmd.CC(plr, args)
 }
 
-function GetPlayerFromUserID(userid) {
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        if (p.entindex() == userid) {
-            return p
+function UTIL_PlayerByIndex(index) {
+    for (local player; player = Entities.FindByClassname(player, "player");) {
+        if (player.entindex() == index) {
+            return player
         }
     }
     return null
@@ -741,8 +884,8 @@ function GetAdminLevel(plr) {
     // For people who were not defined, check if it's the host
     if (FindPlayerClass(plr).steamid.tostring() == GetSteamID(1).tostring()) {
         // It is, so we automatically give the host max perms
-        Admins.push("[6]" + GetSteamID(1))
-        SendChatMessage("Added max permissions for " + GetPlayerName(1) + " as server operator.")
+        Admins.push("[6]" + FindPlayerClass(plr).steamid)
+        SendChatMessage("Added max permissions for " + FindPlayerClass(plr).username + " as server operator.", plr)
         return 6
     } else {
         // Not in Admins array nor are they the host
@@ -755,6 +898,6 @@ function SetAdminLevel(NewLevel, iPlayerIndex) {
         SendChatMessage("[ERROR] Cannot change admin level of server operator!")
         return
     }
-    Admins.push("[" + NewLevel + "]" + GetSteamID(iPlayerIndex))
-    SendChatMessage("Set " + GetPlayerName(iPlayerIndex) + "'s admin level to " + NewLevel + ".")
+    Admins.push("[" + NewLevel + "]" + FindPlayerClass(iPlayerIndex).steamid)
+    SendChatMessage("Set " + FindPlayerClass(iPlayerIndex).username + "'s admin level to " + NewLevel + ".")
 }
