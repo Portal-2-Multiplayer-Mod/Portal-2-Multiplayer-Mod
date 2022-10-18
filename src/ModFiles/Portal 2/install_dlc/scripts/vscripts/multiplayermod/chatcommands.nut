@@ -41,7 +41,7 @@ if (Config_UseChatCommands) {
 function ChatCommands(ccuserid, ccmessage) {
 
     local Message = strip(RemoveDangerousChars(ccmessage))
-    local Player = GetPlayerFromUserID(ccuserid)
+    local Player = UTIL_PlayerByIndex(ccuserid)
     local Inputs = SplitBetween(Message, "!@", true)
     local PlayerClass = FindPlayerClass(Player)
     local Username = PlayerClass.username
@@ -211,7 +211,8 @@ CommandList <- [
         // !rocket (player or "all")
         function CC(p, args) {
             if (args.len() == 0) {
-                return SendChatMessage("[ERROR] Input a player name.", p)
+                RocketPlayer(p)
+                return
             }
 
             local RocketPlayer = function(player) {
@@ -295,7 +296,7 @@ CommandList <- [
                     "Killed all players."
                     "[ERROR] Player not found."
                 ]
-                EntFireByHandle(p2mm_clientcommand, "Command", "say " + KillPlayerText[iTextIndex], 0, player, player)
+                SendChatMessage(KillPlayerText[iTextIndex], player)
             }
 
             if (GetAdminLevel(p) < 2) {
