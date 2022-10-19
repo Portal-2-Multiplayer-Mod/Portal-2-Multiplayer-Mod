@@ -416,7 +416,7 @@ function CreateGenericPlayerClass(p) {
     currentplayerclass.noclip <- p.IsNoclipping() // Player noclip status
     currentplayerclass.color <- GetPlayerColor(p)  // Player color
 
-    // Plugin-specific
+    // Can change depending on whether the plugin is loaded
     currentplayerclass.username <- GetPlayerName(currentplayerclass.id) // Player Name
     currentplayerclass.steamid <- GetSteamID(currentplayerclass.id) // Player Steam ID
 

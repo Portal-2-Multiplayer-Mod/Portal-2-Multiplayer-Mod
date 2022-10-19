@@ -199,7 +199,6 @@ function Loop() {
         }
     }
 
-
     //## Set PlayerModel ##//
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
@@ -391,11 +390,18 @@ function Loop() {
     if (Time() >= PreviousTime5Sec + 5) {
         PreviousTime5Sec = Time()
 
-        // Color display
+        // Color indicator
         if (Config_UseColorIndicator && AllowColorIndicator) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 DisplayPlayerColor(p)
+            }
+        }
+
+        //## Vote CC Display Text ##//
+        if (Config_UseChatCommands && PluginLoaded) {
+            if (ShouldDisplayVoteCounter) {
+                EntFire("VoteCounter", "Display")
             }
         }
     }
@@ -599,7 +605,9 @@ function PostPlayerSpawn() {
     ]
 
     if (IsOnSingleplayerMaps) {
-        SendToConsoleP2MM("script function CoopPingTool(int1, int2) {}") // Not needed in singleplayer
+        // Not needed in singleplayer
+        SendToConsoleP2MM("script function CoopPingTool(int1, int2) {}")
+        SendToConsoleP2MM("script function CoopBotAnimation(int1, int2) {}")
     } else {
         foreach (DoorType in DoorEntities) {
             try {
@@ -646,7 +654,7 @@ function PostMapSpawn() {
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
 
-	// Gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
+	// Gelocity alias for easier changelevel
 	SendToConsoleP2MM("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	SendToConsoleP2MM("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")

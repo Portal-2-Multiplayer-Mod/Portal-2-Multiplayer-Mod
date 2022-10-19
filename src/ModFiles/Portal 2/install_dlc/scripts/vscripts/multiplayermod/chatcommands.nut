@@ -116,94 +116,116 @@ function ChatCommands(ccuserid, ccmessage) {
 //=======================================
 
 CommandList <- [
-    // class {
-    //     name = "vote"
-    //     level = 0
+    /*class {
+        name = "vote"
+        level = 6
 
-    //     // !vote
-    //     function CC(p, args) {
-    //         if (args.len() == 0) {
-    //             return SendChatMessage("[ERROR] Voting options are: \"changelevel\", \"kick\", and \"hostgunonly\"", p)
-    //         }
+        // !vote
+        function CC(p, args) {
+            local Vote = Vote(p) // variables.nut
 
-    //         local bVoteInProgress = false
-    //         local bCurrentCCPlayerInitiatedVote = false
-    //         local iCurrentNumberOfPlayers = 0
-    //         for (local player; player = Entities.FindByClassname(player, "player");) {
-    //             iCurrentNumberOfPlayers++
-    //         }
+            if (args.len() == 0) {
+                if (Vote.bVoteInProgress) {
+                    if (Vote.bCurrentCCPlayerInitiatedVote) {
+                        SendChatMessage("[VOTE] End a vote with: cancel", p)
+                    } else {
+                        if (!FindPlayerClass(p).hasvoted) {
+                            SendChatMessage("[VOTE] Vote with: yes, no", p)
+                        } else {
+                            SendChatMessage("[VOTE] You have already voted.", p)
+                        }
+                    }
+                } else {
+                    SendChatMessage("[VOTE] Start a vote with: changelevel, kick, or hostgunonly", p)
+                }
+                return
+            }
 
-    //         for (local player; player = Entities.FindByClassname(player, "player");) {
-    //             if (FindPlayerClass(player).startedvote) {
-    //                 bVoteInProgress = true
-    //                 if (player == p) {
-    //                     // This player initiated the vote and
-    //                     // is invoking the command again
-    //                     bCurrentCCPlayerInitiatedVote = true
-    //                 }
-    //             }
-    //         }
+            args[0] = Strip(args[0])
 
-    //         args[0] = Strip(args[0])
+            //----------------------------
+            // There is a vote in progress
+            //----------------------------
 
-    //         // There is a vote in progress
-    //         if (bVoteInProgress) {
-    //             switch (args[0].lower()) {
-    //             case "cancel":
-    //                 if (p == bCurrentCCPlayerInitiatedVote)
-    //                     FindPlayerClass(player).startedvote = false
-    //                     FindPlayerClass(player).hasvoted = false
+            if (Vote.bVoteInProgress) {
+                // Standard voter
+                if (!Vote.bCurrentCCPlayerInitiatedVote && FindPlayerClass(p).hasvoted && !Vote.IsAdminLevelEnough(p)) {
+                    return SendChatMessage("[VOTE] You have already voted.", p)
+                }
 
-    //                 break
-    //             case "changelevel":
-    //                 FindPlayerClass(p).hasvoted = true
+                // Vote initiator didn't try to cancel
+                if (Vote.bCurrentCCPlayerInitiatedVote && args[0] != "cancel" && args[0] != "succeed" && args[0] != "fail") {
+                    return SendChatMessage("[ERROR] You initiated a vote and voted already.", p)
+                }
 
-    //                 SendChatMessage("Started vote for " + args[0], p)
-    //                 break
-    //             case "kick":
-    //                 FindPlayerClass(p).startedvote = true
-    //                 FindPlayerClass(p).hasvoted = true
+                switch (args[0]) {
+                // Only cancel if it's an admin or the vote initiator
+                case "cancel":
+                    if (Vote.bCurrentCCPlayerInitiatedVote || Vote.IsAdminLevelEnough(p)) {
+                        Vote.EndVote()
+                        return SendChatMessage("[VOTE] The vote has been cancelled.", p)
+                    }
+                    return SendChatMessage("[ERROR] Cannot cancel the vote if you did not start it.", p)
+                    break
 
-    //                 SendChatMessage("Started vote for " + args[0], p)
-    //                 break
-    //             case "kick":
-    //                 FindPlayerClass(p).startedvote = true
-    //                 FindPlayerClass(p).hasvoted = true
+                // Don't start new votes
+                case "changelevel": SendChatMessage("[ERROR] Cannot start another vote if one is in progress.", p); break
+                case "kick":        SendChatMessage("[ERROR] Cannot start another vote if one is in progress.", p); break
+                case "hostgunonly": SendChatMessage("[ERROR] Cannot start another vote if one is in progress.", p); break
 
-    //                 SendChatMessage("Started vote for " + args[0], p)
-    //                 break
-    //             default:
-    //                 SendChatMessage("[ERROR] Voting options are: \"changelevel\" and \"kick\"", p)
-    //                 break
-    //             }
-    //             SendChatMessage("[ERROR] Cannot start a vote if one is already active.", p)
-    //             return
-    //         }
+                // Submit a vote
+                case "yes":         Vote.SubmitVote(args[0], p);    break
+                case "no":          Vote.SubmitVote(args[0], p);    break
 
-    //         // There was no vote in progress
-    //         switch (args[0].lower()) {
-    //         case "cancel":
-    //             SendChatMessage("Cannot cancel. No vote active.", p)
-    //             break
-    //         case "changelevel":
-    //             FindPlayerClass(p).startedvote = true
-    //             FindPlayerClass(p).hasvoted = true
+                // Admin control
+                case "succeed":
+                    if (Vote.IsAdminLevelEnough(p)) {
+                        Vote.DoVote(args[0])
+                        SendChatMessage("Overruled the vote.", p)
+                    }
+                    break
+                case "fail":
+                    if (Vote.IsAdminLevelEnough(p)) {
+                        Vote.DoVote(args[0])
+                        SendChatMessage("Overruled the vote.", p)
+                    }
+                    break
 
-    //             SendChatMessage("Started vote for " + args[0], p)
-    //             break
-    //         case "kick":
-    //             FindPlayerClass(p).startedvote = true
-    //             FindPlayerClass(p).hasvoted = true
+                // Randomness was entered
+                default:
+                    SendChatMessage("[ERROR] Voting options are: yes, and no", p)
+                    break
+                }
+                return
+            }
 
-    //             SendChatMessage("Started vote for " + args[0], p)
-    //             break
-    //         default:
-    //             SendChatMessage("[ERROR] Voting options are: \"changelevel\" and \"kick\"", p)
-    //             break
-    //         }
-    //     }
-    // }
-    // ,
+            //--------------------------------
+            // There was no vote in progress
+            //--------------------------------
+
+            switch (args[0]) {
+            case "cancel":      SendChatMessage("[ERROR] Cannot cancel. No vote active.", p);   break
+
+            // Start a new vote
+            case "changelevel": Vote.BeginVote(args[0], p);                             break
+            case "kick":        Vote.BeginVote(args[0], p);                             break
+            case "hostgunonly": Vote.BeginVote(args[0], p);                             break
+
+            // Cannot vote for something yet
+            case "yes":         SendChatMessage("[ERROR] No vote is active.", p);       break
+            case "no":          SendChatMessage("[ERROR] No Vote is active.", p);       break
+
+            case "succeed":     SendChatMessage("[ERROR] No vote is active.", p);       break
+            case "fail":        SendChatMessage("[ERROR] No Vote is active.", p);       break
+
+            // No valid option chosen
+            default:
+                SendChatMessage("[ERROR] Voting options are: changelevel, kick, and hostgunonly.", p)
+                break
+            }
+        }
+    }
+    ,*/
     class {
         name = "rocket"
         level = 3
@@ -899,6 +921,6 @@ function SetAdminLevel(NewLevel, iPlayerIndex) {
         SendChatMessage("[ERROR] Cannot change admin level of server operator!")
         return
     }
-    Admins.push("[" + NewLevel + "]" + FindPlayerClass(iPlayerIndex).steamid)
-    SendChatMessage("Set " + FindPlayerClass(iPlayerIndex).username + "'s admin level to " + NewLevel + ".")
+    Admins.push("[" + NewLevel + "]" + FindPlayerClass(UTIL_PlayerByIndex(iPlayerIndex)).steamid)
+    SendChatMessage("Set " + FindPlayerClass(UTIL_PlayerByIndex(iPlayerIndex)).username + "'s admin level to " + NewLevel + ".")
 }

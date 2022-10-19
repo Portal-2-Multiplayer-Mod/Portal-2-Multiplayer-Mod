@@ -43,6 +43,67 @@ class GlobalSpawnClass {
     }
 }
 
+if (Config_UseChatCommands) {
+    class Vote {
+        CurrentTime = null
+        ActiveVote = null
+
+        bVoteInProgress = false
+        bCurrentCCPlayerInitiatedVote = false
+        iCurrentNumberOfPlayers = 0
+        constructor(p) {
+            for (local player; player = Entities.FindByClassname(player, "player");) {
+                iCurrentNumberOfPlayers++
+                if (FindPlayerClass(player).startedvote) {
+                    bVoteInProgress = true
+                    if (p == player) {
+                        // This player initiated the vote and
+                        // is invoking the command again
+                        bCurrentCCPlayerInitiatedVote = true
+                    }
+                }
+            }
+        }
+
+        function IsAdminLevelEnough(player) {
+            if (GetAdminLevel(player) >= 6) {
+                return true
+            }
+            return false
+        }
+        function EndVote() {
+            ActiveVote = null
+            ShouldDisplayVoteCounter = false
+            for (local player; player = Entities.FindByClassname(player, "player");) {
+                FindPlayerClass(player).startedvote = false // Forget who initiated the vote
+                FindPlayerClass(player).hasvoted = false // Forget all those that had voted
+            }
+        }
+        function SubmitVote(arg1, arg2) {
+            FindPlayerClass(arg2).hasvoted = true
+            SendChatMessage("Submitted vote for " + arg1 + ".", arg2)
+        }
+        function DoVote(arg1) {
+            // Add stuff for actually changing in game stuffs
+            EndVote()
+        }
+        function BeginVote(arg1, arg2) {
+            // Update the text color and max players
+            local rgb = FindPlayerClass(arg2).color
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("color", rgb.r.tostring() + " " + rgb.g.tostring() + " " + rgb.b.tostring())
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote #: 0/" + iCurrentNumberOfPlayers.tostring())
+
+            // Update the class info
+            CurrentTime = Time()
+            FindPlayerClass(arg2).startedvote = true
+            FindPlayerClass(arg2).hasvoted = true
+            ActiveVote = arg1
+            ShouldDisplayVoteCounter = true
+            SendChatMessage("Started vote for " + arg1 + ".", arg2)
+        }
+    }
+}
+
 //---------------
 // Booleans
 //---------------
@@ -71,6 +132,11 @@ OrangeCacheFailed <- false
 Player2Joined <- false
 PostMapSpawnDone <- false
 PermaPotato <- false
+
+if (Config_UseChatCommands) {
+    ShouldDisplayVoteCounter <- false
+}
+
 StartDevModeCheck <- false
 usefogcontroller <- false
 
@@ -248,3 +314,17 @@ LastCoordGetPlayer <- null
 OriginalAngle <- null
 OriginalPosMain <- null
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
+
+if (Config_UseChatCommands) {
+    VoteCounter <- Entities.CreateByClassname("game_text")
+    VoteCounter.__KeyValueFromString("targetname", "VoteCounter")
+    VoteCounter.__KeyValueFromString("x", "0.005")
+    VoteCounter.__KeyValueFromString("y", "0.9")
+    VoteCounter.__KeyValueFromString("message", "Vote #: 0/0")
+    VoteCounter.__KeyValueFromString("holdtime", "5")
+    VoteCounter.__KeyValueFromString("fadeout", "2")
+    VoteCounter.__KeyValueFromString("fadein", "2")
+    VoteCounter.__KeyValueFromString("channel", "0")
+    VoteCounter.__KeyValueFromString("spawnflags", "1")
+    VoteCounter.__KeyValueFromString("color", "255 255 255")
+}
