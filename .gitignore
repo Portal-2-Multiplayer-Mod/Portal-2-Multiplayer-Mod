@@ -199,8 +199,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# 2v2coopbattle unneeded files/dirs Added By: Orsell
-p32wip/animations
-p32wip/p2cetest
+# Source Hammer portal files and vmx files
 *.prt
 *.vmx
