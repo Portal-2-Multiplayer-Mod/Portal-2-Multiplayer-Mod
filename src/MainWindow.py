@@ -154,11 +154,12 @@ class Gui:
                     font: str = "GUI/assets/fonts/pixel.ttf",
                     textColor: tuple = (155, 155, 155),
                     xpos: float = 0, # The bigger the number, the more right the text will be.
-                    xstart: float = 100,
-                    xend: float = 100,
+                    xstart: float = 100, # While both xpos and ypos determine where the text will begin,
+                    xend: float = 100, # xstart and xend define where the wrapping for the displaytext will start and end. This can allow to to have text on the next line appear before where it orginally started.
                     ypos: float = 0, # The bigger the number, the lower the text will be.
                     size: float = 100 # The bigger the number, the smaller it is, because that definitely makes sense.
                     ) -> None:
+
             self.text = text
             self.font = font
             self.textColor = textColor
