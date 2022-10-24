@@ -162,7 +162,7 @@ CommandList <- [
                 // Only cancel if it's an admin or the vote initiator
                 case "cancel":
                     if (Vote.bCurrentCCPlayerInitiatedVote || Vote.IsAdminLevelEnough(p)) {
-                        Vote.EndVote()
+                        Vote.DoVote("fail")
                         return SendChatMessage("[VOTE] The vote has been cancelled.", p)
                     }
                     return SendChatMessage("[ERROR] Cannot cancel the vote if you did not start it.", p)
@@ -203,20 +203,31 @@ CommandList <- [
             // There was no vote in progress
             //--------------------------------
 
+            local ShouldReturn = false
+
+            local CheckArg1Exists = function(p) {
+                try {
+                    args[1] = Strip(args[1])
+                } catch (exception) {
+                    ShouldReturn = true
+                    return SendChatMessage("[ERROR] Enter a second argument.", p)
+                }
+            }
+
             switch (args[0]) {
             case "cancel":      SendChatMessage("[ERROR] Cannot cancel. No vote active.", p);   break
 
             // Start a new vote
-            case "changelevel": Vote.BeginVote(args[0], p);                             break
-            case "kick":        Vote.BeginVote(args[0], p);                             break
-            case "hostgunonly": Vote.BeginVote(args[0], p);                             break
+            case "changelevel": CheckArg1Exists(p); if (ShouldReturn) { return };  Vote.BeginVote(args[0], args[1], p);    break
+            case "kick":        CheckArg1Exists(p); if (ShouldReturn) { return };  Vote.BeginVote(args[0], args[1], p);    break
+            case "hostgunonly": CheckArg1Exists(p); if (ShouldReturn) { return };  Vote.BeginVote(args[0], args[1], p);    break
 
             // Cannot vote for something yet
-            case "yes":         SendChatMessage("[ERROR] No vote is active.", p);       break
-            case "no":          SendChatMessage("[ERROR] No Vote is active.", p);       break
+            case "yes":         SendChatMessage("[ERROR] No vote is active.", p);   break
+            case "no":          SendChatMessage("[ERROR] No Vote is active.", p);   break
 
-            case "succeed":     SendChatMessage("[ERROR] No vote is active.", p);       break
-            case "fail":        SendChatMessage("[ERROR] No Vote is active.", p);       break
+            case "succeed":     SendChatMessage("[ERROR] No vote is active.", p);   break
+            case "fail":        SendChatMessage("[ERROR] No Vote is active.", p);   break
 
             // No valid option chosen
             default:
@@ -240,7 +251,7 @@ CommandList <- [
             local RocketPlayer = function(player) {
                 local currentplayerclass = FindPlayerClass(player)
                 player.SetVelocity(Vector(player.GetVelocity().x, player.GetVelocity().y, 500))
-                currentplayerclass.rocket <- true // loop.nut takes care of the rest of this
+                currentplayerclass.rocket <- true
             }
 
             args[0] = Strip(args[0])

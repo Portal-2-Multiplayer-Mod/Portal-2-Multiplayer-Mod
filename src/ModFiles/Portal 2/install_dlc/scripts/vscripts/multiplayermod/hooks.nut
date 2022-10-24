@@ -341,13 +341,14 @@ function Loop() {
     ////#### FUN STUFF ####////
 
     //## Rocket ##//
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        local currentplayerclass = FindPlayerClass(p)
-        if (currentplayerclass.rocket) {
-            if (p.GetVelocity().z <= 1) {
-                EntFireByHandle(p, "sethealth", "-100", 0, p, p)
-                currentplayerclass.rocket <- false
+    if (Config_UseChatCommands && PluginLoaded) {
+        for (local p; p = Entities.FindByClassname(p, "player");) {
+            local currentplayerclass = FindPlayerClass(p)
+            if (currentplayerclass.rocket) {
+                if (p.GetVelocity().z <= 1) {
+                    EntFireByHandle(p, "sethealth", "-100", 0, p, p)
+                    currentplayerclass.rocket <- false
+                }
             }
         }
     }
@@ -391,19 +392,19 @@ function Loop() {
         PreviousTime5Sec = Time()
 
         // Color indicator
-        if (Config_UseColorIndicator && AllowColorIndicator) {
+        if (Config_UseColorIndicator && AllowColorIndicator && HasSpawned) {
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 DisplayPlayerColor(p)
             }
         }
 
-        //## Vote CC Display Text ##//
-        if (Config_UseChatCommands && PluginLoaded) {
-            if (ShouldDisplayVoteCounter) {
-                EntFire("VoteCounter", "Display")
-            }
-        }
+        // //## Vote CC Display Text ##//
+        // if (Config_UseChatCommands && PluginLoaded) {
+        //     if (ShouldDisplayVoteCounter) {
+        //         EntFire("VoteCounter", "Display")
+        //     }
+        // }
     }
 
     ///////////////////////

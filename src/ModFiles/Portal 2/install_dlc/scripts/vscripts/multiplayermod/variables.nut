@@ -43,10 +43,13 @@ class GlobalSpawnClass {
     }
 }
 
-if (Config_UseChatCommands) {
+/*if (Config_UseChatCommands) {
     class Vote {
         CurrentTime = null
         ActiveVote = null
+        VotedYes = 0
+        VotedNo = 0
+        Arg2 = null
 
         bVoteInProgress = false
         bCurrentCCPlayerInitiatedVote = false
@@ -71,38 +74,65 @@ if (Config_UseChatCommands) {
             }
             return false
         }
-        function EndVote() {
+        function SubmitVote(arg1, arg2) {
+            FindPlayerClass(arg2).hasvoted = true
+            if (arg1 == "yes") {
+                VotedYes++
+            } else {
+                VotedNo++
+            }
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + VotedYes + "/" + VotedNo + "/" + iCurrentNumberOfPlayers)
+            SendChatMessage("Submitted vote for " + arg1 + ".", arg2)
+        }
+        function DoVote(arg1) {
+            if (VotedYes > VotedNo || arg1 == "succeed") {
+                // Add stuff for actually changing in game stuffs
+                switch (ActiveVote) {
+                case "changelevel": 
+                case "kick":        
+                case "hostgunonly": 
+                }
+            }
+
+            // Vote forcefully failed or didn't have enough votes
+            // Clean everything up
+            CurrentTime = null
             ActiveVote = null
+            VotedYes = 0
+            VotedNo = 0
+            Arg2 = null
+
+            bVoteInProgress = false
+            bCurrentCCPlayerInitiatedVote = false
+            iCurrentNumberOfPlayers = 0
+
             ShouldDisplayVoteCounter = false
+
             for (local player; player = Entities.FindByClassname(player, "player");) {
                 FindPlayerClass(player).startedvote = false // Forget who initiated the vote
                 FindPlayerClass(player).hasvoted = false // Forget all those that had voted
             }
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + VotedYes + "/" + VotedNo + "/" + iCurrentNumberOfPlayers)
         }
-        function SubmitVote(arg1, arg2) {
-            FindPlayerClass(arg2).hasvoted = true
-            SendChatMessage("Submitted vote for " + arg1 + ".", arg2)
-        }
-        function DoVote(arg1) {
-            // Add stuff for actually changing in game stuffs
-            EndVote()
-        }
-        function BeginVote(arg1, arg2) {
-            // Update the text color and max players
-            local rgb = FindPlayerClass(arg2).color
-            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("color", rgb.r.tostring() + " " + rgb.g.tostring() + " " + rgb.b.tostring())
-            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote #: 0/" + iCurrentNumberOfPlayers.tostring())
-
+        function BeginVote(arg1, arg2, arg3) {
             // Update the class info
+            Arg2 = arg2
+            Vote.SubmitVote("yes", arg3)
             CurrentTime = Time()
-            FindPlayerClass(arg2).startedvote = true
-            FindPlayerClass(arg2).hasvoted = true
+            FindPlayerClass(arg3).startedvote = true
+            FindPlayerClass(arg3).hasvoted = true
             ActiveVote = arg1
+            SendChatMessage("Started vote for " + arg1 + ".", arg3)
+
+            // Update the text color and players
+            local rgb = FindPlayerClass(arg3).color
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("color", rgb.r.tostring() + " " + rgb.g.tostring() + " " + rgb.b.tostring())
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + VotedYes + "/" + VotedNo + "/" + iCurrentNumberOfPlayers)
+
             ShouldDisplayVoteCounter = true
-            SendChatMessage("Started vote for " + arg1 + ".", arg2)
         }
     }
-}
+}*/
 
 //---------------
 // Booleans
@@ -133,9 +163,9 @@ Player2Joined <- false
 PostMapSpawnDone <- false
 PermaPotato <- false
 
-if (Config_UseChatCommands) {
-    ShouldDisplayVoteCounter <- false
-}
+// if (Config_UseChatCommands) {
+//     ShouldDisplayVoteCounter <- false
+// }
 
 StartDevModeCheck <- false
 usefogcontroller <- false
@@ -315,7 +345,7 @@ OriginalAngle <- null
 OriginalPosMain <- null
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 
-if (Config_UseChatCommands) {
+/*if (Config_UseChatCommands) {
     VoteCounter <- Entities.CreateByClassname("game_text")
     VoteCounter.__KeyValueFromString("targetname", "VoteCounter")
     VoteCounter.__KeyValueFromString("x", "0.005")
@@ -327,4 +357,4 @@ if (Config_UseChatCommands) {
     VoteCounter.__KeyValueFromString("channel", "0")
     VoteCounter.__KeyValueFromString("spawnflags", "1")
     VoteCounter.__KeyValueFromString("color", "255 255 255")
-}
+}*/
