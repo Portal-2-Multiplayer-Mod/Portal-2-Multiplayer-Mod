@@ -73,6 +73,7 @@ class Gui:
         self.devMode: bool = devMode
         self.running: bool = True
         self.FPS: int = 60
+        self.currentVersion: str = "2.1.0" # change this before releasing a new version
 
         # Define the name and image of the window
         pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
@@ -217,11 +218,12 @@ class Gui:
         self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
         self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
         self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=100)
+        self.Text_LauncherVersion = self.DisplayText("Version:" + self.currentVersion, textColor=(255, 234, 0), xpos=80, ypos=675)
 
-        self.MainMenuText = [self.Text_MainMenuText]
+        self.MainMenuText = [self.Text_MainMenuText, self.Text_LauncherVersion] # This is where the DisplayText for each menu were defined, again it won't stick to the menu
         self.MainMenuButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
                             self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
-        self.MainMenuItems = []
+        self.MainMenuItems = [] # This was orginally where I was gonna stick everything but I don't know anymore, you do you Cabiste
 
         if self.devMode:
             self.Button_Saves = self.ButtonTemplate(translations["saves_button"], self.Button_Saves_func, (235, 172, 14)) # For now Saves will be a dev only button
