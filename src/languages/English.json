@@ -1,4 +1,5 @@
 {
+  "welcome": "Welcome to the P2MM Launcher! Press 'Start Game' to launch the P2MM Mod!",
   "play_button": "Start Game",
   "exit_button": "Exit",
   "discord_server_button": "Discord Server",
@@ -74,5 +75,9 @@
   "saves_button": "Saves",
   "save_system_state_txt": "Save System Status: ",
   "saves_enabled": "Enabled",
-  "saves_disabled": "Disabled"
+  "saves_disabled": "Disabled",
+  "save_system_refresh": "Refresh Save System",
+  "save_system_refreshing": "Refreshing the Save System...",
+  "save_system_refresh_success": "The Save System refreshed successfully!",
+  "save_system_refresh_failed": "The Save System failed to refresh..."
 }

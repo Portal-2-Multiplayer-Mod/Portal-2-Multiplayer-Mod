@@ -56,12 +56,12 @@ def VerifyGamePath():
 
 
 def CheckForUpdates():
-    
+
     clientUpdate = up.CheckForNewClient()
     if clientUpdate["status"]:
         Log(clientUpdate["name"])
         Log(clientUpdate["message"])
-        
+
         valid = False
         while not valid:
             update = input("type YES or NO to update")
@@ -72,8 +72,8 @@ def CheckForUpdates():
                     Log("please contact the developers")
             elif (update.upper() == "NO") or (update.upper() == "N"):
                 valid = True
-        
-        
+
+
     if up.CheckForNewFiles():
         valid = False
         while not valid:
@@ -87,18 +87,18 @@ def CheckForUpdates():
                 return False
 
 def IsNew():
-    
+
     if len(sys.argv) != 3:
         return
-    
+
     if (sys.argv[1] != "updated") or (not os.path.exists(sys.argv[2])):
         return
-    
+
     Log("this is first launch after update")
-    
+
     Log("deleting old client...")
     os.remove(sys.argv[2])
-    
+
     Log("renaming new client...")
     # only change the name between quotes to whatever you want the client to name itself
     os.rename(GVars.executable, sys.argv[2])
@@ -110,7 +110,7 @@ def OnStart():
     StartLog()
     # Load the configs (It's better to do it separately)
     GVars.LoadConfig()
-    # checks if the client was launched from an older version 
+    # checks if the client was launched from an older version
     IsNew()
     # only check for updates for normal users
     if GVars.configData["developer"]["value"] != "true":
@@ -133,7 +133,7 @@ def DEVMOUNT():
         # delete the old modfiles
         shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
     except Exception as e:
-        Log("folder doesn't exist: "+GVars.modPath + GVars.nf + "ModFiles")
+        Log("folder doesn't exist: "+ GVars.modPath + GVars.nf + "ModFiles")
         Log(str(e))
 
     # copy the one in the current directory to the modpath
@@ -179,7 +179,7 @@ def Init():
         RG.UnpatchBinaries(gamepath)
         Log("Unmounted the game successfully")
 
-    # it's annoying to be asked to exit when you're debugging 
+    # it's annoying to be asked to exit when you're debugging
     # but don't remove it, it's there so the user can read the output when the game closes
     if (GVars.configData["developer"]["value"] != "true"):
         input("Press enter to exit")

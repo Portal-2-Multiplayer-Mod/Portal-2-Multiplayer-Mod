@@ -55,6 +55,7 @@ class Gui:
         self.PlayersMenu: list = []
         self.directorymenu: list = []
         self.directorymenutext: list = []
+        self.directorymenuitems: list = []
         self.PopupBoxList: list = []
         self.LanguagesMenu: list = []
         self.IsUpdating: bool = False
@@ -151,11 +152,12 @@ class Gui:
                     text: str,
                     font: str = "GUI/assets/fonts/pixel.ttf",
                     textColor: tuple = (155, 155, 155),
-                    xpos: float = 0,
+                    xpos: float = 0, # The bigger the number, the more right the text will be.
                     xstart: float = 100,
                     xend: float = 100,
-                    ypos: float = 0,
-                    size: float = 300) -> None:
+                    ypos: float = 0, # The bigger the number, the lower the text will be.
+                    size: float = 100 # The bigger the number, the smaller it is, because that definitely makes sense.
+                    ) -> None:
             self.text = text
             self.font = font
             self.textColor = textColor
@@ -176,9 +178,11 @@ class Gui:
                      selectanim: str = "pop",
                      curanim: str = "",
                      isasync: bool = False,
-                     xpos: float = 16,
-                     size: float = 700,
-                     font: str = "GUI/assets/fonts/pixel.ttf") -> None:
+                     xpos: float = 16, # The small the number, the more the text moves right.
+                     ypos: float = 2, # The bigger the number, the more the text moves up.
+                     size: float = 700, # Size "700" appears to be default size. Increasing over "7500" will start to make the launcher unstable.
+                     font: str = "GUI/assets/fonts/pixel.ttf" # In case we have a custom font that needs to replace the default, this may be the case for different languages.
+                     ) -> None:
 
             self.text = text
             self.font = font
@@ -196,6 +200,7 @@ class Gui:
             self.selectsnd = self.pwrsnd
             self.hoversnd = self.blipsnd
             self.xpos = xpos
+            self.ypos = ypos
             self.size = size
 
     #!############################
@@ -205,18 +210,23 @@ class Gui:
     def DefineMainMenu(self) -> None:
         self.Button_LaunchGame = self.ButtonTemplate(translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120), isasync=True)
         self.Button_Settings = self.ButtonTemplate(translations["settings_button"], self.Button_Settings_func)
-        self.Button_Saves = self.ButtonTemplate(translations["saves_button"], self.Button_Saves_func, (235, 172, 14))
+        #self.Button_Saves = self.ButtonTemplate(translations["saves_button"], self.Button_Saves_func, (235, 172, 14)) This will be the buttons position in the list onces its finished
         self.Button_Update = self.ButtonTemplate(translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
         self.Button_ManualMode = self.ButtonTemplate(translations["manual_mounting_button"], self.Button_ManualMode_func)
         self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
         self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
         self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
+        self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=100)
 
-        self.MainMenuButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Saves, self.Button_Update,
+        self.MainMenuText = [self.Text_MainMenuText]
+        self.MainMenuButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
                             self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
+        self.MainMenuItems = []
 
         if self.devMode:
+            self.Button_Saves = self.ButtonTemplate(translations["saves_button"], self.Button_Saves_func, (235, 172, 14)) # For now Saves will be a dev only button
             self.Button_Test = self.ButtonTemplate("Test Button", self.Button_Test_func)
+            self.MainMenuButtons.append(self.Button_Saves)
             self.MainMenuButtons.append(self.Button_Test)
 
         self.MainMenuButtons.append(self.Button_Exit)
@@ -244,24 +254,27 @@ class Gui:
         self.SettingsMenus.append(self.Button_Back)
 
     def DefineSaveMenu(self) -> None:
+        self.Text_SaveSystemStateTxt = self.DisplayText(
+            translations["save_system_state_txt"], textColor = (155, 155, 155))
         if SS.saveSystemState:
-            self.Button_SaveSystemState = self.ButtonTemplate(
-                translations["save_system_state_txt"] + translations["saves_enabled"],
-                inactiveColor = (21, 255, 0),
-                activeColor = (21, 255, 0),
+            self.Text_SaveSystemState = self.DisplayText(
+                translations["saves_enabled"],
+                textColor = (21, 255, 0),
+                xpos = 1.45,
+                ypos = 3.80,
                 size = 600)
         else:
-            self.Button_SaveSystemState = self.ButtonTemplate(
-                translations["save_system_state_txt"] + translations["saves_disabled"],
-                inactiveColor = (255, 21, 0),
-                activeColor = (255, 21, 0),
+            self.Text_SaveSystemState = self.DisplayText(
+                translations["saves_disabled"],
+                textColor = (255, 21, 0),
+                xpos = 1.45,
+                ypos = 3.80,
                 size = 600)
+        self.Button_RefreshSaveSystem = self.ButtonTemplate(translations["save_system_refresh"], self.Button_RefreshSaveSystem_func)
 
-        #This is old but it worked before, keeping it just in case i need it again
-        #self.Button_SaveSystemState = self.ButtonTemplate(
-        #    translations["save_system_state"] + SS.saveSystemEnabled)
+        self.SavesMenuText = [self.Text_SaveSystemStateTxt, self.Text_SaveSystemState]
+        self.SavesMenuButtons = [self.Button_RefreshSaveSystem, self.Button_Back]
 
-        self.SavesMenu = [self.Button_SaveSystemState, self.Button_Back]
 
     def DefineWorkshopMenu(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(
@@ -299,13 +312,13 @@ class Gui:
             "Print to Console", self.Button_PrintToConsole_func)
         self.Button_Back = self.ButtonTemplate(
             translations["back_button"], self.Button_Back_func)
-        
-        self.Text_MainMenuTextTest1 = self.DisplayText(
+
+        self.Text_TestMenuTextTest1 = self.DisplayText(
             "testtext")
-        self.Text_MainMenuTextTest2 = self.DisplayText(
+        self.Text_TestMenuTextTest2 = self.DisplayText(
             "testtext2", textColor= (52, 67, 235), xpos= 200, ypos=200)
 
-        self.MainMenuText = [self.Text_MainMenuTextTest1, self.Text_MainMenuTextTest2]
+        self.TestMenuText = [self.Text_TestMenuTextTest1, self.Text_TestMenuTextTest2]
 
         self.TestingMenu = [self.Button_InputField, self.PopupBox_gui,
                             self.Button_PrintToConsole, self.Button_Back]
@@ -393,6 +406,15 @@ class Gui:
                 Log(str(key) + ": " + str(GVars.configData[key]["value"]))
                 self.SettingsButtons.append(curkeyButton(key, self))
         self.SettingsButtons.append(self.Button_Back)
+
+    def RefreshSavesMenu(self) -> None:
+        Log("Refreshing the save system...")
+        SS.saveSystemInitialization(refresh=True)
+        self.Error(translations["save_system_refreshing"], 3, (75, 120, 255))
+        if SS.saveSystemState == True:
+            self.Error(translations["save_system_refresh_success"], 5, (21, 255, 0))
+        else:
+            self.Error(translations["save_system_refresh_failed"], 5, (255, 21, 0))
 
     def RefreshPlayersMenu(self) -> None:
         cfg.ValidatePlayerKeys()
@@ -547,8 +569,10 @@ class Gui:
         self.ChangeMenu(self.SettingsMenus)
 
     # switches to the saves menu
+
     def Button_Saves_func(self) -> None:
-        self.ChangeMenu(self.SavesMenu)
+        self.ChangeMenu(self.SavesMenuButtons)
+        self.RefreshSavesMenu()
 
     # launcher update button
 
@@ -616,6 +640,13 @@ class Gui:
     def Button_HiddenSettings_func(self) -> None:
         self.RefreshSettingsMenu("hidden")
         self.ChangeMenu(self.SettingsButtons)
+
+    #!############################
+    #! SAVES BUTTONS FUNCTIONS
+    #!############################
+
+    def Button_RefreshSaveSystem_func(self) -> None:
+        self.RefreshSavesMenu()
 
     #!############################
     #! MANUAL MODE BUTTONS FUNCTIONS
@@ -704,15 +735,18 @@ class Gui:
 #! END OF BUTTON FUNCTIONS
 
 
-    def ChangeMenu(self, menu: list, append: bool = True) -> None:
+    def ChangeMenu(self, menu: list, append: bool = True, text: list = "") -> None:
         if append:
             self.directorymenu.append(self.CurrentMenuButtons)
             #self.directorymenutext.append(self.CurrentMenuText)
 
-        self.CurrentMenuButtons = menu 
+        self.CurrentMenuButtons = menu
 
         if self.CurrentButtonsIndex >= len(menu):
             self.CurrentButtonsIndex = len(menu) - 1
+
+        if self.CurrentMenuTextIndex >= len(text):
+            self.CurrentMenuTextIndex = len(text) - 1
 
         self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
 
@@ -867,16 +901,15 @@ class Gui:
                 clr = button.inactivecolor
             self.RunAnimation(button, button.curanim)
 
-            text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
-            (button.width + button.height)).render(button.text, True, clr)
+            text1 = pygame.font.Font(button.font, (button.width + button.height)).render(button.text, True, clr)
 
             if not (self.LookingForInput):
                 self.screen.blit(
-                    text1, (W / button.xpos, (H / 2 - (text1.get_height() / 2)) * (indx / 5)))
+                    text1, (W / button.xpos, (H / button.ypos - (text1.get_height() / 2)) * (indx / 5)))
             #button.x = W / 16
             #button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
             button.x = W / button.xpos
-            button.y = ((H / 2) - (text1.get_height() / 2)) * (indx / 5)
+            button.y = ((H / button.ypos) - (text1.get_height() / 2)) * (indx / 5)
             button.width = text1.get_width()
             button.height = text1.get_height()
 
@@ -886,7 +919,7 @@ class Gui:
             displaytext.height = int(H / displaytext.size)
             text = pygame.font.Font(displaytext.font, (displaytext.width + displaytext.height)).render(displaytext.text, True, displaytext.textColor)
             self.screen.blit(text, (displaytext.xpos, displaytext.ypos))
-            
+
 
         # BACKGROUND
         for floater in self.Floaters:
@@ -1277,7 +1310,7 @@ def PreExit() -> None:
         os.system("taskkill /f /im portal2.exe")
 
     # linux
-    if (GVars.iol):
+    if (GVars.iol) or (GVars.iosd):
         os.system("killall -9 portal2_linux")
 
     # this is to make sure the portal 2 thread is dead
@@ -1320,6 +1353,8 @@ def VerifyGamePath(shouldgetpath: bool = True) -> bool:
             GetGamePath()
 
         return False
+        Log("Game path is invalid...")
+    Log("Game path is valid...")
     return True
 
 
@@ -1454,10 +1489,6 @@ def UpdateModFiles() -> None:
         Ui.IsUpdating = True
         up.DownloadNewFiles()
         Ui.Error(translations["update_complete"], 5, (75, 255, 75))
-        
-        # We need to refresh the save system after a update to make sure that all the files are there and it will still continue to work
-        SS.refreshSaveSystem()
-
         Ui.IsUpdating = False
         for thing in Ui.ERRORLIST:
             if thing[0] == translations["update_fetching"]:
@@ -1504,7 +1535,7 @@ def UnmountScript(shouldgetpath: bool = True) -> None:
 
 
 def RestartClient(path: str = sys.executable) -> None:
-    if (GVars.iol):
+    if (GVars.iol) or (GVars.iosd):
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
 
@@ -1533,7 +1564,7 @@ def IsNew() -> None:
     Log("Deleting old client...")
     os.remove(sys.argv[2])
 
-    # this will rename the new clien to the old client's name
+    # this will rename the new client to the old client's name
     Log("Renaming new client...")
     os.rename(GVars.executable, sys.argv[2])
     RestartClient("\"" + sys.argv[2] + "\"")
@@ -1583,7 +1614,7 @@ def Initialize() -> None:
     # load the client's translations
     LoadTranslations()
     # Starts up the custom save system
-    SS.saveSystemInitalization()
+    SS.saveSystemInitialization(refresh=False)
 
     # checks if this is debug or release mode
     if sys.argv[0].endswith(".py"):

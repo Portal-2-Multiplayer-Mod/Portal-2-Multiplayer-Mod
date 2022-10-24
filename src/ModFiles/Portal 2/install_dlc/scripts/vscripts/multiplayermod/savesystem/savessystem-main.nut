@@ -50,45 +50,46 @@ function onSave(event) { // Triggers when a map calls for a certain event to be 
     We must check to make sure the python save system script is active or it won't work
     If it fails we'll tell mapspawn.nut that saves aren't currently supported
 */
-
-printl("Starting the custom save system!")
-//Makes a temporary .dem file for our python save system to check
-SendToConsoleP2MM("_record SAVE/savesystemcheck-test")
-SendToConsoleP2MM("stop")
-
-try {
-    IncludeScript("multiplayermod/savesystem/savesystemcheck-pythonsuccess.nut")
-    printl("Save System works! Will be avaliable for the map...")
-    saveCheck <- true
-    SendToConsoleP2MM("_record SAVE/savesystemcheck-nutsuccess")
+function init() {
+    printl("Starting the custom save system!")
+    //Makes a temporary .dem file for our python save system to check
+    SendToConsoleP2MM("_record SAVE/savesystemcheck-test")
     SendToConsoleP2MM("stop")
-} catch (e){
-    printl("First check detection failed, trying again...")
-    printl(e)
-    local savesystemcheckerrors = 0
-    while (savesystemcheckerrors != 3) {
-        try {
-            IncludeScript("multiplayermod/savesystem/savesystem-pythonsuccess.nut")
-            break
-        } catch (e){
-            printl("Check detection failed, will try again...")
-            printl(e)
-            savesystemcheckerrors += 1
-        }
-    }
 
-    if (savesystemcheckerrors = 3) {
-        printl("Save System check detection failed after checking three times!")
-        printl("The save system will not be avaliable for this map...")
-        saveCheck <- false
-        SendToConsoleP2MM("_record SAVE/savesystemcheck-nutfail")
-        SendToConsoleP2MM("stop")
-        savesystemcheckerrors = 0
-    } else {
+    try {
+        IncludeScript("multiplayermod/savesystem/savesystemcheck-pythonsuccess.nut")
         printl("Save System works! Will be avaliable for the map...")
         saveCheck <- true
         SendToConsoleP2MM("_record SAVE/savesystemcheck-nutsuccess")
         SendToConsoleP2MM("stop")
-        savesystemcheckerrors = 0
+    } catch (e){
+        printl("First check detection failed, trying again...")
+        printl(e)
+        local savesystemcheckerrors = 0
+        while (savesystemcheckerrors != 3) {
+            try {
+                IncludeScript("multiplayermod/savesystem/savesystem-pythonsuccess.nut")
+                break
+            } catch (e){
+                printl("Check detection failed, will try again...")
+                printl(e)
+                savesystemcheckerrors += 1
+            }
+        }
+
+        if (savesystemcheckerrors = 3) {
+            printl("Save System check detection failed after checking three times!")
+            printl("The save system will not be avaliable for this map...")
+            saveCheck <- false
+            SendToConsoleP2MM("_record SAVE/savesystemcheck-nutfail")
+            SendToConsoleP2MM("stop")
+            savesystemcheckerrors = 0
+        } else {
+            printl("Save System works! Will be avaliable for the map...")
+            saveCheck <- true
+            SendToConsoleP2MM("_record SAVE/savesystemcheck-nutsuccess")
+            SendToConsoleP2MM("stop")
+            savesystemcheckerrors = 0
+        }
     }
 }
