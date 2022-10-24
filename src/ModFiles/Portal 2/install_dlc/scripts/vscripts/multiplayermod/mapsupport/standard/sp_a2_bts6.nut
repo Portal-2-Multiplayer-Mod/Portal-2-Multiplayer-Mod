@@ -7,15 +7,19 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
+        // Disable nametags this load
+        AllowNametags <- false
+
+        // Disable color indicator this load
+        AllowColorIndicator <- false
+
         // Make some blackkkkk
         inffade <- true
 
-        // Set up the changelevel command entity
-        Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_Bts6ServerCommand")
         // Destroy objects
         Entities.FindByName(null, "tube_ride_start_relay").Destroy()
 
-                // Create Env Globals
+        // Create Env Globals
         env_global01 <- Entities.CreateByClassname("env_global")
         env_global01.__KeyValueFromString("targetname", "env_global01")
         env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
@@ -38,9 +42,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global02, "turnon", "", 1, null, null)
         EntFireByHandle(env_global03, "turnon", "", 1, null, null)
         EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+
+        // Remove Portal Gun
+        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
+        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+
+        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
+        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_core:0.3", 0, null)
     }
 
-    if (MSOnPlayerJoin != false) {
+    if (MSOnPlayerJoin) {
         printl("Player Joined (Reseting Viewcontrols)")
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 0.5, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0.6, null)
@@ -87,6 +101,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "tube_straight_start"), "Trigger", "", 32, null, null)
         EntFireByHandle(Entities.FindByName(null, "tube_collision_start"), "Trigger", "", 36.75, null, null)
         EntFireByHandle(Entities.FindByName(null, "shadowed_light_03"), "TurnOn", "", 37, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ending_relay"), "Trigger", "", 50.50, null, null)
 
         // Sp_A2_Bts6 viewcontrol creation
         Sp_A2_Bts6Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
@@ -97,7 +112,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A2_Bts6Viewcontrol", "setparent", "tube_ride_chell_proxy", 0, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "setparentattachment", "chell_bts6_attach", 0, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0, null)
-        EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 50.66, null)
+        EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 51, null)
 
         // Disable taunting & pinging
         EntFireByHandle(env_global01, "turnon", "", 1, null, null)
@@ -110,9 +125,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(env_global02, "turnoff", "", 50, null, null)
         EntFireByHandle(env_global03, "turnoff", "", 50, null, null)
         EntFireByHandle(env_global04, "turnoff", "", 50, null, null)
-
-        EntFire("Sp_A2_Bts6ServerCommand", "command", "echo Changing level...", 51, null)
-        EntFire("Sp_A2_Bts6ServerCommand", "command", "changelevel sp_a2_core", 51, null)
 
         // Remove some blackkkk
         inffade <- false

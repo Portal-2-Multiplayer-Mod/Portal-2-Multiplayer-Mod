@@ -38,14 +38,12 @@ IncludeScript("multiplayermod/config.nut")
 IncludeScript("multiplayermod/configcheck.nut")
 
 // Create a global point_servercommand entity for us to pass through commands
-// We don't want to create multiple when it is called on
+// We don't want to create multiple when it is called on, so reference it by targetname
 Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 
 // Facilitate first load after game launch
 if (GetDeveloperLevel() == 918612) {
-    // This function is called only once under this developer
-    // level condition, so we'll define it here
-    // No need to use it any other time!
+    // We define this function here since we only need it once
     function MakeProgressCheck() {
         local ChangeToThisMap = "mp_coop_start"
         for (local course = 1; course <= 6; course++) {
@@ -56,7 +54,7 @@ if (GetDeveloperLevel() == 918612) {
                 }
             }
         }
-        EntFire("p2mm_servercommand", "command", "changelevel " + ChangeToThisMap, 0)
+        EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + ChangeToThisMap, 0)
     }
 
     // Reset dev level
@@ -82,7 +80,6 @@ if (GetDeveloperLevel() == 918612) {
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
 IncludeScript("multiplayermod/functions.nut")
-IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
@@ -91,7 +88,7 @@ IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
 // Load the custom save system after everything else has been loaded
-IncludeScript("multiplayermod/savesystem.nut")
+// IncludeScript("multiplayermod/savesystem.nut") Commented out for now, still need to finish
 
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) { printl(line) }
@@ -103,7 +100,8 @@ foreach (line in ConsoleAscii) { printl(line) }
 
 // This function is how we communicate with all mapsupport files.
 // In case no mapsupport file exists, it will fall back to "nothing" instead of an error
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, MSOnSaveCheck) {}
+//function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, MSOnSaveCheck, MSOnSaveLoad) {} This will be the layout for the system in the future
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {}
 
 // Import map support code
 function LoadMapSupportCode(gametype) {
@@ -135,43 +133,22 @@ function LoadMapSupportCode(gametype) {
     }
 }
 
-try {
-    switch (Config_GameMode) {
-        case 0: LoadMapSupportCode("standard");     break;
-        case 1: LoadMapSupportCode("speedrun");     break;
-        case 2: LoadMapSupportCode("deathmatch");   break;
-        case 3: LoadMapSupportCode("futbol");       break;
-    }
-} catch (exception) {
-    printl("(P2:MM): \"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
-    LoadMapSupportCode("standard")
+// Now, manage everything the player has set in config.nut
+// If the gamemode has exceptions of any kind, it will revert to standard mapsupport
+switch (Config_GameMode) {
+    case 0:     LoadMapSupportCode("standard");     break;
+    case 1:     LoadMapSupportCode("speedrun");     break;
+    case 2:     LoadMapSupportCode("deathmatch");   break;
+    case 3:     LoadMapSupportCode("futbol");       break;
+    default:
+        printl("(P2:MM): \"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
+        LoadMapSupportCode("standard")
+        break
 }
 
 //---------------------------------------------------
 
-// Second, run init() shortly AFTER spawn
-
-function init() {
-    // Trigger map-specific code
-    MapSupport(true, false, false, false, false, false, false, false)
-
-    // Create an entity to loop the loop() function every 0.1 second
-    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
-    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
-        if (timer.GetName() == "p2mm_timer") {
-            p2mm_timer <- timer
-            break
-        }
-    }
-    EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-    EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
-    EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
-    EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
-
-    // Delay the creation of our map-specific entities before so
-    // that we don't get an engine error from the entity limit
-    EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
-}
+// Run InstantRun() shortly AFTER spawn (hooks.nut)
 
 try {
     // Make sure that the user is in multiplayer mode before initiating everything
@@ -180,8 +157,8 @@ try {
         EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
     }
 
-    // init() must be delayed
-    EntFire("p2mm_servercommand", "command", "script init()", 0.02)
+    // InstantRun() must be delayed slightly
+    EntFire("p2mm_servercommand", "command", "script InstantRun()", 0.02)
 } catch (e) {
     printl("(P2:MM): Initializing our custom support!\n")
 }

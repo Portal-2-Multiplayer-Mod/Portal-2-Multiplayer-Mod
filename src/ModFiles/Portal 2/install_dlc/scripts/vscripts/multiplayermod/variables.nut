@@ -43,12 +43,106 @@ class GlobalSpawnClass {
     }
 }
 
+/*if (Config_UseChatCommands) {
+    class Vote {
+        CurrentTime = null
+        ActiveVote = null
+        VotedYes = 0
+        VotedNo = 0
+        Arg2 = null
+
+        bVoteInProgress = false
+        bCurrentCCPlayerInitiatedVote = false
+        iCurrentNumberOfPlayers = 0
+        constructor(p) {
+            for (local player; player = Entities.FindByClassname(player, "player");) {
+                iCurrentNumberOfPlayers++
+                if (FindPlayerClass(player).startedvote) {
+                    bVoteInProgress = true
+                    if (p == player) {
+                        // This player initiated the vote and
+                        // is invoking the command again
+                        bCurrentCCPlayerInitiatedVote = true
+                    }
+                }
+            }
+        }
+
+        function IsAdminLevelEnough(player) {
+            if (GetAdminLevel(player) >= 6) {
+                return true
+            }
+            return false
+        }
+        function SubmitVote(arg1, arg2) {
+            FindPlayerClass(arg2).hasvoted = true
+            if (arg1 == "yes") {
+                VotedYes++
+            } else {
+                VotedNo++
+            }
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + VotedYes + "/" + VotedNo + "/" + iCurrentNumberOfPlayers)
+            SendChatMessage("Submitted vote for " + arg1 + ".", arg2)
+        }
+        function DoVote(arg1) {
+            if (VotedYes > VotedNo || arg1 == "succeed") {
+                // Add stuff for actually changing in game stuffs
+                switch (ActiveVote) {
+                case "changelevel": 
+                case "kick":        
+                case "hostgunonly": 
+                }
+            }
+
+            // Vote forcefully failed or didn't have enough votes
+            // Clean everything up
+            CurrentTime = null
+            ActiveVote = null
+            VotedYes = 0
+            VotedNo = 0
+            Arg2 = null
+
+            bVoteInProgress = false
+            bCurrentCCPlayerInitiatedVote = false
+            iCurrentNumberOfPlayers = 0
+
+            ShouldDisplayVoteCounter = false
+
+            for (local player; player = Entities.FindByClassname(player, "player");) {
+                FindPlayerClass(player).startedvote = false // Forget who initiated the vote
+                FindPlayerClass(player).hasvoted = false // Forget all those that had voted
+            }
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + VotedYes + "/" + VotedNo + "/" + iCurrentNumberOfPlayers)
+        }
+        function BeginVote(arg1, arg2, arg3) {
+            // Update the class info
+            Arg2 = arg2
+            Vote.SubmitVote("yes", arg3)
+            CurrentTime = Time()
+            FindPlayerClass(arg3).startedvote = true
+            FindPlayerClass(arg3).hasvoted = true
+            ActiveVote = arg1
+            SendChatMessage("Started vote for " + arg1 + ".", arg3)
+
+            // Update the text color and players
+            local rgb = FindPlayerClass(arg3).color
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("color", rgb.r.tostring() + " " + rgb.g.tostring() + " " + rgb.b.tostring())
+            Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + VotedYes + "/" + VotedNo + "/" + iCurrentNumberOfPlayers)
+
+            ShouldDisplayVoteCounter = true
+        }
+    }
+}*/
+
 //---------------
 // Booleans
 //---------------
+AllowColorIndicator <- true // By default unless specified in mapsupport
+AllowNametags <- true // By default unless specified in mapsupport
 CanCheckAngle <- false
 CanHook <- false
 CheatsOn <- false
+CoordsAlternate <- false
 
 DevModeConfig <- Config_DevMode
 
@@ -66,8 +160,13 @@ if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) != "mp_coop") {
 MadeSpawnClass <- false
 OrangeCacheFailed <- false
 Player2Joined <- false
-PostMapLoadDone <- false
+PostMapSpawnDone <- false
 PermaPotato <- false
+
+// if (Config_UseChatCommands) {
+//     ShouldDisplayVoteCounter <- false
+// }
+
 StartDevModeCheck <- false
 usefogcontroller <- false
 
@@ -79,6 +178,7 @@ cacheoriginalplayerposition <- 0
 EntityCap <- 2000
 EntityCapLeeway <- 20
 FailsafeEntityCap <- 2010
+looptime <- 0.1 // Amount of time in seconds to call Loop() consecutively
 PlayerID <- 0
 PreviousNametagItter <- 0
 PreviousTime1Sec <- 0
@@ -220,7 +320,7 @@ if (Config_UseChatCommands) {
     ]
     commandtable <- {}
     commandtable["help"] <- "List available commands or print a description of a specific one."
-    commandtable["noclip"] <- "Toggles noclip mode."
+    commandtable["noclip"] <- "Toggles your noclip status."
     commandtable["kill"] <- "Kill yourself, others, or \"all\"."
     commandtable["changeteam"] <- "Changes your current team."
     commandtable["speed"] <- "Changes your player speed."
@@ -231,6 +331,8 @@ if (Config_UseChatCommands) {
     commandtable["mpcourse"] <- "Changes the level to the specified cooperative course."
     commandtable["playercolor"] <- "Changes your player model's color through valid RGB values."
     commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
+    commandtable["rocket"] <- "Send yourself, others, or \"all\" into the air for them to blow up."
+    commandtable["slap"] <- "Slap yourself, others, or \"all\" dealing a tiny amount of damage and jolting."
 }
 playerclasses <- []
 PrecachedProps <- []
@@ -238,5 +340,21 @@ PrecachedProps <- []
 //---------------
 // Others
 //---------------
+LastCoordGetPlayer <- null
 OriginalAngle <- null
 OriginalPosMain <- null
+setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
+
+/*if (Config_UseChatCommands) {
+    VoteCounter <- Entities.CreateByClassname("game_text")
+    VoteCounter.__KeyValueFromString("targetname", "VoteCounter")
+    VoteCounter.__KeyValueFromString("x", "0.005")
+    VoteCounter.__KeyValueFromString("y", "0.9")
+    VoteCounter.__KeyValueFromString("message", "Vote #: 0/0")
+    VoteCounter.__KeyValueFromString("holdtime", "5")
+    VoteCounter.__KeyValueFromString("fadeout", "2")
+    VoteCounter.__KeyValueFromString("fadein", "2")
+    VoteCounter.__KeyValueFromString("channel", "0")
+    VoteCounter.__KeyValueFromString("spawnflags", "1")
+    VoteCounter.__KeyValueFromString("color", "255 255 255")
+}*/

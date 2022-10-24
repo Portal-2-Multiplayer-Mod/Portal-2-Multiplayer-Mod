@@ -23,6 +23,16 @@ GetSteamIDLoaded <- false
 AddChatCallbackLoaded <- false
 SetPhysTypeConvarLoaded <- false
 
+// function ReplacePluginFunctions() {
+//     local OurAddedFunctions = ["GetPlayerName", "GetSteamID", "AddChatCallback", "SetPhysTypeConvar"]
+//     foreach (thing in OurAddedFunctions) {
+//         // Does the function exist?
+//         if ("GetPlayerName" in this) {
+
+//         }
+//     }
+// }
+
 function RedefinedMessage(functionname) {
     if (GetDeveloperLevel()) {
         printl("(P2:MM): " + functionname + "() has been redefined!")
