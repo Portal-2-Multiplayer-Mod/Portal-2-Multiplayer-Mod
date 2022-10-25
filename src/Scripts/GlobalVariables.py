@@ -54,7 +54,7 @@ def init() -> None:
     elif (sys.platform.startswith("linux")):
         # Both Linux and SteamOS 3.0 system platforms are returned as "linux"
         # We need to use the platform release name to differentiate a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 release ends with "neptune"
-        if (platform.release.endswith("neptune")):
+        if ("valve" in platform.release()):
             # We need to disables Steam OS 3.0's read-only flag, we will make sure of this everytime because after a update of the operating system this gets turned back on
             # Without this updates and patching the won't work because the system was flagged read-only
             os.system("sudo steamos-readonly disable")
