@@ -70,7 +70,7 @@ def init() -> None:
     else:
         # Feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")
-        Log("We only support Windows and Linux as of current.")
+        Log("We only support Windows, Linux, and SteamOS 3.0 (Steam Deck) as of current.")
         quit()
 
     # Check if the modpath exists, if not create it
