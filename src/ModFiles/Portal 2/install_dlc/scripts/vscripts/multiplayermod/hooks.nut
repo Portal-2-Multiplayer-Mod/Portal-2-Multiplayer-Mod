@@ -397,11 +397,11 @@ function Loop() {
         }
 
         //## Vote CC Display Text ##//
-        if (Config_UseChatCommands && PluginLoaded) {
-            if (ShouldDisplayVoteCounter) {
-                EntFire("VoteCounter", "Display")
-            }
-        }
+        // if (Config_UseChatCommands && PluginLoaded) {
+        //     if (ShouldDisplayVoteCounter) {
+        //         EntFire("VoteCounter", "Display")
+        //     }
+        // }
     }
 
     ///////////////////////
