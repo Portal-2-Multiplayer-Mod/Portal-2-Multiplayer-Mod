@@ -28,53 +28,17 @@ printl("\n-------------------------")
 printl("==== calling mapspawn.nut")
 printl("-------------------------\n")
 
-// Make sure we know whether the plugin is loaded or not
-// before including other files that depend on its value
-IncludeScript("multiplayermod/pluginfunctionscheck.nut")
-
-// Directly after including the user config, we need to make sure that
-// nothing is invalid, and to take care of anything that is
+IncludeScript("multiplayermod/pluginfunctionscheck.nut") // Make sure we know the exact status of our plugin first thing
 IncludeScript("multiplayermod/config.nut")
-IncludeScript("multiplayermod/configcheck.nut")
+IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
 
 // Create a global point_servercommand entity for us to pass through commands
 // We don't want to create multiple when it is called on, so reference it by targetname
 Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 
-// Facilitate first load after game launch
 if (GetDeveloperLevel() == 918612) {
-    // We define this function here since we only need it once
-    function MakeProgressCheck() {
-        local ChangeToThisMap = "mp_coop_start"
-        for (local course = 1; course <= 6; course++) {
-            // 9 levels is the highest that a course has
-            for (local level = 1; level <= 9; level++) {
-                if (IsLevelComplete(course - 1, level - 1)) {
-                    ChangeToThisMap = "mp_coop_lobby_3"
-                }
-            }
-        }
-        EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + ChangeToThisMap, 0)
-    }
-
-    // Reset dev level
-    if (Config_DevMode) {
-        EntFire("p2mm_servercommand", "command", "developer 1")
-    }
-    else {
-        EntFire("p2mm_servercommand", "command", "clear; developer 0")
-    }
-
-    if (!PluginLoaded) {
-        // Remove Portal Gun (Map transition will sound less abrupt)
-        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
-        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
-
-        EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
-        EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
-        EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1) // Must be delayed
-        return
-    }
+    // Take care of anything pertaining to progress check and how our plugin did when loading
+    return IncludeScript("multiplayermod/firstmapload.nut")
 }
 
 IncludeScript("multiplayermod/variables.nut")
@@ -87,8 +51,11 @@ IncludeScript("multiplayermod/chatcommands.nut")
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
+//---------------------------------------------------
+
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) { printl(line) }
+delete ConsoleAscii
 
 //---------------------------------------------------
 
@@ -125,14 +92,14 @@ function LoadMapSupportCode(gametype) {
 // Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
 switch (Config_GameMode) {
-    case 0:     LoadMapSupportCode("standard");     break;
-    case 1:     LoadMapSupportCode("speedrun");     break;
-    case 2:     LoadMapSupportCode("deathmatch");   break;
-    case 3:     LoadMapSupportCode("futbol");       break;
-    default:
-        printl("(P2:MM): \"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
-        LoadMapSupportCode("standard")
-        break
+case 0:     LoadMapSupportCode("standard");     break
+case 1:     LoadMapSupportCode("speedrun");     break
+case 2:     LoadMapSupportCode("deathmatch");   break
+case 3:     LoadMapSupportCode("futbol");       break
+default:
+    printl("(P2:MM): \"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
+    LoadMapSupportCode("standard")
+    break
 }
 
 //---------------------------------------------------

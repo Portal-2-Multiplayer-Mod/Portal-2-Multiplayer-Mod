@@ -423,8 +423,8 @@ function CreateGenericPlayerClass(p) {
     // Chat commands
     if (Config_UseChatCommands && PluginLoaded) {
         currentplayerclass.rocket <- false  // Rocket player status
-        // currentplayerclass.startedvote <- false  // Did this player initiate a vote?
-        // currentplayerclass.hasvoted <- false  // Did this player vote already?
+        currentplayerclass.startedvote <- false  // Did this player initiate a vote?
+        currentplayerclass.hasvoted <- false  // Did this player vote already?
     }
 
     // Note down the registered player for later reference
@@ -1563,12 +1563,6 @@ function CreateOurEntities() {
         nametagdisplay.__KeyValueFromString("fadein", "0.2")
         nametagdisplay.__KeyValueFromString("channel", "0")
     }
-
-    // if (Config_UseChatCommands) {
-    //     p2mm_vote_text_title <- Entities.CreateByClassname("game_text").__KeyValueFromString("targetname", "p2mm_vote_text_title")
-    //     p2mm_vote_for_item <- Entities.CreateByClassname("game_text").__KeyValueFromString("targetname", "p2mm_vote_for_item")
-    //     p2mm_vote_against_item <- Entities.CreateByClassname("game_text").__KeyValueFromString("targetname", "p2mm_vote_against_item")
-    // }
 
     // Create an display entity for the host to wait for another player to load in
     onscreendisplay <- Entities.CreateByClassname("game_text")

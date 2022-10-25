@@ -341,13 +341,12 @@ function Loop() {
     ////#### FUN STUFF ####////
 
     //## Rocket ##//
-    if (Config_UseChatCommands && PluginLoaded) {
+    if (Config_UseChatCommands && AddChatCallbackLoaded) {
         for (local p; p = Entities.FindByClassname(p, "player");) {
-            local currentplayerclass = FindPlayerClass(p)
-            if (currentplayerclass.rocket) {
+            if (FindPlayerClass(p).rocket) {
                 if (p.GetVelocity().z <= 1) {
                     EntFireByHandle(p, "sethealth", "-100", 0, p, p)
-                    currentplayerclass.rocket <- false
+                    FindPlayerClass(p).rocket <- false
                 }
             }
         }
@@ -355,8 +354,7 @@ function Loop() {
 
     // Random turret models & colors
     if (Config_RandomTurrets && HasSpawned) {
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "npc_portal_turret_floor")) {
+        for (local ent; ent = Entities.FindByClassname(ent, "npc_portal_turret_floor");) {
             if (ent.GetTeam() != 69420) {
                 local modelnumber = RandomInt(0, 2)
                 if (modelnumber == 2) {
@@ -393,18 +391,17 @@ function Loop() {
 
         // Color indicator
         if (Config_UseColorIndicator && AllowColorIndicator && HasSpawned) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p; p = Entities.FindByClassname(p, "player");) {
                 DisplayPlayerColor(p)
             }
         }
 
-        // //## Vote CC Display Text ##//
-        // if (Config_UseChatCommands && PluginLoaded) {
-        //     if (ShouldDisplayVoteCounter) {
-        //         EntFire("VoteCounter", "Display")
-        //     }
-        // }
+        //## Vote CC Display Text ##//
+        if (Config_UseChatCommands && PluginLoaded) {
+            if (ShouldDisplayVoteCounter) {
+                EntFire("VoteCounter", "Display")
+            }
+        }
     }
 
     ///////////////////////
@@ -420,8 +417,7 @@ function Loop() {
             randomportalsizeh <- RandomInt(1, 100 ).tostring()
 
             try {
-                local ent = null
-                while (ent = Entities.FindByClassname(ent, "prop_portal")) {
+                for (local ent; ent = Entities.FindByClassname(ent, "prop_portal");) {
                     ent.__KeyValueFromString("HalfWidth", randomportalsize)
                     ent.__KeyValueFromString("HalfHeight", randomportalsizeh)
                 }
@@ -429,8 +425,7 @@ function Loop() {
         }
 
         //## Detect respawn ##//
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p; p = Entities.FindByClassname(p, "player");) {
             if (p.GetHealth() >= 1) {
                 // Get the players from the dead players array
                 foreach (index, player in CurrentlyDead) {
@@ -444,7 +439,7 @@ function Loop() {
 
         //## Singleplayer check that must be looped in case sv_cheats was changed ##//
         if (GlobalOverridePluginGrabController) {
-            if (PluginLoaded) {
+            if (SetPhysTypeConvarLoaded) {
                 if (IsOnSingleplayerMaps) {
                     SetPhysTypeConvar(0) // enable real-time physics
                 } else {
@@ -459,20 +454,18 @@ function Loop() {
 function PostPlayerSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, true, false, false, false, false)
-    EntFire("p2mm_servercommand", "command", "script ForceRespawnAll()", 1)
 
-    local ent = Entities.FindByName(null, "blue")
-    local playerclass = FindPlayerClass(ent)
+    EntFire("p2mm_servercommand", "command", "script ForceRespawnAll()", 1)
 
     if (!fogs) {
         usefogcontroller <- false
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): No fog controller found, disabling fog controller")
+            printl("(P2:MM): No fog controller found. Disabling fog controller...")
         }
     } else {
         usefogcontroller <- true
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): Fog controller found, enabling fog controller")
+            printl("(P2:MM): Fog controller found. Enabling fog controller...")
         }
     }
 
@@ -483,8 +476,7 @@ function PostPlayerSpawn() {
 
         defaultfog <- fogs[0].fogname
 
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
         }
     }
