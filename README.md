@@ -50,7 +50,7 @@ If you want to contribute to this project, you can do so in 3 ways:
 
 2- Help with the VScript, add support to workshop maps, or optimize/clean current code.
 
-3- Localize the launcher with different languages. You can do this by creating a folder called `languages` in your p2mm folder and start creating JSON files in it for each different language. [base translation file](https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/src/languages/English.json))
+3- Localize the launcher with different languages. You can do this by creating a folder called `languages` in your p2mm folder and start creating JSON files in it for each different language. [Base English.json Translation File](https://github.com/kyleraykbs/Portal2-32PlayerMod/blob/main/src/languages/English.json)
 
 ### Dependencies
 - pygame
