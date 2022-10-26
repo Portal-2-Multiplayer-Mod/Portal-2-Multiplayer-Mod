@@ -1,6 +1,15 @@
-# **Portal 2: Multiplayer Mod**
+<h1>
+  <img src="https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/blob/dev/p2mmp32logo.png" alt="P2MMP32 Logo" width="200" align="left">
+  <a href="https://discord.gg/nXRygGNxyK"><img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge" align="right"></a>
+  <br><a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/release-date/kyleraykbs/Portal2-32PlayerMod?color=red&label=Latest%20Release&style=for-the-badge" align="right"></a>
+  <br><a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/commits/main"><img src="https://img.shields.io/github/last-commit/kyleraykbs/Portal2-32PlayerMod?label=Last%20Commit&style=for-the-badge" align="right"></a>
+  <br><a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/downloads/kyleraykbs/Portal2-32PlayerMod/total?style=for-the-badge"  align="right"></a>
+  <br>
+  <p align="right"><strong>PORTAL 2: MULTIPLAYER MOD</strong></p>
+</h1>
 
 **Note: This mod is completely server-side. Only the host needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.**
+
 
 ## Mod features
 ```
@@ -20,9 +29,10 @@
 
 ## Features Coming Eventually
 - Player-specific colored portals (this one is going to take a lot of time to implement)
-- A system for map makers to make maps compatiable with p2mm
-- Steam Deck support
+- A system for map makers to make maps compatiable with P2MM
+- Steam Deck/Steam OS 3.0 support
 - Discord API for easy invites
+- More support for workshop maps
 
 # Installation & use
 
