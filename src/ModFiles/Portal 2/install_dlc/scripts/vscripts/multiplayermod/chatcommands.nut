@@ -96,7 +96,7 @@ function ChatCommands(ccuserid, ccmessage) {
         foreach (CurPlayer in Runners) {
             // Does the exact command exist?
             if (Command == null) {
-                return SendChatMessage("[ERROR] Command not found.", CurPlayer)
+                return SendChatMessage("[ERROR] Command not found. Use !help to list some commands.", CurPlayer)
             }
 
             // Do we have the correct admin level for this command?

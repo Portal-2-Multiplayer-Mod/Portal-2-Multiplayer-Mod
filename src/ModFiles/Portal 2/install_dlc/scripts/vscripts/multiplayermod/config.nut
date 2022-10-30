@@ -80,8 +80,6 @@ Config_UseChatCommands <- true
 // "[AdminLevel]SteamID", // (Username to keep track)
 
 Admins <- [
-"[0]0", // New Player
-"[0]0", // New Player
 "[400]182933216", // kyleraykbs
 "[400]75927374", // Wolƒe Strider Shoσter
 "[400]290760494", // Nanoman2525

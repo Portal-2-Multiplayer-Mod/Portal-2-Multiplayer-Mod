@@ -28,6 +28,7 @@ OurAddedFunctionsLoaded <- [
     GetSteamIDLoaded <- false,
     AddChatCallbackLoaded <- false,
     SetPhysTypeConvarLoaded <- false,
+    SetMaxPortalSeparationConvar <- false
 ]
 
 OurAddedFunctions <- [
@@ -35,6 +36,7 @@ OurAddedFunctions <- [
     "GetSteamID",
     "AddChatCallback",
     "SetPhysTypeConvar"
+    "SetMaxPortalSeparationConvar"
 ]
 
 //---------------------------------------------------
@@ -96,6 +98,7 @@ GetPlayerNameLoaded <- false
 GetSteamIDLoaded <- false
 AddChatCallbackLoaded <- false
 SetPhysTypeConvarLoaded <- false
+SetMaxPortalSeparationConvar <- false
 
 function RedefinedMessage(functionname) {
     if (GetDeveloperLevel()) {
@@ -149,16 +152,28 @@ function ReplaceSetPhysTypeConvar() {
     RedefinedMessage("SetPhysTypeConvar")
 }
 
+function ReplaceSetMaxPortalSeparationConvar() {
+    if ("SetMaxPortalSeparationConvar" in this) {
+        SetMaxPortalSeparationConvar <- true
+        return
+    }
+    function SetMaxPortalSeparationConvar(string) {
+        printl("(P2:MM): Plugin not loaded. Unable to change player collision amounts!")
+    }
+    RedefinedMessage("SetMaxPortalSeparationConvar")
+}
+
 ReplaceGetPlayerName()
 ReplaceGetSteamID()
 ReplaceAddChatCallback()
 ReplaceSetPhysTypeConvar()
+ReplaceSetMaxPortalSeparationConvar()
 
-if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded) {
+if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded || SetMaxPortalSeparationConvar) {
     // Something loaded, so the plugin must be as well
     PluginLoaded <- true
 }
-else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded) {
+else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded && !SetMaxPortalSeparationConvar) {
     // Nothing loaded
     PluginLoaded <- false
 }
