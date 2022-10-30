@@ -179,4 +179,3 @@ else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && 
     // Nothing loaded
     PluginLoaded <- false
 }
-*/
