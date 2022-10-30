@@ -638,6 +638,9 @@ function PostMapSpawn() {
     AddBranchLevelName(1, "P2 MM")
     CreatePropsForLevel(true, false, false)
     // Enable fast download
+    SendToConsoleP2MM("rate 99999999")
+    SendToConsoleP2MM("sv_maxrate 0")
+    SendToConsoleP2MM("sv_timeout 0")
     SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
     SendToConsoleP2MM("sv_allowdownload 1")
     SendToConsoleP2MM("sv_allowupload 1")
@@ -650,12 +653,9 @@ function PostMapSpawn() {
 	SendToConsoleP2MM("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
-    //Alias used to load 2v2coopbattle and mp_coop_p32lobby for easy accsess
+    //Alias used to load 2v2coopbattle and mp_coop_p2mmlobby for easy accsess
     SendToConsoleP2MM("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
-    SendToConsoleP2MM("alias p32lobby changelevel mp_coop_p32lobby")
-    //Loads mp_coop_testroom living only on Orsell's computer
-    //Will fail for anyone else unless they create the p32wip directory in portal2/maps and compile the mp_coop_testroom.vmf placing it into p32wip
-    SendToConsoleP2MM("alias testroom changelevel p32wip/mp_coop_testroom")
+    SendToConsoleP2MM("alias p2mmlobby changelevel mp_coop_p2mmlobby")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
