@@ -5,11 +5,14 @@
 // ██║ ╚═╝ ██║██║  ██║██║     ██║ ╚███║██║  ██║██║ ╚═╝ ██║███████╗
 // ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝
 
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, saveCheck) {
+// Commented out save related stuff is for the save system, remove if not needed
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
+    /*
     saveSupport <- false //If your map supports our built-in save system, set this to true
     saveEvents = { //Place your save events for your map here, you can leave this blank if the above is false
 
     }
+    */
 
     if (MSInstantRun) {
 
@@ -39,6 +42,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     }
 
+
+    /*
     if (MSOnSaveLoad) {
 
     }
@@ -52,4 +57,5 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFire("p2mm_servercommand", "command", "say 'PROGRESS WAS NOT SAVED!!!'")
         }
     }
+    */
 }

@@ -31,6 +31,27 @@ function InstantRun() {
     MapSupport(true, false, false, false, false, false, false)
 
     // Create an entity to loop the Loop() function every 0.1 second
+    Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer_actions")
+    Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer_loop")
+    for (local relay; relay = Entities.FindByClassname(relay, "logic_relay");) {
+        if (relay.GetName() == "p2mm_timer_actions") {
+            p2mm_timer_actions <- relay
+            foundrelay1 <- true
+        }
+        if (relay.GetName() == "p2mm_timer_loop") {
+            p2mm_timer_loop <- relay
+            foundrelay2 <- true
+        }
+        if (foundrelay1 && foundrelay2) {
+            break
+        }
+    }
+    EntFireByHandle(p2mm_timer_actions, "AddOutput", "classname move_rope", 0, null, null)
+    EntFireByHandle(p2mm_timer_actions, "AddOutput", "OnTrigger worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
+    EntFireByHandle(p2mm_timer_actions, "AddOutput", "OnTrigger p2mm_timer_loop:Trigger::0:-1", 0, null, null)
+    EntFireByHandle(p2mm_timer_loop, "AddOutput", "OnTrigger p2mm_timer_actions:Trigger::" + looptime + ":-1", looptime, null, null)
+
+    /*
     Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
     for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
         if (timer.GetName() == "p2mm_timer") {
@@ -38,10 +59,12 @@ function InstantRun() {
             break
         }
     }
+
     EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
     EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
     EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
+    */
 
     // Delay the creation of our map-specific entities before so
     // that we don't get an engine error from the entity limit

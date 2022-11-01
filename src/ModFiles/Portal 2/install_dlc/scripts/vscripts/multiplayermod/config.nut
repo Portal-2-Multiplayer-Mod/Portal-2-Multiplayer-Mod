@@ -35,7 +35,7 @@ Config_UseCustomDevModels <- false
 Config_GameMode <- 0
 
 // Set true/false if you want to randomize every Turret's models and colors (for fun lol)
-Config_RandomTurrets <-true
+Config_RandomTurrets <- true
 
 // Set true/false if you want to randomize the size of all portals every second
 Config_RandomPortalSize <- false
