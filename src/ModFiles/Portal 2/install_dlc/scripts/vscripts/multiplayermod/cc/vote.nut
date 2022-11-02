@@ -136,9 +136,8 @@ class {
     name = "vote"
     level = 0
 
-    // !vote
+    // !vote (arg1) (arg2)
     function CC(p, args) {
-        // variables.nut
         // WE ONLY WANT TO SHARE ONE INSTANCE OF THE CLASS FOR VOTING
         // OTHERWISE WE GET SOME VARIABLES MIXED UP, SUCH AS WHO STARTED
         // A VOTE AND WHO ALREADY VOTED

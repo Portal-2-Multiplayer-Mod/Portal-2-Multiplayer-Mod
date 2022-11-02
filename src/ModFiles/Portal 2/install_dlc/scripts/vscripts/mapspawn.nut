@@ -38,7 +38,8 @@ Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetna
 
 if (GetDeveloperLevel() == 918612) {
     // Take care of anything pertaining to progress check and how our plugin did when loading
-    return IncludeScript("multiplayermod/firstmapload.nut")
+    IncludeScript("multiplayermod/firstmapload.nut")
+    return
 }
 
 IncludeScript("multiplayermod/variables.nut")

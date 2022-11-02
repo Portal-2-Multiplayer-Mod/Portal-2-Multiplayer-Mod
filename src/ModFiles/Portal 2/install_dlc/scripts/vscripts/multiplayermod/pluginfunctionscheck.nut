@@ -28,7 +28,7 @@ OurAddedFunctionsLoaded <- [
     GetSteamIDLoaded <- false,
     AddChatCallbackLoaded <- false,
     SetPhysTypeConvarLoaded <- false,
-    SetMaxPortalSeparationConvar <- false
+    SetMaxPortalSeparationConvarLoaded <- false
 ]
 
 OurAddedFunctions <- [
@@ -59,11 +59,11 @@ foreach (Function in OurAddedFunctions) {
         // Redefine logic
         switch (Function) {
         case OurAddedFunctions[0]:
-            function GetPlayerName(entinx) {
-                return "player" + entinx
+            function GetPlayerName(int) {
+                return "player" + int
             }
         case OurAddedFunctions[1]:
-            function GetSteamID(string) {
+            function GetSteamID(int) {
                 return -1
             }
         case OurAddedFunctions[2]:
@@ -71,8 +71,12 @@ foreach (Function in OurAddedFunctions) {
                 printl("(P2:MM): Plugin not loaded. Unable to add chat callback for chat commands!")
             }
         case OurAddedFunctions[3]:
-            function SetPhysTypeConvar(string) {
+            function SetPhysTypeConvar(int) {
                 printl("(P2:MM): Plugin not loaded. Unable to change game grab controllers!")
+            }
+        case OurAddedFunctions[4]:
+            function SetMaxPortalSeparationConvar(int) {
+                printl("(P2:MM): Plugin not loaded. Unable to change player collision amounts!")
             }
         }
         printl("(P2:MM): " + Function + "() has been redefined!")
