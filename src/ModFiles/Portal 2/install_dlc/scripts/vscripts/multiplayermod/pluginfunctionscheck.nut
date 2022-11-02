@@ -98,12 +98,10 @@ GetPlayerNameLoaded <- false
 GetSteamIDLoaded <- false
 AddChatCallbackLoaded <- false
 SetPhysTypeConvarLoaded <- false
-SetMaxPortalSeparationConvar <- false
+SetMaxPortalSeparationConvarLoaded <- false
 
 function RedefinedMessage(functionname) {
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): " + functionname + "() has been redefined!")
-    }
+    printl("(P2:MM): " + functionname + "() has been redefined!")
 }
 
 function ReplaceGetPlayerName() {
@@ -154,7 +152,7 @@ function ReplaceSetPhysTypeConvar() {
 
 function ReplaceSetMaxPortalSeparationConvar() {
     if ("SetMaxPortalSeparationConvar" in this) {
-        SetMaxPortalSeparationConvar <- true
+        SetMaxPortalSeparationConvarLoaded <- true
         return
     }
     function SetMaxPortalSeparationConvar(string) {
@@ -169,11 +167,11 @@ ReplaceAddChatCallback()
 ReplaceSetPhysTypeConvar()
 ReplaceSetMaxPortalSeparationConvar()
 
-if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded || SetMaxPortalSeparationConvar) {
+if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded || SetMaxPortalSeparationConvarLoaded) {
     // Something loaded, so the plugin must be as well
     PluginLoaded <- true
 }
-else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded && !SetMaxPortalSeparationConvar) {
+else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded && !SetMaxPortalSeparationConvarLoaded) {
     // Nothing loaded
     PluginLoaded <- false
 }
