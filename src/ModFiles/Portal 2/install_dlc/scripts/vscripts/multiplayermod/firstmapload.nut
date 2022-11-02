@@ -27,11 +27,14 @@ if (!PluginLoaded) {
 
     EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
     EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
+} else {
+    printl("(P2:MM): Plugin has already been loaded! Not attempting to load it...")
 }
 
 // Facilitate first load after game launch
 function MakeProgressCheck() {
-    printl("(P2:MM): First map load detected! Attempting to reset map...")
+    printl("(P2:MM): First map load detected! Checking to see if we need to change/reset maps...")
+
     local ChangeToThisMap = "mp_coop_start"
     for (local course = 1; course <= 6; course++) {
         // 9 levels is the highest that a course has
@@ -41,9 +44,14 @@ function MakeProgressCheck() {
             }
         }
     }
-    EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + ChangeToThisMap, 0)
+
+    // We will always need to reset the map since there is no way to preserve a map load without
+    // forcing the game to not wait at least one second for a progress check
+    // if ((GetMapName() != ChangeToThisMap) || !PluginLoaded) {
+        // printl("(P2:MM): Resetting map (Destination map is not the same as " + GetMapName() + " OR our plugin was not loaded!")
+        printl("(P2:MM): Forcing map reset.")
+        EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + ChangeToThisMap)
+    // }
 }
 
-// Even if the plugin was already loaded, we need
-// to reset the map anyways to check the progress
 EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1) // Must be delayed

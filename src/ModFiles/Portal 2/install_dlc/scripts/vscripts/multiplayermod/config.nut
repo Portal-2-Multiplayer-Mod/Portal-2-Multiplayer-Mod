@@ -56,23 +56,29 @@ Config_UseNametags <- true
 // (Still being worked on)
 Config_SafeGuard <- false
 
+// Set to any integer from 0 to 256 to determine how much separation force exists between players.
+// P2:MM disables solid collision between players as seen in normal Portal 2, as it causes issues with players spawning into each other.
+// 0 - Players will not push each other away with any force when colliding.
+// 256 - Players will push each other away with a moderate amount of force when colliding.
+Config_SetPlayerElasticity <- 0
+
 // Set true/false if you want to use chat commands
 Config_UseChatCommands <- true
 
 // * If the P2:MM plugin loads and Config_UseChatCommands is true, then this is the list of players that have access to specific chat commands
-// * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well
+// * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well as long as you reset the map after editing
 // * Permissions stack with increased admin level
-// * The highest admin level available is [6] and is assigned automatically to the host
+// * The highest admin level available is [6] and is assigned automatically to the server operator
 // * Everyone by default has level [0]
 //
 // * These can be accessed with "!" preceding them
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
-// [0]: "help", "changeteam", "kill", "playercolor"
+// [0]: "help", "changeteam", "kill", "playercolor", "vote"
 // [1]:
 // [2]: "kill (someone)"
-// [3]: "playercolor (for someone else)"
-// [4]: "speed", "noclip", "teleport"
+// [3]: "playercolor (for someone else)", "rocket (optionally someone)"
+// [4]: "speed", "noclip", "teleport", "slap (optionally someone)"
 // [5]: "restartlevel", "spchapter", "mpcourse"
 // [6]: "rcon", "adminmodify"
 //
