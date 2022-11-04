@@ -50,24 +50,28 @@ def init() -> None:
         modPath = buf.value + nf + "p2mm"
         modFilesPath = buf.value + nf + "p2mm\ModFiles"
         configPath = buf.value + nf + "p2mm"
+        masterDataFilePath = buf.value + nf + "p2mm"
         dataSystemPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod\savesystem"
     elif (sys.platform.startswith("linux")):
-        # Both Linux and SteamOS 3.0 system platforms are returned as "linux"
+        # Both Linux and SteamOS 3.0 system platform names return as "linux"
         # We need to use the platform release name to differentiate a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release
         if ("valve" in platform.release()):
             iosd = True
             # Steam OS 3.0 has some directories set to read-only
-            # We are going to install p2mm to the \home directory instead of .cache and .config because of this
-            modPath = os.path.expanduser("~") + nf + "p2mm"
-            modFilesPath = os.path.expanduser("~") + nf + "p2mm\Modfiles"
-            configPath = os.path.expanduser("~") + nf + "p2mm"
-            dataSystemPath = os.path.expanduser("~") + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod\datasystem"
+            # We are going to install p2mm to the \home\Documents directory instead of .cache and .config because of this
+            # We are also gonna keep stuff together like with the Windows paths, configs will be placed into the same directory as the ModFiles
+            modPath = os.path.expanduser("~") + nf + "Documents\p2mm"
+            modFilesPath = os.path.expanduser("~") + nf + "Documents\p2mm\Modfiles"
+            configPath = os.path.expanduser("~") + nf + "Documents\p2mm"
+            masterDataFilePath = os.path.expanduser("~") + nf + "Documents\p2mm"
+            dataSystemPath = os.path.expanduser("~") + nf + "Documents\p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod\datasystem"
         else:
             iol = True
-            # Set the modpath the users home directory
+            # Set the modpath the to the users .cache and .config directories in the home directory
             modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
             modFilesPath = os.path.expanduser("~") + nf + ".cache\p2mm\Modfiles"
             configPath = os.path.expanduser("~") + nf + ".config\p2mm"
+            masterDataFilePath = os.path.expanduser("~") + nf + ".config\p2mm"
             dataSystemPath = os.path.expanduser("~") + nf + ".cache\p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod\datasystem"
 
     else:
