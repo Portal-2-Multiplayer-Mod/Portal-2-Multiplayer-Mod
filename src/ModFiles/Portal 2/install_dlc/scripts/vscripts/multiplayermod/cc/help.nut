@@ -15,6 +15,8 @@ commandtable["spchapter"] <- "Changes the level to the specified singleplayer ch
 commandtable["speed"] <- "Changes your player speed."
 commandtable["teleport"] <- "Teleports a specific player or \"all\" to you or another player."
 // commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not."
+// commandtable["kick"] <- "Kicks a player from the server and prevents them from rejoinning only until the next play session."
+// commandtable["ban"] <- "Bans a player from the play session and will prevent them from joinning again for future play sessions."
 
 CommandList.push(
     class {

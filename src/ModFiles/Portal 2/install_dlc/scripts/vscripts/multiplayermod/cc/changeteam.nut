@@ -1,8 +1,8 @@
 teams <- [
     "Singleplayer",
     "Spectator", // This is not used at all since respawning is broken
-    "Red",
-    "Blue"
+    "Red", // P-body
+    "Blue" // Atlas
 ]
 
 CommandList.push(

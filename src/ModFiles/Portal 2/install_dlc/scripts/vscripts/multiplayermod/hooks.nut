@@ -30,7 +30,7 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to loop the Loop() function every 0.1 second
+    // Create two logic_relay entities to loop the Loop() function every 0.1 second
     Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer_actions")
     Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer_loop")
     for (local relay; relay = Entities.FindByClassname(relay, "logic_relay");) {
@@ -46,12 +46,16 @@ function InstantRun() {
             break
         }
     }
+    // p2mm_timer_actions includes the things that will be called
+    // p2mm_timer_loop will be called by p2mm_timer_actions and also calls p2mm_timer_actions again to create that loop
     EntFireByHandle(p2mm_timer_actions, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(p2mm_timer_actions, "AddOutput", "OnTrigger worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
     EntFireByHandle(p2mm_timer_actions, "AddOutput", "OnTrigger p2mm_timer_loop:Trigger::0:-1", 0, null, null)
     EntFireByHandle(p2mm_timer_loop, "AddOutput", "OnTrigger p2mm_timer_actions:Trigger::" + looptime + ":-1", looptime, null, null)
 
-    /*
+    /* 
+    // Old p2mm_timer entity, commented out in case we ever need it again for something.
+    // The p2mm_timer_actions and p2mm_timer_loop entities should reduce the lag though.
     Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
     for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
         if (timer.GetName() == "p2mm_timer") {

@@ -19,8 +19,8 @@ configData: dict[str, dict[str, str]]
 modPath: str # \p2mm
 modFilesPath: str # \p2mm\Modfiles
 configPath: str
-masterSavePath: str # Path defined for the masterSave.cfg file
-saveSystemNutPath: str # Path defined for the savesystem directory
+masterDataFilePath: str # Path defined for the masterDataFile.cfg file
+dataSystemPath: str # Path defined for the datasystem directory
 iow: bool = False # Windows system
 iol: bool = False # Linux system
 iosd: bool = False # Steam OS 3.0 system, mainly Steam Deck
@@ -31,7 +31,7 @@ translations: dict[str, str]
 AfterFunction: None
 
 def init() -> None:
-    global appStartDate, modPath, modFilesPath, configPath, masterSavePath, saveSystemPath, iow, iol, iosd, nf, translations
+    global appStartDate, modPath, modFilesPath, configPath, masterDataFilePath, dataSystemPath, iow, iol, iosd, nf, translations
 
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
@@ -50,22 +50,25 @@ def init() -> None:
         modPath = buf.value + nf + "p2mm"
         modFilesPath = buf.value + nf + "p2mm\ModFiles"
         configPath = buf.value + nf + "p2mm"
-        saveSystemPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod\savesystem"
+        dataSystemPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod\savesystem"
     elif (sys.platform.startswith("linux")):
         # Both Linux and SteamOS 3.0 system platforms are returned as "linux"
-        # We need to use the platform release name to differentiate a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 release ends with "neptune"
+        # We need to use the platform release name to differentiate a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release
         if ("valve" in platform.release()):
-            # We need to disables Steam OS 3.0's read-only flag, we will make sure of this everytime because after a update of the operating system this gets turned back on
-            # Without this updates and patching the won't work because the system was flagged read-only
-            os.system("sudo steamos-readonly disable")
             iosd = True
+            # Steam OS 3.0 has some directories set to read-only
+            # We are going to install p2mm to the \home directory instead of .cache and .config because of this
+            modPath = os.path.expanduser("~") + nf + "p2mm"
+            modFilesPath = os.path.expanduser("~") + nf + "p2mm\Modfiles"
+            configPath = os.path.expanduser("~") + nf + "p2mm"
+            dataSystemPath = os.path.expanduser("~") + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod\datasystem"
         else:
             iol = True
-        # Set the modpath the users home directory
-        modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
-        modFilesPath = os.path.expanduser("~") + nf + ".cache\p2mm\Modfiles"
-        configPath = os.path.expanduser("~") + nf + ".config\p2mm"
-        saveSystemPath = os.path.expanduser("~") + nf + ".cache\p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod\savesystem"
+            # Set the modpath the users home directory
+            modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
+            modFilesPath = os.path.expanduser("~") + nf + ".cache\p2mm\Modfiles"
+            configPath = os.path.expanduser("~") + nf + ".config\p2mm"
+            dataSystemPath = os.path.expanduser("~") + nf + ".cache\p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod\datasystem"
 
     else:
         # Feel sad for the poor people who are running templeOS :(

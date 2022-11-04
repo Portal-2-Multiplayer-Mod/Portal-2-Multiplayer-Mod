@@ -22,7 +22,7 @@ import Scripts.RunGame as RG
 import Scripts.Updater as up
 import Scripts.Workshop as workshop
 from Scripts.BasicLogger import Log, StartLog
-import Scripts.SaveSystem as SS
+import Scripts.DataSystem as DS
 
 tk = ""
 try:
@@ -88,7 +88,7 @@ class Gui:
 
         self.DefineMainMenu()
         self.DefineSettingsMenu()
-        self.DefineSaveMenu()
+        self.DefineDataMenu()
         self.DefineWorkshopMenu()
         self.DefineManualMountingMenu()
         self.DefineResourcesMenu()
@@ -157,7 +157,7 @@ class Gui:
                     xstart: float = 100, # While both xpos and ypos determine where the text will begin,
                     xend: float = 100, # xstart and xend define where the wrapping for the displaytext will start and end. This can allow to to have text on the next line appear before where it orginally started.
                     ypos: float = 0, # The bigger the number, the lower the text will be.
-                    size: float = 100 # The bigger the number, the smaller it is, because that definitely makes sense.
+                    size: float = 100 # The bigger the number, the smaller it is, because that definitely makes sense, needs to be fixed.
                     ) -> None:
 
             self.text = text
@@ -212,7 +212,7 @@ class Gui:
     def DefineMainMenu(self) -> None:
         self.Button_LaunchGame = self.ButtonTemplate(translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120), isasync=True)
         self.Button_Settings = self.ButtonTemplate(translations["settings_button"], self.Button_Settings_func)
-        #self.Button_Saves = self.ButtonTemplate(translations["saves_button"], self.Button_Saves_func, (235, 172, 14)) This will be the buttons position in the list onces its finished
+        #self.Button_Data = self.ButtonTemplate(translations["data_button"], self.Button_Data_func, (235, 172, 14)) This will be the buttons position in the list onces its finished
         self.Button_Update = self.ButtonTemplate(translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
         self.Button_ManualMode = self.ButtonTemplate(translations["manual_mounting_button"], self.Button_ManualMode_func)
         self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
@@ -227,9 +227,9 @@ class Gui:
         self.MainMenuItems = [] # This was orginally where I was gonna stick everything but I don't know anymore, you do you Cabiste
 
         if self.devMode:
-            self.Button_Saves = self.ButtonTemplate(translations["saves_button"], self.Button_Saves_func, (235, 172, 14)) # For now Saves will be a dev only button
+            self.Button_Data = self.ButtonTemplate(translations["data_button"], self.Button_Data_func, (235, 172, 14)) # For now Data will be a dev only button
             self.Button_Test = self.ButtonTemplate("Test Button", self.Button_Test_func)
-            self.MainMenuButtons.append(self.Button_Saves)
+            self.MainMenuButtons.append(self.Button_Data)
             self.MainMenuButtons.append(self.Button_Test)
 
         self.MainMenuButtons.append(self.Button_Exit)
@@ -256,28 +256,27 @@ class Gui:
 
         self.SettingsMenus.append(self.Button_Back)
 
-    def DefineSaveMenu(self) -> None:
-        self.Text_SaveSystemStateTxt = self.DisplayText(
-            translations["save_system_state_txt"], textColor = (155, 155, 155))
-        if SS.saveSystemState:
-            self.Text_SaveSystemState = self.DisplayText(
-                translations["saves_enabled"],
+    def DefineDataMenu(self) -> None:
+        self.Text_DataSystemStateTxt = self.DisplayText(
+            translations["data_system_state_txt"], textColor = (155, 155, 155))
+        if DS.dataSystemState:
+            self.Text_DataSystemState = self.DisplayText(
+                translations["data_enabled"],
                 textColor = (21, 255, 0),
                 xpos = 1.45,
                 ypos = 3.80,
                 size = 600)
         else:
-            self.Text_SaveSystemState = self.DisplayText(
-                translations["saves_disabled"],
+            self.Text_DataSystemState = self.DisplayText(
+                translations["data_disabled"],
                 textColor = (255, 21, 0),
                 xpos = 1.45,
                 ypos = 3.80,
                 size = 600)
-        self.Button_RefreshSaveSystem = self.ButtonTemplate(translations["save_system_refresh"], self.Button_RefreshSaveSystem_func)
+        self.Button_RefreshDataSystem = self.ButtonTemplate(translations["data_system_refresh"], self.Button_RefreshDataSystem_func)
 
-        self.SavesMenuText = [self.Text_SaveSystemStateTxt, self.Text_SaveSystemState]
-        self.SavesMenuButtons = [self.Button_RefreshSaveSystem, self.Button_Back]
-
+        self.DataMenuText = [self.Text_DataSystemStateTxt, self.Text_DataSystemState]
+        self.DataMenuButtons = [self.Button_RefreshDataSystem, self.Button_Back]
 
     def DefineWorkshopMenu(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(
@@ -303,7 +302,7 @@ class Gui:
         self.Button_Discord = self.ButtonTemplate(
             translations["discord_server_button"], self.Button_Discord_func, (75, 75, 150), isasync=True)
 
-        self.RecourcesButtons = [
+        self.ResourcesButtons = [
             self.Button_GitHub, self.Button_Guide, self.Button_Discord, self.Button_Back]
 
     def DefineTestingMenu(self) -> None:
@@ -368,6 +367,7 @@ class Gui:
                 self.size = 700
                 self.xpos = 16
                 self.ypos = 2
+                self.font = "GUI/assets/fonts/pixel.ttf"
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
                 outerSelf.BlitDescription(self.keyobj["description"], self.outerSelf.SelectedButton.x,
@@ -410,14 +410,14 @@ class Gui:
                 self.SettingsButtons.append(curkeyButton(key, self))
         self.SettingsButtons.append(self.Button_Back)
 
-    def RefreshSavesMenu(self) -> None:
-        Log("Refreshing the save system...")
-        SS.saveSystemInitialization(refresh=True)
-        self.Error(translations["save_system_refreshing"], 3, (75, 120, 255))
-        if SS.saveSystemState == True:
-            self.Error(translations["save_system_refresh_success"], 5, (21, 255, 0))
+    def RefreshDataMenu(self) -> None:
+        Log("Refreshing the data system...")
+        DS.dataSystemInitialization(refresh=True)
+        self.Error(translations["data_system_refreshing"], 3, (75, 120, 255))
+        if DS.dataSystemState == True:
+            self.Error(translations["data_system_refresh_success"], 5, (21, 255, 0))
         else:
-            self.Error(translations["save_system_refresh_failed"], 5, (255, 21, 0))
+            self.Error(translations["data_system_refresh_failed"], 5, (255, 21, 0))
 
     def RefreshPlayersMenu(self) -> None:
         cfg.ValidatePlayerKeys()
@@ -571,11 +571,11 @@ class Gui:
     def Button_Settings_func(self) -> None:
         self.ChangeMenu(self.SettingsMenus)
 
-    # switches to the saves menu
+    # switches to the data menu
 
-    def Button_Saves_func(self) -> None:
-        self.ChangeMenu(self.SavesMenuButtons)
-        self.RefreshSavesMenu()
+    def Button_Data_func(self) -> None:
+        self.ChangeMenu(self.DataMenuButtons)
+        self.RefreshDataMenu()
 
     # launcher update button
 
@@ -602,7 +602,7 @@ class Gui:
     # switches to the resources menu (github, discord etc...)
 
     def Button_ResourcesMenu_func(self) -> None:
-        self.ChangeMenu(self.RecourcesButtons)
+        self.ChangeMenu(self.ResourcesButtons)
 
     # it closes the game
 
@@ -648,8 +648,8 @@ class Gui:
     #! SAVES BUTTONS FUNCTIONS
     #!############################
 
-    def Button_RefreshSaveSystem_func(self) -> None:
-        self.RefreshSavesMenu()
+    def Button_RefreshDataSystem_func(self) -> None:
+        self.RefreshDataMenu()
 
     #!############################
     #! MANUAL MODE BUTTONS FUNCTIONS
@@ -1616,8 +1616,8 @@ def Initialize() -> None:
     GVars.LoadConfig()
     # load the client's translations
     LoadTranslations()
-    # Starts up the custom save system
-    SS.saveSystemInitialization(refresh=False)
+    # Starts up the custom data system
+    DS.dataSystemInitialization(refresh=False)
 
     # checks if this is debug or release mode
     if sys.argv[0].endswith(".py"):

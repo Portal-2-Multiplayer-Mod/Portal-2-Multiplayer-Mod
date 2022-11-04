@@ -72,12 +72,12 @@
   "testing_button": "Testing",
   "language_error0_language_update": "Language Set!",
   "language_error0_relaunch_game": "Please reboot the launcher...",
-  "saves_button": "Saves",
-  "save_system_state_txt": "Save System Status: ",
-  "saves_enabled": "Enabled",
-  "saves_disabled": "Disabled",
-  "save_system_refresh": "Refresh Save System",
-  "save_system_refreshing": "Refreshing the Save System...",
-  "save_system_refresh_success": "The Save System refreshed successfully!",
-  "save_system_refresh_failed": "The Save System failed to refresh..."
+  "data_button": "Data",
+  "data_system_state_txt": "Data System Status: ",
+  "data_enabled": "Enabled",
+  "data_disabled": "Disabled",
+  "data_system_refresh": "Refresh Data System",
+  "data_system_refreshing": "Refreshing the Data System...",
+  "data_system_refresh_success": "The Data System refreshed successfully!",
+  "data_system_refresh_failed": "The Data System failed to refresh..."
 }

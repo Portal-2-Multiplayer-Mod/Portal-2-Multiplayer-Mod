@@ -137,7 +137,9 @@ IncludeScriptCC("spchapter")
 // IncludeScriptCC("spectate") // broken
 IncludeScriptCC("speed")
 IncludeScriptCC("teleport")
-// IncludeScriptCC("vote") // INDEV
+// IncludeScriptCC("vote") // INDEV By Nano
+// IncludeScriptCC("kick") // INDEV By Orsell
+// IncludeScriptCC("ban") // INDEV By Orsell
 
 //--------------------------------------
 // Chat command function dependencies
