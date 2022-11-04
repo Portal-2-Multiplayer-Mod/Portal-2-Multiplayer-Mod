@@ -51,14 +51,14 @@ def init() -> None:
         modFilesPath = buf.value + nf + "p2mm\ModFiles"
         configPath = buf.value + nf + "p2mm"
         masterDataFilePath = buf.value + nf + "p2mm"
-        dataSystemPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod\savesystem"
+        dataSystemPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod\datasystem"
     elif (sys.platform.startswith("linux")):
         # Both Linux and SteamOS 3.0 system platform names return as "linux"
         # We need to use the platform release name to differentiate a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release
         if ("valve" in platform.release()):
             iosd = True
             # Steam OS 3.0 has some directories set to read-only
-            # We are going to install p2mm to the \home\Documents directory instead of .cache and .config because of this
+            # We are going to install p2mm to the home\Documents directory instead of .cache and .config because of this
             # We are also gonna keep stuff together like with the Windows paths, configs will be placed into the same directory as the ModFiles
             modPath = os.path.expanduser("~") + nf + "Documents\p2mm"
             modFilesPath = os.path.expanduser("~") + nf + "Documents\p2mm\Modfiles"
