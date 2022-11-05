@@ -982,7 +982,7 @@ function UnNegative(num) {
 
         num = Vector(num.x, num.y, num.z)
     } catch(e) {
-        if (num <= 0) {
+        if (num <= 0) { // TODO: Can cause errors with comparing instances
             num = num * -1
         }
     }

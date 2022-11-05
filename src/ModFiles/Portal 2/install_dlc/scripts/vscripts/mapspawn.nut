@@ -20,16 +20,46 @@
 //                 fixes for 3+ MP.
 //---------------------------------------------------
 
-// mapspawn.nut is called twice on map transitions for some reason...
-// Prevent the second run
-if (!("Entities" in this)) { return }
+// TODO: Find out how to determine whether or not a
+// session is dedicated or listen IN VSCRIPT
 
-printl("\n-------------------------")
-printl("==== calling mapspawn.nut")
-printl("-------------------------\n")
+//-------------------------------------------------------------------------------------------
+// This file is called on map transitions for both the client VM and server VM
+// If the server type is a listen server, then this specific file would be called twice
+// We differentiate between the two by whether or not the VM can control the entities
+//-------------------------------------------------------------------------------------------
 
-IncludeScript("multiplayermod/pluginfunctionscheck.nut") // Make sure we know the exact status of our plugin first thing
-IncludeScript("multiplayermod/config.nut")
+if (!("Entities" in this)/* || GetMapName().find(".bsp") != null || Time().tostring() != "1"*/) {
+    printl("\n----------------------------------")
+    printl("==== calling mapspawn.nut (CLIENT)")
+    printl("----------------------------------\n")
+
+    // If someone uses mapspawn.nut actively, they can put their code here
+
+    return // Terminate execution
+}
+
+//-------------------------------------------------------------------------------------------
+
+printl("\n----------------------------------")
+printl("==== calling mapspawn.nut (SERVER)")
+printl("----------------------------------\n")
+
+// Now we take care of some tasks first thing
+
+// Determine what the "maxplayers" cap is
+iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1)
+printl("(P2:MM): Max players allowed on the server: " + iMaxPlayers)
+
+// Determine whether or not this is a dedicated server
+// if (IsLocalSplitScreen() || !IsMultiplayer()) {
+//     bIsDedicatedServer <- false
+// } else {
+//     bIsDedicatedServer <- true
+// }
+
+IncludeScript("multiplayermod/pluginfunctionscheck.nut") // Make sure we know the exact status of our plugin
+IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences
 IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
 
 // Create a global point_servercommand entity for us to pass through commands
@@ -41,6 +71,10 @@ if (GetDeveloperLevel() == 918612) {
     IncludeScript("multiplayermod/firstmapload.nut")
     return
 }
+
+//-------------------------------------------------------------------------------------------
+
+// Continue loading the P2:MM fixes, game mode, and features
 
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
@@ -108,23 +142,18 @@ case 2:     LoadMapSupportCode("deathmatch");   break
 case 3:     LoadMapSupportCode("futbol");       break
 default:
     printl("(P2:MM): \"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
-    LoadMapSupportCode("standard")
-    break
+    LoadMapSupportCode("standard"); break
 }
 
 //---------------------------------------------------
 
 // Run InstantRun() shortly AFTER spawn (hooks.nut)
 
-try {
-    // Make sure that the user is in multiplayer mode before initiating everything
-    if (!IsMultiplayer()) {
-        printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
-        EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
-    }
-
-    // InstantRun() must be delayed slightly
-    EntFire("p2mm_servercommand", "command", "script InstantRun()", 0.02)
-} catch (e) {
-    printl("(P2:MM): Initializing our custom support!\n")
+// Make sure that the user is in multiplayer mode before initiating everything
+if (!IsMultiplayer()) {
+    printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
+    EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
 }
+
+// InstantRun() must be delayed slightly
+EntFire("p2mm_servercommand", "command", "script InstantRun()", 0.02)

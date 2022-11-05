@@ -781,7 +781,7 @@ function OnPlayerJoin(p, script_scope) {
             break
     }
 
-    SendToConsoleP2MM("sv_timeout 3")
+    SendToConsoleP2MM("sv_timeout -1")
     EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos", 0, p, p)
     EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
     EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
