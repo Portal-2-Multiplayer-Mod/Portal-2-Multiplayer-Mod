@@ -452,19 +452,18 @@ function CreateGenericPlayerClass(p) {
 // }
 
 function DeleteAmountOfEntities(classname, amount) {
-    local p = null
     local indx = 0
-    while (p = Entities.FindByClassname(p, classname)) {
+    for (local p; p = Entities.FindByClassname(p, classname);) {
         if (indx >= amount) {
             break
         }
 
         local delthis = true
-        foreach (thing in InvalidRootMoveParents) {
-            if (p.GetRootMoveParent().GetClassname() == thing) {
-                delthis = false
-                printl("(P2:MM): Not deleting " + classname + " (ROOTMOVEPARENT:) " + p.GetRootMoveParent().GetClassname() + " because it is in the InvalidRootMoveParents array.")
-            }
+        local checkClassname = p.GetRootMoveParent().GetClassname()
+
+        if (checkClassname == "player" || checkClassname == "worldspawn" || checkClassname == "" || checkClassname == "prop_portal") {
+            delthis = false
+            printl("(P2:MM): Not deleting class " + classname + " (ROOTMOVEPARENT:) " + checkClassname + " (By deleting the class, the RootMoveParent will also get deleted, causing crashes).")
         }
 
         if (delthis) {
@@ -477,10 +476,11 @@ function DeleteAmountOfEntities(classname, amount) {
 }
 
 function PrecacheModel(mdl) {
+    // TODO: Is this inefficient?
     SendToConsoleP2MM("script PrecacheModelNoDelay(\"" + mdl + "\")")
 }
 function PrecacheModelNoDelay(mdl) {
-        // Add the models/ to the side of the model name if it's not already there
+    // Add the models/ to the side of the model name if it's not already there
     if (mdl.slice(0, 7) != "models/") {
         mdl = "models/" + mdl
     }

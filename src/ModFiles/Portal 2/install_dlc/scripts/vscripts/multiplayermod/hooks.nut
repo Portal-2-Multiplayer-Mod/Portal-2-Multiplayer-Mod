@@ -699,24 +699,117 @@ function PostMapSpawn() {
 
 // 5
 function OnPlayerJoin(p, script_scope) {
-    // Trigger map-specific code)
+
+    // // Update this value. We don't want to run this several times
+    // // at once if players are joining all at once (i.e. map change)
+    // LastTimePlayerJoined <- Time()
+
+    // // TODO: Find out how to get the number of players
+    // // *connected* to the server and have yet to spawn
+
+    // /*-------------------------------------------------------------
+    // General notes about joining players:
+    // - Their entity index is preserved throughout map loads and only
+    //   changes if they leave the session. It is designated from "1"
+    //   and higher until the first "team_manger" entity. That gives us
+    //   a hint on what the current max players are in the server
+
+    // - They spawn a few entities including:
+    //    - player,                             CPortal_Player
+    //       - Has a targetname of either "blue" or "red", depending on
+    //         the team assigned to upon spawn
+
+    //     (The rest of these have NO targetname by default)
+
+    //    - predicted_viewmodel,                CPredicted_ViewModel
+
+    // If the team portal gun spawning is NOT suppressed,
+    // then these will also spawn for that specific player:
+
+    //    - portalsimulator_collisionentity,    CPSCollisionEntity
+    //    - prop_portal,                        CProp_Portal
+    //    - weapon_portalgun,                   CWeaponPortalgun
+
+    // The reason this whole thing is important is because if the map
+    // is really big and contains a lot of entities, we don't want
+    // players to spawn with the portal gun. Otherwise, the server
+    // will crash due to hitting the max entity cap.
+    // -------------------------------------------------------------*/
+
+    // if (Time() - LastTimePlayerJoined < 0.5) {
+    //     // URGENT: WE MUST FIND OUT IF THERE ARE TOO MANY PLAYERS
+    //     // 20 players crashed me with the entity limit on mp_coop_lobby_3 - Nano
+    //     // If we want 33 player Portal MP, we need to learn when to cut corners :)
+
+    //     // Methods to iterate over EVERY entity present:
+    //     /* 1.
+    //         local entity = Entities.First()
+    //         while (entity = Entities.Next(entity)) {
+    //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
+    //         }*/
+
+    //     /* 2.
+    //         for (local entity = Entities.First(); entity = Entities.Next(entity);) {
+    //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
+    //         }*/
+
+    //     local bShouldRemovePortalguns = false
+    //     local iCurrentNumEntsInLoop = 0
+
+    //     // Find every entity and check their properties
+    //     // TODO: FIX THIS METHOD. IT IS SLOW!!!
+    //     for (local entity = Entities.First(); entity = Entities.Next(entity);) {
+    //         iCurrentNumEntsInLoop++ // increment immediately
+
+    //         // 1950 is nearing the entity limit. At this point, the host
+    //         // has like 30 fps. We need to make an optimzation ASAP.
+    //         if (entity.entindex() >= 2000) {
+    //             bShouldRemovePortalguns = true
+    //             break
+    //         }
+    //     }
+
+    //     // Remove Portal Gun and change map
+    //     if (bShouldRemovePortalguns) {
+    //         SendChatMessage("***THIS MAP IS VERY BIG AND/OR THERE ARE A LOT OF PLAYERS CONNECTED!***", Entities.FindByClassname(null, "player"))
+    //         SendChatMessage("***STRIPPING ALL PORTAL GUNS TO IMPROVE PERFORMANCE AND PREVENT A CRASH! TRANSITIONING TO mp_coop_doors IN 3 SECONDS***", Entities.FindByClassname(null, "player"))
+
+    //         if (!Entities.FindByName(null, "supress_blue_portalgun_spawn")) {
+    //             Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+    //         }
+    //         if (!Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
+    //             Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+    //         }
+    //         for (local ent; ent = Entities.FindByClassname(ent, "weapon_portalgun");) {
+    //             ent.Destroy()
+    //         }
+    //         EntFire("p2mm_servercommand", "command", "changelevel mp_coop_doors", 3)
+    //     } else {
+    //         printl("-----------WE DONT NEED TO REMOVE THE GUNS AND CHANGE LEVEL!!!")
+    //     }
+    // }
+
+    //-------------------------------------------------------------
+    // Update P2:MM code
+
+    // Trigger map-specific code
     MapSupport(false, false, false, false, true, false, false)
 
-    // GlobalSpawnClass Teleport
+    // Are we teleporting this player based on our predictions/calculations
+    // of the locations of entities in the map?
     if (GlobalSpawnClass.useautospawn) {
         TeleportToSpawnPoint(p, null)
     }
 
-    //# Get player's index and store it #//
-    PlayerID <- p.GetRootMoveParent()
-    PlayerID <- PlayerID.entindex()
+    // Get player's index and store it
+    PlayerID <- p.GetRootMoveParent().entindex()
 
-    //# Assign every new targetname to the player after blue and red are used #//
+    // Assign every new targetname to the player after blue and red are used
     if (PlayerID >= 3) {
         p.__KeyValueFromString("targetname", "player" + PlayerID)
     }
 
-    //# Change player portal targetname #//
+    // Change player prop_portal targetname
     local ent1 = null
     local ent2 = null
     local ent = null

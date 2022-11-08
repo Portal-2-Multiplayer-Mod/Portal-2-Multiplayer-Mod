@@ -53,8 +53,8 @@ Config_UseNametags <- true
 // Server variables
 //-----------------------------------
 // Set true/false if you want to enable the Safeguard functionality against server vscript functions from people connecting to you.
-// (Still being worked on)
-Config_SafeGuard <- false
+// "true" is highly recommended if this is a public server
+Config_SafeGuard <- true
 
 // Set to any integer from 0 to 256 to determine how much separation force exists between players.
 // P2:MM disables solid collision between players as seen in normal Portal 2, as it causes issues with players spawning into each other.
@@ -93,5 +93,5 @@ Admins <- [
 "[400]181670710", // Bumpy
 "[400]72399433", // cabiste
 "[400]376041508", // Orsell
-"[400]378724405" // \n
+"[6]378724405" // \n
 ]
