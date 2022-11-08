@@ -53,6 +53,13 @@ function ChatCommands(ccuserid, ccmessage) {
             if (StartsWith(str.tolower(), cmd.name)) {
                 return cmd
             }
+            if (StartsWith(str.tolower(), "playercolour")) {
+                foreach (cmd in CommandList) {
+                    if (cmd.name == "playercolor") {
+                         return cmd
+                    }
+                }
+            }
         }
         return null
     }

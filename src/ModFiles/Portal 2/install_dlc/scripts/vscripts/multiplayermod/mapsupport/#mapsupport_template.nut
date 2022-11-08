@@ -9,7 +9,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
 
     }
-    
+
     if (MSLoop) {
 
     }
