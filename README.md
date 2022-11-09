@@ -79,6 +79,6 @@ You will need `pyinstaller` in order to proceed.
 
 **Team Members**
 - QuantumCoded (Jeffrey)
-- Orsell (AKA zwexit) *(Launcher Dev, Minor VScript, Map Maker)*
+- Orsell (AKA zwexit) *(Launcher Dev, VScript, Map Maker)*
 - \n *(Test Subject (Under Gunpoint))*
-- wanderer *(Exploit Finder, Dedicated Server Support, Reverse Engineering*
+- wanderer *(Exploit Finder, Dedicated Server Support, Reverse Engineering*)
