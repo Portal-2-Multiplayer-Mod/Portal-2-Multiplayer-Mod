@@ -86,8 +86,8 @@ IncludeScript("multiplayermod/chatcommands.nut")
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
-// Load the custom save system after everything else has been loaded
-// IncludeScript("multiplayermod/savesystem.nut") Commented out for now, still need to finish
+// Load the data system after everything else has been loaded
+// IncludeScript("multiplayermod/datasystem/datasystem-main.nut") Commented out for now, still need to finish
 
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) { printl(line) }

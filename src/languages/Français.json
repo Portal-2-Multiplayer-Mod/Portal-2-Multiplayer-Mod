@@ -1,4 +1,6 @@
 {
+  "welcome": "Bienvenue dans le Lanceur P2MM! Appuyez sur 'Lancer Le Jeu' pour lancer le mod P2MM!",
+  "version": "Version: ",
   "play_button": "Lancer Le Jeu",
   "exit_button": "Quitter",
   "discord_server_button": "Serveur Discord",
@@ -7,7 +9,8 @@
   "player_button": "Joueurs",
   "settings_button": "Paramètres",
   "portal2_config_button": "Configuration De Portal 2",
-  "hidden_config_button": "Paramètres Cachés",
+  "hidden_config_button": "Menu Développeur",
+  "dev_mode_enabled": "LE MODE DÉVELOPPEUR EST ACTIVÉ!",
   "back_button": "Retour",
   "mount_button": "Monter",
   "mounted": "Monté!",

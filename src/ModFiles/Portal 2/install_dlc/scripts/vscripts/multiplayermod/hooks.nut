@@ -36,14 +36,9 @@ function InstantRun() {
     for (local relay; relay = Entities.FindByClassname(relay, "logic_relay");) {
         if (relay.GetName() == "p2mm_timer_actions") {
             p2mm_timer_actions <- relay
-            foundrelay1 <- true
         }
         if (relay.GetName() == "p2mm_timer_loop") {
             p2mm_timer_loop <- relay
-            foundrelay2 <- true
-        }
-        if (foundrelay1 && foundrelay2) {
-            break
         }
     }
     // p2mm_timer_actions includes the things that will be called

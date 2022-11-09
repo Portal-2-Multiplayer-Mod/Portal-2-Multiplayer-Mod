@@ -37,7 +37,7 @@ except Exception as e:
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
-class Gui:
+class Gui: 
     def __init__(self, devMode: bool) -> None:
         pygame.mixer.pre_init(channels=1)
         pygame.init()
@@ -73,7 +73,7 @@ class Gui:
         self.devMode: bool = devMode
         self.running: bool = True
         self.FPS: int = 60
-        self.currentVersion: str = "2.1.0" # change this before releasing a new version
+        self.currentVersion: str = "2.1.0" # Change this before releasing a new version
 
         # Define the name and image of the window
         pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
@@ -115,7 +115,7 @@ class Gui:
             sound (pygame.mixer.Sound): the sound to play
         """
 
-        LauncherSFX = GVars.configData["LauncherSFX"]["value"] == "true"
+        LauncherSFX = GVars.configData["Launcher-SFX"]["value"] == "true"
         if LauncherSFX:
             pygame.mixer.Sound.play(sound)
 
@@ -148,14 +148,17 @@ class Gui:
         self.Floaters.append(floater)
 
     # DISPLAY TEXT CLASS
+    # Text for the DisplayText class still needs to be programed to wrap when it goes off the screen
+    # It also needs to be programmed to stay in the menu it was assigned to
+    # Needs to be programmed for the size to grow when the size variable is bigger, not smaller, see below
     class DisplayText:
         def __init__(self,
                     text: str,
-                    font: str = "GUI/assets/fonts/pixel.ttf",
+                    font: str = "GUI/assets/fonts/pixel.ttf", # In case we have a custom font that needs to replace the default, this may be the case for certain languages.
                     textColor: tuple = (155, 155, 155),
                     xpos: float = 0, # The bigger the number, the more right the text will be.
                     xstart: float = 100, # While both xpos and ypos determine where the text will begin,
-                    xend: float = 100, # xstart and xend define where the wrapping for the displaytext will start and end. This can allow to to have text on the next line appear before where it orginally started.
+                    xend: float = 100, # xstart and xend define where the wrapping for the DisplayText will start and end. This can allow to to have text on the next line appear before where it orginally started.
                     ypos: float = 0, # The bigger the number, the lower the text will be.
                     size: float = 100 # The bigger the number, the smaller it is, because that definitely makes sense, needs to be fixed.
                     ) -> None:
@@ -183,7 +186,7 @@ class Gui:
                      xpos: float = 16, # The small the number, the more the text moves right.
                      ypos: float = 2, # The bigger the number, the more the text moves up.
                      size: float = 700, # Size "700" appears to be default size. Increasing over "7500" will start to make the launcher unstable.
-                     font: str = "GUI/assets/fonts/pixel.ttf" # In case we have a custom font that needs to replace the default, this may be the case for different languages.
+                     font: str = "GUI/assets/fonts/pixel.ttf" # In case we have a custom font that needs to replace the default, this may be the case for certain languages.
                      ) -> None:
 
             self.text = text
@@ -219,7 +222,7 @@ class Gui:
         self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
         self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
         self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=100)
-        self.Text_LauncherVersion = self.DisplayText("Version:" + self.currentVersion, textColor=(255, 234, 0), xpos=80, ypos=675)
+        self.Text_LauncherVersion = self.DisplayText(translations["version"] + self.currentVersion, textColor=(255, 234, 0), xpos=80, ypos=650)
 
         self.MainMenuText = [self.Text_MainMenuText, self.Text_LauncherVersion] # This is where the DisplayText for each menu were defined, again it won't stick to the menu
         self.MainMenuButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
@@ -227,8 +230,9 @@ class Gui:
         self.MainMenuItems = [] # This was orginally where I was gonna stick everything but I don't know anymore, you do you Cabiste
 
         if self.devMode:
-            self.Button_Data = self.ButtonTemplate(translations["data_button"], self.Button_Data_func, (235, 172, 14)) # For now Data will be a dev only button
+            self.Button_Data = self.ButtonTemplate(translations["data_button"], self.Button_Data_func, (235, 172, 14)) # For now Data will be a dev mode button
             self.Button_Test = self.ButtonTemplate("Test Button", self.Button_Test_func)
+            self.Text_DevMode = self.DisplayText(translations["dev_mode_enabled"], textColor=(255, 0, 0), xpos=80, ypos=675)
             self.MainMenuButtons.append(self.Button_Data)
             self.MainMenuButtons.append(self.Button_Test)
 
@@ -737,7 +741,7 @@ class Gui:
 
 #! END OF BUTTON FUNCTIONS
 
-
+    # I but editting this function we can have DisplayText keep to it's assigned menu, but I could be wrong, Cabiste knows more about this than I do -Orsell
     def ChangeMenu(self, menu: list, append: bool = True, text: list = "") -> None:
         if append:
             self.directorymenu.append(self.CurrentMenuButtons)
@@ -857,7 +861,7 @@ class Gui:
         lang: str = self.LanguagesMenu[self.CurrentButtonsIndex].text.replace(
             "→ ", "")
         Log("Language set: " + lang)
-        cfg.EditConfig("activeLanguage", lang)
+        cfg.EditConfig("Active-Language", lang)
         LoadTranslations()
         self.__init__(self.devMode)
         self.Error(translations["language_error0_language_update"])
@@ -866,7 +870,7 @@ class Gui:
         self.LanguagesMenu.clear()
         Languages = GetAvailableLanguages()
         for language in Languages:
-            if GVars.configData["activeLanguage"]["value"] == language:
+            if GVars.configData["Active-Language"]["value"] == language:
                 language = "→ " + language
 
             self.LanguagesMenu.append(self.ButtonTemplate(
@@ -934,7 +938,7 @@ class Gui:
             surf = pygame.transform.scale(surf, (W / 15, W / 15))
             surf = pygame.transform.rotate(surf, floater.rot)
             center = surf.get_rect().center
-            LauncherCubes = GVars.configData["LauncherCubes"]["value"] == "true"
+            LauncherCubes = GVars.configData["Launcher-Cubes"]["value"] == "true"
             if (LauncherCubes):
                 self.screen.blit(
                     surf, (floater.x - center[0], floater.y - center[1]))
@@ -1319,7 +1323,7 @@ def PreExit() -> None:
     # this is to make sure the portal 2 thread is dead
     # 1 second should be enough for it to die
     time.sleep(1)
-    if (GVars.configData["AutoUnmount"]["value"] == "true"):
+    if (GVars.configData["Auto-Umount"]["value"] == "true"):
         UnmountScript(False)
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
 
@@ -1328,14 +1332,14 @@ def GetGamePath() -> None:
     tmpp = BF.TryFindPortal2Path()
 
     if tmpp:
-        cfg.EditConfig("portal2path", tmpp.strip())
+        cfg.EditConfig("Portal2-Path", tmpp.strip())
         Log("Saved '" + tmpp.strip() + "' as the game path!")
         Ui.Error(translations["game_path_error-founded"], 5, (255, 255, 75))
         VerifyGamePath()
         return
 
     def AfterInputGP(inp) -> None:
-        cfg.EditConfig("portal2path", inp.strip())
+        cfg.EditConfig("Portal2-Path", inp.strip())
         Log("Saved '" + inp.strip() + "' as the game path!")
         Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
         VerifyGamePath()
@@ -1345,7 +1349,7 @@ def GetGamePath() -> None:
 
 def VerifyGamePath(shouldgetpath: bool = True) -> bool:
     Log("Verifying game path...")
-    gamepath = GVars.configData["portal2path"]["value"]
+    gamepath = GVars.configData["Portal2-Path"]["value"]
 
     if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
         Ui.Error(translations["game_path-is-invalid"])
@@ -1377,7 +1381,7 @@ def UseFallbacks(gamepath: str) -> None:
     # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
     BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf +
                   "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
-    DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
+    DoEncrypt = GVars.configData["Encrypt-Cvars"]["value"] == "true"
     RG.MountMod(gamepath, DoEncrypt)
     Ui.Error(translations["mount_complete"], 5, (75, 255, 75))
     RG.LaunchGame(gamepath)
@@ -1408,16 +1412,16 @@ def MountModOnly() -> bool:
 
     Ui.Error(translations["mounting_mod"], 5, (75, 255, 75))
 
-    gamepath = GVars.configData["portal2path"]["value"]
+    gamepath = GVars.configData["Portal2-Path"]["value"]
 
-    if (GVars.configData["developer"]["value"] == "true"):
+    if (GVars.configData["Dev-Mode"]["value"] == "true"):
         Ui.Error(translations["devmod_is_active"], 5, (255, 180, 75))
         DEVMOUNT()
         Ui.Error(
             translations["devmod_copied_from_local_repo"], 5, (75, 255, 75))
 
     if (VerifyModFiles()):
-        DoEncrypt = GVars.configData["EncryptCvars"]["value"] == "true"
+        DoEncrypt = GVars.configData["Encrypt-Cvars"]["value"] == "true"
         RG.MountMod(gamepath, DoEncrypt)
         Ui.Error(translations["mounted"], 5, (75, 255, 75))
         return True
@@ -1464,20 +1468,20 @@ def GetAvailableLanguages() -> list[str]:
 def LoadTranslations() -> dict:
     global translations
     langPath = "languages/" + \
-        GVars.configData["activeLanguage"]["value"] + ".json"
+        GVars.configData["Active-Language"]["value"] + ".json"
 
     if not os.path.exists(langPath):
         langPath = GVars.modPath + GVars.nf + "languages/" + \
-            GVars.configData["activeLanguage"]["value"] + ".json"
+            GVars.configData["Active-Language"]["value"] + ".json"
 
     translations = json.load(open(langPath, "r", encoding="utf8"))
     EnglishOriginal : dict[str, str] = json.load(open("languages/English.json", "r", encoding="utf8"))
 
     if (not os.path.exists(langPath)) or (translations.keys() != EnglishOriginal.keys()):
-        cfg.EditConfig("activeLanguage",
-                       cfg.DefaultConfigFile["activeLanguage"]["value"])
+        cfg.EditConfig("Active-Language",
+                       cfg.DefaultConfigFile["Active-Language"]["value"])
         langPath = "languages/" + \
-            GVars.configData["activeLanguage"]["value"] + ".json"
+            GVars.configData["Active-Language"]["value"] + ".json"
 
         translations = json.load(open(langPath, "r", encoding="utf8"))
 
@@ -1523,7 +1527,7 @@ def UpdateModClient() -> None:
 
 def RunGameScript() -> None:
     if MountModOnly():
-        gamepath = GVars.configData["portal2path"]["value"]
+        gamepath = GVars.configData["Portal2-Path"]["value"]
         RG.LaunchGame(gamepath)
         Ui.Error(translations["game_launched"], 5, (75, 255, 75))
 
@@ -1531,7 +1535,7 @@ def RunGameScript() -> None:
 def UnmountScript(shouldgetpath: bool = True) -> None:
     Log("___Unmounting Mod___")
     VerifyGamePath(shouldgetpath)
-    gamepath = GVars.configData["portal2path"]["value"]
+    gamepath = GVars.configData["Portal2-Path"]["value"]
     RG.DeleteUnusedDlcs(gamepath)
     RG.UnpatchBinaries(gamepath)
     Log("____DONE UNMOUNTING____")
@@ -1641,7 +1645,7 @@ def PostInitialize() -> None:
 
     def NewAfterFunction() -> None:
         Ui.Error(translations["game_exited"], 5, (125, 0, 125))
-        if (GVars.configData["AutoUnmount"]["value"] == "true"):
+        if (GVars.configData["Auto-Umount"]["value"] == "true"):
             UnmountScript()
             Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
 
@@ -1659,7 +1663,7 @@ if __name__ == '__main__':
     try:
         cwd = os.getcwd()
         Initialize()
-        Ui = Gui(GVars.configData["developer"]["value"] == "true")
+        Ui = Gui(GVars.configData["Dev-Mode"]["value"] == "true")
         PostInitialize()
         Ui.Main()
     except Exception as a_funni_wacky_error_occured:

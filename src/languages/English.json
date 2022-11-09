@@ -1,5 +1,6 @@
 {
   "welcome": "Welcome to the P2MM Launcher! Press 'Start Game' to launch the P2MM Mod!",
+  "version": "Version: ",
   "play_button": "Start Game",
   "exit_button": "Exit",
   "discord_server_button": "Discord Server",
@@ -8,7 +9,8 @@
   "player_button": "Players",
   "settings_button": "Settings",
   "portal2_config_button": "Portal 2 Config",
-  "hidden_config_button": "Hidden Config",
+  "hidden_config_button": "Developer Menu",
+  "dev_mode_enabled": "DEVELOPER MODE IS ENABLED!",
   "back_button": "Back",
   "mount_button": "Mount",
   "mounted": "Mounted!",

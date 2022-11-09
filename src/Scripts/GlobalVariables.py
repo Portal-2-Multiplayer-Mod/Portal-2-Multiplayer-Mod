@@ -19,12 +19,13 @@ configData: dict[str, dict[str, str]]
 modPath: str # \p2mm
 modFilesPath: str # \p2mm\Modfiles
 configPath: str
-masterDataFilePath: str # Path defined for the masterDataFile.cfg file
-dataSystemPath: str # Path defined for the datasystem directory
+masterDataFilePath: str # Path defined for the masterData.cfg file
+dataSystemPath: str # Path defined for the data system nuts directory
+# dataSystemSSFilesPath: str # Path defined for the screenshots folder for Portal 2, this is for the data system
 iow: bool = False # Windows system
 iol: bool = False # Linux system
-iosd: bool = False # Steam OS 3.0 system, mainly Steam Deck
-nf: str = os.sep # This way the logging won't break if someone runs the app on mac
+iosd: bool = False # Steam Deck/Steam OS 3.0 system
+nf: str = os.sep # This way the logging won't break if someone runs the app on Mac
 hadtoresetconfig: bool = False
 executable: str = os.path.abspath(sys.executable)
 translations: dict[str, str]
