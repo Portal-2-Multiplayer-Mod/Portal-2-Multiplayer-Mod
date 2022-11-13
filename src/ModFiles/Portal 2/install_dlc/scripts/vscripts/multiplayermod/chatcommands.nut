@@ -34,16 +34,16 @@ if (Config_UseChatCommands) {
     printl("(P2:MM): Config_UseChatCommands is false. Not adding chat callback for chat commands!")
     // If AddChatCallback() was called at one point during the session, the game will still check for chat callback even after map changes.
     // So, if someone doesn't want CC midgame, just redefine the function to do nothing.
-    function ChatCommands(ccuserid, ccmessage) {}
+    function ChatCommands(iUserIndex, rawText) {}
     return
 }
 
 // The whole filtering process for the chat commands
-function ChatCommands(ccuserid, ccmessage) {
+function ChatCommands(iUserIndex, rawText) {
 
-    local Message = strip(RemoveDangerousChars(ccmessage))
+    local Message = strip(RemoveDangerousChars(rawText))
     local Inputs = SplitBetween(Message, "!@", true)
-    local AdminLevel = GetAdminLevel(UTIL_PlayerByIndex(ccuserid))
+    local AdminLevel = GetAdminLevel(UTIL_PlayerByIndex(iUserIndex))
 
     local Commands = []
     local Runners = []
@@ -56,7 +56,7 @@ function ChatCommands(ccuserid, ccmessage) {
             if (StartsWith(str.tolower(), "playercolour")) {
                 foreach (cmd in CommandList) {
                     if (cmd.name == "playercolor") {
-                         return cmd
+                        return cmd
                     }
                 }
             }
@@ -85,7 +85,7 @@ function ChatCommands(ccuserid, ccmessage) {
 
     // Register the activating player
     if (Runners.len() == 0) {
-        Runners.push(UTIL_PlayerByIndex(ccuserid))
+        Runners.push(UTIL_PlayerByIndex(iUserIndex))
     }
 
     foreach (Command in Commands) {
@@ -188,6 +188,16 @@ function RemoveDangerousChars(str) {
         return ""
     }
     return str
+}
+
+function StrToList(str) {
+    local list = []
+    local i = 0
+    while (i < Len(str)) {
+        list.push( Slice(str, i, i + 1) )
+        i = i + 1
+    }
+    return list
 }
 
 // preserve = true : means that the symbol at the beginning of the string will be included in the first part

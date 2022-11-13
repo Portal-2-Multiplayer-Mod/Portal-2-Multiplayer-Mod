@@ -1,3 +1,7 @@
+// This gamemode is really hacky and can cause crashes on clients if
+// the game attempts to search for the weapon script on their disk
+// (We want them to read our weapon serverside)
+
 // Remove Portal Gun
 function ShouldRespawnWithoutPortalGunToggle() {
     if (!Entities.FindByName(null, "supress_blue_portalgun_spawn") && !Entities.FindByName(null, "supress_orange_portalgun_spawn")) {

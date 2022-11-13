@@ -32,11 +32,11 @@ OurAddedFunctionsLoaded <- [
 ]
 
 OurAddedFunctions <- [
-    "GetPlayerName",
-    "GetSteamID",
-    "AddChatCallback",
-    "SetPhysTypeConvar"
-    "SetMaxPortalSeparationConvar"
+    GetPlayerName,                  // Returns the Steam username of a player
+    GetSteamID,                     // Returns the Steam ID of a player
+    AddChatCallback,                // Allows for registration of VScript functions with the in-game chat box
+    SetPhysTypeConvar,              // Modifies the hidden convar: "player_held_object_use_viewmodel"
+    SetMaxPortalSeparationConvar    // Modifies the hidden convar: "portal_max_separation_force"
 ]
 
 //---------------------------------------------------
@@ -44,7 +44,7 @@ OurAddedFunctions <- [
 foreach (Function in OurAddedFunctions) {
     // Does the function exist?
     local exists = false
-    if (Function in this) {
+    if (Function.getinfos().native) {
         exists = true
     }
     if (exists) {
