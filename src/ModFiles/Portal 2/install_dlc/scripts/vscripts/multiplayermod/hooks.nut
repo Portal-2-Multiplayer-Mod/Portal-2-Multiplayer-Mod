@@ -314,7 +314,7 @@ function Loop() {
 
     // Random turret models & colors
     if (Config_RandomTurrets && HasSpawned) {
-        while (p = Entities.FindByClassname(p, "npc_portal_turret_floor");) {
+        while (p = Entities.FindByClassname(p, "npc_portal_turret_floor")) {
             if (p.GetTeam() != 69420) {
                 local modelnumber = RandomInt(0, 2)
                 if (modelnumber == 2) {
@@ -351,7 +351,7 @@ function Loop() {
 
         // Color indicator
         if (Config_UseColorIndicator && AllowColorIndicator && HasSpawned) {
-            while (p = Entities.FindByClassname(p, "player");) {
+            while (p = Entities.FindByClassname(p, "player")) {
                 DisplayPlayerColor(p)
             }
         }
@@ -377,7 +377,7 @@ function Loop() {
             randomportalsizeh <- RandomInt(1, 100 ).tostring()
 
             try {
-                while (p = Entities.FindByClassname(p, "prop_portal");) {
+                while (p = Entities.FindByClassname(p, "prop_portal")) {
                     p.__KeyValueFromString("HalfWidth", randomportalsize)
                     p.__KeyValueFromString("HalfHeight", randomportalsizeh)
                 }
@@ -385,7 +385,7 @@ function Loop() {
         }
 
         //## Detect respawn ##//
-        while (p = Entities.FindByClassname(p, "player");) {
+        while (p = Entities.FindByClassname(p, "player")) {
             if (p.GetHealth() >= 1) {
                 // Get the players from the dead players array
                 foreach (index, player in CurrentlyDead) {
@@ -481,7 +481,7 @@ function PostPlayerSpawn() {
     HasSpawned = true
 
     // Cache orange players original position
-    if (Entities.FindByName(null, "red").GetTeam() == TEAM_RED) {
+    if (Entities.FindByName(null, "red") != null && Entities.FindByName(null, "red").GetTeam() == TEAM_RED) {
         OrangeOldPlayerPos = p.GetOrigin()
     }
     if (OrangeOldPlayerPos == null) {
@@ -562,6 +562,8 @@ function PostPlayerSpawn() {
 function PostMapSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, false, true, false, false, false)
+
+    SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
 
     //## Cheat detection ##//
     SendToConsoleP2MM("prop_dynamic_create cheatdetectionp2mm")
@@ -858,7 +860,7 @@ function OnDeath(player) {
     MapSupport(false, false, false, false, false, player, false)
 
     if (GetDeveloperLevel()) {
-        printl("(P2:MM): " + FindPlayerClass(player).username + " died! OnDeath() has been triggered.)
+        printl("(P2:MM): " + FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
     }
 }
 

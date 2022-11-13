@@ -39,7 +39,7 @@ if (SendToConsole.getinfos().native) {
             for (local player; player = Entities.FindByClassname(player, "player");) {
                 // Don't account for whether or not they are falling straight down
                 if (player.GetVelocity().x == 0 && player.GetVelocity().y == 0) {
-                    printl(FindPlayerClass(player).username)
+                    printl("- " + FindPlayerClass(player).username)
                 }
             }
             printl("==========================================")

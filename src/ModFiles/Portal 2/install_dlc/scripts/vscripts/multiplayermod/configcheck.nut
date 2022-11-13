@@ -17,7 +17,7 @@
 // Can't create a function to redefine existing
 // variables, so we just do it one by one :D
 
-ConfigValueError = function(invalidorundefined, command) {
+local ConfigValueError = function(invalidorundefined, command) {
     printl("(P2:MM): " + invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")
 }
 
