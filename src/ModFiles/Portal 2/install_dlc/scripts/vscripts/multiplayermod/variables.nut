@@ -229,6 +229,7 @@ PrecachedProps <- []
 // Others
 //---------------
 LastCoordGetPlayer <- null
+OrangeOldPlayerPos <- null
 OriginalAngle <- null
 OriginalPosMain <- null
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)

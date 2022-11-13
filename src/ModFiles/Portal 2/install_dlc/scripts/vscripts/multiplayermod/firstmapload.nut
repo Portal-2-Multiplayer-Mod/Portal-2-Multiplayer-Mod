@@ -36,9 +36,8 @@ function MakeProgressCheck() {
     printl("(P2:MM): First map load detected! Checking to see if we need to change/reset maps...")
 
     local ChangeToThisMap = "mp_coop_start"
-    for (local course = 1; course <= 6; course++) {
-        // 9 levels is the highest that a course has
-        for (local level = 1; level <= 9; level++) {
+    for (local course = 1; course <= 6; course++) {  // 6 courses is the highest that coop has
+        for (local level = 1; level <= 9; level++) { // 9 levels is the highest that a course has
             if (IsLevelComplete(course - 1, level - 1)) {
                 ChangeToThisMap = "mp_coop_lobby_3"
             }

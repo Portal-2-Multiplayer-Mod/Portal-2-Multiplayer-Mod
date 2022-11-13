@@ -103,7 +103,7 @@ CommandList.push(
 
             // Update the player class
             // Note that the color member variable stores the MULTIPLIED versions
-            class FindPlayerClass(pTargetPlayer).color {
+            FindPlayerClass(pTargetPlayer).color = class {
                 r = MultiplyRGBValue(args[0])
                 g = MultiplyRGBValue(args[1])
                 b = MultiplyRGBValue(args[2])

@@ -17,7 +17,7 @@
 // Can't create a function to redefine existing
 // variables, so we just do it one by one :D
 
-function ConfigValueError(invalidorundefined, command) {
+ConfigValueError = function(invalidorundefined, command) {
     printl("(P2:MM): " + invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")
 }
 
@@ -122,6 +122,16 @@ try {
 }
 
 try {
+    if (typeof(Config_SetPlayerElasticity) != "integer") {
+        Config_SetPlayerElasticity <- 0
+        ConfigValueError("Invalid", "Config_SetPlayerElasticity")
+    }
+} catch (exception) {
+    Config_SetPlayerElasticity <- 0
+    ConfigValueError("Undefined", "Config_SetPlayerElasticity")
+}
+
+try {
     if (typeof(Config_UseChatCommands) != "bool") {
         Config_UseChatCommands <- true
         ConfigValueError("Invalid", "Config_UseChatCommands")
@@ -131,7 +141,7 @@ try {
     ConfigValueError("Undefined", "Config_UseChatCommands")
 }
 
-function SetDefaultAdminList() {
+local SetDefaultAdminList = function() {
     Admins <- [
         "[400]182933216", // kyleraykbs
         "[400]75927374", // Wolƒe Strider Shoσter

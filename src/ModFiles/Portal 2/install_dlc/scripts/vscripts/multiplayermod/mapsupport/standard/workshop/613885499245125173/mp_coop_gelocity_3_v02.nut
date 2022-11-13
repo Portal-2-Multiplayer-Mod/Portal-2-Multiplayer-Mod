@@ -68,10 +68,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSLoop) {
         for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1150.777283, 792.685608, -191.968750), 500);) {
-            local pname = p.GetName()
-            if (PluginLoaded) {
-                pname = GetPlayerName(p.entindex())
-            }
+            local pname = FindPlayerClass(p).username
 
             if (!GameDoneGelocity) {
                 try {
@@ -108,7 +105,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         printl("Lap: " + pclass.laps)
 
                         // Set Message Text
-                        local pcolor = GetPlayerColor(p, true)
+                        local pcolor = pclass.color
 
                         if (!GameDoneGelocity) {
                             Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("message", pname +" is on lap " + pclass.laps)

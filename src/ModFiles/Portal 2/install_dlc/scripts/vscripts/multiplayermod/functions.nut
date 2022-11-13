@@ -51,17 +51,6 @@ function SetCheats() {
     }
 }
 
-function SetCosmetics(p) {
-    if (Config_UseCustomDevModels && PluginLoaded) {
-        switch (FindPlayerClass(p).steamid) {
-            case 290760494: SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl");       break; // Nanoman2525
-            case 182933216: SetPlayerModel(p, "models/info_character/info_character_player.mdl");   break; // kyleraykbs
-            case 242453954: SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl");         break; // sear
-            case 181670710: SetPlayerModel(p, "models/handles_map_editor/torus.mdl");               break; // Bumpy
-        }
-    }
-}
-
 function RandomColor() {
     local rcr = RandomInt(0, 255)
     local rcg = RandomInt(0, 255)
@@ -162,66 +151,66 @@ function p2mmfogswitch(fogname) {
     }
 }
 
-// function GetPlayerPortalColor(p, Darken = false) {
-//     local PlayerID = p.entindex() + amtoffsetclr
-//     local A = 220
-//     try {
-//         switch (PlayerID) {
-//             case 1 : R <- 255; G <- 255; B <- 255; A = A; break; //bright white
-//             case 2 : R <- 50,  G <- 255, B <-  50; A = A; break; //green
-//             case 3 : R <- 40,  G <- 60,  B <- 255; A = A; break; //blue
-//             case 4 : R <- 255, G <- 255, B <-  50; A = A; break; //orange
-//             case 5 : R <- 255, G <-  50, B <-  50; A = A; break; //red
-//             case 6 : R <- 255, G <- 100, B <- 255; A = A; break; //pink
-//             case 7 : R <- 255, G <- 255, B <-  50; A = A; break; //yellow
-//             case 8 : R <-  0 , G <- 255, B <- 255; A = A; break; //aqua
-//             case 9 : R <- 100, G <-  50, B <-   0; A = A; break; //brown
-//             case 10: R <-   0, G <- 255, B <- 200; A = A; break; //ocean green
-//             case 11: R <-  90, G <- 120, B <-   0; A = A; break; //olive
-//             case 12: R <-  90, G <-  70, B <- 100; A = A; break; //violet
-//             case 13: R <-  75, G <-  75, B <-  75; A = A; break; //gray
-//             case 14: R <-  75, G <-   0, B <-   0; A = A; break; //dark red
-//             case 15: R <-   0, G <-  75, B <-   0; A = A; break; //dark green
-//             case 16: R <-   0, G <-   0, B <-  75; A = A; break; //dark blue
-//         }
-//     } catch(e) { }
-//     if (PlayerID > 16) {
-//         // If you have more than 16 players then you gotta bear the consequences of your own actions
-//         local randomColor = RandomColor()
-//         R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; A = 250;
-//     }
+/*function GetPlayerPortalColor(p, Darken = false) {
+    local PlayerID = p.entindex() + amtoffsetclr
+    local A = 220
+    try {
+        switch (PlayerID) {
+            case 1 : R <- 255; G <- 255; B <- 255; A = A; break; //bright white
+            case 2 : R <- 50,  G <- 255, B <-  50; A = A; break; //green
+            case 3 : R <- 40,  G <- 60,  B <- 255; A = A; break; //blue
+            case 4 : R <- 255, G <- 255, B <-  50; A = A; break; //orange
+            case 5 : R <- 255, G <-  50, B <-  50; A = A; break; //red
+            case 6 : R <- 255, G <- 100, B <- 255; A = A; break; //pink
+            case 7 : R <- 255, G <- 255, B <-  50; A = A; break; //yellow
+            case 8 : R <-  0 , G <- 255, B <- 255; A = A; break; //aqua
+            case 9 : R <- 100, G <-  50, B <-   0; A = A; break; //brown
+            case 10: R <-   0, G <- 255, B <- 200; A = A; break; //ocean green
+            case 11: R <-  90, G <- 120, B <-   0; A = A; break; //olive
+            case 12: R <-  90, G <-  70, B <- 100; A = A; break; //violet
+            case 13: R <-  75, G <-  75, B <-  75; A = A; break; //gray
+            case 14: R <-  75, G <-   0, B <-   0; A = A; break; //dark red
+            case 15: R <-   0, G <-  75, B <-   0; A = A; break; //dark green
+            case 16: R <-   0, G <-   0, B <-  75; A = A; break; //dark blue
+        }
+    } catch(e) { }
+    if (PlayerID > 16) {
+        // If you have more than 16 players then you gotta bear the consequences of your own actions
+        local randomColor = RandomColor()
+        R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; A = 250;
+    }
 
-//     if (Darken) {
-//         local amt = 2
-//         printl("(P2:MM): Darkening color")
-//         printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
-//         R <- (R / amt);
-//         G <- (G / amt);
-//         B <- (B / amt);
-//         printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
-//         if (R < 1) {
-//             R <- 1;
-//         }
-//         if (G < 1) {
-//             G <- 1;
-//         }
-//         if (B < 1) {
-//             B <- 1;
-//         }
+    if (Darken) {
+        local amt = 2
+        printl("(P2:MM): Darkening color")
+        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
+        R <- (R / amt);
+        G <- (G / amt);
+        B <- (B / amt);
+        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
+        if (R < 1) {
+            R <- 1;
+        }
+        if (G < 1) {
+            G <- 1;
+        }
+        if (B < 1) {
+            B <- 1;
+        }
 
-//         // remove the decimal
-//         B <- B.tointeger()
-//         G <- G.tointeger()
-//         R <- R.tointeger()
-//     }
+        // remove the decimal
+        B <- B.tointeger()
+        G <- G.tointeger()
+        R <- R.tointeger()
+    }
 
-//     return class {
-//         r = R
-//         g = G
-//         b = B
-//         a = A
-//     }
-// }
+    return class {
+        r = R
+        g = G
+        b = B
+        a = A
+    }
+}*/
 
 // Used so that nametags appear less weird
 function MultiplyRGBValue(iRGBValue) {
@@ -359,15 +348,8 @@ function MinifyModel(mdl) {
     return mdl
 }
 
-// AssignedPlayerModels <- []
 function SetPlayerModel(p, mdl) {
     PrecacheModelNoDelay(mdl)
-    // EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
-    // local pmodelclass = class {
-    //     player = p
-    //     model = mdl
-    // }
-    // AssignedPlayerModels.push(pmodelclass)
     FindPlayerClass(p).playermodel <- mdl
 }
 
@@ -405,16 +387,20 @@ function CreateGenericPlayerClass(p) {
     local currentplayerclass = {}
 
     // Base info
+    currentplayerclass.color <- GetPlayerColor(p)  // Player color
+    currentplayerclass.eyeangles <- Vector(0, 0, 0) // Player angles
+    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0) // Player angles
+    currentplayerclass.id <- p.entindex() // Player entity index
+    currentplayerclass.noclip <- p.IsNoclipping() // Player noclip status
     currentplayerclass.player <- p // The player reference in code
+    currentplayerclass.playermodel <- null // Cosmetics
     currentplayerclass.potatogun <- false // Potatogun
     currentplayerclass.portal1 <- null // Player primary portal
     currentplayerclass.portal2 <- null // Player secondary portal
-    currentplayerclass.playermodel <- null // Cosmetics
-    currentplayerclass.id <- p.entindex() // Player entity index
-    currentplayerclass.eyeangles <- Vector(0, 0, 0) // Player angles
-    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0) // Player angles
-    currentplayerclass.noclip <- p.IsNoclipping() // Player noclip status
-    currentplayerclass.color <- GetPlayerColor(p)  // Player color
+
+    // Gelocity
+    currentplayerclass.hitcheckpoint <- false // Player hit checkpoint
+    currentplayerclass.laps <- 0 // Current lap
 
     // Can change depending on whether the plugin is loaded
     currentplayerclass.username <- GetPlayerName(currentplayerclass.id) // Player Name
@@ -1510,13 +1496,13 @@ function TeleportToSpawnPoint(p, SpawnClass) {
         SpawnClass = BestGuessSpawnpoint()
     }
 
-    if (p.GetTeam() == 3) {
+    if (p.GetTeam() == TEAM_BLUE) {
         // Blue team
         p.SetOrigin(SpawnClass.blue.spawnpoint)
         p.SetAngles(SpawnClass.blue.rotation.x, SpawnClass.blue.rotation.y, SpawnClass.blue.rotation.z)
         p.SetVelocity(SpawnClass.blue.velocity)
     }
-    else if (p.GetTeam() == 2) {
+    else if (p.GetTeam() == TEAM_RED) {
         // Red team
         p.SetOrigin(SpawnClass.red.spawnpoint)
         p.SetAngles(SpawnClass.red.rotation.x, SpawnClass.red.rotation.y, SpawnClass.red.rotation.z)
@@ -1709,16 +1695,6 @@ function StartsWith(str, substr) {
     } else {
         return false
     }
-}
-
-function StrToList(str) {
-    local list = []
-    local i = 0
-    while (i < Len(str)) {
-        list.push( Slice(str, i, i + 1) )
-        i = i + 1
-    }
-    return list
 }
 
 function Strip(str) {

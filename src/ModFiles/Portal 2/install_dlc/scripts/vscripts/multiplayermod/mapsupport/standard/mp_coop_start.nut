@@ -82,16 +82,15 @@ function coop_startHasPortalGun(args) {
     GamePlayerEquip <- Entities.CreateByClassname("game_player_equip")
     GamePlayerEquip.__KeyValueFromString("weapon_portalgun", "1")
 
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        // Check is done this way to compensate for players on singleplayer team
+    for (local p; p = Entities.FindByClassname(p, "player");) {
         if (args == "blue") {
-            if (p.GetTeam() != 2) {
+            // Check is done this way to compensate for players on other teams
+            if (p.GetTeam() != TEAM_RED && p.GetTeam() != TEAM_SPECTATOR) {
                 EntFireByHandle(GamePlayerEquip, "use", "", 0, p, p)
             }
         }
         else if (args == "orange") {
-            if (p.GetTeam() == 2) {
+            if (p.GetTeam() == TEAM_RED) {
                 EntFireByHandle(GamePlayerEquip, "use", "", 0, p, p)
             }
         }

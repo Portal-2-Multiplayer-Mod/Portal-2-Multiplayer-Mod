@@ -16,19 +16,16 @@ if (!Config_SafeGuard) {
     return
 }
 
-// Replace SendToConsole with SendToConsoleP2MM
 if (SendToConsole.getinfos().native) {
     SendToConsoleP2MM <- SendToConsole
-
-    function SendToConsole(str) {
+    SendToConsole = function(str) {
         local printchar = true
         local illegalChars = [";", "\\", "/", "\"", "%n"]
         local DoError = function(string, printchar) {
             printl("==========================================")
-            printl("==========================================")
             printl("    PATCHED COMMAND ATTEMPTED TO RUN!     ")
-            printl("                                          ")
             if (printchar) {
+            printl("                                          ")
             printl("  Command: " + string                      )
             }
             printl("                                          ")
@@ -38,13 +35,13 @@ if (SendToConsole.getinfos().native) {
             printl("      attempting to exploit the game.     ")
             printl("         So we're going to stop it.       ")
             printl("                                          ")
-            printl("Possible suspects...                      ")
+            printl("Possible suspects (standing still)...     ")
             for (local player; player = Entities.FindByClassname(player, "player");) {
+                // Don't account for whether or not they are falling straight down
                 if (player.GetVelocity().x == 0 && player.GetVelocity().y == 0) {
                     printl(FindPlayerClass(player).username)
                 }
             }
-            printl("==========================================")
             printl("==========================================")
         }
 
@@ -56,7 +53,7 @@ if (SendToConsole.getinfos().native) {
         foreach (char in illegalChars) {
             if (typeof str.find(char) == "integer") {
                 if (char == illegalChars[4]) {
-                    printchar = false
+                    printchar = false // Do not print this out
                 }
                 DoError(str, printchar)
                 return
@@ -73,6 +70,6 @@ if (SendToConsole.getinfos().native) {
             return
         }
 
-        SendToConsoleP2MM(str)
+        // SendToConsoleP2MM(str)
     }
 }

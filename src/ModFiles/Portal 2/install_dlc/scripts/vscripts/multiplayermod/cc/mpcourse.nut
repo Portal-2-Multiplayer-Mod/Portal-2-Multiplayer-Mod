@@ -17,7 +17,7 @@ CommandList.push(
         function CC(p, args) {
             try{
                 args[0] = args[0].tointeger()
-            } catch (err){
+            } catch (exception) {
                 SendChatMessage("Type in a valid number from 0 to 6.", p)
                 return
             }
@@ -27,11 +27,9 @@ CommandList.push(
                 return
             }
 
-            local videoname
+            local videoname = "coop_bots_load"
             if (args[0] == 0) {
                 videoname = "coop_bots_load_wave"
-            } else {
-                videoname = "coop_bots_load"
             }
 
             for (local ent; ent = Entities.FindByClassname(ent, "player");) {
