@@ -7,7 +7,7 @@
 
 // should fix fog sometime
 
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, MSOnSaveCheck, MSOnSaveLoad) {
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         p2mm_startfade <- Entities.CreateByClassname("env_fade")
         p2mm_startfade.__KeyValueFromString("targetname", "p2mm_startfade")

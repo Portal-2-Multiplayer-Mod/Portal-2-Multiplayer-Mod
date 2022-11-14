@@ -23,15 +23,12 @@ MSPostMapSpawn,     // 4. Runs after the host loads in                          
 MSOnPlayerJoin,     // 5. Runs when a player enters the server                      (Returns true)
 MSOnDeath,          // 6. Runs on player death                                      (Player handle is provided)
 MSOnRespawn,        // 7. Runs on player respawn                                    (Player handle is provided)
-MSOnSave,           // 8. 
-MSOnSaveCheck,      // 9. 
-MSOnSaveLoad        //10. 
 ) {}
 
 // 1
 function InstantRun() {
     // Trigger map-specific code
-    MapSupport(true, false, false, false, false, false, false, false, false, false)
+    MapSupport(true, false, false, false, false, false, false)
 
     // Begin looping
     Loop()
@@ -44,7 +41,7 @@ function InstantRun() {
 // 2
 function Loop() {
     // Trigger map-specific code
-    MapSupport(false, true, false, false, false, false, false, false, false, false)
+    MapSupport(false, true, false, false, false, false, false)
 
     //## Event List ##//
     if (EventList.len() > 0) {
@@ -406,7 +403,7 @@ function Loop() {
 
 function PostPlayerSpawn() {
     // Trigger map-specific code
-    MapSupport(false, false, true, false, false, false, false, false, false, false)
+    MapSupport(false, false, true, false, false, false, false)
 
     EntFire("p2mm_servercommand", "command", "script ForceRespawnAll()", 1)
 
@@ -556,7 +553,7 @@ function PostPlayerSpawn() {
 // 4
 function PostMapSpawn() {
     // Trigger map-specific code
-    MapSupport(false, false, false, true, false, false, false, false, false, false)
+    MapSupport(false, false, false, true, false, false, false)
 
     SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
 
@@ -698,7 +695,7 @@ function OnPlayerJoin(p, script_scope) {
     // Update P2:MM code
 
     // Trigger map-specific code
-    MapSupport(false, false, false, false, true, false, false, false, false, false)
+    MapSupport(false, false, false, false, true, false, false)
 
     // foreach (player in playersconnected) {
     //     if (player != p) {
@@ -800,7 +797,9 @@ function OnPlayerJoin(p, script_scope) {
         EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
     }
 
-    if (Config_UseJoinIndicator) {
+    // We don't want it to show as a host client on a listen server
+    // TODO: Possibly need to rework "y" offset for dedicated?
+    if (Config_UseJoinIndicator && PlayerID > 1) {
         // Set join message to player name (or index)
         local iCurrentNumPlayers = CalcNumPlayers()
         joinmessagedisplay.__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
@@ -856,7 +855,7 @@ function OnPlayerJoin(p, script_scope) {
 // 6
 function OnDeath(player) {
     // Trigger map-specific code
-    MapSupport(false, false, false, false, false, player, false, false, false, false)
+    MapSupport(false, false, false, false, false, player, false)
 
     if (GetDeveloperLevel()) {
         printl("(P2:MM): " + FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
@@ -866,7 +865,7 @@ function OnDeath(player) {
 // 7
 function OnRespawn(player) {
     // Trigger map-specific code
-    MapSupport(false, false, false, false, false, false, player, false, false, false)
+    MapSupport(false, false, false, false, false, false, player)
 
     if (GetDeveloperLevel()) {
         printl("(P2:MM): " + FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
@@ -876,19 +875,4 @@ function OnRespawn(player) {
     if (GlobalSpawnClass.useautospawn) {
         TeleportToSpawnPoint(player, null)
     }
-}
-
-// 8
-function OnSave() {
-    MapSupport(false, false, false, false, false, false, false, true, false, false)
-}
-
-// 9
-function OnSaveCheck() {
-    MapSupport(false, false, false, false, false, false, false, false, true, false)
-}
-
-// 10
-function OnSaveLoad() {
-    MapSupport(false, false, false, false, false, false, false, false, false, true)
 }

@@ -70,7 +70,7 @@ function E1912PostScare() {
     EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
 }
 
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, MSOnSaveCheck, MSOnSaveLoad) {
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Remove Portal Gun
         RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
