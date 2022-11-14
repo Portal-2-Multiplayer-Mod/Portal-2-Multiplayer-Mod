@@ -223,6 +223,7 @@ if (GetMapName() == "mp_coop_credits") {
 //     ch10maps = ["sp_a5_credits"]
 // }
 playerclasses <- []
+playersconnected <- []
 PrecachedProps <- []
 
 //---------------
