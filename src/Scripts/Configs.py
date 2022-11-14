@@ -2,6 +2,7 @@ import os
 import json
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
+import Scripts.DataSystem as DS
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
@@ -9,7 +10,7 @@ import Scripts.GlobalVariables as GVars
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
 
 DefaultConfigFile = {
-    "portal2path":
+    "Portal2-Path":
         {
             "value": "undefined",
             "menu": "launcher",
@@ -18,16 +19,16 @@ DefaultConfigFile = {
             "prompt": "Enter the path to the Portal 2 folder",
         },
 
-    "AutoUnmount":
+    "Auto-Umount":
         {
             "value": "true",
             "menu": "launcher",
             "description": "Automatically unmounts the mod when the game is closed",
             "warning": "",
-            "prompt": "Encrypt specific vscript functions?",
+            "prompt": "",
         },
 
-    "LauncherSFX":
+    "Launcher-SFX":
         {
             "value": "true",
             "menu": "launcher",
@@ -36,7 +37,7 @@ DefaultConfigFile = {
             "prompt": "Enable sound effects?",
         },
 
-    "LauncherCubes":
+    "Launcher-Cubes":
         {
             "value": "true",
             "menu": "launcher",
@@ -45,7 +46,34 @@ DefaultConfigFile = {
             "prompt": "Enable background cubes?",
         },
 
-    "EncryptCvars":
+    "Server-Password":
+        {
+            "value": "",
+            "menu": "portal2",
+            "description": "Set a password for your P2MM server, this can be changed while the server is up but a level restart is required",
+            "warning": "Its recommended to also set Public Server to false to have your server not on the Steam Servers",
+            "prompt": "Please type the password for your P2MM server",
+        },
+    
+    "Public-Server":
+        {
+            "value": "false",
+            "menu": "portal2",
+            "description": "Have your server display public on steam servers?",
+            "warning": "Those with your IP Address will still be able to join. Set a password if you want a private server.",
+            "prompt": "Have your server display public on steam servers?",
+        },
+    
+    "Custom-Launch-Options":
+        {
+            "value": "+map mp_coop_lobby_3",
+            "menu": "portal2",
+            "description": "Type any custom launch options you want. Example (+map 'mapname').",
+            "warning": "Leave this to default if you don't know what it does!",
+            "prompt": "Custom launch options for debugging or starting the server at a different map",
+        },
+
+    "Encrypt-Cvars":
         {
             "value": "false",
             "menu": "portal2",
@@ -54,7 +82,7 @@ DefaultConfigFile = {
             "prompt": "Encrypt cvars?",
         },
 
-    "SafeGuard":
+    "Safe-Guard":
         {
             "value": "false",
             "menu": "portal2",
@@ -74,7 +102,7 @@ DefaultConfigFile = {
             "prompt": "If you see this something is wrong",
         },
 
-    "developer":
+    "Dev-Mode":
         {
             "value": "false",
             "menu": "hidden",
@@ -83,23 +111,23 @@ DefaultConfigFile = {
             "prompt": "",
         },
 
-    "CustomLaunchOptions":
+    "Manual-Data-System-Overide":
         {
-            "value": "+map mp_coop_lobby_3",
+            "value": "true",
             "menu": "hidden",
-            "description": "type your custom launch options. Example (+map 'mapname').",
-            "warning": "leave this to default if you don't know what it does!",
-            "prompt": "Custom launch options for debugging.",
+            "description": "Manually overide if the server will operate next play session.",
+            "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
+            "prompt": "",
         },
 
-    "activeLanguage":
+    "Active-Language":
         {
             "value": "English",
             "menu": "",
             "description": "the language of the p2mm client and not the game",
             "warning": "",
             "prompt": "",
-        },
+        }
 }
 
 ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
@@ -202,7 +230,7 @@ def WriteConfigFile(configs: dict) -> None:
 
     Log("Writing to file...")
     with open(filepath, "w", encoding="utf-8") as cfg:
-        json.dump(configs, cfg)
+        json.dump(configs, cfg, indent=4)
 
 # since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
 def EditConfig(search: str, newvalue: str) -> None:

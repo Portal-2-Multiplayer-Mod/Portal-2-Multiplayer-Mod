@@ -2,7 +2,6 @@ from pathlib import Path
 
 import Scripts.GlobalVariables as GVars
 
-
 def Log(message: str) -> None:
     message = message.strip()
     # get the path of the mod launcher and make a floder inside it called "Logs"
@@ -22,7 +21,6 @@ def Log(message: str) -> None:
             print(str(e))
     else:
         print("")
-
 
 #////////////////////////////////////////#
 #//# Cool text to start the log with  #//#

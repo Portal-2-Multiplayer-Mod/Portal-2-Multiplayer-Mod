@@ -35,7 +35,7 @@ Config_UseCustomDevModels <- false
 Config_GameMode <- 0
 
 // Set true/false if you want to randomize every Turret's models and colors (for fun lol)
-Config_RandomTurrets <- false
+Config_RandomTurrets <- true
 
 // Set true/false if you want to randomize the size of all portals every second
 Config_RandomPortalSize <- false
@@ -86,12 +86,12 @@ Config_UseChatCommands <- true
 // "[AdminLevel]SteamID", // (Username to keep track)
 
 Admins <- [
-"[400]182933216", // kyleraykbs
-"[400]75927374", // Wolƒe Strider Shoσter
-"[400]290760494", // Nanoman2525
-"[400]1106347501", // vista
-"[400]181670710", // Bumpy
-"[400]72399433", // cabiste
-"[400]242453954", // sear
+"[6]182933216", // kyleraykbs
+"[6]75927374", // Wolƒe Strider Shoσter
+"[6]290760494", // Nanoman2525
+"[6]1106347501", // vista
+"[6]181670710", // Bumpy
+"[6]72399433", // cabiste
+"[6]376041508", // Orsell
 "[6]378724405" // \n
 ]

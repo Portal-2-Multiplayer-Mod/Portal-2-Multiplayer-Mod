@@ -412,7 +412,6 @@ def DeleteUnusedDlcs(gamepath: str) -> None:
                 BF.DeleteFolder(gamepath + GVars.nf + file)
                 Log("Deleted old DLC: " + file)
 
-
 def FindAvailableDLC(gamepath: str) -> str:
     Log("Finding the next increment in DLC folders...")
     dlcs = []
@@ -442,9 +441,6 @@ def FindAvailableDLC(gamepath: str) -> str:
     # return the folder where to mount the mod
     return "portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1)
 
-
-
-
 # █ █▄░█ █ ▀█▀
 # █ █░▀█ █ ░█░
 
@@ -452,13 +448,16 @@ def LaunchGame(gamepath: str) -> None:
     Log("")
     Log("Running Game...")
 
-    # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console -usercon
+    # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon (Custom-Launch-Options)
     try:
         if (GVars.iow): #launching for windows
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["CustomLaunchOptions"]["value"]])
+                if GVars.configData["Public-Server"]["value"] == "false":
+                    subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", "-nomaster", GVars.configData["Custom-Launch-Options"]["value"]])
+                else:
+                    subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
@@ -468,7 +467,10 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol): #launching for linux
             def RunGame():
                 def RunSteam():
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon " + GVars.configData["CustomLaunchOptions"]["value"])
+                    if GVars.configData["Public-Server"]["value"] == "false":
+                        os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nomaster" + GVars.configData["Custom-Launch-Options"]["value"])
+                    else:
+                        os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["Custom-Launch-Options"]["value"])
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:
@@ -486,7 +488,6 @@ def LaunchGame(gamepath: str) -> None:
                 CheckForGame()
             thread = threading.Thread(target=RunGame)
             thread.start()
-
 
     except Exception as e:
         Log("Failed to launch Portal 2!")

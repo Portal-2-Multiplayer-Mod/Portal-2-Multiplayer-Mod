@@ -30,7 +30,27 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to loop the Loop() function every 0.1 second
+    // Create two logic_relay entities to loop the Loop() function every 0.1 second
+    Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer_actions")
+    Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer_loop")
+    for (local relay; relay = Entities.FindByClassname(relay, "logic_relay");) {
+        if (relay.GetName() == "p2mm_timer_actions") {
+            p2mm_timer_actions <- relay
+        }
+        if (relay.GetName() == "p2mm_timer_loop") {
+            p2mm_timer_loop <- relay
+        }
+    }
+    // p2mm_timer_actions includes the things that will be called
+    // p2mm_timer_loop will be called by p2mm_timer_actions and also calls p2mm_timer_actions again to create that loop
+    EntFireByHandle(p2mm_timer_actions, "AddOutput", "classname move_rope", 0, null, null)
+    EntFireByHandle(p2mm_timer_actions, "AddOutput", "OnTrigger worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
+    EntFireByHandle(p2mm_timer_actions, "AddOutput", "OnTrigger p2mm_timer_loop:Trigger::0:-1", 0, null, null)
+    EntFireByHandle(p2mm_timer_loop, "AddOutput", "OnTrigger p2mm_timer_actions:Trigger::" + looptime + ":-1", looptime, null, null)
+
+    /* 
+    // Old p2mm_timer entity, commented out in case we ever need it again for something.
+    // The p2mm_timer_actions and p2mm_timer_loop entities should reduce the lag though.
     Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
     for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
         if (timer.GetName() == "p2mm_timer") {
@@ -38,10 +58,12 @@ function InstantRun() {
             break
         }
     }
+
     EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
     EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
     EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
     EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
+    */
 
     // Delay the creation of our map-specific entities before so
     // that we don't get an engine error from the entity limit
@@ -410,7 +432,6 @@ function Loop() {
     }
 }
 
-// 3
 function PostPlayerSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, true, false, false, false, false)
@@ -584,7 +605,12 @@ function PostMapSpawn() {
     CreatePropsForLevel(true, false, false)
 
     // Enable fast download
-    // SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+    SendToConsoleP2MM("rate 99999999")
+    SendToConsoleP2MM("sv_maxrate 0")
+    SendToConsoleP2MM("sv_timeout 0")
+    SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+    SendToConsoleP2MM("sv_allowdownload 1")
+    SendToConsoleP2MM("sv_allowupload 1")
 
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
@@ -593,6 +619,10 @@ function PostMapSpawn() {
 	SendToConsoleP2MM("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	SendToConsoleP2MM("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
+
+    //Alias used to load 2v2coopbattle and mp_coop_p2mmlobby for easy accsess
+    SendToConsoleP2MM("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
+    SendToConsoleP2MM("alias p2mmlobby changelevel mp_coop_p2mmlobby")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
