@@ -267,7 +267,7 @@ def PatchBinaries(gamepath: str) -> None:
         data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70', b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
 
         # Partner disconnect edit
-        data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
+        data = data.replace(b'disconnect "Partner disconnected"', b'script Plyr_Disconnect_Function()')
 
         # Command patch edit
         Log("===Patching commands===")
@@ -326,7 +326,7 @@ def PatchBinaries(gamepath: str) -> None:
         data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70', b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
 
         # Partner disconnect edit
-        data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
+        data = data.replace(b'disconnect "Partner disconnected"', b'script Plyr_Disconnect_Function()')
 
         # Command patch edit
         Log("===Patching commands===")

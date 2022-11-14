@@ -1036,22 +1036,13 @@ function GetDirectionalOffset(org1, org2, multipl = 1) {
 }
 
 // Potatogun
-function PotatoIfy(plr) {
-    if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
-        EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", "1", 0)
-    }
-    if (Entities.FindByName(null, "viewmodel_player" + plr.entindex())) {
-        EntFire("viewmodel_player" + plr.entindex(), "SetBodyGroup", "1", 0)
-    }
-}
+function PotatoIfy(plr, charOnOff) {
+    local pGun = Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())
+    local pViewmodel = Entities.FindByName(null, "predicted_viewmodel_player" + plr.entindex())
 
-// No Potatogun
-function UnPotatoIfy(plr) {
-    if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
-        EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", "0", 0)
-    }
-    if (Entities.FindByName(null, "viewmodel_player" + plr.entindex())) {
-        EntFire("viewmodel_player" + plr.entindex(), "SetBodyGroup", "0", 0)
+    if (pGun && pViewmodel) {
+        EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", charOnOff, 0)
+        EntFire("predicted_viewmodel_player" + plr.entindex(), "SetBodyGroup", charOnOff, 0)
     }
 }
 
@@ -1563,7 +1554,7 @@ function CreateOurEntities() {
 
     // Create a player disconnect message entity
     disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
-    disconnectmessagedisplay.__KeyValueFromString("targetname", "pdcm") // targetname is sensitive to the hex edits!
+    disconnectmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_disconnect_message")
     disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
     disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
     disconnectmessagedisplay.__KeyValueFromString("fadein", "0.2")
@@ -1591,6 +1582,21 @@ function CreateOurEntities() {
     // Create an entity that sends miscellaneous client commands
     p2mm_clientcommand <- Entities.CreateByClassname("point_clientcommand")
     p2mm_clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand") // Using the targetname in outputs causes invalid entity instance errors ??
+}
+
+function CalcNumPlayers() {
+    local iCurrentNumPlayers = 0
+    for (local player; player = Entities.FindByClassname(player, "player");) {
+        iCurrentNumPlayers++
+    }
+    return iCurrentNumPlayers
+}
+
+// Function name is sensitive to the hex edits!
+function Plyr_Disconnect_Function() {
+    local iCurrentNumPlayers = CalcNumPlayers()
+    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
+    EntFire("p2mm_player_disconnect_message", "display")
 }
 
 //--------------------------------------

@@ -98,9 +98,9 @@ function Loop() {
 
         //## PotatoIfy loop ##//
         if (FindPlayerClass(p).potatogun) {
-            PotatoIfy(p)
+            PotatoIfy(p, "1")
         } else {
-            UnPotatoIfy(p)
+            PotatoIfy(p, "0")
         }
 
         // Also update everyones class if PermaPotato is on
@@ -502,9 +502,11 @@ function PostPlayerSpawn() {
     HasSpawned = true
 
     // Cache orange players original position
-    if (Entities.FindByName(null, "red") != null && Entities.FindByName(null, "red").GetTeam() == TEAM_RED) {
-        OrangeOldPlayerPos = p.GetOrigin()
-    }
+    try {
+        if (Entities.FindByName(null, "red") != null && Entities.FindByName(null, "red").GetTeam() == TEAM_RED) {
+            OrangeOldPlayerPos = p.GetOrigin()
+        }
+    } catch (exception) {}
     if (OrangeOldPlayerPos == null) {
         if (GetDeveloperLevel()) {
             printl("(P2:MM): OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
@@ -599,7 +601,7 @@ function PostMapSpawn() {
     }
 
     // Force spawn players in map
-    AddBranchLevelName(1, "P2 MM")
+    AddBranchLevelName(1, "P2:MM")
     CreatePropsForLevel(true, false, false)
 
     // Enable fast download
@@ -733,6 +735,15 @@ function OnPlayerJoin(p, script_scope) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, true, false, false)
 
+    // foreach (player in playersconnected) {
+    //     if (player != p) {
+    //         playersconnected.push(p)
+    //     } else {
+    //         // Should never happen
+    //         printl("(P2:MM): \"playersconnected\" array already had the player registered? Fix this...")
+    //     }
+    // }
+
     // Are we teleporting this player based on our predictions/calculations
     // of the locations of entities in the map?
     if (GlobalSpawnClass.useautospawn) {
@@ -787,7 +798,7 @@ function OnPlayerJoin(p, script_scope) {
 
     //# Set viewmodel targetnames so we can tell them apart #//
     for (local ent; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
-        EntFireByHandle(ent, "addoutput", "targetname predicted_viewmodel_player" + ent.entindex(), 0, null, null)
+        EntFireByHandle(ent, "addoutput", "targetname predicted_viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
     }
 
     // If the player is the first player to join, fix OrangeOldPlayerPos
@@ -825,18 +836,13 @@ function OnPlayerJoin(p, script_scope) {
     }
 
     if (Config_UseJoinIndicator) {
-        //# Say join message on HUD #//
-        if (PluginLoaded) {
-            JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
-        } else {
-            JoinMessage <- "Player " + PlayerID + " joined the game"
-        }
-        // Set join message to player name
-        JoinMessage = JoinMessage.tostring()
-        joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
+        // Set join message to player name (or index)
+        local iCurrentNumPlayers = CalcNumPlayers()
+        joinmessagedisplay.__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
         if (PlayerID > 1) {
             onscreendisplay.__KeyValueFromString("y", "0.075")
         }
+        //# Say join message on HUD #//
         EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
     }
 
@@ -884,7 +890,7 @@ function OnPlayerJoin(p, script_scope) {
 
 // 6
 function OnDeath(player) {
-    // Trigger map-specific code)
+    // Trigger map-specific code
     MapSupport(false, false, false, false, false, player, false)
 
     if (GetDeveloperLevel()) {
@@ -894,7 +900,7 @@ function OnDeath(player) {
 
 // 7
 function OnRespawn(player) {
-    // Trigger map-specific code)
+    // Trigger map-specific code
     MapSupport(false, false, false, false, false, false, player)
 
     if (GetDeveloperLevel()) {
