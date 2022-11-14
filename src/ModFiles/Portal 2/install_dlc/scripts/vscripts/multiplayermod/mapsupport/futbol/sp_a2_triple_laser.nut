@@ -49,7 +49,7 @@ function StartGame() {
     }
 }
 
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, MSOnSaveCheck, MSOnSaveLoad) {
     if (MSInstantRun) {
         local laser1 = Entities.FindByClassname(null, "env_portal_laser")
         local laser2 = Entities.FindByClassname(Entities.FindByClassname(null, "env_portal_laser"), "env_portal_laser")

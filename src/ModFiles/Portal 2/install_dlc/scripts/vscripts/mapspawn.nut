@@ -82,12 +82,14 @@ IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
+// Load the data system after everything else has been loaded
+// IncludeScript("multiplayermod/datasystem/datasystem-main.nut") Commented out for now, still need to finish
+
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
-// Load the data system after everything else has been loaded
-// IncludeScript("multiplayermod/datasystem/datasystem-main.nut") Commented out for now, still need to finish
+//---------------------------------------------------
 
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) { printl(line) }
@@ -97,11 +99,6 @@ delete ConsoleAscii
 
 // Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
-
-// This function is how we communicate with all mapsupport files.
-// In case no mapsupport file exists, it will fall back to "nothing" instead of an error
-//function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, MSOnSaveCheck, MSOnSaveLoad) {} This will be the layout for the system in the future
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {}
 
 // Import map support code
 function LoadMapSupportCode(gametype) {

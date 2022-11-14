@@ -5,7 +5,7 @@
 // ██████╔╝██║    ██████████╗██║  ██║███████╗██████████╗╚█████╔╝╚█████╔╝██║  ██║███████╗
 // ╚═════╝ ╚═╝    ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝ ╚════╝  ╚════╝ ╚═╝  ╚═╝╚══════╝
 
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, MSOnSaveCheck, MSOnSaveLoad) {
     if (MSInstantRun) {
         // We need to control the viewmodel/real simulated grab controllers for inserting Wheatley
         GlobalOverridePluginGrabController <- false

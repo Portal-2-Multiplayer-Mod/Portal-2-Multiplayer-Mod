@@ -1545,7 +1545,7 @@ function CreateOurEntities() {
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
     onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
-    onscreendisplay.__KeyValueFromString("holdtime", "0.05")
+    onscreendisplay.__KeyValueFromString("holdtime", "0.2")
     onscreendisplay.__KeyValueFromString("fadeout", "0")
     onscreendisplay.__KeyValueFromString("fadein", "0")
     onscreendisplay.__KeyValueFromString("spawnflags", "1")

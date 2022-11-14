@@ -5,7 +5,7 @@
 // ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗███████╗██║ ╚███║██████╔╝
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚══════╝╚═╝  ╚══╝╚═════╝
 
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn, MSOnSave, MSOnSaveCheck, MSOnSaveLoad) {
     if (MSInstantRun) {
         PermaPotato <- true
         Entities.FindByName(null, "entrance_door_prop").__KeyValueFromString("targetname", "moja1")

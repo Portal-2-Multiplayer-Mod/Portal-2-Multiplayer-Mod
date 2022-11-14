@@ -22,48 +22,19 @@ MSPostPlayerSpawn,  // 3. Runs once the game begins (players can now move)      
 MSPostMapSpawn,     // 4. Runs after the host loads in                              (Returns true)
 MSOnPlayerJoin,     // 5. Runs when a player enters the server                      (Returns true)
 MSOnDeath,          // 6. Runs on player death                                      (Player handle is provided)
-MSOnRespawn         // 7. Runs on player respawn                                    (Player handle is provided)
+MSOnRespawn,        // 7. Runs on player respawn                                    (Player handle is provided)
+MSOnSave,           // 8. 
+MSOnSaveCheck,      // 9. 
+MSOnSaveLoad        //10. 
 ) {}
 
 // 1
 function InstantRun() {
     // Trigger map-specific code
-    MapSupport(true, false, false, false, false, false, false)
+    MapSupport(true, false, false, false, false, false, false, false, false, false)
 
-    // Create two logic_relay entities to loop the Loop() function every 0.1 second
-    Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer_actions")
-    Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer_loop")
-    for (local relay; relay = Entities.FindByClassname(relay, "logic_relay");) {
-        if (relay.GetName() == "p2mm_timer_actions") {
-            p2mm_timer_actions <- relay
-        }
-        if (relay.GetName() == "p2mm_timer_loop") {
-            p2mm_timer_loop <- relay
-        }
-    }
-    // p2mm_timer_actions includes the things that will be called
-    // p2mm_timer_loop will be called by p2mm_timer_actions and also calls p2mm_timer_actions again to create that loop
-    EntFireByHandle(p2mm_timer_actions, "AddOutput", "classname move_rope", 0, null, null)
-    EntFireByHandle(p2mm_timer_actions, "AddOutput", "OnTrigger worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
-    EntFireByHandle(p2mm_timer_actions, "AddOutput", "OnTrigger p2mm_timer_loop:Trigger::0:-1", 0, null, null)
-    EntFireByHandle(p2mm_timer_loop, "AddOutput", "OnTrigger p2mm_timer_actions:Trigger::" + looptime + ":-1", looptime, null, null)
-
-    /* 
-    // Old p2mm_timer entity, commented out in case we ever need it again for something.
-    // The p2mm_timer_actions and p2mm_timer_loop entities should reduce the lag though.
-    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
-    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
-        if (timer.GetName() == "p2mm_timer") {
-            p2mm_timer <- timer
-            break
-        }
-    }
-
-    EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-    EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
-    EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
-    EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
-    */
+    // Begin looping
+    Loop()
 
     // Delay the creation of our map-specific entities before so
     // that we don't get an engine error from the entity limit
@@ -73,7 +44,7 @@ function InstantRun() {
 // 2
 function Loop() {
     // Trigger map-specific code
-    MapSupport(false, true, false, false, false, false, false)
+    MapSupport(false, true, false, false, false, false, false, false, false, false)
 
     //## Event List ##//
     if (EventList.len() > 0) {
@@ -430,11 +401,12 @@ function Loop() {
             }
         }
     }
+    EntFire("p2mm_servercommand", "command", "script Loop()", 0.1)
 }
 
 function PostPlayerSpawn() {
     // Trigger map-specific code
-    MapSupport(false, false, true, false, false, false, false)
+    MapSupport(false, false, true, false, false, false, false, false, false, false)
 
     EntFire("p2mm_servercommand", "command", "script ForceRespawnAll()", 1)
 
@@ -584,7 +556,7 @@ function PostPlayerSpawn() {
 // 4
 function PostMapSpawn() {
     // Trigger map-specific code
-    MapSupport(false, false, false, true, false, false, false)
+    MapSupport(false, false, false, true, false, false, false, false, false, false)
 
     SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
 
@@ -604,23 +576,16 @@ function PostMapSpawn() {
     AddBranchLevelName(1, "P2:MM")
     CreatePropsForLevel(true, false, false)
 
-    // Enable fast download
-    SendToConsoleP2MM("rate 99999999")
-    SendToConsoleP2MM("sv_maxrate 0")
-    SendToConsoleP2MM("sv_timeout 0")
-    SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
-    SendToConsoleP2MM("sv_allowdownload 1")
-    SendToConsoleP2MM("sv_allowupload 1")
+    // Enable fast download (broken)
+    // SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
 
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
-	// Gelocity alias for easier changelevel
+	// Aliases for easier changelevel for custom maps
 	SendToConsoleP2MM("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	SendToConsoleP2MM("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
-
-    //Alias used to load 2v2coopbattle and mp_coop_p2mmlobby for easy accsess
     SendToConsoleP2MM("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
     SendToConsoleP2MM("alias p2mmlobby changelevel mp_coop_p2mmlobby")
 
@@ -733,7 +698,7 @@ function OnPlayerJoin(p, script_scope) {
     // Update P2:MM code
 
     // Trigger map-specific code
-    MapSupport(false, false, false, false, true, false, false)
+    MapSupport(false, false, false, false, true, false, false, false, false, false)
 
     // foreach (player in playersconnected) {
     //     if (player != p) {
@@ -891,7 +856,7 @@ function OnPlayerJoin(p, script_scope) {
 // 6
 function OnDeath(player) {
     // Trigger map-specific code
-    MapSupport(false, false, false, false, false, player, false)
+    MapSupport(false, false, false, false, false, player, false, false, false, false)
 
     if (GetDeveloperLevel()) {
         printl("(P2:MM): " + FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
@@ -901,7 +866,7 @@ function OnDeath(player) {
 // 7
 function OnRespawn(player) {
     // Trigger map-specific code
-    MapSupport(false, false, false, false, false, false, player)
+    MapSupport(false, false, false, false, false, false, player, false, false, false)
 
     if (GetDeveloperLevel()) {
         printl("(P2:MM): " + FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
@@ -911,4 +876,19 @@ function OnRespawn(player) {
     if (GlobalSpawnClass.useautospawn) {
         TeleportToSpawnPoint(player, null)
     }
+}
+
+// 8
+function OnSave() {
+    MapSupport(false, false, false, false, false, false, false, true, false, false)
+}
+
+// 9
+function OnSaveCheck() {
+    MapSupport(false, false, false, false, false, false, false, false, true, false)
+}
+
+// 10
+function OnSaveLoad() {
+    MapSupport(false, false, false, false, false, false, false, false, false, true)
 }
