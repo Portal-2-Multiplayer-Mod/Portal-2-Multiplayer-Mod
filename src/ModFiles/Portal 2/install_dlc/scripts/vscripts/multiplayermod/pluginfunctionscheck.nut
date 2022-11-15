@@ -18,15 +18,94 @@
 //              function individually.
 //---------------------------------------------------
 
+// TODO: Replace everything with what is commented below
+// This literally works, and is more efficient than the game loads lol
+// I don't know how to make it slow down enough so that it can properly detect
+// the first plugin function (GetPlayerName()) without treating it as false
+/*
+OurAddedFunctionsLoaded <- [
+    GetPlayerNameLoaded <- false,
+    GetSteamIDLoaded <- false,
+    AddChatCallbackLoaded <- false,
+    SetPhysTypeConvarLoaded <- false,
+    SetMaxPortalSeparationConvarLoaded <- false
+]
+
+OurAddedFunctions <- [
+    GetPlayerName,                  // Returns the Steam username of a player
+    GetSteamID,                     // Returns the Steam ID of a player
+    AddChatCallback,                // Allows for registration of VScript functions with the in-game chat box
+    SetPhysTypeConvar,              // Modifies the hidden convar: "player_held_object_use_viewmodel"
+    SetMaxPortalSeparationConvar    // Modifies the hidden convar: "portal_max_separation_force"
+]
+
+//---------------------------------------------------
+
+foreach (Function in OurAddedFunctions) {
+    // Does the function exist?
+    local exists = false
+    if (Function.getinfos().native) {
+        exists = true
+    }
+    if (exists) {
+        for (local i = 0; i < 4; i++) {
+            if (Function == OurAddedFunctions[i]) {
+            // Get the variable in OurAddedFunctionsLoaded[]
+            // through the order of OurAddedFunctions[]
+                OurAddedFunctionsLoaded[i] = true
+            }
+        }
+    } else {
+        // Redefine logic
+        switch (Function) {
+        case OurAddedFunctions[0]:
+            function GetPlayerName(int) {
+                return "player" + int
+            }
+        case OurAddedFunctions[1]:
+            function GetSteamID(int) {
+                return -1
+            }
+        case OurAddedFunctions[2]:
+            function AddChatCallback(string) {
+                printl("(P2:MM): Plugin not loaded. Unable to add chat callback for chat commands!")
+            }
+        case OurAddedFunctions[3]:
+            function SetPhysTypeConvar(int) {
+                printl("(P2:MM): Plugin not loaded. Unable to change game grab controllers!")
+            }
+        case OurAddedFunctions[4]:
+            function SetMaxPortalSeparationConvar(int) {
+                printl("(P2:MM): Plugin not loaded. Unable to change player collision amounts!")
+            }
+        }
+        printl("(P2:MM): " + Function + "() has been redefined!")
+    }
+}
+
+bHasNothingLoaded <- false
+foreach (variable in OurAddedFunctionsLoaded) {
+    if (variable) {
+        // Something loaded, so the plugin must be as well
+        PluginLoaded <- true
+    } else {
+        bHasNothingLoaded = true
+    }
+}
+
+if (!bHasNothingLoaded) {
+    // Nothing loaded
+    PluginLoaded <- false
+}*/
+
 GetPlayerNameLoaded <- false
 GetSteamIDLoaded <- false
 AddChatCallbackLoaded <- false
 SetPhysTypeConvarLoaded <- false
+SetMaxPortalSeparationConvarLoaded <- false
 
 function RedefinedMessage(functionname) {
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): " + functionname + "() has been redefined!")
-    }
+    printl("(P2:MM): " + functionname + "() has been redefined!")
 }
 
 function ReplaceGetPlayerName() {
@@ -75,16 +154,28 @@ function ReplaceSetPhysTypeConvar() {
     RedefinedMessage("SetPhysTypeConvar")
 }
 
+function ReplaceSetMaxPortalSeparationConvar() {
+    if ("SetMaxPortalSeparationConvar" in this) {
+        SetMaxPortalSeparationConvarLoaded <- true
+        return
+    }
+    function SetMaxPortalSeparationConvar(string) {
+        printl("(P2:MM): Plugin not loaded. Unable to change player collision amounts!")
+    }
+    RedefinedMessage("SetMaxPortalSeparationConvar")
+}
+
 ReplaceGetPlayerName()
 ReplaceGetSteamID()
 ReplaceAddChatCallback()
 ReplaceSetPhysTypeConvar()
+ReplaceSetMaxPortalSeparationConvar()
 
-if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded) {
+if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded || SetMaxPortalSeparationConvarLoaded) {
     // Something loaded, so the plugin must be as well
     PluginLoaded <- true
 }
-else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded) {
+else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded && !SetMaxPortalSeparationConvarLoaded) {
     // Nothing loaded
     PluginLoaded <- false
 }

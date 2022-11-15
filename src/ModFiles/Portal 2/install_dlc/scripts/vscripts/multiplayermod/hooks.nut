@@ -9,258 +9,413 @@
 //  | _|| || || ' \ / _||  _|| |/ _ \| ' \ (_-< _
 //  |_|  \_,_||_||_|\__| \__||_|\___/|_||_|/__/(_)
 //---------------------------------------------------
-// Purpose: Define miscellaneous functions used to
-// hook onto player info and chat commands supplied
-//          directly from our plugin.
+// Purpose: Manages the different events and what
+// happens right before mapsupport code is called.
 //---------------------------------------------------
 
-// Runs when a player enters the server
-function OnPlayerJoin(p, script_scope) {
+// This function is how we communicate with all mapsupport files.
+// In case no mapsupport file exists, it will fall back to this (nothing) instead of an error
+function MapSupport(
+MSInstantRun,       // 1. Runs 0.02 after host client loads in the current map      (Returns true)
+MSLoop,             // 2. Looped every 0.1 second in case of changes in the server  (Returns true)
+MSPostPlayerSpawn,  // 3. Runs once the game begins (players can now move)          (Returns true)
+MSPostMapSpawn,     // 4. Runs after the host loads in                              (Returns true)
+MSOnPlayerJoin,     // 5. Runs when a player enters the server                      (Returns true)
+MSOnDeath,          // 6. Runs on player death                                      (Player handle is provided)
+MSOnRespawn,        // 7. Runs on player respawn                                    (Player handle is provided)
+) {}
 
-    // GlobalSpawnClass Teleport
-    if (GlobalSpawnClass.useautospawn) {
-        TeleportToSpawnPoint(p, null)
+// 1
+function InstantRun() {
+    // Trigger map-specific code
+    MapSupport(true, false, false, false, false, false, false)
+
+    // Begin looping
+    Loop()
+
+    // Delay the creation of our map-specific entities before so
+    // that we don't get an engine error from the entity limit
+    EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
+}
+
+// 2
+function Loop() {
+    // Trigger map-specific code
+    MapSupport(false, true, false, false, false, false, false)
+
+    //## Event List ##//
+    if (EventList.len() > 0) {
+        SendToConsoleP2MM("script " + EventList[0])
+        EventList.remove(0)
     }
 
-    //# Get player's index and store it #//
-    PlayerID <- p.GetRootMoveParent()
-    PlayerID <- PlayerID.entindex()
+    // Global null variable limited to this scope
+    local p = null
 
-    //# Assign every new targetname to the player after blue and red are used #//
-    if (PlayerID >= 3) {
-        p.__KeyValueFromString("targetname", "player" + PlayerID)
-    }
+    // Get all players and check for changes
+    while (p = Entities.FindByClassname(p, "player")) {
+        //## Hook player join ##//
+        if (p.ValidateScriptScope()) {
+            local script_scope = p.GetScriptScope()
+            // If player hasn't joined yet / hasn't been spawned / colored yet
+            if (!("Colored" in script_scope)) {
+                // Run player join code
+                OnPlayerJoin(p, script_scope)
+            }
+        }
 
-    //# Change player portal targetname #//
-    local ent1 = null
-    local ent2 = null
-    local ent = null
-    local portal1 = null
-    local portal2 = null
-    while (ent = Entities.FindByClassname(ent, "prop_portal")) {
-        if (ent.GetName() == "") {
-            if (ent1 == null) {
-                ent1 = ent
-            } else {
-                ent2 = ent
+        //## PotatoIfy loop ##//
+        if (FindPlayerClass(p).potatogun) {
+            PotatoIfy(p, "1")
+        } else {
+            PotatoIfy(p, "0")
+        }
+
+        // Also update everyones class if PermaPotato is on
+        FindPlayerClass(p).potatogun <- PermaPotato
+
+        //## Set PlayerModel ##//
+        if (FindPlayerClass(p) != null) {
+            if (FindPlayerClass(p).playermodel != null) {
+                if (FindPlayerClass(p).playermodel != p.GetModelName()) {
+                    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + currentplayerclass.playermodel + "\")", 1)
+                }
+            }
+        }
+
+        //## Detect death ##//
+        if (p.GetHealth() == 0) { // If player is dead
+            local progress = true
+            // Put dead players in the dead players array
+            foreach (player in CurrentlyDead) {
+                if (player == p) {
+                    progress = false
+                }
+            }
+            if (progress) {
+                CurrentlyDead.push(p)
+                OnDeath(p)
+            }
+        }
+
+        //## Rocket ##//
+        if (Config_UseChatCommands && AddChatCallbackLoaded) {
+            if (FindPlayerClass(p).rocket) {
+                if (p.GetVelocity().z <= 1) {
+                    EntFireByHandle(p, "sethealth", "-100", 0, p, p)
+                    FindPlayerClass(p).rocket <- false
+                }
             }
         }
     }
 
-    try {
-        if (ent1.entindex() > ent2.entindex()) {
-            ent1.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "2")
-            ent2.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "1")
-            portal1 = ent2
-            portal2 = ent1
+    //## Update Portal Gun names ##//
+    while (p = Entities.FindByClassname(p, "weapon_portalgun")) {
+        // if it doesnt have a name yet
+        if (p.GetName() == "") {
+            // Set The Name Of The Portalgun (based on PLAYER index)
+            p.__KeyValueFromString("targetname", "weapon_portalgun_player" + p.GetRootMoveParent().entindex())
+        }
+    }
+
+    // //## Nametags ##//
+    if (Config_UseNametags && AllowNametags) {
+        if (Time() - PreviousNametagItter > 0.1) {
+            PreviousNametagItter = Time()
+            while (p = Entities.FindByClassname(p, "player")) {
+                if (FindPlayerClass(p) != null) {
+
+                    // Get number of players in the game
+                    local playernums = 0
+                    foreach (plr in playerclasses) {
+                        playernums = playernums + 1
+                    }
+
+                    local checkcount = 1
+                    // Optimise search based on player count
+                    if (playernums <= 6) {
+                        checkcount = playernums
+                    } else if (playernums <= 11) {
+                        checkcount = 6
+                    } else if (playernums <= 14) {
+                        checkcount = 4
+                    } else if (playernums <= 17) {
+                        checkcount = 3
+                    } else if (playernums <= 21) {
+                        checkcount = 2
+                    } else if (playernums <= 33) {
+                        checkcount = 1
+                    }
+                    local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), FindPlayerClass(p).eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
+                    if (eyeplayer != null) {
+                        local clr = FindPlayerClass(eyeplayer).color
+                        EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
+                        EntFireByHandle(nametagdisplay, "settext", FindPlayerClass(eyeplayer).username, 0, p, p)
+                        EntFireByHandle(nametagdisplay, "display", "", 0, p, p)
+                    }
+                }
+            }
+        }
+    }
+
+    //## Update eye angles ##//
+    if (Config_UseNametags && AllowNametags) {
+        if (!CoordsAlternate) {
+            // Alternate so our timings space out correctly
+            if (LastCoordGetPlayer != null) {
+                LastCoordGetPlayer <- Entities.FindByClassname(LastCoordGetPlayer, "player")
+            } else {
+                LastCoordGetPlayer <- Entities.FindByClassname(null, "player")
+            }
+            if (LastCoordGetPlayer != null) {
+                EntFireByHandle(measuremovement, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
+                // Alternate so our timings space out correctly
+                CoordsAlternate <- true
+            }
         } else {
-            ent1.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "1")
-            ent2.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "2")
-            portal1 = ent1
-            portal2 = ent2
+            if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
+                local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
+                if (currentplayerclass != null) {
+                    if (OriginalAngle == null && CanCheckAngle) {
+                        OriginalAngle <- measuremovement.GetAngles()
+                        Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
+                    }
+
+                    currentplayerclass.eyeangles <- measuremovement.GetAngles()
+                    currentplayerclass.eyeforwardvector <- measuremovement.GetForwardVector()
+                }
+            }
+            // Alternate so our timings space out correctly
+            CoordsAlternate <- false
         }
-        CreateEntityClass(portal1)
-        CreateEntityClass(portal2)
-        FindEntityClass(portal1).linkedprop <- null
-        FindEntityClass(portal2).linkedprop <- null
-    } catch (exception) {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Failed to rename portals" + exception)
-        }
-    }
-
-    //# Set viewmodel targetnames so we can tell them apart #//
-    for (local ent; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
-        EntFireByHandle(ent, "addoutput", "targetname predicted_viewmodel_player" + ent.entindex(), 0, null, null)
-    }
-
-    // If the player is the first player to join, fix OrangeOldPlayerPos
-    if (p.GetTeam() == 2) {
-        if (OrangeCacheFailed) {
-            OrangeOldPlayerPos <- p.GetOrigin()
-            OrangeCacheFailed <- false
-        }
-    }
-
-    switch (PlayerID) {
-        case 1:     PostMapLoad();      break;  // Run general map code after a player loads into the game
-        case 2:     PostPlayer2Join();  break;  // Run code after player 2 joins
-    }
-
-    SendToConsoleP2MM("sv_timeout 3")
-    EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos", 0, p, p)
-    EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
-    EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
-
-    // Motion blur is very intense for some reason
-    EntFireByHandle(p2mm_clientcommand, "Command", "mat_motion_blur_forward_enabled 0", 0, p, p)
-
-    if (!Player2Joined || IsLocalSplitScreen()) {
-        EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
     } else {
-        EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
-        EntFireByHandle(p2mm_clientcommand, "Command", "-score", 1, p, p) // Is this the best way to turn it off for clients?
+        while (p = Entities.FindByClassname(p, "player")) {
+            FindPlayerClass(p).eyeangles <- Vector(0, 0, 0)
+            FindPlayerClass(p).eyeforwardvector <- Vector(0, 0, 0)
+        }
     }
 
-    MapSupport(false, false, false, false, true, false, false)
+    // // ENTITY OPTIMIZATION / DELETION ///////////////
+    // local cnt = GetEntityCount()
+    // local amtpast = cnt - (EntityCap - EntityCapLeeway) // this is the amount of entities we have past the caps leeway amount
+    // local amtdeleted = 0
 
-    if (Config_UseJoinIndicator) {
-        //# Say join message on HUD #//
-        if (PluginLoaded) {
-            JoinMessage <- GetPlayerName(PlayerID) + " joined the game"
+    // if (cnt > EntityCap - EntityCapLeeway) {
+    //     if (cnt >= FailsafeEntityCap) {
+    //         printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
+    //         SendToConsoleP2MM("changelevel mp_coop_lobby_3")
+    //     }
+    //     printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
+    //     foreach (entclass in ExpendableEntities) {
+
+    //         local curdelamt = amtpast - amtdeleted
+    //         if (amtdeleted < amtpast) { // if we are still over the cap
+
+    //             local amt = GetEntityCount(entclass)
+    //             printl("CURRENT AMOUNT OF " + entclass + ": " + amt)
+
+    //             if (amt > 0) {
+    //                 if (amt >= curdelamt) {
+    //                     DeleteAmountOfEntities(entclass, curdelamt)
+    //                     return
+    //                 } else {
+    //                     DeleteAmountOfEntities(entclass, amt)
+    //                     amtdeleted = amtdeleted + amt
+    //                 }
+    //             }
+
+
+    //         } else {
+    //             return
+    //         }
+    //     }
+    // }
+
+    /////////////////////////////////////////////////
+
+
+    //## Cache original spawn position ##//
+    if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
+        // OldPlayerPos = the blues inital spawn position
+        try {
+            OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
+            OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
+        } catch (exception) {
+            try {
+                OldPlayerPos <- Entities.FindByName(null, "info_coop_spawn").GetOrigin()
+                OldPlayerAngles <- Entities.FindByName(null, "info_coop_spawn").GetAngles()
+            } catch (exception) {
+                    try {
+                        OldPlayerPos <- Entities.FindByName(null, "info_player_start").GetOrigin()
+                        OldPlayerAngles <- Entities.FindByName(null, "info_player_start").GetAngles()
+                    } catch(exception) {
+                        OldPlayerPos <- Vector(0, 0, 0)
+                        OldPlayerAngles <- Vector(0, 0, 0)
+                        if (GetDeveloperLevel()) {
+                            printl("(P2:MM): Error: Could not cache player position. This is catastrophic!")
+                        }
+                        cacheoriginalplayerposition <- 1
+                    }
+                }
+            }
+        cacheoriginalplayerposition <- 1
+    }
+
+    //## Hook first spawn ##//
+    if (PostMapSpawnDone) {
+        if (!DoneWaiting) {
+            if (CanHook) {
+                if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
+                    DoneWaiting <- true
+                    PostPlayerSpawn()
+                    if (GetDeveloperLevel()) {
+                        printl("=================================HEALTH SPAWN")
+                    }
+                }
+            }
+            DoEntFire("p2mm_wait_for_players_text", "display", "", 0.0, null, null)
+        }
+    }
+
+    //## GlobalSpawnClass SetSpawn ##//
+    if (GlobalSpawnClass.usesetspawn) {
+        while (p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.setspawn.position, GlobalSpawnClass.setspawn.radius)) {
+            TeleportToSpawnPoint(p, null)
+        }
+    }
+
+    //## Run all custom generated props / prop related Garry's Mod code ##//
+    CreatePropsForLevel(false, false, true)
+
+
+    //## Config developer mode loop ##//
+    if (DevModeConfig) {
+        // Change Config_DevMode variable based on convar "developer"
+        if (!GetDeveloperLevel()) {
+            if (StartDevModeCheck) {
+                Config_DevMode <- false
+            }
         } else {
-            JoinMessage <- "Player " + PlayerID + " joined the game"
-        }
-        // Set join message to player name
-        JoinMessage = JoinMessage.tostring()
-        joinmessagedisplay.__KeyValueFromString("message", JoinMessage)
-        if (PlayerID > 1) {
-            onscreendisplay.__KeyValueFromString("y", "0.075")
-        }
-        EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
-    }
-
-    //# Set player color #//
-
-    // Set a random color for clients that join after 16 have joined
-    local pcolor = GetPlayerColor(p, false)
-
-    // Set color of player's in-game model
-    script_scope.Colored <- true
-    EntFireByHandle(p, "Color", (pcolor.r + " " + pcolor.g + " " + pcolor.b), 0, null, null)
-
-    // SETUP THE CLASS /////////////////
-    local currentplayerclass = CreateGenericPlayerClass(p)
-
-    // UPDATE THE CLASS
-    currentplayerclass.portal1 <- portal1
-    currentplayerclass.portal2 <- portal2
-
-    // PRINT THE CLASS
-    if (GetDeveloperLevel()) {
-        printl("")
-        printl("===== New player joined =====")
-        printl("======== Class Info =========")
-        foreach (thing in FindPlayerClass(p)) {
-            printl(thing)
-        }
-        printl("=================================")
-        printl("")
-    }
-
-    /////////////////////////////////////
-
-    //# SET THE COSMETICS #//
-    SetCosmetics(p)
-
-    // Set fog controller
-    if (HasSpawned) {
-        if (usefogcontroller) {
-            EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
+            Config_DevMode <- true
         }
     }
+
+    ////#### FUN STUFF ####////
+
+    // Random turret models & colors
+    if (Config_RandomTurrets && HasSpawned) {
+        while (p = Entities.FindByClassname(p, "npc_portal_turret_floor")) {
+            if (p.GetTeam() != 69420) {
+                local modelnumber = RandomInt(0, 2)
+                if (modelnumber == 2) {
+                    modelnumber = 4
+                }
+                p.__KeyValueFromInt("ModelIndex", modelnumber)
+                local RTurretColor = RandomColor()
+
+                b <- RTurretColor.b
+                g <- RTurretColor.g
+                r <- RTurretColor.r
+
+                local model = RandomInt(0, 2)
+
+                if (model == 1) {
+                    p.SetModel("models/npcs/turret/turret_skeleton.mdl")
+                }
+                if (model == 2) {
+                    p.SetModel("models/npcs/turret/turret_backwards.mdl")
+                }
+
+                EntFireByHandle(p, "Color", (R + " " + G + " " + R), 0, null, null)
+                p.SetTeam(69420)
+            }
+        }
+    }
+
+    //////////////////////////
+    // RUNS EVERY 5 SECONDS //
+    //////////////////////////
+
+    if (Time() >= PreviousTime5Sec + 5) {
+        PreviousTime5Sec = Time()
+
+        // Color indicator
+        if (Config_UseColorIndicator && AllowColorIndicator && HasSpawned) {
+            while (p = Entities.FindByClassname(p, "player")) {
+                DisplayPlayerColor(p)
+            }
+        }
+
+        //## Vote CC Display Text ##//
+        // if (Config_UseChatCommands && PluginLoaded) {
+        //     if (ShouldDisplayVoteCounter) {
+        //         EntFire("VoteCounter", "Display")
+        //     }
+        // }
+    }
+
+    ///////////////////////
+    // RUNS EVERY SECOND //
+    ///////////////////////
+
+    if (Time() >= PreviousTime1Sec + 1) {
+        PreviousTime1Sec <- Time()
+
+        // Random portal sizes
+        if (Config_RandomPortalSize) {
+            randomportalsize <- RandomInt(1, 100 ).tostring()
+            randomportalsizeh <- RandomInt(1, 100 ).tostring()
+
+            try {
+                while (p = Entities.FindByClassname(p, "prop_portal")) {
+                    p.__KeyValueFromString("HalfWidth", randomportalsize)
+                    p.__KeyValueFromString("HalfHeight", randomportalsizeh)
+                }
+            } catch (exception) {}
+        }
+
+        //## Detect respawn ##//
+        while (p = Entities.FindByClassname(p, "player")) {
+            if (p.GetHealth() >= 1) {
+                // Get the players from the dead players array
+                foreach (index, player in CurrentlyDead) {
+                    if (player == p) {
+                        CurrentlyDead.remove(index)
+                        OnRespawn(p)
+                    }
+                }
+            }
+        }
+
+        //## Singleplayer check that must be looped in case sv_cheats was changed ##//
+        if (GlobalOverridePluginGrabController) {
+            if (SetPhysTypeConvarLoaded) {
+                if (IsOnSingleplayerMaps) {
+                    SetPhysTypeConvar(0) // enable real-time physics
+                } else {
+                    SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
+                }
+            }
+        }
+    }
+    EntFire("p2mm_servercommand", "command", "script Loop()", 0.1)
 }
 
-// Runs after a player dies
-function OnPlayerDeath(player) {
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): Player died!")
-        MapSupport(false, false, false, false, false, player, false)
-    }
-}
+function PostPlayerSpawn() {
+    // Trigger map-specific code
+    MapSupport(false, false, true, false, false, false, false)
 
-// Runs after a player respawns
-function OnPlayerRespawn(player) {
-    // GlobalSpawnClass teleport
-    if (GlobalSpawnClass.useautospawn) {
-        TeleportToSpawnPoint(player, null)
-    }
-
-    MapSupport(false, false, false, false, false, false, player)
-
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): Player respawned!")
-    }
-}
-
-// Runs after the host loads in
-function PostMapLoad() {
-    //## Cheat detection ##//
-    SendToConsoleP2MM("prop_dynamic_create cheatdetectionp2mm")
-    SendToConsoleP2MM("script SetCheats()")
-
-    // Edit cvars & set server name
-    SendToConsoleP2MM("mp_allowspectators 1")
-    if (PluginLoaded) {
-        SendToConsoleP2MM("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
-    } else {
-        SendToConsoleP2MM("hostname Portal 2: Multiplayer Mod Server")
-    }
-    // Force spawn players in map
-    AddBranchLevelName( 1, "P2 MM" )
-    MapSupport(false, false, false, true, false, false, false)
-    CreatePropsForLevel(true, false, false)
-    // Enable fast download
-    SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
-    SendToConsoleP2MM("sv_allowdownload 1")
-    SendToConsoleP2MM("sv_allowupload 1")
-
-	// Elastic Player Collision
-	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
-
-    if (Config_DevMode) {
-        SendToConsoleP2MM("developer 1")
-        StartDevModeCheck <- true
-    }
-
-    if (Config_RandomTurrets) {
-        PrecacheModel("npcs/turret/turret_skeleton.mdl")
-        PrecacheModel("npcs/turret/turret_backwards.mdl")
-    }
-
-	// Gelocity alias, put gelocity1(2,or 3) into console to easier changelevel
-	SendToConsoleP2MM("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
-	SendToConsoleP2MM("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
-	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
-
-    // Set original angles
-    EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
-
-    local plr = Entities.FindByClassname(null, "player")
-
-    plr.SetHealth(230053963)
-    EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
-
-    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
-    EntFire("p2mm_servercommand", "command", "script CanHook <- true", 1)
-    PostMapLoadDone <- true
-}
-
-// Runs when the second player loads in
-function PostPlayer2Join() {
-    if (!CheatsOn) {
-        SendToConsoleP2MM("sv_cheats 0")
-    }
-    Player2Joined <- true
-}
-
-// Runs once the game begins
-// (Two players have loaded in by now)
-function GeneralOneTime() {
     EntFire("p2mm_servercommand", "command", "script ForceRespawnAll()", 1)
-
-    local ent = Entities.FindByName(null, "blue")
-    local playerclass = FindPlayerClass(ent)
 
     if (!fogs) {
         usefogcontroller <- false
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): No fog controller found, disabling fog controller")
+            printl("(P2:MM): No fog controller found. Disabling fog controller...")
         }
     } else {
         usefogcontroller <- true
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): Fog controller found, enabling fog controller")
+            printl("(P2:MM): Fog controller found. Enabling fog controller...")
         }
     }
 
@@ -271,8 +426,7 @@ function GeneralOneTime() {
 
         defaultfog <- fogs[0].fogname
 
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
         }
     }
@@ -314,89 +468,71 @@ function GeneralOneTime() {
 	}
 
     // Set a variable to tell the map loaded
-    HasSpawned <- true
+    HasSpawned = true
 
     // Cache orange players original position
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        if (p.GetTeam()==2) {
-            OrangeOldPlayerPos <- p.GetOrigin()
-        }
-    }
     try {
-        if (OrangeOldPlayerPos) { }
-    } catch(exception) {
+        if (Entities.FindByName(null, "red") != null && Entities.FindByName(null, "red").GetTeam() == TEAM_RED) {
+            OrangeOldPlayerPos = p.GetOrigin()
+        }
+    } catch (exception) {}
+    if (OrangeOldPlayerPos == null) {
         if (GetDeveloperLevel()) {
             printl("(P2:MM): OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
         }
-        OrangeOldPlayerPos <- OldPlayerPos
-        OrangeCacheFailed <- true
+        OrangeOldPlayerPos = OldPlayerPos
+        OrangeCacheFailed = true
     }
 
-    // Force open the blue player droppers
-    try {
-        local ent = null
-        while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OldPlayerPos.x, OldPlayerPos.y, OldPlayerPos.z-300), 100)) {
-            if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl" || ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
-                EntFireByHandle(ent, "setanimation", "open", 0, null, null)
-                if (ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
-                    EntFireByHandle(ent, "setanimation", "item_dropper_open", 0, null, null)
+    // Attempt to force open the map droppers for both blue and red
+    local ForceOpenMapDroppers = function(PosVector, Radius, OverrideName) {
+        if (OverrideName == "Red" && OrangeCacheFailed) {
+            Radius = 350
+        }
+        try {
+            for (local ent; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(PosVector.x, PosVector.y, PosVector.z-300), Radius);) {
+                if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl" || ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
+                    EntFireByHandle(ent, "setanimation", "open", 0, null, null)
+                    if (ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
+                        EntFireByHandle(ent, "setanimation", "item_dropper_open", 0, null, null)
+                    }
+                    // ent.__KeyValueFromString("targetname", OverrideName + "DropperForcedOpenP2MM") // Has no purpose right now
                 }
-                ent.__KeyValueFromString("targetname", "BlueDropperForcedOpenMPMOD")
+            }
+        } catch (exception) {
+            if (GetDeveloperLevel()) {
+                printl("(P2:MM): " + OverrideName + " dropper not found! Cannot force open dropper.")
             }
         }
-    } catch(exception) {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Blue dropper not found!")
-        }
     }
 
-    // Force open the red player droppers
-    local radius = 150
-    if (OrangeCacheFailed) {
-        radius = 350
-    }
-
-    try {
-        local ent = null
-        while(ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", Vector(OrangeOldPlayerPos.x, OrangeOldPlayerPos.y, OldPlayerPos.z-300), radius)) {
-            if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl" || ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
-                EntFireByHandle(ent, "setanimation", "open", 0, null, null)
-                if (ent.GetModelName() == "models/props_backstage/item_dropper.mdl") {
-                    EntFireByHandle(ent, "setanimation", "item_dropper_open", 0, null, null)
-                }
-                ent.__KeyValueFromString("targetname", "RedDropperForcedOpenMPMOD")
-            }
-        }
-    } catch(exception) {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Red dropper not found!")
-        }
-    }
-    local radius = null
-
-    //# Attempt to fix some general map issues #//
-    local DoorEntities = [
-        "airlock_1-door1-airlock_entry_door_close_rl",
-        "airlock_2-door1-airlock_entry_door_close_rl",
-        "last_airlock-door1-airlock_entry_door_close_rl",
-        "airlock_1-door1-door_close",
-        "airlock1-door1-door_close",
-        "camera_door_3-relay_doorclose",
-        "entry_airlock-door1-airlock_entry_door_close_rl",
-        "door1-airlock_entry_door_close_rl",
-        "airlock-door1-airlock_entry_door_close_rl",
-        "orange_door_1-ramp_close_start",
-        "blue_door_1-ramp_close_start",
-        "orange_door_1-airlock_player_block",
-        "blue_door_1-airlock_player_block",
-        "airlock_3-door1-airlock_entry_door_close_rl",  //mp_coop_sx_bounce (Sixense map)
-    ]
+    ForceOpenMapDroppers(OldPlayerPos, 100, "Blue")  // Force open the blue player droppers
+    ForceOpenMapDroppers(OrangeOldPlayerPos, 150, "Red")  // Force open the red player droppers
 
     if (IsOnSingleplayerMaps) {
-        SendToConsoleP2MM("script function CoopPingTool(int1, int2) {}") // Not needed in singleplayer
+        // Not needed in singleplayer
+        SendToConsoleP2MM("script function CoopPingTool(int1, int2) {}")
+        SendToConsoleP2MM("script function CoopBotAnimation(int1, int2) {}")
     } else {
-        foreach (DoorType in DoorEntities) {
+        //# Attempt to fix some general map issues #//
+        local CoopDoorEntities = [
+            "airlock_1-door1-airlock_entry_door_close_rl",
+            "airlock_2-door1-airlock_entry_door_close_rl",
+            "airlock_3-door1-airlock_entry_door_close_rl",  //mp_coop_sx_bounce (Sixense map)
+            "airlock-door1-airlock_entry_door_close_rl",
+            "airlock1-door1-door_close",
+            "airlock_1-door1-door_close",
+            "blue_door_1-airlock_player_block",
+            "blue_door_1-ramp_close_start",
+            "camera_door_3-relay_doorclose",
+            "door1-airlock_entry_door_close_rl",
+            "entry_airlock-door1-airlock_entry_door_close_rl",
+            "last_airlock-door1-airlock_entry_door_close_rl",
+            "orange_door_1-ramp_close_start",
+            "orange_door_1-airlock_player_block",
+        ]
+        foreach (DoorType in CoopDoorEntities) {
+            // Attempt to destroy them
             try {
                 Entities.FindByName(null, DoorType).Destroy()
             } catch(exception) {}
@@ -406,9 +542,337 @@ function GeneralOneTime() {
     // Create props after cache
     SendToConsoleP2MM("script CreatePropsForLevel(false, true, false)")
 
+    // Remove scoreboard
     for (local p; p = Entities.FindByClassname(p, "player");) {
-        EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, p, p)
+        if (p.entindex() == 1 || IsLocalSplitScreen()) {
+            EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, p, p)
+        }
+    }
+}
+
+// 4
+function PostMapSpawn() {
+    // Trigger map-specific code
+    MapSupport(false, false, false, true, false, false, false)
+
+    SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
+
+    //## Cheat detection ##//
+    SendToConsoleP2MM("prop_dynamic_create cheatdetectionp2mm")
+    SendToConsoleP2MM("script SetCheats()")
+
+    // Edit cvars & set server name
+    SendToConsoleP2MM("mp_allowspectators 1")
+    if (PluginLoaded) {
+        SendToConsoleP2MM("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
+    } else {
+        SendToConsoleP2MM("hostname Portal 2: Multiplayer Mod Server")
     }
 
-    MapSupport(false, false, true, false, false, false, false)
+    // Force spawn players in map
+    AddBranchLevelName(1, "P2:MM")
+    CreatePropsForLevel(true, false, false)
+
+    // Enable fast download (broken)
+    // SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+
+	// Elastic Player Collision
+	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
+
+	// Aliases for easier changelevel for custom maps
+	SendToConsoleP2MM("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
+	SendToConsoleP2MM("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
+	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
+    SendToConsoleP2MM("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
+    SendToConsoleP2MM("alias p2mmlobby changelevel mp_coop_p2mmlobby")
+
+    // Set original angles
+    EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
+
+    local plr = Entities.FindByClassname(null, "player")
+
+    plr.SetHealth(230053963)
+    EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
+
+    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
+    EntFire("p2mm_servercommand", "command", "script CanHook <- true", 1)
+    PostMapSpawnDone <- true
+}
+
+// 5
+function OnPlayerJoin(p, script_scope) {
+
+    // // Update this value. We don't want to run this several times
+    // // at once if players are joining all at once (i.e. map change)
+    // LastTimePlayerJoined <- Time()
+
+    // // TODO: Find out how to get the number of players
+    // // *connected* to the server and have yet to spawn
+
+    // /*-------------------------------------------------------------
+    // General notes about joining players:
+    // - Their entity index is preserved throughout map loads and only
+    //   changes if they leave the session. It is designated from "1"
+    //   and higher until the first "team_manger" entity. That gives us
+    //   a hint on what the current max players are in the server
+
+    // - They spawn a few entities including:
+    //    - player,                             CPortal_Player
+    //       - Has a targetname of either "blue" or "red", depending on
+    //         the team assigned to upon spawn
+
+    //     (The rest of these have NO targetname by default)
+
+    //    - predicted_viewmodel,                CPredicted_ViewModel
+
+    // If the team portal gun spawning is NOT suppressed,
+    // then these will also spawn for that specific player:
+
+    //    - portalsimulator_collisionentity,    CPSCollisionEntity
+    //    - prop_portal,                        CProp_Portal
+    //    - weapon_portalgun,                   CWeaponPortalgun
+
+    // The reason this whole thing is important is because if the map
+    // is really big and contains a lot of entities, we don't want
+    // players to spawn with the portal gun. Otherwise, the server
+    // will crash due to hitting the max entity cap.
+    // -------------------------------------------------------------*/
+
+    // if (Time() - LastTimePlayerJoined < 0.5) {
+    //     // URGENT: WE MUST FIND OUT IF THERE ARE TOO MANY PLAYERS
+    //     // 20 players crashed me with the entity limit on mp_coop_lobby_3 - Nano
+    //     // If we want 33 player Portal MP, we need to learn when to cut corners :)
+
+    //     // Methods to iterate over EVERY entity present:
+    //     /* 1.
+    //         local entity = Entities.First()
+    //         while (entity = Entities.Next(entity)) {
+    //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
+    //         }*/
+
+    //     /* 2.
+    //         for (local entity = Entities.First(); entity = Entities.Next(entity);) {
+    //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
+    //         }*/
+
+    //     local bShouldRemovePortalguns = false
+    //     local iCurrentNumEntsInLoop = 0
+
+    //     // Find every entity and check their properties
+    //     // TODO: FIX THIS METHOD. IT IS SLOW!!!
+    //     for (local entity = Entities.First(); entity = Entities.Next(entity);) {
+    //         iCurrentNumEntsInLoop++ // increment immediately
+
+    //         // 1950 is nearing the entity limit. At this point, the host
+    //         // has like 30 fps. We need to make an optimzation ASAP.
+    //         if (entity.entindex() >= 2000) {
+    //             bShouldRemovePortalguns = true
+    //             break
+    //         }
+    //     }
+
+    //     // Remove Portal Gun and change map
+    //     if (bShouldRemovePortalguns) {
+    //         SendChatMessage("***THIS MAP IS VERY BIG AND/OR THERE ARE A LOT OF PLAYERS CONNECTED!***", Entities.FindByClassname(null, "player"))
+    //         SendChatMessage("***STRIPPING ALL PORTAL GUNS TO IMPROVE PERFORMANCE AND PREVENT A CRASH! TRANSITIONING TO mp_coop_doors IN 3 SECONDS***", Entities.FindByClassname(null, "player"))
+
+    //         if (!Entities.FindByName(null, "supress_blue_portalgun_spawn")) {
+    //             Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+    //         }
+    //         if (!Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
+    //             Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+    //         }
+    //         for (local ent; ent = Entities.FindByClassname(ent, "weapon_portalgun");) {
+    //             ent.Destroy()
+    //         }
+    //         EntFire("p2mm_servercommand", "command", "changelevel mp_coop_doors", 3)
+    //     } else {
+    //         printl("-----------WE DONT NEED TO REMOVE THE GUNS AND CHANGE LEVEL!!!")
+    //     }
+    // }
+
+    //-------------------------------------------------------------
+    // Update P2:MM code
+
+    // Trigger map-specific code
+    MapSupport(false, false, false, false, true, false, false)
+
+    // foreach (player in playersconnected) {
+    //     if (player != p) {
+    //         playersconnected.push(p)
+    //     } else {
+    //         // Should never happen
+    //         printl("(P2:MM): \"playersconnected\" array already had the player registered? Fix this...")
+    //     }
+    // }
+
+    // Are we teleporting this player based on our predictions/calculations
+    // of the locations of entities in the map?
+    if (GlobalSpawnClass.useautospawn) {
+        TeleportToSpawnPoint(p, null)
+    }
+
+    // Get player's index and store it
+    PlayerID <- p.GetRootMoveParent().entindex()
+
+    // Assign every new targetname to the player after blue and red are used
+    if (PlayerID >= 3) {
+        p.__KeyValueFromString("targetname", "player" + PlayerID)
+    }
+
+    // Change player prop_portal targetname
+    local ent1 = null
+    local ent2 = null
+    local ent = null
+    local portal1 = null
+    local portal2 = null
+    while (ent = Entities.FindByClassname(ent, "prop_portal")) {
+        if (ent.GetName() == "") {
+            if (ent1 == null) {
+                ent1 = ent
+            } else {
+                ent2 = ent
+            }
+        }
+    }
+
+    try {
+        if (ent1.entindex() > ent2.entindex()) {
+            ent1.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "2")
+            ent2.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "1")
+            portal1 = ent2
+            portal2 = ent1
+        } else {
+            ent1.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "1")
+            ent2.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "2")
+            portal1 = ent1
+            portal2 = ent2
+        }
+        CreateEntityClass(portal1)
+        CreateEntityClass(portal2)
+        FindEntityClass(portal1).linkedprop <- null
+        FindEntityClass(portal2).linkedprop <- null
+    } catch (exception) {
+        if (GetDeveloperLevel()) {
+            printl("(P2:MM): Failed to rename portals" + exception)
+        }
+    }
+
+    //# Set viewmodel targetnames so we can tell them apart #//
+    for (local ent; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
+        EntFireByHandle(ent, "addoutput", "targetname predicted_viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
+    }
+
+    // If the player is the first player to join, fix OrangeOldPlayerPos
+    if (p.GetTeam() == TEAM_RED) {
+        if (OrangeCacheFailed) {
+            OrangeOldPlayerPos <- p.GetOrigin()
+            OrangeCacheFailed <- false
+        }
+    }
+
+    switch (PlayerID) {
+        case 1:
+            // Run general map code after a player loads into the game
+            PostMapSpawn()
+            break
+        case 2:
+            // Run code after player 2 joins
+            if (!CheatsOn) {
+                SendToConsoleP2MM("sv_cheats 0")
+            }
+            Player2Joined <- true
+            break
+    }
+
+    SendToConsoleP2MM("sv_timeout -1")
+    EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos", 0, p, p)
+    EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
+    EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+
+    // Motion blur is very intense for some reason
+    EntFireByHandle(p2mm_clientcommand, "Command", "mat_motion_blur_forward_enabled 0", 0, p, p)
+
+    if (p.entindex() == 1 || IsLocalSplitScreen()) {
+        EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
+    }
+
+    // We don't want it to show as a host client on a listen server
+    // TODO: Possibly need to rework "y" offset for dedicated?
+    if (Config_UseJoinIndicator && PlayerID > 1) {
+        // Set join message to player name (or index)
+        local iCurrentNumPlayers = CalcNumPlayers()
+        joinmessagedisplay.__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
+        if (PlayerID > 1) {
+            onscreendisplay.__KeyValueFromString("y", "0.075")
+        }
+        //# Say join message on HUD #//
+        EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+    }
+
+    // Set color of player's in-game model
+    local pcolor = GetPlayerColor(p, false)
+    EntFireByHandle(p, "Color", (pcolor.r + " " + pcolor.g + " " + pcolor.b), 0, null, null)
+    script_scope.Colored <- true
+
+    // SETUP THE CLASS /////////////////
+    local currentplayerclass = CreateGenericPlayerClass(p)
+
+    // UPDATE THE CLASS
+    currentplayerclass.portal1 <- portal1
+    currentplayerclass.portal2 <- portal2
+
+    // PRINT THE CLASS
+    if (GetDeveloperLevel()) {
+        printl("\n===== New player joined =====")
+        printl("===== P2:MM Class Info: =====")
+        foreach (thing in FindPlayerClass(p)) {
+            printl(thing)
+        }
+        printl("=============================\n")
+    }
+
+    /////////////////////////////////////
+
+    //# SET THE COSMETICS #//
+    if (Config_UseCustomDevModels && PluginLoaded) {
+        switch (FindPlayerClass(p).steamid) {
+            case 290760494: SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl");       break; // Nanoman2525
+            case 182933216: SetPlayerModel(p, "models/info_character/info_character_player.mdl");   break; // kyleraykbs
+            case 242453954: SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl");         break; // sear
+            case 181670710: SetPlayerModel(p, "models/handles_map_editor/torus.mdl");               break; // Bumpy
+        }
+    }
+
+    // Set fog controller
+    if (HasSpawned) {
+        if (usefogcontroller) {
+            EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
+        }
+    }
+}
+
+// 6
+function OnDeath(player) {
+    // Trigger map-specific code
+    MapSupport(false, false, false, false, false, player, false)
+
+    if (GetDeveloperLevel()) {
+        printl("(P2:MM): " + FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
+    }
+}
+
+// 7
+function OnRespawn(player) {
+    // Trigger map-specific code
+    MapSupport(false, false, false, false, false, false, player)
+
+    if (GetDeveloperLevel()) {
+        printl("(P2:MM): " + FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
+    }
+
+    // GlobalSpawnClass teleport
+    if (GlobalSpawnClass.useautospawn) {
+        TeleportToSpawnPoint(player, null)
+    }
 }

@@ -592,6 +592,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A1_Intro1Viewcontrol", "addoutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
         EntFire("Sp_A1_Intro1ViewcontrolTele", "addoutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
 
+        // kill people block exit elevator
+        Entities.FindByName(null, "departure_elevator-elevator_1").__KeyValueFromString("dmg", "100")
+
         // Create container collisson brushes with an offset of (-19, 510, -3)
         // ContainerBedBrush
         // ContainerBedBrush <- Entities.CreateByClassname("func_brush")

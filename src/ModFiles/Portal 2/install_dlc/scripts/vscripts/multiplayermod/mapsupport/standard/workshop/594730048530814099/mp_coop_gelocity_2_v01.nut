@@ -1,7 +1,7 @@
-// ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗ ███████╗██╗      █████╗  █████╗ ██╗████████╗██╗   ██╗           ██████╗            ██╗   ██╗ █████╗   ███╗  
-// ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝ ██╔════╝██║     ██╔══██╗██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝           ╚════██╗           ██║   ██║██╔══██╗ ████║  
-// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██║  ██╗ █████╗  ██║     ██║  ██║██║  ╚═╝██║   ██║    ╚████╔╝              ███╔═╝           ╚██╗ ██╔╝██║  ██║██╔██║  
-// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██║  ╚██╗██╔══╝  ██║     ██║  ██║██║  ██╗██║   ██║     ╚██╔╝             ██╔══╝              ╚████╔╝ ██║  ██║╚═╝██║  
+// ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗ ███████╗██╗      █████╗  █████╗ ██╗████████╗██╗   ██╗           ██████╗            ██╗   ██╗ █████╗   ███╗
+// ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝ ██╔════╝██║     ██╔══██╗██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝           ╚════██╗           ██║   ██║██╔══██╗ ████║
+// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██║  ██╗ █████╗  ██║     ██║  ██║██║  ╚═╝██║   ██║    ╚████╔╝              ███╔═╝           ╚██╗ ██╔╝██║  ██║██╔██║
+// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██║  ╚██╗██╔══╝  ██║     ██║  ██║██║  ██╗██║   ██║     ╚██╔╝             ██╔══╝              ╚████╔╝ ██║  ██║╚═╝██║
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗╚██████╔╝███████╗███████╗╚█████╔╝╚█████╔╝██║   ██║      ██║   ██████████╗███████╗██████████╗  ╚██╔╝  ╚█████╔╝███████╗
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝ ╚═════╝ ╚══════╝╚══════╝ ╚════╝  ╚════╝ ╚═╝   ╚═╝      ╚═╝   ╚═════════╝╚══════╝╚═════════╝   ╚═╝    ╚════╝ ╚══════╝
 
@@ -34,7 +34,7 @@ function Gelocity2AddLap() {
             }
         }
     }
-    
+
     printl("Gelocity2LapCount: " + Gelocity2LapCount)
     Entities.FindByName(null, "change_rounds_text_override").__KeyValueFromString("message", Gelocity2LapCount + " Laps")
     EntFire("change_rounds_text_override", "Display")
@@ -99,7 +99,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         RemoveAllClassname("keyframe_rope")
         RemoveAllClassname("env_sprite")
         Entities.FindByName(null, "clip_start").Destroy()
-        
+
         local ent = null
         while (ent = Entities.FindByName(null, "door_start_1_1")) {
             ent.__KeyValueFromString("targetname", "door_start_1_1_override")
@@ -356,7 +356,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         SendToConsoleP2MM("say " + PlayerUsername + " Won The Race!")
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Race!", 0.1)
                         //ent_fire first_blue addoutput "rendercolor 255 0 0"
-                        if (p.GetTeam() >= 3) {
+                        if (p.GetTeam() >= TEAM_BLUE) {
                             EntFire("blue_wins", "trigger")
                         } else {
                             EntFire("orange_wins", "trigger")

@@ -11,28 +11,65 @@
 //           abusive commands from clients.
 //---------------------------------------------------
 
-if (Config_SafeGuard) {
-    if (::SendToConsole.getinfos().native) {
-        // Replace SendToConsole with SendToConsoleP2MM
-        ::SendToConsoleP2MM <- ::SendToConsole
+if (!Config_SafeGuard) {
+    function SendToConsoleP2MM(str) { SendToConsole(str) }
+    return
+}
 
-        function SendToConsole(str) {
-            if (str.slice(0, 16) != "snd_ducktovolume") {
-                printl("=========================================")
-                printl("=========================================")
-                printl("    PATCHED COMMAND ATTEMPTED TO RUN!    ")
-                printl("                                         ")
-                printl("  Command: " + str                        )
-                printl("                                         ")
-                printl("   This could be game logic running in   ")
-                printl("  the background. But it could also be   ")
-                printl("  a player that is attempting to exploit ")
-                printl("   the game. So we're going to stop it.  ")
-                printl("=========================================")
-                printl("=========================================")
+if (SendToConsole.getinfos().native) {
+    SendToConsoleP2MM <- SendToConsole
+    SendToConsole = function(str) {
+        local printchar = true
+        local illegalChars = [";", "\\", "/", "\"", "%n"]
+        local DoError = function(string, printchar) {
+            printl("==========================================")
+            printl("    PATCHED COMMAND ATTEMPTED TO RUN!     ")
+            if (printchar) {
+            printl("                                          ")
+            printl("  Command: " + string                      )
+            }
+            printl("                                          ")
+            printl("  This could be game logic running in the ")
+            printl(" background. But if the command looks bad,")
+            printl(" then it is most likely a player that is  ")
+            printl("      attempting to exploit the game.     ")
+            printl("         So we're going to stop it.       ")
+            printl("                                          ")
+            printl("Possible suspects (standing still)...     ")
+            for (local player; player = Entities.FindByClassname(player, "player");) {
+                // Don't account for whether or not they are falling straight down
+                if (player.GetVelocity().x == 0 && player.GetVelocity().y == 0) {
+                    printl("- " + FindPlayerClass(player).username)
+                }
+            }
+            printl("==========================================")
+        }
+
+        if (str == "") {
+            printl("\n(P2:MM): AN EMPTY STRING OF SendToConsole ATTEMPTED TO RUN!")
+            return
+        }
+
+        foreach (char in illegalChars) {
+            if (typeof str.find(char) == "integer") {
+                if (char == illegalChars[4]) {
+                    printchar = false // Do not print this out
+                }
+                DoError(str, printchar)
+                return
             }
         }
+
+        // Can't combine these checks since it leads to a string length error
+        if (str.len() < 17) {
+            DoError(str, printchar)
+            return
+        }
+        if (str.len() >= 17 && str.slice(0, 17) != "snd_ducktovolume ") {
+            DoError(str, printchar)
+            return
+        }
+
+        // SendToConsoleP2MM(str)
     }
-} else {
-    function SendToConsoleP2MM(str) { SendToConsole(str) }
 }

@@ -20,87 +20,85 @@
 //                 fixes for 3+ MP.
 //---------------------------------------------------
 
-// mapspawn.nut is called twice on map transitions for some reason...
-// Prevent the second run
-if (!("Entities" in this)) { return }
+// TODO: Find out how to determine whether or not a
+// session is dedicated or listen IN VSCRIPT
 
-printl("\n-------------------------")
-printl("==== calling mapspawn.nut")
-printl("-------------------------\n")
+//-------------------------------------------------------------------------------------------
+// This file is called on map transitions for both the client VM and server VM
+// If the server type is a listen server, then this specific file would be called twice
+// We differentiate between the two by whether or not the VM can control the entities
+//-------------------------------------------------------------------------------------------
 
-// Make sure we know whether the plugin is loaded or not
-// before including other files that depend on its value
-IncludeScript("multiplayermod/pluginfunctionscheck.nut")
+if (!("Entities" in this)/* || GetMapName().find(".bsp") != null || Time().tostring() != "1"*/) {
+    printl("\n----------------------------------")
+    printl("==== calling mapspawn.nut (CLIENT)")
+    printl("----------------------------------\n")
 
-// Directly after including the user config, we need to make sure that
-// nothing is invalid, and to take care of anything that is
-IncludeScript("multiplayermod/config.nut")
-IncludeScript("multiplayermod/configcheck.nut")
+    // If someone uses mapspawn.nut actively, they can put their code here
+
+    return // Terminate execution
+}
+
+//-------------------------------------------------------------------------------------------
+
+printl("\n----------------------------------")
+printl("==== calling mapspawn.nut (SERVER)")
+printl("----------------------------------\n")
+
+// Now we take care of some tasks first thing
+
+// Determine what the "maxplayers" cap is
+iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1)
+printl("(P2:MM): Max players allowed on the server: " + iMaxPlayers)
+
+// Determine whether or not this is a dedicated server
+// if (IsLocalSplitScreen() || !IsMultiplayer()) {
+//     bIsDedicatedServer <- false
+// } else {
+//     bIsDedicatedServer <- true
+// }
+
+IncludeScript("multiplayermod/pluginfunctionscheck.nut") // Make sure we know the exact status of our plugin
+IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences
+IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
 
 // Create a global point_servercommand entity for us to pass through commands
-// We don't want to create multiple when it is called on
+// We don't want to create multiple when it is called on, so reference it by targetname
 Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 
-// Facilitate first load after game launch
 if (GetDeveloperLevel() == 918612) {
-    // This function is called only once under this developer
-    // level condition, so we'll define it here
-    // No need to use it any other time!
-    function MakeProgressCheck() {
-        local ChangeToThisMap = "mp_coop_start"
-        for (local course = 1; course <= 6; course++) {
-            // 9 levels is the highest that a course has
-            for (local level = 1; level <= 9; level++) {
-                if (IsLevelComplete(course - 1, level - 1)) {
-                    ChangeToThisMap = "mp_coop_lobby_3"
-                }
-            }
-        }
-        EntFire("p2mm_servercommand", "command", "changelevel " + ChangeToThisMap, 0)
-    }
-
-    // Reset dev level
-    if (Config_DevMode) {
-        EntFire("p2mm_servercommand", "command", "developer 1")
-    }
-    else {
-        EntFire("p2mm_servercommand", "command", "clear; developer 0")
-    }
-
-    if (!PluginLoaded) {
-        // Remove Portal Gun (Map transition will sound less abrupt)
-        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
-        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
-
-        EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
-        EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
-        EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1) // Must be delayed
-        return
-    }
+    // Take care of anything pertaining to progress check and how our plugin did when loading
+    IncludeScript("multiplayermod/firstmapload.nut")
+    return
 }
+
+//-------------------------------------------------------------------------------------------
+
+// Continue loading the P2:MM fixes, game mode, and features
 
 IncludeScript("multiplayermod/variables.nut")
 IncludeScript("multiplayermod/safeguard.nut")
 IncludeScript("multiplayermod/functions.nut")
-IncludeScript("multiplayermod/loop.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
+
+// Load the data system after everything else has been loaded
+// IncludeScript("multiplayermod/datasystem/datasystem-main.nut") Commented out for now, still need to finish
 
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 
+//---------------------------------------------------
+
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) { printl(line) }
+delete ConsoleAscii
 
 //---------------------------------------------------
 
 // Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
-
-// This function is how we communicate with all mapsupport files.
-// In case no mapsupport file exists, it will fall back to "nothing" instead of an error
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {}
 
 // Import map support code
 function LoadMapSupportCode(gametype) {
@@ -132,53 +130,27 @@ function LoadMapSupportCode(gametype) {
     }
 }
 
-try {
-    switch (Config_GameMode) {
-        case 0: LoadMapSupportCode("standard");     break;
-        case 1: LoadMapSupportCode("speedrun");     break;
-        case 2: LoadMapSupportCode("deathmatch");   break;
-        case 3: LoadMapSupportCode("futbol");       break;
-    }
-} catch (exception) {
+// Now, manage everything the player has set in config.nut
+// If the gamemode has exceptions of any kind, it will revert to standard mapsupport
+switch (Config_GameMode) {
+case 0:     LoadMapSupportCode("standard");     break
+case 1:     LoadMapSupportCode("speedrun");     break
+case 2:     LoadMapSupportCode("deathmatch");   break
+case 3:     LoadMapSupportCode("futbol");       break
+default:
     printl("(P2:MM): \"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
-    LoadMapSupportCode("standard")
+    LoadMapSupportCode("standard"); break
 }
 
 //---------------------------------------------------
 
-// Second, run init() shortly AFTER spawn
+// Run InstantRun() shortly AFTER spawn (hooks.nut)
 
-function init() {
-    // Trigger map-specific code
-    MapSupport(true, false, false, false, false, false, false)
-
-    // Create an entity to loop the loop() function every 0.1 second
-    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
-    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
-        if (timer.GetName() == "p2mm_timer") {
-            p2mm_timer <- timer
-            break
-        }
-    }
-    EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-    EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
-    EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:loop():0:-1", 0, null, null)
-    EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
-
-    // Delay the creation of our map-specific entities before so
-    // that we don't get an engine error from the entity limit
-    EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
+// Make sure that the user is in multiplayer mode before initiating everything
+if (!IsMultiplayer()) {
+    printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
+    EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
 }
 
-try {
-    // Make sure that the user is in multiplayer mode before initiating everything
-    if (!IsMultiplayer()) {
-        printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
-        EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
-    }
-
-    // init() must be delayed
-    EntFire("p2mm_servercommand", "command", "script init()", 0.02)
-} catch (e) {
-    printl("(P2:MM): Initializing our custom support!\n")
-}
+// InstantRun() must be delayed slightly
+EntFire("p2mm_servercommand", "command", "script InstantRun()", 0.02)

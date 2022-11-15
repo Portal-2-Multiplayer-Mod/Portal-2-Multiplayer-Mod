@@ -39,7 +39,7 @@ function StartGame() {
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
         printl("Player " + p  + " has joined the game.")
-        if (p.GetTeam() == 3) {
+        if (p.GetTeam() == TEAM_BLUE) {
             p.SetOrigin(Vector(8169, -5664, 64))
             p.SetAngles(0, -180, 0)
         } else {

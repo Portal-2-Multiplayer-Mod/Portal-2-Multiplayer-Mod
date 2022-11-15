@@ -265,7 +265,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while (p = Entities.FindByClassnameWithin(p, "player", Vector(6976, 568, 521), 225)) {
             if (p.GetOrigin().z >= 450) {
                 printl("Player is in the elevator")
-                if (p.GetTeam()==2) {
+                if (p.GetTeam() == TEAM_RED) {
                     p.SetOrigin(Vector(6926, 398, 410))
                 } else {
                     p.SetOrigin(Vector(7026, 398, 410))

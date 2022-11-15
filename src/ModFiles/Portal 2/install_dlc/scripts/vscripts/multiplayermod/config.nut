@@ -35,7 +35,7 @@ Config_UseCustomDevModels <- false
 Config_GameMode <- 0
 
 // Set true/false if you want to randomize every Turret's models and colors (for fun lol)
-Config_RandomTurrets <- false
+Config_RandomTurrets <- true
 
 // Set true/false if you want to randomize the size of all portals every second
 Config_RandomPortalSize <- false
@@ -53,26 +53,32 @@ Config_UseNametags <- true
 // Server variables
 //-----------------------------------
 // Set true/false if you want to enable the Safeguard functionality against server vscript functions from people connecting to you.
-// (Still being worked on)
-Config_SafeGuard <- false
+// "true" is highly recommended if this is a public server
+Config_SafeGuard <- true
+
+// Set to any integer from 0 to 256 to determine how much separation force exists between players.
+// P2:MM disables solid collision between players as seen in normal Portal 2, as it causes issues with players spawning into each other.
+// 0 - Players will not push each other away with any force when colliding.
+// 256 - Players will push each other away with a moderate amount of force when colliding.
+Config_SetPlayerElasticity <- 0
 
 // Set true/false if you want to use chat commands
 Config_UseChatCommands <- true
 
 // * If the P2:MM plugin loads and Config_UseChatCommands is true, then this is the list of players that have access to specific chat commands
-// * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well
+// * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well as long as you reset the map after editing
 // * Permissions stack with increased admin level
-// * The highest admin level available is [6] and is assigned automatically to the host
+// * The highest admin level available is [6] and is assigned automatically to the server operator
 // * Everyone by default has level [0]
 //
 // * These can be accessed with "!" preceding them
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
-// [0]: "help", "changeteam", "kill", "playercolor"
+// [0]: "help", "changeteam", "kill", "playercolor", "vote"
 // [1]:
 // [2]: "kill (someone)"
-// [3]: "playercolor (for someone else)"
-// [4]: "speed", "noclip", "teleport"
+// [3]: "playercolor (for someone else)", "rocket (optionally someone)"
+// [4]: "speed", "noclip", "teleport", "slap (optionally someone)"
 // [5]: "restartlevel", "spchapter", "mpcourse"
 // [6]: "rcon", "adminmodify"
 //
@@ -80,11 +86,13 @@ Config_UseChatCommands <- true
 // "[AdminLevel]SteamID", // (Username to keep track)
 
 Admins <- [
-"[400]182933216", // kyleraykbs
-"[400]75927374", // Wolƒe Strider Shoσter
-"[400]290760494", // Nanoman2525
-"[400]1106347501", // vista
-"[400]181670710", // Bumpy
-"[400]72399433", // cabiste
-"[400]242453954", // sear
+"[6]182933216",     // kyleraykbs
+"[6]75927374",      // Wolƒe Strider Shoσter
+"[6]290760494",     // Nanoman2525
+"[6]1106347501",    // vista
+"[6]181670710",     // Bumpy
+"[6]72399433",      // cabiste
+"[6]242453954",     // sear
+"[6]376041508",     // Orsell
+"[6]378724405"      // \n
 ]

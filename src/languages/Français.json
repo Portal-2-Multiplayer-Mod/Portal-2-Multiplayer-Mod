@@ -1,4 +1,6 @@
 {
+  "welcome": "Bienvenue dans le Lanceur P2MM! Appuyez sur 'Lancer Le Jeu' pour lancer le mod P2MM!",
+  "version": "Version: ",
   "play_button": "Lancer Le Jeu",
   "exit_button": "Quitter",
   "discord_server_button": "Serveur Discord",
@@ -7,7 +9,8 @@
   "player_button": "Joueurs",
   "settings_button": "Paramètres",
   "portal2_config_button": "Configuration De Portal 2",
-  "hidden_config_button": "Paramètres Cachés",
+  "hidden_config_button": "Menu Développeur",
+  "dev_mode_enabled": "LE MODE DÉVELOPPEUR EST ACTIVÉ!",
   "back_button": "Retour",
   "mount_button": "Monter",
   "mounted": "Monté!",
@@ -67,8 +70,16 @@
   "game_path_error-founded": "Chemin trouvé!",
   "game_path_error-saved": "Chemin sauvegardé!",
   "devmod_is_active": "Dev mode est maintenant actif!",
-  "devmod_copied_from_local_repo": "fichiers du mod copiés à partir du repo local!",
+  "devmod_copied_from_local_repo": "Fichiers du mod copiés à partir du repo local!",
   "testing_button": "Test",
-  "language_error0_language_update": "Langage Mis A Jour,",
-  "language_error0_relaunch_game": "Relancez Votre Lanceur"
+  "language_error0_language_update": "Langage Mis A Jour!",
+  "language_error0_relaunch_game": "Relancez Votre Lanceur...",
+  "data_button": "Données",
+  "data_system_state_txt": "État du Système de Données: ",
+  "data_enabled": "Activé",
+  "data_disabled": "Désactivé",
+  "data_system_refresh": "Actualiser le Système de Données",
+  "data_system_refreshing": "Actualisation du Système de Données...",
+  "data_system_refresh_success": "Le Système de Données a été actualisé avec succès!",
+  "data_system_refresh_failed": "Le Système de Données n'a pas réussi à s'actualiser..."
 }
