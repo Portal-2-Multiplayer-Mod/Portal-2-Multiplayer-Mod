@@ -39,10 +39,8 @@ If you want to contribute to this project you can do so in 3 ways:
 
 # How to build
 ### Dependencies
-- pygame
-- requests
-- steamid-converter
-- pyperclip
+all the dependencies are in the `requirements.txt` file  
+`pip install -r requirements.txt`
 
 ### Compilation
 *you need `pyinstaller` to compile the code*
