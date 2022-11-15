@@ -43,7 +43,7 @@ game_sounds_manifest
 	"precache_file"		"scripts/game_sounds_world.txt"
 	"precache_file"		"scripts/game_sounds_announcer_auto_generated.txt"
 	"precache_file"		"scripts/game_sounds_cores_auto_generated.txt"
-	
+
 
 	//Portal content Sounds
 	"precache_file"		"scripts/level_sounds_music_portal.txt"
@@ -53,15 +53,15 @@ game_sounds_manifest
 	"precache_file"		"scripts/npc_sounds_turret_portal.txt"
 	"precache_file"		"scripts/npc_sounds_rocket_turret.txt"
 	"precache_file"		"scripts/npc_sounds_glados_cores.txt"
-	
+
 	//Co-op bots
 	"precache_file"		"scripts/game_sounds_ballbot.txt"
 	"precache_file"		"scripts/game_sounds_eggbot.txt"
-	
+
 	// NPC Sounds
 	"precache_file"		"scripts/npc_sounds_combine_ball.txt"
 	"precache_file"		"scripts/npc_sounds_combine_ball_episodic.txt"
-	"precache_file"		"scripts/npc_sounds_hover_turret.txt"	
+	"precache_file"		"scripts/npc_sounds_hover_turret.txt"
 	"precache_file"		"scripts/npc_sounds_turret.txt"
 	"precache_file"		"scripts/game_sounds_npc.txt"
 
@@ -73,15 +73,15 @@ game_sounds_manifest
 
 	// FIXME / REMOVEME / whatever: tempcontent
 	"precache_file"		"scripts/level_sounds_tempcontent.txt"
-	
+
 	// Paint
 	"precache_file"		"scripts/game_sounds_weapons_paintgun.txt"
 	"precache_file"		"scripts/game_sounds_paint_player.txt"
 	"precache_file"		"scripts/game_sounds_paint.txt"
-	
+
 	// Scripted Sequences / Cinematics / Set Pieces
 	"precache_file"		"scripts/game_sounds_scripted_sequence.txt"
-	
+
 	// VFX / Particles / Beams
 	"precache_file"		"scripts/game_sounds_vfx.txt"
 
@@ -114,6 +114,9 @@ game_sounds_manifest
 	"precache_file"		"scripts/game_sounds_music_dlc2.txt"
 	"precache_file"		"scripts/game_sounds_dlc2_cave.txt"
 	"precache_file"		"scripts/game_sounds_editor.txt"
+
+	// sixense
+	"precache_file"		"scripts/sixense_sounds.txt"
 
 	//P2:MM Server-side Sounds
 	"precache_file"		"scripts/game_sounds_p2mm.txt"

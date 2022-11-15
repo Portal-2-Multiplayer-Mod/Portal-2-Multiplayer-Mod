@@ -1,9 +1,9 @@
-// ██████╗██████╗             █████╗ ██████╗             █████╗ ██████╗
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚════██╗
-//╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║ █████╔╝
-// ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║ ╚═══██╗
-//██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝██████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚═════╝
+//  ██████╗██████╗             █████╗ ██████╗             █████╗ ██████╗
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚════██╗
+// ╚█████╗ ██████╔╝           ███████║ █████╔╝           ██║  ██║ █████╔╝
+//  ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗           ██║  ██║ ╚═══██╗
+// ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝██████╔╝
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -33,7 +33,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Find all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+            EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
             EntFireByHandle(p, "setfogcontroller", "@environment_lake_fog", 0, null, null)
         }
     }
@@ -65,7 +65,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3631, 1284, -2100), 100)) {
              
-            SendToConsoleP232("changelevel sp_a3_jump_intro")
+            SendToConsoleP2MM("changelevel sp_a3_jump_intro")
         }
     }
 }

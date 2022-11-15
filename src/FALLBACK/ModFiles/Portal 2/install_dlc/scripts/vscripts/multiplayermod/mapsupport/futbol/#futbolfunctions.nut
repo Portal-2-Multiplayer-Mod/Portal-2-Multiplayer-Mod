@@ -10,8 +10,8 @@ function FinishFutBolSpawn(targetname, position) {
 }
 
 function SpawnFutBol(targetname, position) {
-    SendToConsoleP232("sv_cheats 1; ent_create prop_glass_futbol; sv_cheats 0")
-    SendToConsoleP232("script FinishFutBolSpawn(\"" + targetname + " \", Vector(" + position.x + ", " + position.y + ", " + position.z + "))")
+    SendToConsoleP2MM("sv_cheats 1; ent_create prop_glass_futbol; sv_cheats 0")
+    SendToConsoleP2MM("script FinishFutBolSpawn(\"" + targetname + " \", Vector(" + position.x + ", " + position.y + ", " + position.z + "))")
 }
 
 function GetGoalPoint(prop) {

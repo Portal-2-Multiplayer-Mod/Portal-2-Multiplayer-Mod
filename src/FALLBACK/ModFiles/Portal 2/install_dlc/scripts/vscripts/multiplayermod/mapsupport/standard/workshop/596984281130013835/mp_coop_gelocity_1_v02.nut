@@ -1,7 +1,7 @@
-// ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗ ███████╗██╗      █████╗  █████╗ ██╗████████╗██╗   ██╗             ███╗             ██╗   ██╗ █████╗   ███╗  
-// ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝ ██╔════╝██║     ██╔══██╗██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝            ████║             ██║   ██║██╔══██╗ ████║  
-// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██║  ██╗ █████╗  ██║     ██║  ██║██║  ╚═╝██║   ██║    ╚████╔╝            ██╔██║             ╚██╗ ██╔╝██║  ██║██╔██║  
-// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██║  ╚██╗██╔══╝  ██║     ██║  ██║██║  ██╗██║   ██║     ╚██╔╝             ╚═╝██║              ╚████╔╝ ██║  ██║╚═╝██║  
+// ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗ ███████╗██╗      █████╗  █████╗ ██╗████████╗██╗   ██╗             ███╗             ██╗   ██╗ █████╗   ███╗
+// ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝ ██╔════╝██║     ██╔══██╗██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝            ████║             ██║   ██║██╔══██╗ ████║
+// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██║  ██╗ █████╗  ██║     ██║  ██║██║  ╚═╝██║   ██║    ╚████╔╝            ██╔██║             ╚██╗ ██╔╝██║  ██║██╔██║
+// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██║  ╚██╗██╔══╝  ██║     ██║  ██║██║  ██╗██║   ██║     ╚██╔╝             ╚═╝██║              ╚████╔╝ ██║  ██║╚═╝██║
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗╚██████╔╝███████╗███████╗╚█████╔╝╚█████╔╝██║   ██║      ██║   ██████████╗███████╗██████████╗  ╚██╔╝  ╚█████╔╝███████╗
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝ ╚═════╝ ╚══════╝╚══════╝ ╚════╝  ╚════╝ ╚═╝   ╚═╝      ╚═╝   ╚═════════╝╚══════╝╚═════════╝   ╚═╝    ╚════╝ ╚══════╝
 
@@ -9,9 +9,8 @@ LapCount <- 3
 WonGame <- false
 
 function StartGelocity() {
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        if (p.GetTeam() == 2) { // red
+    for (local p; p = Entities.FindByClassname(p, "player");) {
+        if (p.GetTeam() == TEAM_RED) {
             p.SetOrigin(Vector(2047, -3583, 64))
         } else {
             p.SetOrigin(Vector(2240, -3583, 64))
@@ -72,8 +71,8 @@ function Lap(player) {
             Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("holdtime", "8")
             EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Game!", 0.1)
             EntFire("p2mm_laps_text", "display", "", 0.2)
-            SendToConsoleP232("say " + PlayerUsername + " Won The Game!")
-            if (player.GetTeam() == 2) { // red
+            SendToConsoleP2MM("say " + PlayerUsername + " Won The Game!")
+            if (player.GetTeam() == TEAM_RED) {
                 EntFire("orange_wins", "trigger")
                 EntFire("win_door_2_orange", "color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
                 Entities.FindByName(null, "win_door_2_blue").Destroy()
@@ -101,7 +100,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("holdtime", "2.2")
         Entities.FindByName(null, "change_rounds_text").__KeyValueFromString("targetname", "p2mm_change_rounds_text")
 
-        DecEntFireByHandle(Entities.FindByName(null, "start_relay"), "addoutput", "OnTrigger p2mm_servercommand:command:script StartGelocity():0.1")
+        EntFire(Entities.FindByName(null, "start_relay"), "addoutput", "OnTrigger p2mm_servercommand:command:script StartGelocity():0.1")
         Entities.FindByName(null, "checkpoint_orange_1").Destroy()
         Entities.FindByName(null, "checkpoint_blue_1").Destroy()
 
@@ -116,22 +115,21 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSPostPlayerSpawn) {
-        
+
     }
 
     if (MSOnPlayerJoin) {
 
-    } 
+    }
 
     if (MSLoop) {
 
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(2165, -2195, 368), 128)) {
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(2165, -2195, 368), 128);) {
 
             local playerclass = FindPlayerClass(p)
-            
-            try { playerclass.GelocityCheckPoint } catch(e) { 
-                playerclass.GelocityCheckPoint <- 2 
+
+            try { playerclass.GelocityCheckPoint } catch(e) {
+                playerclass.GelocityCheckPoint <- 2
                 p.SetOrigin(Vector(2164, -1866, -191))
                 p.SetAngles(0, 90, 0)
             }
@@ -139,7 +137,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (playerclass.GelocityCheckPoint == 0) {
                 p.SetOrigin(Vector(2164, -1866, -191))
                 p.SetAngles(0, 90, 0)
-            } 
+            }
 
             if (playerclass.GelocityCheckPoint == 1) {
                 p.SetOrigin(Vector(-3329, 1250, 386))
@@ -154,8 +152,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         local FinishLinePlayer = CreateTrigger("player", 1892.304077, -1919.934570, -294.686737, 2472.500732, -1682.512573, 163.864502)
         foreach (player in FinishLinePlayer) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p; p = Entities.FindByClassname(p, "player");) {
                 local playerclass = FindPlayerClass(p)
                 try { playerclass.GelocityCheckPoint } catch(e) { playerclass.GelocityCheckPoint <- 2 }
             }
@@ -165,7 +162,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 printl("Player " + player.GetName() + " reached the finish line!")
                 Lap(player)
             }
-        }  
+        }
         local Checkpoint1 = CreateTrigger("player", -3131.35, 1598.79, -423.305, -3868.24, 814.012, 801.228)
         foreach (player in Checkpoint1) {
             local playerclass = FindPlayerClass(player)

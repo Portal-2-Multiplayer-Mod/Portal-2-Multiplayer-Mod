@@ -16,12 +16,4 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "disassembler_2_door_2").Destroy()
         Entities.FindByName(null, "disassembler_2_door_1").Destroy()
     }
-
-    if (MSPostPlayerSpawn) {
-
-    }
-
-    if (MSLoop) {
-
-    }
 }

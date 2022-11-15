@@ -7,7 +7,9 @@
 
 HasSleptInContainer1 <- false
 function p2mmDestroyedSequence() {
-    printl("p2mmDestroyedSequence")
+    if (GetDeveloperLevel()) {
+        printl("(P2:MM): p2mmDestroyedSequence() has ran!")
+    }
     HasSleptInContainer1 = true
 }
 
@@ -38,7 +40,10 @@ function p2mmSecondDrop() {
 }
 
 function p2mmDropCollision() {
-    printl("Dropping container collision")
+    if (GetDeveloperLevel()) {
+        printl("(P2:MM): Dropping container collision via p2mmDropCollision().")
+    }
+    
     local dropamount = 45
     local ceiltime = 2.6
 
@@ -480,6 +485,9 @@ function StopStickAndTeleport() {
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro2:0.3", 0, null)
+
         ContainerFloorBrush <- false
         currentCartCache <- false
         stoprenable <- false
@@ -572,7 +580,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("announcer_ding_on_wav", "PlaySound", "", 1.5)
         EntFire("good_morning_vcd", "Start", "", 3)
 
-        printl("Ran")
         Sp_A1_Intro1Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         Sp_A1_Intro1Viewcontrol.__KeyValueFromString("targetname", "Sp_A1_Intro1Viewcontrol")
         Sp_A1_Intro1Viewcontrol.__KeyValueFromString("target_team", "-1")
@@ -584,6 +591,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A1_Intro1ViewcontrolTele", "disable", "", 12, null)
         EntFire("Sp_A1_Intro1Viewcontrol", "addoutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
         EntFire("Sp_A1_Intro1ViewcontrolTele", "addoutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
+
+        // kill people block exit elevator
+        Entities.FindByName(null, "departure_elevator-elevator_1").__KeyValueFromString("dmg", "100")
 
         // Create container collisson brushes with an offset of (-19, 510, -3)
         // ContainerBedBrush
@@ -771,7 +781,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
-            printl("Player joined (Reseting viewcontrol)")
+            if (GetDeveloperLevel()) {
+                printl("Player joined (Resetting viewcontrol)")
+            }
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
         }
@@ -846,13 +858,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5556.693848, 1838.821411, 280.240265), 35)) {
                     p.SetOrigin(Vector(-5556.693848, 1838.821411, 270))
-                    printl("Bumped out")
                 }
                 // // Bump desk
                 // local p = null
                 // while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5811.007813 1989.968750 282.031250), 35)) {
                 //     p.SetOrigin(Vector(-5825.083008, 1979.134399, 270))
-                //     printl("Bumped out")
                 // }
 
                 //-5811.007813 1989.968750 282.031250;
@@ -922,7 +932,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             rotval <- 2
             cartrotoffset1 <- 100
             rotval1 <- 2
-            //printl(offsettick)
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
                 EntFireByHandle(p, "addoutput", "MoveType 4", 0, null, null)
@@ -936,7 +945,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, currentCartPos.z + ((playermiddle.x + playermiddle.y) + 14)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
             }
-            DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)
+            if (GetDeveloperLevel()) {
+                DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)
+            }
             currentCartCache <- currentCartPos
 
 
@@ -1041,22 +1052,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
                 // Debug The Lines  ////////////////////////////////////////////////////
-                DebugDrawLine(frontwall[1][0], frontwall[1][1], 255, 255, 0, true, 0) // front wall
-                DebugDrawLine(frontwall[2][0], frontwall[2][1], 255, 255, 0, true, 0) // front wall
-                DebugDrawLine(leftwall[1][0], leftwall[1][1], 255, 255, 0, true, 0)   // left wall
-                DebugDrawLine(leftwall[2][0], leftwall[2][1], 255, 255, 0, true, 0)   // left wall
-                DebugDrawLine(backdoor[1][0], backdoor[1][1], 255, 255, 0, true, 0)   // back door
-                DebugDrawLine(backdoor[2][0], backdoor[2][1], 255, 255, 0, true, 0)   // back door
-                DebugDrawLine(bathroomwall[1][0], bathroomwall[1][1], 255, 255, 0, true, 0)   // bathroom wall
-                DebugDrawLine(bathroomwall[2][0], bathroomwall[2][1], 255, 255, 0, true, 0)   // bathroom wall
-                DebugDrawLine(closetwall[1][0], closetwall[1][1], 255, 255, 0, true, 0)   // closet wall
-                DebugDrawLine(closetwall[2][0], closetwall[2][1], 255, 255, 0, true, 0)   // closet wall
-                DebugDrawLine(rightwall[1][0], rightwall[1][1], 255, 255, 0, true, 0)   // right wall
-                DebugDrawLine(rightwall[2][0], rightwall[2][1], 255, 255, 0, true, 0)   // right wall
-                DebugDrawLine(frontclosetwall[1][0], frontclosetwall[1][1], 255, 255, 0, true, 0)   // front closet wall
-                DebugDrawLine(frontclosetwall[2][0], frontclosetwall[2][1], 255, 255, 0, true, 0)   // front closet wall
-                DebugDrawLine(leftclosetwall[1][0], leftclosetwall[1][1], 255, 255, 0, true, 0)   // left closet wall
-                DebugDrawLine(leftclosetwall[2][0], leftclosetwall[2][1], 255, 255, 0, true, 0)   // left closet wall
+                if (GetDeveloperLevel()) {
+                    DebugDrawLine(frontwall[1][0], frontwall[1][1], 255, 255, 0, true, 0) // front wall
+                    DebugDrawLine(frontwall[2][0], frontwall[2][1], 255, 255, 0, true, 0) // front wall
+                    DebugDrawLine(leftwall[1][0], leftwall[1][1], 255, 255, 0, true, 0)   // left wall
+                    DebugDrawLine(leftwall[2][0], leftwall[2][1], 255, 255, 0, true, 0)   // left wall
+                    DebugDrawLine(backdoor[1][0], backdoor[1][1], 255, 255, 0, true, 0)   // back door
+                    DebugDrawLine(backdoor[2][0], backdoor[2][1], 255, 255, 0, true, 0)   // back door
+                    DebugDrawLine(bathroomwall[1][0], bathroomwall[1][1], 255, 255, 0, true, 0)   // bathroom wall
+                    DebugDrawLine(bathroomwall[2][0], bathroomwall[2][1], 255, 255, 0, true, 0)   // bathroom wall
+                    DebugDrawLine(closetwall[1][0], closetwall[1][1], 255, 255, 0, true, 0)   // closet wall
+                    DebugDrawLine(closetwall[2][0], closetwall[2][1], 255, 255, 0, true, 0)   // closet wall
+                    DebugDrawLine(rightwall[1][0], rightwall[1][1], 255, 255, 0, true, 0)   // right wall
+                    DebugDrawLine(rightwall[2][0], rightwall[2][1], 255, 255, 0, true, 0)   // right wall
+                    DebugDrawLine(frontclosetwall[1][0], frontclosetwall[1][1], 255, 255, 0, true, 0)   // front closet wall
+                    DebugDrawLine(frontclosetwall[2][0], frontclosetwall[2][1], 255, 255, 0, true, 0)   // front closet wall
+                    DebugDrawLine(leftclosetwall[1][0], leftclosetwall[1][1], 255, 255, 0, true, 0)   // left closet wall
+                    DebugDrawLine(leftclosetwall[2][0], leftclosetwall[2][1], 255, 255, 0, true, 0)   // left closet wall
+                }
                 ////////////////////////////////////////////////////////////////////////
                 // Debug The Points ////////////////////////////////////////////////////
                 local minsize = Vector(-2, -2, -2)
@@ -1067,25 +1080,27 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local alpha = 100
                 local time = 0
                 // draw the boxes
-                DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(backleftcloset, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontleftcloset, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontrightcloset, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetfrontleft, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetfrontright, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetbackleft, minsize, maxsize, r, g, b, alpha, time)
-                //top
-                DebugDrawBox(frontlefttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontrighttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(backlefttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(backleftclosettop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontleftclosettop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontrightclosettop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetfrontlefttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetfrontrighttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetbacklefttop, minsize, maxsize, r, g, b, alpha, time)
+                if (GetDeveloperLevel()) {
+                    DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(backleftcloset, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontleftcloset, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontrightcloset, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetfrontleft, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetfrontright, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetbackleft, minsize, maxsize, r, g, b, alpha, time)
+                    //top
+                    DebugDrawBox(frontlefttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontrighttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(backlefttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(backleftclosettop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontleftclosettop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontrightclosettop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetfrontlefttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetfrontrighttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetbacklefttop, minsize, maxsize, r, g, b, alpha, time)
+                }
                 ////////////////////////////////////////////////////////////////////////
 
                 // // draw a line from intersect1 to finalpoint
@@ -1096,12 +1111,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 //////////////////////////
             }
-        }
-
-        // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-685, 3112, 2400), 100)) {
-            SendToConsole("changelevel sp_a1_intro2")
         }
     }
 }
@@ -1120,7 +1129,9 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
             playerforward = Vector(0, 5, 0)
         }
         inter = LineIntersect2DZTranslation(cull1, cull2, playerpoint, playerpoint + playerforward, dir)
-        DebugDrawBox(inter, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 75, 75, 255, 0)
+        if (GetDeveloperLevel()) {
+            DebugDrawBox(inter, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 75, 75, 255, 0)
+        }
     }
 
     if (outofbounds) {
@@ -1147,10 +1158,14 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
         player.SetOrigin(player.GetOrigin() + pushvec)
         player.SetVelocity(player.GetVelocity() + (pushvec * 10))
         
-        DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 255, 75, 255, 0)
+        if (GetDeveloperLevel()) {
+            DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 255, 75, 255, 0)
+        }
 
     } else {
-        DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0)
+        if (GetDeveloperLevel()) {
+            DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0) 
+        }
     }
 }
 

@@ -170,10 +170,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSPostPlayerSpawn) {
-
-    }
-
     if (MSLoop) {
         // If mod credits aren't finished change humans to robots
         if (MPMCredits <= MPModCreditNumber) {

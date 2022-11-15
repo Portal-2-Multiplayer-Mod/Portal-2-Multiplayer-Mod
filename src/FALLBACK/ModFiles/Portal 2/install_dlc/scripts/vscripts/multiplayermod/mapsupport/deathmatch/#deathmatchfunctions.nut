@@ -1,12 +1,19 @@
+// This gamemode is really hacky and can cause crashes on clients if
+// the game attempts to search for the weapon script on their disk
+// (We want them to read our weapon serverside)
+
 // Remove Portal Gun
 function ShouldRespawnWithoutPortalGunToggle() {
-    if (!Entities.FindByName(null, "supress_blue_portalgun_spawn")) {
+    if (!Entities.FindByName(null, "supress_blue_portalgun_spawn") && !Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
         RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
         RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
-    }
-    if (!Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
+
         RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
         RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+    }
+    else if (Entities.FindByName(null, "supress_blue_portalgun_spawn") && Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
+        Entities.FindByName(null, "supress_blue_portalgun_spawn").Destroy()
+        Entities.FindByName(null, "supress_orange_portalgun_spawn").Destroy()
     }
 }
 

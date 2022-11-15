@@ -35,17 +35,15 @@ function dataLoad() {
 
 }
 
-function onSave(event) { // Triggers when a map calls for a certain event to be datad
-    SendToConsoleP2MM("_record SAVE/" + GetMapName().tostring + "-" + event + "-data")
-    SendToConsoleP2MM("stop")
+function dataSave(event, eventdata) {
+    SendToConsoleP2MM("screenshot datasystem-" + event + "-" + eventdata)
     try {
-        IncludeScript("multiplayermod/datasystem/" + GetMapName().tostring + "-" + event + "-data.nut")
+        IncludeScript("multiplayermod/datasystem/datasystem-" + event + "-" + eventdata + ".nut")
         printl(GetMapName().tostring + "-" + event + "-data.dem has been created")
         SendChatMessage("Map progress datad....")
-        SendToConsoleP2MM("_record SAVE/datasystemcheck-mapdatad")
-        SendToConsoleP2MM("stop")
+        SendToConsoleP2MM("screenshot SAVE/datasystemcheck-mapdatad")
     } catch (e){
-        SendChatMessage("Map failed to data, check console...")
+        SendChatMessage("Map failed to data, check launcher console...")
         printl("Save system check failed to complete...")
         printl(e)
     }
@@ -58,7 +56,7 @@ function onSave(event) { // Triggers when a map calls for a certain event to be 
 */
 function init() {
     printl("Starting the custom data system!")
-    //Makes a temporary .dem file for our python data system to check
+    //Makes a temporary screenshot file for our python data system to check
     SendToConsoleP2MM("screenshot SAVE/datasystemcheck-test")
     try {
         IncludeScript("multiplayermod/datasystem/datasystemcheck-pythonsuccess.nut")

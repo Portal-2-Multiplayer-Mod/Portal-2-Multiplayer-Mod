@@ -1,9 +1,9 @@
-// ██████╗██████╗             █████╗ ██████╗            ██╗      █████╗  ██████╗███████╗██████╗            ██████╗ ███████╗██╗      █████╗ ██╗   ██╗ ██████╗
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██║     ██╔══██╗██╔════╝██╔════╝██╔══██╗           ██╔══██╗██╔════╝██║     ██╔══██╗╚██╗ ██╔╝██╔════╝
-//╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██║     ███████║╚█████╗ █████╗  ██████╔╝           ██████╔╝█████╗  ██║     ███████║ ╚████╔╝ ╚█████╗
-// ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██║     ██╔══██║ ╚═══██╗██╔══╝  ██╔══██╗           ██╔══██╗██╔══╝  ██║     ██╔══██║  ╚██╔╝   ╚═══██╗
-//██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████████╗██║  ██║███████╗███████╗██║  ██║   ██║   ██████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═════╝
+//  ██████╗██████╗             █████╗ ██████╗            ██╗      █████╗  ██████╗███████╗██████╗            ██████╗ ███████╗██╗      █████╗ ██╗   ██╗ ██████╗
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██║     ██╔══██╗██╔════╝██╔════╝██╔══██╗           ██╔══██╗██╔════╝██║     ██╔══██╗╚██╗ ██╔╝██╔════╝
+// ╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██║     ███████║╚█████╗ █████╗  ██████╔╝           ██████╔╝█████╗  ██║     ███████║ ╚████╔╝ ╚█████╗
+//  ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██║     ██╔══██║ ╚═══██╗██╔══╝  ██╔══██╗           ██╔══██╗██╔══╝  ██║     ██╔══██║  ╚██╔╝   ╚═══██╗
+// ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████████╗██║  ██║███████╗███████╗██║  ██║   ██║   ██████╔╝
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -23,6 +23,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Kill the end door close trigger even though it probably isn't linked to the door relay
         Entities.FindByClassnameNearest("trigger_once", Vector(-320, -1376, 40), 1024).Destroy()
         SingleplayerOneTimeTrigger1 <- true
+                    
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_turret_blocker:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -36,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Find all players
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
+            EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
             EntFireByHandle(p, "setfogcontroller", "@environment_mines_fog", 0, null, null)
         }
     }
@@ -44,6 +47,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         if (SingleplayerOneTimeTrigger1) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(-468, -704, -63), 10)) {
+                SingleplayerOneTimeTrigger1 <- false
                 // Find all players
                 local p = null
                 while(p = Entities.FindByClassname(p, "player")) {
@@ -54,7 +58,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
                 Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "TPUpLaserRelaysDIS")
                 EntFire("TPUpLaserRelaysDIS", "addoutput", "targetname TPUpLaserRelays", 12, null)
-                SingleplayerOneTimeTrigger1 <- false
             }
         }
 
@@ -69,25 +72,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     }
                 }
                 if (!SKIPLaserRelays) {
-                    if (p.GetOrigin().z <= -50) {
+                    // Rough area where all players can walk around under the chamber
+                    // Teleport everyone up if they spawn below there
+                    if (p.GetOrigin().z <= -50 && p.GetOrigin().z >= -200 && p.GetOrigin().y >= -767 && p.GetOrigin().y <= -625 && p.GetOrigin().x <= 1806.23 && p.GetOrigin().x >= -560.03) {
                         p.SetOrigin(Vector(-256, -189, 28))
                         p.SetAngles(0, -90, 0)
                         p.SetVelocity(Vector(0, 0, 0))
                     }
                 }
             }
-        }
-
-        // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-318, -1790, -267), 50)) {
-            // Reset r_flashlightbrightness
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                EntFireByHandle(clientcommand, "Command", "r_flashlightbrightness 0.25", 0, p, p)
-            }
-             
-            SendToConsoleP232("changelevel sp_a2_turret_blocker")
         }
     }
 }

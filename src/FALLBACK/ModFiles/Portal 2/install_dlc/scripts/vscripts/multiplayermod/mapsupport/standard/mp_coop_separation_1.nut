@@ -38,8 +38,4 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local loopTimes = loopTimes + 1
         }
     }
-
-    if (MSLoop) {
-
-    }
 }

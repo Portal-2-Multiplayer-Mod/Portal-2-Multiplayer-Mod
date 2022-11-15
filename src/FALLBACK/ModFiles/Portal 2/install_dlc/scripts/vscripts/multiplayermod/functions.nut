@@ -10,24 +10,8 @@
 //  |_|  \_,_||_||_|\__| \__||_|\___/|_||_|/__/(_)
 //---------------------------------------------------
 // Purpose: Here, we declare some functions to call
-//                  upon later in the code
+//                upon later in the code.
 //---------------------------------------------------
-
-//## Hacky solutions ##//
-function DecEntFireByHandle(target, action, value = "", delay = 0, activator = null, caller = null) {
-    EntFireByHandle(target, action, value, delay, activator, caller);
-}
-
-//## Replace Plugin Functions ##//
-// If the plugin isn't loaded then we make some replacements
-function MakePluginReplacementFunctions() {
-    function GetPlayerName(entinx) {
-        return "player" + entinx
-    }
-    function AddChatCallback(func) {
-        printl("(P2:MM): Plugin not loaded. NOT adding chat callback!")
-    }
-}
 
 function GetHighest(inpvec) {
     local highest = -99999999
@@ -57,24 +41,6 @@ function ForceRespawnAll() {
     }
 }
 
-function SendPythonReset() {
-    CurrentPythonOutputID = 0
-    printl("ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣reset╠═╣")
-}
-
-function SendPythonOutput(text) {
-    CurrentPythonOutputID = CurrentPythonOutputID + 1
-    printl("ᴘᴏʀᴛᴀʟᴘʏᴛʜᴏɴɪɴᴘᴜᴛ╠═╣" + CurrentPythonOutputID + "╠═╣" + text)
-}
-
-function ToggleCheats() {
-    if (CheatsOn == null || !CheatsOn) {
-        CheatsOn = true
-    } else {
-        CheatsOn = false
-    }
-}
-
 function SetCheats() {
     CheatsOn = Entities.FindByModel(null, "models/cheatdetectionp2mm.mdl")
     if (CheatsOn == null || !CheatsOn) {
@@ -82,70 +48,6 @@ function SetCheats() {
     } else {
         CheatsOn = true
         Entities.FindByModel(null, "models/cheatdetectionp2mm.mdl").Destroy()
-    }
-    printl("===== Cheat Detection =====")
-    printl("           " + CheatsOn)
-    printl("===========================")
-    // SendToConsoleP232("sv_cheats 1")
-    AlwaysPrecachedModels()
-}
-
-function AlwaysPrecachedModels() {
-    //PrecacheModel("props/portal_gap.mdl")
-}
-
-// TODO: Make sure all SteamIDs are correct -vistr
-function SetCosmetics(p) {
-    if (PluginLoaded) {
-        // Get nessasary data
-        local pclass = FindPlayerClass(p)
-        local psteamid = pclass.steamid
-
-        //## kyleraykbs customization ##//
-        if (psteamid == 91466608) {
-            SetPlayerModel(p, "models/info_character/info_character_player.mdl")
-        }
-
-        //## SuperSpeed customization ##//
-        //if (psteamid == "SuperSpeed") {
-            //SetPlayerModel(p, "models/npcs/turret/turretwife.mdl")
-        //}
-
-        //## Dreadnox customization ##//
-        if (psteamid == 193052938) {
-            SetPlayerModel(p, "models/props_underground/underground_weighted_cube.mdl")
-        }
-
-        //## sear customization ##//
-        if (psteamid == 18517563) {
-            SetPlayerModel(p, "models/car_wrecked_dest/car_wrecked_b.mdl")
-        }
-
-        //## Mellow customization ##//
-        if (psteamid == 149186271) {
-            SetPlayerModel(p, "models/props_moon/moonrock_med08.mdl")
-        }
-
-        //## Nanoman2525 customization ##//
-        if (psteamid == 145380247) {
-            SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl")
-        }
-
-        //## Bumpy customization ##//
-        // It's not even a torus. Its a Trefoil Knot. 
-        if (psteamid == 90835355) {
-            SetPlayerModel(p, "models/handles_map_editor/torus.mdl")
-        }
-
-        //## Mystical Λce customization ##//
-        //if (psteamid == "Mystical Λce") {
-            // SetPlayerModel(p, "models/props_underground/geodome_exterior_3072_exo.mdl")
-        //}
-
-        //## Tiddies customization ##//
-        //if (psteamid == "Tiddies") {
-            //SetPlayerModel(p, "models/editor/playerstart.mdl")
-        //}
     }
 }
 
@@ -222,12 +124,11 @@ function RandomColor() {
         rcr = RandomInt(170, 255)
     }
 
-    class ColorBar {
+    return class {
         r = rcr
         g = rcg
         b = rcb
     }
-    return ColorBar
 }
 
 function TeleportPlayerToClass(player, curclass) {
@@ -236,10 +137,10 @@ function TeleportPlayerToClass(player, curclass) {
 }
 
 function p2mmfogswitch(fogname) {
-    printl("Switching to fog: " + fogname)
+    printl("(P2:MM): Switching to fog: " + fogname)
     foreach (fogclass in fogs) {
         if (fogclass.fogname == fogname) {
-            printl("Found fog: " + fogclass.fogname)
+            printl("(P2:MM): Found fog: " + fogclass.fogname)
             // go through each player and set their fog to the new fog
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -250,12 +151,12 @@ function p2mmfogswitch(fogname) {
     }
 }
 
-function GetPlayerPortalColor(p, Darken = false) {
+/*function GetPlayerPortalColor(p, Darken = false) {
     local PlayerID = p.entindex() + amtoffsetclr
     local A = 220
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; A = A; break; //white
+            case 1 : R <- 255; G <- 255; B <- 255; A = A; break; //bright white
             case 2 : R <- 50,  G <- 255, B <-  50; A = A; break; //green
             case 3 : R <- 40,  G <- 60,  B <- 255; A = A; break; //blue
             case 4 : R <- 255, G <- 255, B <-  50; A = A; break; //orange
@@ -281,12 +182,12 @@ function GetPlayerPortalColor(p, Darken = false) {
 
     if (Darken) {
         local amt = 2
-        printl("Darkening color")
-        printl("R: " + R + " G: " + G + " B: " + B)
+        printl("(P2:MM): Darkening color")
+        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
         R <- (R / amt);
         G <- (G / amt);
         B <- (B / amt);
-        printl("R: " + R + " G: " + G + " B: " + B)
+        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
         if (R < 1) {
             R <- 1;
         }
@@ -309,70 +210,69 @@ function GetPlayerPortalColor(p, Darken = false) {
         b = B
         a = A
     }
+}*/
+
+// Used so that nametags appear less weird
+function MultiplyRGBValue(iRGBValue) {
+    // Multiply the color
+    if (iRGBValue >= 100) {
+        iRGBValue = iRGBValue - 100
+    }
+    // cap the color at 255
+    if (iRGBValue > 255) {
+        iRGBValue = 255
+    }
+    // bottom the color at 0
+    if (iRGBValue < 0) {
+        iRGBValue = 0
+    }
+    return iRGBValue
 }
 
 function GetPlayerColor(p, multiply = true) {
-    local PlayerID = p.entindex() + amtoffsetclr
+    local PlayerID
+    if (typeof p == "integer") {
+        PlayerID = p
+    } else {
+        PlayerID = p.entindex() + amtoffsetclr
+    }
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; colorname = "white";      break;
-            case 2 : R <- 180, G <- 255, B <- 180; colorname = "green";      break;
-            case 3 : R <- 120, G <- 140, B <- 255; colorname = "blue";       break;
-            case 4 : R <- 255, G <- 170, B <- 120; colorname = "orange";     break;
-            case 5 : R <- 255, G <- 100, B <- 100; colorname = "red";        break;
-            case 6 : R <- 255, G <- 180, B <- 255; colorname = "pink";       break;
-            case 7 : R <- 255, G <- 255, B <- 180; colorname = "yellow";     break;
-            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "aqua";       break;
-            case 9 : R <-  60, G <-  15, B <-   0; colorname = "crimson";      break;
-            case 10: R <-   0, G <- 255, B <- 200; colorname = "ocean green";break;
-            case 11: R <-  80, G <-  99, B <-   0; colorname = "olive";      break;
-            case 12: R <-  40, G <-  40, B <-  80; colorname = "violet";     break;
-            case 13: R <-  75, G <-  75, B <-  75; colorname = "gray";       break;
-            case 14: R <-  64, G <-   0, B <-   0; colorname = "dark red";   break;
-            case 15: R <-   0, G <-  64, B <-   0; colorname = "dark green"; break;
-            case 16: R <-   0, G <-   0, B <-  64; colorname = "dark blue";  break;
+            case 1 : R <- 255; G <- 255; B <- 255; colorname = "Bright White";  break;
+            case 2 : R <- 180, G <- 255, B <- 180; colorname = "Green";         break;
+            case 3 : R <- 120, G <- 140, B <- 255; colorname = "Blue";          break;
+            case 4 : R <- 255, G <- 170, B <- 120; colorname = "Orange";        break;
+            case 5 : R <- 255, G <- 100, B <- 100; colorname = "Red";           break;
+            case 6 : R <- 255, G <- 180, B <- 255; colorname = "Pink";          break;
+            case 7 : R <- 255, G <- 255, B <- 180; colorname = "Yellow";        break;
+            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "Aqua";          break;
+            case 9 : R <-  60, G <-  15, B <-   0; colorname = "Crimson";       break;
+            case 10: R <-   0, G <- 255, B <- 200; colorname = "Ocean green";   break;
+            case 11: R <-  80, G <-  99, B <-   0; colorname = "Olive";         break;
+            case 12: R <-  40, G <-  40, B <-  80; colorname = "Violet";        break;
+            case 13: R <-  75, G <-  75, B <-  75; colorname = "Gray";          break;
+            case 14: R <-  64, G <-   0, B <-   0; colorname = "Dark red";      break;
+            case 15: R <-   0, G <-  64, B <-   0; colorname = "Dark green";    break;
+            case 16: R <-   0, G <-   0, B <-  64; colorname = "Dark blue";     break;
         }
-    } catch(e) { }
+    } catch(e) {}
+
     if (PlayerID > 16) {
-        // If you have more than 16 players then you gotta bear the consequences of your own actions
+        // If you have more than 16 players, no dedicated color for those players :(
+        // Using a local for the function so we don't call the function 4 times
         local randomColor = RandomColor()
-        R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; colorname = "random";
+        R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; colorname = "Random";
     }
 
+    // Do we want to make the color less "bright"?
     if (multiply) {
-        // Multiply the color
-        if (R >= 100) {
-            R <- R - 100
-        }
-        if (G >= 100) {
-            G <- G - 100
-        }
-        if (B >= 100) {
-            B <- B - 100
-        }
-        // cap the color at 255
-        if (R > 255) {
-            R <- 255
-        }
-        if (G > 255) {
-            G <- 255
-        }
-        if (B > 255) {
-            B <- 255
-        }
-        // bottom the color at 0
-        if (R < 0) {
-            R <- 0
-        }
-        if (G < 0) {
-            G <- 0
-        }
-        if (B < 0) {
-            B <- 0
-        }
+        R = MultiplyRGBValue(R)
+        G = MultiplyRGBValue(G)
+        B = MultiplyRGBValue(B)
     }
 
+    // We want the color exactly how we asked for it
     return class {
         r = R
         g = G
@@ -382,7 +282,7 @@ function GetPlayerColor(p, multiply = true) {
 }
 
 function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
-    if (DevMode){
+    if (GetDeveloperLevel()){
         DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
     }
 
@@ -448,133 +348,125 @@ function MinifyModel(mdl) {
     return mdl
 }
 
-AssignedPlayerModels <- []
 function SetPlayerModel(p, mdl) {
     PrecacheModelNoDelay(mdl)
-    local mdl2 = MinifyModel(mdl)
-    local playerclass = FindPlayerClass(p)
-    // EntFire("p2mmservercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + mdl + "\")", 1)
-    // local pmodelclass = class {
-    //     player = p
-    //     model = mdl
-    // }
-    // AssignedPlayerModels.push(pmodelclass)
-    playerclass.playermodel <- mdl
+    FindPlayerClass(p).playermodel <- mdl
 }
+
+// playerclass <- {
+//     player = null,
+//     id = 0,
+//     username = "",
+//     steamid = 0,
+//     color = {
+//         r = 0,
+//         g = 0,
+//         b = 0,
+//         a = 220
+//     },
+//     eyeangles = Vector(0, 0, 0),
+//     eyeforwardvector = Vector(0, 0, 0),
+//     potatogun = "true",
+//     noclip = false,
+//     rocket = false,
+//     portal1 = null,
+//     portal2 = null,
+//     playermodel = null
+// }
 
 function CreateGenericPlayerClass(p) {
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
         if (curlclass.player == p) {
-            // If there is, remove it
+            // If there is, remove it (This should never happen)
             playerclasses.remove(indx)
+            break
         }
     }
 
     local currentplayerclass = {}
 
-    // BASE
-    currentplayerclass.player <- p
-    currentplayerclass.id <- p.entindex()
+    // Base info
+    currentplayerclass.color <- GetPlayerColor(p)  // Player color
+    currentplayerclass.eyeangles <- Vector(0, 0, 0) // Player angles
+    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0) // Player angles
+    currentplayerclass.id <- p.entindex() // Player entity index
+    currentplayerclass.noclip <- p.IsNoclipping() // Player noclip status
+    currentplayerclass.player <- p // The player reference in code
+    currentplayerclass.playermodel <- null // Cosmetics
+    currentplayerclass.potatogun <- false // Potatogun
+    currentplayerclass.portal1 <- null // Player primary portal
+    currentplayerclass.portal2 <- null // Player secondary portal
 
-    // PLUGIN //
+    // Gelocity
+    currentplayerclass.hitcheckpoint <- false // Player hit checkpoint
+    currentplayerclass.laps <- 0 // Current lap
 
-        // Player Name
-        if (PluginLoaded) {
-            try {
-                currentplayerclass.username <- GetPlayerName(p.entindex())
-                currentplayerclass.steamid <- GetSteamID(p.entindex())
-            } catch(e) {
-                currentplayerclass.steamid <- RandomInt(-32768, -1)
-            }
-        } else {
-            currentplayerclass.username <- "Player " + p.entindex()
-            currentplayerclass.steamid <- RandomInt(-32768, -1) // invalid steamid
-        }
+    // Can change depending on whether the plugin is loaded
+    currentplayerclass.username <- GetPlayerName(currentplayerclass.id) // Player Name
+    currentplayerclass.steamid <- GetSteamID(currentplayerclass.id) // Player Steam ID
 
-    ////////////
+    // Chat commands
+    if (Config_UseChatCommands && PluginLoaded) {
+        currentplayerclass.rocket <- false  // Rocket player status
+        currentplayerclass.startedvote <- false  // Did this player initiate a vote?
+        currentplayerclass.hasvoted <- false  // Did this player vote already?
+    }
 
-    // Player color
-    currentplayerclass.color <- GetPlayerColor(p)
-
-    // Player angles
-    currentplayerclass.eyeangles <- Vector(0, 0, 0)
-    currentplayerclass.eyeforwardvector <- Vector(0, 0, 0)
-
-    // Potatogun
-    currentplayerclass.potatogun <- false
-
-    // Player noclip status
-    currentplayerclass.noclip <- p.IsNoclipping()
-
-    // Rocket player status
-    currentplayerclass.rocket <- false
-
-    // Player Portals
-    currentplayerclass.portal1 <- null
-    currentplayerclass.portal2 <- null
-
-    // COSMETICS /////////////
-
-    currentplayerclass.playermodel <- null
-
-    //////////////////////////////////////////////
-
-    // Add player class to the player class array
+    // Note down the registered player for later reference
     playerclasses.push(currentplayerclass)
 
     return currentplayerclass
 }
 
-function GetEntityCount(classname = null) {
-    if (classname == null) {
-        local p = null
-        local indx = 0
-        while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000)) {
-            indx += 1
-        }
-        return indx
-    } else {
-        local p = null
-        local indx = 0
-        while (p = Entities.FindByClassname(p, classname)) {
-            indx += 1
-        }
-        return indx
-    }
-}
+// function GetEntityCount(classname = null) {
+//     if (classname == null) {
+//         local p = null
+//         local indx = 0
+//         while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000)) {
+//             indx += 1
+//         }
+//         return indx
+//     } else {
+//         local p = null
+//         local indx = 0
+//         while (p = Entities.FindByClassname(p, classname)) {
+//             indx += 1
+//         }
+//         return indx
+//     }
+// }
 
 function DeleteAmountOfEntities(classname, amount) {
-    local p = null
     local indx = 0
-    while (p = Entities.FindByClassname(p, classname)) {
+    for (local p; p = Entities.FindByClassname(p, classname);) {
         if (indx >= amount) {
             break
         }
-        
+
         local delthis = true
-        foreach (thing in InvalidRootMoveParents) {
-            if (p.GetRootMoveParent().GetClassname() == thing) {
-                delthis = false
-                printl("Not deleting " + classname + " (ROOTMOVEPARENT:) " + p.GetRootMoveParent().GetClassname() + " because it is in the InvalidRootMoveParents array")
-            }
+        local checkClassname = p.GetRootMoveParent().GetClassname()
+
+        if (checkClassname == "player" || checkClassname == "worldspawn" || checkClassname == "" || checkClassname == "prop_portal") {
+            delthis = false
+            printl("(P2:MM): Not deleting class " + classname + " (ROOTMOVEPARENT:) " + checkClassname + " (By deleting the class, the RootMoveParent will also get deleted, causing crashes).")
         }
 
         if (delthis) {
             p.Destroy()
             indx += 1
-        }  
+        }
     }
-    printl("Deleted " + indx + " " + classname + "'s")
+    printl("(P2:MM): Deleted " + indx + " " + classname + "'s")
     return indx
 }
 
-PrecachedProps <- []
 function PrecacheModel(mdl) {
-    SendToConsoleP232("script PrecacheModelNoDelay(\"" + mdl + "\")")
+    // TODO: Is this inefficient?
+    SendToConsoleP2MM("script PrecacheModelNoDelay(\"" + mdl + "\")")
 }
 function PrecacheModelNoDelay(mdl) {
-        // Add the models/ to the side of the model name if it's not already there
+    // Add the models/ to the side of the model name if it's not already there
     if (mdl.slice(0, 7) != "models/") {
         mdl = "models/" + mdl
     }
@@ -597,25 +489,27 @@ function PrecacheModelNoDelay(mdl) {
     if (!Entities.FindByModel(null, mdl) && NotPrecached) {
         PrecachedProps.push(minimdl)
         if (!CheatsOn) {
-            SendToConsoleP232("sv_cheats 1; prop_dynamic_create " + minimdl)
+            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
         } else {
-            SendToConsoleP232("sv_cheats 1; prop_dynamic_create " + minimdl)
+            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
         }
         if (!CheatsOn) {
-            SendToConsoleP232("sv_cheats 0")
+            SendToConsoleP2MM("sv_cheats 0")
         }
-        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
+        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4) // FIXME!! Causes errors in vscript
         if (GetDeveloperLevel()) {
-            printl("Precached model: " + minimdl + " AKA " + mdl)
+            printl("(P2:MM): Precached model: " + minimdl + " AKA " + mdl)
         }
     } else {
         if (GetDeveloperLevel()) {
-            printl("Model: " + mdl + " already precached!")
+            printl("(P2:MM): Model: " + mdl + " already precached!")
         }
     }
 }
 
 function FindPlayerClass(plyr) {
+    // If for whatever reason this function causes errors,
+    // then there is a problem with how we hook onto joining players
     foreach (curclass in playerclasses) {
         if (curclass.player == plyr) {
             return curclass
@@ -629,12 +523,12 @@ function FindEntityClass(ent, createclassifnone = true) {
             return curclass
         }
     }
-    printl("Could not find entity class for entity: " + ent)
+    printl("(P2:MM): Could not find entity class for entity: " + ent)
     if (createclassifnone) {
         CreateEntityClass(ent)
         foreach (curclass in entityclasses) {
             if (curclass.entity == ent) {
-                printl("Created entity class for entity: " + ent)
+                printl("(P2:MM): Created entity class for entity: " + ent)
                 return curclass
             }
         }
@@ -657,7 +551,7 @@ function LineIntersect2D(point1start, point1end, point2start, point2end) {
 function CoreExplosion(coords) {
     local core = Entities.CreateByClassname("npc_personality_core")
     core.SetOrigin(coords)
-    DecEntFireByHandle(core, "explode")
+    EntFire(core, "explode")
 }
 
 function TranslatePlayerToWall(wall, playerpos) {
@@ -732,7 +626,6 @@ function LineIntersect2DZTranslation(point1, point2, flatpoint1, flatpoint2, ztr
         flatpoint2 = FlipVectorsZX(point1, flatpoint2)
     }
 
-
     // get the intersection
     local intersect = LineIntersect2D(point1, point2, flatpoint1, flatpoint2)
 
@@ -742,8 +635,6 @@ function LineIntersect2DZTranslation(point1, point2, flatpoint1, flatpoint2, ztr
     } else {
         intersect = FlipVectorsZX(point1, intersect)
     }
-
-
 
     return intersect
 }
@@ -774,53 +665,13 @@ function MultiplyVector(vec, mult) {
     return Vector(vec.x * mult, vec.y * mult, vec.z * mult)
 }
 
-function DivideVector(vec, div) {
-    return Vector(vec.x / div, vec.y / div, vec.z / div)
-}
-
 function AddVectors(vec1, vec2) {
     return Vector(vec1.x + vec2.x, vec1.y + vec2.y, vec1.z + vec2.z)
 }
 
-function GetLastThing(list, thingindx) {
-    if (thingindx > 0) {
-        return list[thingindx - 1]
-    } else {
-        return list[list.len() - 1]
-    }
-}
-
-function VectorAddSinglePart(vec, amt, part) {
-    if (part == 1) {
-        return Vector(vec.x + amt, vec.y, vec.z)
-    } else {
-        if (part == 2) {
-            return Vector(vec.x, vec.y + amt, vec.z)
-        } else {
-            if (part == 3) {
-            return Vector(vec.x, vec.y, vec.z + amt)
-            }
-        }
-    }
-}
-
-function VectorMultiplySinglePart(vec, amt, part) {
-    if (part == 1) {
-        return Vector(vec.x * amt, vec.y, vec.z)
-    } else {
-        if (part == 2) {
-            return Vector(vec.x, vec.y * amt, vec.z)
-        } else {
-            if (part == 3) {
-            return Vector(vec.x, vec.y, vec.z * amt)
-            }
-        }
-    }
-}
-
 function CreateEntityClass(ent) {
     if (GetDeveloperLevel()) {
-        printl("Creating new entity class for entity: " + ent)
+        printl("(P2:MM): Creating new entity class for entity: " + ent)
     }
     local newclass = class {
         entity = ent
@@ -858,7 +709,7 @@ function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "u
     if (GetDistanceScore(entity.GetOrigin(), PointList[entclass.followingpointlistindex]) < Distance) {
         cindx = entclass.followingpointlistindex
         entclass.followingpointlistindex <- entclass.followingpointlistindex + 1
-        printl("Moving to next point: " + entclass.followingpointlistindex)
+        printl("(P2:MM): Moving to next track point: " + entclass.followingpointlistindex)
     }
 
     if (entclass.followingpointlistindex >= PointList.len()) {
@@ -870,7 +721,7 @@ function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "u
     local offset = MultiplyVector(GetDirectionalOffset(entity.GetOrigin(), PointList[entclass.followingpointlistindex]), Speed)
     entity.SetOrigin(entity.GetOrigin() - offset)
 
-    if (VisualDebug) {
+    if (Config_VisualDebug) {
         DebugDrawLine(entity.GetOrigin(), PointList[entclass.followingpointlistindex], 255, 255, 0, true, 0)
         if (entclass.followingpointlistindex == 0) {
             DebugDrawLine(entity.GetOrigin(), PointList[PointList.len() - 1], 0, 255, 0, true, 0)
@@ -915,7 +766,6 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
 
     // Find the nearest entity
     if (specificclass == null) {
-        printl("PANIK")
         while (ent = Entities.FindInSphere(ent, origin, radius)) {
             // Check if the entity is in the list of entities to exclude
             local exclude = false
@@ -1024,7 +874,7 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         clradd = clradd + 50
         opadd = opadd + 1
         if (Entities.FindByName(null, "blue") != entitiestoexclude[0]) {
-            if (VisualDebug) {
+            if (Config_VisualDebug) {
                 DebugDrawBox(origin + originoffset, Vector(deboogdatalarb / -1, deboogdatalarb / -1, deboogdatalarb / -1), Vector(deboogdatalarb, deboogdatalarb, deboogdatalarb), 255 - clradd, 0, clradd, 0 + opadd, 0.1)
                 DebugDrawBox(origin + originoffset, Vector(-10, -10, -10), Vector(10, 10, 10), 0, 255, 255, 10, 0.1)
             }
@@ -1036,47 +886,39 @@ function ForwardVectorTraceLine(origin, forward, mindist = 0, maxdist = 10000, c
         // After getting the end point, we need to see if we hit anything
         local newnearest = FindNearest(origin + originoffset, maxreldist, entitiestoexclude, specificclass)
         if (newnearest != null) {
-            if (VisualDebug) {
+            if (Config_VisualDebug) {
                 DebugDrawLine(origorigin, origin + originoffset, 0, 255, 0, false, 0.1)
             }
             return newnearest
             break
         }
-
-
-        // // If we have reached the end of the line break
-        // if (fowardstep.x == 0 && fowardstep.y == 0 && fowardstep.z == 0) {
-        //     printl("(P2:MM): END OF LINE")
-        //     break
-        // }
-
         loopamt = loopamt + 1
     }
 
     outputorigin = origin + originoffset
-    if (VisualDebug) {
+    if (Config_VisualDebug) {
         DebugDrawLine(origorigin, outputorigin, 0, 255, 0, false, 0.1)
     }
 }
 
 function DisplayPlayerColor(player) {
-    if (!Entities.FindByName(null, "playercolordisplay"))
-    playercolordisplay <- Entities.CreateByClassname("game_text")
-    playercolordisplay.__KeyValueFromString("targetname", "playercolordisplay")
-    playercolordisplay.__KeyValueFromString("holdtime", "5")
-    playercolordisplay.__KeyValueFromString("fadeout", "2")
-    playercolordisplay.__KeyValueFromString("fadein", "2")
-    // playercolordisplay.__KeyValueFromString("spawnflags", "0")
-    playercolordisplay.__KeyValueFromString("channel", "4")
-    // playercolordisplay.__KeyValueFromString("message", )
-    playercolordisplay.__KeyValueFromString("x", "0.005")
-    playercolordisplay.__KeyValueFromString("y", "1")
-
-    EntFireByHandle(playercolordisplay, "SetText", "Your color: " + GetPlayerColor(player).name.slice(0, 1).toupper() + GetPlayerColor(player).name.slice(1), 0, player, player)
-    EntFireByHandle(playercolordisplay, "SetTextColor", GetPlayerColor(player).r + " " + GetPlayerColor(player).g + " " + GetPlayerColor(player).b, 0, player, player)
-    EntFireByHandle(playercolordisplay, "display", "", 0, player, player)
-    EntFireByHandle(playercolordisplay, "display", "", 0, player, player)
-    EntFireByHandle(playercolordisplay, "kill", "", 0.1, player, player)
+    if (!Entities.FindByName(null, "p2mm_playercolordisplay")) {
+        p2mm_playercolordisplay <- Entities.CreateByClassname("game_text")
+        p2mm_playercolordisplay.__KeyValueFromString("targetname", "p2mm_playercolordisplay")
+        p2mm_playercolordisplay.__KeyValueFromString("holdtime", "5")
+        p2mm_playercolordisplay.__KeyValueFromString("fadeout", "2")
+        p2mm_playercolordisplay.__KeyValueFromString("fadein", "2")
+        // p2mm_playercolordisplay.__KeyValueFromString("spawnflags", "0")
+        p2mm_playercolordisplay.__KeyValueFromString("channel", "4")
+        // p2mm_playercolordisplay.__KeyValueFromString("message", "")
+        p2mm_playercolordisplay.__KeyValueFromString("x", "0.005")
+        p2mm_playercolordisplay.__KeyValueFromString("y", "1")
+    }
+    EntFireByHandle(p2mm_playercolordisplay, "SetText", "Your color: " + FindPlayerClass(player).color.name, 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "SetTextColor", FindPlayerClass(player).color.r + " " + FindPlayerClass(player).color.g + " " + FindPlayerClass(player).color.b, 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "display", "", 0, player, player)
+    EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
 function FindAndReplace(inputstr, findstr, replacestr) {
@@ -1126,7 +968,7 @@ function UnNegative(num) {
 
         num = Vector(num.x, num.y, num.z)
     } catch(e) {
-        if (num <= 0) {
+        if (num <= 0) { // TODO: Can cause errors with comparing instances
             num = num * -1
         }
     }
@@ -1139,52 +981,6 @@ function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
     while(ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis)) {
         ent.SetOrigin(TeleportDest)
     }
-}
-
-function PlayerWithinDistance(SearchPos, SearchDis) {
-    local ent = null
-    while(ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis)) {
-        return ent
-    }
-}
-
-function TriggerOnceHook(TriggerName, FunctionName) {
-
-}
-
-function GetAdminLevel(plr) {
-    foreach (admin in Admins) {
-        // Seperate the steamid and the admin level
-        local level = split(admin, "[]")[0]
-        local steamid = split(admin, "]")[1]
-
-        if (steamid==FindPlayerClass(plr).steamid.tostring()) {
-            return level.tointeger()
-        }
-    }
-    if (plr == Entities.FindByName(null, "blue")) {
-        return 6
-    }
-    return 0
-}
-
-// Find player by name
-function ExpandName(name) {
-    name = name.tolower()
-    // Go through each player
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        // Get the player's name
-        local plrname = GetPlayerName(p.entindex())
-        // If the name matches the input name
-        try {
-            if (plrname.slice(0, name.len()).tolower() == name.tolower()) {
-                // Return the player
-                return plrname
-            }
-        } catch(e) {} // if the name is too long
-    }
-    return name
 }
 
 // Get directional offset
@@ -1239,58 +1035,15 @@ function GetDirectionalOffset(org1, org2, multipl = 1) {
     return bxoffset
 }
 
-// Find player by index
-function FindByIndex(id)  {
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        if (p.entindex()==id) {
-            return p
-        }
-    }
-}
-
 // Potatogun
-function PotatoIfy(plr) {
-    if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
-        EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", "1", 0)
+function PotatoIfy(plr, charOnOff) {
+    local pGun = Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())
+    local pViewmodel = Entities.FindByName(null, "predicted_viewmodel_player" + plr.entindex())
+
+    if (pGun && pViewmodel) {
+        EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", charOnOff, 0)
+        EntFire("predicted_viewmodel_player" + plr.entindex(), "SetBodyGroup", charOnOff, 0)
     }
-    if (Entities.FindByName(null, "viewmodel_player" + plr.entindex())) {
-        EntFire("viewmodel_player" + plr.entindex(), "SetBodyGroup", "1", 0)
-    }
-}
-
-// No Potatogun
-function UnPotatoIfy(plr) {
-    if (Entities.FindByName(null, "weapon_portalgun_player" + plr.entindex())) {
-        EntFire("weapon_portalgun_player" + plr.entindex(), "SetBodygroup", "0", 0)
-    }
-    if (Entities.FindByName(null, "viewmodel_player" + plr.entindex())) {
-        EntFire("viewmodel_player" + plr.entindex(), "SetBodyGroup", "0", 0)
-    }
-}
-
-function CanPing(ison = true) {
-    local env_global = Entities.CreateByClassname("env_global")
-    local env_global2 = Entities.CreateByClassname("env_global")
-
-    env_global.__KeyValueFromString("globalstate", "no_pinging_blue")
-    env_global2.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-    // Set the targetname
-    env_global.__KeyValueFromString("targetname", "mpmod_no_pinging_blue")
-    env_global2.__KeyValueFromString("targetname", "mpmod_no_pinging_orange")
-
-
-    local entFireByHandleState = "turnon"
-    if (ison){
-        entFireByHandleState = "turnoff"
-    }
-    EntFireByHandle(env_global, entFireByHandleState, "", 0.1, null, null)
-    EntFireByHandle(env_global2, entFireByHandleState, "", 0.1, null, null)
-
-    // Delete the entities
-    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
-    EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
 }
 
 function CanJump(enable = false, player = "all") {
@@ -1309,10 +1062,10 @@ function CanJump(enable = false, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+            EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
-        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+        EntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
     }
 }
 
@@ -1332,10 +1085,10 @@ function CanUse(enable = false, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+            EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
-        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+        EntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
     }
 }
 
@@ -1355,10 +1108,10 @@ function CanCrouch(enable = false, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+            EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
-        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+        EntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
     }
 }
 
@@ -1378,10 +1131,10 @@ function EnableHud(enable = false, player = "all") {
     if (player == "all") {
         local p = null
         while (p = Entities.FindByClassname(p, "player")) {
-            DecEntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
+            EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
-        DecEntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
+        EntFireByHandle(mainent, "modifyspeed", set, 0, player, player)
     }
 }
 
@@ -1399,16 +1152,16 @@ function EnablePortalGun(enable = false, player = "all") {
             local entviewmodel = Entities.FindByName(null, "viewmodel_player" + p.entindex())
             ent.__KeyValueFromString("CanFirePortal1", set)
             ent.__KeyValueFromString("CanFirePortal2", set)
-            DecEntFireByHandle(ent, draw)
-            DecEntFireByHandle(entviewmodel, draw)
+            EntFire(ent, draw)
+            EntFire(entviewmodel, draw)
         }
     } else {
         local ent = Entities.FindByName(null, "weapon_portalgun_player" + player.entindex())
         local entviewmodel = Entities.FindByName(null, "viewmodel_player" + player.entindex())
         ent.__KeyValueFromString("CanFirePortal1", set)
         ent.__KeyValueFromString("CanFirePortal2", set)
-        DecEntFireByHandle(ent, draw)
-        DecEntFireByHandle(entviewmodel, draw)
+        EntFire(ent, draw)
+        EntFire(entviewmodel, draw)
     }
 }
 
@@ -1426,21 +1179,21 @@ function EnableSpectator(enable = true, player = "all") {
             CanCrouch(enable, p)
             CanJump(enable, p)
             CanUse(enable, p)
-            DecEntFireByHandle(p, draw)
+            EntFire(p, draw)
             EnableNoclip(!enable, p)
             EnablePortalGun(enable, p)
             SetSpeed(p, 1.2)
-            SendClientCommand("cl_fov " + fov.tostring(), p)
+            EntFireByHandle(p2mm_clientcommand, "command", "cl_fov " + fov.tostring(), 0, p, p)
         }
     } else {
         CanCrouch(enable, player)
         CanJump(enable, player)
         CanUse(enable, player)
-        DecEntFireByHandle(player, draw)
+        EntFire(player, draw)
         EnableNoclip(!enable, player)
         EnablePortalGun(enable, player)
         SetSpeed(player, 1.2)
-        SendClientCommand("cl_fov " + fov.tostring(), player)
+        EntFireByHandle(p2mm_clientcommand, "command", "cl_fov " + fov.tostring(), 0, player, player)
     }
 }
 
@@ -1469,67 +1222,12 @@ function EnableNoclip(enable, player = "all") {
     }
 }
 
-function SendClientCommand(command, player = "all") {
-    if (player == "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            EntFire("p2mm_clientcommand", "command", command, 0, p)
-        }
-    } else {
-        EntFire("p2mm_clientcommand", "command", command, 0, player)
-    }
-}
-
 function SetSpeed(player, speed) {
-    speed = speed.tostring()
-    local ent = Entities.FindByName(null, "p2mm_player_speedmod")
-    DecEntFireByHandle(ent, "modifyspeed", speed, 0, player, player)
-}
-
-function CanTaunt(ison = true) {
-    local env_global = Entities.CreateByClassname("env_global")
-    local env_global2 = Entities.CreateByClassname("env_global")
-
-    env_global.__KeyValueFromString("globalstate", "no_taunting_blue")
-    env_global2.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-    // Set the targetname
-    env_global.__KeyValueFromString("targetname", "mpmod_no_taunting_blue")
-    env_global2.__KeyValueFromString("targetname", "mpmod_no_taunting_orange")
-
-    local entFireByHandleState = "turnon"
-    if (ison){
-        entFireByHandleState = "turnoff"
-    }
-    EntFireByHandle(env_global, entFireByHandleState, "", 0.1, null, null)
-    EntFireByHandle(env_global2, entFireByHandleState, "", 0.1, null, null)
-
-    // Delete the entities
-    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
-    EntFireByHandle(env_global2, "kill", "", 0.2, null, null)
-}
-
-function PortalGunSpawn(ison = true) {
-    local env_global = Entities.CreateByClassname("env_global")
-
-    env_global.__KeyValueFromString("globalstate", "portalgun_nospawn")
-
-    // Set the targetname
-    env_global.__KeyValueFromString("targetname", "mpmod_portalgun_nospawn")
-
-    if (ison) {
-            EntFireByHandle(env_global, "turnoff", "", 0.1, null, null)
-    } else {
-            EntFireByHandle(env_global, "turnon", "", 0.1, null, null)
-    }
-
-    // Delete the entities
-    EntFireByHandle(env_global, "kill", "", 0.2, null, null)
+    EntFireByHandle(Entities.FindByName(null, "p2mm_player_speedmod"), "modifyspeed", speed.tostring(), 0, player, player)
 }
 
 // Find the spawn point for the map // Returns a class with {red and blue} in each of those subclasses there is {spawnpoint and rotation}
 function BestGuessSpawnpoint() {
-    printl(GlobalSpawnClass.blue.spawnpoint)
     if (!MadeSpawnClass) {
         // Box ents
         BoxEnts <- [
@@ -1560,10 +1258,6 @@ function BestGuessSpawnpoint() {
                 // If we have found one yet lets tally up the amount of surronding box ents
                 local ent = null
                 while (ent = Entities.FindInSphere(ent, CurrentBoi.GetOrigin(), 300)) {
-                    // if (ent.GetName() in BoxEnts) {
-                    //     printl("Found a box ent: " + ent.GetName())
-                    //     PossibleSurroundingEnts = PossibleSurroundingEnts + 1
-                    // }
                     foreach (TEnt in BoxEnts) {
                         if (ent.GetName() == TEnt) {
                             PossibleSurroundingEnts = PossibleSurroundingEnts + 1
@@ -1580,26 +1274,40 @@ function BestGuessSpawnpoint() {
 
         local RealPlayerSpawn = null
         if (StartingBoxEnt == null) {
-            printl("No starting box ent found")
+            if (GetDeveloperLevel()) {
+                printl("(P2:MM): No starting box ent found.")
+            }
         } else {
             if (BestSurrondingBoxEnt > 0) {
-                printl("Starting box ent found")
+                if (GetDeveloperLevel()) {
+                    printl("(P2:MM): Starting box ent found!")
+                }
                 // If we have found a solid starting box ent, lets find the closest one to it
                 RealPlayerSpawn = Entities.FindByClassnameNearest("info_player_start", StartingBoxEnt.GetOrigin(), 650)
                 if (RealPlayerSpawn == null) {
-                    printl("No real player spawn found")
+                    if (GetDeveloperLevel()) {
+                        printl("(P2:MM): No real player spawn found.")
+                    }
                 } else {
-                    printl("Real player spawn found")
+                    if (GetDeveloperLevel()) {
+                        printl("(P2:MM): Real player spawn found!")
+                    }
                     local LandmarkCheck = Entities.FindByClassnameNearest("info_landmark_entry", RealPlayerSpawn.GetOrigin(), 128)
                     // If we have found a landmark, we know we are in the box
                     if (LandmarkCheck == null) {
-                        printl("No landmark found")
+                        if (GetDeveloperLevel()) {
+                            printl("(P2:MM): No landmark found")
+                        }
                     } else {
-                        printl("Landmark found")
-                        printl("Found info player start!: " + RealPlayerSpawn.GetOrigin())
+                        if (GetDeveloperLevel()) {
+                            printl("(P2:MM): Landmark found!")
+                            printl("(P2:MM): Found info_player_start entity!: " + RealPlayerSpawn.GetOrigin())
+                        }
                         // If EVERY Condition is met, lets set the player spawn
                         if (GlobalSpawnClass.useautospawn) {
-                            printl("useautospawn = True: Setting player spawn")
+                            if (GetDeveloperLevel()) {
+                                printl("(P2:MM): useautospawn = True: Setting player spawn")
+                            }
                             GlobalSpawnClass.useautospawn <- false
                             GlobalSpawnClass.usesetspawn <- true
                             GlobalSpawnClass.setspawn.position <- RealPlayerSpawn.GetOrigin()
@@ -1608,17 +1316,23 @@ function BestGuessSpawnpoint() {
                             local ent = null
                             while (ent = Entities.FindByClassname(ent, "info_player_start")) {
                                 if (ent != RealPlayerSpawn) {
-                                    printl("Found info player start that is not the real player spawn")
+                                    if (GetDeveloperLevel()) {
+                                        printl("(P2:MM): Found info_player_start entity that is not the real player spawn.")
+                                    }
                                     ent.Destroy()
                                 }
                             }
                         } else {
-                            printl("useautospawn = False: Not setting player spawn")
+                            if (GetDeveloperLevel()) {
+                                printl("(P2:MM): useautospawn = false: Not setting player spawn.")
+                            }
                         }
                     }
                 }
             } else {
-                printl("Starting box ent found but not enough surrounding box ents")
+                if (GetDeveloperLevel()) {
+                    printl("(P2:MM): Starting box ent found, but there aren't enough surrounding box ents.")
+                }
             }
         }
     }
@@ -1645,7 +1359,9 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                printl(currentscore)
+                if (GetDeveloperLevel()) {
+                    printl("(P2:MM): " + currentscore)
+                }
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1656,28 +1372,24 @@ function BestGuessSpawnpoint() {
             // Find the angle of the spawnpoint in xyz using cos
             local spawnmiddle_ang_vec = Entities.FindByName(null, "@arrival_teleport").GetForwardVector()
             local spawnmiddle_ang = Entities.FindByName(null, "@arrival_teleport").GetAngles()
-            // local spawntracex = cos(spawnmiddle_ang.x) * sin(spawnmiddle_ang.y)
-            // local spawntracey = sin(spawnmiddle_ang.x) * cos(spawnmiddle_ang.y)
-            // printl(spawntracex)
-            // printl(spawntracey)
-            // spawntracex = spawntracex * 282.5
-            // spawntracey = spawntracey * 282.5
-            local hieght = 180
+            local height = 180
 
             spawnmiddle_ang_vec = spawnmiddle_ang_vec * 126.5
 
-            printl(spawnmiddle_ang_vec)
-
-
+            if (GetDeveloperLevel()) {
+                printl("(P2:MM): " + spawnmiddle_ang_vec)
+            }
 
             // Now get the back front left and right spawnpoints
-            local spawnfront = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x, spawnmiddle_ang_vec.y, hieght)
-            local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, hieght)
-            local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, hieght)
-            local spawnleft = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y/-1, spawnmiddle_ang_vec.x, hieght)
-            printl("spawnMiddle: " + spawnmiddle)
-            printl("spawnOrigin: " + spawnmiddle.GetOrigin())
-            printl("ourClosest: " + ourclosest)
+            local spawnfront = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x, spawnmiddle_ang_vec.y, height)
+            local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, height)
+            local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, height)
+            local spawnleft = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y/-1, spawnmiddle_ang_vec.x, height)
+            if (GetDeveloperLevel()) {
+                printl("(P2:MM): spawnMiddle: " + spawnmiddle)
+                printl("(P2:MM): spawnOrigin: " + spawnmiddle.GetOrigin())
+                printl("(P2:MM): ourClosest: " + ourclosest)
+            }
 
             // Output the spawnpoints
             FinalRotationBlue = spawnmiddle_ang + Vector(0, 0, 0)
@@ -1701,7 +1413,9 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                printl(currentscore)
+                if (GetDeveloperLevel()) {
+                    printl("(P2:MM): " + currentscore)
+                }
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1712,11 +1426,15 @@ function BestGuessSpawnpoint() {
             // Find the highest path_track next to the spawnpoint
             local tallestpathtrack = null
             if (spawnmiddle == null) {
-                printl("failed to find spawnmiddle")
+                if (GetDeveloperLevel()) {
+                    printl("(P2:MM): Failed to find spawnmiddle for path_track spawnpoint!")
+                }
             } else {
                 local pathtracks = null
                 while (pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600)) {
-                    printl("pathtracks: " + pathtracks)
+                    if (GetDeveloperLevel()) {
+                        printl("(P2:MM): pathtracks: " + pathtracks)
+                    }
                     if (tallestpathtrack == null) {
                         tallestpathtrack = pathtracks
                     } else {
@@ -1769,17 +1487,20 @@ function TeleportToSpawnPoint(p, SpawnClass) {
         SpawnClass = BestGuessSpawnpoint()
     }
 
-    if (p.GetTeam() >= 3) {
+    if (p.GetTeam() == TEAM_BLUE) {
         // Blue team
         p.SetOrigin(SpawnClass.blue.spawnpoint)
         p.SetAngles(SpawnClass.blue.rotation.x, SpawnClass.blue.rotation.y, SpawnClass.blue.rotation.z)
         p.SetVelocity(SpawnClass.blue.velocity)
-    } else {
+    }
+    else if (p.GetTeam() == TEAM_RED) {
         // Red team
         p.SetOrigin(SpawnClass.red.spawnpoint)
         p.SetAngles(SpawnClass.red.rotation.x, SpawnClass.red.rotation.y, SpawnClass.red.rotation.z)
         p.SetVelocity(SpawnClass.red.velocity)
     }
+    // If someone respawns after dying on the singleplayer team, they will automatically
+    // be switched to the native team that they joined the server with
 }
 
 function CombineList(list, startlength, inbetweenchars = " ") {
@@ -1796,47 +1517,44 @@ function CombineList(list, startlength, inbetweenchars = " ") {
 
 function CreateOurEntities() {
 
-    // Create an entity to measure player eye angles
-    measuremovement <- Entities.CreateByClassname("logic_measure_movement")
-    measuremovement.__KeyValueFromString( "measuretype", "1")
-    measuremovement.__KeyValueFromString( "measurereference", "" )
-    measuremovement.__KeyValueFromString( "measureretarget", "" )
-    measuremovement.__KeyValueFromString( "targetscale", "1.0" )
-    measuremovement.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement" )
-    measuremovement.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement" )
-    measuremovement.__KeyValueFromString( "target", "p2mm_logic_measure_movement" )
-    EntFireByHandle(measuremovement, "SetMeasureReference", "p2mm_logic_measure_movement", 0.0, null, null)
-    EntFireByHandle(measuremovement, "enable", "", 0.0, null, null)
+    if (Config_UseNametags && AllowNametags) {
+        // Create an entity to measure player eye angles
+        measuremovement <- Entities.CreateByClassname("logic_measure_movement")
+        measuremovement.__KeyValueFromString( "measuretype", "1")
+        measuremovement.__KeyValueFromString( "measurereference", "" )
+        measuremovement.__KeyValueFromString( "measureretarget", "" )
+        measuremovement.__KeyValueFromString( "targetscale", "1.0" )
+        measuremovement.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement" )
+        measuremovement.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement" )
+        measuremovement.__KeyValueFromString( "target", "p2mm_logic_measure_movement" )
+        EntFireByHandle(measuremovement, "SetMeasureReference", "p2mm_logic_measure_movement", 0.0, null, null)
+        EntFireByHandle(measuremovement, "enable", "", 0.0, null, null)
 
-    // Create an entity to display player nametags
-    nametagdisplay <- Entities.CreateByClassname("game_text")
-    nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
-    nametagdisplay.__KeyValueFromString("x", "-1")
-    nametagdisplay.__KeyValueFromString("y", "0.2")
-    nametagdisplay.__KeyValueFromString("message", "Waiting for players...")
-    // onscreendisplay.__KeyValueFromString("spawnflags", "1")
-    nametagdisplay.__KeyValueFromString("holdtime", "0.1")
-    nametagdisplay.__KeyValueFromString("fadeout", "0.1")
-    nametagdisplay.__KeyValueFromString("fadein", "0.1")
-    nametagdisplay.__KeyValueFromString("channel", "0")
-    nametagdisplay.__KeyValueFromString("color", "60 200 60")
+        // Create an entity to display player nametags when aiming at them
+        nametagdisplay <- Entities.CreateByClassname("game_text")
+        nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
+        nametagdisplay.__KeyValueFromString("x", "-1")
+        nametagdisplay.__KeyValueFromString("y", "0.2")
+        nametagdisplay.__KeyValueFromString("holdtime", "0.1")
+        nametagdisplay.__KeyValueFromString("fadeout", "0.2")
+        nametagdisplay.__KeyValueFromString("fadein", "0.2")
+        nametagdisplay.__KeyValueFromString("channel", "0")
+    }
 
     // Create an display entity for the host to wait for another player to load in
     onscreendisplay <- Entities.CreateByClassname("game_text")
     onscreendisplay.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
     onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
-    onscreendisplay.__KeyValueFromString("holdtime", (0.01 + TickSpeed * 2).tostring())
-    onscreendisplay.__KeyValueFromString("fadeout", (0.01 + TickSpeed * 2).tostring())
-    onscreendisplay.__KeyValueFromString("fadein", (0.01 + TickSpeed * 2).tostring())
+    onscreendisplay.__KeyValueFromString("holdtime", "0.2")
+    onscreendisplay.__KeyValueFromString("fadeout", "0")
+    onscreendisplay.__KeyValueFromString("fadein", "0")
     onscreendisplay.__KeyValueFromString("spawnflags", "1")
-    onscreendisplay.__KeyValueFromString("color", "60 200 60")
+    onscreendisplay.__KeyValueFromString("color", "50 190 50")
     onscreendisplay.__KeyValueFromString("channel", "1")
-    // onscreendisplay.__KeyValueFromString("x", "-1.1")
-    // onscreendisplay.__KeyValueFromString("y", "-1.1")
 
     // Create a player disconnect message entity
     disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
-    disconnectmessagedisplay.__KeyValueFromString("targetname", "pdcm") // targetname is sensitive to the hex edits!
+    disconnectmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_disconnect_message")
     disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
     disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
     disconnectmessagedisplay.__KeyValueFromString("fadein", "0.2")
@@ -1844,103 +1562,74 @@ function CreateOurEntities() {
     disconnectmessagedisplay.__KeyValueFromString("color", "140 40 40")
     disconnectmessagedisplay.__KeyValueFromString("channel", "3")
     disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected")
-    EntFireByHandle(disconnectmessagedisplay, "display", "", 0.0, null, null)
 
-    // Create a join message entity
-    joinmessagedisplay <- Entities.CreateByClassname("game_text")
-    joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
-    joinmessagedisplay.__KeyValueFromString("holdtime", "3")
-    joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
-    joinmessagedisplay.__KeyValueFromString("fadein", "0.2")
-    joinmessagedisplay.__KeyValueFromString("spawnflags", "1")
-    joinmessagedisplay.__KeyValueFromString("color", "255 200 0")
-    joinmessagedisplay.__KeyValueFromString("channel", "3")
-    // joinmessagedisplay.__KeyValueFromString("x", "0.1")
-    // joinmessagedisplay.__KeyValueFromString("y", "0.1")
+    if (Config_UseJoinIndicator) {
+        // Create a join message entity
+        joinmessagedisplay <- Entities.CreateByClassname("game_text")
+        joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
+        joinmessagedisplay.__KeyValueFromString("holdtime", "3")
+        joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
+        joinmessagedisplay.__KeyValueFromString("fadein", "0.2")
+        joinmessagedisplay.__KeyValueFromString("spawnflags", "1")
+        joinmessagedisplay.__KeyValueFromString("color", "255 200 0")
+        joinmessagedisplay.__KeyValueFromString("channel", "3")
+    }
 
     // Create a player_speedmod entity to modify a player's movement speed
     playerspeedmod <- Entities.CreateByClassname("player_speedmod")
     playerspeedmod.__KeyValueFromString("targetname", "p2mm_player_speedmod")
 
     // Create an entity that sends miscellaneous client commands
-    clientcommand <- Entities.CreateByClassname("point_clientcommand")
-    clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand")
+    p2mm_clientcommand <- Entities.CreateByClassname("point_clientcommand")
+    p2mm_clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand") // Using the targetname in outputs causes invalid entity instance errors ??
 }
 
-
-///////////////////////////// PLAYERS
-
-    function GetPlayerFromUserID(userid) {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            if (p.entindex() == userid) {
-                return p
-            }
-        }
-        return null
+function CalcNumPlayers() {
+    local iCurrentNumPlayers = 0
+    for (local player; player = Entities.FindByClassname(player, "player");) {
+        iCurrentNumPlayers++
     }
+    return iCurrentNumPlayers
+}
 
-    function FindPlayerByName(name) {
-        name = name.tolower()
-        local best = null
-        local bestnamelen = 99999
-        local bestfullname = ""
+// Function name is sensitive to the hex edits!
+function Plyr_Disconnect_Function() {
+    local iCurrentNumPlayers = CalcNumPlayers()
+    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
+    EntFire("p2mm_player_disconnect_message", "display")
+}
 
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local username = FindPlayerClass(p).username
-            username = username.tolower()
+//--------------------------------------
+// Data functions
+//--------------------------------------
 
-            if (username == name) {
-                return p
-            }
+function GetType(var, simplify = true) {
+    local type = typeof(var)
 
-            if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) < bestnamelen) {
-                best = p
-                bestnamelen = Len(Replace(username, name, ""))
-                bestfullname = username
-            } else if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) == bestnamelen) {
-                if (Find(username, name) < Find(bestfullname, name)) {
-                    best = p
-                    bestnamelen = Len(Replace(username, name, ""))
-                    bestfullname = username
-                }
-            }
-        }
-        return best
-    }
-
-/////////////////////////////////////
-
-//////////////////////////////// DATA
-
-    function GetType(var, simplify = true) {
-        local type = typeof(var)
-
-        if (!simplify) {
-            return type
+    if (!simplify) {
+        return type
+    } else {
+        if (type == "float" || type == "integer") {
+            return "number"
+        } else if (type == "string") {
+            return "string"
+        } else if (type == "bool") {
+            return "bool"
+        } else if (type == "table" || type == "array") {
+            return "table"
+        } else if (type == "instance") {
+            return "entity"
+        } else if (type == "function") {
+            return "function"
         } else {
-            if (type == "float" || type == "integer") {
-                return "number"
-            } else if (type == "string") {
-                return "string"
-            } else if (type == "bool") {
-                return "bool"
-            } else if (type == "table" || type == "array") {
-                return "table"
-            } else if (type == "instance") {
-                return "entity"
-            } else if (type == "function") {
-                return "function"
-            } else {
-                return "unknown"
-            }
+            return "unknown"
         }
     }
+}
 
-/////////////////////////////////////
-
-///////////////////////////////// TABLES
+//--------------------------------------
+// Table functions
+//--------------------------------------
 
 function Join(tbl, str) {
     local nstr = ""
@@ -1950,456 +1639,70 @@ function Join(tbl, str) {
     return nstr
 }
 
-//////////////////////////////// STRINGS
+//--------------------------------------
+// String functions
+//--------------------------------------
 
-    function Len(str) {
-        return str.len()
-    }
-
-    function Find(str, substr) {
-        return str.find(substr)
-    }
-
-    function Slice(str, start, end = null) {
-        if (end == null) {
-            end = Len(str)
-        }
-        try {
-            str = str.slice(start, end)
-        } catch (e) {
-            str = ""
-        }
-        return str
-    }
-
-    function Contains(out, find = "") {
-        local type = GetType(out)
-
-        if (type == "null") {
-            return false
-        } else if (type == "number") {
-            return true
-        } else if (type == "string") {
-            return Contains(Find(out, find))
-        }
-        return false
-    }
-
-    function Replace(str, find, replace) {
-        if (find == replace) {
-            return str
-        }
-
-        local findlen = Find(str, find)
-        local len = Len(find)
-        if (Contains(findlen)) {
-            str = Slice(str, 0, findlen) + replace + Slice(str, findlen + len)
-            if (Contains(str, find)) {
-                str = Replace(str, find, replace)
-            }
-            return str
-        } else {
-            return str
-        }
-    }
-
-    function StartsWith(str, substr) {
-        str = Slice(str, 0, Len(substr))
-        if (str == substr) {
-            return true
-        } else {
-            return false
-        }
-    }
-
-    function StrToList(str) {
-        local list = []
-        local i = 0
-        while (i < Len(str)) {
-            list.push( Slice(str, i, i + 1) )
-            i = i + 1
-        }
-        return list
-    }
-
-    function Strip(str) {
-        return strip(str)
-    }
-
-    function SplitBetween(str, keysymbols, preserve = false) { //preserve = true : means that the symbol at the beginning of the string will be included in the first part
-        local keys = StrToList(keysymbols)
-        local lst = StrToList(str)
-
-        local contin = false
-        foreach (key in keys) {
-            if (Contains(str, key)) {
-                contin = true
-            }
-        }
-
-        if (!contin) {
-            return []
-        }
-
-
-        // FOUND SOMETHING
-
-        local split = []
-        local curslice = ""
-
-        foreach (indx, letter in lst) {
-            local contains = false
-            foreach (key in keys) {
-                if (letter == key) {
-                    contains = key
-                    if (indx == 0 && preserve) {
-                        curslice = curslice + letter
-                    }
-                }
-            }
-
-            if (contains != false) {
-                if (Len(curslice) > 0 && indx > 0) {
-                    split.push(curslice)
-                    if (preserve) {
-                        curslice = contains
-                    } else {
-                        curslice = ""
-                    }
-                }
-            } else {
-                curslice = curslice + letter
-            }
-        }
-
-        if (Len(curslice) > 0) {
-            split.push(curslice)
-        }
-
-        return split
-    }
-
-////////////////////////////////////////
-////////////// CHAT COMMANDS ///////////
-
-ChatCommandErrorList <- [
-    "[ERROR] Command Not Found",
-    "[ERROR] Invalid Syntax",
-    "[ERROR] You do not have permission to use this command",
-    "[ERROR] You cannot use selectors with this command as your admin level is too low",
-]
-
-////////////////////////////////////////////////////////
-
-CommandList <- []
-
-////////////
-
-
-
-/////////////////////////////////// NOCLIP
-function NoclipCommand(plr, args) {
-    local pclass = FindPlayerClass(plr)
-    printl(pclass.noclip)
-    if (pclass.noclip) {
-        EnableNoclip(false, plr)
-    } else {
-        EnableNoclip(true, plr)
-    }
+function Len(str) {
+    return str.len()
 }
 
-CommandList.push(class {
-    name = "noclip"
-    level = 1
-    selectorlevel = 2
-    func = NoclipCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-/////////////////////////////////////// KILL
-function KillCommand(plr, args) {
-    EntFireByHandle(plr, "sethealth", "-9999999999999999999999999999999999999999999999999", 0, plr, plr)
+function Find(str, substr) {
+    return str.find(substr)
 }
 
-CommandList.push(class {
-    name = "kill"
-    level = 0
-    selectorlevel = 1
-    func = KillCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-//////////////////////////////// Change Team
-function ChangeTeamCommand(p, args) {
-    if (p.GetTeam() == 3) {
-        p.SetTeam(2)
-    } else
-    if (p.GetTeam() == 2) {
-        p.SetTeam(3)
+function Slice(str, start, end = null) {
+    if (end == null) {
+        end = Len(str)
     }
-}
-
-CommandList.push(class {
-    name = "changeteam"
-    level = 0
-    selectorlevel = 1
-    func = ChangeTeamCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-////////////////////////////////// Set Speed
-function ChangeSpeedCommand(p, args) {
-    SetSpeed(p, args[0])
-}
-
-CommandList.push(class {
-    name = "speed"
-    level = 2
-    selectorlevel = 2
-    func = ChangeSpeedCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-////////////////////////////////////// Bring
-function BringCommand(p, args) {
-    args[0] = Strip(args[0])
-    if (args[0] != "all") {
-        local plr = FindPlayerByName(args[0])
-        if (plr != null) {
-            plr.SetOrigin(p.GetOrigin())
-            plr.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
-        } else {
-            SendChatMessage("[ERROR] Player not found")
-        }
-    } else {
-        local p2 = null
-        while (p2 = Entities.FindByClassname(p2, "player")) {
-            if (p2 != p) {
-                p2.SetOrigin(p.GetOrigin())
-                p2.SetAngles(p.GetAngles().x, p.GetAngles().y, p.GetAngles().z)
-            }
-        }
+    try {
+        str = str.slice(start, end)
+    } catch (e) {
+        str = ""
     }
-}
-
-CommandList.push(class {
-    name = "bring"
-    level = 2
-    selectorlevel = 2
-    func = BringCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-/////////////////////////////////////// GOTO
-function GotoCommand(p, args) {
-    args[0] = Strip(args[0])
-    local plr = FindPlayerByName(args[0])
-    if (plr != null) {
-        p.SetOrigin(plr.GetOrigin())
-        p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-    } else {
-        SendChatMessage("[ERROR] Player not found")
-    }
-}
-
-CommandList.push(class {
-    name = "goto"
-    level = 1
-    selectorlevel = 2
-    func = GotoCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-/////////////////////////////////////// RCON
-function RconCommand(p, args) {
-    args[0] = Strip(args[0])
-    local cmd = Join(args, " ")
-    SendToConsoleP232(cmd)
-}
-
-CommandList.push(class {
-    name = "rcon"
-    level = 3
-    selectorlevel = 3
-    func = RconCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-//////////////////////////////////// RESTART
-function RestartCommand(p, args) {
-    SendToConsoleP232("changelevel " + GetMapName())
-}
-
-CommandList.push(class {
-    name = "restart"
-    level = 1
-    selectorlevel = 1
-    func = RestartCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-/////////////////////////////////////// HELP
-
-function HelpCommand(p, args) {
-    SendChatMessage("[HELP] Available commands:")
-    local dly = 0
-    foreach (cmd in CommandList) {
-        dly = dly + 0
-        if (cmd.level <= GetAdminLevel(p)) {
-            SendChatMessage("[HELP] " + cmd.name, dly)
-        }
-    }
-}
-
-CommandList.push(class {
-    name = "help"
-    level = 3
-    selectorlevel = 3
-    func = HelpCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-
-////////////////////////////////////////////
-
-//////////////////////////////////// CHAPTER
-
-function ChapterCommand(p, args) {
-    args[0] = Strip(args[0])
-    if (args[0] == "1") {
-        SendToConsoleP232("changelevel sp_a1_intro1")
-    } else if (args[0] == "2") {
-        SendToConsoleP232("changelevel sp_a2_laser_intro")
-    } else if (args[0] == "3") {
-        SendToConsoleP232("changelevel sp_a2_sphere_peek")
-    } else if (args[0] == "4") {
-        SendToConsoleP232("changelevel sp_a2_column_blocker")
-    } else if (args[0] == "5") {
-        SendToConsoleP232("changelevel sp_a2_bts3")
-    } else if (args[0] == "6") {
-        SendToConsoleP232("changelevel sp_a3_00")
-    } else if (args[0] == "7") {
-        SendToConsoleP232("changelevel sp_a3_speed_ramp")
-    } else if (args[0] == "8") {
-        SendToConsoleP232("changelevel sp_a4_intro")
-    } else if (args[0] == "9") {
-        SendToConsoleP232("changelevel sp_a4_finale1")
-    }
-}
-
-CommandList.push(class {
-    name = "chapter"
-    level = 3
-    selectorlevel = 3
-    func = ChapterCommand
-
-    notfounderror = ChatCommandErrorList[0]
-    syntaxerror = ChatCommandErrorList[1]
-    permerror = ChatCommandErrorList[2]
-    selectorpermerror = ChatCommandErrorList[3]
-})
-////////////////////////////////////////////
-
-function SendChatMessage(message, delay = 0) {
-    // SendToConsoleP232("say " + message)
-    EntFire("p2mm_servercommand", "command", "say " + message, delay)
-}
-
-function RemoveDangerousChars(str) {
-    str = Replace(str, "%n", "")
     return str
 }
 
-function ShouldIgnoreMessage(str) {
-    if (StartsWith(str, "^")) { return true }
+function Contains(out, find = "") {
+    local type = GetType(out)
 
+    if (type == "null") {
+        return false
+    } else if (type == "number") {
+        return true
+    } else if (type == "string") {
+        return Contains(Find(out, find))
+    }
     return false
 }
 
-function GetCommandFromString(str) {
-    foreach (cmd in CommandList) {
-        if (StartsWith(str, cmd.name)) {
-            return cmd
+function Replace(str, find, replace) {
+    if (find == replace) {
+        return str
+    }
+
+    local findlen = Find(str, find)
+    local len = Len(find)
+    if (Contains(findlen)) {
+        str = Slice(str, 0, findlen) + replace + Slice(str, findlen + len)
+        if (Contains(str, find)) {
+            str = Replace(str, find, replace)
         }
-    }
-    return null
-}
-
-function ValidateCommand(str) {
-    if (GetCommandFromString(str) != null) { return true }
-    return false
-}
-
-function ValidateCommandAdminLevel(cmd, level) {
-    if (cmd.level <= level) { return true }
-    return false
-}
-
-function ErrorOutCommand(level, cmd = null) {
-    if (cmd == null) {
-        SendChatMessage(ChatCommandErrorList[0])
-    } else if (level == 0) {
-        SendChatMessage(cmd.notfounderror)
-    } else if (level == 1) {
-        SendChatMessage(cmd.permerror)
-    } else if (level == 2) {
-        SendChatMessage(cmd.syntaxerror)
-    } else if (level == 3) {
-        SendChatMessage(cmd.selectorpermerror)
+        return str
+    } else {
+        return str
     }
 }
 
-function ValidateAlowedRunners(cmd, lvl) {
-    if (cmd.selectorlevel <= lvl) { return true }
-    return false
+function StartsWith(str, substr) {
+    str = Slice(str, 0, Len(substr))
+    if (str == substr) {
+        return true
+    } else {
+        return false
+    }
 }
 
-function RunChatCommand(cmd, args, plr) {
-    printl("Running command: " + cmd.name)
-    cmd.func(plr, args)
+function Strip(str) {
+    return strip(str)
 }
-
-///////////////////////////////////////
