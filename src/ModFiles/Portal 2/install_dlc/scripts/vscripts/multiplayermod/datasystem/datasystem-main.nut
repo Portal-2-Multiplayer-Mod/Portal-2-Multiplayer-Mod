@@ -59,15 +59,12 @@ function onSave(event) { // Triggers when a map calls for a certain event to be 
 function init() {
     printl("Starting the custom data system!")
     //Makes a temporary .dem file for our python data system to check
-    SendToConsoleP2MM("_record SAVE/datasystemcheck-test")
-    SendToConsoleP2MM("stop")
-
+    SendToConsoleP2MM("screenshot SAVE/datasystemcheck-test")
     try {
         IncludeScript("multiplayermod/datasystem/datasystemcheck-pythonsuccess.nut")
         printl("Data Systen works! Will be avaliable for the map...")
         dataCheck <- true
         SendToConsoleP2MM("_record SAVE/datasystemcheck-nutsuccess")
-        SendToConsoleP2MM("stop")
     } catch (e){
         printl("First check detection failed, trying again...")
         printl(e)
@@ -88,13 +85,11 @@ function init() {
             printl("The data system will not be avaliable for this map...")
             dataCheck <- false
             SendToConsoleP2MM("_record SAVE/datasystemcheck-nutfail")
-            SendToConsoleP2MM("stop")
             datasystemcheckerrors = 0
         } else {
             printl("Data Systen works! Will be avaliable for the map...")
             dataCheck <- true
             SendToConsoleP2MM("_record SAVE/datasystemcheck-nutsuccess")
-            SendToConsoleP2MM("stop")
             datasystemcheckerrors = 0
         }
     }
