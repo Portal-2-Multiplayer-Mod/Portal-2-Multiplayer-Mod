@@ -795,6 +795,15 @@ class Gui:
         # tempsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5))).render("CuM", True, (255, 100, 255))
         # screen.blit(tempsurf, (mousex - tempsurf.get_width()/2, mousey - tempsurf.get_height()/2))
 
+        button = self.CurrentMenu[0]
+        text1 = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
+                                 int(int((int(W / 25) + int(H / 50)) / 1.5) * button.sizemult)).render(button.text,
+                                                                                                       True, button.activecolor)
+        # DRAW INPUT BOX
+        if self.LookingForInput:
+            self.DrawBox(W, H, fntsize, mindiv, text1)
+            return
+
         # MENU 2 ELECTRIC BOOGALOO
         # loop through all buttons
         indx = 0
@@ -962,35 +971,34 @@ class Gui:
                 self.screen.blit(text, (textx, texty))
                 indx += 1
 
-        # DRAW INPUT BOX
-        if self.LookingForInput:
 
-            # divide the CurrentInput into lines
-            lines = []
-            # every  23 characters, add a new line
-            lines.append(self.CurInput[0:mindiv])
-            for i in range(mindiv, len(self.CurInput), mindiv):
-                lines.append(self.CurInput[i:i + mindiv])
+    def DrawBox(self, W, H, fntsize, mindiv, text1):
+        # divide the CurrentInput into lines
+        lines = []
+        # every  23 characters, add a new line
+        lines.append(self.CurInput[0:mindiv])
+        for i in range(mindiv, len(self.CurInput), mindiv):
+            lines.append(self.CurInput[i:i + mindiv])
 
-            InputText = ""
-            for i in range(len(lines)):
-                InputText = pygame.font.Font(
+        InputText = ""
+        for i in range(len(lines)):
+            InputText = pygame.font.Font(
                     "GUI/assets/fonts/pixel.ttf", fntsize).render(lines[i], True, (255, 255, 175))
-                self.screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (
+            self.screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (
                     (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - (
                     (((text1.get_height() * 1.25) * (len(lines) / 2))))))
 
-            surf1 = pygame.Surface((W / 1.5, W / 100))
-            surf1.fill((255, 255, 255))
-            surf2 = pygame.Surface((W / 1.5, W / 100))
-            blitpos = (
+        surf1 = pygame.Surface((W / 1.5, W / 100))
+        surf1.fill((255, 255, 255))
+        surf2 = pygame.Surface((W / 1.5, W / 100))
+        blitpos = (
                 (W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
-            self.screen.blit(surf1, blitpos)
+        self.screen.blit(surf1, blitpos)
 
-            surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(fntsize/1.5)).render(self.InputPrompt, True,
+        surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(fntsize/1.5)).render(self.InputPrompt, True,
                                                                                              (255, 255, 255))
-            # blit it right below the surf1
-            self.screen.blit(surfInputPrompt, (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2),
+        # blit it right below the surf1
+        self.screen.blit(surfInputPrompt, (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2),
                                                blitpos[1] + surfInputPrompt.get_height()))
 
     ###############################################################################
@@ -1006,7 +1014,9 @@ class Gui:
             self.screen.fill((0, 0, 0))
             self.gradientRect(self.screen, (0, 2, 10), (2, 2, 10), pygame.Rect(
                 0, 0, self.screen.get_width(), self.screen.get_height()))
+
             self.Update()
+
             pygame.display.update()
             self.fpsclock.tick(self.FPS)
 
@@ -1076,6 +1086,7 @@ class Gui:
                         # support for numpad
                         elif len(name) == 3:
                             self.CurInput += name[1]
+                    continue
 
                 # POPUP BOX INPUT
                 if len(self.PopupBoxList) > 0:
