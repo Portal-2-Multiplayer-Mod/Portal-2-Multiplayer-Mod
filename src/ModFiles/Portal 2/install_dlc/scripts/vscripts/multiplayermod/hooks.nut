@@ -30,12 +30,27 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Begin looping
-    Loop()
+    // Create an entity to loop the Loop() function every 0.1 second
+    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
+    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
+        if (timer.GetName() == "p2mm_timer") {
+            p2mm_timer <- timer
+            break
+        }
+    }
+
+    EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
+    EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
+    EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
+    EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
 
     // Delay the creation of our map-specific entities before so
     // that we don't get an engine error from the entity limit
     EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
+
+    if (IsCommunityCoopHub) {
+        PostPlayerSpawn()
+    }
 }
 
 // 2
@@ -99,7 +114,7 @@ function Loop() {
         }
 
         //## Rocket ##//
-        if (Config_UseChatCommands && AddChatCallbackLoaded) {
+        if (Config_UseChatCommands && PluginLoaded) {
             if (FindPlayerClass(p).rocket) {
                 if (p.GetVelocity().z <= 1) {
                     EntFireByHandle(p, "sethealth", "-100", 0, p, p)
@@ -235,7 +250,7 @@ function Loop() {
 
 
     //## Cache original spawn position ##//
-    if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player")) {
+    if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player") && !IsCommunityCoopHub) {
         // OldPlayerPos = the blues inital spawn position
         try {
             OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
@@ -262,7 +277,7 @@ function Loop() {
     }
 
     //## Hook first spawn ##//
-    if (PostMapSpawnDone) {
+    if (PostMapSpawnDone && !IsCommunityCoopHub) {
         if (!DoneWaiting) {
             if (CanHook) {
                 if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
@@ -273,7 +288,7 @@ function Loop() {
                     }
                 }
             }
-            DoEntFire("p2mm_wait_for_players_text", "display", "", 0.0, null, null)
+            EntFire("p2mm_wait_for_players_text", "display")
         }
     }
 
@@ -345,13 +360,6 @@ function Loop() {
                 DisplayPlayerColor(p)
             }
         }
-
-        //## Vote CC Display Text ##//
-        // if (Config_UseChatCommands && PluginLoaded) {
-        //     if (ShouldDisplayVoteCounter) {
-        //         EntFire("VoteCounter", "Display")
-        //     }
-        // }
     }
 
     ///////////////////////
@@ -397,8 +405,48 @@ function Loop() {
                 }
             }
         }
+
+        //## Vote CC Timer Force End ##//
+        if (Config_UseChatCommands && PluginLoaded) {
+            // Display Text Status
+            if (ShouldDisplayVoteText) {
+                EntFire("VoteCounter", "Display")
+                EntFire("VoteTimer", "Display")
+                if (!ReversedTimer) {
+                    // Revese the timer and firing time...
+                    for (local i = 0; i <= VotingTime; i++) {
+                        // TODO: AddOutput likes to replace ":" with "," in strings...
+                        EntFire("VoteTimer", "addoutput", "message Time: " + (VotingTime - i).tostring() + "s", i)
+                    }
+                    ReversedTimer = true
+                }
+            }
+            // This also means that the vote is currently active, so
+            // it is safe to assign new values to member variables
+            if (bAllowVoteTimeCheck) {
+                if (Time() > VoteInitTime + VotingTime) {
+                    bAllowVoteTimeCheck = false
+                    local Vote = VoteInstanceArray[0]
+                    if (Vote.iVotedYes > Vote.iCurrentNumberOfPlayers / 2) {
+                        SendChatMessage("[VOTE] Majority of players have voted yes.", Vote.pVoteInitiator)
+                        Vote.DoVote("succeed")
+                    }
+                    else if (Vote.iVotedNo > Vote.iCurrentNumberOfPlayers / 2) {
+                        SendChatMessage("[VOTE] Majority of players have voted no.", Vote.pVoteInitiator)
+                        Vote.DoVote("fail")
+                    }
+                    else if (Vote.iVotedYes == Vote.iVotedNo) {
+                        // We already have a message set for this
+                        // SendChatMessage("[VOTE] Even number of voters on each side.", Vote.pVoteInitiator)
+                        Vote.DoVote("fail")
+                    } else {
+                        SendChatMessage("[VOTE] Not enough players voted.", Vote.pVoteInitiator)
+                        Vote.DoVote("fail")
+                    }
+                }
+            }
+        }
     }
-    EntFire("p2mm_servercommand", "command", "script Loop()", 0.1)
 }
 
 function PostPlayerSpawn() {
@@ -543,9 +591,11 @@ function PostPlayerSpawn() {
     SendToConsoleP2MM("script CreatePropsForLevel(false, true, false)")
 
     // Remove scoreboard
-    for (local p; p = Entities.FindByClassname(p, "player");) {
-        if (p.entindex() == 1 || IsLocalSplitScreen()) {
-            EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, p, p)
+    if (!IsLocalSplitScreen() && !IsDedicatedServer && !IsCommunityCoopHub /*&& !Player2Joined*/) {
+        for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+            // TODO: Is there a better way to trigger this for the host player on a listen server?
+            // Right now, this will enter -score for every player
+            EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, ent, ent)
         }
     }
 }
@@ -570,7 +620,9 @@ function PostMapSpawn() {
     }
 
     // Force spawn players in map
-    AddBranchLevelName(1, "P2:MM")
+    if (!IsCommunityCoopHub) {
+        AddBranchLevelName(1, "P2:MM")
+    }
     CreatePropsForLevel(true, false, false)
 
     // Enable fast download (broken)
@@ -785,35 +837,10 @@ function OnPlayerJoin(p, script_scope) {
             break
     }
 
-    SendToConsoleP2MM("sv_timeout -1")
-    EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos", 0, p, p)
-    EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_fastpath 0", 0, p, p)
-    EntFireByHandle(p2mm_clientcommand, "Command", "r_portal_use_pvs_optimization 0", 0, p, p)
+    EntFire("p2mm_servercommand", "command", "sv_timeout -1")
 
     // Motion blur is very intense for some reason
-    EntFireByHandle(p2mm_clientcommand, "Command", "mat_motion_blur_forward_enabled 0", 0, p, p)
-
-    if (p.entindex() == 1 || IsLocalSplitScreen()) {
-        EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
-    }
-
-    // We don't want it to show as a host client on a listen server
-    // TODO: Possibly need to rework "y" offset for dedicated?
-    if (Config_UseJoinIndicator && PlayerID > 1) {
-        // Set join message to player name (or index)
-        local iCurrentNumPlayers = CalcNumPlayers()
-        joinmessagedisplay.__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
-        if (PlayerID > 1) {
-            onscreendisplay.__KeyValueFromString("y", "0.075")
-        }
-        //# Say join message on HUD #//
-        EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
-    }
-
-    // Set color of player's in-game model
-    local pcolor = GetPlayerColor(p, false)
-    EntFireByHandle(p, "Color", (pcolor.r + " " + pcolor.g + " " + pcolor.b), 0, null, null)
-    script_scope.Colored <- true
+    EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos; r_portal_fastpath 0; r_portal_use_pvs_optimization 0; mat_motion_blur_forward_enabled 0", 0, p, p)
 
     // SETUP THE CLASS /////////////////
     local currentplayerclass = CreateGenericPlayerClass(p)
@@ -833,6 +860,32 @@ function OnPlayerJoin(p, script_scope) {
     }
 
     /////////////////////////////////////
+
+    // Show scoreboard
+    if (!IsLocalSplitScreen() && !IsDedicatedServer && !IsCommunityCoopHub && !Player2Joined) {
+        local p = Entities.FindByClassname(null, "player")
+        if (FindPlayerClass(p).id == 1) {
+            EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
+        }
+    }
+
+    // We don't want it to show as a host client on a listen server
+    // TODO: Possibly need to rework "y" offset for dedicated?
+    if (Config_UseJoinIndicator && PlayerID > 1) {
+        // Set join message to player name (or index)
+        local iCurrentNumPlayers = CalcNumPlayers()
+        joinmessagedisplay.__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
+        if (PlayerID > 1) {
+            onscreendisplay.__KeyValueFromString("y", "0.075")
+        }
+        //# Say join message on HUD #//
+        EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+    }
+
+    // Set color of player's in-game model
+    local pcolor = GetPlayerColor(p, false)
+    EntFireByHandle(p, "Color", (pcolor.r + " " + pcolor.g + " " + pcolor.b), 0, null, null)
+    script_scope.Colored <- true
 
     //# SET THE COSMETICS #//
     if (Config_UseCustomDevModels && PluginLoaded) {

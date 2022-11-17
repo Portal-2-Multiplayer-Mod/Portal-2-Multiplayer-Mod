@@ -105,7 +105,7 @@ SetPhysTypeConvarLoaded <- false
 SetMaxPortalSeparationConvarLoaded <- false
 
 function RedefinedMessage(functionname) {
-    printl("(P2:MM): " + functionname + "() has been redefined!")
+    printl("(P2:MM): - " + functionname + "() failed to load and has been redefined!")
 }
 
 function ReplaceGetPlayerName() {
@@ -165,6 +165,8 @@ function ReplaceSetMaxPortalSeparationConvar() {
     RedefinedMessage("SetMaxPortalSeparationConvar")
 }
 
+printl("(P2:MM): Checking plugin functionality...")
+
 ReplaceGetPlayerName()
 ReplaceGetSteamID()
 ReplaceAddChatCallback()
@@ -174,6 +176,7 @@ ReplaceSetMaxPortalSeparationConvar()
 if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded || SetMaxPortalSeparationConvarLoaded) {
     // Something loaded, so the plugin must be as well
     PluginLoaded <- true
+    printl("(P2:MM): - Plugin was detected!")
 }
 else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded && !SetMaxPortalSeparationConvarLoaded) {
     // Nothing loaded

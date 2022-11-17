@@ -336,21 +336,9 @@ function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
     return plist
 }
 
-function MinifyModel(mdl) {
-// Add the models/ to the side of the model name if it's not already there
-    if (mdl.slice(0, 7) == "models/") {
-        mdl = mdl.slice(7, mdl.len())
-    }
-    // Add the .mdl to the end of the model name if it's not already there
-    if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
-        mdl = mdl.slice(0, mdl.len() - 4)
-    }
-    return mdl
-}
-
 function SetPlayerModel(p, mdl) {
-    PrecacheModelNoDelay(mdl)
-    FindPlayerClass(p).playermodel <- mdl
+    PrecacheModel(mdl)
+    FindPlayerClass(p).playermodel = mdl
 }
 
 // playerclass <- {
@@ -462,10 +450,6 @@ function DeleteAmountOfEntities(classname, amount) {
 }
 
 function PrecacheModel(mdl) {
-    // TODO: Is this inefficient?
-    SendToConsoleP2MM("script PrecacheModelNoDelay(\"" + mdl + "\")")
-}
-function PrecacheModelNoDelay(mdl) {
     // Add the models/ to the side of the model name if it's not already there
     if (mdl.slice(0, 7) != "models/") {
         mdl = "models/" + mdl
@@ -476,33 +460,41 @@ function PrecacheModelNoDelay(mdl) {
     }
 
     // Remove the models/ from the left side and the .mdl from the right side
+    local MinifyModel = function(mdl) {
+        if (mdl.slice(0, 7) == "models/") {
+            mdl = mdl.slice(7, mdl.len())
+        }
+        if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
+            mdl = mdl.slice(0, mdl.len() - 4)
+        }
+        return mdl
+    }
     local minimdl = MinifyModel(mdl)
 
     // Check if the model is already precached
-    local NotPrecached = true
-    foreach (precached in PrecachedProps) {
-        if (precached == minimdl) {
-            NotPrecached = false
+    local Precached = false
+    foreach (model in PrecachedProps) {
+        if (model == minimdl) {
+            Precached = true
         }
     }
 
-    if (!Entities.FindByModel(null, mdl) && NotPrecached) {
+    // No existing model in the map and it's not something we know is precached
+    if (!Entities.FindByModel(null, mdl) && !Precached) {
+        // Attempt to precache it
+        EntFire("p2mm_servercommand", "command", "sv_cheats 1; prop_dynamic_create " + minimdl)
         PrecachedProps.push(minimdl)
         if (!CheatsOn) {
-            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
-        } else {
-            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
-        }
-        if (!CheatsOn) {
-            SendToConsoleP2MM("sv_cheats 0")
+            // In case players are now joining
+            EntFire("p2mm_servercommand", "command", "sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4) // FIXME!! Causes errors in vscript
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): Precached model: " + minimdl + " AKA " + mdl)
+            printl("(P2:MM): PrecacheModel() - Precached model: " + mdl)
         }
     } else {
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): Model: " + mdl + " already precached!")
+            printl("(P2:MM): PrecacheModel() - Model: " + mdl + " already precached!")
         }
     }
 }
@@ -1538,7 +1530,7 @@ function CreateOurEntities() {
         nametagdisplay.__KeyValueFromString("holdtime", "0.1")
         nametagdisplay.__KeyValueFromString("fadeout", "0.2")
         nametagdisplay.__KeyValueFromString("fadein", "0.2")
-        nametagdisplay.__KeyValueFromString("channel", "0")
+        nametagdisplay.__KeyValueFromString("channel", "1")
     }
 
     // Create an display entity for the host to wait for another player to load in
@@ -1598,6 +1590,115 @@ function Plyr_Disconnect_Function() {
     disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
     EntFire("p2mm_player_disconnect_message", "display")
 }
+
+//--------------------------------------
+// Manage what each team can do
+//--------------------------------------
+
+for (local i = 1; i < 5; i++) {
+    Entities.CreateByClassname("env_global").__KeyValueFromString("targetname", "p2mm_env_global0" + i.tostring())
+}
+
+Entities.FindByName(null, "p2mm_env_global01").__KeyValueFromString("globalstate", "no_pinging_blue")
+Entities.FindByName(null, "p2mm_env_global02").__KeyValueFromString("globalstate", "no_pinging_orange")
+Entities.FindByName(null, "p2mm_env_global03").__KeyValueFromString("globalstate", "no_taunting_blue")
+Entities.FindByName(null, "p2mm_env_global04").__KeyValueFromString("globalstate", "no_taunting_orange")
+
+class UTIL_Team {
+    bPortalgunEnabled_Blue = true
+    bPortalgunEnabled_Red = true
+    // bTauntingEnabled_Blue = true
+    // bTauntingEnabled_Red = true
+    // bPingingEnabled_Blue = true
+    // bPingingEnabled_Red = true
+
+    constructor() {
+        // Set default state for gun spawn
+        if (Entities.FindByName(null, "supress_blue_portalgun_spawn")) {
+            UTIL_Team.bPortalgunEnabled_Blue = false
+        }
+        if (Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
+            UTIL_Team.bPortalgunEnabled_Red = false
+        }
+
+        // TODO: If we can find out how to read the default state of
+        // pinging and taunting, then this code can be done a bit cleaner.
+        // For now, accept all inputs to enable/disable these two.
+    }
+}
+
+function UTIL_Team::Spawn_PortalGun(bEnableOrDisable, charBlueOrRed = "all") {
+    if (bEnableOrDisable) {
+        local DestroyAllTargets = function(team) {
+            for (local target; target = Entities.FindByName(target, team);) {
+                target.Destroy()
+            }
+        }
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all") && !UTIL_Team.bPortalgunEnabled_Blue) {
+            DestroyAllTargets("supress_blue_portalgun_spawn")
+            UTIL_Team.bPortalgunEnabled_Blue = true
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all") && !UTIL_Team.bPortalgunEnabled_Red) {
+            DestroyAllTargets("supress_orange_portalgun_spawn")
+            UTIL_Team.bPortalgunEnabled_Red = true
+        }
+        return
+    }
+    if ((charBlueOrRed == "blue" || charBlueOrRed == "all") && UTIL_Team.bPortalgunEnabled_Blue) {
+        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+        UTIL_Team.bPortalgunEnabled_Blue = false
+    }
+    if ((charBlueOrRed == "red" || charBlueOrRed == "all") && UTIL_Team.bPortalgunEnabled_Red) {
+        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+        UTIL_Team.bPortalgunEnabled_Red = false
+    }
+}
+
+function UTIL_Team::Pinging(bEnableOrDisable, charBlueOrRed = "all", delay = 0) {
+    if (bEnableOrDisable) {
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && !UTIL_Team.bPingingEnabled_Blue*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnoff", "", delay, null, null)
+            // UTIL_Team.bPingingEnabled_Blue = true
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && !UTIL_Team.bPingingEnabled_Red*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global02"), "turnoff", "", delay, null, null)
+            // UTIL_Team.bPingingEnabled_Red = true
+        }
+    } else {
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && UTIL_Team.bPingingEnabled_Blue*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnon", "", delay, null, null)
+            // UTIL_Team.bPingingEnabled_Blue = false
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && UTIL_Team.bPingingEnabled_Red*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global02"), "turnon", "", delay, null, null)
+            // UTIL_Team.bPingingEnabled_Red = false
+        }
+    }
+}
+
+function UTIL_Team::Taunting(bEnableOrDisable, charBlueOrRed = "all", delay = 0) {
+    if (bEnableOrDisable) {
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && !UTIL_Team.bTauntingEnabled_Blue*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnoff", "", delay, null, null)
+            // UTIL_Team.bTauntingEnabled_Blue = true
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && !UTIL_Team.bTauntingEnabled_Red*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global04"), "turnoff", "", delay, null, null)
+            // UTIL_Team.bTauntingEnabled_Red = true
+        }
+    } else {
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && UTIL_Team.bTauntingEnabled_Blue*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnon", "", delay, null, null)
+            // UTIL_Team.bTauntingEnabled_Blue = false
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && UTIL_Team.bTauntingEnabled_Red*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global04"), "turnon", "", delay, null, null)
+            // UTIL_Team.bTauntingEnabled_Red = false
+        }
+    }
+}
+
+UTIL_Team <- UTIL_Team()
 
 //--------------------------------------
 // Data functions

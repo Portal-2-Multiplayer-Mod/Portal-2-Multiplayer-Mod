@@ -71,7 +71,7 @@ function ChatCommands(iUserIndex, rawText) {
         if (!StartsWith(Input, "!") || Message.len() < 2) {
             return
         }
-        if (Message.slice(0, 2) == "!!" && Message.slice(0, 2) == "! ") {
+        if (Message.slice(0, 2) == "!!" || Message.slice(0, 2) == "! ") {
             return
         }
         if (Message.len() > 3) {
@@ -130,8 +130,10 @@ local IncludeScriptCC = function(script) {
 }
 
 IncludeScriptCC("adminmodify")
+// IncludeScriptCC("ban") // INDEV By Orsell
 IncludeScriptCC("changeteam")
 IncludeScriptCC("help")
+// IncludeScriptCC("kick") // INDEV By Orsell
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
@@ -144,9 +146,7 @@ IncludeScriptCC("spchapter")
 // IncludeScriptCC("spectate") // broken
 IncludeScriptCC("speed")
 IncludeScriptCC("teleport")
-// IncludeScriptCC("vote") // INDEV By Nano
-// IncludeScriptCC("kick") // INDEV By Orsell
-// IncludeScriptCC("ban") // INDEV By Orsell
+IncludeScriptCC("vote")
 
 //--------------------------------------
 // Chat command function dependencies
@@ -157,10 +157,9 @@ IncludeScriptCC("teleport")
 //--------------------------------------
 
 function SendChatMessage(message, pActivatorAndCaller = null) {
-    // We try to use server command since that allows the host
-    // to send instant messages without any chat refresh delay
+    // Try to use server command in the case of dedicated servers
     local pEntity = Entities.FindByName(null, "p2mm_servercommand")
-    if (pActivatorAndCaller != null && pActivatorAndCaller != Entities.FindByClassname(null, "player")) {
+    if (pActivatorAndCaller != null) {
         // Send messages from a specific client
         pEntity = p2mm_clientcommand
     }

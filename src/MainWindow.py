@@ -37,7 +37,7 @@ except Exception as e:
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
-class Gui: 
+class Gui:
     def __init__(self, devMode: bool) -> None:
         pygame.mixer.pre_init(channels=1)
         pygame.init()
