@@ -34,8 +34,8 @@ Config_UseCustomDevModels <- false
 // 3 - Futbol     : Portal 2 beta minigame restored             (No full implementation yet)
 Config_GameMode <- 0
 
-// Set true/false if you want to randomize every Turret's models and colors (for fun lol)
-Config_RandomTurrets <- true
+// Set true/false if you want to randomize every Turret's models and colors (for fun lol) (BROKEN)
+Config_RandomTurrets <- false
 
 // Set true/false if you want to randomize the size of all portals every second
 Config_RandomPortalSize <- false
@@ -86,6 +86,7 @@ Config_UseChatCommands <- true
 // "[AdminLevel]SteamID", // (Username to keep track)
 
 Admins <- [
+"[0]0", // New Player
 "[6]182933216",     // kyleraykbs
 "[6]75927374",      // Wolƒe Strider Shoσter
 "[6]290760494",     // Nanoman2525

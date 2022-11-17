@@ -47,16 +47,19 @@ printl("----------------------------------\n")
 
 // Now we take care of some tasks first thing
 
+printl("(P2:MM): Session info...")
+
 // Determine what the "maxplayers" cap is
 iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1)
-printl("(P2:MM): Max players allowed on the server: " + iMaxPlayers)
+printl("(P2:MM): - Max players allowed on the server: " + iMaxPlayers)
 
 // Determine whether or not this is a dedicated server
-// if (IsLocalSplitScreen() || !IsMultiplayer()) {
-//     bIsDedicatedServer <- false
+// if (IsLocalSplitScreen()) {
+    IsDedicatedServer <- false
 // } else {
-//     bIsDedicatedServer <- true
+//     IsDedicatedServer <- true
 // }
+printl("(P2:MM): - Dedicated server: " + IsDedicatedServer + "\n")
 
 IncludeScript("multiplayermod/pluginfunctionscheck.nut") // Make sure we know the exact status of our plugin
 IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences
