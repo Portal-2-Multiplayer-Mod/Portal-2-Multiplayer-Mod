@@ -19,9 +19,8 @@
 //---------------------------------------------------
 
 // TODO: Replace everything with what is commented below
-// This literally works, and is more efficient than the game loads lol
-// I don't know how to make it slow down enough so that it can properly detect
-// the first plugin function (GetPlayerName()) without treating it as false
+// This literally works, and is cleaner, but the variables in
+// OurAddedFunctions are not working
 /*
 OurAddedFunctionsLoaded <- [
     GetPlayerNameLoaded <- false,
@@ -32,19 +31,21 @@ OurAddedFunctionsLoaded <- [
 ]
 
 OurAddedFunctions <- [
-    GetPlayerName,                  // Returns the Steam username of a player
-    GetSteamID,                     // Returns the Steam ID of a player
-    AddChatCallback,                // Allows for registration of VScript functions with the in-game chat box
-    SetPhysTypeConvar,              // Modifies the hidden convar: "player_held_object_use_viewmodel"
-    SetMaxPortalSeparationConvar    // Modifies the hidden convar: "portal_max_separation_force"
+    "GetPlayerName",                  // Returns the Steam username of a player
+    "GetSteamID",                     // Returns the Steam ID of a player
+    "AddChatCallback",                // Allows for registration of VScript functions with the in-game chat box
+    "SetPhysTypeConvar",              // Modifies the hidden convar: "player_held_object_use_viewmodel"
+    "SetMaxPortalSeparationConvar"    // Modifies the hidden convar: "portal_max_separation_force"
 ]
 
 //---------------------------------------------------
 
+printl("(P2:MM): Checking plugin functionality...")
+
 foreach (Function in OurAddedFunctions) {
     // Does the function exist?
     local exists = false
-    if (Function.getinfos().native) {
+    if (Function in this) {
         exists = true
     }
     if (exists) {
@@ -68,18 +69,18 @@ foreach (Function in OurAddedFunctions) {
             }
         case OurAddedFunctions[2]:
             function AddChatCallback(string) {
-                printl("(P2:MM): Plugin not loaded. Unable to add chat callback for chat commands!")
+                printl("(P2:MM): AddChatCallback() not loaded. Unable to add chat callback for chat commands!")
             }
         case OurAddedFunctions[3]:
             function SetPhysTypeConvar(int) {
-                printl("(P2:MM): Plugin not loaded. Unable to change game grab controllers!")
+                printl("(P2:MM): SetPhysTypeConvar() not loaded. Unable to change game grab controllers!")
             }
         case OurAddedFunctions[4]:
             function SetMaxPortalSeparationConvar(int) {
-                printl("(P2:MM): Plugin not loaded. Unable to change player collision amounts!")
+                printl("(P2:MM): SetMaxPortalSeparationConvar() not loaded. Unable to change player collision amounts!")
             }
         }
-        printl("(P2:MM): " + Function + "() has been redefined!")
+        printl("(P2:MM): - " + Function + "() failed to load and has been redefined!")
     }
 }
 
