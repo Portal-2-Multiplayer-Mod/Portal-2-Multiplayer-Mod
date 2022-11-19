@@ -1,11 +1,7 @@
-// TODO: We have no way of accounting for players
-// who leave the game during an active vote. This
-// can easily be fixed, but requires one of our hex
-// edits to be modified slightly
-
 // Modify these as needed...
 VotingCooldownWaitPeriod <- 15 // Seconds before next voting can begin after one finished
 VotingTime <- 30 // Seconds to actually submit a vote before it automatically ends
+MinimumPlayersInitiateVote <- 3 // Minimum number of players required to start a vote
 
 //-----------------------------------------------------------------------------------
 
@@ -58,10 +54,30 @@ class Vote {
     iCurrentNumberOfPlayers = 0
 }
 
+// Recalculate total number of players and their vote status for the display
+function Vote::UpdatePlayerCountText() {
+    local totalnumplayers = 0
+    local yes = 0
+    local no = 0
+    // Can't really use CalcNumPlayers() here
+    for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+        totalnumplayers++
+        if (FindPlayerClass(ent).hasvotedyes) {
+            yes++
+        }
+        else if (FindPlayerClass(ent).hasvotedno) {
+            no++
+        }
+    }
+    iCurrentNumberOfPlayers = totalnumplayers
+    iVotedYes = yes
+    iVotedNo = no
+    Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + iVotedYes.tostring() + "/" + iVotedNo.tostring() + "/" + iCurrentNumberOfPlayers.tostring())
+}
+
 // Starts a vote
 function Vote::BeginVote(arg1, arg2, pPlayer) {
-    switch (arg1) {
-    case "kick":
+    if (arg1 == "kick") {
         if (FindPlayerByName(arg2) == null) {
             return SendChatMessage("[ERROR] Player not found.", pPlayer)
         }
@@ -69,15 +85,18 @@ function Vote::BeginVote(arg1, arg2, pPlayer) {
             return SendChatMessage("[ERROR] Cannot kick server operator.", pPlayer)
         }
     }
-    ActiveVote = arg1
-    Arg2 = arg2
 
-    VoteInitTime = Time()
-    bAllowVoteTimeCheck = true
+    // It's a valid option, so now we update some variables
+    ActiveVote = arg1 // What are we voting for?
+    Arg2 = arg2 // Second argument varies based on what the vote is for
+    VoteInitTime = Time() // Get the current time that this vote has started
+    bAllowVoteTimeCheck = true // Allow the timer to count down from VotingTime
 
     // Update the class info
     FindPlayerClass(pPlayer).startedvote = true
-    FindPlayerClass(pPlayer).hasvoted = true
+    // Handled in SubmitVote now
+    // FindPlayerClass(pPlayer).hasvotedyes = ???
+    // FindPlayerClass(pPlayer).hasvotedno = ???
 
     local intermediateArg2 = ""
     if (ActiveVote == "kick") {
@@ -89,29 +108,34 @@ function Vote::BeginVote(arg1, arg2, pPlayer) {
 
     SendChatMessage("[VOTE] Started vote for " + arg1 + "." + intermediateArg2, pPlayer)
     Vote.SubmitVote("yes", pPlayer)
+    SendChatMessage("[VOTE] Put \"!vote yes\" or \"!vote no\" in the chat before the time runs out!", pPlayer)
 
-    // Update the text color and players
+    // Update the text color
     local rgb = FindPlayerClass(pPlayer).color
     Entities.FindByName(null, "VoteCounter").__KeyValueFromString("color", rgb.r.tostring() + " " + rgb.g.tostring() + " " + rgb.b.tostring())
     Entities.FindByName(null, "VoteTimer").__KeyValueFromString("color", rgb.r.tostring() + " " + rgb.g.tostring() + " " + rgb.b.tostring())
-    Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + iVotedYes.tostring() + "/" + iVotedNo.tostring() + "/" + iCurrentNumberOfPlayers.tostring())
 
+    // Update the text player counts
+    UpdatePlayerCountText()
+
+    // Allow it to display to everyone now
     ShouldDisplayVoteText = true
 }
 
 // Vote is in progress; People can submit a vote
 function Vote::SubmitVote(arg1, arg2) {
-    FindPlayerClass(arg2).hasvoted = true
     if (arg1 == "yes") {
+        FindPlayerClass(arg2).hasvotedyes = true
         iVotedYes++
     } else {
+        FindPlayerClass(arg2).hasvotedno = true
         iVotedNo++
     }
-    Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + iVotedYes.tostring() + "/" + iVotedNo.tostring() + "/" + iCurrentNumberOfPlayers.tostring())
+    UpdatePlayerCountText()
     SendChatMessage("[VOTE] Submitted vote for " + arg1 + ".", arg2)
 
     // Everyone voted, so let's decide now
-    if (iVotedYes + iVotedNo >= iCurrentNumberOfPlayers) {
+    if (iVotedYes + iVotedNo == iCurrentNumberOfPlayers) {
         DoVote()
     }
 }
@@ -120,7 +144,7 @@ function Vote::SubmitVote(arg1, arg2) {
 // Do the actions accordingly
 function Vote::DoVote(arg1 = null) {
     if (arg1 != "cancel") {
-        if (iVotedYes > iVotedNo && arg1 != "fail" || arg1 == "succeed") {
+        if (/*iVotedYes > iVotedNo && arg1 != "fail" || */arg1 == "succeed") {
             SendChatMessage("[VOTE] The vote has succeeded.", pVoteInitiator)
 
             // Add stuff for actually changing in game stuffs
@@ -167,7 +191,7 @@ function Vote::DoVote(arg1 = null) {
             if (iVotedYes > 1) {
                 charPluralVotes = "s"
             }
-            SendChatMessage("[VOTE] The vote was a tie, each with " + iVotedYes.tostring() + " vote" + charPluralVotes + ".", pVoteInitiator)
+            SendChatMessage("[VOTE] The vote has failed and tied, each with " + iVotedYes.tostring() + " vote" + charPluralVotes + ".", pVoteInitiator)
         }
         else if (iVotedYes < iVotedNo && arg1 != "succeed" || arg1 == "fail") {
             SendChatMessage("[VOTE] The vote has failed.", pVoteInitiator)
@@ -186,9 +210,10 @@ function Vote::CleanUpVote() {
 
     for (local player; player = Entities.FindByClassname(player, "player");) {
         FindPlayerClass(player).startedvote = false // Forget who initiated the vote
-        FindPlayerClass(player).hasvoted = false // Forget all those that had voted
+        FindPlayerClass(player).hasvotedyes = false // Forget all those that had voted
+        FindPlayerClass(player).hasvotedno = false // Forget all those that had voted
     }
-    Entities.FindByName(null, "VoteCounter").__KeyValueFromString("message", "Vote (Y/N/All): " + iVotedYes.tostring() + "/" + iVotedNo.tostring() + "/" + iCurrentNumberOfPlayers.tostring())
+    UpdatePlayerCountText()
 
     ReversedTimer = false
     ShouldDisplayVoteText = false
@@ -205,6 +230,10 @@ CommandList.push(
 
         // !vote (arg1) (arg2)
         function CC(p, args) {
+            if (!Player2Joined && !IsDedicatedServer) {
+                SendChatMessage("[VOTE] Wait until the game begins...")
+                return
+            }
             // WE ONLY WANT TO SHARE ONE INSTANCE OF THE CLASS FOR VOTING
             // OTHERWISE WE GET SOME VARIABLES MIXED UP, SUCH AS WHO STARTED
             // A VOTE AND WHO ALREADY VOTED
@@ -243,13 +272,15 @@ CommandList.push(
 
             // Obey the cooldown to initiate a vote
             if (Time().tointeger() < LastVoteCooldownTime.tointeger() && !Vote.bVoteInProgress) {
-                return SendChatMessage("[VOTE] Vote command is on cooldown for " + VotingCooldownWaitPeriod.tostring() + " seconds.", p)
+                SendChatMessage("[VOTE] Vote command is on cooldown for " + VotingCooldownWaitPeriod.tostring() + " seconds.", p)
+                return
             }
 
             // Obey the required number of players needed to initiate a vote
-            // if (Vote.iCurrentNumberOfPlayers < 3 && !Vote.bVoteInProgress) {
-            //     return SendChatMessage("[VOTE] Cannot vote if there are less than 3 players.", p)
-            // }
+            if (Vote.iCurrentNumberOfPlayers < MinimumPlayersInitiateVote && !Vote.bVoteInProgress) {
+                SendChatMessage("[VOTE] Cannot vote if there are less than 3 players.", p)
+                return
+            }
 
             // Depending on who invokes the command, prompt them with different messages
             if (args.len() == 0) {
@@ -257,10 +288,10 @@ CommandList.push(
                     if (bCurrentCCPlayerInitiatedVote) {
                         SendChatMessage("[VOTE] End a vote with: cancel", p)
                     } else {
-                        if (!FindPlayerClass(p).hasvoted) {
-                            SendChatMessage("[VOTE] Vote with: yes, no", p)
-                        } else {
+                        if (FindPlayerClass(p).hasvotedyes || FindPlayerClass(p).hasvotedno) {
                             SendChatMessage("[VOTE] You have already voted.", p)
+                        } else {
+                            SendChatMessage("[VOTE] Vote with: yes, no", p)
                         }
                     }
                 } else {
@@ -289,13 +320,13 @@ CommandList.push(
                 }
 
                 // Standard voter
-                if (!bCurrentCCPlayerInitiatedVote && FindPlayerClass(p).hasvoted && !IsAdminLevelEnough(p)) {
+                if (!bCurrentCCPlayerInitiatedVote && !IsAdminLevelEnough(p) && (FindPlayerClass(p).hasvotedyes || FindPlayerClass(p).hasvotedno)) {
                     return SendChatMessage("[VOTE] You have already voted.", p)
                 }
 
                 // Vote initiator didn't try to cancel
                 if (bCurrentCCPlayerInitiatedVote && args[0] != "cancel" && args[0] != "succeed" && args[0] != "fail") {
-                    return SendChatMessage("[ERROR] You initiated a vote and voted already.", p)
+                    return SendChatMessage("[VOTE] You initiated a vote and voted already.", p)
                 }
 
                 //----------------------------
@@ -306,7 +337,7 @@ CommandList.push(
                         Vote.DoVote("cancel")
                         return SendChatMessage("[VOTE] The vote has been cancelled.", p)
                     }
-                    return SendChatMessage("[ERROR] Cannot cancel the vote if you did not start it.", p)
+                    return SendChatMessage("[VOTE] Cannot cancel the vote if you did not start it.", p)
                 }
                 else if (args[0] == "changelevel" || args[0] == "kick" || args[0] == "hostgunonly" && !IsDedicatedServer) {
                     // Don't start new votes
@@ -321,11 +352,15 @@ CommandList.push(
                         SendChatMessage("[VOTE] Overruled the vote.", p)
                         Vote.DoVote(args[0])
                     } else {
-                        SendChatMessage("[VOTE] You need at least admin level 6 to overrule votes.")
+                        SendChatMessage("[VOTE] You need at least admin level 6 to overrule votes.", p)
                     }
                 } else {
                     // Randomness was entered
-                    SendChatMessage("[ERROR] Voting options are: yes, and no", p)
+                    if (FindPlayerClass(p).hasvotedyes || FindPlayerClass(p).hasvotedno) {
+                        SendChatMessage("[VOTE] You have already voted.", p)
+                    } else {
+                        SendChatMessage("[VOTE] Voting options are: yes, and no", p)
+                    }
                 }
                 return
             }

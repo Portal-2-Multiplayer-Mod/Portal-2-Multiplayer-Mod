@@ -50,6 +50,10 @@ function InstantRun() {
 
     if (IsCommunityCoopHub) {
         PostPlayerSpawn()
+        if (!CheatsOn) {
+            SendToConsoleP2MM("sv_cheats 0")
+        }
+        Player2Joined <- true
     }
 }
 
@@ -416,6 +420,9 @@ function Loop() {
                     // Revese the timer and firing time...
                     for (local i = 0; i <= VotingTime; i++) {
                         // TODO: AddOutput likes to replace ":" with "," in strings...
+                        // ALSO when starting new votes if someone canceled or forcefully
+                        // failed the previous one midway through, the text will appear to be 0
+                        // Maybe use a logic_relay and CancelPending?
                         EntFire("VoteTimer", "addoutput", "message Time: " + (VotingTime - i).tostring() + "s", i)
                     }
                     ReversedTimer = true
@@ -424,6 +431,8 @@ function Loop() {
             // This also means that the vote is currently active, so
             // it is safe to assign new values to member variables
             if (bAllowVoteTimeCheck) {
+                //## Update vote CC total players ##//
+                VoteInstanceArray[0].UpdatePlayerCountText()
                 if (Time() > VoteInitTime + VotingTime) {
                     bAllowVoteTimeCheck = false
                     local Vote = VoteInstanceArray[0]
@@ -449,6 +458,7 @@ function Loop() {
     }
 }
 
+// 3
 function PostPlayerSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, true, false, false, false, false)
@@ -829,11 +839,13 @@ function OnPlayerJoin(p, script_scope) {
             PostMapSpawn()
             break
         case 2:
-            // Run code after player 2 joins
-            if (!CheatsOn) {
-                SendToConsoleP2MM("sv_cheats 0")
+            if (!IsCommunityCoopHub) {
+                // Run code after player 2 joins
+                if (!CheatsOn) {
+                    SendToConsoleP2MM("sv_cheats 0")
+                }
+                Player2Joined = true
             }
-            Player2Joined <- true
             break
     }
 

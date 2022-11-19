@@ -398,7 +398,8 @@ function CreateGenericPlayerClass(p) {
     if (Config_UseChatCommands && PluginLoaded) {
         currentplayerclass.rocket <- false  // Rocket player status
         currentplayerclass.startedvote <- false  // Did this player initiate a vote?
-        currentplayerclass.hasvoted <- false  // Did this player vote already?
+        currentplayerclass.hasvotedyes <- false  // Did this player vote yes?
+        currentplayerclass.hasvotedno <- false  // Did this player vote no?
     }
 
     // Note down the registered player for later reference
@@ -1586,8 +1587,7 @@ function CalcNumPlayers() {
 
 // Function name is sensitive to the hex edits!
 function Plyr_Disconnect_Function() {
-    local iCurrentNumPlayers = CalcNumPlayers()
-    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
+    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected (" + CalcNumPlayers().tostring() + "/" + iMaxPlayers.tostring() + ")")
     EntFire("p2mm_player_disconnect_message", "display")
 }
 
