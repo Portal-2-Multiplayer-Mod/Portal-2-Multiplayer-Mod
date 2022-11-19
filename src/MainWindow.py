@@ -865,7 +865,6 @@ class Gui:
         # We need to check for "\n"s in the prompt that is supplied
         # If there is then we will seperate each part of text into a table
         breaktxt = "\n"
-        brackets = "[]"
         self.HasBreaks = False
         self.PromptBreaks = 0
         if breaktxt in prompt:
