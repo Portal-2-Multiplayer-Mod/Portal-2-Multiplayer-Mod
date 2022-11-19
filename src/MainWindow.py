@@ -810,7 +810,7 @@ class Gui:
             translations["error_yes"], YesInput, (75, 200, 75))
         Button_Decline = self.ButtonTemplate(
             translations["error_no"], NoInput, (255, 75, 75))
-        self.PopupBox("Trolling Time!?!?!", "Have you given cabiste an\naneruism today?",
+        self.PopupBox("Trolling Time!?!?!", "Have you given Cabiste an\naneruism today?",
                       [Button_Confirm, Button_Decline])
 
     def Button_PrintToConsole_func(self) -> None:
