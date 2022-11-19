@@ -246,9 +246,8 @@ def dataSystemInitialization(refresh: bool) -> None:
 # It will check for updates from the files Portal 2 will create read the name of the file then run the function that corresponds with the file
 def dataSystemChecker():
     Log("DS: Data System Checker has been enabled...")
-    while dataSystemState == True:
-
-        if os.path.exists(gamepath + GVars.nf + "SAVES"):
+    while dataSystemState:
+        if os.path.exists(gamepath + GVars.nf + "screenshots"):
             demdatas = os.listdir(demdataspath)
             for datasystemdems in demdatas:
                 print(datasystemdems)
@@ -281,7 +280,7 @@ class p2mmNotFoundError(Exception):
         dataSystemState = False
         quit()
 
-class firstStartWarning(Exception):
+class firstStartWarning(Warning):
     def __init__(self):
         Log("")
         Log("            __________Warning: DATA SYSTEM firstStartWarning__________")

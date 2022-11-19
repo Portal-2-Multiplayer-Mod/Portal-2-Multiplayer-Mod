@@ -464,7 +464,7 @@ def LaunchGame(gamepath: str) -> None:
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
-        elif (GVars.iol): #launching for linux
+        elif ((GVars.iol) or (GVars.iosd)): #launching for linux
             def RunGame():
                 def RunSteam():
                     if GVars.configData["Public-Server"]["value"] == "false":

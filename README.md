@@ -62,9 +62,9 @@ This is optional if you prefer not to use official release compilations.
 ### Compilation
 You will need `pyinstaller` in order to proceed.
 
-- Windows: `pyinstaller src/MainWindow.py -F -i src/GUI/assets/images/p2mm64.ico --noconsole --add-data "src/GUI;GUI" --add-data "src/FALLBACK;FALLBACK" --add-data "src/languages;languages"`
+- Windows: `pyinstaller src/MainWindow.py -F -i src/GUI/assets/images/p2mm64.ico --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/languages;languages"`
 
-- Linux: `pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/FALLBACK:FALLBACK" --add-data "src/languages:languages"`
+- Linux: `pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/languages:languages"`
 
 **Note: If you would like to fork the project and make your own releases, you will need to change the variables at the top of `Updater.py`**
 

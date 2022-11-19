@@ -50,8 +50,8 @@ DefaultConfigFile = {
         {
             "value": "",
             "menu": "portal2",
-            "description": "Set a password for your P2MM server, this can be changed while the server is up but a level restart is required",
-            "warning": "Its recommended to also set Public Server to false to have your server not on the Steam Servers",
+            "description": "Set a password for your P2MM server, this can be changed while the server is up but a level restart is required.",
+            "warning": "Its recommended to also set Public Server to false to have your server not appear on the Steam Servers.",
             "prompt": "Please type the password for your P2MM server",
         },
     
@@ -59,26 +59,26 @@ DefaultConfigFile = {
         {
             "value": "false",
             "menu": "portal2",
-            "description": "Have your server display public on steam servers?",
+            "description": "Have your server display public on Steam servers?",
             "warning": "Those with your IP Address will still be able to join. Set a password if you want a private server.",
-            "prompt": "Have your server display public on steam servers?",
+            "prompt": "Have your server display public on Steam servers?",
         },
     
     "Custom-Launch-Options":
         {
             "value": "+map mp_coop_lobby_3",
             "menu": "portal2",
-            "description": "Type any custom launch options you want. Example (+map 'mapname').",
+            "description": "Custom launch options for debugging or starting the server at a different map.",
             "warning": "Leave this to default if you don't know what it does!",
-            "prompt": "Custom launch options for debugging or starting the server at a different map",
+            "prompt": "Type any custom launch options you want.\nExample: \"+map 'mapname'\"",
         },
 
     "Encrypt-Cvars":
         {
             "value": "false",
             "menu": "portal2",
-            "description": "Encrypts cvars such as \"restart_level\" and \"reset_all_progress\")",
-            "warning": "(only use for public games) may break some functionality",
+            "description": "Encrypts cvars such as \"restart_level\" and \"reset_all_progress\".",
+            "warning": "Only use for public games! This may break some functionality.",
             "prompt": "Encrypt cvars?",
         },
 
@@ -86,8 +86,8 @@ DefaultConfigFile = {
         {
             "value": "false",
             "menu": "portal2",
-            "description": "Encrypts vscript functions such as \"SendToConsole(\"\")\"",
-            "warning": "(only use for public games) may break some functionality",
+            "description": "Encrypts vscript functions such as \"SendToConsole()\"",
+            "warning": "Only use for public games! This may break some functionality.",
             "prompt": "Encrypt specific vscript functions?",
         },
 
@@ -99,22 +99,22 @@ DefaultConfigFile = {
             "menu": "players",
             "description": "If You See This Something Is Wrong",
             "warning": "If You See This Something Is Wrong",
-            "prompt": "If you see this something is wrong",
+            "prompt": "If You See This Something Is Wrong",
         },
 
     "Dev-Mode":
         {
             "value": "false",
-            "menu": "hidden",
+            "menu": "dev",
             "description": "Makes the mod's files mount from src/ModFiles",
-            "warning": "only enable this if you know what you're doing!",
+            "warning": "Only enable this if you know what you're doing!",
             "prompt": "",
         },
 
-    "Manual-Data-System-Overide":
+    "Data-System-Overide":
         {
             "value": "true",
-            "menu": "hidden",
+            "menu": "dev",
             "description": "Manually overide if the server will operate next play session.",
             "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
             "prompt": "",

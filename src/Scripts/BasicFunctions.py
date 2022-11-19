@@ -35,7 +35,6 @@ def CopyFile(src: str, dst: str) -> str:
         os.system("cp \"" + src + "\" \"" + dst + "\"")
     return dst
 
-
 def MoveFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("move \"" + src + "\" \"" + dst + "\"")
@@ -57,6 +56,9 @@ def TryFindPortal2Path():
     elif (GVars.iow):
         if (os.path.isdir(defpathwin)):
             return defpathwin
+    elif (GVars.iosd):
+        if (os.path.isdir(defpathlin)):
+            return defpathlin
 
     if (GVars.iow):
         try:

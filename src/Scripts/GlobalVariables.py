@@ -59,13 +59,13 @@ def init() -> None:
         if ("valve" in platform.release()):
             iosd = True
             # Steam OS 3.0 has some directories set to read-only
-            # We are going to install p2mm to the home\Documents directory instead of .cache and .config because of this
+            # We are going to install p2mm to the home\Desktop directory instead of .cache and .config because of this
             # We are also gonna keep stuff together like with the Windows paths, configs will be placed into the same directory as the ModFiles
-            modPath = os.path.expanduser("~") + nf + "Documents\p2mm"
-            modFilesPath = os.path.expanduser("~") + nf + "Documents\p2mm\Modfiles"
-            configPath = os.path.expanduser("~") + nf + "Documents\p2mm"
-            masterDataFilePath = os.path.expanduser("~") + nf + "Documents\p2mm"
-            dataSystemPath = os.path.expanduser("~") + nf + "Documents\p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod\datasystem"
+            modPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
+            modFilesPath = os.path.expanduser("~") + nf + "Desktop/p2mm/Modfiles"
+            configPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
+            masterDataFilePath = os.path.expanduser("~") + nf + "Desktop/p2mm"
+            dataSystemPath = os.path.expanduser("~") + nf + "Desktop/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscript/multiplayermod/datasystem"
         else:
             iol = True
             # Set the modpath the to the users .cache and .config directories in the home directory

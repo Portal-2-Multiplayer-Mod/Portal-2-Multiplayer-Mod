@@ -56,4 +56,7 @@ def StartLog() -> None:
         Log("Windows OS detected!")
     elif (GVars.iol):
         Log("")
-        Log("Linux OS detected!")
+        Log("Linux OS: detected!")
+    elif (GVars.iosd):
+        Log("")
+        Log("SteamOS: detected!")
