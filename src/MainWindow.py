@@ -1217,7 +1217,7 @@ class Gui:
         Log("Starting Discord Rich Presence!")
         
         RPC.connect()
-        RPC.update(state="Oh Yeah, Its Custom Rich Presence Time", details="  ", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
+        RPC.update(state="Playing with the Portal 2 Multiplayer Mod!", details="  ", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
         Log("Rich Presence enabled!")
         while self.running:
             mouse = pygame.mouse.get_pos()
@@ -1414,7 +1414,7 @@ class Gui:
 
             discordPresenceCount += 1 # Every frame we will add to the counter, every 60 counts is a second
             if discordPresenceCount == int(60 * 15): # Every 15 seconds we will reset the Discord Presence
-                RPC.update(state="Oh Yeah, Its Custom Rich Presence Time, But Now 15 Seconds Later...", details="  ", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
+                RPC.update(state="Playing with the Portal 2 Multiplayer Mod!", details="  ", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
                 discordPresenceCount = 0
 
         PreExit()
