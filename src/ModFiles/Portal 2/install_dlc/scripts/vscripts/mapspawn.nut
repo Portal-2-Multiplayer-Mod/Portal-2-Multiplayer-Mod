@@ -104,13 +104,11 @@ delete ConsoleAscii
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
 
 // Import map support code
+// Map name will be wonky if the client VM attempts to get the map name
 function LoadMapSupportCode(gametype) {
     printl("\n=============================================================")
     printl("(P2:MM): Attempting to load " + gametype + " mapsupport code!")
     printl("=============================================================\n")
-
-    local MapName = FindAndReplace(GetMapName().tostring(), "maps/", "")
-    MapName = FindAndReplace(MapName.tostring(), ".bsp", "")
 
     if (gametype != "standard") {
         try {
@@ -122,7 +120,7 @@ function LoadMapSupportCode(gametype) {
     }
 
     try {
-        IncludeScript("multiplayermod/mapsupport/" + gametype + "/" + MapName.tostring() + ".nut")
+        IncludeScript("multiplayermod/mapsupport/" + gametype + "/" + GetMapName() + ".nut")
     } catch (exception) {
         if (gametype == "standard") {
             printl("(P2:MM): Failed to load standard mapsupport for " + GetMapName() + "\n")

@@ -48,31 +48,18 @@ function TeleportPlayersUp() {
     Entities.FindByClassname(null, "player").SetOrigin(Vector(-190 0 64))
 }
 
-PermaPotato <- true
+PermaPotato = true
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Create env_globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+        // Assign env_globals
+        env_global01 <- Entities.FindByName(null, "p2mm_env_global01")
+        env_global02 <- Entities.FindByName(null, "p2mm_env_global02")
+        env_global03 <- Entities.FindByName(null, "p2mm_env_global03")
+        env_global04 <- Entities.FindByName(null, "p2mm_env_global04")
 
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+        UTIL_Team.Pinging(true, "all", 1)
+        UTIL_Team.Taunting(true, "all", 1)
 
         // Sp_A2_Finale4 first elevator viewcontrol creation
         Sp_A2_Finale4Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
@@ -264,10 +251,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (!Entities.FindByName(null, "ReEnableViewControl")) {
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0, null, null)
                 if (!OneTimeRenableViewControl) {
-                    EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-                    EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-                    EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-                    EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+                    UTIL_Team.Pinging(false, "all", 1)
+                    UTIL_Team.Taunting(false, "all", 1)
                     OneTimeRenableViewControl <- true
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "chell", 55.15, null, null)
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 55.25, null, null)
@@ -293,10 +278,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFireByHandle(player, "disabledraw", "", 0, null, null)
                 }
                 EntFire("rollcameracontrol", "kill", "", 16.1, null)
-                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+                UTIL_Team.Pinging(false, "all", 1)
+                UTIL_Team.Taunting(false, "all", 1)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "disable", "", 16, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0.3, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "ending_vehicle", 0.1, null, null)
@@ -407,10 +390,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (Sp_A4_Finale4ElevatorTeleport) {
                 EntFireByHandle(Sp_A2_Finale4Viewcontrol, "enable", "", 0, null, null)
                 GoodByeIdaho()
-                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+                UTIL_Team.Pinging(false, "all", 1)
+                UTIL_Team.Taunting(false, "all", 1)
                 EntFire("environment_darkness_1", "trigger", "", 5, null)
                 EntFire("light_dynamic_wheatley", "TurnOn", "", 5, null)
                 // EntFireByHandle(Sp_A2_Finale4Viewcontrol, "disable", "", 13, null, null)

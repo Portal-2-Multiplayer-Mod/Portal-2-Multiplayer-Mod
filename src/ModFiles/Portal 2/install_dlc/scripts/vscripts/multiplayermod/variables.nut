@@ -232,8 +232,10 @@ PrecachedProps <- []
 //---------------
 // Others
 //---------------
+defaultfog <- null
 LastCoordGetPlayer <- null
-OldPlayerPos <- null
+OldPlayerAngles <- Vector(0, 0, 0)
+OldPlayerPos <- Vector(0, 0, 0)
 OrangeOldPlayerPos <- null
 OriginalAngle <- null
 OriginalPosMain <- null

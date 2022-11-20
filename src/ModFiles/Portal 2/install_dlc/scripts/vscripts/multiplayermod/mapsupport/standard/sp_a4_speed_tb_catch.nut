@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     // Music doesn't play at the end (Moja)
     if (MSInstantRun) {
-        PermaPotato <- true
+        PermaPotato = true
         // GlobalSpawnClass.blue.spawnpoint <- Vector(-609.265137, 1875.096680, -100)
         // GlobalSpawnClass.red.spawnpoint <- Vector(-609.265137, 1875.096680, -100)
         // GlobalSpawnClass.blue.rotation <- Vector(0, -90, 0)

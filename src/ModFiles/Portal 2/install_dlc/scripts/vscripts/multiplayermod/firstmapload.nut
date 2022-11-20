@@ -22,6 +22,7 @@ else {
 
 if (!PluginLoaded) {
     // Remove Portal Gun (Map transition will sound less abrupt)
+    // Can't use UTIL_Team.Spawn_PortalGun(false) since the .nut file has not been loaded
     Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
     Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
 

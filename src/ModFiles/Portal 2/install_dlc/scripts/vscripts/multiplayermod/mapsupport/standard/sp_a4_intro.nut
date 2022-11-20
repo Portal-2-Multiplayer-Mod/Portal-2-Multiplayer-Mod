@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
-        PermaPotato <- true
+        PermaPotato = true
         rollang <- 0
         // self.PrecacheSoundScript("ambient\\industrial\\delivery_tubes_lp_01.wav") // Causes errors?
         Entities.FindByName(null, "wheatley_mad_sound1").SetOrigin(Vector(-680, -210, 916))

@@ -10,27 +10,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make changing levels work
         EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_intro:0.29", 0, null)
 
-        // Create env_globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+        UTIL_Team.Pinging(false, "all", 1)
 
         EntFire("@sphere", "EnableMotion", "", 0, null)
         EntFire("@sphere", "DisableMotion", "", 0.1, null)
@@ -143,10 +123,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         p.SetOrigin(Vector(8548, 1204, 106))
                         p.SetVelocity(Vector(0, 0, 0))
                     }
-                    EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-                    EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-                    EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-                    EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+                    UTIL_Team.Pinging(false, "all", 1)
+                    UTIL_Team.Taunting(false, "all", 1)
                     TPP1 <- false
                 }
             }
@@ -161,10 +139,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(0, 45, 0)
                 }
-                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+                UTIL_Team.Pinging(false, "all", 1)
+                    UTIL_Team.Taunting(false, "all", 1)
                 TPP2 <- false
             }
         }
@@ -177,20 +153,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(20, 40, 0)
                 }
-                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+                UTIL_Team.Pinging(false, "all", 1)
+                UTIL_Team.Taunting(false, "all", 1)
                 TPP3 <- false
             }
         }
 
         if (TPP4) {
             if (Entities.FindByName(null, "TPPLAYERS4")) {
-                EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+                UTIL_Team.Pinging(false)
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
                     p.SetOrigin(Vector(10366, 1215, 486))

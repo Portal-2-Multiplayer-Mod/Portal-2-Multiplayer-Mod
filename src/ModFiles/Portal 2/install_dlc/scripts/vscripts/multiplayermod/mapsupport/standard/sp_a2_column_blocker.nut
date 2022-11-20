@@ -9,27 +9,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
 
-        // Create env_globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+        UTIL_Team.Pinging(true, "all", 1)
+        UTIL_Team.Taunting(true, "all", 1)
 
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         // Destroy objects
@@ -58,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-1472, 256, -2591.75) 5).__KeyValueFromString("spawnflags", "4201")
 
         Entities.FindByClassnameNearest("trigger_once", Vector(-1472, 256, -3007.75), 1024).__KeyValueFromString("spawnflags", "4201")
-        EntFire(Entities.FindByClassnameNearest("trigger_once", Vector(-1472, 256, -3007.75), 1024), "addoutput", "OnTrigger p2mm_servercommand:command:script TogglePingingAndTaunts(1)", 0, null)
+        EntFire(Entities.FindByClassnameNearest("trigger_once", Vector(-1472, 256, -3007.75), 1024), "addoutput", "OnTrigger p2mm_servercommand:command:script UTIL_Team.Pinging(true, \"all\"); script UTIL_Team.Taunting(true, \"all\")", 0, null)
     }
 
     if (MSLoop) {
@@ -91,8 +72,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 SpA2ColumBlockerViewcontrol.SetAngles(0, 0, 0)
                 EntFire("SpA2ColumBlockerViewcontrol", "enable", "", 0, null)
                 EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", "SpA2ColumBlockerViewcontrol", 0, null, null)
-                
-                TogglePingingAndTaunts(0)
+
+                UTIL_Team.Pinging(false, "all")
+                UTIL_Team.Taunting(false, "all")
 
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -100,19 +82,5 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
         }
-    }
-}
-
-function TogglePingingAndTaunts(arg) {
-    if (!arg) {
-        EntFireByHandle(Entities.FindByName(null, "env_global01"), "turnon", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global02"), "turnon", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global03"), "turnon", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global04"), "turnon", "", 0, null, null)
-    } else {
-        EntFireByHandle(Entities.FindByName(null, "env_global01"), "turnoff", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global02"), "turnoff", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global03"), "turnoff", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "env_global04"), "turnoff", "", 0, null, null)
     }
 }

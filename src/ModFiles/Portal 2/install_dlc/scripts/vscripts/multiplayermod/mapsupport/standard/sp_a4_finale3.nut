@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     // Wheatley crusher glitch (Moja)
     if (MSInstantRun) {
-        PermaPotato <- true
+        PermaPotato = true
         Entities.FindByClassnameNearest("prop_dynamic", Vector(736, -1832, 185), 20).__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "airlock_door2").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "airlock_door2_brush").__KeyValueFromString("targetname", "moja3")
