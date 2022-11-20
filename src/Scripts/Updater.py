@@ -17,19 +17,18 @@ currentVersion = "2.1.0" # Change this before releasing a new version of the lau
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
-
 # thanks stackOverflow for this solution <3
 def haveInternet() -> bool:
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
     try:
         conn.request("HEAD", "/")
-        return True
-
-        return False
-    finally:
         conn.close()
-
-
+        Log("User as a internet connection!")
+        return True
+    except Exception as e:
+        Log(f"Failed to connect to the internet:\n{str(e)}")
+        return False
+        
 def CheckForNewClient() -> dict:
 
     if not haveInternet():
@@ -61,7 +60,6 @@ def CheckForNewClient() -> dict:
     }
 
     return results
-
 
 def DownloadClient(cType: str = "") -> bool:
 
@@ -189,4 +187,3 @@ def DownloadNewFiles() -> None:
     # then copy the new files there
     shutil.move(tempPath, Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
     Log("copied new files to " + GVars.modPath + Funcs.ConvertPath("/ModFiles/Portal 2/install_dlc"))
-
