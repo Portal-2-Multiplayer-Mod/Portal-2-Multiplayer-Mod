@@ -82,9 +82,9 @@ class Gui:
         self.p2mmlogo = pygame.image.load("GUI/assets/images/p2mm64.png").convert_alpha()
         pygame.display.set_icon(self.p2mmlogo)
         # cubes
-        self.greenCube = pygame.image.load("GUI/assets/images/button.png").convert_alpha()
-        self.angrycube = pygame.image.load("GUI/assets/images/angrycube.png").convert_alpha()
-        self.goldencube = pygame.image.load("GUI/assets/images/goldencube.png").convert_alpha()
+        self.greencube = pygame.image.load("GUI/assets/images/greencube.png").convert_alpha()
+        self.redcube = pygame.image.load("GUI/assets/images/redcube.png").convert_alpha()
+        self.goldencube = pygame.image.load("GUI/assets/images/yellowcube.png").convert_alpha()
 
         ###############################################################################
 
@@ -139,7 +139,7 @@ class Gui:
             x (float): the x position where it first spawns
             y (float): the y position where it first spawns
         """
-        surf = self.greenCube
+        surf = self.greencube
         surf = pygame.transform.scale(surf, (width, height))
         surf = pygame.transform.rotate(surf, 0)
 
@@ -1026,7 +1026,7 @@ class Gui:
         for floater in self.Floaters:
             surf = floater.surf
             if (self.SelectedButton.text == translations["unmount_button"] or self.SelectedButton.text == translations["exit_button"]):
-                surf = self.angrycube
+                surf = self.redcube
             if (self.SelectedButton.text == translations["back_button"]):
                 surf = self.goldencube
             surf = pygame.transform.scale(surf, (W / 15, W / 15))
