@@ -14,6 +14,7 @@ import pygame
 import pyperclip
 from pygame.locals import *
 from steamid_converter import Converter
+import pypresence
 
 import Scripts.BasicFunctions as BF
 import Scripts.Configs as cfg
@@ -1212,6 +1213,12 @@ class Gui:
 
     def Main(self) -> None:
         LastBackspace = 0
+        discordPresenceCount = 0
+        Log("Starting Discord Rich Presence!")
+        
+        RPC.connect()
+        RPC.update(state="Oh Yeah, Its Custom Rich Presence Time", details="  ", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
+        Log("Rich Presence enabled!")
         while self.running:
             mouse = pygame.mouse.get_pos()
             mousex = mouse[0]
@@ -1405,6 +1412,11 @@ class Gui:
                             self.selectedpopupbutton = button
                             self.PlaySound(button.hoversnd)
 
+            discordPresenceCount += 1 # Every frame we will add to the counter, every 60 counts is a second
+            if discordPresenceCount == int(60 * 15): # Every 15 seconds we will reset the Discord Presence
+                RPC.update(state="Oh Yeah, Its Custom Rich Presence Time, But Now 15 Seconds Later...", details="  ", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
+                discordPresenceCount = 0
+
         PreExit()
 
         pygame.quit()
@@ -1429,6 +1441,10 @@ def PreExit() -> None:
     if (GVars.configData["Auto-Umount"]["value"] == "true"):
         UnmountScript(False)
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+    
+    # Wrap up Discord Prescence by closing the connection
+    RPC.close()
+    Log("Discord Rich Presence for P2MM has been shutdown...")
 
 def GetGamePath() -> None:
     tmpp = BF.TryFindPortal2Path()
@@ -1729,6 +1745,7 @@ def PostInitialize() -> None:
 if __name__ == '__main__':
     try:
         cwd = os.getcwd()
+        RPC = pypresence.Presence("1024425552066658465") # Set the Client ID for P2MM's Discord Rich Presence
         Initialize()
         Ui = Gui(GVars.configData["Dev-Mode"]["value"] == "true")
         PostInitialize()

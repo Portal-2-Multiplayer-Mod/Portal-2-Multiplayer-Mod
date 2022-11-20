@@ -50,7 +50,7 @@ def CheckForNewClient() -> dict:
 
     # make sure that the latest release has a different version than the current one and is not a beta release
     if (currentVersion == r["tag_name"]) or ("beta" in r["tag_name"]):
-        Log("found release but it's old")
+        Log("Found release but it's old...")
         return {"status": False}
 
     results = {
@@ -109,7 +109,7 @@ def DownloadClient(cType: str = "") -> bool:
 
     command = path + " updated " + GVars.executable
     subprocess.Popen(command, shell=True)
-    Log("launched the new client")
+    Log("Launched the new client...")
     return True
 
 def CheckForNewFiles() -> bool:
@@ -130,16 +130,16 @@ def CheckForNewFiles() -> bool:
     # check if the identifier file exists or no
     localIdPath = GVars.modPath + GVars.nf + f"ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc{GVars.nf}32playermod.identifier"
     if not os.path.isfile(localIdPath):
-        Log("identifier file doesn't exist so the mod files are probably unavailable too")
+        Log("Identifier file doesn't exist so the mod files are probably unavailable too...")
         return True
 
-    Log("found local identifier file")
+    Log("Found local identifier file!")
 
     # if there was an error retrieving this file that means most likely that we changed it's name and released a new client
     try:
         r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json").json()
     except Exception as e:
-        Log(f"error getting the index file: {str(e)}")
+        Log(f"Error getting the index file: {str(e)}")
         return False
 
     # compare the dates of the local file and the file on the repo
@@ -147,10 +147,10 @@ def CheckForNewFiles() -> bool:
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
     # if the remote date is less or equal to the local date that means our client is up to date
     if (remoteDate <= localDate):
-        Log("mod files are up to date")
+        Log("Mod files are up to date...")
         return False
 
-    Log(f"the remote date {remoteDate} is greater than the local date {localDate}")
+    Log(f"The remote date {remoteDate} is greater than the local date {localDate}...")
 
     return True
 
@@ -162,7 +162,7 @@ def DownloadNewFiles() -> None:
 
     r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
-    Log("downloading "+str(len(r["Files"]))+" files...")
+    Log("Downloading "+str(len(r["Files"]))+" files...")
 
     # downlaod the files to a temp folder
     tempPath = GVars.modPath + GVars.nf + ".temp"
@@ -173,17 +173,17 @@ def DownloadNewFiles() -> None:
         try:
             urllib.request.urlretrieve(downloadLink, tempPath + file.replace("/", GVars.nf))
         except Exception as e:
-            Log(f"failed to download a file: {str(e)}")
+            Log(f"Failed to download a file: {str(e)}")
     Log("finished downloading")
 
     try:
         # when downloading is done delete the old mod files
         Funcs.DeleteFolder(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
-        Log("deleted old files")
+        Log("Deleted old files...")
     except Exception as e:
-        Log("there was no old mod files")
+        Log("There was no old mod files...")
         Log(str(e))
 
     # then copy the new files there
     shutil.move(tempPath, Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
-    Log("copied new files to " + GVars.modPath + Funcs.ConvertPath("/ModFiles/Portal 2/install_dlc"))
+    Log("Copied new files to " + GVars.modPath + Funcs.ConvertPath("/ModFiles/Portal 2/install_dlc..."))
