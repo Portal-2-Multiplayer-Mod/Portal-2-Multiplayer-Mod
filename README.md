@@ -4,6 +4,7 @@
   <br><a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/release-date/kyleraykbs/Portal2-32PlayerMod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right"></a>
   <br><a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/commits/main"><img src="https://img.shields.io/github/last-commit/kyleraykbs/Portal2-32PlayerMod?label=Last%20Commit&style=for-the-badge" alt="Commit Shield Badge" align="right"></a>
   <br><a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/downloads/kyleraykbs/Portal2-32PlayerMod/total?style=for-the-badge" alt="Download Count Shield Badge" align="right"></a>
+  <br><a href="https://github.com/qwertyquerty/pypresence"><img src="https://img.shields.io/badge/using-pypresence-00bb88.svg?style=for-the-badge&logo=discord&logoWidth=20" alt="P2MM uses Pypresence for Discord Rich Presence" align="right"></a>
   <br>
   <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
 </h1>

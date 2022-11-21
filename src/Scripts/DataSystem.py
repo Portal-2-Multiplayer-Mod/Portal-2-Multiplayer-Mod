@@ -197,7 +197,7 @@ def dataSystemInitialization(refresh: bool) -> None:
     # Now we clean up the system and create the files needed for the datasystem-main.nut file to read when its called on later when a map loads
     finally:
         try:
-            if (dataSystemState == True) and (GVars.configData["Manual-Data-System-Overide"]["value"] == "true"):
+            if (dataSystemState == True) and (GVars.configData["Data-System-Overide"]["value"] == "true"):
                 dataSystemInitSuccess = open(GVars.dataSystemPath + GVars.nf + "datasystem-enabled.nut", "x")
             else:
                 dataSystemInitFail = open(GVars.dataSystemPath + GVars.nf + "datasystem-disabled.nut", "x")
@@ -254,7 +254,7 @@ def dataSystemChecker():
                 demcount += 1
             print(demcount)
 
-def setPassword(password):
+def setPassword(password) -> bool:
     if (dataSystemState == True) and (GVars.configData["Manual-Data-System-Overide"]["value"] == "true"):
         passwordfile = open(GVars.dataSystemPath + GVars.nf + "datasystem-setpassword-" + password + ".nut", )
     else:
@@ -262,6 +262,8 @@ def setPassword(password):
             translations["error_ok"], YesInput, (75, 200, 75))
         Gui.PopupBox("The Data System is currently disabled due to an error or has been disabled manually.\nPlease refresh using the 'Refresh Data System' button for the system to refresh then try again.", Button_OK)
 
+def checkConfigChange():
+    print("checking config")
 
 # All the custom exceptions are defined here
 class p2mmNotFoundError(Exception):

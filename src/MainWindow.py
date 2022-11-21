@@ -14,7 +14,6 @@ import pygame
 import pyperclip
 from pygame.locals import *
 from steamid_converter import Converter
-import pypresence
 
 import Scripts.BasicFunctions as BF
 import Scripts.Configs as cfg
@@ -24,6 +23,7 @@ import Scripts.Updater as up
 import Scripts.Workshop as workshop
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.DataSystem as DS
+import Scripts.DiscordRichPresence as DRP
 
 tk = ""
 try:
@@ -423,6 +423,7 @@ class Gui:
                     else:
                         cfg.EditConfig(self.cfgkey, "false")
                     self.outerSelf.RefreshSettingsMenu(menu)
+                    #DS.checkConfigChange()
                     # Put Data System checking here for when a setting changes
                 else:
                     def AfterInputGenericSetConfig(inp: str) -> None:
@@ -432,6 +433,7 @@ class Gui:
                         self.outerSelf.Error(
                             translations["error_saved"], 5, (75, 200, 75))
                         self.outerSelf.RefreshSettingsMenu(menu)
+                        #DS.checkConfigChange()
 
                     self.outerSelf.GetUserInputPYG(
                         AfterInputGenericSetConfig, self.keyobj["prompt"], self.cfgvalue)
@@ -1214,11 +1216,7 @@ class Gui:
     def Main(self) -> None:
         LastBackspace = 0
         discordPresenceCount = 0
-        Log("Starting Discord Rich Presence!")
-        
-        RPC.connect()
-        RPC.update(state="Playing with the Portal 2 Multiplayer Mod!", details="  ", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
-        Log("Rich Presence enabled!")
+        discordPresenceRefreshCount = 0
         while self.running:
             mouse = pygame.mouse.get_pos()
             mousex = mouse[0]
@@ -1414,7 +1412,8 @@ class Gui:
 
             discordPresenceCount += 1 # Every frame we will add to the counter, every 60 counts is a second
             if discordPresenceCount == int(60 * 15): # Every 15 seconds we will reset the Discord Presence
-                RPC.update(state="Playing with the Portal 2 Multiplayer Mod!", details="  ", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
+                discordPresenceRefreshCount += 1
+                DRP.updateRichPresence(discordPresenceRefreshCount)
                 discordPresenceCount = 0
 
         PreExit()
@@ -1443,8 +1442,7 @@ def PreExit() -> None:
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
     
     # Wrap up Discord Prescence by closing the connection
-    RPC.close()
-    Log("Discord Rich Presence for P2MM has been shutdown...")
+    DRP.shutdownRichPresence()
 
 def GetGamePath() -> None:
     tmpp = BF.TryFindPortal2Path()
@@ -1745,10 +1743,10 @@ def PostInitialize() -> None:
 if __name__ == '__main__':
     try:
         cwd = os.getcwd()
-        RPC = pypresence.Presence("1024425552066658465") # Set the Client ID for P2MM's Discord Rich Presence
         Initialize()
         Ui = Gui(GVars.configData["Dev-Mode"]["value"] == "true")
         PostInitialize()
+        DRP.startRichPresence()
         Ui.Main()
     except Exception as a_funni_wacky_error_occured:
         Log("Exception encountered:\n" + traceback.format_exc())
