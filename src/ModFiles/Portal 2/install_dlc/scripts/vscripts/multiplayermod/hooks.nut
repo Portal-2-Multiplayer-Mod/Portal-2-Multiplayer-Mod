@@ -34,15 +34,13 @@ function InstantRun() {
     Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
     for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
         if (timer.GetName() == "p2mm_timer") {
-            p2mm_timer <- timer
+            EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
+            EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
+            EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
+            EntFireByHandle(timer, "Enable", "", looptime, null, null)
             break
         }
     }
-
-    EntFireByHandle(p2mm_timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-    EntFireByHandle(p2mm_timer, "AddOutput", "classname move_rope", 0, null, null)
-    EntFireByHandle(p2mm_timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
-    EntFireByHandle(p2mm_timer, "Enable", "", looptime, null, null)
 
     // Delay the creation of our map-specific entities before so
     // that we don't get an engine error from the entity limit
@@ -53,7 +51,7 @@ function InstantRun() {
         if (!CheatsOn) {
             SendToConsoleP2MM("sv_cheats 0")
         }
-        Player2Joined <- true
+        Player2Joined = true
     }
 }
 
@@ -83,15 +81,15 @@ function Loop() {
             }
         }
 
+        // Update everyone's class if PermaPotato is on
+        FindPlayerClass(p).potatogun = PermaPotato
+
         //## PotatoIfy loop ##//
-        if (FindPlayerClass(p).potatogun) {
+        if (PermaPotato) {
             PotatoIfy(p, "1")
         } else {
             PotatoIfy(p, "0")
         }
-
-        // Also update everyones class if PermaPotato is on
-        FindPlayerClass(p).potatogun <- PermaPotato
 
         //## Set PlayerModel ##//
         if (FindPlayerClass(p) != null) {
@@ -122,7 +120,7 @@ function Loop() {
             if (FindPlayerClass(p).rocket) {
                 if (p.GetVelocity().z <= 1) {
                     EntFireByHandle(p, "sethealth", "-100", 0, p, p)
-                    FindPlayerClass(p).rocket <- false
+                    FindPlayerClass(p).rocket = false
                 }
             }
         }
@@ -182,35 +180,35 @@ function Loop() {
         if (!CoordsAlternate) {
             // Alternate so our timings space out correctly
             if (LastCoordGetPlayer != null) {
-                LastCoordGetPlayer <- Entities.FindByClassname(LastCoordGetPlayer, "player")
+                LastCoordGetPlayer = Entities.FindByClassname(LastCoordGetPlayer, "player")
             } else {
-                LastCoordGetPlayer <- Entities.FindByClassname(null, "player")
+                LastCoordGetPlayer = Entities.FindByClassname(null, "player")
             }
             if (LastCoordGetPlayer != null) {
                 EntFireByHandle(measuremovement, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
                 // Alternate so our timings space out correctly
-                CoordsAlternate <- true
+                CoordsAlternate = true
             }
         } else {
             if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
                 local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
                 if (currentplayerclass != null) {
                     if (OriginalAngle == null && CanCheckAngle) {
-                        OriginalAngle <- measuremovement.GetAngles()
+                        OriginalAngle = measuremovement.GetAngles()
                         Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
                     }
 
-                    currentplayerclass.eyeangles <- measuremovement.GetAngles()
-                    currentplayerclass.eyeforwardvector <- measuremovement.GetForwardVector()
+                    currentplayerclass.eyeangles = measuremovement.GetAngles()
+                    currentplayerclass.eyeforwardvector = measuremovement.GetForwardVector()
                 }
             }
             // Alternate so our timings space out correctly
-            CoordsAlternate <- false
+            CoordsAlternate = false
         }
     } else {
         while (p = Entities.FindByClassname(p, "player")) {
-            FindPlayerClass(p).eyeangles <- Vector(0, 0, 0)
-            FindPlayerClass(p).eyeforwardvector <- Vector(0, 0, 0)
+            FindPlayerClass(p).eyeangles = Vector(0, 0, 0)
+            FindPlayerClass(p).eyeforwardvector = Vector(0, 0, 0)
         }
     }
 
@@ -257,27 +255,27 @@ function Loop() {
     if (cacheoriginalplayerposition == 0 && Entities.FindByClassname(null, "player") && !IsCommunityCoopHub) {
         // OldPlayerPos = the blues inital spawn position
         try {
-            OldPlayerPos <- Entities.FindByName(null, "blue").GetOrigin()
-            OldPlayerAngles <- Entities.FindByName(null, "blue").GetAngles()
+            OldPlayerPos = Entities.FindByName(null, "blue").GetOrigin()
+            OldPlayerAngles = Entities.FindByName(null, "blue").GetAngles()
         } catch (exception) {
             try {
-                OldPlayerPos <- Entities.FindByName(null, "info_coop_spawn").GetOrigin()
-                OldPlayerAngles <- Entities.FindByName(null, "info_coop_spawn").GetAngles()
+                OldPlayerPos = Entities.FindByName(null, "info_coop_spawn").GetOrigin()
+                OldPlayerAngles = Entities.FindByName(null, "info_coop_spawn").GetAngles()
             } catch (exception) {
                     try {
-                        OldPlayerPos <- Entities.FindByName(null, "info_player_start").GetOrigin()
-                        OldPlayerAngles <- Entities.FindByName(null, "info_player_start").GetAngles()
+                        OldPlayerPos = Entities.FindByName(null, "info_player_start").GetOrigin()
+                        OldPlayerAngles = Entities.FindByName(null, "info_player_start").GetAngles()
                     } catch(exception) {
-                        OldPlayerPos <- Vector(0, 0, 0)
-                        OldPlayerAngles <- Vector(0, 0, 0)
+                        OldPlayerPos = Vector(0, 0, 0)
+                        OldPlayerAngles = Vector(0, 0, 0)
                         if (GetDeveloperLevel()) {
                             printl("(P2:MM): Error: Could not cache player position. This is catastrophic!")
                         }
-                        cacheoriginalplayerposition <- 1
+                        cacheoriginalplayerposition = 1
                     }
                 }
             }
-        cacheoriginalplayerposition <- 1
+        cacheoriginalplayerposition = 1
     }
 
     //## Hook first spawn ##//
@@ -285,7 +283,7 @@ function Loop() {
         if (!DoneWaiting) {
             if (CanHook) {
                 if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
-                    DoneWaiting <- true
+                    DoneWaiting = true
                     PostPlayerSpawn()
                     if (GetDeveloperLevel()) {
                         printl("=================================HEALTH SPAWN")
@@ -312,10 +310,10 @@ function Loop() {
         // Change Config_DevMode variable based on convar "developer"
         if (!GetDeveloperLevel()) {
             if (StartDevModeCheck) {
-                Config_DevMode <- false
+                Config_DevMode = false
             }
         } else {
-            Config_DevMode <- true
+            Config_DevMode = true
         }
     }
 
@@ -332,9 +330,9 @@ function Loop() {
                 p.__KeyValueFromInt("ModelIndex", modelnumber)
                 local RTurretColor = RandomColor()
 
-                b <- RTurretColor.b
-                g <- RTurretColor.g
-                r <- RTurretColor.r
+                local B = RTurretColor.b
+                local G = RTurretColor.g
+                local R = RTurretColor.r
 
                 local model = RandomInt(0, 2)
 
@@ -371,12 +369,12 @@ function Loop() {
     ///////////////////////
 
     if (Time() >= PreviousTime1Sec + 1) {
-        PreviousTime1Sec <- Time()
+        PreviousTime1Sec = Time()
 
         // Random portal sizes
         if (Config_RandomPortalSize) {
-            randomportalsize <- RandomInt(1, 100 ).tostring()
-            randomportalsizeh <- RandomInt(1, 100 ).tostring()
+            randomportalsize = RandomInt(1, 100 ).tostring()
+            randomportalsizeh = RandomInt(1, 100 ).tostring()
 
             try {
                 while (p = Entities.FindByClassname(p, "prop_portal")) {
@@ -400,13 +398,11 @@ function Loop() {
         }
 
         //## Singleplayer check that must be looped in case sv_cheats was changed ##//
-        if (GlobalOverridePluginGrabController) {
-            if (SetPhysTypeConvarLoaded) {
-                if (IsOnSingleplayerMaps) {
-                    SetPhysTypeConvar(0) // enable real-time physics
-                } else {
-                    SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
-                }
+        if (SetPhysTypeConvarLoaded) {
+            if (GlobalOverridePluginGrabController && IsOnSingleplayerMaps) {
+                SetPhysTypeConvar(0) // enable real-time physics
+            } else {
+                SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
             }
         }
 
@@ -463,15 +459,17 @@ function PostPlayerSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, true, false, false, false, false)
 
+    Player2Joined = true // in case no player joined yet and only the host spawned for now (LISTEN SERVER)
+
     EntFire("p2mm_servercommand", "command", "script ForceRespawnAll()", 1)
 
     if (!fogs) {
-        usefogcontroller <- false
+        usefogcontroller = false
         if (GetDeveloperLevel()) {
             printl("(P2:MM): No fog controller found. Disabling fog controller...")
         }
     } else {
-        usefogcontroller <- true
+        usefogcontroller = true
         if (GetDeveloperLevel()) {
             printl("(P2:MM): Fog controller found. Enabling fog controller...")
         }
@@ -482,7 +480,7 @@ function PostPlayerSpawn() {
             EntFireByHandle(Entities.FindByName(null, fog.name), "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmfogswitch(\"" + fog.fogname + "\")", 0, null, null)
         }
 
-        defaultfog <- fogs[0].fogname
+        defaultfog = fogs[0].fogname
 
         for (local p; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
@@ -649,7 +647,7 @@ function PostMapSpawn() {
     SendToConsoleP2MM("alias p2mmlobby changelevel mp_coop_p2mmlobby")
 
     // Set original angles
-    EntFire("p2mm_servercommand", "command", "script CanCheckAngle <- true", 0.32)
+    EntFire("p2mm_servercommand", "command", "script CanCheckAngle = true", 0.32)
 
     local plr = Entities.FindByClassname(null, "player")
 
@@ -657,8 +655,8 @@ function PostMapSpawn() {
     EntFireByHandle(plr, "addoutput", "MoveType 8", 0, null, null)
 
     EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
-    EntFire("p2mm_servercommand", "command", "script CanHook <- true", 1)
-    PostMapSpawnDone <- true
+    EntFire("p2mm_servercommand", "command", "script CanHook = true", 1)
+    PostMapSpawnDone = true
 }
 
 // 5
@@ -738,12 +736,7 @@ function OnPlayerJoin(p, script_scope) {
     //         SendChatMessage("***THIS MAP IS VERY BIG AND/OR THERE ARE A LOT OF PLAYERS CONNECTED!***", Entities.FindByClassname(null, "player"))
     //         SendChatMessage("***STRIPPING ALL PORTAL GUNS TO IMPROVE PERFORMANCE AND PREVENT A CRASH! TRANSITIONING TO mp_coop_doors IN 3 SECONDS***", Entities.FindByClassname(null, "player"))
 
-    //         if (!Entities.FindByName(null, "supress_blue_portalgun_spawn")) {
-    //             Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
-    //         }
-    //         if (!Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
-    //             Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
-    //         }
+    //         UTIL_Team.Spawn_PortalGun(false)
     //         for (local ent; ent = Entities.FindByClassname(ent, "weapon_portalgun");) {
     //             ent.Destroy()
     //         }
@@ -775,7 +768,7 @@ function OnPlayerJoin(p, script_scope) {
     }
 
     // Get player's index and store it
-    PlayerID <- p.GetRootMoveParent().entindex()
+    PlayerID = p.GetRootMoveParent().entindex()
 
     // Assign every new targetname to the player after blue and red are used
     if (PlayerID >= 3) {
@@ -828,8 +821,8 @@ function OnPlayerJoin(p, script_scope) {
     // If the player is the first player to join, fix OrangeOldPlayerPos
     if (p.GetTeam() == TEAM_RED) {
         if (OrangeCacheFailed) {
-            OrangeOldPlayerPos <- p.GetOrigin()
-            OrangeCacheFailed <- false
+            OrangeOldPlayerPos = p.GetOrigin()
+            OrangeCacheFailed = false
         }
     }
 
@@ -858,8 +851,8 @@ function OnPlayerJoin(p, script_scope) {
     local currentplayerclass = CreateGenericPlayerClass(p)
 
     // UPDATE THE CLASS
-    currentplayerclass.portal1 <- portal1
-    currentplayerclass.portal2 <- portal2
+    currentplayerclass.portal1 = portal1
+    currentplayerclass.portal2 = portal2
 
     // PRINT THE CLASS
     if (GetDeveloperLevel()) {
@@ -886,12 +879,12 @@ function OnPlayerJoin(p, script_scope) {
     if (Config_UseJoinIndicator && PlayerID > 1) {
         // Set join message to player name (or index)
         local iCurrentNumPlayers = CalcNumPlayers()
-        joinmessagedisplay.__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
+        Entities.FindByName(null, "p2mm_player_joined_text").__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
         if (PlayerID > 1) {
             onscreendisplay.__KeyValueFromString("y", "0.075")
         }
         //# Say join message on HUD #//
-        EntFireByHandle(joinmessagedisplay, "display", "", 0.0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "p2mm_player_joined_text"), "display", "", 0.0, null, null)
     }
 
     // Set color of player's in-game model

@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        PermaPotato <- true
+        PermaPotato = true
         Entities.FindByName(null, "entrance_door_prop").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "paint_trickle_blue_1").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "paint_trickle_white_1").__KeyValueFromString("targetname", "moja3")

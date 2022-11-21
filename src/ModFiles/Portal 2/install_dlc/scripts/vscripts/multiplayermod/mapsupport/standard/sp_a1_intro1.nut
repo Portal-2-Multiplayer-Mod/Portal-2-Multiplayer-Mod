@@ -494,35 +494,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         dummyent <- Entities.CreateByClassname("prop_dynamic")
 
         // Remove Portal Gun
-        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
-        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+        UTIL_Team.Spawn_PortalGun(false)
 
-        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
-        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
-
-        // Create Env Globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
-
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+        // Disable pinging and taunting
+        UTIL_Team.Pinging(false)
+        UTIL_Team.Taunting(false)
 
         HasStartedSp_A1_Intro1 <- false
 
@@ -817,10 +793,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetOrigin(Vector(-8709.201172, 1690.068359, 36))
                     p.SetAngles(-4.158184, 64.797371, 0)
                 }
-                EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
                 stoprenable <- true
                 //Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
                 //Entities.FindByName(null, "knockout-portalgun").Destroy()

@@ -19,36 +19,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Destroy objects
         Entities.FindByName(null, "tube_ride_start_relay").Destroy()
 
-        // Create Env Globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
-
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
-
-        // Remove Portal Gun
-        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
-        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
-
-        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
-        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+        UTIL_Team.Spawn_PortalGun(false)
+        UTIL_Team.Pinging(false)
+        UTIL_Team.Taunting(false)
 
         // Make changing levels work
         EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_core:0.3", 0, null)
@@ -58,14 +31,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         printl("Player Joined (Reseting Viewcontrols)")
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 0.5, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0.6, null)
-        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global01, "turnon", "", 1.1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1.1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1.1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1.1, null, null)
+        UTIL_Team.Pinging(false)
+        UTIL_Team.Taunting(false)
     }
 
     if (MSLoop) {
@@ -115,16 +82,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 51, null)
 
         // Disable taunting & pinging
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+        UTIL_Team.Pinging(false, "all", 1)
+        UTIL_Team.Taunting(false, "all", 1)
 
         // Enable taunting & pinging
-        EntFireByHandle(env_global01, "turnoff", "", 50, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 50, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 50, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 50, null, null)
+        UTIL_Team.Pinging(false, "all", 50)
+        UTIL_Team.Taunting(false, "all", 50)
 
         // Remove some blackkkk
         inffade <- false

@@ -341,27 +341,6 @@ function SetPlayerModel(p, mdl) {
     FindPlayerClass(p).playermodel = mdl
 }
 
-// playerclass <- {
-//     player = null,
-//     id = 0,
-//     username = "",
-//     steamid = 0,
-//     color = {
-//         r = 0,
-//         g = 0,
-//         b = 0,
-//         a = 220
-//     },
-//     eyeangles = Vector(0, 0, 0),
-//     eyeforwardvector = Vector(0, 0, 0),
-//     potatogun = "true",
-//     noclip = false,
-//     rocket = false,
-//     portal1 = null,
-//     portal2 = null,
-//     playermodel = null
-// }
-
 function CreateGenericPlayerClass(p) {
     // Make sure there isnt an existing player class
     foreach (indx, curlclass in playerclasses) {
@@ -668,6 +647,10 @@ function CreateEntityClass(ent) {
     }
     local newclass = class {
         entity = ent
+        // TODO: What should be the default for this?
+        // linkedprop = ???
+        // followingpointlist = ???
+        // followingpointlistindex = ???
     }
     entityclasses.push(newclass)
 }
@@ -1197,20 +1180,20 @@ function EnableNoclip(enable, player = "all") {
             local currentplayerclass = FindPlayerClass(p)
             if (enable) {
                 EntFireByHandle(p, "addoutput", "MoveType 8", 0, null, null)
-                currentplayerclass.noclip <- true
+                currentplayerclass.noclip = true
             } else {
                 EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
-                currentplayerclass.noclip <- false
+                currentplayerclass.noclip = false
             }
         }
     } else {
         local currentplayerclass = FindPlayerClass(player)
         if (enable) {
             EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
-            currentplayerclass.noclip <- true
+            currentplayerclass.noclip = true
         } else {
             EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
-            currentplayerclass.noclip <- false
+            currentplayerclass.noclip = false
         }
     }
 }
@@ -1223,7 +1206,7 @@ function SetSpeed(player, speed) {
 function BestGuessSpawnpoint() {
     if (!MadeSpawnClass) {
         // Box ents
-        BoxEnts <- [
+        local BoxEnts = [
             "@arrival_video_master",
             "@departure_video_master",
             "@end_of_playtest_text",
@@ -1467,10 +1450,10 @@ function BestGuessSpawnpoint() {
         GlobalSpawnClass.red.spawnpoint <- FinalSpawnRed
         GlobalSpawnClass.red.rotation <- FinalRotationRed
 
-        MadeSpawnClass <- true
+        MadeSpawnClass = true
         return GlobalSpawnClass
     } else {
-        MadeSpawnClass <- true
+        MadeSpawnClass = true
         return GlobalSpawnClass
     }
 }
@@ -1546,7 +1529,7 @@ function CreateOurEntities() {
     onscreendisplay.__KeyValueFromString("channel", "1")
 
     // Create a player disconnect message entity
-    disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
+    local disconnectmessagedisplay = Entities.CreateByClassname("game_text")
     disconnectmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_disconnect_message")
     disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
     disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
@@ -1558,7 +1541,7 @@ function CreateOurEntities() {
 
     if (Config_UseJoinIndicator) {
         // Create a join message entity
-        joinmessagedisplay <- Entities.CreateByClassname("game_text")
+        local joinmessagedisplay = Entities.CreateByClassname("game_text")
         joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
         joinmessagedisplay.__KeyValueFromString("holdtime", "3")
         joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
@@ -1569,7 +1552,7 @@ function CreateOurEntities() {
     }
 
     // Create a player_speedmod entity to modify a player's movement speed
-    playerspeedmod <- Entities.CreateByClassname("player_speedmod")
+    local playerspeedmod = Entities.CreateByClassname("player_speedmod")
     playerspeedmod.__KeyValueFromString("targetname", "p2mm_player_speedmod")
 
     // Create an entity that sends miscellaneous client commands
@@ -1587,7 +1570,7 @@ function CalcNumPlayers() {
 
 // Function name is sensitive to the hex edits!
 function Plyr_Disconnect_Function() {
-    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected (" + CalcNumPlayers().tostring() + "/" + iMaxPlayers.tostring() + ")")
+    Entities.FindByName(null, "p2mm_player_disconnect_message").__KeyValueFromString("message", "Player disconnected (" + CalcNumPlayers().tostring() + "/" + iMaxPlayers.tostring() + ")")
     EntFire("p2mm_player_disconnect_message", "display")
 }
 
