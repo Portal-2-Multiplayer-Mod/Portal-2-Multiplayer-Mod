@@ -7,6 +7,7 @@ DRP = pypresence.Presence("1024425552066658465") # Set the Client ID for P2MM's 
 discordActive: bool = False
 
 def startRichPresence() -> None:
+    global discordActive
     Log("Starting Discord Rich Presence!")
     if checkIfProcessRunning("Discord"):
         discordActive = True
@@ -19,7 +20,8 @@ def startRichPresence() -> None:
         Log("Rich Presence will not be enabled!")
 
 def updateRichPresence(count) -> None:
-    if discordActive:
+    global discordActive
+    if discordActive == True:
         if checkIfProcessRunning("Discord"):
             DRP.update(state= str(count) + "" + "Playing with the Portal 2 Multiplayer Mod!", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
         else:
