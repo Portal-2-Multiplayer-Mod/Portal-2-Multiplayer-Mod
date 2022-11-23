@@ -155,7 +155,7 @@ function Vote::DoVote(arg1 = null) {
                 break
             case "kick":
                 SendChatMessage("[VOTE] Kicking player in 5 seconds.", pVoteInitiator)
-                EntFire("p2mm_servercommand", "command", "kick " + FindPlayerClass(FindPlayerByName(VoteInstanceArray[0].Arg2)).username, 5)
+                EntFire(p2mm_clientcommand, "command", "disconnect " + FindPlayerClass(FindPlayerByName(VoteInstanceArray[0].Arg2)).username + " \"You have been kicked from the server!\"", 5)
                 break
             case "hostgunonly":
                 // TODO: This doesn't account for gamemodes apart from "standard"

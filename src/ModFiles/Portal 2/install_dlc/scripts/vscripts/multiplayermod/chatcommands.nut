@@ -286,7 +286,7 @@ function FindPlayerByName(name) {
 
 function GetAdminLevel(plr) {
     foreach (admin in Admins) {
-        // Seperate the SteamID and the admin level
+        // Separate the SteamID and the admin level
         local level = split(admin, "[]")[0]
         local SteamID = split(admin, "]")[1]
 
