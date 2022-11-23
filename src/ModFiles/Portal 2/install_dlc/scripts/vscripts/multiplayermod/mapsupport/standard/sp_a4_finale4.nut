@@ -15,10 +15,6 @@ fogs <- [
     {name = "environment_darkness_4", fogname = "@environment_darkness_fog_4", fogdelay = 0}
 ]
 
-function GoodByeIdaho() {
-    PermaPotato = false
-}
-
 function CatwalkDisableRender() {
     Entities.FindByName(null, "p2mmcatwalkmodeloverride").__KeyValueFromString("rendermode", "10")
     Entities.FindByName(null, "p2mmcatwalk2modeloverride").__KeyValueFromString("rendermode", "10")
@@ -389,7 +385,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (!Entities.FindByName(null, "notinelevator")) {
             if (Sp_A4_Finale4ElevatorTeleport) {
                 EntFireByHandle(Sp_A2_Finale4Viewcontrol, "enable", "", 0, null, null)
-                GoodByeIdaho()
+                PermaPotato = false
                 UTIL_Team.Pinging(false, "all", 1)
                 UTIL_Team.Taunting(false, "all", 1)
                 EntFire("environment_darkness_1", "trigger", "", 5, null)
