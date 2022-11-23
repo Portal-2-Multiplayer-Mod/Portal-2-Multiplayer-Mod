@@ -46,7 +46,7 @@ DefaultConfigFile = {
             "prompt": "Enable background cubes?",
         },
 
-    "Server-Password":
+    "(WIP)Server-Password":
         {
             "value": "",
             "menu": "portal2",
@@ -55,7 +55,7 @@ DefaultConfigFile = {
             "prompt": "Please type the password for your P2MM server",
         },
     
-    "Public-Server":
+    "(WIP)Public-Server":
         {
             "value": "false",
             "menu": "portal2",
@@ -111,7 +111,7 @@ DefaultConfigFile = {
             "prompt": "",
         },
 
-    "Data-System-Overide":
+    "(WIP)Data-System-Overide":
         {
             "value": "true",
             "menu": "dev",

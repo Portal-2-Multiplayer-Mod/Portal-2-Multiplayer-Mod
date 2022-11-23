@@ -25,27 +25,51 @@ from Scripts.BasicLogger import Log
 
 # This is the default masterData.cfg structure
 # Will we use this to check if the file is formatted correctly and if a new one needs to be created
+# defaultDataStructure = {
+#     "kicklist":[], # The kick list is a list that will be reset for every play session
+#     "banlist":[], # The ban list is a list that will persist every play session
+
+#     "officalp2mmmaps": {
+#         "Test Room": { # This will be removed later when what ever update involving this system is released
+#             "verificationStatus": "offical",
+#             "mapFileName": "mp_coop_testroom.bsp",
+#             "mapsupportFile": "mp_coop_testroom.nut",
+#             "data": {
+#                 "testdatasend": "notsent",
+#                 "testdatarecieved": "notsent"
+#             }
+#         }
+#     },
+    
+#     "verifiedp2mmmaps": { # This will be a list of maps that work with the data system the devs have verified personally
+
+#     },
+#     "unverifiedp2mmmaps": {
+
+#     }
+# }
+
 defaultDataStructure = {
     "kicklist":[], # The kick list is a list that will be reset for every play session
     "banlist":[], # The ban list is a list that will persist every play session
 
-    "officalp2mmmaps": {
-        "Test Room": { # This will be removed later when what ever update involving this system is released
-            "verificationStatus": "offical",
-            "mapFileName": "mp_coop_testroom.bsp",
-            "mapsupportFile": "mp_coop_testroom.nut",
-            "data": {
-                "testdatasend": "notsent",
-                "testdatarecieved": "notsent"
-            }
+    "Test Room": { # This will be removed later when what ever update involving this system is released
+        "verificationStatus": "offical", # The maps status in the system
+        "mapFileName": "mp_coop_testroom", # Specify the map bsp file
+        "mapsupportFile": "mp_coop_testroom", # Soecify the map support file if there is one
+        "data": {
+            "testdatasend": "notsent",
+            "testdatarecieved": "notsent"
         }
     },
-    
-    "verifiedp2mmmaps": { # This will be a list of maps that work with the data system the devs have verified personally
 
-    },
-    "unverifiedp2mmmaps": {
-
+    "P2MM Lobby": {
+        "verificationStatus": "offical",
+        "mapFileName": "mp_coop_p2mmlobby",
+        "mapsupportFile": "mp_coop_p2mmlobby",
+        "data": {
+            "introseq": "false"
+        }
     }
 }
 
@@ -65,16 +89,17 @@ def masterDataFileStructureCheck(masterDataFilePath) -> None:
 
     grabbedMasterData = open(masterDataFilePath, "r", encoding="utf-8").read().strip()
     masterDataFile = json.loads(grabbedMasterData)
-
-    dataFileKeys = masterDataFile.keys()
+    
+    #dateFileKeyValues = masterDataFile[]
     errors = 0
     # Validate all the categories in presetCategories are correct in the masterDataFile file
-    for keys in dataFileKeys:
+    for keys in masterDataFile:
         if keys not in presetKeys:
             Log(f"DS: The category [{key}] is invalid, removing it...")
             dataFileKeys.pop(key)
             errors +=1
 
+    
     # Validate all the keys in mapKeys for each are correct in the masterDataFile file
     #for values in dataFileKeys[key]:
         #if value not in mapValues:
@@ -197,7 +222,7 @@ def dataSystemInitialization(refresh: bool) -> None:
     # Now we clean up the system and create the files needed for the datasystem-main.nut file to read when its called on later when a map loads
     finally:
         try:
-            if (dataSystemState == True) and (GVars.configData["Data-System-Overide"]["value"] == "true"):
+            if (dataSystemState == True) and (GVars.configData["(WIP)Data-System-Overide"]["value"] == "true"):
                 dataSystemInitSuccess = open(GVars.dataSystemPath + GVars.nf + "datasystem-enabled.nut", "x")
             else:
                 dataSystemInitFail = open(GVars.dataSystemPath + GVars.nf + "datasystem-disabled.nut", "x")
@@ -255,7 +280,7 @@ def dataSystemChecker():
             print(demcount)
 
 def setPassword(password) -> bool:
-    if (dataSystemState == True) and (GVars.configData["Manual-Data-System-Overide"]["value"] == "true"):
+    if (dataSystemState == True) and (GVars.configData["(WIP)Data-System-Overide"]["value"] == "true"):
         passwordfile = open(GVars.dataSystemPath + GVars.nf + "datasystem-setpassword-" + password + ".nut", )
     else:
         Button_OK = Gui.ButtonTemplate(

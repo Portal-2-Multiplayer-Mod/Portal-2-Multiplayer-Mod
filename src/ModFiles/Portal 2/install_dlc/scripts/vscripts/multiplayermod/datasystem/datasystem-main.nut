@@ -33,8 +33,15 @@ function dataLoad() {
 
 }
 
-function dataSave(event, eventdata) {
-    SendToConsoleP2MM("screenshot datasystem-" + event + "-" + eventdata)
+function dataSaveCreate(event, eventdata) {
+    try {
+        SendToConsoleP2MM("screenshot datasystem-" + event + "-" + eventdata)
+        printl("datasystem-" + event + "-" + eventdata + " file created...")
+    } catch(e) {
+        printl("datasystem-" + event + "-" + eventdata + " failed to be created...")
+        printl(e)
+    }
+    
     try {
         IncludeScript("multiplayermod/datasystem/datasystem-" + event + "-" + eventdata + ".nut")
         printl(GetMapName().tostring + "-" + event + "-data.dem has been created")
