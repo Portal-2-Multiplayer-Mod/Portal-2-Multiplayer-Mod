@@ -22,7 +22,7 @@ def updateRichPresence(count) -> None:
     global discordActive
     if discordActive == True:
         if BF.checkIfProcessRunning("Discord"):
-            DRP.update(state= "Playing with the Portal 2 Multiplayer Mod!", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
+            DRP.update(state="Playing with the Portal 2 Multiplayer Mod!", large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
         else:
             discordActive = False
             Log("Discord is not running anymore...")
