@@ -40,7 +40,7 @@ OurAddedFunctions <- [
 
 //---------------------------------------------------
 
-printl("(P2:MM): Checking plugin functionality...")
+printlP2MM("Checking plugin functionality...")
 
 foreach (Function in OurAddedFunctions) {
     // Does the function exist?
@@ -69,18 +69,18 @@ foreach (Function in OurAddedFunctions) {
             }
         case OurAddedFunctions[2]:
             function AddChatCallback(string) {
-                printl("(P2:MM): AddChatCallback() not loaded. Unable to add chat callback for chat commands!")
+                printlP2MM("AddChatCallback() not loaded. Unable to add chat callback for chat commands!")
             }
         case OurAddedFunctions[3]:
             function SetPhysTypeConvar(int) {
-                printl("(P2:MM): SetPhysTypeConvar() not loaded. Unable to change game grab controllers!")
+                printlP2MM("SetPhysTypeConvar() not loaded. Unable to change game grab controllers!")
             }
         case OurAddedFunctions[4]:
             function SetMaxPortalSeparationConvar(int) {
-                printl("(P2:MM): SetMaxPortalSeparationConvar() not loaded. Unable to change player collision amounts!")
+                printlP2MM("SetMaxPortalSeparationConvar() not loaded. Unable to change player collision amounts!")
             }
         }
-        printl("(P2:MM): - " + Function + "() failed to load and has been redefined!")
+        printlP2MM("- " + Function + "() failed to load and has been redefined!")
     }
 }
 
@@ -106,7 +106,7 @@ SetPhysTypeConvarLoaded <- false
 SetMaxPortalSeparationConvarLoaded <- false
 
 function RedefinedMessage(functionname) {
-    printl("(P2:MM): - " + functionname + "() failed to load and has been redefined!")
+    printlP2MM("- " + functionname + "() failed to load and has been redefined!")
 }
 
 function ReplaceGetPlayerName() {
@@ -139,7 +139,7 @@ function ReplaceAddChatCallback() {
         return
     }
     function AddChatCallback(string) {
-        printl("(P2:MM): Plugin not loaded. Unable to add chat callback for chat commands!")
+        printlP2MM("Plugin not loaded. Unable to add chat callback for chat commands!")
     }
     RedefinedMessage("AddChatCallback")
 }
@@ -150,7 +150,7 @@ function ReplaceSetPhysTypeConvar() {
         return
     }
     function SetPhysTypeConvar(string) {
-        printl("(P2:MM): Plugin not loaded. Unable to change game grab controllers!")
+        printlP2MM("Plugin not loaded. Unable to change game grab controllers!")
     }
     RedefinedMessage("SetPhysTypeConvar")
 }
@@ -161,12 +161,12 @@ function ReplaceSetMaxPortalSeparationConvar() {
         return
     }
     function SetMaxPortalSeparationConvar(string) {
-        printl("(P2:MM): Plugin not loaded. Unable to change player collision amounts!")
+        printlP2MM("Plugin not loaded. Unable to change player collision amounts!")
     }
     RedefinedMessage("SetMaxPortalSeparationConvar")
 }
 
-printl("(P2:MM): Checking plugin functionality...")
+printlP2MM("Checking plugin functionality...")
 
 ReplaceGetPlayerName()
 ReplaceGetSteamID()
@@ -174,10 +174,16 @@ ReplaceAddChatCallback()
 ReplaceSetPhysTypeConvar()
 ReplaceSetMaxPortalSeparationConvar()
 
+if (IsDedicatedServer) {
+    AddChatCallbackLoaded = false // CLIENT NEEDED IN ORDER TO FUNCTION
+    SetMaxPortalSeparationConvarLoaded = false // CLIENT-SIDE ONLY CVAR
+    printlP2MM("Running a dedicated server. Cannot add a callback for chat or set max separation force for players!")
+}
+
 if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded || SetMaxPortalSeparationConvarLoaded) {
     // Something loaded, so the plugin must be as well
     PluginLoaded <- true
-    printl("(P2:MM): - Plugin was detected!")
+    printlP2MM("- Plugin was detected!")
 }
 else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded && !SetMaxPortalSeparationConvarLoaded) {
     // Nothing loaded

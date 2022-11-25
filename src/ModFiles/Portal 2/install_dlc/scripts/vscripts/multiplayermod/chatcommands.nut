@@ -21,17 +21,17 @@ if (Config_UseChatCommands) {
     // This can only be enabled when the plugin is loaded fully
     if (PluginLoaded) {
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): Adding chat callback for chat commands.")
+            printlP2MM("Adding chat callback for chat commands.")
         }
         AddChatCallback("ChatCommands")
     } else {
         if (GetDeveloperLevel()) {
-            printl("(P2:MM): Can't add chat commands since no plugin is loaded!")
+            printlP2MM("Can't add chat commands since no plugin is loaded!")
         }
         return
     }
 } else {
-    printl("(P2:MM): Config_UseChatCommands is false. Not adding chat callback for chat commands!")
+    printlP2MM("Config_UseChatCommands is false. Not adding chat callback for chat commands!")
     // If AddChatCallback() was called at one point during the session, the game will still check for chat callback even after map changes.
     // So, if someone doesn't want CC midgame, just redefine the function to do nothing.
     function ChatCommands(iUserIndex, rawText) {}
@@ -167,8 +167,8 @@ function SendChatMessage(message, pActivatorAndCaller = null) {
 }
 
 function RunChatCommand(cmd, args, plr) {
-    printl("(P2:MM): Running chat command: " + cmd.name)
-    printl("(P2:MM): Player: " + FindPlayerClass(plr).username)
+    printlP2MM("Running chat command: " + cmd.name)
+    printlP2MM("Player: " + FindPlayerClass(plr).username)
     cmd.CC(plr, args)
 }
 
