@@ -51,17 +51,8 @@ DefaultConfigFile = {
             "value": "",
             "menu": "portal2",
             "description": "Set a password for your P2MM server, this can be changed while the server is up but a level restart is required.",
-            "warning": "Its recommended to also set Public Server to false to have your server not appear on the Steam Servers.",
+            "warning": "",
             "prompt": "Please type the password for your P2MM server",
-        },
-    
-    "(WIP)Public-Server":
-        {
-            "value": "false",
-            "menu": "portal2",
-            "description": "Have your server display public on Steam servers?",
-            "warning": "Those with your IP Address will still be able to join. Set a password if you want a private server.",
-            "prompt": "Have your server display public on Steam servers?",
         },
     
     "Custom-Launch-Options":
