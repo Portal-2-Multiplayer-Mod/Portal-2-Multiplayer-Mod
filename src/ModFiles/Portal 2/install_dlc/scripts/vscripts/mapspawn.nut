@@ -45,21 +45,35 @@ printl("\n----------------------------------")
 printl("==== calling mapspawn.nut (SERVER)")
 printl("----------------------------------\n")
 
+if (Entities.FindByName(null, "p2mm_servercommand")) {
+    printlP2MM("mapspawn.nut (SERVER) has already ran and is attempting to run again! Suppressing...")
+    return
+}
+
+function printlP2MM(str) {
+    printl("(P2:MM): " + str)
+}
+
 // Now we take care of some tasks first thing
 
-printl("(P2:MM): Session info...")
+printlP2MM("Session info...")
+printlP2MM("- Current map: " + GetMapName())
 
 // Determine what the "maxplayers" cap is
 iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1)
-printl("(P2:MM): - Max players allowed on the server: " + iMaxPlayers)
+printlP2MM("- Max players allowed on the server: " + iMaxPlayers)
 
-// Determine whether or not this is a dedicated server
+// TODO: Determine whether or not this is a dedicated server
+// Right now it needs to manually be assigned
 // if (IsLocalSplitScreen()) {
+    // if (Time() <= 1.63333) { // This is the latest known time a host client loads into a listen server
+
+    // }
     IsDedicatedServer <- false
 // } else {
 //     IsDedicatedServer <- true
 // }
-printl("(P2:MM): - Dedicated server: " + IsDedicatedServer + "\n")
+printlP2MM("- Dedicated server: " + IsDedicatedServer + "\n")
 
 IncludeScript("multiplayermod/pluginfunctionscheck.nut") // Make sure we know the exact status of our plugin
 IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences
@@ -107,7 +121,7 @@ delete ConsoleAscii
 // Map name will be wonky if the client VM attempts to get the map name
 function LoadMapSupportCode(gametype) {
     printl("\n=============================================================")
-    printl("(P2:MM): Attempting to load " + gametype + " mapsupport code!")
+    printlP2MM("Attempting to load " + gametype + " mapsupport code!")
     printl("=============================================================\n")
 
     if (gametype != "standard") {
@@ -115,7 +129,7 @@ function LoadMapSupportCode(gametype) {
             // Import the core functions before the actual mapsupport
             IncludeScript("multiplayermod/mapsupport/" + gametype + "/#" + gametype + "functions.nut")
         } catch (exception) {
-            printl("(P2:MM): Failed to load the " + gametype + " core functions file!")
+            printlP2MM("Failed to load the " + gametype + " core functions file!")
         }
     }
 
@@ -123,9 +137,9 @@ function LoadMapSupportCode(gametype) {
         IncludeScript("multiplayermod/mapsupport/" + gametype + "/" + GetMapName() + ".nut")
     } catch (exception) {
         if (gametype == "standard") {
-            printl("(P2:MM): Failed to load standard mapsupport for " + GetMapName() + "\n")
+            printlP2MM("Failed to load standard mapsupport for " + GetMapName() + "\n")
         } else {
-            printl("(P2:MM): Failed to load " + gametype + " mapsupport code! Reverting to standard mapsupport...")
+            printlP2MM("Failed to load " + gametype + " mapsupport code! Reverting to standard mapsupport...")
             return LoadMapSupportCode("standard")
         }
     }
@@ -139,7 +153,7 @@ case 1:     LoadMapSupportCode("speedrun");     break
 case 2:     LoadMapSupportCode("deathmatch");   break
 case 3:     LoadMapSupportCode("futbol");       break
 default:
-    printl("(P2:MM): \"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
+    printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
     LoadMapSupportCode("standard"); break
 }
 
@@ -149,7 +163,7 @@ default:
 
 // Make sure that the user is in multiplayer mode before initiating everything
 if (!IsMultiplayer()) {
-    printl("(P2:MM): This is not a multiplayer session! Disconnecting client...")
+    printlP2MM("This is not a multiplayer session! Disconnecting client...")
     EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
 }
 

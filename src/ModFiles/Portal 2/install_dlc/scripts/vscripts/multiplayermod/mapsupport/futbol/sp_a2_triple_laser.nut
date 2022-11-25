@@ -1,53 +1,29 @@
-futent <- null
+//  ██████╗██████╗             █████╗ ██████╗            ████████╗██████╗ ██╗██████╗ ██╗     ███████╗           ██╗      █████╗  ██████╗███████╗██████╗
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ╚══██╔══╝██╔══██╗██║██╔══██╗██║     ██╔════╝           ██║     ██╔══██╗██╔════╝██╔════╝██╔══██╗
+// ╚█████╗ ██████╔╝           ███████║  ███╔═╝              ██║   ██████╔╝██║██████╔╝██║     █████╗             ██║     ███████║╚█████╗ █████╗  ██████╔╝
+//  ╚═══██╗██╔═══╝            ██╔══██║██╔══╝                ██║   ██╔══██╗██║██╔═══╝ ██║     ██╔══╝             ██║     ██╔══██║ ╚═══██╗██╔══╝  ██╔══██╗
+// ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗   ██║   ██║  ██║██║██║     ███████╗███████╗██████████╗███████╗██║  ██║██████╔╝███████╗██║  ██║
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝     ╚══════╝╚══════╝╚═════════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝
+
 disp1 <- null
 disp2 <- null
 
-desiredscore <- 10
-
-CurrentlySpawningFutBol <- false
-CanSpawnFutBol <- true
-GameRunning <- false
-
-FutBolTeams <- [
-    class {
-        name = "blue"
-        score = 0
+function FinishingSpawnFutbolInMap(x, y, z) {
+    EntFire("p2mm_servercommand", "command", "script CurrentlySpawningFutBol = false", 0.1)
+    if (CanSpawnFutBol) {
+        SpawnFutBol("futbol_in_map", Vector(x, y, z))
+        EntFire(Entities.FindByClassname(null, "prop_glass_futbol"), "break", "", 30)
     }
-    class {
-        name = "red"
-        score = 0
-    }
-]
-
-function FinishingSpawnFutbolInMap() {
-        EntFire("p2mm_servercommand", "command", "script CurrentlySpawningFutBol = false", 0.1)
-        if (CanSpawnFutBol) {
-            SpawnFutBol("futbol_in_map", Vector(7777, -5668, 225))
-            SendToConsoleP2MM("script EntFire(Entities.FindByClassname(null, \"prop_glass_futbol\"), \"break\", \"\",30)")
-        }
 }
 
 function SpawnFutbolInMap() {
     if (CanSpawnFutBol && !CurrentlySpawningFutBol) {
         CurrentlySpawningFutBol = true
-        EntFire("p2mm_servercommand", "command", "script FinishingSpawnFutbolInMap()", 3)
+        EntFire("p2mm_servercommand", "command", "script FinishingSpawnFutbolInMap(7777, -5668, 225)", 3)
     }
 }
 
-function StartGame() {
-    GameRunning <- true
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        printl("Player " + p  + " has joined the game.")
-        if (p.GetTeam() == TEAM_BLUE) {
-            p.SetOrigin(Vector(8169, -5664, 64))
-            p.SetAngles(0, -180, 0)
-        } else {
-            p.SetOrigin(Vector(7587, -5726,64))
-            p.SetAngles(0, 0, 0)
-        }
-    }
-}
+//------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -97,7 +73,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSPostPlayerSpawn) {
-        EntFire("p2mm_servercommand", "command", "say Game starts in 30 seconds", 0)
+        EntFire("p2mm_servercommand", "command", "say Game starts in 30 seconds")
         EntFire("p2mm_servercommand", "command", "say Game starts in 20 seconds", 10)
         EntFire("p2mm_servercommand", "command", "say Game starts in 10 seconds", 20)
         EntFire("p2mm_servercommand", "command", "say Game starts in 5 seconds", 25)
@@ -106,9 +82,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("p2mm_servercommand", "command", "say Game starts in 2 seconds", 28)
         EntFire("p2mm_servercommand", "command", "say Game starts in 1 second", 29)
         EntFire("p2mm_servercommand", "command", "say Game starting!", 30)
-        EntFire("p2mm_servercommand", "command", "script StartGame()", 30)
-                    EntFire(BlueGoalCounter, "Display", "", 0.1)
-                    EntFire(RedGoalCounter, "Display", "",0.1)
+        EntFire("p2mm_servercommand", "command", "script StartGame(8169, -5664, 64, 0, -180, 0, 7587, -5726, 64, 0, 0, 0)", 30)
+        EntFire(BlueGoalCounter, "Display", "", 0.1)
+        EntFire(RedGoalCounter, "Display", "", 0.1)
     }
 
     if (MSLoop) {
@@ -134,7 +110,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
             if (GameRunning) {
-                if (FutBolTeams[0].score  >= desiredscore) {
+                if (FutBolTeams.m_nBluescore >= desiredscore) {
                     GameRunning = false
                     CanSpawnFutBol = false
                     SendToConsoleP2MM("say BLUE WON THE GAME!")
@@ -142,7 +118,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFire(RedGoalCounter, "SetText", "BLUE WON THE GAME!", 0.1)
                     EntFire(BlueGoalCounter, "Display", "", 0.1)
                     EntFire(RedGoalCounter, "Display", "", 0.1)
-                } else if (FutBolTeams[1].score  >= desiredscore) {
+                } else if (FutBolTeams.m_nRedscore  >= desiredscore) {
                     GameRunning = false
                     CanSpawnFutBol = false
                     SendToConsoleP2MM("say RED WON THE GAME!")
@@ -150,7 +126,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFire(RedGoalCounter, "SetText", "RED WON THE GAME!", 0.1)
                     EntFire(BlueGoalCounter, "Display", "", 0.1)
                     EntFire(RedGoalCounter, "Display", "", 0.1)
-                    EntFire("p2mm_servercommand", "command", "say Game Restarts In 5 Seconds", 0)
+                    EntFire("p2mm_servercommand", "command", "say Game Restarts In 5 Seconds")
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 4 Seconds", 1)
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 3 Seconds", 2)
                     EntFire("p2mm_servercommand", "command", "say Game Restarts In 2 Seconds", 3)
@@ -163,8 +139,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 if (CounterRefreshTimer < Time() - 2) {
                     CounterRefreshTimer = Time()
-                    EntFire(BlueGoalCounter, "SetText", "Blue: " + FutBolTeams[0].score + "/" + desiredscore)
-                    EntFire(RedGoalCounter, "SetText", "Red: " + FutBolTeams[1].score + "/" + desiredscore)
+                    EntFire(BlueGoalCounter, "SetText", "Blue: " + FutBolTeams.m_nBluescore + "/" + desiredscore)
+                    EntFire(RedGoalCounter, "SetText", "Red: " + FutBolTeams.m_nRedscore + "/" + desiredscore)
                     EntFire(BlueGoalCounter, "Display", "", 0.1)
                     EntFire(RedGoalCounter, "Display", "", 0.1)
                 }
@@ -184,10 +160,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         EntFire("p2mm_servercommand", "command", "script futent.SetOrigin(GetGoalPoint(disp1))", 0.1)
                         EntFire("p2mm_servercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
                         EntFire(futent, "break", "", 1)
-                        EntFire(FutBolGoalText, "SetText", "Blue Scored!", 0)
+                        EntFire(FutBolGoalText, "SetText", "Blue Scored!")
                         EntFire(FutBolGoalText, "SetTextColor", "0 80 255", 0.1)
                         EntFire(FutBolGoalText, "Display", "", 0.2)
-                        FutBolTeams[0].score <- FutBolTeams[0].score + 1
+                        FutBolTeams.m_nBluescore = FutBolTeams.m_nBluescore + 1
 
                     } else {
                     if (CheckFutBolGoal(1, disp2, futent)) {
@@ -196,13 +172,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                             EntFire("p2mm_servercommand", "command", "script futent.SetOrigin(GetGoalPoint(disp2))", 0.1)
                             EntFire("p2mm_servercommand", "command", "script CoreExplosion(futent.GetOrigin())", 0.9)
                             EntFire(futent, "break", "", 1)
-                            EntFire(FutBolGoalText, "SetText", "Red Scored!", 0)
+                            EntFire(FutBolGoalText, "SetText", "Red Scored!")
                             EntFire(FutBolGoalText, "SetTextColor", "255 100 0", 0.1)
                             EntFire(FutBolGoalText, "Display", "", 0.2)
-
-
-                            FutBolTeams[1].score <- FutBolTeams[1].score + 1
-
+                            FutBolTeams.m_nRedscore <- FutBolTeams.m_nRedscore + 1
                         }
                     }
                 }
