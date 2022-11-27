@@ -1,15 +1,16 @@
+PlayerBanList <- []
+
 CommandList.push(
     class {
         name = "ban"
         level = 6
 
-        // !ban (player to kick here) (optional argument)
+        // !ban (player to ban here) (optional argument)
         function CC(p, args) {
-            PlayerKickList <- []
-            local KickPlayer = function(player) {
-                EntFireByHandle(p2mm_clientcommand, "Command", "disconnect \"You've been kicked from the server.\"", 0, p, p)
-                PlayerKickList.insert(player)
-                SendChatMessage(FindPlayerClass(player).username + " has been kicked from the server...", p)
+            local BanPlayer = function(player) {
+                EntFireByHandle(p2mm_clientcommand, "Command", "disconnect \"You've been banned from the server.\"", 0, p, p)
+                PlayerBanList.push(player)
+                SendChatMessage(FindPlayerClass(player).username + " has been banned from the server...", p)
             }
 
             if ((args.len() == 0) || (args.len() > 2)) {
@@ -17,7 +18,7 @@ CommandList.push(
                 return
             }
 
-            // arg[0] -> player to kick
+            // arg[0] -> player to ban
             args[0] = Strip(args[0])
             local plr = FindPlayerByName(args[0])
             // arg[1] -> optional argument
@@ -31,20 +32,20 @@ CommandList.push(
 
                 if (args.len() == 1) {
                     if (plr == p) {
-                        return SendChatMessage("[ERROR] You're trying to kick yourself.", p)
+                        return SendChatMessage("[ERROR] You're trying to ban yourself.", p)
                     }
                     if (plr != p) {
-                        KickPlayer(plr)
+                        BanPlayer(plr)
                     }
                 }
 
                 if (args.len() == 2) {
                     if (plr == p) {
-                        return SendChatMessage("[ERROR] You're trying to kick yourself.", p)
+                        return SendChatMessage("[ERROR] You're trying to ban yourself.", p)
                     }
                     if (plr != p) {
                         if (args[1] = "remove") {
-                            KickPlayer(plr)
+                            BanPlayer(plr)
                         }
                     }
                 }

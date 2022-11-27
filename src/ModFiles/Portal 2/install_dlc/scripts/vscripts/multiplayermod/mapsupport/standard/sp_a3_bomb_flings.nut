@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-256, 1570, 1288), 100)) {
              
-            SendToConsoleP2MM("changelevel sp_a3_crazy_box")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_crazy_box")
         }
     }
 }

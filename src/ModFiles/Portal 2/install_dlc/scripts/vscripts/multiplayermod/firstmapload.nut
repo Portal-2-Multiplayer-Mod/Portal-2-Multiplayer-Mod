@@ -26,8 +26,11 @@ if (!PluginLoaded) {
     Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
     Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
 
+    local intermediateArg = ""
+    if (IsDedicatedServer) { intermediateArg = "_noclient" }
+
     EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
-    EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05)
+    EntFire("p2mm_servercommand", "command", "plugin_load 32pmod" + intermediateArg, 0.05)
 } else {
     printlP2MM("Plugin has already been loaded! Not attempting to load it...")
 }

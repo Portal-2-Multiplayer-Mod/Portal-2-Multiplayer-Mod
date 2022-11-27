@@ -122,18 +122,18 @@ function ChatCommands(iUserIndex, rawText) {
 
 CommandList <- []
 
-// Include the scripts that will push each
-// CC to the CommandList array
-
 local IncludeScriptCC = function(script) {
     IncludeScript("multiplayermod/cc/" + script + ".nut")
 }
+
+// Include the scripts that will push each
+// chat command to the CommandList array
 
 IncludeScriptCC("adminmodify")
 // IncludeScriptCC("ban") // INDEV By Orsell
 IncludeScriptCC("changeteam")
 IncludeScriptCC("help")
-// IncludeScriptCC("kick") // INDEV By Orsell
+IncludeScriptCC("kick")
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
@@ -183,7 +183,7 @@ function UTIL_PlayerByIndex(index) {
 
 function RemoveDangerousChars(str) {
     str = Replace(str, "%n", "") // Can cause crashes!
-    if (StartsWith(str, "^")) {
+    if (StartsWith(str, "^")) { // ?
         return ""
     }
     return str

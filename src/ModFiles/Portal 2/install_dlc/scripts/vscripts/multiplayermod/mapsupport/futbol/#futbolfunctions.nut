@@ -11,8 +11,8 @@ class FutBolTeams {
 }
 
 function SpawnFutBol(targetname, position) {
-    SendToConsoleP2MM("sv_cheats 1; ent_create prop_glass_futbol; sv_cheats 0")
-    SendToConsoleP2MM("script FinishFutBolSpawn(\"" + targetname + " \", Vector(" + position.x + ", " + position.y + ", " + position.z + "))")
+    EntFire("p2mm_servercommand", "command", "sv_cheats 1; ent_create prop_glass_futbol; sv_cheats 0")
+    EntFire("p2mm_servercommand", "command", "script FinishFutBolSpawn(\"" + targetname + " \", Vector(" + position.x + ", " + position.y + ", " + position.z + "))")
 }
 
 function FinishFutBolSpawn(targetname, position) {

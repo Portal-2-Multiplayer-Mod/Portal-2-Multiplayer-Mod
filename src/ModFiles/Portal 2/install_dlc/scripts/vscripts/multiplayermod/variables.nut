@@ -84,6 +84,15 @@ if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) == "mp_coop") {
     IsOnSingleplayerMaps <- 1
 }
 
+// Minimize the errors when in singleplayer maps
+// (We don't need these)
+if (IsOnSingleplayerMaps) {
+    function GetPlayer() {}
+    function PrecacheMovie(string) {}
+    function CoopPingTool(int1, int2) {}
+    function CoopBotAnimation(int1, int2) {}
+}
+
 MadeSpawnClass <- false
 OrangeCacheFailed <- false
 Player2Joined <- false

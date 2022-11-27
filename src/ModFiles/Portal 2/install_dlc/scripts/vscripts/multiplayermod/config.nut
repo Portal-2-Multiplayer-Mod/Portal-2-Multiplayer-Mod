@@ -80,7 +80,7 @@ Config_UseChatCommands <- true
 // [3]: "playercolor (for someone else)", "rocket (optionally someone)"
 // [4]: "speed", "noclip", "teleport", "slap (optionally someone)"
 // [5]: "restartlevel", "spchapter", "mpcourse"
-// [6]: "rcon", "adminmodify"
+// [6]: "rcon", "adminmodify", "kick", "ban"
 //
 // Manually format it like this:
 // "[AdminLevel]SteamID", // (Username to keep track)

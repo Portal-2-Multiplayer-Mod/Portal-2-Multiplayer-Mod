@@ -168,16 +168,24 @@ function ReplaceSetMaxPortalSeparationConvar() {
 
 printlP2MM("Checking plugin functionality...")
 
+// Test all VScript functions
 ReplaceGetPlayerName()
 ReplaceGetSteamID()
-ReplaceAddChatCallback()
+if (!IsDedicatedServer) { ReplaceAddChatCallback() } // HOST CLIENT NEEDED IN ORDER TO FUNCTION
 ReplaceSetPhysTypeConvar()
-ReplaceSetMaxPortalSeparationConvar()
+if (!IsDedicatedServer) { ReplaceSetMaxPortalSeparationConvar() } // CLIENT-SIDE ONLY CVAR
 
+// Force mark some as false
 if (IsDedicatedServer) {
-    AddChatCallbackLoaded = false // CLIENT NEEDED IN ORDER TO FUNCTION
-    SetMaxPortalSeparationConvarLoaded = false // CLIENT-SIDE ONLY CVAR
-    printlP2MM("Running a dedicated server. Cannot add a callback for chat or set max separation force for players!")
+    AddChatCallbackLoaded = false
+    function AddChatCallback(string) {
+        printlP2MM("AddChatCallback() not loaded. Unable to add chat callback for chat commands!")
+    }
+    SetMaxPortalSeparationConvarLoaded = false
+    function SetMaxPortalSeparationConvar(string) {
+        printlP2MM("Plugin not loaded. Unable to change player collision amounts!")
+    }
+    printlP2MM("- Running a dedicated server. Cannot add a callback for chat or set max separation force for players!")
 }
 
 if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded || SetMaxPortalSeparationConvarLoaded) {
