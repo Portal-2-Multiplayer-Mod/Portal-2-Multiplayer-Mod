@@ -30,7 +30,23 @@
 // Not Running: The user has defined they do not want the data system to run next play session or the system is disabled
 
 function dataLoad() {
-
+    printl("Loading data retrieved from masterData...")
+    local grabbedData = false
+    try {
+        IncludeScript("datasystemsaves/datasystem-" + event + "-" + eventdata + ".nut")
+        grabbedData = true
+    } catch (e) {
+        printl("Loading the blank script failed... We are gonna try again one more time...")
+        try {
+            IncludeScript("datasystemsaves/datasystem-" + event + "-" + eventdata + ".nut")
+        } catch (e) {
+            printl("Failed to grab data!")
+            grabbedData = false
+        }
+    }
+    if (grabbedData = true) {
+        dataSaveCheck()
+    }
 }
 
 function dataSaveCreate(event, eventdata) {
@@ -41,16 +57,34 @@ function dataSaveCreate(event, eventdata) {
         printl("datasystem-" + event + "-" + eventdata + " failed to be created...")
         printl(e)
     }
-    
+}
+
+function dataNutCheck() {
+    local checkFile = false, ""
+    local dataFileTypes = ["datasystem-kick-succeed.nut", 
+    "datasystem-kick-failed.nut", "datasystem-ban-succeed.nut", 
+    "datasystem-ban-failed.nut", "datasystem-mapevent-succeed.nut",
+    "datasystem-mapevent-failed.nut"]
     try {
-        IncludeScript("multiplayermod/datasystem/datasystem-" + event + "-" + eventdata + ".nut")
-        printl(GetMapName().tostring + "-" + event + "-data.dem has been created")
-        SendChatMessage("Map progress datad....")
-        SendToConsoleP2MM("screenshot SAVE/datasystemcheck-mapdatad")
-    } catch (e){
-        SendChatMessage("Map failed to data, check launcher console...")
-        printl("Save system check failed to complete...")
-        printl(e)
+        IncludeScript("datasystemsaves/datasystem-datacheck.nut")
+        checkFile = true
+    } catch (e) {
+        return
+    }
+    if (checkFile = true) {
+        foreach (dataFile in dataFileTypes) {
+            try {
+                IncludeScript(dataFile)
+                dataFileFound = true
+            } catch (e) {
+                continue
+            }
+        }
+        if (dataFileFound = true) {
+
+        } else {
+            printl("Data System Check called but no file found...")
+        }  
     }
 }
 
@@ -67,7 +101,7 @@ function init() {
         IncludeScript("multiplayermod/datasystem/datasystemcheck-pythonsuccess.nut")
         printl("Data Systen works! Will be avaliable for the map...")
         dataCheck <- true
-        SendToConsoleP2MM("_record SAVE/datasystemcheck-nutsuccess")
+        SendToConsoleP2MM("screenshot datasystemcheck-nutsuccess")
     } catch (e){
         printl("First check detection failed, trying again...")
         printl(e)

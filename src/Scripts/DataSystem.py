@@ -25,30 +25,6 @@ from Scripts.BasicLogger import Log
 
 # This is the default masterData.cfg structure
 # Will we use this to check if the file is formatted correctly and if a new one needs to be created
-# defaultDataStructure = {
-#     "kicklist":[], # The kick list is a list that will be reset for every play session
-#     "banlist":[], # The ban list is a list that will persist every play session
-
-#     "officalp2mmmaps": {
-#         "Test Room": { # This will be removed later when what ever update involving this system is released
-#             "verificationStatus": "offical",
-#             "mapFileName": "mp_coop_testroom.bsp",
-#             "mapsupportFile": "mp_coop_testroom.nut",
-#             "data": {
-#                 "testdatasend": "notsent",
-#                 "testdatarecieved": "notsent"
-#             }
-#         }
-#     },
-    
-#     "verifiedp2mmmaps": { # This will be a list of maps that work with the data system the devs have verified personally
-
-#     },
-#     "unverifiedp2mmmaps": {
-
-#     }
-# }
-
 defaultDataStructure = {
     "kicklist":[], # The kick list is a list that will be reset for every play session
     "banlist":[], # The ban list is a list that will persist every play session
@@ -87,47 +63,47 @@ def masterDataFileStructureCheck(masterDataFilePath) -> None:
         Log("DS: File blank, adding masterDataFile structure...")
         json.dump(defaultDataStructure, masterDataFilePath, indent=4)
 
-    grabbedMasterData = open(masterDataFilePath, "r", encoding="utf-8").read().strip()
-    masterDataFile = json.loads(grabbedMasterData)
+    # grabbedMasterData = open(masterDataFilePath, "r", encoding="utf-8").read().strip()
+    # masterDataFile = json.loads(grabbedMasterData)
     
-    #dateFileKeyValues = masterDataFile[]
-    errors = 0
-    # Validate all the categories in presetCategories are correct in the masterDataFile file
-    for keys in masterDataFile:
-        if keys not in presetKeys:
-            Log(f"DS: The category [{key}] is invalid, removing it...")
-            dataFileKeys.pop(key)
-            errors +=1
+    # dataFileKeys = masterDataFile.keys()
+    # #dateFileKeyValues = dataFileKeys[key]
+    # errors = 0
+    # # Validate all the categories in presetCategories are correct in the masterDataFile file
+    # for keys in masterDataFile:
+    #     if keys not in presetKeys:
+    #         Log(f"DS: The category [{key}] is invalid, removing it...")
+    #         dataFileKeys.pop(key)
+    #         errors +=1
 
-    
-    # Validate all the keys in mapKeys for each are correct in the masterDataFile file
-    #for values in dataFileKeys[key]:
-        #if value not in mapValues:
-            #if dataFile[key][values] != defaultDataStructure[key][values]:
-                #Log(f"DS: The value for [{key}][{values}] is invalid, fixing it...")
-                #dataFile[key][values] = defaultDataStructure[key][values]
-                #errors +=1
+    # # Validate all the keys in mapKeys for each are correct in the masterDataFile file
+    # #for values in dataFileKeys[key]:
+    #     #if value not in mapValues:
+    #         #if dataFile[key][values] != defaultDataStructure[key][values]:
+    #             #Log(f"DS: The value for [{key}][{values}] is invalid, fixing it...")
+    #             #dataFile[key][values] = defaultDataStructure[key][values]
+    #             #errors +=1
 
-    # Validate all the categories in presetCategories exist in the masterDataFile file
-    for key in defaultDataStructure.keys():
-        if key not in dataFileKeys:
-            Log(f"DS: The category [{key}] is missing, readding it...")
-            dataFileKeys[key] = defaultDataStructure[key]
-            errors +=1
+    # # Validate all the categories in presetCategories exist in the masterDataFile file
+    # for key in defaultDataStructure.keys():
+    #     if key not in dataFileKeys:
+    #         Log(f"DS: The category [{key}] is missing, readding it...")
+    #         dataFileKeys[key] = defaultDataStructure[key]
+    #         errors +=1
 
-    # Validate
-    #for key in DefaultConfigFile:
-        #for property in DefaultConfigFile[key]:
-            #if property not in config[key]:
-                #Log(f"The value for [{key}][{property}] is missing, fixing it...")
-                #config[key][property] = DefaultConfigFile[key][property]
-                #errors +=1
+    # # Validate
+    # #for key in DefaultConfigFile:
+    #     #for property in DefaultConfigFile[key]:
+    #         #if property not in config[key]:
+    #             #Log(f"The value for [{key}][{property}] is missing, fixing it...")
+    #             #config[key][property] = DefaultConfigFile[key][property]
+    #             #errors +=1
 
-    if errors > 0:
-        Log(f"DS: There are errors, {errors} error(s) was detected.")
-        #Log("DS: There are errors, we need to wipe the masterDataFile and make a new one...")
-        #createNewMasterData()
-    Log("DS: Structure check successfully performed!")
+    # if errors > 0:
+    #     Log(f"DS: There are errors, {errors} error(s) was detected.")
+    #     #Log("DS: There are errors, we need to wipe the masterDataFile and make a new one...")
+    #     #createNewMasterData()
+    # Log("DS: Structure check successfully performed!")
 
 def createNewMasterData() -> None:
     currentMasterData = (GVars.configPath + "\masterData.cfg")
@@ -172,10 +148,14 @@ def dataSystemInitialization(refresh: bool) -> None:
 
         # We need to remove any old .nut files that tell the data system if it started or not
         Log("DS: Removing any old .nut file indicators...")
-        if os.path.exists(GVars.dataSystemPath + "\datasystem-enabled.nut"):
-            os.remove(GVars.dataSystemPath + "\datasystem-enabled.nut")
-        if os.path.exists(GVars.dataSystemPath + "\datasystem-disabled.nut"):
-            os.remove(GVars.dataSystemPath + "\datasystem-disabled.nut")
+        if os.listdir(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves"):
+            for datasystemIndicator in os.listdir(GVars.p2mmScriptsPath + GVars.nf + "datasystem-enabled.nut"):
+                print(datasystemIndicator)
+                os.remove(datasystemIndicator)
+        #if os.path.exists(GVars.p2mmScriptsPath + GVars.nf + "datasystem-enabled.nut"):
+            #os.remove(GVars.p2mmScriptsPath + GVars.nf + "datasystem-enabled.nut")
+        #if os.path.exists(GVars.p2mmScriptsPath + GVars.nf + "datasystem-disabled.nut"):
+            #os.remove(GVars.p2mmScriptsPath + GVars.nf + "datasystem-disabled.nut")
         Log("DS: Removed old .nut file indicators...")
 
         # If the masterDataFile config file doesn't exist, we will ensure that a new fresh one is created
@@ -191,7 +171,7 @@ def dataSystemInitialization(refresh: bool) -> None:
         # Now finally need to check if the datasystem-main.nut file exists, this should be downloaded when the launcher updates
         # If it's not there the system will not be able to communicate with Portal 2 and vice versa, the system will be disabled
         Log("DS: Checking on our main data system Squirrel file...")
-        if not os.path.exists(GVars.dataSystemPath + GVars.nf + "datasystem-main.nut"):
+        if not os.path.exists(GVars.p2mmScriptsPath + GVars.nf + "datasystem.nut"):
             raise dataSystemNutNotFoundError
         else:
             Log("DS: Our Squirrel file exists!")
@@ -223,9 +203,9 @@ def dataSystemInitialization(refresh: bool) -> None:
     finally:
         try:
             if (dataSystemState == True) and (GVars.configData["(WIP)Data-System-Overide"]["value"] == "true"):
-                dataSystemInitSuccess = open(GVars.dataSystemPath + GVars.nf + "datasystem-enabled.nut", "x")
+                dataSystemInitSuccess = open(GVars.p2mmScriptsPath + GVars.nf + "datasystem-enabled.nut", "x")
             else:
-                dataSystemInitFail = open(GVars.dataSystemPath + GVars.nf + "datasystem-disabled.nut", "x")
+                dataSystemInitFail = open(GVars.p2mmScriptsPath + GVars.nf + "datasystem-disabled.nut", "x")
                 Log("DS: The data system encountered an error and it can't be enabled! Or it has been disabled in the Dev Menu.")
                 Log("DS: The system will be disabled for the next play session...")
                 dataSystemState = False
@@ -281,7 +261,7 @@ def dataSystemChecker():
 
 def setPassword(password) -> bool:
     if (dataSystemState == True) and (GVars.configData["(WIP)Data-System-Overide"]["value"] == "true"):
-        passwordfile = open(GVars.dataSystemPath + GVars.nf + "datasystem-setpassword-" + password + ".nut", )
+        passwordfile = open(GVars.p2mmScriptsPath + GVars.nf + "datasystem-setpassword-" + password + ".nut", )
     else:
         Button_OK = Gui.ButtonTemplate(
             translations["error_ok"], YesInput, (75, 200, 75))
