@@ -37,7 +37,6 @@ except Exception as e:
 # set current directory to the directory of this file
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-
 class Gui:
     def __init__(self, devMode: bool) -> None:
         pygame.mixer.pre_init(channels=1)
@@ -112,11 +111,9 @@ class Gui:
 
     def PlaySound(self, sound: pygame.mixer.Sound) -> None:
         """Plays the launcher's sounds when hovering / clicking on a buttong
-
         Args:
             sound (pygame.mixer.Sound): the sound to play
         """
-
         LauncherSFX = GVars.configData["Launcher-SFX"]["value"] == "true"
         if LauncherSFX:
             pygame.mixer.Sound.play(sound)
@@ -1410,10 +1407,9 @@ class Gui:
                             self.selectedpopupbutton = button
                             self.PlaySound(button.hoversnd)
 
-            discordPresenceCount += 1 # Every frame we will add to the counter, every 60 counts is a second
-            if discordPresenceCount == int(60 * 15): # Every 15 seconds we will reset the Discord Presence
-                discordPresenceRefreshCount += 1
-                DRP.updateRichPresence(discordPresenceRefreshCount)
+            discordPresenceCount += 1 # Every frame we will add to the counter, every 60 frame is a second
+            if discordPresenceCount == int(60 * 15): # Every 15 seconds we will update the Discord Rich Presence and check if Discord is still running or not
+                DRP.updateRichPresence()
                 discordPresenceCount = 0
 
         PreExit()
@@ -1426,6 +1422,8 @@ class Gui:
 # !######################################################
 
 def PreExit() -> None:
+    Log("Shutting down the P2MM launcher...")
+    Log("Shutting down Portal 2...")
     # windows
     if (GVars.iow):
         os.system("taskkill /f /im portal2.exe")
@@ -1437,12 +1435,18 @@ def PreExit() -> None:
     # this is to make sure the portal 2 thread is dead
     # 1 second should be enough for it to die
     time.sleep(1)
+    Log("Portal 2 has been shutdown...")
+
+    # Make sure the P2MM ModFiles are unmounted from Portal 2
     if (GVars.configData["Auto-Umount"]["value"] == "true"):
+        Log("Unmounting P2MM's ModFiles from Portal 2...")
         UnmountScript(False)
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+        Log("Unmounted P2MM's ModFiles from Portal 2...")
     
-    # Wrap up Discord Prescence by closing the connection
+    # Wrap up Discord Rich Presence by closing the connection
     DRP.shutdownRichPresence()
+    Log("The P2MM launcher has been shutdown...")
 
 def GetGamePath() -> None:
     tmpp = BF.TryFindPortal2Path()

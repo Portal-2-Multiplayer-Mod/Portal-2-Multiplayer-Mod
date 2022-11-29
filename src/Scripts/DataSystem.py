@@ -147,16 +147,13 @@ def dataSystemInitialization(refresh: bool) -> None:
         Log("DS: File system is good...")
 
         # We need to remove any old .nut files that tell the data system if it started or not
-        Log("DS: Removing any old .nut file indicators...")
-        if os.listdir(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves"):
-            for datasystemIndicator in os.listdir(GVars.p2mmScriptsPath + GVars.nf + "datasystem-enabled.nut"):
-                print(datasystemIndicator)
-                os.remove(datasystemIndicator)
-        #if os.path.exists(GVars.p2mmScriptsPath + GVars.nf + "datasystem-enabled.nut"):
-            #os.remove(GVars.p2mmScriptsPath + GVars.nf + "datasystem-enabled.nut")
-        #if os.path.exists(GVars.p2mmScriptsPath + GVars.nf + "datasystem-disabled.nut"):
-            #os.remove(GVars.p2mmScriptsPath + GVars.nf + "datasystem-disabled.nut")
-        Log("DS: Removed old .nut file indicators...")
+        Log("DS: Checking for any old .nut file indicators...")
+        if not os.listdir(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves") == []:
+            Log("DS: Found old .nut file indicators, removing...")
+            for dataSystemIndicator in os.listdir(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves"):
+                os.remove(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + dataSystemIndicator)
+            Log("DS: Removed old .nut file indicators...")
+        Log("DS: Finished checking for any old .nut file indicators")
 
         # If the masterDataFile config file doesn't exist, we will ensure that a new fresh one is created
         Log("DS: Checking our masterData.cfg file...")
@@ -164,7 +161,7 @@ def dataSystemInitialization(refresh: bool) -> None:
             Log("DS: No masterData.cfg detected, creating a new one...")
             createNewMasterData()
         else:
-            Log("DS: masterData.cfg retrieved!")
+            Log("DS: masterData.cfg retrieved...")
             masterDataFilePath = (GVars.configPath + GVars.nf + "masterData.cfg")
             masterDataFileStructureCheck(masterDataFilePath)
 
@@ -174,7 +171,7 @@ def dataSystemInitialization(refresh: bool) -> None:
         if not os.path.exists(GVars.p2mmScriptsPath + GVars.nf + "datasystem.nut"):
             raise dataSystemNutNotFoundError
         else:
-            Log("DS: Our Squirrel file exists!")
+            Log("DS: Our Squirrel file exists...")
 
     # If some miscelanous or unaccounted for error occurs this will throw, Orsell fricked up something too if this happens :)
     # This for some reason this is getting executed along with the other exceptions, thats not suppose to happen and it needs to be fixed
@@ -203,9 +200,9 @@ def dataSystemInitialization(refresh: bool) -> None:
     finally:
         try:
             if (dataSystemState == True) and (GVars.configData["(WIP)Data-System-Overide"]["value"] == "true"):
-                dataSystemInitSuccess = open(GVars.p2mmScriptsPath + GVars.nf + "datasystem-enabled.nut", "x")
+                dataSystemInitSuccess = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-enabled.nut", "x")
             else:
-                dataSystemInitFail = open(GVars.p2mmScriptsPath + GVars.nf + "datasystem-disabled.nut", "x")
+                dataSystemInitFail = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-disabled.nut", "x")
                 Log("DS: The data system encountered an error and it can't be enabled! Or it has been disabled in the Dev Menu.")
                 Log("DS: The system will be disabled for the next play session...")
                 dataSystemState = False
