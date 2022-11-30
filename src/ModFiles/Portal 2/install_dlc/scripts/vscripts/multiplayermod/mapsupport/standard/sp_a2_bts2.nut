@@ -147,8 +147,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         envfade.__KeyValueFromString("targetname", "FadeyBoi")
                         DoEntFire("p2mm_wait_for_players_textbts2", "display", "", 0.1, null, null)
                         DoEntFire("FadeyBoi", "fade", "", 0.1, null, null)
-                        if (GetDeveloperLevel()) {
-                            printl("stuff=====================thing")
+                        if (GetDeveloperLevelP2MM()) {
+                            printlP2MM("stuff=====================thing")
                         }
                         NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- false
                         PreviousTimeSp_A2_Bts2Again <- Time()
@@ -162,8 +162,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
                  
                 EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts2")
-                if (GetDeveloperLevel()) {
-                    printl("stuff=====================")
+                if (GetDeveloperLevelP2MM()) {
+                    printlP2MM("stuff=====================")
                 }
             }
         }

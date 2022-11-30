@@ -160,7 +160,7 @@ function Vote::DoVote(arg1 = null) {
             case "hostgunonly":
                 // TODO: This doesn't account for gamemodes apart from "standard"
                 // How do we deal with other weapon classes?
-                if (!IsDedicatedServer) {
+                if (!IsDedicatedServer()) {
                     SendChatMessage("[VOTE] Stripping all player guns except host in 5 seconds.", pVoteInitiator)
 
                     UTIL_Team.Spawn_PortalGun(false, "all")
@@ -230,7 +230,7 @@ CommandList.push(
 
         // !vote (arg1) (arg2)
         function CC(p, args) {
-            if (!Player2Joined && !IsDedicatedServer) {
+            if (!Player2Joined && !IsDedicatedServer()) {
                 SendChatMessage("[VOTE] Wait until the game begins...")
                 return
             }
@@ -295,7 +295,7 @@ CommandList.push(
                         }
                     }
                 } else {
-                    if (IsDedicatedServer) {
+                    if (IsDedicatedServer()) {
                         SendChatMessage("[VOTE] Start a vote with: changelevel, kick", p)
                     } else {
                         SendChatMessage("[VOTE] Start a vote with: changelevel, kick, hostgunonly", p)
@@ -339,7 +339,7 @@ CommandList.push(
                     }
                     return SendChatMessage("[VOTE] Cannot cancel the vote if you did not start it.", p)
                 }
-                else if (args[0] == "changelevel" || args[0] == "kick" || args[0] == "hostgunonly" && !IsDedicatedServer) {
+                else if (args[0] == "changelevel" || args[0] == "kick" || args[0] == "hostgunonly" && !IsDedicatedServer()) {
                     // Don't start new votes
                     SendChatMessage("[ERROR] Cannot start another vote if one is in progress.", p)
                 }
@@ -384,7 +384,7 @@ CommandList.push(
                 }
                 Vote.BeginVote(args[0], args[1], p)
             }
-            else if (args[0] == "hostgunonly" && !IsDedicatedServer) {
+            else if (args[0] == "hostgunonly" && !IsDedicatedServer()) {
                 // Start a new vote
                 Vote.BeginVote(args[0], null, p)
             }
@@ -394,7 +394,7 @@ CommandList.push(
                 VoteInstanceArray.clear()
             } else {
                 // No valid option chosen
-                if (IsDedicatedServer) {
+                if (IsDedicatedServer()) {
                     SendChatMessage("[ERROR] Voting options are: changelevel, kick.", p)
                 } else {
                     SendChatMessage("[ERROR] Voting options are: changelevel, kick, hostgunonly.", p)

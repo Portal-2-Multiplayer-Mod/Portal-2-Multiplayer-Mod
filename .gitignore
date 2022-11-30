@@ -59,6 +59,8 @@ Logs/
 configs.cfg
 !src/ModFiles/portal2
 # normal folder
+!src/ModFiles/Portal 2/install_dlc/addons/32pmod.dll
+!src/ModFiles/Portal 2/install_dlc/addons/32pmod.so
 !src/ModFiles/Portal 2/install_dlc/32pmod.dll
 !src/ModFiles/Portal 2/install_dlc/32pmod.so
 

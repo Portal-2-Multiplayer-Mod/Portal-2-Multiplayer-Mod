@@ -5,11 +5,19 @@ CommandList.push(
 
         // !speed (float arg)
         function CC(p, args) {
-            try {
-                SetSpeed(p, args[0].tofloat())
-            } catch (exception) {
-                EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Input a number.", 0, p, p)
+            if (args.len() == 0) {
+                SendChatMessage("[ERROR] Input a number.", p)
+                return
             }
+
+            args[0] = Strip(args[0]).tofloat()
+
+            if (typeof args[0] != "integer" && typeof args[0] != "float") {
+                SendChatMessage("[ERROR] Input a number.", p)
+                return
+            }
+
+            SetSpeed(p, args[0])
         }
     }
 )

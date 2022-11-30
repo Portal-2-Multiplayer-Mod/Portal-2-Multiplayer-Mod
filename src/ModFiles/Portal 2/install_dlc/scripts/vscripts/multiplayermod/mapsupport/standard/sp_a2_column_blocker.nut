@@ -60,8 +60,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (OnlyOnceSpA2ColumBlocker2) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(-1486, 256, -139.75), 10)) {
                 OnlyOnceSpA2ColumBlocker2 <- false
-                if (GetDeveloperLevel()) {
-                    printl("(P2:MM): Elevator viewcontrol activated!")
+                if (GetDeveloperLevelP2MM()) {
+                    printlP2MM("Elevator viewcontrol activated!")
                 }
                 SpA2ColumBlockerViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
                 SpA2ColumBlockerViewcontrol.__KeyValueFromString("target_team", "-1")
