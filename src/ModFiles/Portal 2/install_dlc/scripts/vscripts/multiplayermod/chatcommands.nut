@@ -15,26 +15,17 @@
 // TODO:
 // 1. Fix how we work out arguments for
 //    players with spaces in their names
-// 2. Implement vote CC
 
 if (Config_UseChatCommands) {
     // This can only be enabled when the plugin is loaded fully
-    if (PluginLoaded) {
-        if (GetDeveloperLevel()) {
-            printlP2MM("Adding chat callback for chat commands.")
-        }
-        AddChatCallback("ChatCommands")
-    } else {
-        if (GetDeveloperLevel()) {
+    if (!PluginLoaded) {
+        if (GetDeveloperLevelP2MM()) {
             printlP2MM("Can't add chat commands since no plugin is loaded!")
         }
         return
     }
 } else {
     printlP2MM("Config_UseChatCommands is false. Not adding chat callback for chat commands!")
-    // If AddChatCallback() was called at one point during the session, the game will still check for chat callback even after map changes.
-    // So, if someone doesn't want CC midgame, just redefine the function to do nothing.
-    function ChatCommands(iUserIndex, rawText) {}
     return
 }
 
@@ -156,14 +147,21 @@ IncludeScriptCC("vote")
 // if the player chooses not to use CC
 //--------------------------------------
 
+// TODO: Replace SendChatMessage with SendToChat and
+// maintain backwards compat in case something breaks
 function SendChatMessage(message, pActivatorAndCaller = null) {
-    // Try to use server command in the case of dedicated servers
-    local pEntity = Entities.FindByName(null, "p2mm_servercommand")
-    if (pActivatorAndCaller != null) {
-        // Send messages from a specific client
-        pEntity = p2mm_clientcommand
+    if (SendToChatLoaded) {
+        // It takes a different number of args, so we take care of it here
+        SendToChat("\x03(P2:MM): " + message)
+    } else {
+        // Try to use server command in the case of dedicated servers
+        local pEntity = Entities.FindByName(null, "p2mm_servercommand")
+        if (pActivatorAndCaller != null) {
+            // Send messages from a specific client
+            pEntity = p2mm_clientcommand
+        }
+        EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
     }
-    EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
 }
 
 function RunChatCommand(cmd, args, plr) {

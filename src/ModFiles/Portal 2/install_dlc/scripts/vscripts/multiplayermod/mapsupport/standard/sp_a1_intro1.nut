@@ -7,7 +7,7 @@
 
 HasSleptInContainer1 <- false
 function p2mmDestroyedSequence() {
-    if (GetDeveloperLevel()) {
+    if (GetDeveloperLevelP2MM()) {
         printl("(P2:MM): p2mmDestroyedSequence() has ran!")
     }
     HasSleptInContainer1 = true
@@ -40,10 +40,10 @@ function p2mmSecondDrop() {
 }
 
 function p2mmDropCollision() {
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): Dropping container collision via p2mmDropCollision().")
+    if (GetDeveloperLevelP2MM()) {
+        printlP2MM("Dropping container collision via p2mmDropCollision().")
     }
-    
+
     local dropamount = 45
     local ceiltime = 2.6
 
@@ -757,8 +757,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
-            if (GetDeveloperLevel()) {
-                printl("Player joined (Resetting viewcontrol)")
+            if (GetDeveloperLevelP2MM()) {
+                printlP2MM("Player joined (Resetting viewcontrol)")
             }
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
@@ -917,7 +917,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, currentCartPos.z + ((playermiddle.x + playermiddle.y) + 14)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
             }
-            if (GetDeveloperLevel()) {
+            if (GetDeveloperLevelP2MM()) {
                 DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)
             }
             currentCartCache <- currentCartPos
@@ -1024,7 +1024,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
                 // Debug The Lines  ////////////////////////////////////////////////////
-                if (GetDeveloperLevel()) {
+                if (GetDeveloperLevelP2MM()) {
                     DebugDrawLine(frontwall[1][0], frontwall[1][1], 255, 255, 0, true, 0) // front wall
                     DebugDrawLine(frontwall[2][0], frontwall[2][1], 255, 255, 0, true, 0) // front wall
                     DebugDrawLine(leftwall[1][0], leftwall[1][1], 255, 255, 0, true, 0)   // left wall
@@ -1052,7 +1052,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local alpha = 100
                 local time = 0
                 // draw the boxes
-                if (GetDeveloperLevel()) {
+                if (GetDeveloperLevelP2MM()) {
                     DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
                     DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
                     DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
@@ -1101,7 +1101,7 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
             playerforward = Vector(0, 5, 0)
         }
         inter = LineIntersect2DZTranslation(cull1, cull2, playerpoint, playerpoint + playerforward, dir)
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             DebugDrawBox(inter, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 75, 75, 255, 0)
         }
     }
@@ -1130,12 +1130,12 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
         player.SetOrigin(player.GetOrigin() + pushvec)
         player.SetVelocity(player.GetVelocity() + (pushvec * 10))
         
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 255, 75, 255, 0)
         }
 
     } else {
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0) 
         }
     }

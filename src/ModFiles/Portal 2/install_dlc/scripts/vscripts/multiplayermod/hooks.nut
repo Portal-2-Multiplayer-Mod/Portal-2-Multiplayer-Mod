@@ -49,7 +49,7 @@ function InstantRun() {
     if (IsCommunityCoopHub) {
         PostPlayerSpawn()
         if (!CheatsOn) {
-            if (IsDedicatedServer) {
+            if (IsDedicatedServer()) {
                 EntFire("p2mm_servercommand", "command", "sv_cheats 0")
             } else {
                 EntFire("p2mm_servercommand", "command", "hud_saytext_time 0; sv_cheats 0; hud_saytext_time 12")
@@ -269,7 +269,7 @@ function Loop() {
                     } catch(exception) {
                         OldPlayerPos = Vector(0, 0, 0)
                         OldPlayerAngles = Vector(0, 0, 0)
-                        if (GetDeveloperLevel()) {
+                        if (GetDeveloperLevelP2MM()) {
                             printlP2MM("Error: Could not cache player position. This is catastrophic!")
                         }
                         cacheoriginalplayerposition = 1
@@ -286,7 +286,7 @@ function Loop() {
                 if (Entities.FindByClassname(null, "player").GetHealth() < 200003001 || Entities.FindByClassname(null, "player").GetHealth() > 230053963) {
                     DoneWaiting = true
                     PostPlayerSpawn()
-                    if (GetDeveloperLevel()) {
+                    if (GetDeveloperLevelP2MM()) {
                         printl("=================================HEALTH SPAWN")
                     }
                 }
@@ -309,7 +309,7 @@ function Loop() {
     //## Config developer mode loop ##//
     if (DevModeConfig) {
         // Change Config_DevMode variable based on convar "developer"
-        if (!GetDeveloperLevel()) {
+        if (!GetDeveloperLevelP2MM()) {
             if (StartDevModeCheck) {
                 Config_DevMode = false
             }
@@ -466,12 +466,12 @@ function PostPlayerSpawn() {
 
     if (!fogs) {
         usefogcontroller = false
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             printlP2MM("No fog controller found. Disabling fog controller...")
         }
     } else {
         usefogcontroller = true
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             printlP2MM("Fog controller found. Enabling fog controller...")
         }
     }
@@ -534,7 +534,7 @@ function PostPlayerSpawn() {
         }
     } catch (exception) {}
     if (OrangeOldPlayerPos == null) {
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             printlP2MM("OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
         }
         OrangeOldPlayerPos = OldPlayerPos
@@ -557,7 +557,7 @@ function PostPlayerSpawn() {
                 }
             }
         } catch (exception) {
-            if (GetDeveloperLevel()) {
+            if (GetDeveloperLevelP2MM()) {
                 printlP2MM(OverrideName + " dropper not found! Cannot force open dropper.")
             }
         }
@@ -615,7 +615,7 @@ function PostPlayerSpawn() {
     EntFire("p2mm_servercommand", "command", "script CreatePropsForLevel(false, true, false)")
 
     // Remove scoreboard
-    if (!IsLocalSplitScreen() && !IsDedicatedServer && !IsCommunityCoopHub /*&& !Player2Joined*/) {
+    if (!IsLocalSplitScreen() && !IsDedicatedServer() && !IsCommunityCoopHub /*&& !Player2Joined*/) {
         for (local ent; ent = Entities.FindByClassname(ent, "player");) {
             // TODO: Is there a better way to trigger this for the host player on a listen server?
             // Right now, this will enter -score for every player
@@ -629,7 +629,7 @@ function PostMapSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, false, true, false, false, false)
 
-    if (!IsDedicatedServer) {
+    if (!IsDedicatedServer()) {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
     }
 
@@ -639,7 +639,7 @@ function PostMapSpawn() {
 
     // Edit cvars & set server name
     EntFire("p2mm_servercommand", "command", "mp_allowspectators 1")
-    if (PluginLoaded && !IsDedicatedServer) {
+    if (PluginLoaded && !IsDedicatedServer()) {
         EntFire("p2mm_servercommand", "command", "hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
     } else {
         EntFire("p2mm_servercommand", "command", "hostname Portal 2: Multiplayer Mod Server")
@@ -823,7 +823,7 @@ function OnPlayerJoin(p, script_scope) {
         FindEntityClass(portal1).linkedprop <- null
         FindEntityClass(portal2).linkedprop <- null
     } catch (exception) {
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             printlP2MM("Failed to rename portals" + exception)
         }
     }
@@ -850,7 +850,7 @@ function OnPlayerJoin(p, script_scope) {
             if (!IsCommunityCoopHub) {
                 // Run code after player 2 joins
                 if (!CheatsOn) {
-                    if (IsDedicatedServer) {
+                    if (IsDedicatedServer()) {
                         EntFire("p2mm_servercommand", "command", "sv_cheats 0")
                     } else {
                         EntFire("p2mm_servercommand", "command", "hud_saytext_time 0; sv_cheats 0; hud_saytext_time 12")
@@ -877,7 +877,7 @@ function OnPlayerJoin(p, script_scope) {
     /////////////////////////////////////
 
     // Show scoreboard
-    if (!IsLocalSplitScreen() && !IsDedicatedServer && !IsCommunityCoopHub && !Player2Joined) {
+    if (!IsLocalSplitScreen() && !IsDedicatedServer() && !IsCommunityCoopHub && !Player2Joined) {
         local p = Entities.FindByClassname(null, "player")
         if (FindPlayerClass(p).id == 1) {
             EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
@@ -925,7 +925,7 @@ function OnDeath(player) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, player, false)
 
-    if (GetDeveloperLevel()) {
+    if (GetDeveloperLevelP2MM()) {
         printlP2MM(FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
     }
 }
@@ -935,7 +935,7 @@ function OnRespawn(player) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, false, player)
 
-    if (GetDeveloperLevel()) {
+    if (GetDeveloperLevelP2MM()) {
         printlP2MM(FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
     }
 

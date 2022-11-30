@@ -282,7 +282,7 @@ function GetPlayerColor(p, multiply = true) {
 }
 
 function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
-    if (GetDeveloperLevel()){
+    if (GetDeveloperLevelP2MM()){
         DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
     }
 
@@ -477,11 +477,11 @@ function PrecacheModel(mdl) {
             EntFire("p2mm_servercommand", "command", "sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             printlP2MM("PrecacheModel() - Precached model: " + mdl)
         }
     } else {
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             printlP2MM("PrecacheModel() - Model: " + mdl + " already precached!")
         }
     }
@@ -650,7 +650,7 @@ function AddVectors(vec1, vec2) {
 }
 
 function CreateEntityClass(ent) {
-    if (GetDeveloperLevel()) {
+    if (GetDeveloperLevelP2MM()) {
         printlP2MM("Creating new entity class for entity: " + ent)
     }
     local newclass = class {
@@ -1226,7 +1226,7 @@ function BestGuessSpawnpoint() {
             "@transition_from_map",
         ]
 
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             printl("===========================")
             printl("Box ents")
             printl("===========================")
@@ -1258,38 +1258,38 @@ function BestGuessSpawnpoint() {
 
         local RealPlayerSpawn = null
         if (StartingBoxEnt == null) {
-            if (GetDeveloperLevel()) {
+            if (GetDeveloperLevelP2MM()) {
                 printlP2MM("No starting box ent found.")
             }
         } else {
             if (BestSurrondingBoxEnt > 0) {
-                if (GetDeveloperLevel()) {
+                if (GetDeveloperLevelP2MM()) {
                     printlP2MM("Starting box ent found!")
                 }
                 // If we have found a solid starting box ent, lets find the closest one to it
                 RealPlayerSpawn = Entities.FindByClassnameNearest("info_player_start", StartingBoxEnt.GetOrigin(), 650)
                 if (RealPlayerSpawn == null) {
-                    if (GetDeveloperLevel()) {
+                    if (GetDeveloperLevelP2MM()) {
                         printlP2MM("No real player spawn found.")
                     }
                 } else {
-                    if (GetDeveloperLevel()) {
+                    if (GetDeveloperLevelP2MM()) {
                         printlP2MM("Real player spawn found!")
                     }
                     local LandmarkCheck = Entities.FindByClassnameNearest("info_landmark_entry", RealPlayerSpawn.GetOrigin(), 128)
                     // If we have found a landmark, we know we are in the box
                     if (LandmarkCheck == null) {
-                        if (GetDeveloperLevel()) {
+                        if (GetDeveloperLevelP2MM()) {
                             printlP2MM("No landmark found")
                         }
                     } else {
-                        if (GetDeveloperLevel()) {
+                        if (GetDeveloperLevelP2MM()) {
                             printlP2MM("Landmark found!")
                             printlP2MM("Found info_player_start entity!: " + RealPlayerSpawn.GetOrigin())
                         }
                         // If EVERY Condition is met, lets set the player spawn
                         if (GlobalSpawnClass.useautospawn) {
-                            if (GetDeveloperLevel()) {
+                            if (GetDeveloperLevelP2MM()) {
                                 printlP2MM("useautospawn = True: Setting player spawn")
                             }
                             GlobalSpawnClass.useautospawn <- false
@@ -1300,21 +1300,21 @@ function BestGuessSpawnpoint() {
                             local ent = null
                             while (ent = Entities.FindByClassname(ent, "info_player_start")) {
                                 if (ent != RealPlayerSpawn) {
-                                    if (GetDeveloperLevel()) {
+                                    if (GetDeveloperLevelP2MM()) {
                                         printlP2MM("Found info_player_start entity that is not the real player spawn.")
                                     }
                                     ent.Destroy()
                                 }
                             }
                         } else {
-                            if (GetDeveloperLevel()) {
+                            if (GetDeveloperLevelP2MM()) {
                                 printlP2MM("useautospawn = false: Not setting player spawn.")
                             }
                         }
                     }
                 }
             } else {
-                if (GetDeveloperLevel()) {
+                if (GetDeveloperLevelP2MM()) {
                     printlP2MM("Starting box ent found, but there aren't enough surrounding box ents.")
                 }
             }
@@ -1343,7 +1343,7 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                if (GetDeveloperLevel()) {
+                if (GetDeveloperLevelP2MM()) {
                     printlP2MM(currentscore)
                 }
                 currentscore = currentscore.x + currentscore.y + currentscore.z
@@ -1360,7 +1360,7 @@ function BestGuessSpawnpoint() {
 
             spawnmiddle_ang_vec = spawnmiddle_ang_vec * 126.5
 
-            if (GetDeveloperLevel()) {
+            if (GetDeveloperLevelP2MM()) {
                 printlP2MM(spawnmiddle_ang_vec)
             }
 
@@ -1369,7 +1369,7 @@ function BestGuessSpawnpoint() {
             local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, height)
             local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, height)
             local spawnleft = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y/-1, spawnmiddle_ang_vec.x, height)
-            if (GetDeveloperLevel()) {
+            if (GetDeveloperLevelP2MM()) {
                 printlP2MM("spawnMiddle: " + spawnmiddle)
                 printlP2MM("spawnOrigin: " + spawnmiddle.GetOrigin())
                 printlP2MM("ourClosest: " + ourclosest)
@@ -1397,7 +1397,7 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                if (GetDeveloperLevel()) {
+                if (GetDeveloperLevelP2MM()) {
                     printlP2MM(currentscore)
                 }
                 currentscore = currentscore.x + currentscore.y + currentscore.z
@@ -1410,13 +1410,13 @@ function BestGuessSpawnpoint() {
             // Find the highest path_track next to the spawnpoint
             local tallestpathtrack = null
             if (spawnmiddle == null) {
-                if (GetDeveloperLevel()) {
+                if (GetDeveloperLevelP2MM()) {
                     printlP2MM("Failed to find spawnmiddle for path_track spawnpoint!")
                 }
             } else {
                 local pathtracks = null
                 while (pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600)) {
-                    if (GetDeveloperLevel()) {
+                    if (GetDeveloperLevelP2MM()) {
                         printlP2MM("pathtracks: " + pathtracks)
                     }
                     if (tallestpathtrack == null) {
@@ -1606,10 +1606,10 @@ class UTIL_Team {
     constructor() {
         // Set default state for gun spawn
         if (Entities.FindByName(null, "supress_blue_portalgun_spawn")) {
-            UTIL_Team.bPortalgunEnabled_Blue = false
+            bPortalgunEnabled_Blue = false
         }
         if (Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
-            UTIL_Team.bPortalgunEnabled_Red = false
+            bPortalgunEnabled_Blue = false
         }
 
         // TODO: If we can find out how to read the default state of

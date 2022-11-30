@@ -20,7 +20,7 @@ CommandList.push(
                 SendChatMessage("[ERROR] Cannot kick yourself.", p)
                 return
             }
-            if (!IsDedicatedServer) {
+            if (!IsDedicatedServer()) {
                 if (FindPlayerByName(args[0]) == UTIL_PlayerByIndex(1)) {
                     SendChatMessage("[ERROR] Cannot kick server operator.", p)
                     return
