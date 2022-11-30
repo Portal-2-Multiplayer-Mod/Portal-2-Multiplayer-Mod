@@ -29,14 +29,25 @@
 // Running: By default the data system is set to run with every play session
 // Not Running: The user has defined they do not want the data system to run next play session or the system is disabled
 
-function dataLoad() {
+/* Process steps:
+ Init:
+    
+*/
+
+dataFileIndicators = [
+    "datasystem-kick-succeed.nut", 
+    "datasystem-kick-failed.nut", "datasystem-ban-succeed.nut", 
+    "datasystem-ban-failed.nut", "datasystem-mapevent-succeed.nut",
+    "datasystem-mapevent-failed.nut"]
+
+function dataLoad(event, eventdata) {
     printl("Loading data retrieved from masterData...")
     local grabbedData = false
     try {
         IncludeScript("datasystemsaves/datasystem-" + event + "-" + eventdata + ".nut")
         grabbedData = true
     } catch (e) {
-        printl("Loading the blank script failed... We are gonna try again one more time...")
+        printl("Loading the nut indicator failed... We are gonna try again one more time...")
         try {
             IncludeScript("datasystemsaves/datasystem-" + event + "-" + eventdata + ".nut")
         } catch (e) {
@@ -53,18 +64,14 @@ function dataSaveCreate(event, eventdata) {
     try {
         SendToConsoleP2MM("screenshot datasystem-" + event + "-" + eventdata)
         printl("datasystem-" + event + "-" + eventdata + " file created...")
-    } catch(e) {
+    } catch (e) {
         printl("datasystem-" + event + "-" + eventdata + " failed to be created...")
         printl(e)
     }
 }
 
 function dataNutCheck() {
-    local checkFile = false, ""
-    local dataFileTypes = ["datasystem-kick-succeed.nut", 
-    "datasystem-kick-failed.nut", "datasystem-ban-succeed.nut", 
-    "datasystem-ban-failed.nut", "datasystem-mapevent-succeed.nut",
-    "datasystem-mapevent-failed.nut"]
+    local checkFile = false
     try {
         IncludeScript("datasystemsaves/datasystem-datacheck.nut")
         checkFile = true
@@ -72,19 +79,26 @@ function dataNutCheck() {
         return
     }
     if (checkFile = true) {
-        foreach (dataFile in dataFileTypes) {
+        foreach (selectedDataFile in dataFileIndicators) {
             try {
-                IncludeScript(dataFile)
+                IncludeScript(selectedDataFile)
                 dataFileFound = true
             } catch (e) {
                 continue
             }
         }
         if (dataFileFound = true) {
-
+            switch (selectedDataFile) {
+                case 1 : selectedDataFile <- "datasystem-kick-succeed.nut"; return dataSystemKick(returnstate=true);
+                case 2 : selectedDataFile <- "datasystem-kick-fail.nut"; return dataSystemKick(returnstate=false);
+                case 3 : selectedDataFile <- "datasystem-ban-succeed.nut"; return dataSystemBan(returnstate=true);
+                case 4 : selectedDataFile <- "datasystem-ban-fail.nut"; return dataSystemBan(returnstate=false);
+                case 5 : selectedDataFile <- "datasystem-mapevent-succeed.nut"; return dataSystemBan(returnstate=true);
+                case 6 : selectedDataFile <- "datasystem-mapevent-fail.nut"; return dataSystemBan(returnstate=false);
+            }
         } else {
             printl("Data System Check called but no file found...")
-        }  
+        }
     }
 }
 
@@ -94,39 +108,39 @@ function dataNutCheck() {
     If it fails we'll tell mapspawn.nut that datas aren't currently supported
 */
 function init() {
-    printl("Starting the custom data system!")
+    printl("Starting the data system!")
     //Makes a temporary screenshot file for our python data system to check
     SendToConsoleP2MM("screenshot SAVE/datasystemcheck-test")
     try {
         IncludeScript("multiplayermod/datasystem/datasystemcheck-pythonsuccess.nut")
-        printl("Data Systen works! Will be avaliable for the map...")
+        printlP2MM("Data Systen works! Will be avaliable for the map...")
         dataCheck <- true
         SendToConsoleP2MM("screenshot datasystemcheck-nutsuccess")
     } catch (e){
-        printl("First check detection failed, trying again...")
-        printl(e)
+        printlP2MM("First check detection failed, trying again...")
+        printlP2MM(e)
         local datasystemcheckerrors = 0
         while (datasystemcheckerrors != 3) {
             try {
                 IncludeScript("multiplayermod/datasystem/datasystem-pythonsuccess.nut")
                 break
             } catch (e){
-                printl("Check detection failed, will try again...")
-                printl(e)
+                printlP2MM("Check detection failed, will try again...")
+                printlP2MM(e)
                 datasystemcheckerrors += 1
             }
         }
 
         if (datasystemcheckerrors = 3) {
-            printl("Data Systen check detection failed after checking three times!")
-            printl("The data system will not be avaliable for this map...")
+            printlP2MM("Data Systen check detection failed after checking three times!")
+            printlP2MM("The data system will not be avaliable for this map...")
             dataCheck <- false
-            SendToConsoleP2MM("_record SAVE/datasystemcheck-nutfail")
+            SendToConsoleP2MM("screenshot datasystemcheck-nutfail")
             datasystemcheckerrors = 0
         } else {
-            printl("Data Systen works! Will be avaliable for the map...")
+            printlP2MM("Data System works! Will be avaliable for the map...")
             dataCheck <- true
-            SendToConsoleP2MM("_record SAVE/datasystemcheck-nutsuccess")
+            SendToConsoleP2MM("screenshot datasystemcheck-nutsuccess")
             datasystemcheckerrors = 0
         }
     }

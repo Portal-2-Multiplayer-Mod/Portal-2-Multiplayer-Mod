@@ -3,7 +3,7 @@ CommandList.push(
         name = "kick"
         level = 6
 
-        // !kick (player to kick here) (optional removeargument)
+        // !kick (player to kick here) (optional remove argument)
         function CC(p, args) {
             // arg[0] -> player to kick
             args[0] = Strip(args[0])
@@ -11,7 +11,7 @@ CommandList.push(
             // arg[1] -> optional remove argument
             args[1] = Strip(args[1])
 
-            PlayerKickList <- []
+            local PlayerKickList <- []
             local KickPlayer = function(plr) {
                 EntFireByHandle(p2mm_clientcommand, "Command", "disconnect \"You've been kicked from the server.\"", 0, plr, plr)
                 PlayerKickList.insert(FindPlayerClass(plr).steamid)
@@ -52,6 +52,12 @@ CommandList.push(
             } catch (exception) {
                 return SendChatMessage("[ERROR] An error occured trying to run that command, check console...", p)
             }
+
+            // Send this message right before kicking in case the class gets destroyed
+            SendChatMessage("[KICK] Kicked " + FindPlayerClass(FindPlayerByName(args[0])).username + " from the server.", p)
+
+            // Players can still join the game again if you use this
+            EntFire("p2mm_servercommand", "command", "kick " + FindPlayerClass(FindPlayerByName(args[0])).username)
         }
     }
 )

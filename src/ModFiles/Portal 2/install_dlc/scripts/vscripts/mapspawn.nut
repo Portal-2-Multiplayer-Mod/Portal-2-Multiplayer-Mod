@@ -22,6 +22,7 @@
 
 // TODO: Find out how to determine whether or not a
 // session is dedicated or listen IN VSCRIPT
+// It currently needs to be set manually
 
 //-------------------------------------------------------------------------------------------
 // This file is called on map transitions for both the client VM and server VM
@@ -50,39 +51,29 @@ if (Entities.FindByName(null, "p2mm_servercommand")) {
     return
 }
 
+// Differentiate our debug comments in the console from normal spew
 function printlP2MM(str) {
     printl("(P2:MM): " + str)
 }
 
-// Now we take care of some tasks first thing
+iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1) // Determine what the "maxplayers" cap is
+IsDedicatedServer <- false // Determine is this is a dedicated server
 
 printlP2MM("Session info...")
 printlP2MM("- Current map: " + GetMapName())
-
-// Determine what the "maxplayers" cap is
-iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1)
 printlP2MM("- Max players allowed on the server: " + iMaxPlayers)
-
-// TODO: Determine whether or not this is a dedicated server
-// Right now it needs to manually be assigned
-// if (IsLocalSplitScreen()) {
-    // if (Time() <= 1.63333) { // This is the latest known time a host client loads into a listen server
-
-    // }
-    IsDedicatedServer <- false
-// } else {
-//     IsDedicatedServer <- true
-// }
 printlP2MM("- Dedicated server: " + IsDedicatedServer + "\n")
 
-IncludeScript("multiplayermod/pluginfunctionscheck.nut") // Make sure we know the exact status of our plugin
-IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences
-IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
+IncludeScript("multiplayermod/pluginfunctionscheck.nut")    // Make sure we know the exact status of our plugin
+IncludeScript("multiplayermod/config.nut")                  // Import the user configuration and preferences
+IncludeScript("multiplayermod/configcheck.nut")             // Make sure nothing was invalid and compensate
 
 // Create a global point_servercommand entity for us to pass through commands
 // We don't want to create multiple when it is called on, so reference it by targetname
 Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 
+// There's no conceivable way to tell whether or not this is the first map load after launching a server
+// So we do a dirty developer level hack to something that no one sets it to and reset it when we are done
 if (GetDeveloperLevel() == 918612) {
     // Take care of anything pertaining to progress check and how our plugin did when loading
     IncludeScript("multiplayermod/firstmapload.nut")
@@ -120,7 +111,7 @@ delete ConsoleAscii
 // Import map support code
 // Map name will be wonky if the client VM attempts to get the map name
 function LoadMapSupportCode(gametype) {
-    printl("\n=============================================================")
+    printl( "\n=============================================================")
     printlP2MM("Attempting to load " + gametype + " mapsupport code!")
     printl("=============================================================\n")
 

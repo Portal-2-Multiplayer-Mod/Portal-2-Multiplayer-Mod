@@ -1130,22 +1130,22 @@ function EnablePortalGun(enable = false, player = "all") {
     if (enable) { draw = "enabledraw" }
 
     if (player = "all") {
-        local p = null;
+        local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             local ent = Entities.FindByName(null, "weapon_portalgun_player" + p.entindex())
-            local entviewmodel = Entities.FindByName(null, "viewmodel_player" + p.entindex())
+            local entviewmodel = Entities.FindByName(null, "predicted_viewmodel_player" + p.entindex())
             ent.__KeyValueFromString("CanFirePortal1", set)
             ent.__KeyValueFromString("CanFirePortal2", set)
             EntFire(ent, draw)
-            EntFire(entviewmodel, draw)
+            EntFireByHandle(entviewmodel, draw, "", 0, null, null)
         }
     } else {
         local ent = Entities.FindByName(null, "weapon_portalgun_player" + player.entindex())
-        local entviewmodel = Entities.FindByName(null, "viewmodel_player" + player.entindex())
+        local entviewmodel = Entities.FindByName(null, "predicted_viewmodel_player" + player.entindex())
         ent.__KeyValueFromString("CanFirePortal1", set)
         ent.__KeyValueFromString("CanFirePortal2", set)
         EntFire(ent, draw)
-        EntFire(entviewmodel, draw)
+        EntFireByHandle(entviewmodel, draw, "", 0, null, null)
     }
 }
 

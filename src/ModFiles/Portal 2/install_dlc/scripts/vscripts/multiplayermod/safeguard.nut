@@ -62,7 +62,15 @@ if (SendToConsole.getinfos().native) {
             DoError(str)
             return
         }
-        if (str.len() >= 17 && str.slice(0, 17) != "snd_ducktovolume ") {
+        if ((str.len() == 17 || str.len() == 18) && str.slice(0, 17) != "snd_ducktovolume ") {
+            DoError(str)
+            return
+        }
+        if ((str.len() == 23 || str.len() == 24) && str.slice(0, 23) != "map_wants_save_disable ") {
+            DoError(str)
+            return
+        }
+        if (str.len() >= 25) {
             DoError(str)
             return
         }

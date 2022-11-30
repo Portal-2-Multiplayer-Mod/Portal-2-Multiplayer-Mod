@@ -1,3 +1,5 @@
+PlayerBanList <- []
+
 CommandList.push(
     class {
         name = "ban"
@@ -34,7 +36,7 @@ CommandList.push(
                         return SendChatMessage("[ERROR] You're trying to ban yourself.", p)
                     }
                     if (plr != p) {
-                        KickPlayer(plr)
+                        BanPlayer(plr)
                     }
                 }
 

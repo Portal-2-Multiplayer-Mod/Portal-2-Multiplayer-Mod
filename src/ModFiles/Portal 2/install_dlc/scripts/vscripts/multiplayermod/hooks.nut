@@ -50,9 +50,9 @@ function InstantRun() {
         PostPlayerSpawn()
         if (!CheatsOn) {
             if (IsDedicatedServer) {
-                SendToConsoleP2MM("sv_cheats 0")
+                EntFire("p2mm_servercommand", "command", "sv_cheats 0")
             } else {
-                SendToConsoleP2MM("hud_saytext_time 0; sv_cheats 0; hud_saytext_time 12")
+                EntFire("p2mm_servercommand", "command", "hud_saytext_time 0; sv_cheats 0; hud_saytext_time 12")
             }
         }
         Player2Joined = true
@@ -66,7 +66,7 @@ function Loop() {
 
     //## Event List ##//
     if (EventList.len() > 0) {
-        SendToConsoleP2MM("script " + EventList[0])
+        EntFire("p2mm_servercommand", "command", "script " + EventList[0])
         EventList.remove(0)
     }
 
@@ -221,7 +221,7 @@ function Loop() {
     // if (cnt > EntityCap - EntityCapLeeway) {
     //     if (cnt >= FailsafeEntityCap) {
     //         printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
-    //         SendToConsoleP2MM("changelevel mp_coop_lobby_3")
+    //         EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3")
     //     }
     //     printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
     //     foreach (entclass in ExpendableEntities) {
@@ -566,11 +566,7 @@ function PostPlayerSpawn() {
     ForceOpenMapDroppers(OldPlayerPos, 100, "Blue")  // Force open the blue player droppers
     ForceOpenMapDroppers(OrangeOldPlayerPos, 150, "Red")  // Force open the red player droppers
 
-    if (IsOnSingleplayerMaps) {
-        // Not needed in singleplayer
-        SendToConsoleP2MM("script function CoopPingTool(int1, int2) {}")
-        SendToConsoleP2MM("script function CoopBotAnimation(int1, int2) {}")
-    } else {
+    if (!IsOnSingleplayerMaps) {
         //# Attempt to fix some general map issues #//
         local CoopDoorEntities = [
             "airlock_1-door1-airlock_entry_door_close_rl",
@@ -616,7 +612,7 @@ function PostPlayerSpawn() {
     }
 
     // Create props after cache
-    SendToConsoleP2MM("script CreatePropsForLevel(false, true, false)")
+    EntFire("p2mm_servercommand", "command", "script CreatePropsForLevel(false, true, false)")
 
     // Remove scoreboard
     if (!IsLocalSplitScreen() && !IsDedicatedServer && !IsCommunityCoopHub /*&& !Player2Joined*/) {
@@ -637,16 +633,16 @@ function PostMapSpawn() {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
     }
 
-    //## Cheat detection ##//
-    SendToConsoleP2MM("prop_dynamic_create cheatdetectionp2mm")
-    SendToConsoleP2MM("script SetCheats()")
+    //## Cheat detection ##//erver
+    EntFire("p2mm_servercommand", "command", "prop_dynamic_create cheatdetectionp2mm")
+    EntFire("p2mm_servercommand", "command", "script SetCheats()")
 
     // Edit cvars & set server name
-    SendToConsoleP2MM("mp_allowspectators 1")
+    EntFire("p2mm_servercommand", "command", "mp_allowspectators 1")
     if (PluginLoaded && !IsDedicatedServer) {
-        SendToConsoleP2MM("hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
+        EntFire("p2mm_servercommand", "command", "hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
     } else {
-        SendToConsoleP2MM("hostname Portal 2: Multiplayer Mod Server")
+        EntFire("p2mm_servercommand", "command", "hostname Portal 2: Multiplayer Mod Server")
     }
 
     // Force spawn players in map
@@ -656,19 +652,19 @@ function PostMapSpawn() {
     CreatePropsForLevel(true, false, false)
 
     // Enable fast download (broken)
-    // SendToConsoleP2MM("sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
+    // EntFire("p2mm_servercommand", "command", "sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
 
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
 	// Aliases for easier changelevel for custom maps
-	SendToConsoleP2MM("alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
-	SendToConsoleP2MM("alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
-	SendToConsoleP2MM("alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
+	EntFire("p2mm_servercommand", "command", "alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
+	EntFire("p2mm_servercommand", "command", "alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
+	EntFire("p2mm_servercommand", "command", "alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
     // Aliases for Orsell's custom P2:MM maps
-    SendToConsoleP2MM("alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
-    SendToConsoleP2MM("alias p2mmlobby changelevel mp_coop_p2mmlobby")
+    EntFire("p2mm_servercommand", "command", "alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
+    EntFire("p2mm_servercommand", "command", "alias p2mmlobby changelevel mp_coop_p2mmlobby")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle = true", 0.32)
@@ -855,9 +851,9 @@ function OnPlayerJoin(p, script_scope) {
                 // Run code after player 2 joins
                 if (!CheatsOn) {
                     if (IsDedicatedServer) {
-                        SendToConsoleP2MM("sv_cheats 0")
+                        EntFire("p2mm_servercommand", "command", "sv_cheats 0")
                     } else {
-                        SendToConsoleP2MM("hud_saytext_time 0; sv_cheats 0; hud_saytext_time 12")
+                        EntFire("p2mm_servercommand", "command", "hud_saytext_time 0; sv_cheats 0; hud_saytext_time 12")
                     }
                 }
                 Player2Joined = true
