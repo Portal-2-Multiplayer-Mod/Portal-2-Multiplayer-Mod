@@ -165,8 +165,7 @@ function SendChatMessage(message, pActivatorAndCaller = null) {
 }
 
 function RunChatCommand(cmd, args, plr) {
-    printlP2MM("Running chat command: " + cmd.name)
-    printlP2MM("Player: " + FindPlayerClass(plr).username)
+    printlP2MM("Running chat command \"" + cmd.name + "\" from player \"" + FindPlayerClass(plr).username + "\"")
     cmd.CC(plr, args)
 }
 
@@ -316,7 +315,7 @@ function GetAdminLevel(plr) {
 }
 
 function SetAdminLevel(NewLevel, iPlayerIndex) {
-    if (iPlayerIndex == 1) {
+    if (!IsDedicatedServer() && iPlayerIndex == 1) {
         SendChatMessage("[ERROR] Cannot change admin level of server operator!")
         return
     }
