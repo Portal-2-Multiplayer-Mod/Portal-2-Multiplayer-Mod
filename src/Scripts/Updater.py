@@ -64,7 +64,7 @@ def CheckForNewClient() -> dict:
 def DownloadClient(cType: str = "") -> bool:
 
     if not haveInternet():
-        Log("No internet Connection")
+        Log("No internet Connection!")
         return False
 
     # cType is the Client Type (gui / cli)
@@ -77,7 +77,7 @@ def DownloadClient(cType: str = "") -> bool:
     # so we can easily edit it in the future if we want to
     if (GVars.iow):
         packageType = ".EXE"
-    elif (GVars.iol):
+    elif (GVars.iol) or (GVars.iosd):
         packageType = ".SH"
 
     downloadLink = ""
@@ -101,9 +101,8 @@ def DownloadClient(cType: str = "") -> bool:
     # if (GVars.iow):
     #     command = [path, "updated", GVars.executable]
     #     subprocess.Popen(command)
-    #     \n was here, how DARE you misspell linux
-    if (GVars.iol):
-        Log("Linux detected, gotta chmod that bad boy")
+    if (GVars.iol) or (GVars.iosd):
+        Log("Linux system detected, gotta chmod that bad boy...")
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
 

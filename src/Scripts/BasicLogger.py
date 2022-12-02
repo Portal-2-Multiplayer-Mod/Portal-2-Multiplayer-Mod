@@ -59,4 +59,4 @@ def StartLog() -> None:
         Log("Linux OS: detected!")
     elif (GVars.iosd):
         Log("")
-        Log("SteamOS: detected!")
+        Log("SteamOS 3.0: detected!")

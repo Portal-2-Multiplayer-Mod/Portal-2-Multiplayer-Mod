@@ -61,6 +61,7 @@ def init() -> None:
             # Steam OS 3.0 has some directories set to read-only
             # We are going to install p2mm to the home\Desktop directory instead of .cache and .config because of this
             # We are also gonna keep stuff together like with the Windows paths, configs will be placed into the same directory as the ModFiles
+            # Steam OS 3.0's os.sep seems to be "/" instead of the usual "\"
             modPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
             modFilesPath = os.path.expanduser("~") + nf + "Desktop/p2mm/Modfiles"
             configPath = os.path.expanduser("~") + nf + "Desktop/p2mm"

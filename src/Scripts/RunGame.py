@@ -462,7 +462,7 @@ def LaunchGame(gamepath: str) -> None:
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
-        elif ((GVars.iol) or (GVars.iosd)): #launching for linux and steam deck
+        elif ((GVars.iol) or (GVars.iosd)): #launching for linux and steam os 3.0
             def RunGame():
                 def RunSteam():
                     Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, " + GVars.configData["Custom-Launch-Options"]["value"])
