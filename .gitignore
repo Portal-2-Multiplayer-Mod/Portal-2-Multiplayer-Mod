@@ -30,7 +30,7 @@ srctools.vdf
 srctools_sndscript_data.vdf
 bee2/
 *.mdmp
-cfg/
+src/ModFiles/Portal 2/install_dlc/cfg/autoexec.cfg
 vpk_override/
 *.so
 !WebFiles/FastDL/portal2
@@ -59,10 +59,10 @@ Logs/
 configs.cfg
 !src/ModFiles/portal2
 # normal folder
-!src/ModFiles/Portal 2/install_dlc/addons/32pmod.dll
-!src/ModFiles/Portal 2/install_dlc/addons/32pmod.so
-!src/ModFiles/Portal 2/install_dlc/32pmod.dll
-!src/ModFiles/Portal 2/install_dlc/32pmod.so
+!src/ModFiles/Portal 2/install_dlc/addons/p2mm.dll
+!src/ModFiles/Portal 2/install_dlc/addons/p2mm.so
+!src/ModFiles/Portal 2/install_dlc/p2mm.dll
+!src/ModFiles/Portal 2/install_dlc/p2mm.so
 # fallback folder
 !src/FALLBACK/ModFiles/Portal 2/install_dlc/32pmod.dll
 !src/FALLBACK/ModFiles/Portal 2/install_dlc/32pmod.so

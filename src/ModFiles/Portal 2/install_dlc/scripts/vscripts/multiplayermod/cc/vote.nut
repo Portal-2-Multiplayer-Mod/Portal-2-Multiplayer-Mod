@@ -106,9 +106,9 @@ function Vote::BeginVote(arg1, arg2, pPlayer) {
         intermediateArg2 = " (" + VoteInstanceArray[0].Arg2 + ")"
     }
 
-    SendChatMessage("[VOTE] Started vote for " + arg1 + "." + intermediateArg2, pPlayer)
+    SendChatMessage("[VOTE] Started vote for " + arg1 + "." + intermediateArg2)
     Vote.SubmitVote("yes", pPlayer)
-    SendChatMessage("[VOTE] Put \"!vote yes\" or \"!vote no\" in the chat before the time runs out!", pPlayer)
+    SendChatMessage("[VOTE] Put \"!vote yes\" or \"!vote no\" in the chat before the time runs out!")
 
     // Update the text color
     local rgb = FindPlayerClass(pPlayer).color
@@ -145,23 +145,23 @@ function Vote::SubmitVote(arg1, arg2) {
 function Vote::DoVote(arg1 = null) {
     if (arg1 != "cancel") {
         if (/*iVotedYes > iVotedNo && arg1 != "fail" || */arg1 == "succeed") {
-            SendChatMessage("[VOTE] The vote has succeeded.", pVoteInitiator)
+            SendChatMessage("[VOTE] The vote has succeeded.")
 
             // Add stuff for actually changing in game stuffs
             switch (VoteInstanceArray[0].ActiveVote) {
             case "changelevel":
-                SendChatMessage("[VOTE] Changing map in 5 seconds.", pVoteInitiator)
+                SendChatMessage("[VOTE] Changing map in 5 seconds.")
                 EntFire("p2mm_servercommand", "command", "changelevel " + VoteInstanceArray[0].Arg2, 5)
                 break
             case "kick":
-                SendChatMessage("[VOTE] Kicking player in 5 seconds.", pVoteInitiator)
+                SendChatMessage("[VOTE] Kicking player in 5 seconds.")
                 EntFire("p2mm_servercommand", "command", "kick " + FindPlayerClass(FindPlayerByName(VoteInstanceArray[0].Arg2)).username, 5)
                 break
             case "hostgunonly":
                 // TODO: This doesn't account for gamemodes apart from "standard"
                 // How do we deal with other weapon classes?
                 if (!IsDedicatedServer()) {
-                    SendChatMessage("[VOTE] Stripping all player guns except host in 5 seconds.", pVoteInitiator)
+                    SendChatMessage("[VOTE] Stripping all player guns except host in 5 seconds.")
 
                     UTIL_Team.Spawn_PortalGun(false, "all")
                     // Remove Portal Gun
@@ -182,7 +182,7 @@ function Vote::DoVote(arg1 = null) {
                     break
                 }
             default:
-                SendChatMessage("[VOTE] You should not see this. This is fatal.", pVoteInitiator)
+                SendChatMessage("[VOTE] You should not see this. This is fatal.")
                 break
             }
         }
@@ -191,10 +191,10 @@ function Vote::DoVote(arg1 = null) {
             if (iVotedYes > 1) {
                 charPluralVotes = "s"
             }
-            SendChatMessage("[VOTE] The vote has failed and tied, each with " + iVotedYes.tostring() + " vote" + charPluralVotes + ".", pVoteInitiator)
+            SendChatMessage("[VOTE] The vote has failed and tied, each with " + iVotedYes.tostring() + " vote" + charPluralVotes + ".")
         }
         else if (iVotedYes < iVotedNo && arg1 != "succeed" || arg1 == "fail") {
-            SendChatMessage("[VOTE] The vote has failed.", pVoteInitiator)
+            SendChatMessage("[VOTE] The vote has failed.")
         }
     }
 
@@ -231,7 +231,7 @@ CommandList.push(
         // !vote (arg1) (arg2)
         function CC(p, args) {
             if (!Player2Joined && !IsDedicatedServer()) {
-                SendChatMessage("[VOTE] Wait until the game begins...")
+                SendChatMessage("[VOTE] Wait until the game begins...", p)
                 return
             }
             // WE ONLY WANT TO SHARE ONE INSTANCE OF THE CLASS FOR VOTING
@@ -335,7 +335,7 @@ CommandList.push(
                     // Only cancel if it's an admin or the vote initiator
                     if (bCurrentCCPlayerInitiatedVote || IsAdminLevelEnough(p)) {
                         Vote.DoVote("cancel")
-                        return SendChatMessage("[VOTE] The vote has been cancelled.", p)
+                        return SendChatMessage("[VOTE] The vote has been cancelled.")
                     }
                     return SendChatMessage("[VOTE] Cannot cancel the vote if you did not start it.", p)
                 }
@@ -359,7 +359,7 @@ CommandList.push(
                     if (FindPlayerClass(p).hasvotedyes || FindPlayerClass(p).hasvotedno) {
                         SendChatMessage("[VOTE] You have already voted.", p)
                     } else {
-                        SendChatMessage("[VOTE] Voting options are: yes, and no", p)
+                        SendChatMessage("[VOTE] Voting options are: yes, no", p)
                     }
                 }
                 return
