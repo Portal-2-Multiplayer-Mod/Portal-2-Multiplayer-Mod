@@ -110,7 +110,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("forceprecache", "0")
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("looping", "0")
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("stretch", "0")
-        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("targetname", "p2mppenis")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("targetname", "p2mm_video")
 
         Entities.FindByName(null, "transition_portal1").Destroy()
         Entities.FindByName(null, "transition_portal2").Destroy()
