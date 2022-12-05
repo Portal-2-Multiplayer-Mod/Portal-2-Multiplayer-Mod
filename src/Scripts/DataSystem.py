@@ -57,15 +57,15 @@ dataSystemState: bool = True
 # Need to rework this function:
 # Instead of just detecting errors, this needs to detect and fix the errors without making a new file.
 # This will allow the other items that aren't in the file my default to stay intact.
-def masterDataFileStructureCheck(masterDataFilePath) -> None:
+def masterDataFileStructureCheck(configsPath) -> None:
     Log("DS: Performing masterDataFile structure check...")
-    if os.path.getsize(masterDataFilePath) == 0:
+    if os.path.getsize(configsPath) == 0:
         Log("DS: File blank, adding masterDataFile structure...")
-        json.dump(defaultDataStructure, masterDataFilePath, indent=4)
+        json.dump(defaultDataStructure, configsPath, indent=4)
 
-    # grabbedMasterData = open(masterDataFilePath, "r", encoding="utf-8").read().strip()
+    # grabbedMasterData = open(configsPath, "r", encoding="utf-8").read().strip()
     # masterDataFile = json.loads(grabbedMasterData)
-    
+
     # dataFileKeys = masterDataFile.keys()
     # #dateFileKeyValues = dataFileKeys[key]
     # errors = 0
@@ -106,16 +106,16 @@ def masterDataFileStructureCheck(masterDataFilePath) -> None:
     # Log("DS: Structure check successfully performed!")
 
 def createNewMasterData() -> None:
-    currentMasterData = (GVars.configPath + "\masterData.cfg")
+    currentMasterData = (GVars.configsPath + "\masterData.cfg")
     try:
         os.remove(currentMasterData)
     except Exception as e:
         Log(f"The masterDataFile file was already removed or some other error occured: {str(e)}")
 
-    newMasterDataFile = open(GVars.configPath + GVars.nf + "masterData.cfg", "w+", encoding="utf-8")
+    newMasterDataFile = open(GVars.configsPath + GVars.nf + "masterData.cfg", "w+", encoding="utf-8")
     json.dump(defaultDataStructure, newMasterDataFile, indent=4)
 
-    if os.path.exists(GVars.modPath + "\masterData.cfg"):
+    if os.path.exists(GVars.modPath + GVars.nf + "masterData.cfg"):
         Log("DS: New masterData.cfg created in p2mm directory...")
     else:
         raise masterDataFileCreationError
@@ -124,6 +124,7 @@ def createNewMasterData() -> None:
 def dataSystemInitialization(refresh: bool) -> None:
     global dataSystemState
     dataSystemState = False
+    firstStart = False
     try:
         Log("")
         if refresh == True:
@@ -146,6 +147,9 @@ def dataSystemInitialization(refresh: bool) -> None:
             raise firstStartWarning
         Log("DS: File system is good...")
 
+        if not os.path.exists(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves"):
+            os.makedirs(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves")
+        print(os.path.exists(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves"))
         # We need to remove any old .nut files that tell the data system if it started or not
         Log("DS: Checking for any old .nut file indicators...")
         if not os.listdir(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves") == []:
@@ -157,13 +161,13 @@ def dataSystemInitialization(refresh: bool) -> None:
 
         # If the masterDataFile config file doesn't exist, we will ensure that a new fresh one is created
         Log("DS: Checking our masterData.cfg file...")
-        if (not os.path.exists(GVars.configPath + GVars.nf + "masterData.cfg")) or (os.path.getsize(GVars.configPath + GVars.nf + "masterData.cfg") == 0):
+        if (not os.path.exists(GVars.configsPath + GVars.nf + "masterData.cfg")) or (os.path.getsize(GVars.configsPath + GVars.nf + "masterData.cfg") == 0):
             Log("DS: No masterData.cfg detected, creating a new one...")
             createNewMasterData()
         else:
             Log("DS: masterData.cfg retrieved...")
-            masterDataFilePath = (GVars.configPath + GVars.nf + "masterData.cfg")
-            masterDataFileStructureCheck(masterDataFilePath)
+            configsPath = (GVars.configsPath + GVars.nf + "masterData.cfg")
+            masterDataFileStructureCheck(configsPath)
 
         # Now finally need to check if the datasystem-main.nut file exists, this should be downloaded when the launcher updates
         # If it's not there the system will not be able to communicate with Portal 2 and vice versa, the system will be disabled
@@ -199,13 +203,14 @@ def dataSystemInitialization(refresh: bool) -> None:
     # Now we clean up the system and create the files needed for the datasystem-main.nut file to read when its called on later when a map loads
     finally:
         try:
-            if (dataSystemState == True) and (GVars.configData["(WIP)Data-System-Overide"]["value"] == "true"):
+            if (dataSystemState == True) and (firstStart == False) and (GVars.configData["(WIP)Data-System-Overide"]["value"] == "true"):
                 dataSystemInitSuccess = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-enabled.nut", "x")
-            else:
+            elif (dataSystemState == False) and (firstStart == True):
+                Log("This is the launchers first start, will not be creating datasystem nut indicator...")
+            elif (dataSystemState == False) and (firstStart == False):
                 dataSystemInitFail = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-disabled.nut", "x")
                 Log("DS: The data system encountered an error and it can't be enabled! Or it has been disabled in the Dev Menu.")
                 Log("DS: The system will be disabled for the next play session...")
-                dataSystemState = False
 
         # This exception should only occur if either the p2mm or Modfiles folder wasn't found
         except FileNotFoundError:
@@ -295,6 +300,7 @@ class firstStartWarning(Warning):
         Log("            __________Warning: DATA SYSTEM firstStartWarning__________")
         Log("")
         dataSystemState = False
+        firstStart = True
 
 class masterDataFileCreationError(Exception):
     def __init__(self):

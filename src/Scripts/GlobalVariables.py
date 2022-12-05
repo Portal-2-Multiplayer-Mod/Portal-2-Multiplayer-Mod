@@ -16,10 +16,9 @@ from Scripts.BasicLogger import Log
 
 appStartDate: str # appStartDate is the dateTime when the launcher was started, this is used to name the logs
 configData: dict[str, dict[str, str]]
-modPath: str # \p2mm
+modPath: str # p2mm\
 modFilesPath: str # \p2mm\Modfiles
-configPath: str
-masterDataFilePath: str # Path defined for the masterData.cfg file
+configsPath: str # Path defined for config files for the launcher, p2mm\
 p2mmScriptsPath: str # Path defined for the data system nuts directory
 # dataSystemSSFilesPath: str # Path defined for the screenshots folder for Portal 2, this is for the data system
 iow: bool = False # Windows system
@@ -32,7 +31,7 @@ translations: dict[str, str]
 AfterFunction: None
 
 def init() -> None:
-    global appStartDate, modPath, modFilesPath, configPath, masterDataFilePath, p2mmScriptsPath, iow, iol, iosd, nf, translations
+    global appStartDate, modPath, modFilesPath, configsPath, p2mmScriptsPath, iow, iol, iosd, nf, translations
 
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
@@ -50,8 +49,7 @@ def init() -> None:
         # Set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
         modFilesPath = buf.value + nf + "p2mm\ModFiles"
-        configPath = buf.value + nf + "p2mm"
-        masterDataFilePath = buf.value + nf + "p2mm"
+        configsPath = buf.value + nf + "p2mm"
         p2mmScriptsPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod"
     elif (sys.platform.startswith("linux")):
         # Both Linux and SteamOS 3.0 system platform names return as "linux"
@@ -64,16 +62,14 @@ def init() -> None:
             # Steam OS 3.0's os.sep seems to be "/" instead of the usual "\"
             modPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
             modFilesPath = os.path.expanduser("~") + nf + "Desktop/p2mm/Modfiles"
-            configPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
-            masterDataFilePath = os.path.expanduser("~") + nf + "Desktop/p2mm"
+            configsPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
             p2mmScriptsPath = os.path.expanduser("~") + nf + "Desktop/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscript/multiplayermod"
         else:
             iol = True
             # Set the modpath the to the users .cache and .config directories in the home directory
             modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
             modFilesPath = os.path.expanduser("~") + nf + ".cache\p2mm\Modfiles"
-            configPath = os.path.expanduser("~") + nf + ".config\p2mm"
-            masterDataFilePath = os.path.expanduser("~") + nf + ".config\p2mm"
+            configsPath = os.path.expanduser("~") + nf + ".config\p2mm"
             p2mmScriptsPath = os.path.expanduser("~") + nf + ".cache\p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod"
 
     else:
@@ -85,8 +81,8 @@ def init() -> None:
     # Check if the modpath exists, if not create it
     if not os.path.exists(modPath):
         os.makedirs(modPath)
-    if not os.path.exists(configPath):
-        os.makedirs(configPath)
+    if not os.path.exists(configsPath):
+        os.makedirs(configsPath)
 
 def LoadConfig() -> None:
     global configData
