@@ -147,12 +147,16 @@ IncludeScriptCC("vote")
 // if the player chooses not to use CC
 //--------------------------------------
 
-// TODO: Replace SendChatMessage with SendToChat and
-// maintain backwards compat in case something breaks
 function SendChatMessage(message, pActivatorAndCaller = null) {
     if (SendToChatLoaded) {
-        // It takes a different number of args, so we take care of it here
-        SendToChat("\x03(P2:MM): " + message)
+        local color = "\x03" // light green; default
+        if (pActivatorAndCaller == null) {
+            pActivatorAndCaller = 0 // Sends the message to everyone
+            color = "\x04" // Bright green notice
+        } else {
+            pActivatorAndCaller = pActivatorAndCaller.entindex()
+        }
+        SendToChat(color + "(P2:MM): " + message, pActivatorAndCaller)
     } else {
         // Try to use server command in the case of dedicated servers
         local pEntity = Entities.FindByName(null, "p2mm_servercommand")
@@ -303,13 +307,13 @@ function GetAdminLevel(plr) {
     }
 
     // For people who were not defined, check if it's the host
-    if (FindPlayerClass(plr).steamid.tostring() == GetSteamID(1).tostring()) {
-        // It is, so we automatically give the host max perms
+    if (!IsDedicatedServer() && (FindPlayerClass(plr).steamid.tostring() == GetSteamID(1).tostring())) {
+        // It is, so we automatically give them max perms on the listen server
         Admins.push("[6]" + FindPlayerClass(plr).steamid)
         SendChatMessage("Added max permissions for " + FindPlayerClass(plr).username + " as server operator.", plr)
         return 6
     } else {
-        // Not in Admins array nor are they the host
+        // Not in Admins array nor are they the host, or it is a dedicated server
         return 0
     }
 }

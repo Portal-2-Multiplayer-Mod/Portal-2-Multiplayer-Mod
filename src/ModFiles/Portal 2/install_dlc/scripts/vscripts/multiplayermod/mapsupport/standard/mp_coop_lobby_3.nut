@@ -65,6 +65,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Remove useless entities so that the entity limit does not crash the game
 
+        // Paint reveal cutscene cleanser doesn't properly turn off (there's two of them)
+        Entities.FindByName(Entities.FindByName(null, "cleanser_preventduring_paint_reveal"), "cleanser_preventduring_paint_reveal").Destroy()
+        Entities.FindByName(null, "cleanser_preventduring_paint_reveal").Destroy()
+
         // Remove func_portal_bumper's from the map
         for (local ent; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
             ent.Destroy() // 165 entities removed

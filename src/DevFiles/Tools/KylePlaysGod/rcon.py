@@ -1,5 +1,3 @@
-# Its mario time fuckers!
-
 from ast import While
 import valve.rcon as rcon # pip install python-valve
 import time
@@ -122,7 +120,7 @@ while True:
     x, y = pygame.mouse.get_pos()
     mousepos = (x, y)
     pygame.draw.rect(window, (255, 0, 0), (coords[0] - 25, coords[1] - 25, 50, 50))
-    
+
 
     pygame.draw.line(window, (255, 255, 0), (coords[0], coords[1]), (x, y), 1)
     pygame.draw.line(window, (255, 255, 255), (coords[0], coords[1]), ((coords[0]) + fwdvec[0], (coords[1]) + fwdvec[1]), 1)

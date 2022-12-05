@@ -27,7 +27,7 @@ if (!PluginLoaded) {
     Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
 
     EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
-    EntFire("p2mm_servercommand", "command", "plugin_load 32pmod", 0.05) // This should never fail the first time through addons... try loading it from root DLC path
+    EntFire("p2mm_servercommand", "command", "plugin_load p2mm", 0.05) // This should never fail the first time through addons... try loading it from root DLC path
 } else {
     printlP2MM("Plugin has already been loaded! Not attempting to load it...")
 }
