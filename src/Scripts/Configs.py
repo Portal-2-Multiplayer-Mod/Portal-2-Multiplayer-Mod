@@ -54,7 +54,7 @@ DefaultConfigFile = {
             "warning": "",
             "prompt": "Please type the password for your P2MM server",
         },
-    
+
     "Custom-Launch-Options":
         {
             "value": "+map mp_coop_lobby_3",
@@ -247,7 +247,7 @@ def DeletePlayer(index: int):
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
-    return GVars.configPath + GVars.nf + "configs.cfg"
+    return GVars.configsPath + GVars.nf + "configs.cfg"
 
 # to import the config data from the local config file
 def ImportConfig() -> dict:

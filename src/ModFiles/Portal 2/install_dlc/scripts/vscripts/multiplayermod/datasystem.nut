@@ -31,12 +31,12 @@
 
 /* Process steps:
  Init:
-    
+
 */
 
 dataFileIndicators = [
-    "datasystem-kick-succeed.nut", 
-    "datasystem-kick-failed.nut", "datasystem-ban-succeed.nut", 
+    "datasystem-kick-succeed.nut",
+    "datasystem-kick-failed.nut", "datasystem-ban-succeed.nut",
     "datasystem-ban-failed.nut", "datasystem-mapevent-succeed.nut",
     "datasystem-mapevent-failed.nut"]
 
@@ -89,12 +89,12 @@ function dataNutCheck() {
         }
         if (dataFileFound = true) {
             switch (selectedDataFile) {
-                case 1 : selectedDataFile <- "datasystem-kick-succeed.nut"; return dataSystemKick(returnstate=true);
-                case 2 : selectedDataFile <- "datasystem-kick-fail.nut"; return dataSystemKick(returnstate=false);
-                case 3 : selectedDataFile <- "datasystem-ban-succeed.nut"; return dataSystemBan(returnstate=true);
-                case 4 : selectedDataFile <- "datasystem-ban-fail.nut"; return dataSystemBan(returnstate=false);
-                case 5 : selectedDataFile <- "datasystem-mapevent-succeed.nut"; return dataSystemBan(returnstate=true);
-                case 6 : selectedDataFile <- "datasystem-mapevent-fail.nut"; return dataSystemBan(returnstate=false);
+                case "datasystem-kick-succeed.nut": return dataSystemKick(returnstate=true); break;
+                case "datasystem-kick-fail.nut": return dataSystemKick(returnstate=false); break;
+                case "datasystem-ban-succeed.nut": return dataSystemBan(returnstate=true); break;
+                case "datasystem-ban-fail.nut": return dataSystemBan(returnstate=false); break;
+                case "datasystem-mapevent-succeed.nut": return dataSystemBan(returnstate=true); break;
+                case "datasystem-mapevent-fail.nut": return dataSystemBan(returnstate=false); break;
             }
         } else {
             printl("Data System Check called but no file found...")

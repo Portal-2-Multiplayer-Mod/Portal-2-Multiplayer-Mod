@@ -69,7 +69,7 @@ class Gui:
 
     ###############################################################################
         # The resolution of the launcher when it opens, why the height is 800 is to accomidate the Steam Decks resolution if launching the launcher in Gaming Mode
-        self.screen = pygame.display.set_mode((1280, 800), RESIZABLE) 
+        self.screen = pygame.display.set_mode((1280, 800), RESIZABLE)
         self.fpsclock = pygame.time.Clock()
         self.devMode: bool = devMode
         self.running: bool = True
@@ -230,7 +230,7 @@ class Gui:
         self.Text_LauncherVersion = self.DisplayText(translations["version"] + self.currentVersion, textColor=(255, 234, 0), xpos=75, xstart=75, xend=750, ypos=735)
 
         # The DisplayText class needs a seperate table for displaying nonfunction text, this worked better than trying to merge both DisplayText and ButtonTemplate classes
-        self.MainMenuText = [self.Text_MainMenuText, self.Text_LauncherVersion] 
+        self.MainMenuText = [self.Text_MainMenuText, self.Text_LauncherVersion]
         self.MainMenuButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
                             self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
 
@@ -348,7 +348,7 @@ class Gui:
         self.Text_TestMenuTextTest5 = self.DisplayText(
             "testtext5: textColor=(255, 255, 0), xpos=600, xstart=600, xend=2000, ypos=300", textColor=(255, 255, 0), xpos=600, xstart=600, xend=2000, ypos=300)
 
-        self.TestMenuText = [self.Text_TestMenuTextTest1, self.Text_TestMenuTextTest2, 
+        self.TestMenuText = [self.Text_TestMenuTextTest1, self.Text_TestMenuTextTest2,
                             self.Text_TestMenuTextTest3, self.Text_TestMenuTextTest4,
                             self.Text_TestMenuTextTest5]
         self.TestMenu = [self.Button_InputField, self.PopupBox_gui,
@@ -399,7 +399,7 @@ class Gui:
                 self.width = 28 # A duct tape fix to prevent errors with mouse movement detection
                 self.height = 14 # A duct tape fix to prevent errors with mouse movement detection
                 self.font = "GUI/assets/fonts/pixel.ttf"
-            
+
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
                 outerSelf.BlitDescription(self.keyobj["description"], 75,
                                           520, (130, 130, 255))
@@ -801,10 +801,10 @@ class Gui:
 
     def PopupBox_test_func(self) -> None:
         def YesInput() -> None:
-            self.Error(translations["error_yes"], 3, (75, 255, 75))
+            self.Error("Let's go!!!", 3, (75, 255, 75))
 
         def NoInput() -> None:
-            self.Error(translations["error_no"], 3, (255, 75, 75))
+            self.Error("Bruh...", 3, (255, 75, 75))
 
         Button_Confirm = self.ButtonTemplate(
             translations["error_yes"], YesInput, (75, 200, 75))
@@ -815,7 +815,7 @@ class Gui:
 
     def Button_PrintToConsole_func(self) -> None:
         print(GVars.modPath)
-        print(GVars.configPath)
+        print(GVars.configsPath)
 
     ################################
 
@@ -836,9 +836,9 @@ class Gui:
                 button.sizemult = 1
                 button.curanim = ""
 
-    def BlitDescription(self, 
-            txt: str, 
-            x: float = None, 
+    def BlitDescription(self,
+            txt: str,
+            x: float = None,
             y: float = None,
             clr: tuple = (255, 255, 255)) -> None:
 
@@ -846,16 +846,16 @@ class Gui:
             x = self.screen.get_width() / 16
         if y is None:
             y = self.screen.get_height() / 16
-        
+
         if (len(txt) > 0):
             text = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(
                 int((int(self.screen.get_width() / 15) + int(self.screen.get_height() / 25)) / (len(txt) * 0.1))))).render(txt, True, clr)
             if not (self.LookingForInput):
                 self.screen.blit(text, (x, y))
 
-    def GetUserInputPYG(self, 
-        afterfunc=None, 
-        prompt: list = [], 
+    def GetUserInputPYG(self,
+        afterfunc=None,
+        prompt: list = [],
         preinput: str = "") -> None:
 
         Log("Getting user input...")
@@ -879,7 +879,7 @@ class Gui:
         else:
             print(prompt)
             self.InputPrompt = str(prompt)
-            
+
         self.AfterInputFunction = afterfunc
         Log("AfterInputFunction: " + str(self.AfterInputFunction))
 
@@ -990,12 +990,12 @@ class Gui:
             #         print("Num of Breaks:" + str(TextBreaks))
             #     breaks = 0
             #     for breaks in range(0, TextBreaks):
-            #         displaytextsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf", 
+            #         displaytextsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
             #             (displaytext.width + displaytext.height)).render(text[breaks], True, displaytext.textColor)
             #         self.screen.blit(displaytextsurf, (displaytext.xpos, ((displaytext.ypos * breaks))))
             #         print(breaks)
             # else:
-            #     displaytextsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf", 
+            #     displaytextsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
             #             (displaytext.width + displaytext.height)).render(displaytext.text, True, displaytext.textColor)
             #     self.screen.blit(displaytextsurf, (displaytext.xpos, displaytext.ypos))
             displaytext.width = int(W / displaytext.size)
@@ -1019,7 +1019,7 @@ class Gui:
                     x += word_width + space
                 x = displaytext.xstart
                 y += word_height
-                
+
 
         # BACKGROUND
         for floater in self.Floaters:
@@ -1192,22 +1192,22 @@ class Gui:
             if self.HasBreaks == True:
                 breaks = 0
                 for breaks in range(0, self.PromptBreaks):
-                    surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", 
+                    surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
                         int(fntsize/1.5)).render(self.InputPrompt[breaks], True, (255, 255, 255))
-                    
+
                     # blit it right below the surf1
-                    self.screen.blit(surfInputPrompt, 
+                    self.screen.blit(surfInputPrompt,
                             (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2),
-                            ((blitpos[1] + 15)+ (surfInputPrompt.get_height() * breaks))))             
+                            ((blitpos[1] + 15)+ (surfInputPrompt.get_height() * breaks))))
             else:
-                surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf", 
+                surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
                         int(fntsize/1.5)).render(self.InputPrompt, True, (255, 255, 255))
-                    
+
                 # blit it right below the surf1
-                self.screen.blit(surfInputPrompt, 
+                self.screen.blit(surfInputPrompt,
                         (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2),
                         (blitpos[1] + surfInputPrompt.get_height())))
-            
+
     ###############################################################################
 
     def Main(self) -> None:
@@ -1443,7 +1443,7 @@ def PreExit() -> None:
         UnmountScript(False)
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
         Log("Unmounted P2MM's ModFiles from Portal 2...")
-    
+
     # Wrap up Discord Rich Presence by closing the connection
     DRP.shutdownRichPresence()
     Log("The P2MM launcher has been shutdown...")
@@ -1545,10 +1545,10 @@ def MountModOnly() -> bool:
             translations["error_ok"], OkInput, (75, 255, 75))
         Ui.Error(
             translations["update_error_connection_problem"], 5, (255, 75, 75))
-        Ui.PopupBox(translations["update_error_connection_problem"], 
+        Ui.PopupBox(translations["update_error_connection_problem"],
             translations["no_internet_error"], OkButton)
         return False
-    
+
     return True
 
 def GetAvailableLanguages() -> list[str]:
