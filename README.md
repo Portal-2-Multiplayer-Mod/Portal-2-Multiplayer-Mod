@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/blob/dev/BannerP2MMPortal2.png" alt="BannerP2MMPortal2" width="200" align="left">
+  <img src="https://github.com/OrsellGaming/Portal2-32PlayerMod-Orsell/blob/dev/BannerP2MMPortal2.png" alt="BannerP2MMPortal2" width="700" height="460" align="left">
   <a href="https://discord.gg/nXRygGNxyK"><img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge" alt="Discord Shield Badge" align="right"></a>
   <br><a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/release-date/kyleraykbs/Portal2-32PlayerMod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right"></a>
   <br><a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/commits/main"><img src="https://img.shields.io/github/last-commit/kyleraykbs/Portal2-32PlayerMod?label=Last%20Commit&style=for-the-badge" alt="Commit Shield Badge" align="right"></a>
@@ -59,6 +59,7 @@ This is optional if you prefer not to use official release compilations.
 - requests
 - steamid-converter
 - pyperclip
+- pypresence
 
 ### Compilation
 You will need `pyinstaller` in order to proceed.
