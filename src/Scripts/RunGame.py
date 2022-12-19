@@ -245,6 +245,9 @@ def PatchBinaries(gamepath: str) -> None:
         # Validation
         data = data.replace(b'\x74\x7d\x8b\x17', b'\xeb\x7d\x8b\x17')
 
+        # Server Password Fix
+        data = data.replace(b'\x0F\x95\xC1\x51\x8D\x4D\xE8', b'\x03\xC9\x90\x51\x8D\x4D\xE8')
+
         # write the data back to the file
         open(gamepath + GVars.nf + "engine.dll", "wb").write(data)
 
@@ -304,6 +307,9 @@ def PatchBinaries(gamepath: str) -> None:
 
         # Validation
         data = data.replace(b'\x74\xc5\x8b\x06\x8d\x93', b'\xeb\xc5\x8b\x06\x8d\x93')
+
+        # Server Password Fix
+        data = data.replace(b'\x0F\x95\xC1\x51\x8D\x4D\xE8', b'\x03\xC9\x90\x51\x8D\x4D\xE8')
 
         # write the data back to the file
         open(gamepath + GVars.nf + "engine.so", "wb").write(data)
