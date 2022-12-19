@@ -1227,9 +1227,9 @@ function BestGuessSpawnpoint() {
         ]
 
         if (GetDeveloperLevelP2MM()) {
-            printl("===========================")
-            printl("Box ents")
-            printl("===========================")
+            printlP2MM("===========================")
+            printlP2MM("Box ents")
+            printlP2MM("===========================")
         }
 
         local BestSurrondingBoxEnt = -1

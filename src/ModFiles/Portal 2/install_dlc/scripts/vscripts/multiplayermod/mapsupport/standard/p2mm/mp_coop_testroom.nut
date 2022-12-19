@@ -47,7 +47,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     //     if (supportSaves && saveCheck) {
     //         // Put save events here
     //     } else {
-    //         printl("(P2:MM): Tried to save progress but either saving isn't avaliable or saving isn't enabled in this map...")
+    //         printlP2MM("(P2:MM): Tried to save progress but either saving isn't avaliable or saving isn't enabled in this map...")
     //         EntFire("p2mm_servercommand", "command", "say 'ERROR! FILE SAVING IS NOT AVALIABLE/ENABLED FOR THIS MAP!'")
     //         EntFire("p2mm_servercommand", "command", "say 'PROGRESS WAS NOT SAVED!!!'")
     //     }
@@ -60,11 +60,11 @@ function test_file_create() {
         // This should make a .dem file with read and write permission, testing still in progress
         EntFire("@command_test_file", "command", "_record SAVE/test_nut")
         EntFire("@command_test_file", "command", "stop")
-        printl("(P2:MM): File created succesfully.")
+        printlP2MM("(P2:MM): File created succesfully.")
         EntFire("@command_test_file", "command", "ent_create_portal_weighted_cube")
     }   catch (e) {
         // This gets thrown if it fails to create the file
-        printl("(P2:MM): File failed to create.")
+        printlP2MM("(P2:MM): File failed to create.")
         throw e
     }
 }

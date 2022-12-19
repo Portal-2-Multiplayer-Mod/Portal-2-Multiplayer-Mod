@@ -21,7 +21,7 @@ function FinishFutBolSpawn(targetname, position) {
         if (ent.GetName() == "") {
             ent.__KeyValueFromString("targetname", targetname)
             ent.SetOrigin(position)
-            printl("FinishFutBolSpawn: " + targetname + " at " + position)
+            printlP2MM("FinishFutBolSpawn: " + targetname + " at " + position)
         }
     }
 }
@@ -38,14 +38,14 @@ function CheckFutBolGoal(team, prop, filter = "all") {
 
     if (filter == "all") {
         if (Entities.FindByClassnameNearest("prop_glass_futbol", goalpoint, 5)) {
-            printl("CheckFutBolGoal: " + team + " goal!")
+            printlP2MM("CheckFutBolGoal: " + team + " goal!")
             return true
         }
     } else {
         local ent = null
         while (ent = Entities.FindByClassnameWithin(ent, "prop_glass_futbol", goalpoint, 5)) {
             if (ent == filter) {
-                    printl("CheckFutBolGoal: " + team + " goal!")
+                    printlP2MM("CheckFutBolGoal: " + team + " goal!")
                     return true
             }
         }

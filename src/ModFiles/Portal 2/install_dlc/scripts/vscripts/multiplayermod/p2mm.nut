@@ -12,15 +12,15 @@
 //---------------------------------------------------
 // Purpose: The heart of the mod's content. Runs on
 // every map transition to bring about features and
-//                 fixes for 3+ MP.
+//                 fixes for 2+ MP.
 //---------------------------------------------------
 
 // In case this is the client VM...
 if (!("Entities" in this)) { return }
 
-printl("\n---------------------")
-printl("==== calling p2mm.nut")
-printl("---------------------\n")
+printlP2MM("\n---------------------")
+printlP2MM("==== calling p2mm.nut")
+printlP2MM("---------------------\n")
 
 // We don't call this one directly from the start since
 // we want to continue our logic in this file for now...
@@ -36,7 +36,7 @@ if (!PluginLoaded) {
 
     if (!("HasStartedP2MM" in this)) {
         HasStartedP2MM <- true
-        printl("RETURNING")
+        printlP2MM("RETURNING")
         return
     }
 }
@@ -69,8 +69,8 @@ IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
-// Load the data system after everything else has been loaded
-// IncludeScript("multiplayermod/datasystem/datasystem-main.nut") Commented out for now, still need to finish
+// Load the data system after everything else has been loaded, sill WIP
+// IncludeScript("multiplayermod/datasystem.nut")
 
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
@@ -79,7 +79,7 @@ IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 //---------------------------------------------------
 
 // Print P2:MM game art in console
-foreach (line in ConsoleAscii) { printl(line) }
+foreach (line in ConsoleAscii) { printlP2MM(line) }
 delete ConsoleAscii
 
 //---------------------------------------------------
@@ -90,9 +90,9 @@ delete ConsoleAscii
 // Import map support code
 // Map name will be wonky if the client VM attempts to get the map name
 function LoadMapSupportCode(gametype) {
-    printl( "\n=============================================================")
+    printlP2MM( "\n=============================================================")
     printlP2MM("Attempting to load " + gametype + " mapsupport code!")
-    printl("=============================================================\n")
+    printlP2MM("=============================================================\n")
 
     if (gametype != "standard") {
         try {

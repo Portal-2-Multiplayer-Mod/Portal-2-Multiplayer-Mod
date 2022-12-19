@@ -21,29 +21,29 @@ if (SendToConsole.getinfos().native) {
     SendToConsole = function(str = "") {
         local illegalChars = [";", "\\", "/", "\"", "%n", "'"]
         local DoError = function(string) {
-            printl("==========================================")
-            printl("    PATCHED COMMAND ATTEMPTED TO RUN!     ")
-            printl("                                          ")
-            printl("  Command: " + string                      )
-            printl("                                          ")
-            printl("  This could be game logic running in the ")
-            printl(" background. But if the command looks bad,")
-            printl(" then it is most likely a player that is  ")
-            printl("      attempting to exploit the game.     ")
-            printl("         So we're going to stop it.       ")
-            printl("                                          ")
-            printl("Possible suspects (standing still)...     ")
+            printlP2MM("==========================================")
+            printlP2MM("    PATCHED COMMAND ATTEMPTED TO RUN!     ")
+            printlP2MM("                                          ")
+            printlP2MM("  Command: " + string                      )
+            printlP2MM("                                          ")
+            printlP2MM("  This could be game logic running in the ")
+            printlP2MM(" background. But if the command looks bad,")
+            printlP2MM(" then it is most likely a player that is  ")
+            printlP2MM("      attempting to exploit the game.     ")
+            printlP2MM("         So we're going to stop it.       ")
+            printlP2MM("                                          ")
+            printlP2MM("Possible suspects (standing still)...     ")
             for (local player; player = Entities.FindByClassname(player, "player");) {
                 // Don't account for whether or not they are falling straight down
                 if (player.GetVelocity().x == 0 && player.GetVelocity().y == 0) {
-                    printl("- " + FindPlayerClass(player).username)
+                    printlP2MM("- " + FindPlayerClass(player).username)
                 }
             }
-            printl("==========================================")
+            printlP2MM("==========================================")
         }
 
         if (str == "") {
-            printl("\n(P2:MM): AN EMPTY STRING OF SendToConsole ATTEMPTED TO RUN!")
+            printlP2MM("\n(P2:MM): AN EMPTY STRING OF SendToConsole ATTEMPTED TO RUN!")
             return
         }
 

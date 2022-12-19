@@ -220,17 +220,17 @@ function Loop() {
 
     // if (cnt > EntityCap - EntityCapLeeway) {
     //     if (cnt >= FailsafeEntityCap) {
-    //         printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
+    //         printlP2MM("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
     //         EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3")
     //     }
-    //     printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
+    //     printlP2MM("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
     //     foreach (entclass in ExpendableEntities) {
 
     //         local curdelamt = amtpast - amtdeleted
     //         if (amtdeleted < amtpast) { // if we are still over the cap
 
     //             local amt = GetEntityCount(entclass)
-    //             printl("CURRENT AMOUNT OF " + entclass + ": " + amt)
+    //             printlP2MM("CURRENT AMOUNT OF " + entclass + ": " + amt)
 
     //             if (amt > 0) {
     //                 if (amt >= curdelamt) {
@@ -287,7 +287,7 @@ function Loop() {
                     DoneWaiting = true
                     PostPlayerSpawn()
                     if (GetDeveloperLevelP2MM()) {
-                        printl("=================================HEALTH SPAWN")
+                        printlP2MM("=================================HEALTH SPAWN")
                     }
                 }
             }
@@ -724,12 +724,12 @@ function OnPlayerJoin(p, script_scope) {
     //     /* 1.
     //         local entity = Entities.First()
     //         while (entity = Entities.Next(entity)) {
-    //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
+    //             printlP2MM(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
     //         }*/
 
     //     /* 2.
     //         for (local entity = Entities.First(); entity = Entities.Next(entity);) {
-    //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
+    //             printlP2MM(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
     //         }*/
 
     //     local bShouldRemovePortalguns = false
@@ -757,7 +757,7 @@ function OnPlayerJoin(p, script_scope) {
     //         RemoveAllClassname("weapon_portalgun")
     //         EntFire("p2mm_servercommand", "command", "changelevel mp_coop_doors", 3)
     //     } else {
-    //         printl("-----------WE DONT NEED TO REMOVE THE GUNS AND CHANGE LEVEL!!!")
+    //         printlP2MM("-----------WE DONT NEED TO REMOVE THE GUNS AND CHANGE LEVEL!!!")
     //     }
     // }
 
