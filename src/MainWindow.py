@@ -705,6 +705,8 @@ class Gui:
 
         self.coolDown = int(3 * 60)
         UnmountScript()
+        Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+
 
     #!############################
     #! WORKSHOP BUTTONS FUNCTIONS
