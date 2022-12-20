@@ -866,8 +866,8 @@ class Gui:
         # We need to check for "\n"s in the prompt that is supplied
         # If there is then we will seperate each part of text into a list
         breaktxt = "\n"
-        self.HasBreaks = False # Will tell the blit part of the code to blit it as multiple lines or not
-        self.PromptBreaks = 0 # Need to count how many lines there are to pass to the blit part of the code
+        self.HasBreaks = False # Will tell the blit part of the code (line 1180) to blit it as multiple lines or not
+        self.PromptBreaks = 0 # Need to count how many lines there are to pass to the blit part of the code (line 1180)
         # We need to check if there even is "\n"s, if no it will be displayed as a single line
         if breaktxt in prompt:
             self.HasBreaks = True
@@ -1040,10 +1040,17 @@ class Gui:
                     floater.x = random.randint(0, W)
                     floater.negrot = random.randint(0, 1) == 1
 
-        # Put assets/images/keys.png on the top right corner of the screen
-        keys = pygame.image.load("GUI/assets/images/keys.png").convert_alpha()
-        keys = pygame.transform.scale(keys, (W / 10, W / 10))
-        self.screen.blit(keys, ((W / 1.05) - keys.get_width(), H / 1.25))
+        if (not self.LookingForInput):
+            if GVars.iosd:
+                # Puts assets/images/buttons.png on the bottom right corner of the screen
+                buttons = pygame.image.load("GUI/assets/images/buttons.png").convert_alpha()
+                buttons = pygame.transform.scale(buttons, (W / 10, W / 10))
+                self.screen.blit(buttons, ((W / 1.05) - buttons.get_width(), H / 1.25))
+            else:
+                # Puts assets/images/keys.png on the bototm right corner of the screen
+                keys = pygame.image.load("GUI/assets/images/keys.png").convert_alpha()
+                keys = pygame.transform.scale(keys, (W / 10, W / 10))
+                self.screen.blit(keys, ((W / 1.05) - keys.get_width(), H / 1.25))
 
         # MENU
 
@@ -1170,7 +1177,7 @@ class Gui:
             blitpos = (
                 (W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
             self.screen.blit(surf1, blitpos)
-            # 
+            # We need to check if breaks were detected before in the prompt part of the code (line 868)
             if self.HasBreaks == True:
                 for breaks in range(0, self.PromptBreaks):
                     surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf",

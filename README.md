@@ -82,5 +82,5 @@ You will need `pyinstaller` in order to proceed.
 **Team Members**
 - QuantumCoded (Jeffrey)
 - Orsell (AKA zwexit) *(Launcher Dev, VScript, Map Maker)*
-- \n *(Test Subject (Under Gunpoint))*
+- \n *(Test Subject (Under Gunpoint), Asset Maker)*
 - wanderer *(Exploit Finder, Dedicated Server Support, Reverse Engineering*)
