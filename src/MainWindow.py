@@ -717,6 +717,7 @@ class Gui:
             map = workshop.MapFromSteamID(input)
 
             if map is not None:
+                map = map.replace(".bsp", "") # The ".bsp" part is still being copied, this should remove it
                 pyperclip.copy("changelevel " + map)
                 self.Error(
                     translations["workshop_changelevel_command"], 3, (255, 0, 255))
@@ -793,7 +794,7 @@ class Gui:
     def Button_InputField_func(self) -> None:
         def AfterInput(input) -> None:
             self.Error("Input: " + input, 3, (255, 255, 0))
-        self.GetUserInputPYG(AfterInput)
+        self.GetUserInputPYG(AfterInput, "As you can see this text can \n go onto another line :)")
 
     #######################
 
@@ -863,10 +864,11 @@ class Gui:
         self.CurInput = preinput
 
         # We need to check for "\n"s in the prompt that is supplied
-        # If there is then we will seperate each part of text into a table
+        # If there is then we will seperate each part of text into a list
         breaktxt = "\n"
-        self.HasBreaks = False
-        self.PromptBreaks = 0
+        self.HasBreaks = False # Will tell the blit part of the code to blit it as multiple lines or not
+        self.PromptBreaks = 0 # Need to count how many lines there are to pass to the blit part of the code
+        # We need to check if there even is "\n"s, if no it will be displayed as a single line
         if breaktxt in prompt:
             self.HasBreaks = True
             prompt = prompt.split("\n")
@@ -875,7 +877,7 @@ class Gui:
                 print(breaktxt)
                 print(self.PromptBreaks)
             print(prompt)
-            self.InputPrompt = str(prompt)
+            self.InputPrompt = prompt
         else:
             print(prompt)
             self.InputPrompt = str(prompt)
@@ -974,30 +976,8 @@ class Gui:
             button.width = text1.get_width()
             button.height = text1.get_height()
 
-        # TEXT DISPLAYED ON MENU
+        # DISPLAYING DISPLAYTEXT ON MENUS
         for displaytext in self.CurrentMenuText:
-            # We need to check for "\n"s in the prompt that is supplied
-            # If there is then we will seperate each part of text into a table
-            # breaktxt = "\n"
-            # TextBreaks = 0
-            # displaytext.width = int(W / displaytext.size)
-            # displaytext.height = int(H / displaytext.size)
-            # if breaktxt in displaytext.text:
-            #     text = (displaytext.text).split("\n")
-            #     for breaktxt in text:
-            #         TextBreaks += 1
-            #         print("Text Piece:" + breaktxt)
-            #         print("Num of Breaks:" + str(TextBreaks))
-            #     breaks = 0
-            #     for breaks in range(0, TextBreaks):
-            #         displaytextsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
-            #             (displaytext.width + displaytext.height)).render(text[breaks], True, displaytext.textColor)
-            #         self.screen.blit(displaytextsurf, (displaytext.xpos, ((displaytext.ypos * breaks))))
-            #         print(breaks)
-            # else:
-            #     displaytextsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
-            #             (displaytext.width + displaytext.height)).render(displaytext.text, True, displaytext.textColor)
-            #     self.screen.blit(displaytextsurf, (displaytext.xpos, displaytext.ypos))
             displaytext.width = int(W / displaytext.size)
             displaytext.height = int(H / displaytext.size)
             text = pygame.font.Font("GUI/assets/fonts/pixel.ttf", (displaytext.width + displaytext.height))
@@ -1019,7 +999,6 @@ class Gui:
                     x += word_width + space
                 x = displaytext.xstart
                 y += word_height
-
 
         # BACKGROUND
         for floater in self.Floaters:
@@ -1075,9 +1054,11 @@ class Gui:
         indx = 0
         for error in self.ERRORLIST[::-1]:
             indx += 1
-            errortext = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int(W / 60) + int(H / 85))).render(error[0],
-                                                                                                              True,
-                                                                                                              error[2])
+            errortext = pygame.font.Font(
+                "GUI/assets/fonts/pixel.ttf", 
+                int(int(W / 60) + int(H / 85))
+                ).render(error[0], True, error[2])
+            
             self.screen.blit(
                 errortext, (W / 30, ((errortext.get_height() * indx) * -1) + (H / 1.05)))
 
@@ -1189,8 +1170,8 @@ class Gui:
             blitpos = (
                 (W / 2) - (surf2.get_width() / 2), (H / 2) + ((InputText.get_height() * 1.725) * ((len(lines) / 2) - 1)))
             self.screen.blit(surf1, blitpos)
+            # 
             if self.HasBreaks == True:
-                breaks = 0
                 for breaks in range(0, self.PromptBreaks):
                     surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
                         int(fntsize/1.5)).render(self.InputPrompt[breaks], True, (255, 255, 255))
@@ -1213,7 +1194,6 @@ class Gui:
     def Main(self) -> None:
         LastBackspace = 0
         discordPresenceCount = 0
-        discordPresenceRefreshCount = 0
         while self.running:
             mouse = pygame.mouse.get_pos()
             mousex = mouse[0]
@@ -1329,39 +1309,39 @@ class Gui:
                                 break
 
                 # NORMAL INPUT
-                if event.type == KEYDOWN:
-                    if event.key in [K_ESCAPE, K_BACKSPACE]:
-                        self.BackMenu()
-                    elif event.key in [K_DOWN, K_s]:
-                        if self.CurrentButtonsIndex < len(self.CurrentMenuButtons) - 1:
-                            self.CurrentButtonsIndex += 1
-                            self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
-                            self.PlaySound(self.SelectedButton.hoversnd)
-                        else:
-                            self.CurrentButtonsIndex = 0
-                            self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
-                            self.PlaySound(self.SelectedButton.hoversnd)
-                    elif event.key in [K_UP, K_w]:
-                        if self.CurrentButtonsIndex > 0:
-                            self.CurrentButtonsIndex -= 1
-                            self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
-                            self.PlaySound(self.SelectedButton.hoversnd)
-                        else:
-                            self.CurrentButtonsIndex = len(
-                                self.CurrentMenuButtons) - 1
-                            self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
-                            self.PlaySound(self.SelectedButton.hoversnd)
-                    elif event.key in [K_SPACE, K_RETURN, K_KP_ENTER]:
-                        self.SelectAnimation(
-                            self.SelectedButton, self.SelectedButton.selectanim)
-                        if self.SelectedButton.function:
-                            if self.SelectedButton.isasync:
-                                threading.Thread(
-                                    target=self.SelectedButton.function).start()
+                if (not self.LookingForInput):
+                    if event.type == KEYDOWN:
+                        if event.key in [K_ESCAPE, K_BACKSPACE]:
+                            self.BackMenu()
+                        elif event.key in [K_DOWN, K_s]:
+                            if self.CurrentButtonsIndex < len(self.CurrentMenuButtons) - 1:
+                                self.CurrentButtonsIndex += 1
+                                self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
+                                self.PlaySound(self.SelectedButton.hoversnd)
                             else:
-                                self.SelectedButton.function()
-
-                        self.PlaySound(self.SelectedButton.selectsnd)
+                                self.CurrentButtonsIndex = 0
+                                self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
+                                self.PlaySound(self.SelectedButton.hoversnd)
+                        elif event.key in [K_UP, K_w]:
+                            if self.CurrentButtonsIndex > 0:
+                                self.CurrentButtonsIndex -= 1
+                                self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
+                                self.PlaySound(self.SelectedButton.hoversnd)
+                            else:
+                                self.CurrentButtonsIndex = len(
+                                    self.CurrentMenuButtons) - 1
+                                self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
+                                self.PlaySound(self.SelectedButton.hoversnd)
+                        elif event.key in [K_SPACE]:
+                            self.SelectAnimation(
+                                self.SelectedButton, self.SelectedButton.selectanim)
+                            if self.SelectedButton.function:
+                                if self.SelectedButton.isasync:
+                                    threading.Thread(
+                                        target=self.SelectedButton.function).start()
+                                else:
+                                    self.SelectedButton.function()
+                            self.PlaySound(self.SelectedButton.selectsnd)
 
                 # LMB
                 # executes the button's function on left mouse click IF the mouse is above the button
