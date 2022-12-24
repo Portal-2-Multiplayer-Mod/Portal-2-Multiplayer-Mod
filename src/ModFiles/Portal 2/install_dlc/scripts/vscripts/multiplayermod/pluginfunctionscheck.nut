@@ -20,7 +20,7 @@
 
 // Differentiate our debug comments in the console from normal spew
 function printlP2MM(str) {
-    printlP2MM("(P2:MM): " + str)
+    printl("(P2:MM): " + str)
 }
 
 if (Entities.FindByName(null, "p2mm_servercommand")) {
