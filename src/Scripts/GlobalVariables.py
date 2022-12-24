@@ -53,15 +53,15 @@ def init() -> None:
         p2mmScriptsPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod"
     elif (sys.platform.startswith("linux")):
         # Both Linux and SteamOS 3.0 system platform names return as "linux"
-        # We need to use the platform release name to differentiate a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release
+        # We need to use the platform release name to differentiate
+        # a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release
         if ("valve" in platform.release()):
             iosd = True
-            # Steam OS 3.0 has some directories set to read-only
+            # Steam OS 3.0 has some directories set to read-only, they can be fixed but it gets reset every update
             # We are going to install p2mm to the home\Desktop directory instead of .cache and .config because of this
-            # We are also gonna keep stuff together like with the Windows paths, configs will be placed into the same directory as the ModFiles
-            # Steam OS 3.0's os.sep seems to be "/" instead of the usual "\"
+            # Steam OS 3.0's os.sep is "/" instead of the usual "\"
             modPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
-            modFilesPath = os.path.expanduser("~") + nf + "Desktop/p2mm/Modfiles"
+            modFilesPath = os.path.expanduser("~") + nf + "Desktop/p2mm/ModFiles"
             configsPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
             p2mmScriptsPath = os.path.expanduser("~") + nf + "Desktop/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscript/multiplayermod"
         else:
@@ -75,7 +75,7 @@ def init() -> None:
     else:
         # Feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")
-        Log("We only support Windows, Linux, and SteamOS 3.0 (Steam Deck) as of current.")
+        Log("We only support Windows, Linux, and SteamOS 3.0 (Steam Deck) as of version 2.2.0.")
         quit()
 
     # Check if the modpath exists, if not create it

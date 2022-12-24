@@ -106,11 +106,11 @@ def masterDataFileStructureCheck(configsPath) -> None:
     # Log("DS: Structure check successfully performed!")
 
 def createNewMasterData() -> None:
-    currentMasterData = (GVars.configsPath + "\masterData.cfg")
+    currentMasterData = (GVars.configsPath + GVars.nf + "masterData.cfg")
     try:
         os.remove(currentMasterData)
     except Exception as e:
-        Log(f"The masterDataFile file was already removed or some other error occured: {str(e)}")
+        Log(f"DS: The masterDataFile file was already removed or some other error occured: {str(e)}")
 
     newMasterDataFile = open(GVars.configsPath + GVars.nf + "masterData.cfg", "w+", encoding="utf-8")
     json.dump(defaultDataStructure, newMasterDataFile, indent=4)
