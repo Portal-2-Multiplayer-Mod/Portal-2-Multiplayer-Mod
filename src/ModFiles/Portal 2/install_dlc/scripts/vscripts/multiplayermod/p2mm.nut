@@ -18,9 +18,9 @@
 // In case this is the client VM...
 if (!("Entities" in this)) { return }
 
-printlP2MM("\n---------------------")
-printlP2MM("==== calling p2mm.nut")
-printlP2MM("---------------------\n")
+printl("\n---------------------")
+printl("==== calling p2mm.nut")
+printl("---------------------\n")
 
 // We don't call this one directly from the start since
 // we want to continue our logic in this file for now...
