@@ -13,11 +13,11 @@ import Scripts.BasicFunctions as Funcs
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
-currentVersion = "2.1.0" # Change this before releasing a new version of the launcher
+currentVersion = "2.1.0" # REMEMBER TO CHANGE THIS BEFORE RELEASEING A NEW VERSION OF THE LAUNCHER
 ownerName = "kyleraykbs"
 repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
 
-# thanks stackOverflow for this solution <3
+# A quick easy way to check if the system is connected to the internet, thanks stackOverflow for this solution <3
 def haveInternet() -> bool:
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
     try:

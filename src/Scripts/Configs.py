@@ -46,13 +46,13 @@ DefaultConfigFile = {
             "prompt": "Enable background cubes?",
         },
 
-    "(WIP)Server-Password":
+    "Server-Password":
         {
-            "value": '""',
+            "value": "\"\"",
             "menu": "portal2",
-            "description": "Set a password for your P2MM server, this can be changed while the server is up but a level restart is required.",
+            "description": "Set a password for your P2MM server. This can be changed while the server is up but a level restart or change is required.",
             "warning": "",
-            "prompt": "Please type the password for your P2MM server",
+            "prompt": "Type the password for your P2MM server.\n\"\" will disable the password on your server,\nleaving blank won't.",
         },
 
     "Custom-Launch-Options":
@@ -95,18 +95,18 @@ DefaultConfigFile = {
 
     "Dev-Mode":
         {
-            "value": "false",
+            "value": "true", #REMEMBER TO CHANGE THIS WHEN RELEASING NEW VERSION!
             "menu": "dev",
             "description": "Makes the mod's files mount from src/ModFiles",
             "warning": "Only enable this if you know what you're doing!",
             "prompt": "",
         },
 
-    "(WIP)Data-System-Overide":
+    "Data-System-Overide":
         {
             "value": "true",
             "menu": "dev",
-            "description": "Manually overide if the server will operate next play session.",
+            "description": "Manually overide if the datasystem will operate next play session.",
             "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
             "prompt": "",
         },
