@@ -20,7 +20,6 @@ modPath: str # p2mm\
 modFilesPath: str # \p2mm\Modfiles
 configsPath: str # Path defined for config files for the launcher, p2mm\
 p2mmScriptsPath: str # Path defined for the data system nuts directory
-# dataSystemSSFilesPath: str # Path defined for the screenshots folder for Portal 2, this is for the data system
 iow: bool = False # Windows system
 iol: bool = False # Linux system
 iosd: bool = False # Steam Deck/Steam OS 3.0 system
@@ -48,9 +47,10 @@ def init() -> None:
 
         # Set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
-        modFilesPath = buf.value + nf + "p2mm\ModFiles"
-        configsPath = buf.value + nf + "p2mm"
-        p2mmScriptsPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod"
+        modFilesPath = modPath + nf + "ModFiles"
+        configsPath = modPath
+        p2mmScriptsPath = modFilesPath + nf + "Portal 2\install_dlc\scripts\\vscripts\multiplayermod"
+        print(modPath + "\n" + modFilesPath + "\n" + configsPath + "\n" + p2mmScriptsPath)
     elif (sys.platform.startswith("linux")):
         # Both Linux and SteamOS 3.0 system platform names return as "linux"
         # We need to use the platform release name to differentiate
@@ -61,16 +61,16 @@ def init() -> None:
             # We are going to install p2mm to the home\Desktop directory instead of .cache and .config because of this
             # Steam OS 3.0's os.sep is "/" instead of the usual "\"
             modPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
-            modFilesPath = os.path.expanduser("~") + nf + "Desktop/p2mm/ModFiles"
-            configsPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
-            p2mmScriptsPath = os.path.expanduser("~") + nf + "Desktop/p2mm/ModFiles/Portal 2/install_dlc/scripts/vscript/multiplayermod"
+            modFilesPath = modPath + nf + "ModFiles"
+            configsPath = modPath
+            p2mmScriptsPath = os.path.expanduser("~") + nf + modFilesPath + nf + "Portal 2/install_dlc/scripts/vscript/multiplayermod"
         else:
             iol = True
             # Set the modpath the to the users .cache and .config directories in the home directory
             modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
-            modFilesPath = os.path.expanduser("~") + nf + ".cache\p2mm\Modfiles"
+            modFilesPath = modPath + nf + "Modfiles"
             configsPath = os.path.expanduser("~") + nf + ".config\p2mm"
-            p2mmScriptsPath = os.path.expanduser("~") + nf + ".cache\p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscript\multiplayermod"
+            p2mmScriptsPath = modFilesPath + nf + "Portal 2\install_dlc\scripts\\vscript\multiplayermod"
 
     else:
         # Feel sad for the poor people who are running templeOS :(
