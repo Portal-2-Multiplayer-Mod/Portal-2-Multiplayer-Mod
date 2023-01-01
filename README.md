@@ -72,15 +72,15 @@ You will need `pyinstaller` in order to proceed.
 
 # Credits
 **Head Developers**
-- kyleraykbs *(Vscript, Singleplayer Support, Cooperative Support, Launcher, Exploit Finder)*
-- Nanoman2525 *(Community Manager, Exploit Finder, Vscript, Singleplayer Support, Cooperative Support, VScript optimization)*
+- kyleraykbs *(Vscript, Singleplayer Support, Cooperative Support, Launcher, Reverse Engineering)*
+- Nanoman2525 *(Community Manager, Reverse Engineering, Vscript, Singleplayer Support, Cooperative Support, VScript optimization)*
 - Vista *(C++ Plugin, Reverse Engineering)*
 - cabiste *(Launcher, Overall code optimization)*
-- Bumpy *(Minor Vscript, Exploit Finder)*
+- Bumpy *(Minor Vscript, Reverse Engineering)*
 - Wolƒe Strider Shoσter *(Singleplayer Support, Minor Vscript)*
 
 **Team Members**
 - QuantumCoded (Jeffrey)
-- Orsell (AKA zwexit) *(Launcher Dev, VScript, Map Maker)*
+- Orsell (AKA zwexit) *(Launcher Dev, VScript, Map Maker, Asset Maker)*
 - \n *(Test Subject (Under Gunpoint), Asset Maker)*
-- wanderer *(Exploit Finder, Dedicated Server Support, Reverse Engineering*)
+- wanderer *(Dedicated Server Support, Reverse Engineering*)
