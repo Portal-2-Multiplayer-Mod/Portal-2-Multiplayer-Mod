@@ -121,10 +121,10 @@ local IncludeScriptCC = function(script) {
 // chat command to the CommandList array
 
 IncludeScriptCC("adminmodify")
-// IncludeScriptCC("ban") // INDEV By Orsell
+//IncludeScriptCC("ban") // INDEV By Orsell
 IncludeScriptCC("changeteam")
 IncludeScriptCC("help")
-IncludeScriptCC("kick")
+//IncludeScriptCC("kick") // INDEV By Orsell
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
@@ -134,7 +134,7 @@ IncludeScriptCC("restartlevel")
 IncludeScriptCC("rocket")
 IncludeScriptCC("slap")
 IncludeScriptCC("spchapter")
-// IncludeScriptCC("spectate") // broken
+//IncludeScriptCC("spectate") // broken
 IncludeScriptCC("speed")
 IncludeScriptCC("teleport")
 IncludeScriptCC("vote")
