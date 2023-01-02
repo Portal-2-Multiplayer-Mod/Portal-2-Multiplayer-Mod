@@ -5,17 +5,17 @@ CommandList.push(
 
         // !kick (player to kick here) (optional remove argument)
         function CC(p, args) {
+            PlayerKickList <- {}
             // arg[0] -> player to kick
             args[0] = Strip(args[0])
             local plr = FindPlayerByName(args[0])
             // arg[1] -> optional remove argument
             args[1] = Strip(args[1])
 
-            local PlayerKickList <- []
             local KickPlayer = function(plr) {
                 EntFireByHandle(p2mm_clientcommand, "Command", "disconnect \"You've been kicked from the server.\"", 0, plr, plr)
-                PlayerKickList.insert(FindPlayerClass(plr).steamid)
-                SendChatMessage(FindPlayerClass(plr).username + " has been kicked from the server...", p)
+                PlayerKickList.push(FindPlayerClass(plr).steamid)
+                dataSystemKick(null, plr)
             }
 
             if ((args.len() == 0) || (args.len() > 2)) {
@@ -25,8 +25,7 @@ CommandList.push(
 
             try {
                 if (plr == null) {
-                    SendChatMessage("[ERROR] Player not found.", p)
-                    return
+                    return SendChatMessage("[ERROR] Player not found.", p)
                 }
 
                 if (args.len() == 1) {
@@ -35,6 +34,7 @@ CommandList.push(
                     }
                     if (plr != p) {
                         KickPlayer(plr)
+                        return
                     }
                 }
 

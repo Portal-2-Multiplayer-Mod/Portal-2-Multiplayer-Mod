@@ -1,5 +1,3 @@
-PlayerBanList <- []
-
 CommandList.push(
     class {
         name = "ban"
@@ -7,6 +5,7 @@ CommandList.push(
 
         // !ban (player to ban here) (optional remove argument)
         function CC(p, args) {
+            PlayerBanList <- {}
             // arg[0] -> player to ban
             args[0] = Strip(args[0])
             local plr = FindPlayerByName(args[0])
@@ -16,8 +15,8 @@ CommandList.push(
             PlayerBanList <- []
             local BanPlayer = function(plr) {
                 EntFireByHandle(p2mm_clientcommand, "Command", "disconnect \"You've been banned from the server.\"", 0, plr, plr)
-                PlayerBanList.insert(FindPlayerClass(plr).steamid)
-                SendChatMessage(FindPlayerClass(plr).username + " has been banned from the server...", p)
+                PlayerBanList.push(FindPlayerClass(plr).steamid)
+                dataSystemBan(null, plr)
             }
 
             if ((args.len() == 0) || (args.len() > 2)) {
