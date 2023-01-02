@@ -81,8 +81,10 @@ function Vote::BeginVote(arg1, arg2, pPlayer) {
         if (FindPlayerByName(arg2) == null) {
             return SendChatMessage("[ERROR] Player not found.", pPlayer)
         }
-        if (FindPlayerByName(arg2) == UTIL_PlayerByIndex(1)) {
-            return SendChatMessage("[ERROR] Cannot kick server operator.", pPlayer)
+        if (!IsDedicatedServer()) {
+            if (FindPlayerByName(arg2) == UTIL_PlayerByIndex(1)) {
+                return SendChatMessage("[ERROR] Cannot kick server operator.", pPlayer)
+            }
         }
     }
 
@@ -210,8 +212,8 @@ function Vote::CleanUpVote() {
 
     for (local player; player = Entities.FindByClassname(player, "player");) {
         FindPlayerClass(player).startedvote = false // Forget who initiated the vote
-        FindPlayerClass(player).hasvotedyes = false // Forget all those that had voted
-        FindPlayerClass(player).hasvotedno = false // Forget all those that had voted
+        FindPlayerClass(player).hasvotedyes = false // Forget all those that had voted yes
+        FindPlayerClass(player).hasvotedno = false // Forget all those that had voted no
     }
     UpdatePlayerCountText()
 
@@ -231,6 +233,7 @@ CommandList.push(
         // !vote (arg1) (arg2)
         function CC(p, args) {
             if (!Player2Joined && !IsDedicatedServer()) {
+                // Just loaded into a map
                 SendChatMessage("[VOTE] Wait until the game begins...", p)
                 return
             }
@@ -278,7 +281,7 @@ CommandList.push(
 
             // Obey the required number of players needed to initiate a vote
             if (Vote.iCurrentNumberOfPlayers < MinimumPlayersInitiateVote && !Vote.bVoteInProgress) {
-                SendChatMessage("[VOTE] Cannot vote if there are less than 3 players.", p)
+                SendChatMessage("[VOTE] Cannot vote if there are less than " + MinimumPlayersInitiateVote.tostring() + " players.", p)
                 return
             }
 
@@ -287,6 +290,9 @@ CommandList.push(
                 if (Vote.bVoteInProgress) {
                     if (bCurrentCCPlayerInitiatedVote) {
                         SendChatMessage("[VOTE] End a vote with: cancel", p)
+                        if (GetAdminLevel(p) >= 6) {
+                            SendChatMessage("[VOTE] Admins can force an outcome with: fail, succeed", p)
+                        }
                     } else {
                         if (FindPlayerClass(p).hasvotedyes || FindPlayerClass(p).hasvotedno) {
                             SendChatMessage("[VOTE] You have already voted.", p)

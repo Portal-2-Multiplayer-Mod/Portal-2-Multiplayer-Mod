@@ -12,9 +12,7 @@
 // Purpose: Enable commands through the chat box.
 //---------------------------------------------------
 
-// TODO:
-// 1. Fix how we work out arguments for
-//    players with spaces in their names
+// TODO: Fix how we work out arguments for players with spaces in their names
 
 if (Config_UseChatCommands) {
     // This can only be enabled when the plugin is loaded fully
@@ -120,6 +118,9 @@ local IncludeScriptCC = function(script) {
 // Include the scripts that will push each
 // chat command to the CommandList array
 
+// The order of the CC list will be dependent on what is included first
+// Organized alphabetically...
+
 IncludeScriptCC("adminmodify")
 // IncludeScriptCC("ban") // INDEV By Orsell
 IncludeScriptCC("changeteam")
@@ -149,10 +150,10 @@ IncludeScriptCC("vote")
 
 function SendChatMessage(message, pActivatorAndCaller = null) {
     if (SendToChatLoaded) {
-        local color = "\x03" // light green; default
+        local color = "\x03" // light green; default, private message
         if (pActivatorAndCaller == null) {
-            pActivatorAndCaller = 0 // Sends the message to everyone
-            color = "\x04" // Bright green notice
+            pActivatorAndCaller = 0 // 0 means sending to everyone via plugin logic
+            color = "\x04" // Bright green; public message
         } else {
             pActivatorAndCaller = pActivatorAndCaller.entindex()
         }
@@ -166,10 +167,14 @@ function SendChatMessage(message, pActivatorAndCaller = null) {
         }
         EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
     }
+    // Note that "\x05" is used for private messages with more than one person
+    // You will need to create a special case to use it (see cc/teleport.nut)
 }
 
 function RunChatCommand(cmd, args, plr) {
-    printlP2MM("Running chat command \"" + cmd.name + "\" from player \"" + FindPlayerClass(plr).username + "\"")
+    if (GetDeveloperLevelP2MM()) {
+        printlP2MM("Running chat command \"" + cmd.name + "\" from player \"" + FindPlayerClass(plr).username + "\"")
+    }
     cmd.CC(plr, args)
 }
 
@@ -310,7 +315,9 @@ function GetAdminLevel(plr) {
     if (!IsDedicatedServer() && (FindPlayerClass(plr).steamid.tostring() == GetSteamID(1).tostring())) {
         // It is, so we automatically give them max perms on the listen server
         Admins.push("[6]" + FindPlayerClass(plr).steamid)
-        SendChatMessage("Added max permissions for " + FindPlayerClass(plr).username + " as server operator.", plr)
+        if (GetDeveloperLevelP2MM()) {
+            SendChatMessage("Added max permissions for " + FindPlayerClass(plr).username + " as server operator.", plr)
+        }
         return 6
     } else {
         // Not in Admins array nor are they the host, or it is a dedicated server

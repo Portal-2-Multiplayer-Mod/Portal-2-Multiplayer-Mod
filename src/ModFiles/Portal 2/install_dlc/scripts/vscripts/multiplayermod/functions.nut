@@ -239,7 +239,7 @@ function GetPlayerColor(p, multiply = true) {
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; colorname = "White";          break;
+            case 1 : R <- 255; G <- 255; B <- 255; colorname = "Bright White";   break;
             case 2 : R <-   0, G <- 200, B <-   0; colorname = "Green";          break;
             case 3 : R <- 120, G <- 140, B <- 255; colorname = "Blue";           break;
             case 4 : R <- 255, G <- 170, B <- 120; colorname = "Orange";         break;
@@ -255,12 +255,12 @@ function GetPlayerColor(p, multiply = true) {
             case 14: R <-  64, G <-   0, B <-   0; colorname = "Dark Red";       break;
             case 15: R <-   0, G <-  64, B <-   0; colorname = "Dark Green";     break;
             case 16: R <-   0, G <-   0, B <-  64; colorname = "Dark Blue";      break;
-            case 17: R <- 255, G <-  87, B <-  51; colorname = "Reddish Orange"; break;
+            case 17: R <- 255, G <-  87, B <-  51; colorname = "Scarlet";        break;
             case 18: R <- 165, G <- 208, B <- 255; colorname = "Bright Blue";    break;
             case 19: R <- 190, G <- 255, B <- 200; colorname = "Mint Green";     break;
             case 20: R <- 205, G <- 207, B <-  62; colorname = "Gold Yellow";    break;
             case 21: R <- 255, G <- 194, B <- 194; colorname = "Bright Red";     break;
-            case 22: R <- 208, G <- 255, B <-  28; colorname = "Yellowish Green";break;
+            case 22: R <- 208, G <- 255, B <-  28; colorname = "Lime";           break;
             case 23: R <-  91, G <- 129, B <- 184; colorname = "Dull Blue";      break;
             case 24: R <-  99, G <-   0, B <- 161; colorname = "Purple";         break;
             case 25: R <- 107, G <- 169, B <- 117; colorname = "Dull Green";     break;
@@ -273,8 +273,7 @@ function GetPlayerColor(p, multiply = true) {
             case 32: R <- 236, G <- 167, B <- 167; colorname = "Light Red";      break;
             case 33: R <-   0, G <- 100, B <- 150; colorname = "Navy Blue";      break;
         }
-    } catch(e) {} 
-
+    } catch (exception) {}
 
     if (PlayerID > 33) {
         // If you have more than 33 players (not happening anytime soon, if at all), no dedicated color for those players :(
