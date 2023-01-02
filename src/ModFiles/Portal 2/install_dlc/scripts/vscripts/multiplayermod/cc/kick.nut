@@ -54,7 +54,7 @@ CommandList.push(
             }
 
             // Send this message right before kicking in case the class gets destroyed
-            SendChatMessage("[KICK] Kicked " + FindPlayerClass(FindPlayerByName(args[0])).username + " from the server.", p)
+            SendChatMessage("[KICK] Kicked " + FindPlayerClass(FindPlayerByName(args[0])).username + " from the server.")
 
             // Players can still join the game again if you use this
             EntFire("p2mm_servercommand", "command", "kick " + FindPlayerClass(FindPlayerByName(args[0])).username)

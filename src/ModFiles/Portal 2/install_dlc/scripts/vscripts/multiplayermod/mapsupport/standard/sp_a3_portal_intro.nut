@@ -81,7 +81,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (GooHurtTimerPred <= Time()) {
             while (p = Entities.FindByClassname(p, "player")) {
-                if (p.GetOrigin().z <= -3250) {
+                if (p.GetOrigin().z <= -3500) {
                     EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
                 }
             }

@@ -57,24 +57,29 @@ CommandList.push(
                     }
                 }
                 if (plr == p) {
-                    SendChatMessage("Brought all players.", p)
+                    SendChatMessage("Brought all players.")
                 } else {
-                    SendChatMessage("Teleported all players.", p)
+                    SendChatMessage("Teleported all players.")
                 }
                 return
             }
 
             if (plr == p && plr == plr2) {
-                return SendChatMessage("[ERROR] Can't teleport player to the same player.", p)
+                SendChatMessage("[ERROR] Can't teleport player to the same player.", p)
+                return
             }
 
             // if the second argument is a player
             plr2.SetOrigin(plr.GetOrigin())
             plr2.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
             if (plr2 == p) {
-                return SendChatMessage("Teleported to player.", p)
+                SendChatMessage("Teleported to player.", p)
+                return
             } else {
-                return SendChatMessage("Teleported player.", p)
+                // Special case for changing chat color to a mildly dark green
+                SendToChat("\x05(P2:MM): Teleported player.", p.entindex())
+                SendToChat("\x05(P2:MM): Teleported player.", plr2.entindex()) // Notify the other player who got teleported as well
+                return
             }
         }
     }
