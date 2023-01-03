@@ -37,19 +37,10 @@ defaultDataStructure = {
             "testdatasend": "notsent",
             "testdatarecieved": "notsent"
         }
-    },
-
-    "P2MM Lobby": {
-        "verificationStatus": "offical",
-        "mapFileName": "mp_coop_p2mmlobby",
-        "mapsupportFile": "mp_coop_p2mmlobby",
-        "data": {
-            "introseq": "false"
-        }
     }
 }
 
-presetKeys = {"kicklist", "banlist", "officalp2mmmaps", "verifiedp2mmmaps", "unverifiedp2mmmaps"}
+presetKeys = {"kicklist", "banlist", "Test Room"}
 mapValues = {"verificationStatus", "mapFileName", "mapSupportFile", "data"}
 dataSystemState: bool = True
 # ssFilesPath: str = GVars.configData["Portal2-Path"]["value"] + GVars.nf + "screenshots"
@@ -203,7 +194,7 @@ def dataSystemInitialization(refresh: bool) -> None:
     # Now we clean up the system and create the files needed for the datasystem-main.nut file to read when its called on later when a map loads
     finally:
         try:
-            if (dataSystemState == True) and (firstStart == False) and (GVars.configData["(WIP)Data-System-Overide"]["value"] == "true"):
+            if (dataSystemState == True) and (firstStart == False) and (GVars.configData["Data-System-Overide"]["value"] == "true"):
                 dataSystemInitSuccess = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-enabled.nut", "x")
             elif (dataSystemState == False) and (firstStart == True):
                 Log("This is the launchers first start, will not be creating datasystem nut indicator...")
