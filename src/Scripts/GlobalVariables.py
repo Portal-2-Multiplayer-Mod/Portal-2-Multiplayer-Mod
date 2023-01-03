@@ -63,14 +63,14 @@ def init() -> None:
             modPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
             modFilesPath = modPath + nf + "ModFiles"
             configsPath = modPath
-            p2mmScriptsPath = os.path.expanduser("~") + nf + modFilesPath + nf + "Portal 2/install_dlc/scripts/vscript/multiplayermod"
+            p2mmScriptsPath = modFilesPath + nf + "Portal 2/install_dlc/scripts/vscripts/multiplayermod"
         else:
             iol = True
             # Set the modpath the to the users .cache and .config directories in the home directory
             modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
             modFilesPath = modPath + nf + "Modfiles"
             configsPath = os.path.expanduser("~") + nf + ".config\p2mm"
-            p2mmScriptsPath = modFilesPath + nf + "Portal 2\install_dlc\scripts\\vscript\multiplayermod"
+            p2mmScriptsPath = modFilesPath + nf + "Portal 2\install_dlc\scripts\\vscripts\multiplayermod"
 
     else:
         # Feel sad for the poor people who are running templeOS :(
