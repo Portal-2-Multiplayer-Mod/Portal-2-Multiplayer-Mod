@@ -1583,6 +1583,16 @@ function CreateOurEntities() {
     // Create an entity that sends miscellaneous client commands
     p2mm_clientcommand <- Entities.CreateByClassname("point_clientcommand")
     p2mm_clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand") // Using the targetname in outputs causes invalid entity instance errors ??
+
+    // Create the env_global entities that P2MM utilizes
+    for (local i = 1; i < 5; i++) {
+        Entities.CreateByClassname("env_global").__KeyValueFromString("targetname", "p2mm_env_global0" + i.tostring())
+    }
+
+    Entities.FindByName(null, "p2mm_env_global01").__KeyValueFromString("globalstate", "no_pinging_blue")
+    Entities.FindByName(null, "p2mm_env_global02").__KeyValueFromString("globalstate", "no_pinging_orange")
+    Entities.FindByName(null, "p2mm_env_global03").__KeyValueFromString("globalstate", "no_taunting_blue")
+    Entities.FindByName(null, "p2mm_env_global04").__KeyValueFromString("globalstate", "no_taunting_orange")
 }
 
 function CalcNumPlayers() {
@@ -1602,15 +1612,6 @@ function Plyr_Disconnect_Function() {
 //--------------------------------------
 // Manage what each team can do
 //--------------------------------------
-
-for (local i = 1; i < 5; i++) {
-    Entities.CreateByClassname("env_global").__KeyValueFromString("targetname", "p2mm_env_global0" + i.tostring())
-}
-
-Entities.FindByName(null, "p2mm_env_global01").__KeyValueFromString("globalstate", "no_pinging_blue")
-Entities.FindByName(null, "p2mm_env_global02").__KeyValueFromString("globalstate", "no_pinging_orange")
-Entities.FindByName(null, "p2mm_env_global03").__KeyValueFromString("globalstate", "no_taunting_blue")
-Entities.FindByName(null, "p2mm_env_global04").__KeyValueFromString("globalstate", "no_taunting_orange")
 
 class UTIL_Team {
     bPortalgunEnabled_Blue = true
