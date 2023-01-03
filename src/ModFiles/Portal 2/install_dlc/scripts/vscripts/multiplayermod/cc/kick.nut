@@ -6,6 +6,7 @@ CommandList.push(
         // !kick (player to kick here) (optional remove argument)
         function CC(p, args) {
             PlayerKickList <- {}
+
             // arg[0] -> player to kick
             args[0] = Strip(args[0])
             local plr = FindPlayerByName(args[0])
@@ -25,12 +26,14 @@ CommandList.push(
 
             try {
                 if (plr == null) {
-                    return SendChatMessage("[ERROR] Player not found.", p)
+                    SendChatMessage("[ERROR] Player not found.", p)
+                    return
                 }
 
                 if (args.len() == 1) {
                     if (plr == p) {
-                        return SendChatMessage("[ERROR] You're trying to kick yourself.", p)
+                        SendChatMessage("[ERROR] You're trying to kick yourself.", p)
+                        return
                     }
                     if (plr != p) {
                         KickPlayer(plr)
@@ -40,17 +43,20 @@ CommandList.push(
 
                 if (args.len() == 2) {
                     if (plr == p) {
-                        return SendChatMessage("[ERROR] You're trying to kick yourself.", p)
+                        SendChatMessage("[ERROR] You're trying to kick yourself.", p)
+                        return
                     }
                     if (plr != p) {
                         if ((plr != null) && (args[1] = "remove")) {
                             PlayerKickList.remove(FindPlayerClass(plr).steamid)
-                            return SendChatMessage(FindPlayerClass(plr).username + " has been unkicked from the server...", p)
+                            SendChatMessage(FindPlayerClass(plr).username + " has been unkicked from the server...", p)
+                            return
                         }
                     }
                 }
             } catch (exception) {
-                return SendChatMessage("[ERROR] An error occured trying to run that command, check console...", p)
+                SendChatMessage("[ERROR] An error occured trying to run that command, check console...", p)
+                return
             }
 
             // Send this message right before kicking in case the class gets destroyed
