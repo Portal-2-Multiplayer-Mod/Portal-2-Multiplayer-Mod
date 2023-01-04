@@ -138,12 +138,10 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
 
-    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
-
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
 
-    destination = BF.CopyFolder(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
+    destination = BF.CopyFolder(GVars.modFilesPath + GVars.nf + ".", gamepath + GVars.nf + dlcmountpoint)
     Log("Successfully copied the mod files to "+ destination)
 
     nutConfigFile = gamepath + GVars.nf + dlcmountpoint + GVars.nf + "scripts" + GVars.nf + "vscripts" + GVars.nf + "multiplayermod" + GVars.nf + "config.nut"
@@ -399,7 +397,23 @@ def UnRenameBinaries(gamepath: str, binaries: list[str]) -> None:
             # Rename the binary back to it's original name
             os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + Og_binary)
 
-def DeleteUnusedDlcs(gamepath: str) -> None:
+# Make sure the dlc folders that come with Portal 2 exist
+# They are required since they include stuff for multiplayer and fixes for other things Portal 2 related
+# portal2_dlc1 is required for multiplayer to work since it includes mp_coop_lobby_3 and the stuff for the DLC course Art Therapy
+# portal2_dlc2 is also required, while its mainly for PeTi, it also includes a bunch of other assets and fixes for Portal 2
+# If either of these folders are not detected we won't start or mount P2MM
+def CheckForRequiredDLC(gamepath: str) -> bool:
+    Log("")
+    Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
+    if (not os.path.exists(gamepath + GVars.nf + "portal2_dlc1")) or (not os.path.exists(gamepath + GVars.nf + "portal2_dlc2")):
+        Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
+        Log("P2MM with not be mounted/started!")
+        return False
+    Log("DLC folders were found...")
+    return True
+
+# Find and delete P2MM's portal2_dlc folder
+def DeleteUnusedDLCs(gamepath: str) -> None:
     Log("")
     Log("            _________Dealing with Folders________")
 
@@ -411,17 +425,18 @@ def DeleteUnusedDlcs(gamepath: str) -> None:
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
-            # if inside the folder there is a file called "32playermod.identifier" delete this folder
-            if "32playermod.identifier" in os.listdir(gamepath + GVars.nf + file):
+            # if inside the folder there is a file called "p2mm.identifier" delete this folder
+            if "p2mm.identifier" in os.listdir(gamepath + GVars.nf + file):
                 Log("Found old DLC: " + file)
                 # delete the folder even if it's not empty
                 BF.DeleteFolder(gamepath + GVars.nf + file)
                 Log("Deleted old DLC: " + file)
 
+# Find what DLC folders exist for Portal 2 and create a incremented folder for P2MM
 def FindAvailableDLC(gamepath: str) -> str:
     Log("Finding the next increment in DLC folders...")
     dlcs = []
-    DeleteUnusedDlcs(gamepath)
+    DeleteUnusedDLCs(gamepath)
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
