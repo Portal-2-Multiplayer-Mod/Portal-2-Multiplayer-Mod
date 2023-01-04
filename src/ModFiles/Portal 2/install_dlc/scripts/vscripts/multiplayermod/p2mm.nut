@@ -39,17 +39,18 @@ if (!PluginLoaded) {
 
     if (!("HasStartedP2MM" in this)) {
         HasStartedP2MM <- true
-        printl("RETURNING")
         return
     }
 }
 
 iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1) // Determine what the "maxplayers" cap is
 
-printlP2MM("Session info...")
-printlP2MM("- Current map: " + GetMapName())
-printlP2MM("- Max players allowed on the server: " + iMaxPlayers)
-printlP2MM("- Dedicated server: " + IsDedicatedServer() + "\n")
+if (GetDeveloperLevelP2MM()) {
+    printlP2MM("Session info...")
+    printlP2MM("- Current map: " + GetMapName())
+    printlP2MM("- Max players allowed on the server: " + iMaxPlayers)
+    printlP2MM("- Dedicated server: " + IsDedicatedServer())
+}
 
 IncludeScript("multiplayermod/config.nut")                  // Import the user configuration and preferences
 IncludeScript("multiplayermod/configcheck.nut")             // Make sure nothing was invalid and compensate
