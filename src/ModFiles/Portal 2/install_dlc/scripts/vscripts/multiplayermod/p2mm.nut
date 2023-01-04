@@ -72,8 +72,14 @@ IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
-// Load the data system after everything else has been loaded, sill WIP
-// IncludeScript("multiplayermod/datasystem.nut")
+// Load the data system after everything else has been loaded
+// STILL WIP AND DOESN'T WORK ON DEDICATED SERVERS!!!
+// if (!IsDedicatedServer()) {
+//     IncludeScript("multiplayermod/datasystem.nut")
+// } else {
+//     printlP2MM("[DS] Dedicated server detected, the Data System will not be activated!")
+// }
+    
 
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
