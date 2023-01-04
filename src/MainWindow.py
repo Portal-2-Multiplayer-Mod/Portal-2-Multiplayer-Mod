@@ -1620,7 +1620,7 @@ def UnmountScript(shouldgetpath: bool = True) -> None:
     Log("___Unmounting Mod___")
     VerifyGamePath(shouldgetpath)
     gamepath = GVars.configData["Portal2-Path"]["value"]
-    RG.DeleteUnusedDlcs(gamepath)
+    RG.DeleteUnusedDLCs(gamepath)
     RG.UnpatchBinaries(gamepath)
     Log("____DONE UNMOUNTING____")
 
