@@ -12,8 +12,8 @@
 //   \ V // _` || '_|| |/ _` || '_ \| |/ -_)(_-< _
 //    \_/ \__,_||_|  |_|\__,_||_.__/|_|\___|/__/(_)
 //---------------------------------------------------
-// Purpose: Here, we declare and set up almost
-// every variable used throughout the P2:MM codebase.
+// Purpose: Here, we declare and set up frequently
+// used variables used throughout the P2:MM codebase.
 //---------------------------------------------------
 
 //---------------
@@ -70,9 +70,27 @@ fogs <- false
 GlobalOverridePluginGrabController <- true // By default unless specified in mapsupport
 HasSpawned <- false
 
-IsOnSingleplayerMaps <- false
-if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) != "mp_coop") {
-    IsOnSingleplayerMaps = true
+// Check entire map string
+if (GetMapName().slice(0, GetMapName().len()) == "mp_coop_community_hub") {
+    IsCommunityCoopHub <- 1
+} else {
+    IsCommunityCoopHub <- 0
+}
+
+// Check part of the map string
+if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) == "mp_coop") {
+    IsOnSingleplayerMaps <- 0
+} else {
+    IsOnSingleplayerMaps <- 1
+}
+
+// Minimize the errors when in singleplayer maps
+// (We don't need these)
+if (IsOnSingleplayerMaps) {
+    function GetPlayer() {}
+    function PrecacheMovie(string) {}
+    function CoopPingTool(int1, int2) {}
+    function CoopBotAnimation(int1, int2) {}
 }
 
 MadeSpawnClass <- false
@@ -109,21 +127,13 @@ TotalRemovedEnts <- 0
 // Arrays/Tables
 //---------------
 ConsoleAscii <- [
-"\n",
-"██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░░██████╗░",
-"██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░░╚════██╗",
-"██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░░░░███╔═╝",
-"██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░░██╔══╝░░",
-"██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░░███████╗",
-"╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░░╚══════╝",
-"",
-"░░░░░░███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░░░░░░░",
-"░░░░░░████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗░░░░░░",
-"░░░░░░██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║░░░░░░",
-"░░░░░░██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║░░░░░░",
-"░░░░░░██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝░░░░░░",
-"░░░░░░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░╚═╝░░░░░╚═╝░╚════╝░╚═════╝░░░░░░░",
-"\n"
+"########...#######...##..##.....##.##.....##",
+"##.....##.##.....##.####.###...###.###...###",
+"##.....##........##..##..####.####.####.####",
+"########...#######.......##.###.##.##.###.##",
+"##........##.........##..##.....##.##.....##",
+"##........##........####.##.....##.##.....##",
+"##........#########..##..##.....##.##.....##"
 ]
 CurrentlyDead <- []
 entityclasses <- []
@@ -159,19 +169,19 @@ if (GetMapName() == "mp_coop_credits") {
         "###--------------------------",
         "###P2:MM Head Creators",
         "###--------------------------",
-        "Nanoman2525 | Mapping + Minor Launcher + Main Mod Developer/Maintainer + Hex Edits + Community Manager + Major VScript",
-        "kyleraykbs | Major VScript + Launcher + Alpha-stage full Cooperative Support",
+        "Nanoman2525 | Main Mod Developer/Maintainer + Major VScript + Community Manager + Hex Edits + Launcher + Mapping",
+        "kyleraykbs | Major VScript + Launcher + Alpha-stage full Cooperative Support + Hex Edits",
         "Bumpy | Script Theory",
         "Vista | Reverse Engineering, Plugin Developer",
         "Wolƒe Strider Shoσter | Alpha-stage full Singleplayer Support",
-        "cabiste | Mod Launcher Code Refactor + Minor VScript",
+        "cabiste | Major Launcher + VScript",
         "###--------------------------",
         "###P2:MM Team Members",
         "###--------------------------",
         "sear | Speedrun Mode Ideas + Heavy Playtesting",
         "Jeffrey | Previous Code Cleanup",
         "wanderer | Dedicated Server Functionality",
-        "tnp|\\n|thewoodster75 | Heavy Playtesting",
+        "tnp (\\n) |thewoodster75 | Heavy Playtesting",
         "Orsell | Custom Content Functionality + VScript",
         "###--------------------------",
         "###P2:MM Contributers",
@@ -229,7 +239,10 @@ PrecachedProps <- []
 //---------------
 // Others
 //---------------
+defaultfog <- null
 LastCoordGetPlayer <- null
+OldPlayerAngles <- Vector(0, 0, 0)
+OldPlayerPos <- Vector(0, 0, 0)
 OrangeOldPlayerPos <- null
 OriginalAngle <- null
 OriginalPosMain <- null

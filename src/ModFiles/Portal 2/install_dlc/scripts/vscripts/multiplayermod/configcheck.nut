@@ -18,7 +18,7 @@
 // variables, so we just do it one by one :D
 
 local ConfigValueError = function(invalidorundefined, command) {
-    printl("(P2:MM): " + invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")
+    printlP2MM(invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")
 }
 
 try {
@@ -142,15 +142,7 @@ try {
 }
 
 local SetDefaultAdminList = function() {
-    Admins <- [
-        "[400]182933216", // kyleraykbs
-        "[400]75927374", // Wolƒe Strider Shoσter
-        "[400]290760494", // Nanoman2525
-        "[400]1106347501", // vista
-        "[400]181670710", // Bumpy
-        "[400]72399433", // cabiste
-        "[400]242453954", // sear
-    ]
+    Admins <- []
 }
 
 try {

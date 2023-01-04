@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
-        PermaPotato <- true
+        PermaPotato = true
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto20-entrance_lift_train"), "StartForward", "", 0, null, null)
         // Destroy objects
@@ -38,7 +38,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
         // Elevator changelevel
         for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100);) {
-            SendToConsoleP2MM("changelevel sp_a3_speed_flings")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_speed_flings")
         }
     }
 }

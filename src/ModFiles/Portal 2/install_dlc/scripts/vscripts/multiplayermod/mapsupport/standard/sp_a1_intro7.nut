@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
-        GlobalOverridePluginGrabController <- false
+        GlobalOverridePluginGrabController = false
 
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         EntFire("@sphere", "addoutput", "OnPlayerPickup p2mm_servercommand:command:script disablewheatleyplayerpickup()", 0, null)

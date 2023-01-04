@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        PermaPotato <- true
+        PermaPotato = true
         Entities.FindByName(null, "portal_chamber_1").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "portal_chamber_2").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "areaportal_airlock_1").__KeyValueFromString("targetname", "moja3")
@@ -43,7 +43,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3152, -1928, -240), 100)) {
              
-            SendToConsoleP2MM("changelevel sp_a4_finale3")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a4_finale3")
         }
     }
 }

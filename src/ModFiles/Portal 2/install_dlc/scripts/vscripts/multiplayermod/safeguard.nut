@@ -18,16 +18,13 @@ if (!Config_SafeGuard) {
 
 if (SendToConsole.getinfos().native) {
     SendToConsoleP2MM <- SendToConsole
-    SendToConsole = function(str) {
-        local printchar = true
-        local illegalChars = [";", "\\", "/", "\"", "%n"]
-        local DoError = function(string, printchar) {
+    SendToConsole = function(str = "") {
+        local illegalChars = [";", "\\", "/", "\"", "%n", "'"]
+        local DoError = function(string) {
             printl("==========================================")
             printl("    PATCHED COMMAND ATTEMPTED TO RUN!     ")
-            if (printchar) {
             printl("                                          ")
             printl("  Command: " + string                      )
-            }
             printl("                                          ")
             printl("  This could be game logic running in the ")
             printl(" background. But if the command looks bad,")
@@ -53,20 +50,28 @@ if (SendToConsole.getinfos().native) {
         foreach (char in illegalChars) {
             if (typeof str.find(char) == "integer") {
                 if (char == illegalChars[4]) {
-                    printchar = false // Do not print this out
+                    str = "% + n"
                 }
-                DoError(str, printchar)
+                DoError(str)
                 return
             }
         }
 
         // Can't combine these checks since it leads to a string length error
         if (str.len() < 17) {
-            DoError(str, printchar)
+            DoError(str)
             return
         }
-        if (str.len() >= 17 && str.slice(0, 17) != "snd_ducktovolume ") {
-            DoError(str, printchar)
+        if ((str.len() == 17 || str.len() == 18) && str.slice(0, 17) != "snd_ducktovolume ") {
+            DoError(str)
+            return
+        }
+        if ((str.len() == 23 || str.len() == 24) && str.slice(0, 23) != "map_wants_save_disable ") {
+            DoError(str)
+            return
+        }
+        if (str.len() >= 25) {
+            DoError(str)
             return
         }
 

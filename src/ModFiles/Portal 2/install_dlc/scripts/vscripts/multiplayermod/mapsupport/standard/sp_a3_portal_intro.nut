@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
-        PermaPotato <- true
+        PermaPotato = true
         OnlyOnceSp_A3_Portal_Intro <- false
 
         Entities.FindByName(null, "1970s_door1door_lower").__KeyValueFromString("targetname", "moja1")
@@ -81,7 +81,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (GooHurtTimerPred <= Time()) {
             while (p = Entities.FindByClassname(p, "player")) {
-                if (p.GetOrigin().z <= -3250) {
+                if (p.GetOrigin().z <= -3500) {
                     EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
                 }
             }

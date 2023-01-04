@@ -1,7 +1,9 @@
 commandtable <- {}
 commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
+// commandtable["ban"] <- "Bans a player from the play session and will prevent them from joinning again for future play sessions."
 commandtable["changeteam"] <- "Changes your current team."
 commandtable["help"] <- "List available commands or print a description of a specific one."
+commandtable["kick"] <- "Kicks acts as a temp ban, kicks the player from the play session and won't let them back in until the next session."
 commandtable["kill"] <- "Kill yourself, others, or \"all\"."
 commandtable["mpcourse"] <- "Changes the level to the specified cooperative course."
 commandtable["noclip"] <- "Toggles your noclip status."
@@ -14,9 +16,7 @@ commandtable["spchapter"] <- "Changes the level to the specified singleplayer ch
 // commandtable["spectate"] <- "Allows you to spectate players and roam around the map."
 commandtable["speed"] <- "Changes your player speed."
 commandtable["teleport"] <- "Teleports a specific player or \"all\" to you or another player."
-// commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not."
-// commandtable["kick"] <- "Kicks acts as a temp ban, kicks the player from the play session and won't let them back in until the next session."
-// commandtable["ban"] <- "Bans a player from the play session and will prevent them from joinning again for future play sessions."
+commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not."
 
 CommandList.push(
     class {
@@ -35,12 +35,20 @@ CommandList.push(
                 }
             } catch (exception) {
                 SendChatMessage("[HELP] Your available commands:", p)
+                local availablecommands = ""
                 foreach (command in CommandList) {
                     if (command.level <= GetAdminLevel(p)) {
-                        SendChatMessage("[HELP] " + command.name, p)
+                        // 100 characters max allowed in chat box per message
+                        if ((availablecommands + command.name + ", ").len() >= 100) {
+                            // Print it out
+                            SendChatMessage("[HELP] " + availablecommands.slice(0, availablecommands.len() - 2), p) // Remove excess comma and space
+                            availablecommands = ""
+                        }
+                        availablecommands = availablecommands + command.name + ", "
                     }
                 }
-                SendChatMessage("[HELP] This command can also print a description for another if supplied with it.", p)
+                SendChatMessage("[HELP] " + availablecommands.slice(0, availablecommands.len() - 2), p) // Remove excess comma and space
+                // SendChatMessage("[HELP] This command can also print a description for another if supplied with it.", p)
             }
         }
     }

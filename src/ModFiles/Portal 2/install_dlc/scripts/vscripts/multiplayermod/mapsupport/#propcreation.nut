@@ -706,7 +706,6 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 
   if (CacheTime) {
-    PrecacheModel("models/props/metal_box.mdl")
     DoneCacheing <- true
   }
 

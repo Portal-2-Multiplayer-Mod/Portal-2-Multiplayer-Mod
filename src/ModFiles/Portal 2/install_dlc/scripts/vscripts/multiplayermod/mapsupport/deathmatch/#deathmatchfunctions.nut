@@ -5,15 +5,10 @@
 // Remove Portal Gun
 function ShouldRespawnWithoutPortalGunToggle() {
     if (!Entities.FindByName(null, "supress_blue_portalgun_spawn") && !Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
-        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
-        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
-
-        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
-        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+        UTIL_Team.Spawn_PortalGun(false)
     }
     else if (Entities.FindByName(null, "supress_blue_portalgun_spawn") && Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
-        Entities.FindByName(null, "supress_blue_portalgun_spawn").Destroy()
-        Entities.FindByName(null, "supress_orange_portalgun_spawn").Destroy()
+        UTIL_Team.Spawn_PortalGun(true)
     }
 }
 

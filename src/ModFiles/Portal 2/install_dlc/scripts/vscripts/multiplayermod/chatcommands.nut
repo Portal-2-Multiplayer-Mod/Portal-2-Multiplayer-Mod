@@ -12,29 +12,18 @@
 // Purpose: Enable commands through the chat box.
 //---------------------------------------------------
 
-// TODO:
-// 1. Fix how we work out arguments for
-//    players with spaces in their names
-// 2. Implement vote CC
+// TODO: Fix how we work out arguments for players with spaces in their names
 
 if (Config_UseChatCommands) {
     // This can only be enabled when the plugin is loaded fully
-    if (PluginLoaded) {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Adding chat callback for chat commands.")
-        }
-        AddChatCallback("ChatCommands")
-    } else {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Can't add chat commands since no plugin is loaded!")
+    if (!PluginLoaded) {
+        if (GetDeveloperLevelP2MM()) {
+            printlP2MM("Can't add chat commands since no plugin is loaded!")
         }
         return
     }
 } else {
-    printl("(P2:MM): Config_UseChatCommands is false. Not adding chat callback for chat commands!")
-    // If AddChatCallback() was called at one point during the session, the game will still check for chat callback even after map changes.
-    // So, if someone doesn't want CC midgame, just redefine the function to do nothing.
-    function ChatCommands(iUserIndex, rawText) {}
+    printlP2MM("Config_UseChatCommands is false. Not adding chat callback for chat commands!")
     return
 }
 
@@ -71,7 +60,7 @@ function ChatCommands(iUserIndex, rawText) {
         if (!StartsWith(Input, "!") || Message.len() < 2) {
             return
         }
-        if (Message.slice(0, 2) == "!!" && Message.slice(0, 2) == "! ") {
+        if (Message.slice(0, 2) == "!!" || Message.slice(0, 2) == "! ") {
             return
         }
         if (Message.len() > 3) {
@@ -122,16 +111,21 @@ function ChatCommands(iUserIndex, rawText) {
 
 CommandList <- []
 
-// Include the scripts that will push each
-// CC to the CommandList array
-
 local IncludeScriptCC = function(script) {
     IncludeScript("multiplayermod/cc/" + script + ".nut")
 }
 
+// Include the scripts that will push each
+// chat command to the CommandList array
+
+// The order of the CC list will be dependent on what is included first
+// Organized alphabetically...
+
 IncludeScriptCC("adminmodify")
+// IncludeScriptCC("ban") // INDEV By Orsell
 IncludeScriptCC("changeteam")
 IncludeScriptCC("help")
+IncludeScriptCC("kick")
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
@@ -144,9 +138,7 @@ IncludeScriptCC("spchapter")
 // IncludeScriptCC("spectate") // broken
 IncludeScriptCC("speed")
 IncludeScriptCC("teleport")
-// IncludeScriptCC("vote") // INDEV By Nano
-// IncludeScriptCC("kick") // INDEV By Orsell
-// IncludeScriptCC("ban") // INDEV By Orsell
+IncludeScriptCC("vote")
 
 //--------------------------------------
 // Chat command function dependencies
@@ -157,19 +149,32 @@ IncludeScriptCC("teleport")
 //--------------------------------------
 
 function SendChatMessage(message, pActivatorAndCaller = null) {
-    // We try to use server command since that allows the host
-    // to send instant messages without any chat refresh delay
-    local pEntity = Entities.FindByName(null, "p2mm_servercommand")
-    if (pActivatorAndCaller != null && pActivatorAndCaller != Entities.FindByClassname(null, "player")) {
-        // Send messages from a specific client
-        pEntity = p2mm_clientcommand
+    if (SendToChatLoaded) {
+        local color = "\x03" // light green; default, private message
+        if (pActivatorAndCaller == null) {
+            pActivatorAndCaller = 0 // 0 means sending to everyone via plugin logic
+            color = "\x04" // Bright green; public message
+        } else {
+            pActivatorAndCaller = pActivatorAndCaller.entindex()
+        }
+        SendToChat(color + "(P2:MM): " + message, pActivatorAndCaller)
+    } else {
+        // Try to use server command in the case of dedicated servers
+        local pEntity = Entities.FindByName(null, "p2mm_servercommand")
+        if (pActivatorAndCaller != null) {
+            // Send messages from a specific client
+            pEntity = p2mm_clientcommand
+        }
+        EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
     }
-    EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
+    // Note that "\x05" is used for private messages with more than one person
+    // You will need to create a special case to use it (see cc/teleport.nut)
 }
 
 function RunChatCommand(cmd, args, plr) {
-    printl("(P2:MM): Running chat command: " + cmd.name)
-    printl("(P2:MM): Player: " + FindPlayerClass(plr).username)
+    if (GetDeveloperLevelP2MM()) {
+        printlP2MM("Running chat command \"" + cmd.name + "\" from player \"" + FindPlayerClass(plr).username + "\"")
+    }
     cmd.CC(plr, args)
 }
 
@@ -184,7 +189,7 @@ function UTIL_PlayerByIndex(index) {
 
 function RemoveDangerousChars(str) {
     str = Replace(str, "%n", "") // Can cause crashes!
-    if (StartsWith(str, "^")) {
+    if (StartsWith(str, "^")) { // ?
         return ""
     }
     return str
@@ -287,7 +292,7 @@ function FindPlayerByName(name) {
 
 function GetAdminLevel(plr) {
     foreach (admin in Admins) {
-        // Seperate the SteamID and the admin level
+        // Separate the SteamID and the admin level
         local level = split(admin, "[]")[0]
         local SteamID = split(admin, "]")[1]
 
@@ -307,19 +312,21 @@ function GetAdminLevel(plr) {
     }
 
     // For people who were not defined, check if it's the host
-    if (FindPlayerClass(plr).steamid.tostring() == GetSteamID(1).tostring()) {
-        // It is, so we automatically give the host max perms
+    if (!IsDedicatedServer() && (FindPlayerClass(plr).steamid.tostring() == GetSteamID(1).tostring())) {
+        // It is, so we automatically give them max perms on the listen server
         Admins.push("[6]" + FindPlayerClass(plr).steamid)
-        SendChatMessage("Added max permissions for " + FindPlayerClass(plr).username + " as server operator.", plr)
+        if (GetDeveloperLevelP2MM()) {
+            SendChatMessage("Added max permissions for " + FindPlayerClass(plr).username + " as server operator.", plr)
+        }
         return 6
     } else {
-        // Not in Admins array nor are they the host
+        // Not in Admins array nor are they the host, or it is a dedicated server
         return 0
     }
 }
 
 function SetAdminLevel(NewLevel, iPlayerIndex) {
-    if (iPlayerIndex == 1) {
+    if (!IsDedicatedServer() && iPlayerIndex == 1) {
         SendChatMessage("[ERROR] Cannot change admin level of server operator!")
         return
     }

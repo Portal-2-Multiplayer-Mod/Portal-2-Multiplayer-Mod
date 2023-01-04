@@ -24,12 +24,32 @@ CommandList.push(
                 } catch (exception) {
                     if (plr != null) {
                         SendChatMessage(GetPlayerName(plr.entindex()) + "'s admin level: " + GetAdminLevel(plr), p)
+
+                        // Update the config.nut admins array in case their name was on here
+                        // This way, they can't just leave and reconnect
+                        foreach (admin in Admins) {
+                            // Separate the SteamID and the admin level
+                            local level = split(admin, "[]")[0]
+                            local SteamID = split(admin, "]")[1]
+
+                            if (SteamID == FindPlayerClass(plr).steamid.tostring()) {
+                                if (SteamID == GetSteamID(1).tostring()) {
+                                    // Host always has max perms even if defined lower
+                                    if (level.tointeger() < 6) {
+                                        return
+                                    }
+                                    admin = "[" + level + "]" + SteamID
+                                } else {
+                                    admin = "[" + level + "]" + SteamID
+                                }
+                            }
+                        }
                     } else {
                         SendChatMessage("[ERROR] Player not found.", p)
                     }
                 }
             } catch (exception) {
-                EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Input a player name.", 0, p, p)
+                SendChatMessage("[ERROR] Input a player name.", p)
             }
         }
     }

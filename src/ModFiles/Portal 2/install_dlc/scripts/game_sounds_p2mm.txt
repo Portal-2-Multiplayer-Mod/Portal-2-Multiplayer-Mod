@@ -1,4 +1,5 @@
 // P2:MM server-side game sounds
+// DOES NOT WORK CURRENTLY
 
 "Bullets.DefaultNearmiss"
 {

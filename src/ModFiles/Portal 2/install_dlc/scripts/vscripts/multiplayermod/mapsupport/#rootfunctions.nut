@@ -114,8 +114,8 @@ function NewApertureStartElevatorFixes() {
         // Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
         // Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
     } catch(exception) {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Exception occured in NewApertureStartElevatorFixes()!")
+        if (GetDeveloperLevelP2MM()) {
+            printlP2MM("Exception occured in NewApertureStartElevatorFixes()!")
         }
     }
     // Enable vgui displays

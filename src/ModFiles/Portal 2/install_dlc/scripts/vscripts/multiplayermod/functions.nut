@@ -137,10 +137,10 @@ function TeleportPlayerToClass(player, curclass) {
 }
 
 function p2mmfogswitch(fogname) {
-    printl("(P2:MM): Switching to fog: " + fogname)
+    printlP2MM("Switching to fog: " + fogname)
     foreach (fogclass in fogs) {
         if (fogclass.fogname == fogname) {
-            printl("(P2:MM): Found fog: " + fogclass.fogname)
+            printlP2MM("Found fog: " + fogclass.fogname)
             // go through each player and set their fog to the new fog
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
@@ -182,12 +182,12 @@ function p2mmfogswitch(fogname) {
 
     if (Darken) {
         local amt = 2
-        printl("(P2:MM): Darkening color")
-        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
+        printlP2MM("Darkening color")
+        printlP2MM("R: " + R + " G: " + G + " B: " + B)
         R <- (R / amt);
         G <- (G / amt);
         B <- (B / amt);
-        printl("(P2:MM): R: " + R + " G: " + G + " B: " + B)
+        printlP2MM("R: " + R + " G: " + G + " B: " + B)
         if (R < 1) {
             R <- 1;
         }
@@ -239,27 +239,44 @@ function GetPlayerColor(p, multiply = true) {
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; colorname = "Bright White";  break;
-            case 2 : R <- 180, G <- 255, B <- 180; colorname = "Green";         break;
-            case 3 : R <- 120, G <- 140, B <- 255; colorname = "Blue";          break;
-            case 4 : R <- 255, G <- 170, B <- 120; colorname = "Orange";        break;
-            case 5 : R <- 255, G <- 100, B <- 100; colorname = "Red";           break;
-            case 6 : R <- 255, G <- 180, B <- 255; colorname = "Pink";          break;
-            case 7 : R <- 255, G <- 255, B <- 180; colorname = "Yellow";        break;
-            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "Aqua";          break;
-            case 9 : R <-  60, G <-  15, B <-   0; colorname = "Crimson";       break;
-            case 10: R <-   0, G <- 255, B <- 200; colorname = "Ocean green";   break;
-            case 11: R <-  80, G <-  99, B <-   0; colorname = "Olive";         break;
-            case 12: R <-  40, G <-  40, B <-  80; colorname = "Violet";        break;
-            case 13: R <-  75, G <-  75, B <-  75; colorname = "Gray";          break;
-            case 14: R <-  64, G <-   0, B <-   0; colorname = "Dark red";      break;
-            case 15: R <-   0, G <-  64, B <-   0; colorname = "Dark green";    break;
-            case 16: R <-   0, G <-   0, B <-  64; colorname = "Dark blue";     break;
+            case 1 : R <- 255; G <- 255; B <- 255; colorname = "Bright White";   break;
+            case 2 : R <-   0, G <- 200, B <-   0; colorname = "Green";          break;
+            case 3 : R <- 120, G <- 140, B <- 255; colorname = "Blue";           break;
+            case 4 : R <- 255, G <- 170, B <- 120; colorname = "Orange";         break;
+            case 5 : R <- 255, G <- 100, B <- 100; colorname = "Red";            break;
+            case 6 : R <- 255, G <- 180, B <- 255; colorname = "Pink";           break;
+            case 7 : R <- 255, G <- 255, B <- 180; colorname = "Yellow";         break;
+            case 8 : R <-  0 , G <- 255, B <- 255; colorname = "Aqua";           break;
+            case 9 : R <-  60, G <-  15, B <-   0; colorname = "Crimson";        break;
+            case 10: R <-   0, G <- 255, B <- 200; colorname = "Ocean Green";    break;
+            case 11: R <-  80, G <-  99, B <-   0; colorname = "Olive";          break;
+            case 12: R <-  40, G <-  40, B <-  80; colorname = "Violet";         break;
+            case 13: R <-  75, G <-  75, B <-  75; colorname = "Gray";           break;
+            case 14: R <-  64, G <-   0, B <-   0; colorname = "Dark Red";       break;
+            case 15: R <-   0, G <-  64, B <-   0; colorname = "Dark Green";     break;
+            case 16: R <-   0, G <-   0, B <-  64; colorname = "Dark Blue";      break;
+            case 17: R <- 255, G <-  87, B <-  51; colorname = "Scarlet";        break;
+            case 18: R <- 165, G <- 208, B <- 255; colorname = "Bright Blue";    break;
+            case 19: R <- 190, G <- 255, B <- 200; colorname = "Mint Green";     break;
+            case 20: R <- 205, G <- 207, B <-  62; colorname = "Gold Yellow";    break;
+            case 21: R <- 255, G <- 194, B <- 194; colorname = "Bright Red";     break;
+            case 22: R <- 208, G <- 255, B <-  28; colorname = "Lime";           break;
+            case 23: R <-  91, G <- 129, B <- 184; colorname = "Dull Blue";      break;
+            case 24: R <-  99, G <-   0, B <- 161; colorname = "Purple";         break;
+            case 25: R <- 107, G <- 169, B <- 117; colorname = "Dull Green";     break;
+            case 26: R <-  56, G <- 191, B <- 188; colorname = "Cyan";           break;
+            case 27: R <-  11, G <-  11, B <-  11; colorname = "Black";          break;
+            case 28: R <- 103, G <- 233, B <- 197; colorname = "Teal";           break;
+            case 29: R <- 183, G <- 135, B <- 223; colorname = "Bright Magenta"; break;
+            case 30: R <- 120, G <- 195, B <- 193; colorname = "Blue Gray";      break;
+            case 31: R <- 138, G <-  89, B <-   0; colorname = "Dark Orange";    break;
+            case 32: R <- 236, G <- 167, B <- 167; colorname = "Light Red";      break;
+            case 33: R <-   0, G <- 100, B <- 150; colorname = "Navy Blue";      break;
         }
-    } catch(e) {}
+    } catch (exception) {}
 
-    if (PlayerID > 16) {
-        // If you have more than 16 players, no dedicated color for those players :(
+    if (PlayerID > 33) {
+        // If you have more than 33 players (not happening anytime soon, if at all), no dedicated color for those players :(
         // Using a local for the function so we don't call the function 4 times
         local randomColor = RandomColor()
         R <- randomColor.r; G <- randomColor.g; B <- randomColor.b; colorname = "Random";
@@ -282,7 +299,7 @@ function GetPlayerColor(p, multiply = true) {
 }
 
 function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
-    if (GetDeveloperLevel()){
+    if (GetDeveloperLevelP2MM()){
         DebugDrawBox(Vector(x1, y1, z1), Vector(0, 0, 0), Vector(x2-x1, y2-y1, z2-z1), 255, 100, 8, 20, TickSpeed*1.17);
     }
 
@@ -336,43 +353,10 @@ function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
     return plist
 }
 
-function MinifyModel(mdl) {
-// Add the models/ to the side of the model name if it's not already there
-    if (mdl.slice(0, 7) == "models/") {
-        mdl = mdl.slice(7, mdl.len())
-    }
-    // Add the .mdl to the end of the model name if it's not already there
-    if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
-        mdl = mdl.slice(0, mdl.len() - 4)
-    }
-    return mdl
-}
-
 function SetPlayerModel(p, mdl) {
-    PrecacheModelNoDelay(mdl)
-    FindPlayerClass(p).playermodel <- mdl
+    PrecacheModel(mdl)
+    FindPlayerClass(p).playermodel = mdl
 }
-
-// playerclass <- {
-//     player = null,
-//     id = 0,
-//     username = "",
-//     steamid = 0,
-//     color = {
-//         r = 0,
-//         g = 0,
-//         b = 0,
-//         a = 220
-//     },
-//     eyeangles = Vector(0, 0, 0),
-//     eyeforwardvector = Vector(0, 0, 0),
-//     potatogun = "true",
-//     noclip = false,
-//     rocket = false,
-//     portal1 = null,
-//     portal2 = null,
-//     playermodel = null
-// }
 
 function CreateGenericPlayerClass(p) {
     // Make sure there isnt an existing player class
@@ -401,6 +385,14 @@ function CreateGenericPlayerClass(p) {
     // Gelocity
     currentplayerclass.hitcheckpoint <- false // Player hit checkpoint
     currentplayerclass.laps <- 0 // Current lap
+    if (GetMapName() == "workshop/594730048530814099/mp_coop_gelocity_2_v01") {
+        currentplayerclass.Gelocity2Checkpoint <- true
+        currentplayerclass.Laps <- -1
+        currentplayerclass.Gelocity2CheckpointMove <- class {
+            pos = Vector(2580, -4399,  267)
+            rot = Vector(0, 90, 0)
+        }
+    }
 
     // Can change depending on whether the plugin is loaded
     currentplayerclass.username <- GetPlayerName(currentplayerclass.id) // Player Name
@@ -410,7 +402,8 @@ function CreateGenericPlayerClass(p) {
     if (Config_UseChatCommands && PluginLoaded) {
         currentplayerclass.rocket <- false  // Rocket player status
         currentplayerclass.startedvote <- false  // Did this player initiate a vote?
-        currentplayerclass.hasvoted <- false  // Did this player vote already?
+        currentplayerclass.hasvotedyes <- false  // Did this player vote yes?
+        currentplayerclass.hasvotedno <- false  // Did this player vote no?
     }
 
     // Note down the registered player for later reference
@@ -449,23 +442,19 @@ function DeleteAmountOfEntities(classname, amount) {
 
         if (checkClassname == "player" || checkClassname == "worldspawn" || checkClassname == "" || checkClassname == "prop_portal") {
             delthis = false
-            printl("(P2:MM): Not deleting class " + classname + " (ROOTMOVEPARENT:) " + checkClassname + " (By deleting the class, the RootMoveParent will also get deleted, causing crashes).")
+            printlP2MM("Not deleting class " + classname + " (ROOTMOVEPARENT: " + checkClassname + "). By deleting the class, the RootMoveParent will also get deleted, causing crashes.")
         }
 
         if (delthis) {
             p.Destroy()
-            indx += 1
+            indx++
         }
     }
-    printl("(P2:MM): Deleted " + indx + " " + classname + "'s")
+    printlP2MM("Deleted " + indx + " " + classname + "'s")
     return indx
 }
 
 function PrecacheModel(mdl) {
-    // TODO: Is this inefficient?
-    SendToConsoleP2MM("script PrecacheModelNoDelay(\"" + mdl + "\")")
-}
-function PrecacheModelNoDelay(mdl) {
     // Add the models/ to the side of the model name if it's not already there
     if (mdl.slice(0, 7) != "models/") {
         mdl = "models/" + mdl
@@ -476,33 +465,41 @@ function PrecacheModelNoDelay(mdl) {
     }
 
     // Remove the models/ from the left side and the .mdl from the right side
+    local MinifyModel = function(mdl) {
+        if (mdl.slice(0, 7) == "models/") {
+            mdl = mdl.slice(7, mdl.len())
+        }
+        if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
+            mdl = mdl.slice(0, mdl.len() - 4)
+        }
+        return mdl
+    }
     local minimdl = MinifyModel(mdl)
 
     // Check if the model is already precached
-    local NotPrecached = true
-    foreach (precached in PrecachedProps) {
-        if (precached == minimdl) {
-            NotPrecached = false
+    local Precached = false
+    foreach (model in PrecachedProps) {
+        if (model == minimdl) {
+            Precached = true
         }
     }
 
-    if (!Entities.FindByModel(null, mdl) && NotPrecached) {
+    // No existing model in the map and it's not something we know is precached
+    if (!Entities.FindByModel(null, mdl) && !Precached) {
+        // Attempt to precache it
+        EntFire("p2mm_servercommand", "command", "sv_cheats 1; prop_dynamic_create " + minimdl)
         PrecachedProps.push(minimdl)
         if (!CheatsOn) {
-            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
-        } else {
-            SendToConsoleP2MM("sv_cheats 1; prop_dynamic_create " + minimdl)
+            // In case players are now joining
+            EntFire("p2mm_servercommand", "command", "sv_cheats 0")
         }
-        if (!CheatsOn) {
-            SendToConsoleP2MM("sv_cheats 0")
-        }
-        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4) // FIXME!! Causes errors in vscript
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Precached model: " + minimdl + " AKA " + mdl)
+        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
+        if (GetDeveloperLevelP2MM()) {
+            printlP2MM("PrecacheModel() - Precached model: " + mdl)
         }
     } else {
-        if (GetDeveloperLevel()) {
-            printl("(P2:MM): Model: " + mdl + " already precached!")
+        if (GetDeveloperLevelP2MM()) {
+            printlP2MM("PrecacheModel() - Model: " + mdl + " already precached!")
         }
     }
 }
@@ -523,12 +520,12 @@ function FindEntityClass(ent, createclassifnone = true) {
             return curclass
         }
     }
-    printl("(P2:MM): Could not find entity class for entity: " + ent)
+    printlP2MM("Could not find entity class for entity: " + ent)
     if (createclassifnone) {
         CreateEntityClass(ent)
         foreach (curclass in entityclasses) {
             if (curclass.entity == ent) {
-                printl("(P2:MM): Created entity class for entity: " + ent)
+                printlP2MM("Created entity class for entity: " + ent)
                 return curclass
             }
         }
@@ -670,11 +667,15 @@ function AddVectors(vec1, vec2) {
 }
 
 function CreateEntityClass(ent) {
-    if (GetDeveloperLevel()) {
-        printl("(P2:MM): Creating new entity class for entity: " + ent)
+    if (GetDeveloperLevelP2MM()) {
+        printlP2MM("Creating new entity class for entity: " + ent)
     }
     local newclass = class {
         entity = ent
+        // TODO: What should be the default for this?
+        // linkedprop = ???
+        // followingpointlist = ???
+        // followingpointlistindex = ???
     }
     entityclasses.push(newclass)
 }
@@ -709,7 +710,7 @@ function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "u
     if (GetDistanceScore(entity.GetOrigin(), PointList[entclass.followingpointlistindex]) < Distance) {
         cindx = entclass.followingpointlistindex
         entclass.followingpointlistindex <- entclass.followingpointlistindex + 1
-        printl("(P2:MM): Moving to next track point: " + entclass.followingpointlistindex)
+        printlP2MM("Moving to next track point: " + entclass.followingpointlistindex)
     }
 
     if (entclass.followingpointlistindex >= PointList.len()) {
@@ -1146,22 +1147,22 @@ function EnablePortalGun(enable = false, player = "all") {
     if (enable) { draw = "enabledraw" }
 
     if (player = "all") {
-        local p = null;
+        local p = null
         while (p = Entities.FindByClassname(p, "player")) {
             local ent = Entities.FindByName(null, "weapon_portalgun_player" + p.entindex())
-            local entviewmodel = Entities.FindByName(null, "viewmodel_player" + p.entindex())
+            local entviewmodel = Entities.FindByName(null, "predicted_viewmodel_player" + p.entindex())
             ent.__KeyValueFromString("CanFirePortal1", set)
             ent.__KeyValueFromString("CanFirePortal2", set)
             EntFire(ent, draw)
-            EntFire(entviewmodel, draw)
+            EntFireByHandle(entviewmodel, draw, "", 0, null, null)
         }
     } else {
         local ent = Entities.FindByName(null, "weapon_portalgun_player" + player.entindex())
-        local entviewmodel = Entities.FindByName(null, "viewmodel_player" + player.entindex())
+        local entviewmodel = Entities.FindByName(null, "predicted_viewmodel_player" + player.entindex())
         ent.__KeyValueFromString("CanFirePortal1", set)
         ent.__KeyValueFromString("CanFirePortal2", set)
         EntFire(ent, draw)
-        EntFire(entviewmodel, draw)
+        EntFireByHandle(entviewmodel, draw, "", 0, null, null)
     }
 }
 
@@ -1204,20 +1205,20 @@ function EnableNoclip(enable, player = "all") {
             local currentplayerclass = FindPlayerClass(p)
             if (enable) {
                 EntFireByHandle(p, "addoutput", "MoveType 8", 0, null, null)
-                currentplayerclass.noclip <- true
+                currentplayerclass.noclip = true
             } else {
                 EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
-                currentplayerclass.noclip <- false
+                currentplayerclass.noclip = false
             }
         }
     } else {
         local currentplayerclass = FindPlayerClass(player)
         if (enable) {
             EntFireByHandle(player, "addoutput", "MoveType 8", 0, null, null)
-            currentplayerclass.noclip <- true
+            currentplayerclass.noclip = true
         } else {
             EntFireByHandle(player, "addoutput", "MoveType 2", 0, null, null)
-            currentplayerclass.noclip <- false
+            currentplayerclass.noclip = false
         }
     }
 }
@@ -1230,7 +1231,7 @@ function SetSpeed(player, speed) {
 function BestGuessSpawnpoint() {
     if (!MadeSpawnClass) {
         // Box ents
-        BoxEnts <- [
+        local BoxEnts = [
             "@arrival_video_master",
             "@departure_video_master",
             "@end_of_playtest_text",
@@ -1242,7 +1243,7 @@ function BestGuessSpawnpoint() {
             "@transition_from_map",
         ]
 
-        if (GetDeveloperLevel()) {
+        if (GetDeveloperLevelP2MM()) {
             printl("===========================")
             printl("Box ents")
             printl("===========================")
@@ -1274,39 +1275,39 @@ function BestGuessSpawnpoint() {
 
         local RealPlayerSpawn = null
         if (StartingBoxEnt == null) {
-            if (GetDeveloperLevel()) {
-                printl("(P2:MM): No starting box ent found.")
+            if (GetDeveloperLevelP2MM()) {
+                printlP2MM("No starting box ent found.")
             }
         } else {
             if (BestSurrondingBoxEnt > 0) {
-                if (GetDeveloperLevel()) {
-                    printl("(P2:MM): Starting box ent found!")
+                if (GetDeveloperLevelP2MM()) {
+                    printlP2MM("Starting box ent found!")
                 }
                 // If we have found a solid starting box ent, lets find the closest one to it
                 RealPlayerSpawn = Entities.FindByClassnameNearest("info_player_start", StartingBoxEnt.GetOrigin(), 650)
                 if (RealPlayerSpawn == null) {
-                    if (GetDeveloperLevel()) {
-                        printl("(P2:MM): No real player spawn found.")
+                    if (GetDeveloperLevelP2MM()) {
+                        printlP2MM("No real player spawn found.")
                     }
                 } else {
-                    if (GetDeveloperLevel()) {
-                        printl("(P2:MM): Real player spawn found!")
+                    if (GetDeveloperLevelP2MM()) {
+                        printlP2MM("Real player spawn found!")
                     }
                     local LandmarkCheck = Entities.FindByClassnameNearest("info_landmark_entry", RealPlayerSpawn.GetOrigin(), 128)
                     // If we have found a landmark, we know we are in the box
                     if (LandmarkCheck == null) {
-                        if (GetDeveloperLevel()) {
-                            printl("(P2:MM): No landmark found")
+                        if (GetDeveloperLevelP2MM()) {
+                            printlP2MM("No landmark found")
                         }
                     } else {
-                        if (GetDeveloperLevel()) {
-                            printl("(P2:MM): Landmark found!")
-                            printl("(P2:MM): Found info_player_start entity!: " + RealPlayerSpawn.GetOrigin())
+                        if (GetDeveloperLevelP2MM()) {
+                            printlP2MM("Landmark found!")
+                            printlP2MM("Found info_player_start entity!: " + RealPlayerSpawn.GetOrigin())
                         }
                         // If EVERY Condition is met, lets set the player spawn
                         if (GlobalSpawnClass.useautospawn) {
-                            if (GetDeveloperLevel()) {
-                                printl("(P2:MM): useautospawn = True: Setting player spawn")
+                            if (GetDeveloperLevelP2MM()) {
+                                printlP2MM("useautospawn = True: Setting player spawn")
                             }
                             GlobalSpawnClass.useautospawn <- false
                             GlobalSpawnClass.usesetspawn <- true
@@ -1316,22 +1317,22 @@ function BestGuessSpawnpoint() {
                             local ent = null
                             while (ent = Entities.FindByClassname(ent, "info_player_start")) {
                                 if (ent != RealPlayerSpawn) {
-                                    if (GetDeveloperLevel()) {
-                                        printl("(P2:MM): Found info_player_start entity that is not the real player spawn.")
+                                    if (GetDeveloperLevelP2MM()) {
+                                        printlP2MM("Found info_player_start entity that is not the real player spawn.")
                                     }
                                     ent.Destroy()
                                 }
                             }
                         } else {
-                            if (GetDeveloperLevel()) {
-                                printl("(P2:MM): useautospawn = false: Not setting player spawn.")
+                            if (GetDeveloperLevelP2MM()) {
+                                printlP2MM("useautospawn = false: Not setting player spawn.")
                             }
                         }
                     }
                 }
             } else {
-                if (GetDeveloperLevel()) {
-                    printl("(P2:MM): Starting box ent found, but there aren't enough surrounding box ents.")
+                if (GetDeveloperLevelP2MM()) {
+                    printlP2MM("Starting box ent found, but there aren't enough surrounding box ents.")
                 }
             }
         }
@@ -1359,8 +1360,8 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                if (GetDeveloperLevel()) {
-                    printl("(P2:MM): " + currentscore)
+                if (GetDeveloperLevelP2MM()) {
+                    printlP2MM(currentscore)
                 }
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
@@ -1376,8 +1377,8 @@ function BestGuessSpawnpoint() {
 
             spawnmiddle_ang_vec = spawnmiddle_ang_vec * 126.5
 
-            if (GetDeveloperLevel()) {
-                printl("(P2:MM): " + spawnmiddle_ang_vec)
+            if (GetDeveloperLevelP2MM()) {
+                printlP2MM(spawnmiddle_ang_vec)
             }
 
             // Now get the back front left and right spawnpoints
@@ -1385,10 +1386,10 @@ function BestGuessSpawnpoint() {
             local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, height)
             local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, height)
             local spawnleft = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y/-1, spawnmiddle_ang_vec.x, height)
-            if (GetDeveloperLevel()) {
-                printl("(P2:MM): spawnMiddle: " + spawnmiddle)
-                printl("(P2:MM): spawnOrigin: " + spawnmiddle.GetOrigin())
-                printl("(P2:MM): ourClosest: " + ourclosest)
+            if (GetDeveloperLevelP2MM()) {
+                printlP2MM("spawnMiddle: " + spawnmiddle)
+                printlP2MM("spawnOrigin: " + spawnmiddle.GetOrigin())
+                printlP2MM("ourClosest: " + ourclosest)
             }
 
             // Output the spawnpoints
@@ -1413,8 +1414,8 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                if (GetDeveloperLevel()) {
-                    printl("(P2:MM): " + currentscore)
+                if (GetDeveloperLevelP2MM()) {
+                    printlP2MM(currentscore)
                 }
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
@@ -1426,14 +1427,14 @@ function BestGuessSpawnpoint() {
             // Find the highest path_track next to the spawnpoint
             local tallestpathtrack = null
             if (spawnmiddle == null) {
-                if (GetDeveloperLevel()) {
-                    printl("(P2:MM): Failed to find spawnmiddle for path_track spawnpoint!")
+                if (GetDeveloperLevelP2MM()) {
+                    printlP2MM("Failed to find spawnmiddle for path_track spawnpoint!")
                 }
             } else {
                 local pathtracks = null
                 while (pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600)) {
-                    if (GetDeveloperLevel()) {
-                        printl("(P2:MM): pathtracks: " + pathtracks)
+                    if (GetDeveloperLevelP2MM()) {
+                        printlP2MM("pathtracks: " + pathtracks)
                     }
                     if (tallestpathtrack == null) {
                         tallestpathtrack = pathtracks
@@ -1474,10 +1475,10 @@ function BestGuessSpawnpoint() {
         GlobalSpawnClass.red.spawnpoint <- FinalSpawnRed
         GlobalSpawnClass.red.rotation <- FinalRotationRed
 
-        MadeSpawnClass <- true
+        MadeSpawnClass = true
         return GlobalSpawnClass
     } else {
-        MadeSpawnClass <- true
+        MadeSpawnClass = true
         return GlobalSpawnClass
     }
 }
@@ -1517,7 +1518,7 @@ function CombineList(list, startlength, inbetweenchars = " ") {
 
 function CreateOurEntities() {
 
-    if (Config_UseNametags && AllowNametags) {
+    if (Config_UseNametags/* && AllowNametags*/) {
         // Create an entity to measure player eye angles
         measuremovement <- Entities.CreateByClassname("logic_measure_movement")
         measuremovement.__KeyValueFromString( "measuretype", "1")
@@ -1538,7 +1539,7 @@ function CreateOurEntities() {
         nametagdisplay.__KeyValueFromString("holdtime", "0.1")
         nametagdisplay.__KeyValueFromString("fadeout", "0.2")
         nametagdisplay.__KeyValueFromString("fadein", "0.2")
-        nametagdisplay.__KeyValueFromString("channel", "0")
+        nametagdisplay.__KeyValueFromString("channel", "1")
     }
 
     // Create an display entity for the host to wait for another player to load in
@@ -1553,7 +1554,7 @@ function CreateOurEntities() {
     onscreendisplay.__KeyValueFromString("channel", "1")
 
     // Create a player disconnect message entity
-    disconnectmessagedisplay <- Entities.CreateByClassname("game_text")
+    local disconnectmessagedisplay = Entities.CreateByClassname("game_text")
     disconnectmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_disconnect_message")
     disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
     disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
@@ -1565,7 +1566,7 @@ function CreateOurEntities() {
 
     if (Config_UseJoinIndicator) {
         // Create a join message entity
-        joinmessagedisplay <- Entities.CreateByClassname("game_text")
+        local joinmessagedisplay = Entities.CreateByClassname("game_text")
         joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
         joinmessagedisplay.__KeyValueFromString("holdtime", "3")
         joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
@@ -1576,7 +1577,7 @@ function CreateOurEntities() {
     }
 
     // Create a player_speedmod entity to modify a player's movement speed
-    playerspeedmod <- Entities.CreateByClassname("player_speedmod")
+    local playerspeedmod = Entities.CreateByClassname("player_speedmod")
     playerspeedmod.__KeyValueFromString("targetname", "p2mm_player_speedmod")
 
     // Create an entity that sends miscellaneous client commands
@@ -1594,10 +1595,118 @@ function CalcNumPlayers() {
 
 // Function name is sensitive to the hex edits!
 function Plyr_Disconnect_Function() {
-    local iCurrentNumPlayers = CalcNumPlayers()
-    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
+    Entities.FindByName(null, "p2mm_player_disconnect_message").__KeyValueFromString("message", "Player disconnected (" + CalcNumPlayers().tostring() + "/" + iMaxPlayers.tostring() + ")")
     EntFire("p2mm_player_disconnect_message", "display")
 }
+
+//--------------------------------------
+// Manage what each team can do
+//--------------------------------------
+
+for (local i = 1; i < 5; i++) {
+    Entities.CreateByClassname("env_global").__KeyValueFromString("targetname", "p2mm_env_global0" + i.tostring())
+}
+
+Entities.FindByName(null, "p2mm_env_global01").__KeyValueFromString("globalstate", "no_pinging_blue")
+Entities.FindByName(null, "p2mm_env_global02").__KeyValueFromString("globalstate", "no_pinging_orange")
+Entities.FindByName(null, "p2mm_env_global03").__KeyValueFromString("globalstate", "no_taunting_blue")
+Entities.FindByName(null, "p2mm_env_global04").__KeyValueFromString("globalstate", "no_taunting_orange")
+
+class UTIL_Team {
+    bPortalgunEnabled_Blue = true
+    bPortalgunEnabled_Red = true
+    // bTauntingEnabled_Blue = true
+    // bTauntingEnabled_Red = true
+    // bPingingEnabled_Blue = true
+    // bPingingEnabled_Red = true
+
+    constructor() {
+        // Set default state for gun spawn
+        if (Entities.FindByName(null, "supress_blue_portalgun_spawn")) {
+            bPortalgunEnabled_Blue = false
+        }
+        if (Entities.FindByName(null, "supress_orange_portalgun_spawn")) {
+            bPortalgunEnabled_Blue = false
+        }
+
+        // TODO: If we can find out how to read the default state of
+        // pinging and taunting, then this code can be done a bit cleaner.
+        // For now, accept all inputs to enable/disable these two.
+    }
+}
+
+function UTIL_Team::Spawn_PortalGun(bEnableOrDisable, charBlueOrRed = "all") {
+    if (bEnableOrDisable) {
+        local DestroyAllTargets = function(team) {
+            for (local target; target = Entities.FindByName(target, team);) {
+                target.Destroy()
+            }
+        }
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all") && !UTIL_Team.bPortalgunEnabled_Blue) {
+            DestroyAllTargets("supress_blue_portalgun_spawn")
+            UTIL_Team.bPortalgunEnabled_Blue = true
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all") && !UTIL_Team.bPortalgunEnabled_Red) {
+            DestroyAllTargets("supress_orange_portalgun_spawn")
+            UTIL_Team.bPortalgunEnabled_Red = true
+        }
+        return
+    }
+    if ((charBlueOrRed == "blue" || charBlueOrRed == "all") && UTIL_Team.bPortalgunEnabled_Blue) {
+        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+        UTIL_Team.bPortalgunEnabled_Blue = false
+    }
+    if ((charBlueOrRed == "red" || charBlueOrRed == "all") && UTIL_Team.bPortalgunEnabled_Red) {
+        Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+        UTIL_Team.bPortalgunEnabled_Red = false
+    }
+}
+
+function UTIL_Team::Pinging(bEnableOrDisable, charBlueOrRed = "all", delay = 0) {
+    if (bEnableOrDisable) {
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && !UTIL_Team.bPingingEnabled_Blue*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnoff", "", delay, null, null)
+            // UTIL_Team.bPingingEnabled_Blue = true
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && !UTIL_Team.bPingingEnabled_Red*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global02"), "turnoff", "", delay, null, null)
+            // UTIL_Team.bPingingEnabled_Red = true
+        }
+    } else {
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && UTIL_Team.bPingingEnabled_Blue*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnon", "", delay, null, null)
+            // UTIL_Team.bPingingEnabled_Blue = false
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && UTIL_Team.bPingingEnabled_Red*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global02"), "turnon", "", delay, null, null)
+            // UTIL_Team.bPingingEnabled_Red = false
+        }
+    }
+}
+
+function UTIL_Team::Taunting(bEnableOrDisable, charBlueOrRed = "all", delay = 0) {
+    if (bEnableOrDisable) {
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && !UTIL_Team.bTauntingEnabled_Blue*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnoff", "", delay, null, null)
+            // UTIL_Team.bTauntingEnabled_Blue = true
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && !UTIL_Team.bTauntingEnabled_Red*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global04"), "turnoff", "", delay, null, null)
+            // UTIL_Team.bTauntingEnabled_Red = true
+        }
+    } else {
+        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && UTIL_Team.bTauntingEnabled_Blue*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnon", "", delay, null, null)
+            // UTIL_Team.bTauntingEnabled_Blue = false
+        }
+        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && UTIL_Team.bTauntingEnabled_Red*/) {
+            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global04"), "turnon", "", delay, null, null)
+            // UTIL_Team.bTauntingEnabled_Red = false
+        }
+    }
+}
+
+UTIL_Team <- UTIL_Team()
 
 //--------------------------------------
 // Data functions

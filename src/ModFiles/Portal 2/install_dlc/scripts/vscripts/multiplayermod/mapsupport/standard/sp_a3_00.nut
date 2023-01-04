@@ -28,27 +28,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Shake the camera when you fall through the wood
         Entities.FindByName(null, "crash_landing_shake").__KeyValueFromString("spawnflags", "29")
 
-        // Create env_globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+        UTIL_Team.Pinging(false, "all", 1)
+        UTIL_Team.Taunting(false, "all", 1)
 
         printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
         Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
@@ -86,10 +67,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "potatos_relay"), "Trigger", "", 3, null, null)
         EntFireByHandle(Entities.FindByName(null, "potatos_train"), "StartForward", "", 4, null, null)
 
-        EntFireByHandle(env_global01, "turnoff", "", 70, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 70, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 70, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 70, null, null)
+        UTIL_Team.Pinging(true, "all", 70)
+        UTIL_Team.Taunting(true, "all", 70)
     }
 
     if (MSOnPlayerJoin) {
