@@ -37,21 +37,21 @@
 dataFileIndicators = [
     "datasystem-kick-succeed.nut",
     "datasystem-kick-failed.nut", "datasystem-ban-succeed.nut",
-    "datasystem-ban-failed.nut", "datasystem-mapevent-succeed.nut",
-    "datasystem-mapevent-failed.nut"]
+    "datasystem-ban-failed.nut", "datasystem-password-succeed.nut",
+    "datasystem-password-failed.nut"]
 
 function dataLoad(event, eventdata) {
-    printl("Loading data retrieved from masterData...")
+    printlP2MM("Loading data retrieved from masterData...")
     local grabbedData = false
     try {
         IncludeScript("datasystemsaves/datasystem-" + event + "-" + eventdata + ".nut")
         grabbedData = true
     } catch (e) {
-        printl("Loading the nut indicator failed... We are gonna try again one more time...")
+        printlP2MM("Loading the nut indicator failed... We are gonna try again one more time...")
         try {
             IncludeScript("datasystemsaves/datasystem-" + event + "-" + eventdata + ".nut")
         } catch (e) {
-            printl("Failed to grab data!")
+            printlP2MM("Failed to grab data!")
             grabbedData = false
         }
     }
@@ -63,10 +63,10 @@ function dataLoad(event, eventdata) {
 function dataSaveCreate(event, eventdata) {
     try {
         SendToConsoleP2MM("screenshot datasystem-" + event + "-" + eventdata)
-        printl("datasystem-" + event + "-" + eventdata + " file created...")
+        printlP2MM("datasystem-" + event + "-" + eventdata + " file created...")
     } catch (e) {
-        printl("datasystem-" + event + "-" + eventdata + " failed to be created...")
-        printl(e)
+        printlP2MM("datasystem-" + event + "-" + eventdata + " failed to be created...")
+        printlP2MM(e)
     }
 }
 
@@ -93,12 +93,58 @@ function dataNutCheck() {
                 case "datasystem-kick-fail.nut": return dataSystemKick(returnstate=false); break;
                 case "datasystem-ban-succeed.nut": return dataSystemBan(returnstate=true); break;
                 case "datasystem-ban-fail.nut": return dataSystemBan(returnstate=false); break;
-                case "datasystem-mapevent-succeed.nut": return dataSystemBan(returnstate=true); break;
-                case "datasystem-mapevent-fail.nut": return dataSystemBan(returnstate=false); break;
+                case "datasystem-password-succeed.nut": return dataSystemPassword(returnstate=true); break;
+                case "datasystem-password-fail.nut": return dataSystemPassword(returnstate=false); break;
             }
         } else {
-            printl("Data System Check called but no file found...")
+            printlP2MM("Data System Check called but no file found...")
         }
+    }
+}
+
+function dataSystemKick(returnstate, player) {
+    if (returnstate = true) {
+        SendChatMessage(FindPlayerClass(player).username + " has been kicked from the server...", null)
+        printlP2MM(FindPlayerClass(player).username + " has been kicked from the server...")
+    }
+
+    if (returnstate = false) {
+        SendChatMessage("[ERROR] Failed to kick player: " + FindPlayerClass(player).username, null)
+        printlP2MM("The Python Data System returned an error when trying to kick: " + FindPlayerClass(player).username)
+        printlP2MM("Check the Python console for the launcher...")
+    }
+
+    if (returnstate = null) {
+        SendToConsoleP2MM("screenshot datasystem-kick-" + player)
+        printlP2MM("Kick screenshot has been created for player: " + player)
+    }
+}
+
+function dataSystemBan(returnstate, player) {
+    if (returnstate = true) {
+        SendChatMessage(FindPlayerClass(player).username + " has been banned from the server...", null)
+        printlP2MM(FindPlayerClass(player).username + " has been banned from the server...")
+    }
+
+    if (returnstate = false) {
+        SendChatMessage("[ERROR] Failed to ban player: " + FindPlayerClass(player).username, null)
+        printlP2MM("The Python Data System returned an error when trying to ban: " + FindPlayerClass(player).username)
+        printlP2MM("Check the Python console for the launcher...")
+    }
+
+    if (returnstate = null) {
+        SendToConsoleP2MM("screenshot datasystem-ban-" + player)
+        printlP2MM("Ban screenshot has been created for player: " + player)
+    }
+}
+
+function dataSystemPassword(returnstate) {
+    if (returnstate = true) {
+        SendChatMessage("The server password has been successfully changed!")
+    }
+
+    if (returnstate = false) {
+        SendChatMessage("[ERROR} Failed to change server password! Check the both the Portal 2 and launcher console!", null)
     }
 }
 
@@ -108,7 +154,7 @@ function dataNutCheck() {
     If it fails we'll tell mapspawn.nut that datas aren't currently supported
 */
 function init() {
-    printl("Starting the data system!")
+    printlP2MM("Starting the data system!")
     //Makes a temporary screenshot file for our python data system to check
     SendToConsoleP2MM("screenshot SAVE/datasystemcheck-test")
     try {
