@@ -417,7 +417,7 @@ def DeleteUnusedDLCs(gamepath: str) -> None:
     Log("")
     Log("            _________Dealing with Folders________")
 
-    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+    if ((os.path.exists(gamepath)) != True):
         Log("Portal 2 game path not found!")
         return
 

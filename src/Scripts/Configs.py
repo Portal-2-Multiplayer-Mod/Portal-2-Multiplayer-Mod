@@ -48,7 +48,7 @@ DefaultConfigFile = {
 
     "Server-Password":
         {
-            "value": "\"\"",
+            "value": "",
             "menu": "portal2",
             "description": "Set a password for your P2MM server. This can be changed while the server is up but a level restart or change is required.",
             "warning": "",
