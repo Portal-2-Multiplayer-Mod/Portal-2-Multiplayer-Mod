@@ -83,7 +83,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/FALL
 
 *Notes:*  
 - On Linux make sure you have the tkinter package `pacman -S tk`
-- If you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Udater.py` to your own information
+- If you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Updater.py` to your own information
 
 
 # Contributions

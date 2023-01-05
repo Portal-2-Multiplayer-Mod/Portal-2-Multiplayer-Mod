@@ -1,6 +1,6 @@
 tests/
 Logs/
-configs.cfg
+configs.json
 !src/ModFiles/portal2
 .vscode/
 
