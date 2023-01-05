@@ -56,11 +56,15 @@
 
 # Build
 
+*We use python 3.10 for the launcher*
+
 **Dependencies**
 - pygame
 - requests
 - steamid-converter
 - pyperclip
+
+We also have them in a file for easy install `pip install -r requirements.txt`
 
 **Compilation**
 
@@ -76,8 +80,10 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/assets/images/p2mm64.ico" --nocon
 ```
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/FALLBACK:FALLBACK" --add-data "src/languages:languages"
 ```
-*Note:*  
-if you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Udater.py` to your own information
+
+*Notes:*  
+- On Linux make sure you have the tkinter package `pacman -S tk`
+- If you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Udater.py` to your own information
 
 
 # Contributions
