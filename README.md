@@ -44,11 +44,11 @@
 
 # Installation & use
 
-**You can download the latest version from here:**
-- https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
-
 **Steam guide on how to host and join a game:**
 - https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
+
+**Latest version:**
+- https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
 
 **Discord Server for technical help, bug report or to just chat:**
 - https://discord.gg/kW3nG6GKpF
