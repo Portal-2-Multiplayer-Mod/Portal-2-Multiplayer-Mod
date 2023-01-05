@@ -19,7 +19,7 @@
   <p align="left">Portal 2: Multiplayer Mod</p>
 </h1>
 
-### Note: This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
+### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
 ## Mod features
 ```
   - A maximum player cap of 33
@@ -63,6 +63,7 @@
 - pyperclip
 
 **Compilation**
+
 We use `pyinstaller` to make the executable
 - Windows:
 
@@ -84,6 +85,7 @@ if you want to fork the project and do your own releases you need to changes the
 We are always happy to take whatever additional help we can get for this project. Specifically, we are in need of proficient coders in Squirrel or C++. If you think you can spare a hand, it will go a long way!
 
 # Credits
+
 **Developers:**
 - kyleraykbs
 - Bumpy
@@ -92,7 +94,6 @@ We are always happy to take whatever additional help we can get for this project
 - Wolƒe Strider Shoσter
 - cabiste
 - Orsell
-
 
 **Contributors:**
 - wanderer (free bird)
