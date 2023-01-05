@@ -98,3 +98,6 @@ We are always happy to take whatever additional help we can get for this project
 **Contributors:**
 - wanderer (free bird)
 - MeblIkea
+- Luukex
+- PieCreeper
+- Areng
