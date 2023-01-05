@@ -1,63 +1,9 @@
-portal2/
-bin/
-platform/
-portal2_dlc*/
-*.dll
-.vscode/
-sdk_content/
-Soundtrack/
-update/
-portal2.exe
-portal2.ico
-portal2.sh
-portal2_linux
-portal2_osx
-steam_appid.txt
-installscript_osx.vdf
-thirdpartylegalnotices.doc
-game_actions_620.vdf
-fontconfig/
-crash_reports/
-portal2_sixense/
-client_classes.txt
-game.cvars
-portal2.cmd
-portal2_sixense.cmd
-sdk_tools/
-sixense_deriv_log_file.txt
-sixense_log_file.txt
-srctools.vdf
-srctools_sndscript_data.vdf
-bee2/
-*.mdmp
-src/ModFiles/Portal 2/install_dlc/cfg/autoexec.cfg
-vpk_override/
-*.so
-!WebFiles/FastDL/portal2
-kyle.portal2.gdb.E5rc
-kyle.portal2.gdb.x1ij
-.DS_Store
-MultiplayerModFiles/mpmod.cfg
-bspsrc.jar
-*.lnk
-client_datamap.txt
-server_classes.txt
-server_datamap.txt
-autosubmit_key.txt
-svars_persist
-portal2R*
-autosubmit_key_og.txt
-portal2mpmod.cmd
-autosubmit_key_fake.txt
-hammer/
-steam_input/
-sar.pdb
-
-# added by cabiste ;)
 tests/
 Logs/
 configs.cfg
 !src/ModFiles/portal2
+.vscode/
+
 # normal folder
 !src/ModFiles/Portal 2/install_dlc/addons/p2mm.dll
 !src/ModFiles/Portal 2/install_dlc/addons/p2mm.so
