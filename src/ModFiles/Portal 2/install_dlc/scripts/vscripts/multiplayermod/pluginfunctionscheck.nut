@@ -32,8 +32,9 @@ if (Entities.FindByName(null, "p2mm_servercommand")) {
     // We don't want to create multiple when it is called on, so reference it by targetname
     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 }
-
-printlP2MM("Checking plugin functionality...")
+if (GetDeveloperLevelP2MM()) {
+    printlP2MM("Checking plugin functionality...")
+}
 
 //---------------------------------------------------
 
@@ -42,7 +43,9 @@ try {
     if (GetPlayerNameLoaded && GetSteamIDLoaded && SetPhysTypeConvarLoaded && SetMaxPortalSeparationConvarLoaded && IsDedicatedServerLoaded && IsMapValidLoaded && GetDeveloperLevelP2MMLoaded && SendToChatLoaded) {
         // Everything loaded properly, no need to even go through the checks
         PluginLoaded <- true
-        printlP2MM("- Plugin and its VScript functions detected successfully!\n")
+        if (GetDeveloperLevelP2MM()) {
+            printlP2MM("- Plugin and its VScript functions detected successfully!\n")
+        }
         return
     }
 } catch (exception) {}
@@ -138,7 +141,7 @@ local ReplaceGetDeveloperLevelP2MM = function() {
         return
     }
     function GetDeveloperLevelP2MM() {
-        return 0 // We've been cornered, so we flip a coin (harmless value) :(
+        return GetDeveloperLevel() // return the integer of the next best type
     }
     RedefinedMessage("GetDeveloperLevelP2MM")
 }
@@ -172,8 +175,8 @@ ReplaceIsMapValid()
 ReplaceGetDeveloperLevelP2MM()
 ReplaceSendToChat()
 
-if (IsDedicatedServer()) {
-    // Handled in the plugin. Does not do anything if it's a dedicated server
+if (IsDedicatedServer() && GetDeveloperLevelP2MM()) {
+    // Handled in the plugin. This doesn't work with ds
     printlP2MM("- Running a dedicated server. Cannot set max separation force for players!")
 }
 
