@@ -134,7 +134,7 @@ def CheckForNewFiles() -> bool:
 
     Log("Found local identifier file!")
 
-    # if there was an error retrieving this file that means most likely that we changed it's name and released a new client
+    # if there was an error retrieving this file that means most likely that the name has changed and there is a new released client
     try:
         r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json").json()
     except Exception as e:

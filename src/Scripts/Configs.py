@@ -50,9 +50,9 @@ DefaultConfigFile = {
         {
             "value": "",
             "menu": "portal2",
-            "description": "Set a password for your P2MM server. This can be changed while the server is up but a level restart or change is required.",
+            "description": "Set a password for your P2MM server. This can be changed while the server is up.",
             "warning": "",
-            "prompt": "Type the password for your P2MM server.\n\"\" will disable the password on your server,\nleaving blank won't.",
+            "prompt": "Type the password for your P2MM server.\nCharacters \'\"\', \"\\\", and \";\" are disallowed\nand will be automatically removed.",
         },
 
     "Custom-Launch-Options":
@@ -124,7 +124,7 @@ DefaultConfigFile = {
 ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
 
 # verifies the config file by making sure that the processed data has the same keys as the default
-# if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
+# if it doesn't then the values are transfered from the local config file to the default one and write the default one
 def VerifyConfigFileIntegrity(config: dict) -> dict:
     Log("=========================")
     Log("Validating config data...")
@@ -223,7 +223,8 @@ def WriteConfigFile(configs: dict) -> None:
     with open(filepath, "w", encoding="utf-8") as cfg:
         json.dump(configs, cfg, indent=4)
 
-# since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
+# since the integrity of the config file was checked earlier its not needed to re-read from it
+# just change the value in the loaded file and write the whole thing back
 def EditConfig(search: str, newvalue: str) -> None:
     GVars.configData[search]["value"] = newvalue
     WriteConfigFile(GVars.configData)
@@ -242,8 +243,6 @@ def DeletePlayer(index: int):
     GVars.configData["Players"]["value"].pop(index)
     WriteConfigFile(GVars.configData)
 
-# why this is a seperate function that only has 2 lines?
-# well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here

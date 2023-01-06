@@ -9,8 +9,8 @@ discordActive: bool = False
 def startRichPresence() -> None:
     global DRP, discordActive
     Log("Starting Discord Rich Presence...")
-    # We need to try and and define the Client ID, this will also check if Discord is open but if not it will throw a exception
-    # We need to ignore it since we have a better way to check if Discord is running or not
+    # First its needed to try and and define the Client ID, this will also check if Discord is open but if not it will throw a exception
+    # If it throws a exception it will ignore it since ther is a better way to check if Discord is running or not later in the code
     try:
         discordActive = True
         DRP = pypresence.Presence("1024425552066658465") # Set the Client ID for P2MM's Discord Rich Presence Application

@@ -43,7 +43,7 @@
 ```
 
 ## Features to be added
-- Steam Deck/Steam OS 3.0 support
+- Steam Deck/SteamOS 3.0 support
 - Discord API for easy invites
 - More support for workshop maps
 
@@ -104,7 +104,7 @@ We are always happy to take whatever additional help we can get for this project
 - vista
 - Wolƒe Strider Shoσter
 - cabiste
-- Orsell (zwexit) 
+- zwexit (Orsell) 
 
 **Contributors:**
 - wanderer (free bird)
