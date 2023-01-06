@@ -25,16 +25,6 @@ from Scripts.BasicLogger import Log, StartLog
 import Scripts.DataSystem as DS
 import Scripts.DiscordRichPresence as DRP
 
-tk = None
-try:
-
-    from tkinter import Tk
-    tk = Tk()
-    tk.withdraw()
-
-except Exception as e:
-    print(str(e))
-
 # set current directory to the directory of this file
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -1256,10 +1246,9 @@ class Gui:
                             self.CurInput += "    "
                         elif CTRLHELD and name == "v":
                             try:
-                                str1 = str(tk.selection_get(
-                                    selection="CLIPBOARD")).replace("\n", "")
-                                Log(f"Pasted: {str1}")
-                                self.CurInput += str1
+                                pastedstr = str(pyperclip.paste())
+                                self.CurInput += pastedstr
+                                Log(f"Pasted: {pastedstr}")
                             except Exception as e:
                                 Log(str(e))  # always log the error
                                 pass

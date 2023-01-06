@@ -20,7 +20,7 @@
   </a>
   <br>
   <br>
-  <p align="right">Portal 2: Multiplayer Mod</p>
+  <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
 </h1>
 
 ### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
@@ -38,7 +38,7 @@
   - Encryption of client commands invoked through the active GameRules class
   - Support for Linux, Windows 7 and above
   - Togglable game options and config system exposed through VScript and a custom plugin
-  - Support for SAR (SourceAutoRecord) for speedruns
+  - Support for SAR (SourceAutoRecord) for speedrunning
   - Native support for dedicated servers if you manage to get one working :)
 ```
 
@@ -55,7 +55,7 @@
 **Latest version:**
 - https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
 
-**Discord Server for technical help, bug report or to just chat:**
+**Discord Server for technical help (MAKE SURE YOU READ THE FAQ!!!), bug report or to just chat:**
 - https://discord.gg/kW3nG6GKpF
 
 
@@ -65,10 +65,10 @@
 
 **Dependencies**
 - pygame
-- requests
-- steamid-converter
 - pyperclip
 - pypresence
+- requests
+- steamid-converter
 
 We also have them in a file for easy install `pip install -r requirements.txt`
 
@@ -87,8 +87,7 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/assets/images/p2mm64.ico" --nocon
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/languages:languages"
 ```
 
-*Notes:*  
-- On Linux make sure you have the tkinter package `pacman -S tk`
+*Note:*  
 - If you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Updater.py` to your own information
 
 
@@ -105,7 +104,7 @@ We are always happy to take whatever additional help we can get for this project
 - vista
 - Wolƒe Strider Shoσter
 - cabiste
-- (zwexit) Orsell
+- Orsell (zwexit) 
 
 **Contributors:**
 - wanderer (free bird)
