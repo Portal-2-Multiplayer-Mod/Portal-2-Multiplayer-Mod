@@ -24,14 +24,15 @@ import Scripts.Workshop as workshop
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.DataSystem as DS
 
-tk = ""
+tk = None
 try:
-    from tkinter import Tk
 
+    from tkinter import Tk
     tk = Tk()
     tk.withdraw()
+
 except Exception as e:
-    Log(str(e))
+    print(str(e))
 
 # set current directory to the directory of this file
 os.chdir(os.path.dirname(os.path.abspath(__file__)))

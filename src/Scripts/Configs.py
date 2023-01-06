@@ -256,7 +256,7 @@ def DeletePlayer(index: int):
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
-    return GVars.configPath + GVars.nf + "configs.cfg"
+    return GVars.configPath + GVars.nf + "configs.json"
 
 # to import the config data from the local config file
 def ImportConfig() -> dict:
