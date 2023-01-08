@@ -21,6 +21,13 @@
 // In case this is the client VM...
 if (!("Entities" in this)) { return }
 
+// Make sure that the user is in multiplayer mode before initiating everything
+if (!IsMultiplayer()) {
+    printlP2MM("This is not a multiplayer session! Disconnecting client...")
+    EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
+    return
+}
+
 printl("\n---------------------")
 printl("==== calling p2mm.nut")
 printl("---------------------\n")
@@ -52,8 +59,8 @@ if (GetDeveloperLevelP2MM()) {
     printlP2MM("- Dedicated server: " + IsDedicatedServer())
 }
 
-IncludeScript("multiplayermod/config.nut")                  // Import the user configuration and preferences
-IncludeScript("multiplayermod/configcheck.nut")             // Make sure nothing was invalid and compensate
+IncludeScript("multiplayermod/config.nut")      // Import the user configuration and preferences
+IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
 
 // There's no conceivable way to tell whether or not this is the first map load after launching a server
 // So we do a dirty developer level hack to something that no one sets it to and reset it when we are done
@@ -134,12 +141,4 @@ default:
 //---------------------------------------------------
 
 // Run InstantRun() shortly AFTER spawn (hooks.nut)
-
-// Make sure that the user is in multiplayer mode before initiating everything
-if (!IsMultiplayer()) {
-    printlP2MM("This is not a multiplayer session! Disconnecting client...")
-    EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
-}
-
-// InstantRun() must be delayed slightly
 EntFire("p2mm_servercommand", "command", "script InstantRun()", 0.02)
