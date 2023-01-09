@@ -89,4 +89,14 @@ Config_UseChatCommands <- true
 //     "[3]123456789", // John Doe
 // ]
 
-Admins <- []
+Admins <- [
+    "[6]182933216",     // kyleraykbs
+    "[6]75927374",      // Wolƒe Strider Shoσter
+    "[6]290760494",     // Nanoman2525
+    "[6]1106347501",    // vista
+    "[6]181670710",     // Bumpy
+    "[6]72399433",      // cabiste
+    "[6]242453954",     // sear
+    "[6]376041508",     // Orsell
+    "[6]378724405"      // \n
+]
