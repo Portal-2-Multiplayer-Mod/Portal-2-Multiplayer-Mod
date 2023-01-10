@@ -1,5 +1,6 @@
 import os
 import json
+import locale
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.DataSystem as DS
@@ -8,6 +9,17 @@ import Scripts.DataSystem as DS
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
+
+def GetSysLang() -> str:
+    sysDefaultLocale = locale.getdefaultlocale()[0]
+    if sysDefaultLocale.lower() == 'fr-FR'.lower() or sysDefaultLocale.lower() == 'fr-BE'.lower() or sysDefaultLocale.lower() == 'fr-CA'.lower() or sysDefaultLocale.lower() == 'fr-LU'.lower() or sysDefaultLocale.lower() == 'fr-CH'.lower():
+        return 'Fran\u00e7ais'
+    elif sysDefaultLocale.lower() == 'zh_CN'.lower() or sysDefaultLocale.lower() == 'zh-SG'.lower() or sysDefaultLocale.lower() == 'zh-Hans'.lower():
+        return 'SChinese'
+    elif sysDefaultLocale.lower() == 'zh-TW'.lower() or sysDefaultLocale.lower() == 'zh-HK'.lower() or sysDefaultLocale.lower() == 'zh-MO'.lower() or sysDefaultLocale == 'zh-Hant'.lower():
+        return 'TChinese'
+    else:
+        return "English"
 
 DefaultConfigFile = {
     "Portal2-Path":
@@ -122,7 +134,7 @@ DefaultConfigFile = {
 
     "Active-Language":
         {
-            "value": "English",
+            "value": GetSysLang(),
             "menu": "",
             "description": "the language of the p2mm client and not the game",
             "warning": "",

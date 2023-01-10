@@ -232,7 +232,7 @@ class Gui:
 
         if self.devMode:
             self.Button_Data = self.ButtonTemplate(translations["data_button"], self.Button_Data_func, (235, 172, 14)) # For now Data will be a dev mode button
-            self.Button_Test = self.ButtonTemplate("Test Button", self.Button_Test_func)
+            self.Button_Test = self.ButtonTemplate(translations["test_button"], self.Button_Test_func)
             self.Text_DevMode = self.DisplayText(translations["dev_mode_enabled"], textColor=(255, 0, 0), xpos=80, ypos=675)
             self.MainMenuButtons.append(self.Button_Data)
             self.MainMenuButtons.append(self.Button_Test)
@@ -312,11 +312,11 @@ class Gui:
 
     def DefineTestingMenu(self) -> None:
         self.Button_InputField = self.ButtonTemplate(
-            "User Input", self.Button_InputField_func)
+            translations["test_user_input"], self.Button_InputField_func)
         self.PopupBox_gui = self.ButtonTemplate(
-            "Popup Box", self.PopupBox_test_func)
+            translations["test_popup_box"], self.PopupBox_test_func)
         self.Button_PrintToConsole = self.ButtonTemplate(
-            "Print to Console", self.Button_PrintToConsole_func)
+            translations["test_print_to_console"], self.Button_PrintToConsole_func)
         self.Button_Back = self.ButtonTemplate(
             translations["back_button"], self.Button_Back_func)
 
@@ -361,7 +361,7 @@ class Gui:
                 self.mlen = 10
                 if len(self.text) > self.mlen:
                     self.text = self.text[:self.mlen] + "..."
-                self.text = key + ": " + self.text
+                self.text = translations[key] + ": " + self.text
                 self.cfgkey = key
                 self.cfgvalue = GVars.configData[key]["value"]
                 self.keyobj = GVars.configData[key]
@@ -375,9 +375,9 @@ class Gui:
                 self.font = "GUI/assets/fonts/pixel.ttf"
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
-                outerSelf.BlitDescription(self.keyobj["description"], self.outerSelf.SelectedButton.x,
+                outerSelf.BlitDescription(translations[self.keyobj["description"]], self.outerSelf.SelectedButton.x,
                                           self.outerSelf.SelectedButton.y + (self.outerSelf.SelectedButton.height * 1), (130, 130, 255))
-                outerSelf.BlitDescription(self.keyobj["warning"], self.outerSelf.SelectedButton.x, self.outerSelf.SelectedButton.y + (
+                outerSelf.BlitDescription(translations[self.keyobj["warning"]], self.outerSelf.SelectedButton.x, self.outerSelf.SelectedButton.y + (
                     self.outerSelf.SelectedButton.height * 1.25), (255, 50, 50))
 
             selectanim = "pop"
