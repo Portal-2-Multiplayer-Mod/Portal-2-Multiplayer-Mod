@@ -312,11 +312,11 @@ class Gui:
 
     def DefineTestingMenu(self) -> None:
         self.Button_InputField = self.ButtonTemplate(
-            translations["test_user_input"], self.Button_InputField_func)
+            translations["user_input"], self.Button_InputField_func)
         self.PopupBox_gui = self.ButtonTemplate(
-            translations["test_popup_box"], self.PopupBox_test_func)
+            translations["popup_box"], self.PopupBox_test_func)
         self.Button_PrintToConsole = self.ButtonTemplate(
-            translations["test_print_to_console"], self.Button_PrintToConsole_func)
+            translations["print_to_console"], self.Button_PrintToConsole_func)
         self.Button_Back = self.ButtonTemplate(
             translations["back_button"], self.Button_Back_func)
 
