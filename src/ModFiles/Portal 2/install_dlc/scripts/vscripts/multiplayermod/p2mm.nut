@@ -76,6 +76,7 @@ IncludeScript("multiplayermod/chatcommands.nut")
 // Load the data system after everything else has been loaded
 // STILL WIP AND DOESN'T WORK ON DEDICATED SERVERS!!!
 // if (!IsDedicatedServer()) {
+//     printlP2MM("[DS] Loading the data system for launcher and Portal 2 communication!")
 //     IncludeScript("multiplayermod/datasystem.nut")
 // } else {
 //     printlP2MM("[DS] Dedicated server detected, the Data System will not be activated!")

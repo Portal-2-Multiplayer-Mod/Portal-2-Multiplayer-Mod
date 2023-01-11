@@ -125,7 +125,7 @@ IncludeScriptCC("adminmodify")
 //IncludeScriptCC("ban") // INDEV By Orsell
 IncludeScriptCC("changeteam")
 IncludeScriptCC("help")
-//IncludeScriptCC("kick") // INDEV By Orsell
+//IncludeScriptCC("kick") // Needs Fixes By Orsell
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
