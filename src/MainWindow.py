@@ -232,7 +232,7 @@ class Gui:
 
         if self.devMode:
             self.Button_Data = self.ButtonTemplate(translations["data_button"], self.Button_Data_func, (235, 172, 14)) # For now Data will be a dev mode button
-            self.Button_Test = self.ButtonTemplate(translations["test_button"], self.Button_Test_func)
+            self.Button_Test = self.ButtonTemplate("Test Button", self.Button_Test_func)
             self.Text_DevMode = self.DisplayText(translations["dev_mode_enabled"], textColor=(255, 0, 0), xpos=80, ypos=675)
             self.MainMenuButtons.append(self.Button_Data)
             self.MainMenuButtons.append(self.Button_Test)
@@ -312,11 +312,11 @@ class Gui:
 
     def DefineTestingMenu(self) -> None:
         self.Button_InputField = self.ButtonTemplate(
-            translations["user_input"], self.Button_InputField_func)
+            "User Input", self.Button_InputField_func)
         self.PopupBox_gui = self.ButtonTemplate(
-            translations["popup_box"], self.PopupBox_test_func)
+            "Popup Box", self.PopupBox_test_func)
         self.Button_PrintToConsole = self.ButtonTemplate(
-            translations["print_to_console"], self.Button_PrintToConsole_func)
+            "Print to Console", self.Button_PrintToConsole_func)
         self.Button_Back = self.ButtonTemplate(
             translations["back_button"], self.Button_Back_func)
 
