@@ -15,7 +15,7 @@ from Scripts.BasicLogger import Log
 
 currentVersion = "2.1.0" # change this before releasing a new version
 ownerName = "kyleraykbs"
-repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
+repoName = "Portal2-Multiplayer-Mod"  # we can't change this to the id :(
 
 
 # thanks stackOverflow for this solution <3
