@@ -7,7 +7,7 @@
 
 HasSleptInContainer1 <- false
 function p2mmDestroyedSequence() {
-    if (GetDeveloperLevelP2MM()) {
+    if (GetDeveloperLevel()) {
         printl("(P2:MM): p2mmDestroyedSequence() has ran!")
     }
     HasSleptInContainer1 = true
@@ -40,10 +40,10 @@ function p2mmSecondDrop() {
 }
 
 function p2mmDropCollision() {
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM("Dropping container collision via p2mmDropCollision().")
+    if (GetDeveloperLevel()) {
+        printl("(P2:MM): Dropping container collision via p2mmDropCollision().")
     }
-
+    
     local dropamount = 45
     local ceiltime = 2.6
 
@@ -494,11 +494,35 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         dummyent <- Entities.CreateByClassname("prop_dynamic")
 
         // Remove Portal Gun
-        UTIL_Team.Spawn_PortalGun(false)
+        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
+        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
 
-        // Disable pinging and taunting
-        UTIL_Team.Pinging(false)
-        UTIL_Team.Taunting(false)
+        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
+        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+
+        // Create Env Globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
 
         HasStartedSp_A1_Intro1 <- false
 
@@ -567,9 +591,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A1_Intro1ViewcontrolTele", "disable", "", 12, null)
         EntFire("Sp_A1_Intro1Viewcontrol", "addoutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
         EntFire("Sp_A1_Intro1ViewcontrolTele", "addoutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
-
-        // kill people block exit elevator
-        Entities.FindByName(null, "departure_elevator-elevator_1").__KeyValueFromString("dmg", "100")
 
         // Create container collisson brushes with an offset of (-19, 510, -3)
         // ContainerBedBrush
@@ -757,8 +778,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
-            if (GetDeveloperLevelP2MM()) {
-                printlP2MM("Player joined (Resetting viewcontrol)")
+            if (GetDeveloperLevel()) {
+                printl("Player joined (Resetting viewcontrol)")
             }
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
@@ -793,6 +814,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetOrigin(Vector(-8709.201172, 1690.068359, 36))
                     p.SetAngles(-4.158184, 64.797371, 0)
                 }
+                EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
                 stoprenable <- true
                 //Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
                 //Entities.FindByName(null, "knockout-portalgun").Destroy()
@@ -917,7 +942,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, currentCartPos.z + ((playermiddle.x + playermiddle.y) + 14)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
             }
-            if (GetDeveloperLevelP2MM()) {
+            if (GetDeveloperLevel()) {
                 DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)
             }
             currentCartCache <- currentCartPos
@@ -1024,7 +1049,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
                 // Debug The Lines  ////////////////////////////////////////////////////
-                if (GetDeveloperLevelP2MM()) {
+                if (GetDeveloperLevel()) {
                     DebugDrawLine(frontwall[1][0], frontwall[1][1], 255, 255, 0, true, 0) // front wall
                     DebugDrawLine(frontwall[2][0], frontwall[2][1], 255, 255, 0, true, 0) // front wall
                     DebugDrawLine(leftwall[1][0], leftwall[1][1], 255, 255, 0, true, 0)   // left wall
@@ -1052,7 +1077,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local alpha = 100
                 local time = 0
                 // draw the boxes
-                if (GetDeveloperLevelP2MM()) {
+                if (GetDeveloperLevel()) {
                     DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
                     DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
                     DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
@@ -1101,7 +1126,7 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
             playerforward = Vector(0, 5, 0)
         }
         inter = LineIntersect2DZTranslation(cull1, cull2, playerpoint, playerpoint + playerforward, dir)
-        if (GetDeveloperLevelP2MM()) {
+        if (GetDeveloperLevel()) {
             DebugDrawBox(inter, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 75, 75, 255, 0)
         }
     }
@@ -1130,12 +1155,12 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
         player.SetOrigin(player.GetOrigin() + pushvec)
         player.SetVelocity(player.GetVelocity() + (pushvec * 10))
         
-        if (GetDeveloperLevelP2MM()) {
+        if (GetDeveloperLevel()) {
             DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 255, 75, 255, 0)
         }
 
     } else {
-        if (GetDeveloperLevelP2MM()) {
+        if (GetDeveloperLevel()) {
             DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0) 
         }
     }

@@ -11,70 +11,28 @@
 //           abusive commands from clients.
 //---------------------------------------------------
 
-if (!Config_SafeGuard) {
-    function SendToConsoleP2MM(str) { SendToConsole(str) }
-    return
-}
+if (Config_SafeGuard) {
+    if (::SendToConsole.getinfos().native) {
+        // Replace SendToConsole with SendToConsoleP2MM
+        ::SendToConsoleP2MM <- ::SendToConsole
 
-if (SendToConsole.getinfos().native) {
-    SendToConsoleP2MM <- SendToConsole
-    SendToConsole = function(str = "") {
-        local illegalChars = [";", "\\", "/", "\"", "%n", "'"]
-        local DoError = function(string) {
-            printl("==========================================")
-            printl("    PATCHED COMMAND ATTEMPTED TO RUN!     ")
-            printl("                                          ")
-            printl("  Command: " + string                      )
-            printl("                                          ")
-            printl("  This could be game logic running in the ")
-            printl(" background. But if the command looks bad,")
-            printl(" then it is most likely a player that is  ")
-            printl("      attempting to exploit the game.     ")
-            printl("         So we're going to stop it.       ")
-            printl("                                          ")
-            printl("Possible suspects (standing still)...     ")
-            for (local player; player = Entities.FindByClassname(player, "player");) {
-                // Don't account for whether or not they are falling straight down
-                if (player.GetVelocity().x == 0 && player.GetVelocity().y == 0) {
-                    printl("- " + FindPlayerClass(player).username)
-                }
-            }
-            printl("==========================================")
-        }
-
-        if (str == "") {
-            printl("\n(P2:MM): AN EMPTY STRING OF SendToConsole ATTEMPTED TO RUN!")
-            return
-        }
-
-        foreach (char in illegalChars) {
-            if (typeof str.find(char) == "integer") {
-                if (char == illegalChars[4]) {
-                    str = "% + n"
-                }
-                DoError(str)
-                return
+        function SendToConsole(str) {
+            if (str.slice(0, 16) != "snd_ducktovolume") {
+                printl("=========================================")
+                printl("=========================================")
+                printl("    PATCHED COMMAND ATTEMPTED TO RUN!    ")
+                printl("                                         ")
+                printl("  Command: " + str                        )
+                printl("                                         ")
+                printl("   This could be game logic running in   ")
+                printl("  the background. But it could also be   ")
+                printl("  a player that is attempting to exploit ")
+                printl("   the game. So we're going to stop it.  ")
+                printl("=========================================")
+                printl("=========================================")
             }
         }
-
-        // Can't combine these checks since it leads to a string length error
-        if (str.len() < 17) {
-            DoError(str)
-            return
-        }
-        if ((str.len() == 17 || str.len() == 18) && str.slice(0, 17) != "snd_ducktovolume ") {
-            DoError(str)
-            return
-        }
-        if ((str.len() == 23 || str.len() == 24) && str.slice(0, 23) != "map_wants_save_disable ") {
-            DoError(str)
-            return
-        }
-        if (str.len() >= 25) {
-            DoError(str)
-            return
-        }
-
-        // SendToConsoleP2MM(str)
     }
+} else {
+    function SendToConsoleP2MM(str) { SendToConsole(str) }
 }

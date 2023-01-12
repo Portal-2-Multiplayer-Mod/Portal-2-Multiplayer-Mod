@@ -73,7 +73,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 jerry.__KeyValueFromString("targetname", "tubecap")
                 movecube <- true
             } else {
-                EntFire("p2mm_servercommand", "command", "sv_cheats 1; ent_create_portal_weighted_antique; sv_cheats 0")
+                SendToConsoleP2MM("sv_cheats 1")
+                SendToConsoleP2MM("ent_create_portal_weighted_antique ")
+                SendToConsoleP2MM("sv_cheats 0")
                 //OVERRIDE CUBE FIZZLE
                 WaitDontFizzle <- true
                 WaitDontFizzleTime <- Time()+1
@@ -150,7 +152,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100)) {
              
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_transition01")
+            SendToConsoleP2MM("changelevel sp_a3_transition01")
         }
     }
 }

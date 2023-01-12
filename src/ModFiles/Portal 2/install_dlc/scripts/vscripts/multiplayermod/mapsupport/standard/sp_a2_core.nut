@@ -132,8 +132,27 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         TempGrabControllerToggled <- false
         StartFadeDone <- false
 
-        UTIL_Team.Pinging(true, "all", 1)
-        UTIL_Team.Taunting(true, "all", 1)
+        // Create env_globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
     }
 
     if (MSOnPlayerJoin) {
@@ -307,8 +326,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 EntFire("glados_pointer", "SetTargetEntity", "lookat_exit_elevator_bullseye", 0, null)
 
-                UTIL_Team.Pinging(true, "all", 0.1)
-                UTIL_Team.Taunting(true, "all", 0.1)
+                EntFireByHandle(env_global01, "turnon", "", 0.1, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 0.1, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 0.1, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 0.1, null, null)
             }
         }
 

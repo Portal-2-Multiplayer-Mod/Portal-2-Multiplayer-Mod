@@ -34,7 +34,7 @@ Config_UseCustomDevModels <- false
 // 3 - Futbol     : Portal 2 beta minigame restored             (No full implementation yet)
 Config_GameMode <- 0
 
-// Set true/false if you want to randomize every Turret's models and colors (for fun lol) (BROKEN)
+// Set true/false if you want to randomize every Turret's models and colors (for fun lol)
 Config_RandomTurrets <- false
 
 // Set true/false if you want to randomize the size of all portals every second
@@ -53,40 +53,38 @@ Config_UseNametags <- true
 // Server variables
 //-----------------------------------
 // Set true/false if you want to enable the Safeguard functionality against server vscript functions from people connecting to you.
-// "true" is highly recommended if this is a public server
-Config_SafeGuard <- true
+// (Still being worked on)
+Config_SafeGuard <- false
 
-// Set to any integer from 0 to 256 to determine how much separation force exists between players.
-// NOTE: THIS WILL NOT DO ANYTHING ON DEDICATED SERVERS!
-// P2:MM disables solid collision between players as seen in normal Portal 2, since it causes issues with players spawning inside of each other.
-// 0 - Players will not push each other away with any force when colliding.
-// 256 - Players will push each other away with a moderate amount of force when colliding.
-Config_SetPlayerElasticity <- 0
-
-// Set true/false if you want to enable chat command functionality
+// Set true/false if you want to use chat commands
 Config_UseChatCommands <- true
 
 // * If the P2:MM plugin loads and Config_UseChatCommands is true, then this is the list of players that have access to specific chat commands
-// * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well as long as you reset the map after editing
+// * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well
 // * Permissions stack with increased admin level
-// * The highest admin level available is [6] and is assigned automatically to the server operator (unless it's a dedicated server)
+// * The highest admin level available is [6] and is assigned automatically to the host
 // * Everyone by default has level [0]
 //
 // * These can be accessed with "!" preceding them
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
-// [0]: "help", "changeteam", "kill", "playercolor", "vote"
+// [0]: "help", "changeteam", "kill", "playercolor"
 // [1]:
 // [2]: "kill (someone)"
-// [3]: "playercolor (for someone else)", "rocket (optionally someone)"
-// [4]: "speed", "noclip", "teleport", "slap (optionally someone)"
+// [3]: "playercolor (for someone else)"
+// [4]: "speed", "noclip", "teleport"
 // [5]: "restartlevel", "spchapter", "mpcourse"
-// [6]: "rcon", "adminmodify", "kick", "ban"
+// [6]: "rcon", "adminmodify"
 //
-// Example on how to format the list:
-// Admins <- [
-//     "[AdminLevel]SteamID", // (Username to keep track)
-//     "[3]123456789", // John Doe
-// ]
+// Manually format it like this:
+// "[AdminLevel]SteamID", // (Username to keep track)
 
-Admins <- []
+Admins <- [
+"[400]182933216", // kyleraykbs
+"[400]75927374", // Wolƒe Strider Shoσter
+"[400]290760494", // Nanoman2525
+"[400]1106347501", // vista
+"[400]181670710", // Bumpy
+"[400]72399433", // cabiste
+"[400]242453954", // sear
+]

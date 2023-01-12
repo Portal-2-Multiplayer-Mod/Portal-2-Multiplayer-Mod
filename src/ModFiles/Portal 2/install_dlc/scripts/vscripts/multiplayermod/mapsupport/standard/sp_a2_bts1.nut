@@ -1,7 +1,7 @@
-//  ██████╗██████╗             █████╗ ██████╗            ██████╗ ████████╗ ██████╗  ███╗
-// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚══██╔══╝██╔════╝ ████║
-// ╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██████╦╝   ██║   ╚█████╗ ██╔██║
-//  ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██╔══██╗   ██║    ╚═══██╗╚═╝██║
+//  ██████╗██████╗             █████╗ ██████╗            ██████╗ ████████╗ ██████╗  ███╗  
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚══██╔══╝██╔════╝ ████║  
+// ╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██████╦╝   ██║   ╚█████╗ ██╔██║  
+//  ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██╔══██╗   ██║    ╚═══██╗╚═╝██║  
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝███████╗
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚══════╝
 
@@ -61,7 +61,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (Entities.FindByName(null, "jailbreak_chamber_lit-jailbreak_trigger")) {
             local p = null
             while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3792, -1128, 142), 350)) {
-                if (p.GetTeam() == TEAM_RED) {
+                if (p.GetTeam()==2) {
                     p.SetOrigin(Vector(-10066, -2281, 0))
                 } else {
                     p.SetOrigin(Vector(-10066, -2581, 0))
@@ -81,8 +81,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make our own changelevel trigger
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(1253.4089355469, -1319.4395751953, -320.2317199707), 104.79999542236)) {
-
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts2")
+             
+            SendToConsoleP2MM("changelevel sp_a2_bts2")
         }
     }
 }

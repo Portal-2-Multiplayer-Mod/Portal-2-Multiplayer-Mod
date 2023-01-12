@@ -1,7 +1,7 @@
-// ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗ ███████╗██╗      █████╗  █████╗ ██╗████████╗██╗   ██╗           ██████╗            ██╗   ██╗ █████╗   ███╗
-// ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝ ██╔════╝██║     ██╔══██╗██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝           ╚════██╗           ██║   ██║██╔══██╗ ████║
-// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██║  ██╗ █████╗  ██║     ██║  ██║██║  ╚═╝██║   ██║    ╚████╔╝              ███╔═╝           ╚██╗ ██╔╝██║  ██║██╔██║
-// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██║  ╚██╗██╔══╝  ██║     ██║  ██║██║  ██╗██║   ██║     ╚██╔╝             ██╔══╝              ╚████╔╝ ██║  ██║╚═╝██║
+// ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗ ███████╗██╗      █████╗  █████╗ ██╗████████╗██╗   ██╗           ██████╗            ██╗   ██╗ █████╗   ███╗  
+// ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝ ██╔════╝██║     ██╔══██╗██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝           ╚════██╗           ██║   ██║██╔══██╗ ████║  
+// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██║  ██╗ █████╗  ██║     ██║  ██║██║  ╚═╝██║   ██║    ╚████╔╝              ███╔═╝           ╚██╗ ██╔╝██║  ██║██╔██║  
+// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██║  ╚██╗██╔══╝  ██║     ██║  ██║██║  ██╗██║   ██║     ╚██╔╝             ██╔══╝              ╚████╔╝ ██║  ██║╚═╝██║  
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗╚██████╔╝███████╗███████╗╚█████╔╝╚█████╔╝██║   ██║      ██║   ██████████╗███████╗██████████╗  ╚██╔╝  ╚█████╔╝███████╗
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝ ╚═════╝ ╚══════╝╚══════╝ ╚════╝  ╚════╝ ╚═╝   ╚═╝      ╚═╝   ╚═════════╝╚══════╝╚═════════╝   ╚═╝    ╚════╝ ╚══════╝
 
@@ -34,8 +34,8 @@ function Gelocity2AddLap() {
             }
         }
     }
-
-    printlP2MM("Gelocity2LapCount: " + Gelocity2LapCount)
+    
+    printl("Gelocity2LapCount: " + Gelocity2LapCount)
     Entities.FindByName(null, "change_rounds_text_override").__KeyValueFromString("message", Gelocity2LapCount + " Laps")
     EntFire("change_rounds_text_override", "Display")
     EntFire("button_1_override", "Skin", "0")
@@ -70,7 +70,7 @@ function Gelocity2RemoveLap() {
             }
         }
     }
-    printlP2MM("Gelocity2LapCount: " + Gelocity2LapCount)
+    printl("Gelocity2LapCount: " + Gelocity2LapCount)
     Entities.FindByName(null, "change_rounds_text_override").__KeyValueFromString("message", Gelocity2LapCount + " Laps")
     EntFire("change_rounds_text_override", "Display")
     if (Gelocity2LapCount <= 2) {
@@ -80,7 +80,7 @@ function Gelocity2RemoveLap() {
 }
 
 function YeetThePaint() {
-    printlP2MM("Yall Playing GELOCITY");
+    printl("Yall Playing GELOCITY");
     local ent = null
     while (ent = Entities.FindByClassname(ent, "paint_sphere")) {
         // EntFire(ent.GetName(), "paint", "", 0.8)
@@ -99,7 +99,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         RemoveAllClassname("keyframe_rope")
         RemoveAllClassname("env_sprite")
         Entities.FindByName(null, "clip_start").Destroy()
-
+        
         local ent = null
         while (ent = Entities.FindByName(null, "door_start_1_1")) {
             ent.__KeyValueFromString("targetname", "door_start_1_1_override")
@@ -112,7 +112,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("checkpoint_orange_1", "kill")
         EntFire("checkpoint_blue_1", "kill")
 
-        // printlP2MM("Yall Playing GELOCITY");
+        // printl("Yall Playing GELOCITY");
         // local ent = null
         // while (ent = Entities.FindByClassname(ent, "paint_sphere")) {
         //     EntFire(ent.GetName(), "paint", "", 0.8)
@@ -171,7 +171,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSPostPlayerSpawn) {
-        printlP2MM("Removed: " + TotalRemovedEnts + " Entities")
+        printl("Removed: " + TotalRemovedEnts + " Entities")
     }
 
     if (MSLoop) {
@@ -179,23 +179,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             CanCheckpointGel <- true
         }
 
-        // Setup Everyone's Class
-        // MOVED TO CreateGenericPlayerClass()
-        // for (local p; p = Entities.FindByClassname(p, "player");) {
-        //     local CurrentPlayerClass = FindPlayerClass(p)
-        //     try {
-        //         local test1 = CurrentPlayerClass.Gelocity2Checkpoint
-        //         local test2 = CurrentPlayerClass.Laps
-        //         local test3 = CurrentPlayerClass.Gelocity2CheckpointMove
-        //     } catch(e) {
-        //         CurrentPlayerClass.Gelocity2Checkpoint <- true
-        //         CurrentPlayerClass.Laps <- -1
-        //         CurrentPlayerClass.Gelocity2CheckpointMove <- class {
-        //             pos = Vector(2580, -4399,  267)
-        //             rot = Vector(0, 90, 0)
-        //         }
-        //     }
-        // }
+        // Setup Everyones Class
+        for (local p; p = Entities.FindByClassname(p, "player");) {
+            local CurrentPlayerClass = FindPlayerClass(p)
+            try {
+                local test1 = CurrentPlayerClass.Gelocity2Checkpoint
+                local test2 = CurrentPlayerClass.Laps
+                local test3 = CurrentPlayerClass.Gelocity2CheckpointMove
+            } catch(e) {
+                CurrentPlayerClass.Gelocity2Checkpoint <- true
+                CurrentPlayerClass.Laps <- -1
+                CurrentPlayerClass.Gelocity2CheckpointMove <- class {
+                    pos = Vector(2580, -4399,  267)
+                    rot = Vector(0, 90, 0)
+                }
+            }
+        }
 
         if (CanCheckpointGel) {
             // Teleport Player to Checkpoint
@@ -350,14 +349,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     local pcolor = GetPlayerColor(p, true)
                     Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
                     if (!WinCondition) {
-                        printlP2MM(PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps)
+                        printl(PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps)
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps, 0.1)
                     } else {
-                        printlP2MM(PlayerUsername + " Won The Race!")
+                        printl(PlayerUsername + " Won The Race!")
                         SendToConsoleP2MM("say " + PlayerUsername + " Won The Race!")
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Race!", 0.1)
                         //ent_fire first_blue addoutput "rendercolor 255 0 0"
-                        if (p.GetTeam() >= TEAM_BLUE) {
+                        if (p.GetTeam() >= 3) {
                             EntFire("blue_wins", "trigger")
                         } else {
                             EntFire("orange_wins", "trigger")
@@ -377,7 +376,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local PlayerUsername = CurrentPlayerClass.username
             if (!CurrentPlayerClass.Gelocity2Checkpoint) {
                 CurrentPlayerClass.Gelocity2Checkpoint <- true
-                printlP2MM(PlayerUsername + " Completed Checkpoint")
+                printl(PlayerUsername + " Completed Checkpoint")
             }
         }
     }

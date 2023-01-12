@@ -18,56 +18,18 @@
 //              function individually.
 //---------------------------------------------------
 
-// Differentiate our debug comments in the console from normal spew
-function printlP2MM(str) {
-    printl("(P2:MM): " + str)
-}
-
-if (Entities.FindByName(null, "p2mm_servercommand")) {
-    // Primary check in case the script attempts to execute midgame and it already has
-    printlP2MM("pluginfunctionscheck.nut has already ran and is attempting to run again! Suppressing...")
-    return
-} else {
-    // Create a global point_servercommand entity for us to pass through commands
-    // We don't want to create multiple when it is called on, so reference it by targetname
-    Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
-}
-if (GetDeveloperLevelP2MM()) {
-    printlP2MM("Checking plugin functionality...")
-}
-
-//---------------------------------------------------
-
-// HANDLED THROUGH THE PLUGIN
-try {
-    if (GetPlayerNameLoaded && GetSteamIDLoaded && SetPhysTypeConvarLoaded && SetMaxPortalSeparationConvarLoaded && IsDedicatedServerLoaded && IsMapValidLoaded && GetDeveloperLevelP2MMLoaded && SendToChatLoaded) {
-        // Everything loaded properly, no need to even go through the checks
-        PluginLoaded <- true
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("- Plugin and its VScript functions detected successfully!\n")
-        }
-        return
-    }
-} catch (exception) {}
-
-//---------------------------------------------------
-
-// Failed the check, redeclare all as false and check each one manually..
-
-GetPlayerNameLoaded                 <- false
-GetSteamIDLoaded                    <- false
-SetPhysTypeConvarLoaded             <- false
-SetMaxPortalSeparationConvarLoaded  <- false
-IsDedicatedServerLoaded             <- false
-IsMapValidLoaded                    <- false
-GetDeveloperLevelP2MMLoaded         <- false
-SendToChatLoaded                    <- false
+GetPlayerNameLoaded <- false
+GetSteamIDLoaded <- false
+AddChatCallbackLoaded <- false
+SetPhysTypeConvarLoaded <- false
 
 function RedefinedMessage(functionname) {
-    printlP2MM("- " + functionname + "() failed to load and has been redefined!")
+    if (GetDeveloperLevel()) {
+        printl("(P2:MM): " + functionname + "() has been redefined!")
+    }
 }
 
-local ReplaceGetPlayerName = function() {
+function ReplaceGetPlayerName() {
     // Does the function exist?
     if ("GetPlayerName" in this) {
         GetPlayerNameLoaded <- true
@@ -80,7 +42,7 @@ local ReplaceGetPlayerName = function() {
     RedefinedMessage("GetPlayerName")
 }
 
-local ReplaceGetSteamID = function() {
+function ReplaceGetSteamID() {
     if ("GetSteamID" in this) {
         GetSteamIDLoaded <- true
         return
@@ -91,102 +53,38 @@ local ReplaceGetSteamID = function() {
     RedefinedMessage("GetSteamID")
 }
 
-local ReplaceSetPhysTypeConvar = function() {
+function ReplaceAddChatCallback() {
+    if ("AddChatCallback" in this) {
+        AddChatCallbackLoaded <- true
+        return
+    }
+    function AddChatCallback(string) {
+        printl("(P2:MM): Plugin not loaded. Unable to add chat callback for chat commands!")
+    }
+    RedefinedMessage("AddChatCallback")
+}
+
+function ReplaceSetPhysTypeConvar() {
     if ("SetPhysTypeConvar" in this) {
         SetPhysTypeConvarLoaded <- true
         return
     }
     function SetPhysTypeConvar(string) {
-        printlP2MM("Plugin not loaded. Unable to change game grab controllers!")
+        printl("(P2:MM): Plugin not loaded. Unable to change game grab controllers!")
     }
     RedefinedMessage("SetPhysTypeConvar")
 }
 
-local ReplaceSetMaxPortalSeparationConvar = function() {
-    if ("SetMaxPortalSeparationConvar" in this) {
-        SetMaxPortalSeparationConvarLoaded <- true
-        return
-    }
-    function SetMaxPortalSeparationConvar(string) {
-        printlP2MM("Plugin not loaded. Unable to change player collision amounts!")
-    }
-    RedefinedMessage("SetMaxPortalSeparationConvar")
-}
-
-local ReplaceIsDedicatedServer = function() {
-    if ("IsDedicatedServer" in this) {
-        IsDedicatedServerLoaded <- true
-        return
-    }
-    function IsDedicatedServer() {
-        return false // We've been cornered, so we assume the most likely value :(
-    }
-    RedefinedMessage("IsDedicatedServer")
-}
-
-local ReplaceIsMapValid = function() {
-    if ("IsMapValid" in this) {
-        IsMapValidLoaded <- true
-        return
-    }
-    function IsMapValid(string) {
-        return true // We've been cornered, so we flip a coin :(
-    }
-    RedefinedMessage("IsMapValid")
-}
-
-local ReplaceGetDeveloperLevelP2MM = function() {
-    if ("GetDeveloperLevelP2MM" in this) {
-        GetDeveloperLevelP2MMLoaded <- true
-        return
-    }
-    function GetDeveloperLevelP2MM() {
-        return GetDeveloperLevel() // return the integer of the next best type
-    }
-    RedefinedMessage("GetDeveloperLevelP2MM")
-}
-
-local ReplaceSendToChat = function() {
-    if ("SendToChat" in this) {
-        SendToChatLoaded <- true
-        return
-    }
-    function SendToChat(message, pActivatorAndCaller = null) {
-        // Try to use server command in the case of dedicated servers
-        local pEntity = Entities.FindByName(null, "p2mm_servercommand")
-        if (pActivatorAndCaller != null) {
-            // Send messages from a specific client
-            pEntity = p2mm_clientcommand
-        }
-        EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
-    }
-    RedefinedMessage("SendToChat")
-}
-
-//---------------------------------------------------
-
-// Test all VScript functions
 ReplaceGetPlayerName()
 ReplaceGetSteamID()
+ReplaceAddChatCallback()
 ReplaceSetPhysTypeConvar()
-ReplaceSetMaxPortalSeparationConvar()
-ReplaceIsDedicatedServer()
-ReplaceIsMapValid()
-ReplaceGetDeveloperLevelP2MM()
-ReplaceSendToChat()
 
-if (IsDedicatedServer() && GetDeveloperLevelP2MM()) {
-    // Handled in the plugin. This doesn't work with ds
-    printlP2MM("- Running a dedicated server. Cannot set max separation force for players!")
+if (GetPlayerNameLoaded || GetSteamIDLoaded || AddChatCallbackLoaded || SetPhysTypeConvarLoaded) {
+    // Something loaded, so the plugin must be as well
+    PluginLoaded <- true
 }
-
-//---------------------------------------------------
-
-// The final say
-if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !SetPhysTypeConvarLoaded && !SetMaxPortalSeparationConvarLoaded && !IsDedicatedServerLoaded && !IsMapValidLoaded && !GetDeveloperLevelP2MMLoaded && !SendToChatLoaded) {
+else if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !AddChatCallbackLoaded && !SetPhysTypeConvarLoaded) {
     // Nothing loaded
     PluginLoaded <- false
-} else {
-    // Something must have been detected
-    PluginLoaded <- true
 }

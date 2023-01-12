@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        PermaPotato = true
+        PermaPotato <- true
         Entities.FindByName(null, "entrance_door_prop").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "paint_trickle_blue_1").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "paint_trickle_white_1").__KeyValueFromString("targetname", "moja3")
@@ -15,9 +15,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "paint_trickle_blue_2").__KeyValueFromString("targetname", "moja5")
         Entities.FindByName(null, "paint_trickle_blue_2").__KeyValueFromString("targetname", "moja5")
         Entities.FindByName(null, "paint_trickle_white_2").__KeyValueFromString("targetname", "moja6")
-
-        Entities.FindByName(null, "departure_elevator-elevator_1").__KeyValueFromString("dmg", "100")
-
         // Here if we need to ent_fire something
         EntFireByHandle(Entities.FindByName(null, "entrance_door_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja3:Start", 1, null, null)
@@ -32,14 +29,26 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             ent.__KeyValueFromString("CheckAllIDs", "1")
         }
         // Change name of a thing (look moxxie a thing) so we can yell at him
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
+        // Change name of a thing (look moxxie a thing) (look moxxie a thing) (look moxxie a thing)
         Entities.FindByName(null, "achievement_all_gels_entity").__KeyValueFromString("targetname", "look_moxxie_a_thing")
         // Destroy objects
         Entities.FindByName(null, "fade_to_death").Destroy()
         OnlyOnceSp_A3_End <- false
         OnlyOnceSp_A3_End_1 <- false
+    }
 
-        // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_intro:0.3", 0, null)
+    if (MSPostPlayerSpawn) {
+
     }
 
     if (MSOnPlayerJoin) {
@@ -114,6 +123,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
             GooHurtTimerPred = Time()+1
+        }
+        // Elevator changelevel
+        local p = null
+        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1540, -830, 3840), 50)) {
+             
+            SendToConsoleP2MM("changelevel sp_a4_intro")
         }
     }
 }

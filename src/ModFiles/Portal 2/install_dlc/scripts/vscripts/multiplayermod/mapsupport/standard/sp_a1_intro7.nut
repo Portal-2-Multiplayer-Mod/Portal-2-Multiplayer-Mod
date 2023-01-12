@@ -8,7 +8,6 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.useautospawn <- true
-        GlobalOverridePluginGrabController = false
 
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         EntFire("@sphere", "addoutput", "OnPlayerPickup p2mm_servercommand:command:script disablewheatleyplayerpickup()", 0, null)
@@ -71,11 +70,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // portal_detector
         Entities.FindByName(null, "portal_in_wheatley_room_detector").__KeyValueFromString("CheckAllIDs", "1")
         Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
-
-        // Wheatley made it past the locked door (pancake one)
-        if (Entities.FindByNameWithin(null, "@sphere", Vector(-1500, -415.95, 1280), 128)) {
-            GlobalOverridePluginGrabController <- true
-        }
     }
 }
 
