@@ -1,0 +1,48 @@
+//  ██████╗██████╗             █████╗   ███╗             ██╗███╗  ██╗████████╗██████╗  █████╗ ██████╗
+// ██╔════╝██╔══██╗           ██╔══██╗ ████║             ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗╚════██╗
+// ╚█████╗ ██████╔╝           ███████║██╔██║             ██║██╔██╗██║   ██║   ██████╔╝██║  ██║  ███╔═╝
+//  ╚═══██╗██╔═══╝            ██╔══██║╚═╝██║             ██║██║╚████║   ██║   ██╔══██╗██║  ██║██╔══╝
+// ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝███████╗
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚══════╝
+
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
+    if (MSInstantRun) {
+        // Offset coop repsawn nodes for elevators (left and right side)
+        GlobalSpawnClass.useautospawn <- true
+
+        // This could be repurposed for speedrun mode where the teleport node
+        // is offset exactly where we want to spawn players in the actual elevator
+        // teleport <- Entities.FindByName(null, "@arrival_teleport")
+        // elevator <- Entities.FindByName(null, "arrival_elevator-elevator_1")
+        // teleport.SetOrigin(Vector(elevator.GetOrigin().x, elevator.GetOrigin().y, elevator.GetOrigin().z - 60.97))
+        // EntFireByHandle(Entities.FindByName(null, "@arrival_teleport"), "setparent", "arrival_elevator-elevator_1", 0, null, null)
+
+        // Make the first player spawn on the right side
+        // Entities.FindByClassnameNearest("trigger_once", Vector(1296, 512, 112), 50).Destroy()
+
+        // Remove Portal Gun
+        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
+        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+
+        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
+        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
+        Entities.FindByClassnameNearest("trigger_once", Vector(-320, 832, -24), 100).Destroy()
+        Entities.FindByName(null, "Fizzle_Trigger").Destroy()
+        Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
+
+        // Make changing levels work
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro3:0.3", 0, null)
+    }
+
+    if (MSPostPlayerSpawn) {
+        NewApertureStartElevatorFixes()
+    }
+
+    if (MSLoop) {
+        try {
+            Entities.FindByName(null, "block_boxes").Destroy()
+        } catch (exception) {}
+    }
+}
