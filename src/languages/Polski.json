@@ -63,7 +63,7 @@
   "players_enter_username": "Wpisz nazwe użytkownika",
   "players_name": "Nazwa użytkownika: ",
   "players_converted_steamid": "Zkonwertowano SteamID!",
-  "players_invalid_steamid": "Niepoprwane SteamID!",
+  "players_invalid_steamid": "Niepoprawne SteamID!",
   "game_path_enter_path": "Podaj scieżke plików do Portal 2",
   "game_path-is-invalid": "Scieżka plików jest niepoprawna!",
   "game_path-attempt-to-fetch": "Pobieranie scieżke plików...",
