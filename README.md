@@ -15,9 +15,6 @@
     <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/downloads/kyleraykbs/Portal2-32PlayerMod/total?style=for-the-badge" alt="Download Count Shield Badge" align="right">
   </a>
   <br>
-  <a href="https://github.com/qwertyquerty/pypresence">
-    <img src="https://img.shields.io/badge/using-pypresence-00bb88.svg?style=for-the-badge&logo=discord&logoWidth=20" alt="P2MM uses Pypresence for Discord Rich Presence" align="right">
-  </a>
   <br>
   <br>
   <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
@@ -46,6 +43,7 @@
 - Steam Deck/SteamOS 3.0 support
 - Discord API for easy invites
 - More support for workshop maps
+- FastDL Support
 
 # Installation & use
 
@@ -66,7 +64,6 @@
 **Dependencies**
 - pygame
 - pyperclip
-- pypresence
 - requests
 - steamid-converter
 
