@@ -118,7 +118,7 @@ def dataSystemInitialization(refresh: bool) -> None:
     firstStart = False
     try:
         Log("")
-        if refresh == True:
+        if refresh :
             Log("            __________Data System Refresh Start__________")
             Log("DS: Refreshing the data system...")
         else:
@@ -184,7 +184,7 @@ def dataSystemInitialization(refresh: bool) -> None:
 
     # This will run only if the data system sucessfully initilized
     else:
-        if refresh == True:
+        if refresh:
             Log("DS: The data system has refreshed sucessfully!")
         else:
             Log("DS: The data system has started sucessfully!")
@@ -193,52 +193,49 @@ def dataSystemInitialization(refresh: bool) -> None:
 
     # Now we clean up the system and create the files needed for the datasystem-main.nut file to read when its called on later when a map loads
     finally:
-        try:
-            if (dataSystemState == True) and (firstStart == False) and (GVars.configData["Data-System-Overide"]["value"] == "true"):
-                dataSystemInitSuccess = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-enabled.nut", "x")
-            elif (dataSystemState == False) and (firstStart == True):
-                Log("This is the launchers first start, will not be creating datasystem nut indicator...")
-            elif (dataSystemState == False) and (firstStart == False):
-                dataSystemInitFail = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-disabled.nut", "x")
-                Log("DS: The data system encountered an error and it can't be enabled! Or it has been disabled in the Dev Menu.")
-                Log("DS: The system will be disabled for the next play session...")
+            try:
+                if (dataSystemState) and (not firstStart) and (GVars.configData["Data-System-Overide"]["value"]):
+                    dataSystemInitSuccess = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-enabled.nut", "x")
+                elif firstStart:
+                    Log("This is the launchers first start, will not be creating datasystem nut indicator...")
+                elif (not dataSystemState) and (not firstStart):
+                    dataSystemInitFail = open(GVars.p2mmScriptsPath + GVars.nf + "datasystemsaves" + GVars.nf + "datasystem-disabled.nut", "x")
+                    Log("DS: The data system encountered an error and it can't be enabled! Or it has been disabled in the Dev Menu.")
+                    Log("DS: The system will be disabled for the next play session...")
 
-        # This exception should only occur if either the p2mm or Modfiles folder wasn't found
-        except FileNotFoundError:
-            Log("")
-            Log("            __________DATA SYSTEM FileNotFoundError!!!__________")
-            Log("The data system encountered an error and it can't be enabled!")
-            Log("This was caused because either the p2mm or ModFiles folder wasn't found.")
-            Log("The system will be disabled for the next play session...")
-            Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
-            Log("            __________DATA SYSTEM FileNotFoundError!!!__________")
-            Log("")
-            dataSystemState = False
+            # This exception should only occur if either the p2mm or Modfiles folder wasn't found
+            except FileNotFoundError:
+                Log("")
+                Log("            __________DATA SYSTEM FileNotFoundError!!!__________")
+                Log("The data system encountered an error and it can't be enabled!")
+                Log("This was caused because either the p2mm or ModFiles folder wasn't found.")
+                Log("The system will be disabled for the next play session...")
+                Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
+                Log("            __________DATA SYSTEM FileNotFoundError!!!__________")
+                Log("")
+                dataSystemState = False
 
-        # This exception should only happen if Orsell fricked something up :)
-        # This seems to be get executed along side the FileNotFoundError exception, thats not suppose to happen and it needs to be fixed
-        except:
-            Log("")
-            Log("            __________DATA SYSTEM ERROR!!!__________")
-            Log("An unknown error that hasn't been accounted for in the development of this script has occured...")
-            Log("This error has to do with the data system so please ping Orsell (aka zwexit) in #mod-help in our discord.")
-            Log("He must have fricked up something if this appears.")
-            Log("To make sure nothing else fricks up the data system will be disabled...")
-            Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
-            Log("            __________DATA SYSTEM ERROR!!!__________")
-            Log("")
-            dataSystemState = False
-        finally:
-            if refresh == True:
-                Log("DS: Data system has finished refreshing...")
-                Log("            __________Data System Refreshing End__________")
-            else:
-                Log("DS: Data system has finished initalizing...")
-                Log("            __________Data System Initialization End__________")
-            Log("")
-            # We will enable the dataSystemChecker so it will be ready to read any .dem files Portal 2
-            # In the case dataSystemState is False, dataSystemChecker will wait to be enabled again when the system refreshes
-            # dataSystemChecker()
+            # This exception should only happen if Orsell fricked something up :)
+            # This seems to be get executed along side the FileNotFoundError exception, thats not suppose to happen and it needs to be fixed
+            except:
+                Log("")
+                Log("            __________DATA SYSTEM ERROR!!!__________")
+                Log("An unknown error that hasn't been accounted for in the development of this script has occured...")
+                Log("This error has to do with the data system so please ping Orsell (aka zwexit) in #mod-help in our discord.")
+                Log("He must have fricked up something if this appears.")
+                Log("To make sure nothing else fricks up the data system will be disabled...")
+                Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
+                Log("            __________DATA SYSTEM ERROR!!!__________")
+                Log("")
+                dataSystemState = False
+            finally:
+                if refresh:
+                    Log("DS: Data system has finished refreshing...")
+                    Log("            __________Data System Refreshing End__________")
+                else:
+                    Log("DS: Data system has finished initalizing...")
+                    Log("            __________Data System Initialization End__________")
+                Log("")
 
 # This is the checker that is started when the launcher confirms that the Data System is ready to go
 # It will check for updates from the files Portal 2 will create read the name of the file then run the function that corresponds with the file

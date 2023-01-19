@@ -21,7 +21,7 @@ DefaultConfigFile = {
 
     "Auto-Umount":
         {
-            "value": "true",
+            "value": True,
             "menu": "launcher",
             "description": "Automatically unmounts the mod when the game is closed",
             "warning": "",
@@ -30,7 +30,7 @@ DefaultConfigFile = {
 
     "Launcher-SFX":
         {
-            "value": "true",
+            "value": True,
             "menu": "launcher",
             "description": "Makes the buttons play sound effects",
             "warning": "",
@@ -39,7 +39,7 @@ DefaultConfigFile = {
 
     "Launcher-Cubes":
         {
-            "value": "true",
+            "value": True,
             "menu": "launcher",
             "description": "Makes cubes rain in the background",
             "warning": "",
@@ -54,7 +54,6 @@ DefaultConfigFile = {
             "warning": "",
             "prompt": "Type the password for your P2MM server.\nCharacters \'\"\', \"\\\", and \";\" are disallowed\nand will be automatically removed.",
         },
-
     "Custom-Launch-Options":
         {
             "value": "+map mp_coop_lobby_3",
@@ -66,7 +65,7 @@ DefaultConfigFile = {
 
     "Encrypt-Cvars":
         {
-            "value": "false",
+            "value": False,
             "menu": "portal2",
             "description": "Encrypts cvars such as \"restart_level\" and \"reset_all_progress\".",
             "warning": "Only use for public games! This may break some functionality.",
@@ -75,7 +74,7 @@ DefaultConfigFile = {
 
     "Safe-Guard":
         {
-            "value": "false",
+            "value": False,
             "menu": "portal2",
             "description": "Encrypts vscript functions such as \"SendToConsole()\"",
             "warning": "Only use for public games! This may break some functionality.",
@@ -95,7 +94,7 @@ DefaultConfigFile = {
 
     "Dev-Mode":
         {
-            "value": "true", #REMEMBER TO CHANGE THIS WHEN RELEASING NEW VERSION!
+            "value": True, #REMEMBER TO CHANGE THIS WHEN RELEASING NEW VERSION!
             "menu": "dev",
             "description": "Makes the mod's files mount from src/ModFiles",
             "warning": "Only enable this if you know what you're doing!",
@@ -104,7 +103,7 @@ DefaultConfigFile = {
 
     "Data-System-Overide":
         {
-            "value": "true",
+            "value": True,
             "menu": "dev",
             "description": "Manually overide if the datasystem will operate next play session.",
             "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
@@ -223,9 +222,8 @@ def WriteConfigFile(configs: dict) -> None:
     with open(filepath, "w", encoding="utf-8") as cfg:
         json.dump(configs, cfg, indent=4)
 
-# since the integrity of the config file was checked earlier its not needed to re-read from it
-# just change the value in the loaded file and write the whole thing back
-def EditConfig(search: str, newvalue: str) -> None:
+# since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
+def EditConfig(search: str, newvalue: any) -> None:
     GVars.configData[search]["value"] = newvalue
     WriteConfigFile(GVars.configData)
 

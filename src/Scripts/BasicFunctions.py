@@ -1,6 +1,7 @@
 import Scripts.GlobalVariables as GVars
 import os
 import psutil
+from Scripts.BasicLogger import Log
 
 ##############
 # CONVERSION #
@@ -50,22 +51,15 @@ def MoveFile(src: str, dst: str) -> str:
 
 # Used to grab Portal 2's game directory for the launcher if it hasn't been defined yet
 # On Windows it will use the manifest file that is in the steamapps directory to detect Portal 2
-def TryFindPortal2Path():
-    if (GVars.iow):
-        import winreg
-
-    # if C:\Program Files (x86)\Steam\steamapps\common\Portal 2 exists
-    defpathwin = ConvertPath("D:\Program Files (x86)\Steam\steamapps\common\Portal 2")
+def TryFindPortal2Path() -> str:
+    # Should be default linux path for the game
     defpathlin = ConvertPath("~/.local/share/Steam/steamapps/common/Portal 2")
 
-    if (GVars.iol) or (GVars.iosd):
-        if (os.path.isdir(defpathlin)):
-            return defpathlin
-    elif (GVars.iow):
-        if (os.path.isdir(defpathwin)):
-            return defpathwin
+    if ((GVars.iol or GVars.iosd) and (os.path.isfile(defpathlin + "/portal2_linux"))):
+        return defpathlin
 
     if (GVars.iow):
+        import winreg
         try:
             hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\WOW6432Node\Valve\Steam")
             print(hkey)
@@ -75,14 +69,11 @@ def TryFindPortal2Path():
             print(manifestpath)
             if (os.path.isfile(manifestpath)):
                 # read the manifest file
-                f = open(manifestpath, "r", encoding="utf-8")
-                manifest = f.read()
-                f.close()
-
+                manifest = open(manifestpath, "r", encoding="utf-8").readlines()
                 paths = []
 
-                for line in manifest.split("\n"):
-                    line=line.strip()
+                for line in manifest:
+                    line = line.strip()
                     # remove the quotes
                     line = line.replace("\"", "")
                     print(line)
@@ -97,7 +88,7 @@ def TryFindPortal2Path():
                         return path + ConvertPath("/steamapps/common/Portal 2")
 
         except Exception as e:
-            print("ERROR: " + str(e))
+            Log("ERROR: " + str(e))
 
     return False
 

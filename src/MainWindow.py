@@ -105,7 +105,8 @@ class Gui:
         Args:
             sound (pygame.mixer.Sound): the sound to play
         """
-        LauncherSFX = GVars.configData["Launcher-SFX"]["value"] == "true"
+
+        LauncherSFX = GVars.configData["Launcher-SFX"]["value"]
         if LauncherSFX:
             pygame.mixer.Sound.play(sound)
 
@@ -370,7 +371,7 @@ class Gui:
 
         class curkeyButton:
             def __init__(self, key: str, outerSelf: Gui) -> None:
-                self.text = GVars.configData[key]["value"]
+                self.text = str(GVars.configData[key]["value"])
                 self.mlen = 10
                 if len(self.text) > self.mlen:
                     self.text = self.text[:self.mlen] + "..."
@@ -404,12 +405,12 @@ class Gui:
             curanim = ""
 
             def function(self) -> None:
-                if self.cfgvalue == "true" or self.cfgvalue == "false":
-                    if self.cfgvalue == "false":
-                        cfg.EditConfig(self.cfgkey, "true")
+                if type(self.cfgvalue) is bool:
+                    if self.cfgvalue == False:
+                        cfg.EditConfig(self.cfgkey, True)
                     # default to false to avoid errors
                     else:
-                        cfg.EditConfig(self.cfgkey, "false")
+                        cfg.EditConfig(self.cfgkey, False)
                     DS.dataSystemInitialization(True)
                     self.outerSelf.RefreshSettingsMenu(menu)
                 else:
@@ -1006,7 +1007,7 @@ class Gui:
             surf = pygame.transform.scale(surf, (W / 15, W / 15))
             surf = pygame.transform.rotate(surf, floater.rot)
             center = surf.get_rect().center
-            LauncherCubes = GVars.configData["Launcher-Cubes"]["value"] == "true"
+            LauncherCubes = GVars.configData["Launcher-Cubes"]["value"]
             if (LauncherCubes):
                 self.screen.blit(
                     surf, (floater.x - center[0], floater.y - center[1]))
@@ -1216,6 +1217,7 @@ class Gui:
             if (self.LookingForInput):
                 BACKSPACEHELD = pygame.key.get_pressed()[pygame.K_BACKSPACE]
                 if (BACKSPACEHELD):
+                    print("backspace pressed")
                     LastBackspace += 0.25
                 # if its been a second since the last backspace, delete the last character
                 if (LastBackspace >= 1):
@@ -1227,11 +1229,9 @@ class Gui:
                 if event.type == QUIT:
                     self.running = False
 
-                # INPUT BOX INPUT
                 if (self.LookingForInput):
                     CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
                     SHIFTHELD = pygame.key.get_mods() & pygame.KMOD_SHIFT
-
                     if event.type == pygame.KEYDOWN:
                         # get the key and add it to self.CurInput
                         name = pygame.key.name(event.key)
@@ -1274,6 +1274,7 @@ class Gui:
                         # support for numpad
                         elif len(name) == 3:
                             self.CurInput += name[1]
+                    continue
 
                 # POPUP BOX INPUT
                 if len(self.PopupBoxList) > 0:
@@ -1422,7 +1423,7 @@ def PreExit() -> None:
     Log("Portal 2 has been shutdown...")
 
     # Make sure the P2MM ModFiles are unmounted from Portal 2
-    if (GVars.configData["Auto-Umount"]["value"] == "true"):
+    if (GVars.configData["Auto-Umount"]["value"]):
         Log("Unmounting P2MM's ModFiles from Portal 2...")
         UnmountScript(False)
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
@@ -1442,14 +1443,14 @@ def GetGamePath() -> None:
         cfg.EditConfig("Portal2-Path", tmpp.strip())
         Log("Saved '" + tmpp.strip() + "' as the game path!")
         Ui.Error(translations["game_path_error-founded"], 5, (255, 255, 75))
-        VerifyGamePath()
+        VerifyGamePath(False)
         return
 
     def AfterInputGP(inp) -> None:
         cfg.EditConfig("Portal2-Path", inp.strip())
         Log("Saved '" + inp.strip() + "' as the game path!")
         Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
-        VerifyGamePath()
+        VerifyGamePath(False)
 
     Ui.GetUserInputPYG(AfterInputGP, translations["game_path_enter_path"])
 
@@ -1457,7 +1458,7 @@ def VerifyGamePath(shouldgetpath: bool = True) -> bool:
     Log("Verifying game path...")
     gamepath = GVars.configData["Portal2-Path"]["value"]
 
-    if ((os.path.exists(gamepath)) != True):
+    if not os.path.exists(gamepath):
         Ui.Error(translations["game_path-is-invalid"])
 
         if shouldgetpath:
@@ -1466,7 +1467,6 @@ def VerifyGamePath(shouldgetpath: bool = True) -> bool:
             GetGamePath()
 
         return False
-        Log("Game path is invalid...")
     Log("Game path is valid...")
     return True
 
@@ -1509,14 +1509,14 @@ def MountModOnly() -> bool:
         Ui.Error("Unable to mount P2MM!\nOne or both of Portal 2's DLC folders\nwere not found! They are needed\nto run/mount P2MM!\nVerify the file integrity\nof Portal 2 then try again...", 5, (255, 21, 0))
         return False
 
-    if (GVars.configData["Dev-Mode"]["value"] == "true"):
+    if (GVars.configData["Dev-Mode"]["value"]):
         Ui.Error(translations["devmode_is_active"], 5, (255, 180, 75))
         DEVMOUNT()
         Ui.Error(
             translations["devmode_copied_from_local_repo"], 5, (75, 255, 75))
 
     if (VerifyModFiles()):
-        DoEncrypt = GVars.configData["Encrypt-Cvars"]["value"] == "true"
+        DoEncrypt = GVars.configData["Encrypt-Cvars"]["value"]
         RG.MountMod(gamepath, DoEncrypt)
         Ui.Error(translations["mounted"], 5, (75, 255, 75))
         return True
@@ -1718,11 +1718,11 @@ def PostInitialize() -> None:
     if not sys.argv[0].endswith(".py"):
         CheckForUpdates()
 
-    VerifyGamePath(False)
+    VerifyGamePath()
 
     def NewAfterFunction() -> None:
         Ui.Error(translations["game_exited"], 5, (125, 0, 125))
-        if (GVars.configData["Auto-Umount"]["value"] == "true"):
+        if (GVars.configData["Auto-Umount"]["value"]):
             UnmountScript()
             Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
 
@@ -1739,7 +1739,7 @@ if __name__ == '__main__':
     try:
         cwd = os.getcwd()
         Initialize()
-        Ui = Gui(GVars.configData["Dev-Mode"]["value"] == "true")
+        Ui = Gui(GVars.configData["Dev-Mode"]["value"])
         PostInitialize()
         Ui.Main()
     except Exception as a_funni_wacky_error_occured:

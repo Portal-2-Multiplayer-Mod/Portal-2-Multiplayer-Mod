@@ -505,11 +505,11 @@ def LaunchGame(gamepath: str) -> None:
 
                 def CheckForGame() -> None:
                     shouldcheck = True
-                    lached = False
+                    lached = False # what is "lached" ???
                     while shouldcheck:
                         gamerunning = str(os.system("pidof portal2_linux"))
                         if gamerunning == "256":
-                            if lached == True:
+                            if lached :
                                 GVars.AfterFunction()
                                 shouldcheck = False
                         elif not lached:
