@@ -28,6 +28,7 @@ hadtoresetconfig: bool = False
 executable: str = os.path.abspath(sys.executable)
 translations: dict[str, str]
 AfterFunction: None
+gameActive: bool = False
 
 def init() -> None:
     global appStartDate, modPath, modFilesPath, configsPath, p2mmScriptsPath, iow, iol, iosd, nf, translations
@@ -47,36 +48,35 @@ def init() -> None:
 
         # Set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
-        modFilesPath = modPath + nf + "ModFiles"
+        modFilesPath = modPath + nf + "ModFiles\Portal 2\install_dlc"
         configsPath = modPath
-        p2mmScriptsPath = modFilesPath + nf + "Portal 2\install_dlc\scripts\\vscripts\multiplayermod"
+        p2mmScriptsPath = modFilesPath + nf + "scripts\\vscripts\multiplayermod"
         Log("GVars paths for Windows:")
         Log(modPath + "\n" + modFilesPath + "\n" + configsPath + "\n" + p2mmScriptsPath)
     elif (sys.platform.startswith("linux")):
         # Both Linux and SteamOS 3.0 system platform names return as "linux"
         # We need to use the platform release name to differentiate a normal Linux 
-        # distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release
+        # distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release name
         if ("valve" in platform.release()):
             iosd = True
             # SteamOS 3.0 has some directories set to read-only, they can be fixed but it gets reset every update and it requires sudo
             # Because of this p2mm will be installed to the home\deck\Desktop directory instead of .cache and .config
             # For some reason also SteamOS 3.0's os.sep is "/" instead of the usual "\"
             modPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
-            modFilesPath = modPath + nf + "ModFiles"
+            modFilesPath = modPath + nf + "ModFiles/Portal 2/install_dlc"
             configsPath = modPath
-            p2mmScriptsPath = modFilesPath + nf + "Portal 2/install_dlc/scripts/vscripts/multiplayermod"
+            p2mmScriptsPath = modFilesPath + nf + "scripts/vscripts/multiplayermod"
             Log("GVars paths for Steam Deck/SteamOS 3.0:")
             Log(modPath + "\n" + modFilesPath + "\n" + configsPath + "\n" + p2mmScriptsPath)
         else:
             iol = True
             # Set the modpath the to the users .cache and .config directories in the home directory
             modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
-            modFilesPath = modPath + nf + "Modfiles"
+            modFilesPath = modPath + nf + "Modfiles\Portal 2\install_dlc"
             configsPath = os.path.expanduser("~") + nf + ".config\p2mm"
-            p2mmScriptsPath = modFilesPath + nf + "Portal 2\install_dlc\scripts\\vscripts\multiplayermod"
+            p2mmScriptsPath = modFilesPath + nf + "scripts\\vscripts\multiplayermod"
             Log("GVars paths for Linux:")
             Log(modPath + "\n" + modFilesPath + "\n" + configsPath + "\n" + p2mmScriptsPath)
-
     else:
         # Feel sad for the poor people who are running templeOS :)
         Log("This operating system is not supported!")

@@ -28,7 +28,7 @@ def DeleteFolder(path: str) -> None:
 # Copies a folder using the OSes copy command
 def CopyFolder(src: str, dst: str) -> str:
     if (GVars.iow):
-        os.system("xcopy /E /H /C /I \"" + src + "\" \"" + dst + "\"")
+        os.system("xcopy /E /H /C /I /Y \"" + src + "\" \"" + dst + "\"")
     elif (GVars.iol) or (GVars.iosd):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
