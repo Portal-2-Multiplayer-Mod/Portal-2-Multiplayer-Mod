@@ -8,6 +8,7 @@ from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
 import Scripts.Configs as cfg
+import Scripts.FastDLHTTPServer as FDLHTTP
 import subprocess
 import Scripts.BasicFunctions as BF
 import random
@@ -444,7 +445,7 @@ def DeleteUnusedDLCs(gamepath: str) -> None:
     if foundp2mmdlcfolder != False:
         Log("Found old DLC: " + foundp2mmdlcfolder)
         # delete the folder even if it's not empty
-        BF.DeleteFolder(gamepath + GVars.nf + foundp2mmdlcfolder)
+        BF.DeleteFolder(foundp2mmdlcfolder)
         Log("Deleted old DLC: " + foundp2mmdlcfolder)
 
 # Find what DLC folders exist for Portal 2 and create a incremented folder for P2MM
@@ -486,21 +487,25 @@ def LaunchGame(gamepath: str) -> None:
     # LAUNCH OPTIONS: -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon +sv_password (password) (Custom-Launch-Options)
     try:
         if (GVars.iow): # Launching for Windows
+            GVars.gameActive = True
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, +sv_password " + GVars.configData["Server-Password"]["value"] + ", " + GVars.configData["Custom-Launch-Options"]["value"])
-                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", "+sv_password " + GVars.configData["Server-Password"]["value"], GVars.configData["Custom-Launch-Options"]["value"]])
+                Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, " + GVars.configData["Custom-Launch-Options"]["value"])
+                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
                 Log("Game exited successfully.")
                 # Run The AfterFunction
-                GVars.AfterFunction()
+                GVars.gameActive = False
+                GVars.AfterFunction()    
             # start the game in a new thread
-            threading.Thread(target=RunGame).start()
+            threading.Thread(target=FDLHTTP.FastDLHTTPServerInit).start()
+            threading.Thread(target=RunGame).start()         
         elif ((GVars.iol) or (GVars.iosd)): # Launching for Linux and SteamOS 3.0
+            GVars.gameActive = True
             def RunGame():
                 def RunSteam():
-                    Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, +sv_password " + GVars.configData["Server-Password"]["value"] + ", " + GVars.configData["Custom-Launch-Options"]["value"])
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon +sv_password " + GVars.configData["Server-Password"]["value"] + " " + GVars.configData["Custom-Launch-Options"]["value"])   
+                    Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, " + GVars.configData["Custom-Launch-Options"]["value"])
+                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon " + GVars.configData["Custom-Launch-Options"]["value"])
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:
@@ -509,16 +514,17 @@ def LaunchGame(gamepath: str) -> None:
                     while shouldcheck:
                         gamerunning = str(os.system("pidof portal2_linux"))
                         if gamerunning == "256":
-                            if lached :
+                            if lached:
+                                Log("Game exited successfully.")
                                 GVars.AfterFunction()
                                 shouldcheck = False
                         elif not lached:
                             lached = True
                         time.sleep(1)
                 CheckForGame()
-            thread = threading.Thread(target=RunGame)
-            thread.start()
-
+                GVars.gameActive = False
+            threading.Thread(target=FDLHTTP.FastDLHTTPServerInit).start()
+            threading.Thread(target=RunGame).start()
     except Exception as e:
         Log("Failed to launch Portal 2!")
         Log("Error: " + str(e))
