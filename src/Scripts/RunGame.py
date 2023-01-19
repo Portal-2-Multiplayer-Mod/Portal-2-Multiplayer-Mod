@@ -257,7 +257,7 @@ def PatchBinaries(gamepath: str) -> None:
         # Delete the file
         os.remove(gamepath + GVars.nf + "server.dll")
         # replace the data
-        
+
         # 32 player cap edit
         data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15', b'\x8bM\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
         data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]', b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0 \x89\x01]')
@@ -454,7 +454,7 @@ def LaunchGame(gamepath: str) -> None:
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                if GVars.configData["Public-Server"]["value"] == "false":
+                if GVars.configData["Public-Server"]["value"] == False:
                     subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", "-nomaster", GVars.configData["Custom-Launch-Options"]["value"]])
                 else:
                     subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
@@ -467,7 +467,7 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol): #launching for linux
             def RunGame():
                 def RunSteam():
-                    if GVars.configData["Public-Server"]["value"] == "false":
+                    if GVars.configData["Public-Server"]["value"] == False:
                         os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nomaster" + GVars.configData["Custom-Launch-Options"]["value"])
                     else:
                         os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["Custom-Launch-Options"]["value"])
@@ -475,11 +475,11 @@ def LaunchGame(gamepath: str) -> None:
 
                 def CheckForGame() -> None:
                     shouldcheck = True
-                    lached = False
+                    lached = False # what is "lached" ???
                     while shouldcheck:
                         gamerunning = str(os.system("pidof portal2_linux"))
                         if gamerunning == "256":
-                            if lached == True:
+                            if lached :
                                 GVars.AfterFunction()
                                 shouldcheck = False
                         elif not lached:

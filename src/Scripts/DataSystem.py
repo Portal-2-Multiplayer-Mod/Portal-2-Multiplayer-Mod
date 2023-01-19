@@ -40,7 +40,7 @@ defaultDataStructure = {
             }
         }
     },
-    
+
     "verifiedp2mmmaps": { # This will be a list of maps that work with the data system the devs have verified personally
 
     },
@@ -125,7 +125,7 @@ def dataSystemInitialization(refresh: bool) -> None:
     dataSystemState = False
     try:
         Log("")
-        if refresh == True:
+        if refresh :
             Log("            __________Data System Refresh Start__________")
             Log("DS: Refreshing the data system...")
         else:
@@ -187,7 +187,7 @@ def dataSystemInitialization(refresh: bool) -> None:
 
     # This will run only if the data system sucessfully initilized
     else:
-        if refresh == True:
+        if refresh:
             Log("DS: The data system has refreshed sucessfully!")
         else:
             Log("DS: The data system has started sucessfully!")
@@ -197,7 +197,7 @@ def dataSystemInitialization(refresh: bool) -> None:
     # Now we clean up the system and create the files needed for the datasystem-main.nut file to read when its called on later when a map loads
     finally:
         try:
-            if (dataSystemState == True) and (GVars.configData["Manual-Data-System-Overide"]["value"] == "true"):
+            if (dataSystemState) and (GVars.configData["Manual-Data-System-Overide"]["value"]):
                 dataSystemInitSuccess = open(GVars.dataSystemPath + GVars.nf + "datasystem-enabled.nut", "x")
             else:
                 dataSystemInitFail = open(GVars.dataSystemPath + GVars.nf + "datasystem-disabled.nut", "x")
@@ -231,7 +231,7 @@ def dataSystemInitialization(refresh: bool) -> None:
             Log("")
             dataSystemState = False
         finally:
-            if refresh == True:
+            if refresh:
                 Log("DS: Data system has finished refreshing...")
                 Log("            __________Data System Refreshing End__________")
             else:
@@ -246,7 +246,7 @@ def dataSystemInitialization(refresh: bool) -> None:
 # It will check for updates from the files Portal 2 will create read the name of the file then run the function that corresponds with the file
 def dataSystemChecker():
     Log("DS: Data System Checker has been enabled...")
-    while dataSystemState == True:
+    while dataSystemState:
 
         if os.path.exists(gamepath + GVars.nf + "SAVES"):
             demdatas = os.listdir(demdataspath)
@@ -256,7 +256,7 @@ def dataSystemChecker():
             print(demcount)
 
 def setPassword(password):
-    if (dataSystemState == True) and (GVars.configData["Manual-Data-System-Overide"]["value"] == "true"):
+    if (dataSystemState) and (GVars.configData["Manual-Data-System-Overide"]["value"]):
         passwordfile = open(GVars.dataSystemPath + GVars.nf + "datasystem-setpassword-" + password + ".nut", )
     else:
         Button_OK = Gui.ButtonTemplate(
