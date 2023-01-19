@@ -14,8 +14,8 @@ import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
 currentVersion = "2.1.0" # REMEMBER TO CHANGE THIS BEFORE RELEASEING A NEW VERSION OF THE LAUNCHER
-ownerName = "kyleraykbs"
-repoName = "Portal2-32PlayerMod"  # we can't change this to the id :(
+ownerName = "Portal-2-Multiplayer-Mod"
+repoName = "Portal-2-Multiplayer-Mod"  # we can't change this to the id :(
 
 # A quick easy way to check if the system is connected to the internet, thanks stackOverflow for this solution <3
 def haveInternet() -> bool:
@@ -23,7 +23,6 @@ def haveInternet() -> bool:
     try:
         conn.request("HEAD", "/")
         conn.close()
-        Log("User as a internet connection!")
         return True
     except Exception as e:
         Log(f"Failed to connect to the internet:\n{str(e)}")
