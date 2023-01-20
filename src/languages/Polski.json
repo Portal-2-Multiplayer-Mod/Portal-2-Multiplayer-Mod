@@ -1,7 +1,7 @@
 {
   "welcome": "Witaj w launcherze dla P2:MM! Wciśnij na przycisk 'Rozpocznij Gre' aby uruchomić modyfikacje!",
   "version": "Wersja: ",
-  "play_button": "Rozpocznij Gre",
+  "play_button": "Rozpocznij Grę",
   "exit_button": "Wyjdź",
   "discord_server_button": "Serwer Discord",
   "languages_button": "Języki",
@@ -29,7 +29,7 @@
   "game_files_no_cached_files": "Nie ma plików moda zapisanych w pamięci!\n\nZainstalować najnowszą wersję?\n\n\n Możesz skorzystać z Fallbacków,\n ale nie jest to zalecane.",
   "workshop_link": "Wpisz link do mapy na Workshopie",
   "workshop_map_not_found": "Nie znaleziono mapy",
-  "workshop_sentence0_sure-you-are-sub": "Upewnij się że zasubrkybowałes",
+  "workshop_sentence0_sure-you-are-sub": "Upewnij się że zasubskrybowałeś",
   "workshop_sentence0_to-map-and-play-it": "mapę i zagrałeś w nią",
   "workshop_sentence0_least-once": "przynajmniej jeden raz.",
   "workshop_changelevel_command": "Komenda Changelevel",
