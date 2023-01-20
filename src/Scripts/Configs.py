@@ -52,7 +52,7 @@ DefaultConfigFile = {
             "menu": "portal2",
             "description": "Set a password for your P2MM server. This can be changed while the server is up.",
             "warning": "",
-            "prompt": "Type the password for your P2MM server.\nCharacters \'\"\', \"\\\", and \";\" are disallowed\nand will be automatically removed.",
+            "prompt": "Type the password for your P2MM server.\nCharacters \"\'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.",
         },
     "Custom-Launch-Options":
         {
@@ -109,12 +109,48 @@ DefaultConfigFile = {
             "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
             "prompt": "",
         },
+    
+    "Data-System-Debugging":
+        {
+            "value": True, #REMEMBER TO CHANGE THIS WHEN RELEASING NEW VERSION!
+            "menu": "dev",
+            "description": "Enables debug messaging for the Data System",
+            "warning": "Leave this off if you wish to not clog up the logs!",
+            "prompt": "",
+        },
+
+    "Discord-Rich-Presence":
+        {
+            "value": True,
+            "menu": "launcher",
+            "description": "Enable Discord Rich Presense For P2MM. This is needed for easy joinning for public servers.",
+            "warning": "Please give around 15 seconds for the change to take effect.",
+            "prompt": "",
+        },
+    
+    "FastDL-Server-IP":
+        {
+            "value": "",
+            "menu": "portal2",
+            "description": "The local IP you want to use to host the FastDL HTTP Server.",
+            "warning": "This is required if you want to use FastDL in P2MM!",
+            "prompt": "The local IP you want to\nuse to host the FastDL HTTP Server.\nIt should be the same local\nIP you used to port foward Portal 2.",
+        },
+
+    "FastDL-Server-Port":
+        {
+            "value": "27016",
+            "menu": "portal2",
+            "description": "The port you want the FastDL HTTP Server to run on.",
+            "warning": "This is required if you want to use FastDL in P2MM!",
+            "prompt": "The port you want the\nFastDL HTTP Server to run on.\nIt's recommended to use 27016\nbut another open port should work.",
+        },
 
     "Active-Language":
         {
             "value": "English",
             "menu": "",
-            "description": "the language of the p2mm client and not the game",
+            "description": "The language used in the P2MM Launcher.",
             "warning": "",
             "prompt": "",
         }
