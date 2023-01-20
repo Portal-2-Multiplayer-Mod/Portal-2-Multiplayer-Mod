@@ -51,7 +51,7 @@ DefaultConfigFile = {
             "value": "",
             "menu": "portal2",
             "description": "Set a password for your P2MM server. This can be changed while the server is up.",
-            "warning": "",
+            "warning": "It is recommended to set this if you don't want unwanted visitors!",
             "prompt": "Type the password for your P2MM server.\nCharacters \"\'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.",
         },
     "Custom-Launch-Options":
@@ -112,7 +112,7 @@ DefaultConfigFile = {
     
     "Data-System-Debugging":
         {
-            "value": True, #REMEMBER TO CHANGE THIS WHEN RELEASING NEW VERSION!
+            "value": False,
             "menu": "dev",
             "description": "Enables debug messaging for the Data System",
             "warning": "Leave this off if you wish to not clog up the logs!",
