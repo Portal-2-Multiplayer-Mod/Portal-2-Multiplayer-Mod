@@ -69,7 +69,7 @@ class Gui:
 
         # Define the name and image of the window
         pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
-        self.p2mmlogo = pygame.image.load("GUI/assets/images/p2mm64.png").convert_alpha()
+        self.p2mmlogo = pygame.image.load("GUI/assets/images/p2mm64.ico").convert_alpha()
         pygame.display.set_icon(self.p2mmlogo)
         # cubes
         self.greencube = pygame.image.load("GUI/assets/images/greencube.png").convert_alpha()
@@ -143,7 +143,7 @@ class Gui:
     class DisplayText:
         def __init__(self,
                     text: str, # The text you want to display
-                    font: str = "GUI/assets/fonts/pixel.ttf", # In case we have a custom font that needs to replace the default, this may be the case for certain languages.
+                    font: str = "GUI/assets/fonts/pixel.ttf", # In case there is a custom font that needs to replace the default, this may be the case for certain languages
                     textColor: tuple = (155, 155, 155), # The color you want the text displayed to be in RGB format
                     xpos: float = 0, # The bigger the number, the more right the text will be.
                     ypos: float = 0, # The bigger the number, the lower the text will be.
@@ -179,7 +179,7 @@ class Gui:
                      width: float = 28, # A duct tape fix to prevent errors with mouse movement detection
                      height: float = 14, # A duct tape fix to prevent errors with mouse movement detection
                      size: float = 700, # Size "700" appears to be default size. Increasing over "7500" will start to make the launcher unstable.
-                     font: str = "GUI/assets/fonts/pixel.ttf" # In case we have a custom font that needs to replace the default, this may be the case for certain languages.
+                     font: str = "GUI/assets/fonts/pixel.ttf" # In case there is a custom font that needs to replace the default, this may be the case for certain languages
                      ) -> None:
 
             self.text = text
@@ -218,11 +218,11 @@ class Gui:
         self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
         self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
         self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
-        self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=870, xstart=870, xend=2000, ypos=20, size=75)
-        self.Text_LauncherVersion = self.DisplayText(translations["version"] + self.currentVersion, textColor=(255, 234, 0), xpos=75, xstart=75, xend=750, ypos=770)
+        self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=840, xstart=840, xend=1870, ypos=20, size=75)
+        self.Text_LauncherVersionText = self.DisplayText(translations["version"] + self.currentVersion, textColor=(255, 234, 0), xpos=75, xstart=75, xend=750, ypos=770)
 
-        # The DisplayText class needs a seperate table for displaying nonfunction text, this worked better than trying to merge both DisplayText and ButtonTemplate classes
-        self.MainMenuText = [self.Text_MainMenuText, self.Text_LauncherVersion]
+        # The DisplayText class needs a seperate table for displaying nonfunctional text
+        self.MainMenuText = [self.Text_MainMenuText, self.Text_LauncherVersionText]
         self.MainMenuButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
                             self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
 
@@ -236,8 +236,7 @@ class Gui:
 
         self.MainMenuButtons.append(self.Button_Exit)
         # We don't need the back button in the main menu but I thought it will be better the declare it here -Cabiste
-        self.Button_Back = self.ButtonTemplate(
-            translations["back_button"], self.Button_Back_func)
+        self.Button_Back = self.ButtonTemplate(translations["back_button"], self.Button_Back_func)
 
     def DefineSettingsMenu(self) -> None:
         self.Button_LauncherSettingsMenu = self.ButtonTemplate(
@@ -271,33 +270,34 @@ class Gui:
             translations["data_system_state_txt"], textColor = (155, 155, 155), xpos=10, xstart=10, xend=1000, ypos=10, size=60)
         if DS.dataSystemState:
             self.Text_DataSystemState = self.DisplayText(
-                translations["data_enabled"],
+                translations["data_system_enabled"],
                 textColor = (21, 255, 0),
-                xpos = 670,
-                xstart = 670,
-                xend= 6700,
-                ypos = 15,
-                size = 75)
+                xpos = 670, xstart = 670, xend= 6700, ypos = 15, size = 75)
         else:
             self.Text_DataSystemState = self.DisplayText(
-                translations["data_disabled"],
+                translations["data_system_disabled"],
                 textColor = (255, 21, 0),
-                xpos = 670,
-                xstart = 670,
-                xend= 6700,
-                ypos = 15,
-                size = 75)
+                xpos = 670, xstart = 670, xend= 6700, ypos = 15, size = 75)
         self.Button_RefreshDataSystem = self.ButtonTemplate(translations["data_system_refresh"], self.Button_RefreshDataSystem_func)
 
-        self.DataMenuText = [self.Text_DataSystemStateTxt, self.Text_DataSystemState]
+        self.Text_DataMenuInfo = self.DisplayText(
+            translations["data_menu_info"], 
+            textColor = (255, 234, 0), 
+            xpos = 75, xstart = 75, xend = 1000, ypos = 220, size = 70)
+
+        self.DataMenuText = [self.Text_DataSystemStateTxt, self.Text_DataSystemState, self.Text_DataMenuInfo]
         self.DataMenuButtons = [self.Button_RefreshDataSystem, self.Button_Back]
 
     def DefineWorkshopMenu(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(
             translations["get_level_button"], self.Button_GetWorkShopCommand_func)
+        self.Text_WorkshopMenuInfo = self.DisplayText(
+            translations["workshop_menu_info"],
+            textColor = (255, 234, 0), 
+            xpos = 75, xstart = 75, xend = 1100, ypos = 220, size = 70)
 
-        self.WorkshopButtons = [
-            self.Button_GetWorkShopCommand, self.Button_Back]
+        self.WorkshopMenuText = [self.Text_WorkshopMenuInfo]
+        self.WorkshopButtons = [self.Button_GetWorkShopCommand, self.Button_Back]
 
     def DefineManualMountingMenu(self) -> None:
         self.Button_ManualMount = self.ButtonTemplate(
@@ -394,8 +394,8 @@ class Gui:
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
                 outerSelf.BlitDescription(self.keyobj["description"], 75,
-                                          520, (130, 130, 255))
-                outerSelf.BlitDescription(self.keyobj["warning"], 75, 555, (255, 50, 50))
+                                          590, (130, 130, 255))
+                outerSelf.BlitDescription(self.keyobj["warning"], 75, 620, (255, 50, 50))
 
             selectanim = "pop"
             selectsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
@@ -411,7 +411,16 @@ class Gui:
                     # default to false to avoid errors
                     else:
                         cfg.EditConfig(self.cfgkey, False)
-                    DS.dataSystemInitialization(True)
+                    configCheck = DS.configCheck()
+                    if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
+                        self.outerSelf.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
+                    elif "passwordcorrected" in configCheck:
+                        self.outerSelf.Error(translations["data_system_password_corrected"], 5, (75, 200, 75))
+                    elif "passwordcorrectionerror" in configCheck:
+                        self.outerSelf.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+                    elif "passwordupdaterror" in configCheck:
+                        self.outerSelf.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+                    DS.dataSystemInitialization(True, GVars.configData["Data-System-Debugging"]["value"])
                     self.outerSelf.RefreshSettingsMenu(menu)
                 else:
                     def AfterInputGenericSetConfig(inp: str) -> None:
@@ -420,15 +429,17 @@ class Gui:
                             "' to config " + self.cfgkey)
                         self.outerSelf.Error(
                             translations["error_saved"], 5, (75, 200, 75))
-                        configUpdate = DS.configUpdate()
-                        if configUpdate == False:
-                            self.outerSelf.Error(text="The Data System is currently disabled due\nto an error or has been\ndisabled manually.Please refresh using the\n'Refresh Data System'\nbutton for the system to refresh then try again.",
-                            time=5, color=(255, 21, 0))
-                        elif configUpdate == "passwordcorrected":
-                            self.outerSelf.Error(text="Server-Password fixed from blank to \"\"", time=5, color=(75, 200, 75))
-                        elif configUpdate == "passwordcorrectionerror":
-                            self.outerSelf.Error(text="Server-Pasword correction failed! Check the console!", time=5, color=(255, 21, 0))
-                        DS.dataSystemInitialization(True)
+                        configCheck = DS.configCheck()
+                        if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
+                            self.outerSelf.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
+                        elif "passwordcorrected" in configCheck:
+                            self.outerSelf.Error(translations["data_system_password_corrected"], 5, (75, 200, 75))
+                        elif "passwordcorrectionerror" in configCheck:
+                            self.outerSelf.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+                        elif "passwordupdaterror" in configCheck:
+                            self.outerSelf.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+
+                        DS.dataSystemInitialization(True, GVars.configData["Data-System-Debugging"]["value"])
                         self.outerSelf.RefreshSettingsMenu(menu)
                     self.outerSelf.GetUserInputPYG(
                         AfterInputGenericSetConfig, self.keyobj["prompt"], self.cfgvalue)
@@ -442,12 +453,21 @@ class Gui:
 
     def RefreshDataMenu(self) -> None:
         Log("Refreshing the data system...")
-        DS.dataSystemInitialization(True)
+        DS.dataSystemInitialization(True, GVars.configData["Data-System-Debugging"]["value"])
         self.Error(translations["data_system_refreshing"], 3, (75, 120, 255))
         if DS.dataSystemState:
             self.Error(translations["data_system_refresh_success"], 5, (21, 255, 0))
         else:
             self.Error(translations["data_system_refresh_failed"], 5, (255, 21, 0))
+        configCheck = DS.configCheck()
+        if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
+            self.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
+        elif "passwordcorrected" in configCheck:
+            self.Error(translations["data_system_password_corrected"], 5, (75, 200, 75))
+        elif "passwordcorrectionerror" in configCheck:
+            self.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+        elif "passwordupdaterror" in configCheck:
+            self.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
 
     def RefreshPlayersMenu(self) -> None:
         cfg.ValidatePlayerKeys()
@@ -626,7 +646,7 @@ class Gui:
     # switches to the workshop menu
 
     def Button_Workshop_func(self) -> None:
-        self.ChangeMenu(self.WorkshopButtons, append=True)
+        self.ChangeMenu(self.WorkshopButtons, self.WorkshopMenuText, append=True)
 
     # switches to the resources menu (github, discord etc...)
 
@@ -674,7 +694,7 @@ class Gui:
         self.ChangeMenu(self.SettingsButtons, append=True)
 
     #!############################
-    #! SAVES BUTTONS FUNCTIONS
+    #! DATA SYSTEM BUTTON FUNCTIONS
     #!############################
 
     def Button_RefreshDataSystem_func(self) -> None:
@@ -723,13 +743,7 @@ class Gui:
                     translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
                 return
 
-            self.Error(translations["workshop_map_not_found"])
-            self.Error(
-                translations["workshop_sentence0_sure-you-are-sub"], 6, (255, 255, 0))
-            self.Error(
-                translations["workshop_sentence0_to-map-and-play-it"], 6, (255, 255, 0))
-            self.Error(
-                translations["workshop_sentence0_least-once"], 6, (255, 255, 0))
+            self.Error(translations["workshop_map_not_found"], 6, (255, 255, 0))
 
         self.GetUserInputPYG(AfterInput, translations["workshop_link"])
 
@@ -786,16 +800,13 @@ class Gui:
 
     ####################
 
-    # input field
+    # this is a test for input fields
     def Button_InputField_func(self) -> None:
         def AfterInput(input) -> None:
             self.Error("Input: " + input, 3, (255, 255, 0))
         self.GetUserInputPYG(AfterInput, "As you can see this text can \n go onto another line :)")
 
-    #######################
-
-    # this is a test for the popup box
-
+    # this is a test for popup boxes
     def PopupBox_test_func(self) -> None:
         def YesInput() -> None:
             self.Error("Let's go!!!", 3, (75, 255, 75))
@@ -810,9 +821,17 @@ class Gui:
         self.PopupBox("Trolling Time!?!?!", "Have you given Cabiste an\naneruism today?",
                       [Button_Confirm, Button_Decline])
 
+    # this is a test to print text to console
     def Button_PrintToConsole_func(self) -> None:
+        print("Without Log():")
         print(GVars.modPath)
         print(GVars.configsPath)
+        Log("With Log():")
+        Log(GVars.modPath)
+        Log(GVars.configsPath)
+        DS.DSLogging("With DSLogging():", "true", True)
+        DS.DSLogging(GVars.modPath, "true", True)
+        DS.DSLogging(GVars.configsPath, "true", True)
 
     ################################
 
@@ -860,8 +879,8 @@ class Gui:
         self.LookingForInput = True
         self.CurInput = preinput
 
-        # We need to check for "\n"s in the prompt that is supplied
-        # If there is then we will seperate each part of text into a list
+        # First it it needs to check for "\n"s in the prompt that is supplied
+        # If there are then it will seperate each part of text into a list
         breaktxt = "\n"
         self.HasBreaks = False # Will tell the blit part of the code (line 1180) to blit it as multiple lines or not
         self.PromptBreaks = 0 # Need to count how many lines there are to pass to the blit part of the code (line 1180)
@@ -966,8 +985,6 @@ class Gui:
             if not (self.LookingForInput):
                 self.screen.blit(
                     text1, (W / button.xpos, (H / button.ypos - (text1.get_height() / 2)) * (indx / 5)))
-            #button.x = W / 16
-            #button.y = (H / 2 - (text1.get_height() / 2)) * (indx / 5)
             button.x = W / button.xpos
             button.y = ((H / button.ypos) - (text1.get_height() / 2)) * (indx / 5)
             button.width = text1.get_width()
@@ -994,8 +1011,8 @@ class Gui:
                         y += word_height  # Start on new row.
                     self.screen.blit(word_surface, (x, y))
                     x += word_width + space
-                x = displaytext.xstart
-                y += word_height
+                x = displaytext.xstart # Reset the x.
+                y += word_height # Start on a new row.
 
         # BACKGROUND
         for floater in self.Floaters:
@@ -1042,12 +1059,12 @@ class Gui:
                 # Puts assets/images/buttons.png on the bottom right corner of the screen
                 buttons = pygame.image.load("GUI/assets/images/buttons.png").convert_alpha()
                 buttons = pygame.transform.scale(buttons, (W / 10, W / 10))
-                self.screen.blit(buttons, ((W / 1.05) - buttons.get_width(), H / 1.25))
+                self.screen.blit(buttons, ((W / 1.05) - buttons.get_width(), H / 1.22))
             else:
                 # Puts assets/images/keys.png on the bototm right corner of the screen
                 keys = pygame.image.load("GUI/assets/images/keys.png").convert_alpha()
                 keys = pygame.transform.scale(keys, (W / 10, W / 10))
-                self.screen.blit(keys, ((W / 1.05) - keys.get_width(), H / 1.25))
+                self.screen.blit(keys, ((W / 1.05) - keys.get_width(), H / 1.22))
 
         # MENU
 
@@ -1217,7 +1234,6 @@ class Gui:
             if (self.LookingForInput):
                 BACKSPACEHELD = pygame.key.get_pressed()[pygame.K_BACKSPACE]
                 if (BACKSPACEHELD):
-                    print("backspace pressed")
                     LastBackspace += 0.25
                 # if its been a second since the last backspace, delete the last character
                 if (LastBackspace >= 1):
@@ -1246,7 +1262,7 @@ class Gui:
                             self.CurInput += "    "
                         elif CTRLHELD and name == "v":
                             try:
-                                pastedstr = str(pyperclip.paste())
+                                pastedstr = str(pyperclip.paste().replace("\n", ""))
                                 self.CurInput += pastedstr
                                 Log(f"Pasted: {pastedstr}")
                             except Exception as e:
@@ -1389,13 +1405,13 @@ class Gui:
                             self.selectedpopupbutton = button
                             self.PlaySound(button.hoversnd)
 
-            # DISCORD RICH PRESENCE AND DATA SYSTEM CHECKER #
-            # Every 15 seconds we will update the Discord Rich Presence, check if Discord is still running or not, and check for any config changes the Data System checks for
-            updateCount += 1 # Every frame we will add to the counter, every 60 frames is a second
-            if updateCount == int(60 * 15): 
-                DRP.updateRichPresence()
-                DS.configUpdate()
-                updateCount = 0
+            # DISCORD RICH PRESENCE AND DATA SYSTEM CONFIG CHECKER #
+            # Every 15 seconds the Discord Rich Presence will update and check if Discord is still running or not
+            # This also checks for any config changes that the Data System looks for
+            updateCount += 1 # Every frame will add to the counter, every 60 frames is a second
+            if updateCount == int(60 * 15):
+                UpdateTime()
+                updateCount = 0 # Reset the counter back to zero
 
         PreExit()
 
@@ -1406,14 +1422,29 @@ class Gui:
 # !                       Logic
 # !######################################################
 
+def UpdateTime():
+    if DS.firstStart:
+        return
+    DRP.updateRichPresenceCheck()
+    configCheck = DS.configCheck()
+    if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
+        Ui.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
+    elif "passwordcorrected" in configCheck:
+        Ui.Error(translations["data_system_password_corrected"], 5, (75, 200, 75))
+    elif "passwordcorrectionerror" in configCheck:
+        Ui.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+    elif "passwordupdaterror" in configCheck:
+        Ui.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+    DS.dataSystemInitialization(True, GVars.configData["Data-System-Debugging"]["value"])
+
 def PreExit() -> None:
     Log("Shutting down the P2MM launcher...")
     Log("Shutting down Portal 2...")
-    # windows
+    # Windows
     if (GVars.iow):
         os.system("taskkill /f /im portal2.exe")
 
-    # linux
+    # Linux and Steam Deck/SteamOS 3.0
     if (GVars.iol) or (GVars.iosd):
         os.system("killall -9 portal2_linux")
 
@@ -1434,6 +1465,7 @@ def PreExit() -> None:
 
     # Wrap up Discord Rich Presence by closing the connection
     DRP.shutdownRichPresence()
+    
     Log("The P2MM launcher has been shutdown...")
 
 def GetGamePath() -> None:
@@ -1472,23 +1504,30 @@ def VerifyGamePath(shouldgetpath: bool = True) -> bool:
 
 def VerifyModFiles() -> bool:
     Log("Searching for mod files in: " + GVars.modFilesPath)
+    print(os.path.exists(GVars.modFilesPath))
+    print(GVars.modFilesPath)
+    print(os.path.exists(GVars.modFilesPath + GVars.nf + "p2mm.identifier"))
+    print(GVars.modFilesPath + GVars.nf + "p2mm.identifier")
     if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + GVars.nf + "p2mm.identifier")):
         Log("Mod files found!")
         return True
 
     Log("Mod files not found!")
-    return False
+    return False    
 
 def DEVMOUNT() -> None:
     try:
         # delete the old modfiles
+        Log("DEV: Deleteing p2mm/ModFiles...")
+        print(GVars.modPath + GVars.nf + "ModFiles")
         BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
     except Exception:
         Log("Error deleting the old mod files, below is the error that caused this:")
         Log(traceback.format_exc())
 
     # copy the one in the current directory to the modpath
-    BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.ModFiles)
+    Log("DEV: Copying over files from src/Modfiles...")
+    BF.CopyFolder(cwd + GVars.nf + "ModFiles", GVars.modFilesPath)
 
 def MountModOnly() -> bool:
     cfg.ValidatePlayerKeys()
@@ -1502,11 +1541,15 @@ def MountModOnly() -> bool:
 
     Ui.Error(translations["mounting_mod"], 5, (75, 255, 75))
 
+    # Need to make sure the gamepath is in fact defined if not P2MM will not be run/mounted
     gamepath = GVars.configData["Portal2-Path"]["value"]
-
+    if gamepath == "undefined":
+        Ui.Error(translations["mount_nopath_error"], 5, (255, 21, 0))
+        return False
+    
     # Check if both of Portal 2's DLC folders exist
     if not RG.CheckForRequiredDLC(gamepath):
-        Ui.Error("Unable to mount P2MM!\nOne or both of Portal 2's DLC folders\nwere not found! They are needed\nto run/mount P2MM!\nVerify the file integrity\nof Portal 2 then try again...", 5, (255, 21, 0))
+        Ui.Error(translations["mount_nodlc_error"], 5, (255, 21, 0))
         return False
 
     if (GVars.configData["Dev-Mode"]["value"]):
@@ -1515,13 +1558,13 @@ def MountModOnly() -> bool:
         Ui.Error(
             translations["devmode_copied_from_local_repo"], 5, (75, 255, 75))
 
-    if (VerifyModFiles()):
+    if VerifyModFiles():
         DoEncrypt = GVars.configData["Encrypt-Cvars"]["value"]
         RG.MountMod(gamepath, DoEncrypt)
         Ui.Error(translations["mounted"], 5, (75, 255, 75))
         return True
 
-    # If the they are not a developer and the mod files don't exist ask them to download the files from the repo
+    #If the they are not a developer and the mod files don't exist ask them to download the files from the repo
     if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
         BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
 
@@ -1572,7 +1615,7 @@ def LoadTranslations() -> dict:
 
         translations = json.load(open(langPath, "r", encoding="utf8"))
 
-        Log("[ERROR] language file isn't found or key mismatch")
+        Log("[ERROR] Language file isn't found or key mismatch")
 
 def UpdateModFiles() -> None:
     PreExit()
@@ -1601,7 +1644,7 @@ def UpdateModClient() -> None:
 
         if not up.DownloadClient():
             Ui.Error(
-                "Couldn't find the download link \nplease visit our github to update")
+                translations["update_nolink_error"])
             return
 
         Ui.running = False
@@ -1613,8 +1656,13 @@ def UpdateModClient() -> None:
 def RunGameScript() -> None:
     if MountModOnly():
         gamepath = GVars.configData["Portal2-Path"]["value"]
+        GVars.gameActive = True
+        DRP.updateRichPresenceCheck()
         RG.LaunchGame(gamepath)
         Ui.Error(translations["game_launched"], 5, (75, 255, 75))
+    else:
+        Ui.Error(translations["game_path_undefined_fetch"], 5)
+        GetGamePath()
 
 def UnmountScript(shouldgetpath: bool = True) -> None:
     Log("___Unmounting Mod___")
@@ -1636,10 +1684,10 @@ def RestartClient(path: str = sys.executable) -> None:
 
 # checks if the client was downloaded by a previous version of itself
 def IsNew() -> None:
-    # we pass 2 arguments when we update the client
+    # Two arguements are passed when the client updates
     # 1- the word "updated"
     # 2- the path of the previous version
-    # argument 0 is always the command to start the app so we don't need that
+    # argument 0 is always the command to start the app so it is not needed
 
     if len(sys.argv) != 3:
         return
@@ -1693,12 +1741,12 @@ def Initialize() -> None:
     GVars.init()
     # do the fancy log thing
     StartLog()
-    # load the config file into memmory
+    # load the config file into memory
     GVars.LoadConfig()
     # load the client's translations
     LoadTranslations()
     # Starts up the custom data system
-    DS.dataSystemInitialization()
+    DS.dataSystemInitialization(False, GVars.configData["Data-System-Debugging"]["value"], False)
     # Start Discord Rich Presence so every knows that youre playing our cool mod
     DRP.startRichPresence()
 
@@ -1720,8 +1768,19 @@ def PostInitialize() -> None:
 
     VerifyGamePath()
 
+    configCheck = DS.configCheck()
+    if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
+        Ui.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
+    elif "passwordcorrected" in configCheck:
+        Ui.Error(translations["data_system_password_corrected"], 5, (75, 200, 75))
+    elif "passwordcorrectionerror" in configCheck:
+        Ui.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+    elif "passwordupdaterror" in configCheck:
+        Ui.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+
     def NewAfterFunction() -> None:
         Ui.Error(translations["game_exited"], 5, (125, 0, 125))
+        DRP.updateRichPresenceCheck()
         if (GVars.configData["Auto-Umount"]["value"]):
             UnmountScript()
             Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
@@ -1742,5 +1801,14 @@ if __name__ == '__main__':
         Ui = Gui(GVars.configData["Dev-Mode"]["value"])
         PostInitialize()
         Ui.Main()
+    # Called when a unexpected error results in a launcher crash
     except Exception as a_funni_wacky_error_occured:
+        Log("")
+        Log("__________FATAL LAUNCHER ERROR!!!__________")
         Log("Exception encountered:\n" + traceback.format_exc())
+        Log("__________FATAL LAUNCHER ERROR!!!__________")
+    # Called when a dev kills the launcher using Command/Ctrl + C in a terminal
+    except KeyboardInterrupt:
+        PreExit()
+        pygame.quit()
+        os._exit(0)
