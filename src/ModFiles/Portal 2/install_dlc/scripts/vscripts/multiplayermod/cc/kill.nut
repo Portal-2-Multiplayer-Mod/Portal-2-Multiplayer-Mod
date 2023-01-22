@@ -6,6 +6,7 @@ CommandList.push(
         // !kill
         function CC(p, args) {
             local KillPlayer = function(player) {
+                if (player.GetHealth() == 0) { return }
                 EntFireByHandle(player, "sethealth", "-100", 0, player, player)
             }
             local KillPlayerMessage = function(iTextIndex, player) {

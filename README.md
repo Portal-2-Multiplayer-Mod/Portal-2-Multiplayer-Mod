@@ -20,6 +20,9 @@
 </h1>
 
 ### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
+
+### Special thanks to Krzyhau for allowing us to use his code from Speedrun Mod.
+
 ## Mod features
 ```
   - A maximum player cap of 33
@@ -35,6 +38,7 @@
   - Support for Linux, Windows 7 and above
   - togglable game options and config system exposed through VScript and a plugin (Not SourceAutoRecord)
   - Native support for dedicated servers if you manage to get one working :)
+  - Different game modes (standard, speedrun, futbol, deathmatch)
 ```
 
 ## Features to be added
@@ -107,3 +111,4 @@ We are always happy to take whatever additional help we can get for this project
 - Luukex
 - PieCreeper
 - Areng
+- Krzyhau

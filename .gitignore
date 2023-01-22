@@ -150,3 +150,4 @@ dmypy.json
 # Source Hammer portal files and vmx files
 *.prt
 *.vmx
+src/ModFiles/Portal 2/install_dlc/cfg/autoexec.cfg
