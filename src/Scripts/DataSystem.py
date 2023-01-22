@@ -361,7 +361,7 @@ def cleanUpFolders() -> None:
         BF.DeleteFolder(dsSavesPath)
     
     Log("DS: Checking for any old screenshot file indicators left over...")
-    if not GVars.configData["Portal2-Path"]["value"] == "undefined":
+    if (not GVars.configData["Portal2-Path"]["value"] == "undefined") and (os.path.exists(ssFilesPath)):
         if not os.listdir(ssFilesPath) == []:
             Log("DS: Found screenshot files, determining if they belong to the DS and removing them...")
             for dataSystemIndicator in os.listdir(ssFilesPath):
