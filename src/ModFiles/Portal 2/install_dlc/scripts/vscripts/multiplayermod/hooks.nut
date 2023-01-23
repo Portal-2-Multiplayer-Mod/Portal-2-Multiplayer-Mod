@@ -58,7 +58,6 @@ function InstantRun() {
     }
 
     // For the I/O loop method we need to trigger the start of the loop
-    printlP2MM("Starting I/O Loop...")
     EntFireByHandle(p2mm_timer, "Trigger", "", 1, null, null)
 
     // Delay the creation of our map-specific entities before so
@@ -80,7 +79,6 @@ function InstantRun() {
 
 // 2
 function Loop() {
-    //printlP2MM("Loop() has been triggered")
     // Trigger map-specific code
     MapSupport(false, true, false, false, false, false, false)
 
