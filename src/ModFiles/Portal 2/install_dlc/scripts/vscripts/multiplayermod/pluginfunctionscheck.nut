@@ -32,9 +32,12 @@ if (Entities.FindByName(null, "p2mm_servercommand")) {
     // We don't want to create multiple when it is called on, so reference it by targetname
     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 }
-if (GetDeveloperLevelP2MM()) {
-    printlP2MM("Checking plugin functionality...")
-}
+
+try {
+    if (GetDeveloperLevelP2MM()) {
+        printlP2MM("Checking plugin functionality...")
+    }
+} catch (exception) {}
 
 //---------------------------------------------------
 
