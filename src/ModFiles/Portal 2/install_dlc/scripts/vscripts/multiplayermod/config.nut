@@ -75,8 +75,9 @@ Config_UseChatCommands <- true
 // [4]: "speed", "noclip", "teleport"
 // [5]: "restartlevel", "spchapter", "mpcourse"
 // [6]: "rcon", "adminmodify"
-//
+
 // Manually format it like this:
 // "[AdminLevel]SteamID", // (Username to keep track)
-
-Admins <- []
+Admins <- [
+  // Leave empty or put in a user to be admin
+]
