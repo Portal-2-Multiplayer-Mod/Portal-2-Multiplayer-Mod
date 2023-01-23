@@ -10,13 +10,13 @@ import Scripts.DataSystem as DS
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
 
 DefaultConfigFile = {
-    "Portal2-Path":
+    "Discord-Rich-Presence":
         {
-            "value": "undefined",
+            "value": True,
             "menu": "launcher",
-            "description": "Path of the Portal 2 Folder",
-            "warning": "",
-            "prompt": "Enter the path to the Portal 2 folder",
+            "description": "Enable Discord Rich Presense For P2MM. This is needed for easy joinning for public servers.",
+            "warning": "Please give around 15 seconds for the change to take effect.",
+            "prompt": "",
         },
 
     "Auto-Umount":
@@ -46,6 +46,24 @@ DefaultConfigFile = {
             "prompt": "Enable background cubes?",
         },
 
+    "Portal2-Path":
+        {
+            "value": "undefined",
+            "menu": "portal2",
+            "description": "Path of the Portal 2 Folder",
+            "warning": "",
+            "prompt": "Enter the path to the Portal 2 folder",
+        },
+    
+    "Custom-Launch-Options":
+        {
+            "value": "+map mp_coop_lobby_3",
+            "menu": "portal2",
+            "description": "Custom launch options for debugging or starting the server at a different map.",
+            "warning": "Leave this to default if you don't know what it does!",
+            "prompt": "Type any custom launch options you want.\nExample: \"+map 'mapname'\"",
+        },
+
     "Server-Password":
         {
             "value": "",
@@ -54,13 +72,23 @@ DefaultConfigFile = {
             "warning": "It is recommended to set this if you don't want unwanted visitors!",
             "prompt": "Type the password for your P2MM server.\nCharacters \"\'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.",
         },
-    "Custom-Launch-Options":
+
+    "FastDL-Server-IP":
         {
-            "value": "+map mp_coop_lobby_3",
+            "value": "",
             "menu": "portal2",
-            "description": "Custom launch options for debugging or starting the server at a different map.",
-            "warning": "Leave this to default if you don't know what it does!",
-            "prompt": "Type any custom launch options you want.\nExample: \"+map 'mapname'\"",
+            "description": "The local IP you want to use to host the FastDL HTTP Server.",
+            "warning": "This is required if you want to use FastDL in P2MM!",
+            "prompt": "The local IP you want to\nuse to host the FastDL HTTP Server.\nIt should be the same local\nIP you used to port foward Portal 2.",
+        },
+
+    "FastDL-Server-Port":
+        {
+            "value": "27016",
+            "menu": "portal2",
+            "description": "The port you want the FastDL HTTP Server to run on.",
+            "warning": "This is required if you want to use FastDL in P2MM!",
+            "prompt": "The port you want the\nFastDL HTTP Server to run on.\nIt's recommended to use 27016\nbut another open port should work.",
         },
 
     "Encrypt-Cvars":
@@ -91,6 +119,15 @@ DefaultConfigFile = {
             "warning": "If You See This Something Is Wrong",
             "prompt": "If You See This Something Is Wrong",
         },
+    
+    "Active-Language":
+        {
+            "value": "English",
+            "menu": "",
+            "description": "The language used in the P2MM Launcher.",
+            "warning": "",
+            "prompt": "",
+        },
 
     "Dev-Mode":
         {
@@ -116,42 +153,6 @@ DefaultConfigFile = {
             "menu": "dev",
             "description": "Enables debug messaging for the Data System",
             "warning": "Leave this off if you wish to not clog up the logs!",
-            "prompt": "",
-        },
-
-    "Discord-Rich-Presence":
-        {
-            "value": True,
-            "menu": "launcher",
-            "description": "Enable Discord Rich Presense For P2MM. This is needed for easy joinning for public servers.",
-            "warning": "Please give around 15 seconds for the change to take effect.",
-            "prompt": "",
-        },
-    
-    "FastDL-Server-IP":
-        {
-            "value": "",
-            "menu": "portal2",
-            "description": "The local IP you want to use to host the FastDL HTTP Server.",
-            "warning": "This is required if you want to use FastDL in P2MM!",
-            "prompt": "The local IP you want to\nuse to host the FastDL HTTP Server.\nIt should be the same local\nIP you used to port foward Portal 2.",
-        },
-
-    "FastDL-Server-Port":
-        {
-            "value": "27016",
-            "menu": "portal2",
-            "description": "The port you want the FastDL HTTP Server to run on.",
-            "warning": "This is required if you want to use FastDL in P2MM!",
-            "prompt": "The port you want the\nFastDL HTTP Server to run on.\nIt's recommended to use 27016\nbut another open port should work.",
-        },
-
-    "Active-Language":
-        {
-            "value": "English",
-            "menu": "",
-            "description": "The language used in the P2MM Launcher.",
-            "warning": "",
             "prompt": "",
         }
 }

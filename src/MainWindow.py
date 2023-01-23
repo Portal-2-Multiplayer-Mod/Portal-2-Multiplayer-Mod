@@ -393,9 +393,9 @@ class Gui:
                 self.font = "GUI/assets/fonts/pixel.ttf"
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
-                outerSelf.BlitDescription(self.keyobj["description"], 75,
-                                          590, (130, 130, 255))
-                outerSelf.BlitDescription(self.keyobj["warning"], 75, 620, (255, 50, 50))
+                outerSelf.BlitDescription(self.keyobj["description"], 25,
+                                          20, (130, 130, 255))
+                outerSelf.BlitDescription(self.keyobj["warning"], 25, 45, (255, 50, 50))
 
             selectanim = "pop"
             selectsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
