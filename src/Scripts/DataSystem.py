@@ -321,7 +321,7 @@ def updatePassword(newpassword: str) -> bool:
 
 # Goes through all the configs the Data System
 # checking and performing actions to correct any if necessary
-def configCheck() -> "bool and/or str":
+def configCheck() -> str:
     returns: list = []
     # These characters can screw up the system or cause execution of other commands on the server
     disallowedpasswordchars: list = ["\\", ";", "\'"]
