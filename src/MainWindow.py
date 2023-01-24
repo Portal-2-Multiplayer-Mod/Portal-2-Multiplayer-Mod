@@ -19,7 +19,7 @@ import Scripts.BasicFunctions as BF
 import Scripts.Configs as cfg
 import Scripts.GlobalVariables as GVars
 import Scripts.RunGame as RG
-import Scripts.Updater as up
+import Scripts.Updater as UP
 import Scripts.Workshop as workshop
 from Scripts.BasicLogger import Log, StartLog
 import Scripts.DataSystem as DS
@@ -218,7 +218,7 @@ class Gui:
         self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
         self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
         self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
-        self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=840, xstart=840, xend=1870, ypos=20, size=75)
+        self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=750, xstart=750, xend=1870, ypos=20, size=75)
         self.Text_LauncherVersionText = self.DisplayText(translations["version"] + self.currentVersion, textColor=(255, 234, 0), xpos=75, xstart=75, xend=750, ypos=770)
 
         # The DisplayText class needs a seperate table for displaying nonfunctional text
@@ -393,9 +393,9 @@ class Gui:
                 self.font = "GUI/assets/fonts/pixel.ttf"
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
-                outerSelf.BlitDescription(self.keyobj["description"], 25,
-                                          20, (130, 130, 255))
-                outerSelf.BlitDescription(self.keyobj["warning"], 25, 45, (255, 50, 50))
+                outerSelf.BlitDescription(self.keyobj["description"], 75,
+                                          590, (130, 130, 255))
+                outerSelf.BlitDescription(self.keyobj["warning"], 75, 625, (255, 50, 50))
 
             selectanim = "pop"
             selectsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
@@ -852,6 +852,7 @@ class Gui:
                 button.sizemult = 1
                 button.curanim = ""
 
+    # Displaying the "prompt" and "warning" fields when hovering over settings
     def BlitDescription(self,
             txt: str,
             x: float = None,
@@ -971,8 +972,8 @@ class Gui:
 
         for button in self.CurrentMenuButtons:
             indx += 1
-            button.width = int(button.size / 25)
-            button.height = int(button.size / 50)
+            button.width = int(button.size / 27)
+            button.height = int(button.size / 52)
 
             if button == self.SelectedButton:
                 clr = button.activecolor
@@ -984,9 +985,9 @@ class Gui:
 
             if not (self.LookingForInput):
                 self.screen.blit(
-                    text1, (W / button.xpos, (H / button.ypos - (text1.get_height() / 2)) * (indx / 5)))
+                    text1, (W / button.xpos, (H / button.ypos - (text1.get_height() / 2)) * (indx / 5.6)))
             button.x = W / button.xpos
-            button.y = ((H / button.ypos) - (text1.get_height() / 2)) * (indx / 5)
+            button.y = ((H / button.ypos) - (text1.get_height() / 2)) * (indx / 5.6)
             button.width = text1.get_width()
             button.height = text1.get_height()
 
@@ -1059,12 +1060,12 @@ class Gui:
                 # Puts assets/images/buttons.png on the bottom right corner of the screen
                 buttons = pygame.image.load("GUI/assets/images/buttons.png").convert_alpha()
                 buttons = pygame.transform.scale(buttons, (W / 10, W / 10))
-                self.screen.blit(buttons, ((W / 1.05) - buttons.get_width(), H / 1.22))
+                self.screen.blit(buttons, ((W / 1.03) - buttons.get_width(), H / 1.22))
             else:
                 # Puts assets/images/keys.png on the bototm right corner of the screen
                 keys = pygame.image.load("GUI/assets/images/keys.png").convert_alpha()
                 keys = pygame.transform.scale(keys, (W / 10, W / 10))
-                self.screen.blit(keys, ((W / 1.05) - keys.get_width(), H / 1.22))
+                self.screen.blit(keys, ((W / 1.03) - keys.get_width(), H / 1.22))
 
         # MENU
 
@@ -1568,7 +1569,7 @@ def MountModOnly() -> bool:
     if (os.path.exists(GVars.modPath + GVars.nf + "ModFiles")):
         BF.DeleteFolder(GVars.modPath + GVars.nf + "ModFiles")
 
-    if not up.haveInternet():
+    if not UP.haveInternet():
         def OkInput() -> None:
             Log("Downloading the latest mod files...")
             UpdateModFiles()
@@ -1624,7 +1625,7 @@ def UpdateModFiles() -> None:
     def UpdateThread() -> None:
         Log("Updating...")
         Ui.IsUpdating = True
-        up.DownloadNewFiles()
+        UP.DownloadNewFiles()
         Ui.Error(translations["update_complete"], 5, (75, 255, 75))
         Ui.IsUpdating = False
         for thing in Ui.ERRORLIST:
@@ -1642,7 +1643,7 @@ def UpdateModClient() -> None:
         Log("Updating client...")
         Ui.IsUpdating = True
 
-        if not up.DownloadClient():
+        if not UP.DownloadClient():
             Ui.Error(
                 translations["update_nolink_error"])
             return
@@ -1724,13 +1725,13 @@ def ModFilesUpdateBox() -> None:
 
 def CheckForUpdates() -> bool:
     Log("Checking for updates...")
-    clientUpdate = up.CheckForNewClient()
+    clientUpdate = UP.CheckForNewClient()
 
     if clientUpdate["status"]:
         ClientUpdateBox(clientUpdate)
         return True
 
-    if up.CheckForNewFiles():
+    if UP.CheckForNewFiles():
         ModFilesUpdateBox()
         return True
 
