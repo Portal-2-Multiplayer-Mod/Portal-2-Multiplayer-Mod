@@ -95,19 +95,18 @@ def dataSystemInitialization(refresh: bool = False, debugging: str = "false", ha
             Log(" __________!!!FATAL: DATA SYSTEM p2mmNotFoundError!!!__________")
             Log("FATAL DATA SYSTEM ERROR!!! The main p2mm directory couldn't be found!")
             Log("This shouldn't happen at all! If this happens again please reinstall the mod!")
-            Log("If the issue persists then please let us know in our discord!")
+            Log("If the issue persists then please let us know in our Discord!")
             Log("This error has to do with the data system so please ping Orsell (aka zwexit) in #mod-help in our discord.")
-            Log("He must have messed up something if this appears. Like this shouldn't be possible.")
             Log("The launcher will be stopped...")
             Log("Below is the exception that resulted in this nonsense:\n" + traceback.format_exc())
             Log("__________!!!FATAL: DATA SYSTEM p2mmNotFoundError!!!__________")
             Log("")
             dataSystemState = False
-            quit()
+            exit("p2mmNotFoundError")
 
         # Next check if the ModFiles are there and if the portal2 path has been defined
         # If they aren't the Data System will assume that this is the first time the person has started the launcher
-        # Once the launcher is updated the refreshDataSystem function will run
+        # Once the launcher is updated the initilization function will run again
         if (not os.path.exists(GVars.modFilesPath)) or (GVars.configData["Portal2-Path"]["value"] == "undefined"):
             raise firstStartWarning
         
@@ -300,10 +299,10 @@ def updatePassword(newpassword: str) -> bool:
             passwordfile.write(f"New_Password <- \"{newpassword}\"")
             passwordfile.close()
         # with open(locallscfg, "w", encoding="utf-8") as listencfg:
-        #     #print("reeeee")
+        #     #print("adding to local listenserver cfg")
         #     listencfg.close()
         # with open(localscfg, "w", encoding="utf-8") as servercfg:
-        #     #print("reeessassad")
+        #     #print("adding to local server cfg")
         #     servercfg.close()
         checkfile = open(dsSavesPath + GVars.nf + "datasystem-datacheck.nut", "x", encoding="utf-8")
         checkfile.close()
@@ -312,8 +311,6 @@ def updatePassword(newpassword: str) -> bool:
         Log("DS: New Password: " + GVars.configData["Server-Password"]["value"])
         return True
     except FileExistsError:
-        pass
-    except FileNotFoundError:
         pass
     except Exception as error:
         Log("DS: Failed to update password, exception:\n" + traceback.format_exc())
@@ -326,33 +323,38 @@ def configCheck() -> str:
     # These characters can screw up the system or cause execution of other commands on the server
     disallowedpasswordchars: list = ["\\", ";", "\'"]
     DSLogging("Checking configs...", dsdebug, started)
-    if (dataSystemState == True) and (GVars.configData["Data-System-Overide"]["value"] == "true"):
-        # Password config check
-        DSLogging("Current Password: " + serverPassword, dsdebug, started)
-        for disallowedchar in disallowedpasswordchars:
-            if disallowedchar in serverPassword:
-                DSLogging(f"Found disallowed characters in password: \"{disallowedchar}\"! Fixing!", dsdebug, started)
-                fixedpassword = serverPassword.replace(disallowedchar, "")
-                if updatePassword(fixedpassword) == False:
-                    Log("__________DATA SYSTEM ERROR!!!__________")
-                    Log("The Data System couldn't correct the password!")
-                    Log("This is problem with the Data System and needs to fixed!")
-                    Log("Please contact Orsell (aka zwexit) in our Discord!")
-                    Log("He messed up something and need to fix it!")
-                    Log("__________DATA SYSTEM ERROR!!!__________")
-                    returns.append("passwordcorrectionerror")
-                else:
-                    returns.append("passwordcorrected")
-            else:
-                if not updatePassword(serverPassword):
-                    returns.append("passwordupdateerror")
-        return returns
-        
-    else:
-        return "false"
 
-#def dataSystemIndicatorCheck() -> None:
+    # if (not dataSystemState) or (not GVars.configData["Data-System-Overide"]["value"]):
+    #     return "false"
     
+    # Password config check
+    
+    DSLogging("Current Password: " + serverPassword, dsdebug, started)
+    disallowedcharfound = False
+    
+    if any(disallowedchar in serverPassword for disallowedchar in disallowedpasswordchars):
+        DSLogging(f"Found disallowed characters in password: \"{disallowedchar}\"! Fixing!", dsdebug, started)
+        fixedpassword = serverPassword.replace(disallowedchar, "")
+        if not updatePassword(fixedpassword):
+            Log("__________DATA SYSTEM ERROR!!!__________")
+            Log("The Data System couldn't correct the password!")
+            Log("This is problem with the Data System and needs to fixed!")
+            Log("Please contact Orsell (aka zwexit) in our Discord!")
+            Log("He messed up something and need to fix it!")
+            Log("__________DATA SYSTEM ERROR!!!__________")
+            returns.append("passwordcorrectionerror")
+        else:
+            returns.append("passwordcorrected")
+    else:
+        if not updatePassword(serverPassword):
+            returns.append("passwordupdateerror")
+    DSLogging("Finished checking configs...", dsdebug, started)
+    return returns
+
+# Called to check for any screen shot indicators
+#def dataSystemIndicatorCheck() -> None:
+
+# Cleans up any screenshot indicators after being read
 #def returnCleanUp() -> None:
 
 def cleanUpFolders() -> None:

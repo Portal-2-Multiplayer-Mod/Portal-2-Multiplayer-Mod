@@ -37,7 +37,7 @@ class Gui:
         self.hvrclksnd = pygame.mixer.Sound("GUI/assets/sounds/hoverclick.wav")
         self.hvrclksnd.set_volume(0.05)
 
-        #! public variables
+        # public variables
         self.coolDown: int = 0
         self.CurInput: str = ""
         self.ERRORLIST: list = []
@@ -59,7 +59,9 @@ class Gui:
         self.Floaters: list[self.Floater] = []
 
     ###############################################################################
-        # The resolution of the launcher when it opens, why the height is 800 is to accomidate the Steam Decks resolution if launching the launcher in Gaming Mode
+        # The resolution of the launcher when it opens, 
+        # why the height is 800 is to accomidate the Steam Decks resolution 
+        # if launching the launcher in Gaming Mode or without a monitor
         self.screen = pygame.display.set_mode((1280, 800), RESIZABLE)
         self.fpsclock = pygame.time.Clock()
         self.devMode: bool = devMode
@@ -71,7 +73,8 @@ class Gui:
         pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
         self.p2mmlogo = pygame.image.load("GUI/assets/images/p2mm64.ico").convert_alpha()
         pygame.display.set_icon(self.p2mmlogo)
-        # cubes
+
+        # The cube floaters for the launcher screen
         self.greencube = pygame.image.load("GUI/assets/images/greencube.png").convert_alpha()
         self.redcube = pygame.image.load("GUI/assets/images/redcube.png").convert_alpha()
         self.goldencube = pygame.image.load("GUI/assets/images/yellowcube.png").convert_alpha()
@@ -92,16 +95,12 @@ class Gui:
         self.CurrentMenuText: list = self.MainMenuText
         self.SelectedButton: self.ButtonTemplate = self.CurrentMenuButtons[self.CurrentButtonsIndex]
 
+        # Add the cubes onto the launcher screen
         for i in range(9):
             self.AddFloater(50, 50, 20, 75, 75)
 
-    # surf = pygame.surface.Surface([int(W / 25) + int(H / 50), int(W / 25) + int(H / 50)])
-    #     surf.set_colorkey((0, 0, 0))
-    #     surf.fill((255, 255, 255))
-    #     surf = pygame.transform.rotate(surf, 19)
-
     def PlaySound(self, sound: pygame.mixer.Sound) -> None:
-        """Plays the launcher's sounds when hovering / clicking on a buttong
+        """Plays the launcher's sounds when hovering / clicking on a button
         Args:
             sound (pygame.mixer.Sound): the sound to play
         """
@@ -139,7 +138,6 @@ class Gui:
         self.Floaters.append(floater)
 
     # DISPLAY TEXT CLASS
-    # Needs to be programmed for the size to grow when the size variable is bigger, not smaller, see below
     class DisplayText:
         def __init__(self,
                     text: str, # The text you want to display
@@ -149,7 +147,7 @@ class Gui:
                     ypos: float = 0, # The bigger the number, the lower the text will be.
                     xstart: float = 0, # Where the next line for the line will begin, normally this should be equal to xpos
                     xend: float = 100, # Where the line of text will end and start the next one at xstart
-                    size: float = 100 # The bigger the number, the smaller it is, because that definitely makes sense, needs to be fixed.
+                    size: float = 100 # The bigger the number, the smaller it is, because that definitely makes sense
                     ) -> None:
 
             self.text = text
@@ -606,8 +604,7 @@ class Gui:
     #! MAIN BUTTONS FUNCTIONS
     #!############################
 
-    # launches the game
-
+    # Mounts and launches Portal 2
     def Button_LaunchGame_func(self) -> None:
         if self.coolDown > 0:
             return
@@ -615,19 +612,16 @@ class Gui:
         self.coolDown = int(3 * 60)
         RunGameScript()
 
-    # switches to the settings menu
-
+    # Switches to the settings menu
     def Button_Settings_func(self) -> None:
         self.ChangeMenu(self.SettingsMenus, self.SettingsMenuText)
 
-    # switches to the data menu
-
+    # Switches to the data menu
     def Button_Data_func(self) -> None:
         self.ChangeMenu(self.DataMenuButtons, self.DataMenuText)
         self.RefreshDataMenu()
 
-    # launcher update button
-
+    # Checks for any updates for the launcher
     def Button_Update_func(self) -> None:
         if self.coolDown > 0:
             return
@@ -638,23 +632,19 @@ class Gui:
             self.Error(
                 translations["update_already_up_to_date"], 5, (200, 75, 220))
 
-    # switches to the manual mod un/mounting menu
-
+    # Switches to the manual mod mounting and unmounting menu
     def Button_ManualMode_func(self) -> None:
         self.ChangeMenu(self.ManualButtons, append=True)
 
-    # switches to the workshop menu
-
+    # Switches to the workshop menu, where you can get the changelevel command for workshop maps
     def Button_Workshop_func(self) -> None:
-        self.ChangeMenu(self.WorkshopButtons, self.WorkshopMenuText, append=True)
+        self.ChangeMenu(self.WorkshopButtons, self.WorkshopMenuText)
 
-    # switches to the resources menu (github, discord etc...)
-
+    # Switches to the resources menu, access to links to the GitHub Repo, P2MM Discord, etc
     def Button_ResourcesMenu_func(self) -> None:
         self.ChangeMenu(self.ResourcesButtons, append=True)
 
-    # it closes the game
-
+    # Performs a clean close of the launcher, it will close down and unmount Portal 2 if it's open
     def Button_Exit_func(self) -> None:
         self.running = False
 
@@ -662,33 +652,28 @@ class Gui:
     #! SETTINGS BUTTONS FUNCTIONS
     #!############################
 
-    # switches to the launcher specific settings
-
+    # Switches to the Launcher Settings
     def Button_LauncherSettingsMenu_func(self) -> None:
         self.RefreshSettingsMenu("launcher")
         self.ChangeMenu(self.SettingsButtons, append=True)
 
-    # switches to the portal 2 sepcific settings
-
+    # Switches to the Portal 2 Settings
     def Button_Portal2Settings_func(self) -> None:
         self.RefreshSettingsMenu("portal2")
         self.ChangeMenu(self.SettingsButtons, append=True)
 
-    # switches to the player menu where you can add admins
-
+    # Switches to the Player menu where you can add admins
     def Button_AdminsMenu_func(self) -> None:
         self.RefreshPlayersMenu()
         self.ChangeMenu(self.PlayersMenu, append=True)
 
-    # switches to the language menu where you can pick a language for the launcher
-
+    # Switches to the Language menu where you can pick a language for the launcher
     def Button_LanguageMenu_func(self) -> None:
         # for choosing a languages
         self.LanguageButton()
         self.ChangeMenu(self.LanguagesMenu, append=True)
 
-    # shows the dev settings
-
+    # Access to the launchers Developer settings
     def Button_DevSettings_func(self) -> None:
         self.RefreshSettingsMenu("dev")
         self.ChangeMenu(self.SettingsButtons, append=True)
@@ -704,8 +689,7 @@ class Gui:
     #! MANUAL MODE BUTTONS FUNCTIONS
     #!############################
 
-    # a button for manual mounting
-
+    # Button to manually mount P2MM
     def Button_ManualMount_func(self) -> None:
         if self.coolDown > 0:
             return
@@ -713,8 +697,7 @@ class Gui:
         self.coolDown = int(3 * 60)
         MountModOnly()
 
-    # a button for manual unmounting
-
+    # Button to manually unmount P2MM
     def Button_ManualUnmount_func(self) -> None:
         if self.coolDown > 0:
             return
@@ -723,19 +706,17 @@ class Gui:
         UnmountScript()
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
 
-
     #!############################
     #! WORKSHOP BUTTONS FUNCTIONS
     #!############################
 
-    # get's the id from a map's url then copies the changelevel command to the clipboard
-
+    # Get's the id from a map's url then copies the changelevel command to the clipboard
     def Button_GetWorkShopCommand_func(self) -> None:
         def AfterInput(input: str):
             map = workshop.MapFromSteamID(input)
 
             if map is not None:
-                map = map.replace(".bsp", "") # The ".bsp" part is still being copied, this should remove it
+                map = map.replace(".bsp", "")
                 pyperclip.copy("changelevel " + map)
                 self.Error(
                     translations["workshop_changelevel_command"], 3, (255, 0, 255))
@@ -1252,6 +1233,8 @@ class Gui:
                     if event.type == pygame.KEYDOWN:
                         # get the key and add it to self.CurInput
                         name = pygame.key.name(event.key)
+                        DS.DSLogging(name, DS.dsdebug, DS.started)
+
                         if name == "space":
                             self.CurInput += " "
                         elif name in ["return", "enter"]:
@@ -1267,7 +1250,7 @@ class Gui:
                                 self.CurInput += pastedstr
                                 Log(f"Pasted: {pastedstr}")
                             except Exception as e:
-                                Log(str(e))  # always log the error
+                                Log(str(e))  # Log a error in case it fails
                                 pass
                         elif len(name) == 1:
                             if SHIFTHELD:
@@ -1449,7 +1432,7 @@ def PreExit() -> None:
     if (GVars.iol) or (GVars.iosd):
         os.system("killall -9 portal2_linux")
 
-    # this is to make sure the portal 2 thread is dead
+    # This waits to make sure the Portal 2 thread is dead
     # 1 second should be enough for it to die
     time.sleep(1)
     Log("Portal 2 has been shutdown...")
@@ -1461,7 +1444,7 @@ def PreExit() -> None:
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
         Log("Unmounted P2MM's ModFiles from Portal 2...")
     
-    # Remove the datasystemsaves folder from the portal2's vscripts folder
+    # Remove the datasystemsaves folder from the portal2 vscripts folder
     DS.cleanUpFolders()
 
     # Wrap up Discord Rich Presence by closing the connection
