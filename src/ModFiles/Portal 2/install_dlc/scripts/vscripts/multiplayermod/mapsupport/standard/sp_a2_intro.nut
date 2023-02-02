@@ -25,7 +25,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSPostPlayerSpawn) {
-        printl("Ran")
+        printlP2MM("Ran")
         SpA2IntroViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         SpA2IntroViewcontrol.__KeyValueFromString("targetname", "SpA2IntroViewcontrol")
         SpA2IntroViewcontrol.__KeyValueFromString("target_team", "-1")

@@ -113,7 +113,7 @@ def OnStart():
     # checks if the client was launched from an older version
     IsNew()
     # only check for updates for normal users
-    if GVars.configData["developer"]["value"] != "true":
+    if GVars.configData["developer"]["value"] != True:
         CheckForUpdates()
 
 
@@ -163,7 +163,7 @@ def Init():
 #//# Mount P2:MM #//#
     if (WillMount):
 
-        if (GVars.configData["developer"]["value"] == "true"):
+        if (GVars.configData["developer"]["value"] == True):
             Log("Dev mode active")
             DEVMOUNT()
 
@@ -181,7 +181,7 @@ def Init():
 
     # it's annoying to be asked to exit when you're debugging
     # but don't remove it, it's there so the user can read the output when the game closes
-    if (GVars.configData["developer"]["value"] != "true"):
+    if (GVars.configData["developer"]["value"] != True):
         input("Press enter to exit")
 
 

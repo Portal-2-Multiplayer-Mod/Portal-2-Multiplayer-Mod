@@ -1,12 +1,15 @@
 import Scripts.GlobalVariables as GVars
 import os
+import psutil
+from Scripts.BasicLogger import Log
 
 ##############
 # CONVERSION #
 ##############
 
+# Converts paths to make sure they are read properly by the OS
 def ConvertPath(path: str) -> str:
-    if (GVars.iol):
+    if (GVars.iol) or (GVars.iosd):
         path = path.replace("\\", GVars.nf)
         path = path.replace("~", os.path.expanduser("~"))
 
@@ -15,50 +18,48 @@ def ConvertPath(path: str) -> str:
 
     return path
 
+# Deletes the folder using the OSes delete command
 def DeleteFolder(path: str) -> None:
     if (GVars.iow):
         os.system("rmdir /s /q \"" + path + "\"")
-    elif (GVars.iol):
+    elif (GVars.iol) or (GVars.iosd):
         os.system("rm -rf \"" + path + "\"")
 
+# Copies a folder using the OSes copy command
 def CopyFolder(src: str, dst: str) -> str:
     if (GVars.iow):
-        os.system("xcopy /E /H /C /I \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol):
+        os.system("xcopy /E /H /C /I /Y \"" + src + "\" \"" + dst + "\"")
+    elif (GVars.iol) or (GVars.iosd):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
 
+# Copies a file using the OSes copy command
 def CopyFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("copy \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol):
+    elif (GVars.iol) or (GVars.iosd):
         os.system("cp \"" + src + "\" \"" + dst + "\"")
     return dst
 
-
+# Moves a file using the OSes move command
 def MoveFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("move \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol):
+    elif (GVars.iol) or (GVars.iosd):
         os.system("mv \"" + src + "\" \"" + dst + "\"")
     return dst
 
-def TryFindPortal2Path():
-    if (GVars.iow):
-        import winreg
-
-    # if C:\Program Files (x86)\Steam\steamapps\common\Portal 2 exists
-    defpathwin = ConvertPath("D:\Program Files (x86)\Steam\steamapps\common\Portal 2")
+# Used to grab Portal 2's game directory for the launcher if it hasn't been defined yet
+# On Windows it will use the manifest file that is in the steamapps directory to detect Portal 2
+def TryFindPortal2Path() -> str:
+    # Should be default linux path for the game
     defpathlin = ConvertPath("~/.local/share/Steam/steamapps/common/Portal 2")
 
-    if (GVars.iol):
-        if (os.path.isdir(defpathlin)):
-            return defpathlin
-    elif (GVars.iow):
-        if (os.path.isdir(defpathwin)):
-            return defpathwin
+    if ((GVars.iol or GVars.iosd) and (os.path.isfile(defpathlin + "/portal2_linux"))):
+        return defpathlin
 
     if (GVars.iow):
+        import winreg
         try:
             hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\WOW6432Node\Valve\Steam")
             print(hkey)
@@ -68,14 +69,11 @@ def TryFindPortal2Path():
             print(manifestpath)
             if (os.path.isfile(manifestpath)):
                 # read the manifest file
-                f = open(manifestpath, "r", encoding="utf-8")
-                manifest = f.read()
-                f.close()
-
+                manifest = open(manifestpath, "r", encoding="utf-8").readlines()
                 paths = []
 
-                for line in manifest.split("\n"):
-                    line=line.strip()
+                for line in manifest:
+                    line = line.strip()
                     # remove the quotes
                     line = line.replace("\"", "")
                     print(line)
@@ -90,6 +88,16 @@ def TryFindPortal2Path():
                         return path + ConvertPath("/steamapps/common/Portal 2")
 
         except Exception as e:
-            print("ERROR: " + str(e))
+            Log("ERROR: " + str(e))
 
+    return False
+
+# Allows to check if certain processes are running
+def checkIfProcessRunning(processName) -> bool:
+    for proc in psutil.process_iter():
+        try:
+            if processName.lower() in proc.name().lower():
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
     return False

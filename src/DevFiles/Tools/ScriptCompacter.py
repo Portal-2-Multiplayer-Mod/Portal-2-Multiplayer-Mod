@@ -7,7 +7,7 @@ quoteovverride = '\\"'
 scripttag = "script_client"
 
 
-# read the file inside of currentdir/temp named scriptdata.nut 
+# read the file inside of currentdir/temp named scriptdata.nut
 import os
 from traceback import print_last
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -66,18 +66,17 @@ for line in data:
                     obracket = True
                     break
                 looptime -= 1
-            
-            if obracket == True:
+
+            if obracket:
                 newline = newline + line + ","
-            elif cbracket == True:
+            elif cbracket:
                 # if the last character in newline is a }, then add a "; echo NEWLINE" at the beginning of the line
                 if newline[-1] == "}":
                     newline = newline + ";echo NEWLINE;" + scripttag + " " + line + ";echo NEWLINE;" + scripttag + " "
                 else:
                     newline = newline + line + ";echo NEWLINE;" + scripttag + " "
             # if crbracket and obracket are both false
-            if cbracket == False:
-                if obracket == False:
+            if not cbracket and not obracket:
                     newline = newline + line + ";echo NEWLINE;" + scripttag + " "
         else:
             # remove all \n at the end of the line

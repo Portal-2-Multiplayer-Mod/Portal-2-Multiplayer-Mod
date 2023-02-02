@@ -13,6 +13,7 @@
 //---------------------------------------------------
 
 // TODO: Fix how we work out arguments for players with spaces in their names
+// TODO: Fix adminmodify pushing players instead of changing existing slot
 
 if (Config_UseChatCommands) {
     // This can only be enabled when the plugin is loaded fully
@@ -122,10 +123,11 @@ local IncludeScriptCC = function(script) {
 // Organized alphabetically...
 
 IncludeScriptCC("adminmodify")
-// IncludeScriptCC("ban") // INDEV By Orsell
+//IncludeScriptCC("ban") // INDEV By Orsell
 IncludeScriptCC("changeteam")
 IncludeScriptCC("help")
-IncludeScriptCC("kick")
+IncludeScriptCC("hub")
+//IncludeScriptCC("kick") // Still needs fixed by Orsell
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
@@ -135,7 +137,7 @@ IncludeScriptCC("restartlevel")
 IncludeScriptCC("rocket")
 IncludeScriptCC("slap")
 IncludeScriptCC("spchapter")
-// IncludeScriptCC("spectate") // broken
+//IncludeScriptCC("spectate") // broken
 IncludeScriptCC("speed")
 IncludeScriptCC("teleport")
 IncludeScriptCC("vote")

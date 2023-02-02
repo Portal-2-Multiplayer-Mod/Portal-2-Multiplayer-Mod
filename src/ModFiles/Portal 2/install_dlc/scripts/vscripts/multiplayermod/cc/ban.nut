@@ -1,28 +1,29 @@
-PlayerBanList <- []
-
 CommandList.push(
     class {
         name = "ban"
         level = 6
 
-        // !ban (player to ban here) (optional argument)
+        // !ban (player to ban here) (optional remove argument)
         function CC(p, args) {
-            local BanPlayer = function(player) {
-                EntFireByHandle(p2mm_clientcommand, "Command", "disconnect \"You've been banned from the server.\"", 0, p, p)
-                PlayerBanList.push(player)
-                SendChatMessage(FindPlayerClass(player).username + " has been banned from the server...", p)
+            PlayerBanList <- {}
+
+            // arg[0] -> player to ban
+            args[0] = Strip(args[0])
+            local plr = FindPlayerByName(args[0])
+            // arg[1] -> optional remove argument
+            args[1] = Strip(args[1])
+
+            PlayerBanList <- []
+            local BanPlayer = function(plr) {
+                EntFireByHandle(p2mm_clientcommand, "Command", "disconnect \"You've been banned from the server.\"", 0, plr, plr)
+                PlayerBanList.push(FindPlayerClass(plr).steamid)
+                dataSystemBan(null, plr)
             }
 
             if ((args.len() == 0) || (args.len() > 2)) {
                 SendChatMessage("[ERROR] Please input a player name and/or a optional argument.", p)
                 return
             }
-
-            // arg[0] -> player to ban
-            args[0] = Strip(args[0])
-            local plr = FindPlayerByName(args[0])
-            // arg[1] -> optional argument
-            args[1] = Strip(args[1])
 
             try {
                 if (plr == null) {
@@ -32,7 +33,8 @@ CommandList.push(
 
                 if (args.len() == 1) {
                     if (plr == p) {
-                        return SendChatMessage("[ERROR] You're trying to ban yourself.", p)
+                        SendChatMessage("[ERROR] You're trying to ban yourself.", p)
+                        return
                     }
                     if (plr != p) {
                         BanPlayer(plr)
@@ -41,15 +43,21 @@ CommandList.push(
 
                 if (args.len() == 2) {
                     if (plr == p) {
-                        return SendChatMessage("[ERROR] You're trying to ban yourself.", p)
+                        SendChatMessage("[ERROR] You're trying to ban yourself.", p)
+                        return
                     }
                     if (plr != p) {
-                        if (args[1] = "remove") {
-                            BanPlayer(plr)
+                        if ((plr != null) && (args[1] = "remove")) {
+                            PlayerBanList.remove(FindPlayerClass(plr).steamid)
+                            SendChatMessage(FindPlayerClass(plr).username + " has been unbanned from the server...", p)
+                            return
                         }
                     }
                 }
-            } catch (exception) {}
+            } catch (exception) {
+                SendChatMessage("[ERROR] An error occured trying to run that command, check console...", p)
+                return
+            }
         }
     }
 )

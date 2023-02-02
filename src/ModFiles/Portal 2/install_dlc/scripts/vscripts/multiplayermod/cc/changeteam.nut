@@ -22,7 +22,7 @@ CommandList.push(
                         return SendChatMessage("Team is now set to " + teams[args[0].tointeger()] + ".", p)
                     }
                 }
-                EntFireByHandle(p2mm_clientcommand, "Command", "say [ERROR] Enter a valid team number: 0, 2, or 3.", 0, p, p)
+                SendChatMessage("[ERROR] Enter a valid team number: 0, 2, or 3.", p)
             } catch (exception) {
                 // No argument, so just cycle through the teams
                 if (args.len() == 0) {

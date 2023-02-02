@@ -29,7 +29,7 @@ def SteamIDFromLink(link : str) -> str:
     # removes the searchtext
     # when you search for a map and you copy the link it will append the search text to the end of the url
     # like this -> https://steamcommunity.com/sharedfiles/filedetails/?id=91038223&searchtext=gelocity
-    # so to remove it we loop through the string we have until we find a letter then we substring all that's before it
+    # to remove it loop through the string thats grabbed until it finds a letter then substring all that's before it
     i : int = 0
     for letter in link:
         if not letter.isdigit():

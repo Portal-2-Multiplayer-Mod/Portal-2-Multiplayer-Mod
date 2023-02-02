@@ -124,7 +124,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (PreviousTimeSP_A2_BTS2 + 31 <= Time()) {
                 if (Entities.FindByName(null, "EndDeathEventMPMod")) {
                     if (NoPlayerMadeItOnlyOnceSp_A2_Bts2) {
-                        printl("No Player Made It")
+                        printlP2MM("No Player Made It")
                         PreviousTimeSP_A2_BTS2Again <- Time()
                         // Create an on screen text message entity
                         onscreendisplay69.__KeyValueFromString("targetname", "p2mm_wait_for_players_textbts2")
