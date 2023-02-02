@@ -1,4 +1,5 @@
 {
+  "font": "src/GUI/assets/fonts/pixel.ttf",
   "welcome": "Bienvenue dans le lanceur P2:MM !\n\nAppuyez sur\n\"Lancer le jeu\" pour lancer le mod !\n\nAssurez-vous de vérifier les paramètres pour\nPortal 2 dans le menu Paramètres !",
   "version": "Version: ",
   "play_button": "Lancer le jeu",

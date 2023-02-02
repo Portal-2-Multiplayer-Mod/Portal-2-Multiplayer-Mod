@@ -1,4 +1,5 @@
 {
+  "font": "src/GUI/assets/fonts/pixel.ttf",
   "welcome": "Welcome to the P2:MM Launcher!\n\nPress\n\"Start Game\" to launch the mod!\n\nBe sure to check out the Settings Menu to customize\nthe launcher and your play sessions!",
   "version": "Version: ",
   "play_button": "Start Game",

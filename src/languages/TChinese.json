@@ -1,4 +1,5 @@
 {
+  "font": "src/GUI/assets/fonts/zpix.ttf",
   "welcome": "歡迎使用 Portal 2：多人連線啟動器！\n\n單擊“啟動遊戲”來啟動本模組！\n\n請確保你已檢查過設定選單以便\n自訂你的啟動器以及伺服器！",
   "version": "版本：",
   "play_button": "啟動遊戲",
