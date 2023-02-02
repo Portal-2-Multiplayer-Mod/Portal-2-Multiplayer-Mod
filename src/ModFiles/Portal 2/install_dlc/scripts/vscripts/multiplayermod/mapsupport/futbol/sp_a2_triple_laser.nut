@@ -151,7 +151,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
                 disp1  = Entities.FindByName(null, "dispenser1")
                 disp2  = Entities.FindByName(null, "dispenser2")
-                // printl(futent.GetName())
+                // printlP2MM(futent.GetName())
 
                 if (disp1&& disp2&&futent&&strip(futent.GetName()) == "futbol_in_map") {
                     if (CheckFutBolGoal(0, disp1, futent)) {

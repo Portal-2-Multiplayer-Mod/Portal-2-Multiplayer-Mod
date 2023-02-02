@@ -1,13 +1,15 @@
 import Scripts.GlobalVariables as GVars
 import os
+import psutil
 from Scripts.BasicLogger import Log
 
 ##############
 # CONVERSION #
 ##############
 
+# Converts paths to make sure they are read properly by the OS
 def ConvertPath(path: str) -> str:
-    if (GVars.iol):
+    if (GVars.iol) or (GVars.iosd):
         path = path.replace("\\", GVars.nf)
         path = path.replace("~", os.path.expanduser("~"))
 
@@ -16,42 +18,45 @@ def ConvertPath(path: str) -> str:
 
     return path
 
+# Deletes the folder using the OSes delete command
 def DeleteFolder(path: str) -> None:
     if (GVars.iow):
         os.system("rmdir /s /q \"" + path + "\"")
-    elif (GVars.iol):
+    elif (GVars.iol) or (GVars.iosd):
         os.system("rm -rf \"" + path + "\"")
 
+# Copies a folder using the OSes copy command
 def CopyFolder(src: str, dst: str) -> str:
     if (GVars.iow):
-        os.system("xcopy /E /H /C /I \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol):
+        os.system("xcopy /E /H /C /I /Y \"" + src + "\" \"" + dst + "\"")
+    elif (GVars.iol) or (GVars.iosd):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
 
+# Copies a file using the OSes copy command
 def CopyFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("copy \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol):
+    elif (GVars.iol) or (GVars.iosd):
         os.system("cp \"" + src + "\" \"" + dst + "\"")
     return dst
 
-
+# Moves a file using the OSes move command
 def MoveFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("move \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol):
+    elif (GVars.iol) or (GVars.iosd):
         os.system("mv \"" + src + "\" \"" + dst + "\"")
     return dst
 
+# Used to grab Portal 2's game directory for the launcher if it hasn't been defined yet
+# On Windows it will use the manifest file that is in the steamapps directory to detect Portal 2
 def TryFindPortal2Path() -> str:
-
-    # should be default linux path for the game
+    # Should be default linux path for the game
     defpathlin = ConvertPath("~/.local/share/Steam/steamapps/common/Portal 2")
 
-    if (GVars.iol and os.path.isfile(defpathlin + "/portal2_linux")):
+    if ((GVars.iol or GVars.iosd) and (os.path.isfile(defpathlin + "/portal2_linux"))):
         return defpathlin
-
 
     if (GVars.iow):
         import winreg
@@ -85,4 +90,14 @@ def TryFindPortal2Path() -> str:
         except Exception as e:
             Log("ERROR: " + str(e))
 
+    return False
+
+# Allows to check if certain processes are running
+def checkIfProcessRunning(processName) -> bool:
+    for proc in psutil.process_iter():
+        try:
+            if processName.lower() in proc.name().lower():
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
     return False
