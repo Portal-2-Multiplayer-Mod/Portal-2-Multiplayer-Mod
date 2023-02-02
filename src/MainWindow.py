@@ -440,7 +440,7 @@ class Gui:
                         DS.dataSystemInitialization(True, GVars.configData["Data-System-Debugging"]["value"])
                         self.outerSelf.RefreshSettingsMenu(menu)
                     self.outerSelf.GetUserInputPYG(
-                        AfterInputGenericSetConfig, self.keyobj["prompt"], self.cfgvalue)
+                        AfterInputGenericSetConfig, translations[self.keyobj["prompt"]], self.cfgvalue)
             isasync = False
 
         for key in GVars.configData:
@@ -514,7 +514,7 @@ class Gui:
                 self.RefreshPlayersMenu()
 
             self.GetUserInputPYG(
-                AfterInputSteamID, "Enter A SteamID", PlayerKey["steamid"])
+                AfterInputSteamID, translations["players_enter_steamid"], PlayerKey["steamid"])
 
         Button_PlayerSteamId = self.ButtonTemplate(
             "SteamID: " + PlayerKey["steamid"], Button_PlayerSteamId_func, (255, 255, 120))
