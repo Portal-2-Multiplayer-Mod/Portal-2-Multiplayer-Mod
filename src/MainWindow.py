@@ -373,7 +373,7 @@ class Gui:
                 self.mlen = 10
                 if len(self.text) > self.mlen:
                     self.text = self.text[:self.mlen] + "..."
-                self.text = key + ": " + self.text
+                self.text = translations[key] + ": " + self.text
                 self.cfgkey = key
                 self.cfgvalue = GVars.configData[key]["value"]
                 self.keyobj = GVars.configData[key]
@@ -391,9 +391,9 @@ class Gui:
                 self.font = "GUI/assets/fonts/pixel.ttf"
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
-                outerSelf.BlitDescription(self.keyobj["description"], 75,
+                outerSelf.BlitDescription(translations[self.keyobj["description"]], 75,
                                           590, (130, 130, 255))
-                outerSelf.BlitDescription(self.keyobj["warning"], 75, 625, (255, 50, 50))
+                outerSelf.BlitDescription(translations[self.keyobj["warning"]], 75, 625, (255, 50, 50))
 
             selectanim = "pop"
             selectsnd = pygame.mixer.Sound("GUI/assets/sounds/power.wav")
@@ -440,7 +440,7 @@ class Gui:
                         DS.dataSystemInitialization(True, GVars.configData["Data-System-Debugging"]["value"])
                         self.outerSelf.RefreshSettingsMenu(menu)
                     self.outerSelf.GetUserInputPYG(
-                        AfterInputGenericSetConfig, self.keyobj["prompt"], self.cfgvalue)
+                        AfterInputGenericSetConfig, translations[self.keyobj["prompt"]], self.cfgvalue)
             isasync = False
 
         for key in GVars.configData:
@@ -514,7 +514,7 @@ class Gui:
                 self.RefreshPlayersMenu()
 
             self.GetUserInputPYG(
-                AfterInputSteamID, "Enter A SteamID", PlayerKey["steamid"])
+                AfterInputSteamID, translations["players_enter_steamid"], PlayerKey["steamid"])
 
         Button_PlayerSteamId = self.ButtonTemplate(
             "SteamID: " + PlayerKey["steamid"], Button_PlayerSteamId_func, (255, 255, 120))

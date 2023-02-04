@@ -1,5 +1,6 @@
 import os
 import json
+import locale
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.DataSystem as DS
@@ -8,6 +9,23 @@ import Scripts.DataSystem as DS
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
+
+def GetSysLang() -> str:
+    sysDefaultLocale = locale.getdefaultlocale()[0]
+    if sysDefaultLocale.split('_')[0].lower() == 'fr'.lower() :
+        return 'Fran\u00e7ais'
+    elif sysDefaultLocale.split('_')[0].lower() == 'zh'.lower():
+        if sysDefaultLocale.split('_')[1].lower() == 'CN'.lower() \
+        or sysDefaultLocale.split('_')[1].lower() == 'SG'.lower() \
+        or sysDefaultLocale.split('_')[1].lower() == 'Hans'.lower():
+            return 'SChinese'
+        elif sysDefaultLocale.split('_')[1].lower() == 'TW'.lower() \
+        or sysDefaultLocale.split('_')[1].lower() == 'HK'.lower() \
+        or sysDefaultLocale.split('_')[1].lower() == 'MO'.lower() \
+        or sysDefaultLocale.split('_')[1].lower() == 'Hant'.lower():
+            return 'TChinese'
+    else:
+        return "English"
 
 DefaultConfigFile = {
     "Discord-Rich-Presence":
@@ -122,7 +140,7 @@ DefaultConfigFile = {
     
     "Active-Language":
         {
-            "value": "English",
+            "value": GetSysLang(),
             "menu": "",
             "description": "The language used in the P2MM Launcher.",
             "warning": "",
