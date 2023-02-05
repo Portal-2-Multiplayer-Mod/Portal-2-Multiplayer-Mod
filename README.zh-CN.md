@@ -28,7 +28,7 @@
 ### 特别感谢 Krzyhau 允许我们使用速通模组中的代码。
 
 ## 语言
-[English](README.md) | [Polski](README.pl.md) | [Español](README.es.md) | 简体中文 | [繁體中文](README.zh-CN.md)
+[English](README.md) | [Polski](README.pl.md) | [Español](README.es.md) | 简体中文 | [繁體中文](README.zh-TW.md)
 
 ## 模组功能
 ```
