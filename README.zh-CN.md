@@ -1,5 +1,5 @@
 <h1>
-  <img src="../Images/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
+  <img src="/Images/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
   <a href="https://discord.gg/nXRygGNxyK">
     <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20%E7%94%A8%E6%88%B7&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
   </a>
@@ -26,6 +26,9 @@
 ### 该模组仅服务端使用。只有服务器管理员需要安装该模组至 Portal 2 来运行。其他玩家仅需使用原版即可进入该服务器。
 
 ### 特别感谢 Krzyhau 允许我们使用速通模组中的代码。
+
+## 语言
+[English](README.md) | [Polski](README.pl.md) | [Español](README.es.md) | 简体中文 | [繁體中文](README.zh-CN.md)
 
 ## 模组功能
 ```
