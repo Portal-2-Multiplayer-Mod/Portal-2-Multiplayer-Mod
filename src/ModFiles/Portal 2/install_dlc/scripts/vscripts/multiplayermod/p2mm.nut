@@ -18,6 +18,14 @@
 //                 fixes for 3+ MP.
 //---------------------------------------------------
 
+/*
+    TODO:
+    - Redo the entire system for LoadMapSupportCode
+        - Better to merge everything into one nut file per map, even with gamemode differences
+    - Find a proper way to load speedrun mod plugin
+        - We could merge it into p2mm dll (need to check with Krzy first)
+*/
+
 // In case this is the client VM...
 if (!("Entities" in this)) { return }
 
@@ -106,6 +114,13 @@ function LoadMapSupportCode(gametype) {
     printl("=============================================================\n")
 
     if (gametype != "standard") {
+        if (gametype == "speedrun") {
+            // Quick check for the speedrun mod plugin
+            if (!("smsm" in this)) {
+                printlP2MM("Failed to load the VScript registers in the Speedrun Mod plugin! Reverting to standard mapsupport...")
+                return LoadMapSupportCode("standard")
+            }
+        }
         try {
             // Import the core functions before the actual mapsupport
             IncludeScript("multiplayermod/mapsupport/" + gametype + "/#" + gametype + "functions.nut")
@@ -119,7 +134,8 @@ function LoadMapSupportCode(gametype) {
     } catch (exception) {
         if (gametype == "standard") {
             printlP2MM("Failed to load standard mapsupport for " + GetMapName() + "\n")
-        } else {
+        }
+        else {
             printlP2MM("Failed to load " + gametype + " mapsupport code! Reverting to standard mapsupport...")
             return LoadMapSupportCode("standard")
         }

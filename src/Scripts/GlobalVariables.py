@@ -16,23 +16,22 @@ from Scripts.BasicLogger import Log
 
 appStartDate: str # appStartDate is the dateTime when the launcher was started, this is used to name the logs
 configData: dict[str, dict[str, str]]
-modPath: str # \p2mm
-modFilesPath: str # \p2mm\Modfiles
-configPath: str
-masterDataFilePath: str # Path defined for the masterData.cfg file
-dataSystemPath: str # Path defined for the data system nuts directory
-# dataSystemSSFilesPath: str # Path defined for the screenshots folder for Portal 2, this is for the data system
+modPath: str # Main mod folder
+modFilesPath: str # The ModFiles folder for the mod
+configsPath: str # Path defined for config files for the launcher
+p2mmScriptsPath: str # Path defined for the multiplayermod scripts location of the mod
 iow: bool = False # Windows system
 iol: bool = False # Linux system
-iosd: bool = False # Steam Deck/Steam OS 3.0 system
+iosd: bool = False # Steam Deck/SteamOS 3.0 system
 nf: str = os.sep # This way the logging won't break if someone runs the app on Mac
 hadtoresetconfig: bool = False
 executable: str = os.path.abspath(sys.executable)
 translations: dict[str, str]
 AfterFunction: None
+gameActive: bool = False
 
 def init() -> None:
-    global appStartDate, modPath, modFilesPath, configPath, masterDataFilePath, dataSystemPath, iow, iol, iosd, nf, translations
+    global appStartDate, modPath, modFilesPath, configsPath, p2mmScriptsPath, iow, iol, iosd, nf, translations
 
     appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
 
@@ -49,38 +48,46 @@ def init() -> None:
 
         # Set the modpath to the users documents folder
         modPath = buf.value + nf + "p2mm"
-        modFilesPath = buf.value + nf + "p2mm\ModFiles"
-        configPath = buf.value + nf + "p2mm"
-        masterDataFilePath = buf.value + nf + "p2mm"
-        dataSystemPath = buf.value + nf + "p2mm\ModFiles\Portal 2\install_dlc\scripts\\vscripts\multiplayermod\datasystem"
+        modFilesPath = modPath + nf + "ModFiles\Portal 2\install_dlc"
+        configsPath = modPath
+        p2mmScriptsPath = modFilesPath + nf + "scripts\\vscripts\multiplayermod"
+        Log("GVars paths for Windows:")
+        Log(modPath + "\n" + modFilesPath + "\n" + configsPath + "\n" + p2mmScriptsPath)
     elif (sys.platform.startswith("linux")):
         # Both Linux and SteamOS 3.0 system platform names return as "linux"
-        # We need to use the platform release name to differentiate a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release
+        # We need to use the platform release name to differentiate a normal Linux 
+        # distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release name
         if ("valve" in platform.release()):
             iosd = True
+            # SteamOS 3.0 has some directories set to read-only, they can be fixed but it gets reset every update and it requires sudo
+            # Because of this p2mm will be installed to the home\deck\Desktop directory instead of .cache and .config
+            # For some reason also SteamOS 3.0's os.sep is "/" instead of the usual "\"
+            modPath = os.path.expanduser("~") + nf + "Desktop/p2mm"
+            modFilesPath = modPath + nf + "ModFiles/Portal 2/install_dlc"
+            configsPath = modPath
+            p2mmScriptsPath = modFilesPath + nf + "scripts/vscripts/multiplayermod"
+            Log("GVars paths for Steam Deck/SteamOS 3.0:")
+            Log(modPath + "\n" + modFilesPath + "\n" + configsPath + "\n" + p2mmScriptsPath)
         else:
             iol = True
-
-        # Steam OS 3.0 has some directories set to read-only
-        # We are going to install p2mm to the home\Documents directory instead of .cache and .config because of this
-        # We are also gonna keep stuff together like with the Windows paths, configs will be placed into the same directory as the ModFiles
-        modPath = os.path.expanduser("~") + nf + "Documents/p2mm"
-        modFilesPath = os.path.expanduser("~") + nf + "Documents/p2mm/Modfiles"
-        configPath = os.path.expanduser("~") + nf + "Documents/p2mm"
-        masterDataFilePath = os.path.expanduser("~") + nf + "Documents/p2mm"
-        dataSystemPath = os.path.expanduser("~") + nf + "Documents/p2mm/ModFiles/Portal 2/install_dlc/scripts//vscript/multiplayermod/datasystem"
-
+            # Set the modpath the to the users .cache and .config directories in the home directory
+            modPath = os.path.expanduser("~") + nf + ".cache\p2mm"
+            modFilesPath = modPath + nf + "Modfiles\Portal 2\install_dlc"
+            configsPath = os.path.expanduser("~") + nf + ".config\p2mm"
+            p2mmScriptsPath = modFilesPath + nf + "scripts\\vscripts\multiplayermod"
+            Log("GVars paths for Linux:")
+            Log(modPath + "\n" + modFilesPath + "\n" + configsPath + "\n" + p2mmScriptsPath)
     else:
-        # Feel sad for the poor people who are running templeOS :(
+        # Feel sad for the poor people who are running templeOS :)
         Log("This operating system is not supported!")
-        Log("We only support Windows, Linux, and SteamOS 3.0 (Steam Deck) as of current.")
+        Log("We only support Windows, Linux, and SteamOS 3.0 (Steam Deck) as of version 2.2.0!")
         quit()
 
     # Check if the modpath exists, if not create it
     if not os.path.exists(modPath):
         os.makedirs(modPath)
-    if not os.path.exists(configPath):
-        os.makedirs(configPath)
+    if not os.path.exists(configsPath):
+        os.makedirs(configsPath)
 
 def LoadConfig() -> None:
     global configData
