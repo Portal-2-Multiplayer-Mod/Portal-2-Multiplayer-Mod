@@ -484,15 +484,15 @@ def FindAvailableDLC(gamepath: str) -> str:
 def LaunchGame(gamepath: str) -> None:
     Log("")
     Log("Running Game...")
-    # LAUNCH OPTIONS: -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon +sv_password (password) (Custom-Launch-Options)
+    # LAUNCH OPTIONS: -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels (Custom-Launch-Options)
     try:
         if (GVars.iow): # Launching for Windows
             GVars.gameActive = True
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, " + GVars.configData["Custom-Launch-Options"]["value"])
-                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
+                Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, -nopreloadmodels, " + GVars.configData["Custom-Launch-Options"]["value"])
+                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", "-nopreloadmodels", GVars.configData["Custom-Launch-Options"]["value"]])
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.gameActive = False
@@ -504,8 +504,8 @@ def LaunchGame(gamepath: str) -> None:
             GVars.gameActive = True
             def RunGame():
                 def RunSteam():
-                    Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, " + GVars.configData["Custom-Launch-Options"]["value"])
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon " + GVars.configData["Custom-Launch-Options"]["value"])
+                    Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, -nopreloadmodels, " + GVars.configData["Custom-Launch-Options"]["value"])
+                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels " + GVars.configData["Custom-Launch-Options"]["value"])
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:
