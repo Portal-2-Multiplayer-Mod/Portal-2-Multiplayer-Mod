@@ -31,7 +31,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay8", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "knockout_start"), "Trigger", "", 1, null, null)
 
-        printl("Ran")
+        printlP2MM("Ran")
         Sp_A3_01Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         Sp_A3_01Viewcontrol.__KeyValueFromString("targetname", "Sp_A3_01Viewcontrol")
         Sp_A3_01Viewcontrol.__KeyValueFromString("target_team", "-1")
@@ -47,7 +47,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
-            printl("Player Joined (Reseting Viewcontrols)")
+            printlP2MM("Player Joined (Reseting Viewcontrols)")
             EntFire("Sp_A3_01Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A3_01Viewcontrol", "enable", "", 0.6, null)
         }

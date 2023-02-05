@@ -28,7 +28,7 @@ function TeleportPlayersBehindEndingElevator() {
 }
 
 function MoveSoundScape() {
-    printl("JELLO")
+    printlP2MM("JELLO")
     // EntFire("end_soundscape", "disable")
     // Entities.FindByName(null, "end_soundscape").SetOrigin(Vector(-11264, 576, 128))
     // EntFire("end_soundscape", "enable", "", 0.1)
@@ -173,7 +173,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local ent = null
         while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
             ent.__KeyValueFromString("CheckAllIDs", "1")
-            //printl("Found func_portal_detector")
+            //printlP2MM("Found func_portal_detector")
             EntFireByHandle(ent, "addoutput", "OnStartTouchPortal ReEnableViewControl:kill::3", 0, null, null)
         }
 
@@ -340,17 +340,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
             if (!Entities.FindByName(null, "DummyObjectWheatlyLook")) {
-                printl("DummyObjectWheatlyLook not found running objective")
+                printlP2MM("DummyObjectWheatlyLook not found running objective")
                 Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "DummyObjectWheatlyLook")
                 WatchPlayerWheatley <- false
                 EntFireByHandle(Entities.FindByName(null, "wheatley_bottom_swivel"), "SetTargetEntity", "chassis_target", 0, null, null)
             }
 
             cursocket <- "socket" + socketnum + "_trigger"
-            //printl(WatchPlayerWheatley)
+            //printlP2MM(WatchPlayerWheatley)
 
             // if (!WatchPlayerWheatley) {
-            //     printl(cursocket)
+            //     printlP2MM(cursocket)
             //     if (!Entities.FindByName(null, cursocket)) {
             //         if (DoDestroyDummy) {
             //             // Entities.FindByName(null, "DummyObjectWheatlyLookOn").Destroy()
@@ -362,7 +362,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // }
 
             if (!Entities.FindByName(null, "DummyObjectWheatlyLookOn")) {
-                printl("DummyObjectWheatlyLookOn not found running objective")
+                printlP2MM("DummyObjectWheatlyLookOn not found running objective")
                 Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "DummyObjectWheatlyLookOn")
                 WatchPlayerWheatley <- true
             }
@@ -403,7 +403,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (!Entities.FindByName(null, "topofelevator")) {
-            //printl("topofelevator")
+            //printlP2MM("topofelevator")
             if (Sp_A4_Finale4ElevatorTopTeleport) {
                 for (local p; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(1, -77, 200))

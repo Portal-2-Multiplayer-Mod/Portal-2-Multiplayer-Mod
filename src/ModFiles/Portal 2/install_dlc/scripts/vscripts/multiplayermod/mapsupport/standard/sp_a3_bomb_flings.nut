@@ -21,7 +21,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printl()}
+        if (GooHurtTimerPred) { printlP2MM()}
         } catch (exception) {
             GooHurtTimerPred <- 0
         }
