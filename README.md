@@ -28,7 +28,7 @@
 ### Special thanks to Krzyhau for allowing us to use his code from Speedrun Mod.
 
 ## Languages
-English | [Español](README.es.md) | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-CN.md)
+English | [Español](README.es.md) | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
 
 ## Mod features
 ```
