@@ -332,8 +332,10 @@ def configCheck() -> str:
     DSLogging("Current Password: " + serverPassword, dsdebug, started)
     disallowedcharfound = False
     
-    if any(disallowedchar in serverPassword for disallowedchar in disallowedpasswordchars):
-        DSLogging(f"Found disallowed characters in password: \"{disallowedchar}\"! Fixing!", dsdebug, started)
+    for disallowedchar in disallowedpasswordchars:
+        if not disallowedchar in serverPassword:
+            continue
+        DSLogging(f'Found disallowed characters in password: {disallowedchar} Fixing!', dsdebug, started)
         fixedpassword = serverPassword.replace(disallowedchar, "")
         if not updatePassword(fixedpassword):
             Log("__________DATA SYSTEM ERROR!!!__________")

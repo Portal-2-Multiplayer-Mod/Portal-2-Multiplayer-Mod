@@ -1,5 +1,5 @@
 <h1>
-  <img src="Images/p2mmbanner_logo.png" alt="p2mmbanner_logo" width="500" height="300" align="left">
+  <img src="../Images/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
   <a href="https://discord.gg/nXRygGNxyK">
     <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
   </a>
