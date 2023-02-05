@@ -1627,8 +1627,7 @@ def UpdateModClient() -> None:
         Ui.running = False
         Log("self.running set to false")
 
-    thread = threading.Thread(target=UpdateThread)
-    thread.start()
+    threading.Thread(target=UpdateThread).start()
 
 def RunGameScript() -> None:
     if MountModOnly():
