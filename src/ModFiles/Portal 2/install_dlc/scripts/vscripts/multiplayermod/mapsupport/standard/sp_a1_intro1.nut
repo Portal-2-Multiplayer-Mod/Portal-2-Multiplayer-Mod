@@ -8,7 +8,7 @@
 HasSleptInContainer1 <- false
 function p2mmDestroyedSequence() {
     if (GetDeveloperLevelP2MM()) {
-        printlP2MM("(P2:MM): p2mmDestroyedSequence() has ran!")
+        printl("(P2:MM): p2mmDestroyedSequence() has ran!")
     }
     HasSleptInContainer1 = true
 }

@@ -64,37 +64,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Remove useless entities so that the entity limit does not crash the game
 
-        // Paint reveal cutscene cleanser doesn't properly turn off so we need to remove them (there's two of them)
-        for (local ent; ent = Entities.FindByClassname(ent, "trigger_portal_cleanser");) {
-            ent.Destroy()
-        }
-
-        // Remove a point_viewcontrol from the map, this is from the commentary mode so we don't need it
-        EntFire("camera_bridge_door", "Kill", null, 0, null)
-
-        // Remove point_viewcontrol_multiplayer's from the map, we aren't using any of them since they have been disabled
-        for (local ent; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
-            ent.Destroy() // 15 entities removed
-        } 
-
-        // Remove a func_clip_vphysics from the map, something for course 5 but its not needed
-        EntFire("track5-door_paint-collide_door", "Kill", null, 0, null)
-
-        // Remove move_rope's from the map
-        for (local ent; ent = Entities.FindByClassname(ent, "move_rope");) {
-            ent.Destroy() // 3 entities removed
-        }
-
-        // Remove a keyframe_rope from the map
-        EntFire("rope_2", "Kill", null, 0, null)
-
-        // Remove game_end's from the map
-        for (local ent; ent = Entities.FindByClassname(ent, "game_end");) {
-            ent.Destroy() // 6 entities removed
-        }
-
-        // Remove a logic_autosave from the map, this ain't single player so it won't work
-        EntFire("@autosave", "Kill", null, 0, null)
+        // Paint reveal cutscene cleanser doesn't properly turn off (there's two of them)
+        Entities.FindByName(Entities.FindByName(null, "cleanser_preventduring_paint_reveal"), "cleanser_preventduring_paint_reveal").Destroy()
+        Entities.FindByName(null, "cleanser_preventduring_paint_reveal").Destroy()
 
         // Remove func_portal_bumper's from the map
         for (local ent; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {

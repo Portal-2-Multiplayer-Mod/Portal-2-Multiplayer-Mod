@@ -20,12 +20,12 @@ function StartGelocity() {
 
 function AddLap() {
     LapCount = LapCount + 1
-    printlP2MM("LapCount: " + LapCount)
+    printl("LapCount: " + LapCount)
     EntFire("p2mm_change_rounds_text", "settext", "Laps: " + LapCount)
     EntFire("p2mm_change_rounds_text", "display")
     if (LapCount >= 50) {
         LapCount = 50
-        printlP2MM("Hit Max Laps")
+        printl("Hit Max Laps")
         EntFire("rounds_button_2", "lock")
         EntFire("button_2", "skin", "1")
     }
@@ -33,12 +33,12 @@ function AddLap() {
 
 function RemoveLap() {
     LapCount = LapCount - 1
-    printlP2MM("LapCount: " + LapCount)
+    printl("LapCount: " + LapCount)
     EntFire("p2mm_change_rounds_text", "settext", "Laps: " + LapCount)
     EntFire("p2mm_change_rounds_text", "display")
     if (LapCount <= 2) {
         LapCount = 2
-        printlP2MM("Hit Min Laps")
+        printl("Hit Min Laps")
         EntFire("rounds_button_1", "lock")
         EntFire("button_1", "skin", "1")
     }
@@ -159,7 +159,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local playerclass = FindPlayerClass(player)
             if (playerclass.GelocityCheckPoint == 2) {
                 playerclass.GelocityCheckPoint <- 0
-                printlP2MM("Player " + player.GetName() + " reached the finish line!")
+                printl("Player " + player.GetName() + " reached the finish line!")
                 Lap(player)
             }
         }
@@ -168,7 +168,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local playerclass = FindPlayerClass(player)
             if (playerclass.GelocityCheckPoint == 0) {
                 playerclass.GelocityCheckPoint <- 1
-                printlP2MM("Player " + player.GetName() + " reached checkpoint 1!")
+                printl("Player " + player.GetName() + " reached checkpoint 1!")
             }
         }
         local Checkpoint2 = CreateTrigger("player", -4878.03, -3548.62, 602.766, -5098.68, -2747.39, -235.222)
@@ -176,7 +176,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local playerclass = FindPlayerClass(player)
             if (playerclass.GelocityCheckPoint == 1) {
                 playerclass.GelocityCheckPoint <- 2
-                printlP2MM("Player " + player.GetName() + " reached checkpoint 2!")
+                printl("Player " + player.GetName() + " reached checkpoint 2!")
             }
         }
     }

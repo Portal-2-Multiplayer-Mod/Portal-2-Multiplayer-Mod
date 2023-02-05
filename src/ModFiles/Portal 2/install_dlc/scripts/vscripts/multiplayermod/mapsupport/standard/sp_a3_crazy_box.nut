@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printlP2MM()}
+        if (GooHurtTimerPred) { printl()}
         } catch (exception) {
             GooHurtTimerPred <- 0
         }
@@ -96,7 +96,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (p.GetClassname()=="prop_weighted_cube") {
                 if (!isopen) {
                     isopen = true
-                    printlP2MM("OPENED")
+                    printl("OPENED")
                     EntFire("genericcustomprop_maindropper", "setanimation", "open", 0.4, null)
                 }
                 stayopen = true
@@ -104,7 +104,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (!stayopen && isopen) {
-            printlP2MM("CLOSED")
+            printl("CLOSED")
             EntFire("genericcustomprop_maindropper", "setanimation", "close", 2.5, null)
             isopen = false
         }

@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         DisableLookDisablerSP_A2_BTS4 <- false
 
         TestingHackStart <- function() {
-            printlP2MM("DOOR HACK START")
+            printl("DOOR HACK START")
             WheatleyPlayerLookSP_A2_BTS4 <- false
         }
     }
@@ -112,7 +112,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // On trigger hit, smash the door 18 seconds later
         if (TriggerOnceSP_A2_BTS4_1) {
             if (!Entities.FindByName(null, "wheatley_scanner_intro_vcd_trigger")) {
-                printlP2MM("Wheatley Sequance Started")
+                printl("Wheatley Sequance Started")
                 EntFire("wheatley_start_smash_window_relay", "trigger", "", 18, null)
                 EntFire("@glados", "RunScriptCode", "FactoryControlRoomHackSuccess()", 18, null)
                 TriggerOnceSP_A2_BTS4_1 <- false

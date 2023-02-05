@@ -10,12 +10,12 @@ GameDoneGelocity <- false
 
 function RoundsButtonAdd1() {
     GelocityRounds = GelocityRounds + 1
-    printlP2MM(GelocityRounds)
+    printl(GelocityRounds)
 }
 
 function RoundsButtonRemove1() {
     GelocityRounds = GelocityRounds - 1
-    printlP2MM(GelocityRounds)
+    printl(GelocityRounds)
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_start").Destroy()
 
 
-        printlP2MM("Yall Playing GELOCITY");
+        printl("Yall Playing GELOCITY");
         local ent = null
         while (ent = Entities.FindByClassname(ent, "paint_sphere")) {
             EntFire(ent.GetName(), "paint", "", 0.8)
@@ -63,7 +63,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSPostPlayerSpawn) {
-        printlP2MM("Removed: " + TotalRemovedEnts + " Entities")
+        printl("Removed: " + TotalRemovedEnts + " Entities")
     }
 
     if (MSLoop) {
@@ -81,7 +81,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     }
                 } catch(e) {
                     local pclass = FindPlayerClass(p)
-                    printlP2MM("No Gelocity player class parts found! Creating...")
+                    printl("No Gelocity player class parts found! Creating...")
                     pclass.hitcheckpoint <- true
                     pclass.laps <- 0
                 }
@@ -102,7 +102,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         pclass.laps <- pclass.laps + 1
                         pclass.hitcheckpoint <- false
 
-                        printlP2MM("Lap: " + pclass.laps)
+                        printl("Lap: " + pclass.laps)
 
                         // Set Message Text
                         local pcolor = pclass.color
@@ -122,7 +122,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         EntFire("p2mm_rounds_text_override", "display")
                     }
                 } catch(e) {
-                    printlP2MM("No Gelocity player class parts found! Creating...")
+                    printl("No Gelocity player class parts found! Creating...")
                     pclass.hitcheckpoint <- true
                     pclass.laps <- 0
                 }
@@ -134,10 +134,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 try {
                     if (!pclass.hitcheckpoint) {
                         pclass.hitcheckpoint <- true
-                        printlP2MM("HitCheckpoint: " + pclass.hitcheckpoint)
+                        printl("HitCheckpoint: " + pclass.hitcheckpoint)
                     }
                 } catch(e) {
-                    printlP2MM("No Gelocity player class parts found! Creating...")
+                    printl("No Gelocity player class parts found! Creating...")
                     pclass.hitcheckpoint <- true
                 }
             }
