@@ -24,6 +24,8 @@ def GetSysLang() -> str:
         or sysDefaultLocale.split('_')[1].lower() == 'MO'.lower() \
         or sysDefaultLocale.split('_')[1].lower() == 'Hant'.lower():
             return 'TChinese'
+    elif sysDefaultLocale.split('_')[0].lower() == 'pl'.lower():
+        return 'Polski'
     else:
         return "English"
 
