@@ -141,7 +141,6 @@ class Gui:
     class DisplayText:
         def __init__(self,
                     text: str, # The text you want to display
-                    font: str = "GUI/assets/fonts/pixel.ttf", # In case there is a custom font that needs to replace the default, this may be the case for certain languages
                     textColor: tuple = (155, 155, 155), # The color you want the text displayed to be in RGB format
                     xpos: float = 0, # The bigger the number, the more right the text will be.
                     ypos: float = 0, # The bigger the number, the lower the text will be.
@@ -151,7 +150,6 @@ class Gui:
                     ) -> None:
 
             self.text = text
-            self.font = font
             self.textColor = textColor
             self.xpos = xpos
             self.xstart = xstart
@@ -177,11 +175,9 @@ class Gui:
                      width: float = 28, # A duct tape fix to prevent errors with mouse movement detection
                      height: float = 14, # A duct tape fix to prevent errors with mouse movement detection
                      size: float = 700, # Size "700" appears to be default size. Increasing over "7500" will start to make the launcher unstable.
-                     font: str = "GUI/assets/fonts/pixel.ttf" # In case there is a custom font that needs to replace the default, this may be the case for certain languages
                      ) -> None:
 
             self.text = text
-            self.font = font
             self.function = func
             self.activecolor = activeColor
             self.inactivecolor = inactiveColor
@@ -388,7 +384,6 @@ class Gui:
                 self.y = 2 # A duct tape fix to prevent errors with mouse movement detection
                 self.width = 28 # A duct tape fix to prevent errors with mouse movement detection
                 self.height = 14 # A duct tape fix to prevent errors with mouse movement detection
-                self.font = "GUI/assets/fonts/pixel.ttf"
 
             def whileSelectedfunction(self, outerSelf: Gui) -> None:
                 outerSelf.BlitDescription(translations[self.keyobj["description"]], 75,
@@ -838,8 +833,7 @@ class Gui:
             txt: str,
             x: float = None,
             y: float = None,
-            clr: tuple = (255, 255, 255),
-            font: str = "GUI/assets/fonts/pixel.ttf") -> None:
+            clr: tuple = (255, 255, 255)) -> None:
 
         if x is None:
             x = self.screen.get_width() / 16
@@ -847,7 +841,7 @@ class Gui:
             y = self.screen.get_height() / 16
 
         if (len(txt) > 0):
-            text = pygame.font.Font(font, int(int(
+            text = pygame.font.Font(translations["font"], int(int(
                 int((int(self.screen.get_width() / 15) + int(self.screen.get_height() / 25)) / (len(txt) * 0.1))))).render(txt, True, clr)
             if not (self.LookingForInput):
                 self.screen.blit(text, (x, y))
@@ -944,7 +938,7 @@ class Gui:
 
         # DEBUG
 
-        # tempsurf = pygame.font.Font("GUI/assets/fonts/pixel.ttf", int(int((int(W / 25) + int(H / 50)) / 1.5))).render("CuM", True, (255, 100, 255))
+        # tempsurf = pygame.font.Font(translations["font"], int(int((int(W / 25) + int(H / 50)) / 1.5))).render("CuM", True, (255, 100, 255))
         # screen.blit(tempsurf, (mousex - tempsurf.get_width()/2, mousey - tempsurf.get_height()/2))
 
         # MENU 2 ELECTRIC BOOGALOO
@@ -961,8 +955,8 @@ class Gui:
             else:
                 clr = button.inactivecolor
             self.RunAnimation(button, button.curanim)
-
-            text1 = pygame.font.Font(button.font, (button.width + button.height)).render(button.text, True, clr)
+            
+            text1 = pygame.font.Font(translations["font"], (button.width + button.height)).render(button.text, True, clr)
 
             if not (self.LookingForInput):
                 self.screen.blit(
@@ -976,7 +970,7 @@ class Gui:
         for displaytext in self.CurrentMenuText:
             displaytext.width = int(W / displaytext.size)
             displaytext.height = int(H / displaytext.size)
-            text = pygame.font.Font(displaytext.font, (displaytext.width + displaytext.height))
+            text = pygame.font.Font(translations["font"], (displaytext.width + displaytext.height))
             words = [word.split(' ') for word in displaytext.text.splitlines()]  # 2D array where each row is a list of words.
             space = text.size(' ')[0]  # The width of a space.
             max_width = displaytext.xend
@@ -1058,7 +1052,7 @@ class Gui:
         for error in self.ERRORLIST[::-1]:
             indx += 1
             errortext = pygame.font.Font(
-                "GUI/assets/fonts/pixel.ttf", 
+                translations["font"],
                 int(int(W / 60) + int(H / 85))
                 ).render(error[0], True, error[2])
             
@@ -1098,7 +1092,7 @@ class Gui:
             by = H / 2 - (bh / 2)
 
             # put the title in the box
-            boxtitle = pygame.font.Font("GUI/assets/fonts/pixel.ttf", fntsize).render(self.PopupBoxList[0][0], True,
+            boxtitle = pygame.font.Font(translations["font"], fntsize).render(self.PopupBoxList[0][0], True,
                                                                                       (255, 255, 0))
             titlew = boxtitle.get_width()
             titleh = boxtitle.get_height()
@@ -1111,7 +1105,7 @@ class Gui:
             indx = 0
             for line in ctext:
                 text = pygame.font.Font(
-                    "GUI/assets/fonts/pixel.ttf", int(fntsize / 1.5)).render(line, True, (0, 0, 0))
+                    translations["font"], int(fntsize / 1.5)).render(line, True, (0, 0, 0))
                 textw = text.get_width()
                 texth = text.get_height()
                 textx = bx + (bw / 2) - (textw / 2)
@@ -1140,7 +1134,7 @@ class Gui:
                 button.height = surfh
                 self.screen.blit(buttonsurf, (surfx, surfy))
 
-                text = pygame.font.Font(button.font, int(fntsize / 1.5)).render(button.text, True, (255, 255, 255))
+                text = pygame.font.Font(translations["font"], int(fntsize / 1.5)).render(button.text, True, (255, 255, 255))
                 textw = text.get_width()
                 texth = text.get_height()
                 textx = bx + (bw / amtob) * (indx) + \
@@ -1161,7 +1155,7 @@ class Gui:
             InputText = ""
             for i in range(len(lines)):
                 InputText = pygame.font.Font(
-                    "GUI/assets/fonts/pixel.ttf", fntsize).render(lines[i], True, (255, 255, 175))
+                    translations["font"], fntsize).render(lines[i], True, (255, 255, 175))
                 self.screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (
                     (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - (
                     (((text1.get_height() * 1.25) * (len(lines) / 2))))))
@@ -1175,7 +1169,7 @@ class Gui:
             # We need to check if breaks were detected before in the prompt part of the code (line 868)
             if self.HasBreaks == True:
                 for breaks in range(0, self.PromptBreaks):
-                    surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
+                    surfInputPrompt = pygame.font.Font(translations["font"],
                         int(fntsize/1.5)).render(self.InputPrompt[breaks], True, (255, 255, 255))
 
                     # blit it right below the surf1
@@ -1183,7 +1177,7 @@ class Gui:
                             (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2),
                             ((blitpos[1] + 15)+ (surfInputPrompt.get_height() * breaks))))
             else:
-                surfInputPrompt = pygame.font.Font("GUI/assets/fonts/pixel.ttf",
+                surfInputPrompt = pygame.font.Font(translations["font"],
                         int(fntsize/1.5)).render(self.InputPrompt, True, (255, 255, 255))
 
                 # blit it right below the surf1
@@ -1583,20 +1577,20 @@ def LoadTranslations() -> dict:
     global translations
     langPath = "languages/" + \
         GVars.configData["Active-Language"]["value"] + ".json"
-
+    print(langPath)
     if not os.path.exists(langPath):
         langPath = GVars.modPath + GVars.nf + "languages/" + \
             GVars.configData["Active-Language"]["value"] + ".json"
-
+    print(langPath)
     translations = json.load(open(langPath, "r", encoding="utf8"))
     EnglishOriginal : dict[str, str] = json.load(open("languages/English.json", "r", encoding="utf8"))
-
-    if (not os.path.exists(langPath)) or (translations.keys() != EnglishOriginal.keys()):
+    
+    if (not os.path.exists(langPath)):
         cfg.EditConfig("Active-Language",
                        cfg.DefaultConfigFile["Active-Language"]["value"])
         langPath = "languages/" + \
             GVars.configData["Active-Language"]["value"] + ".json"
-
+        print(langPath)
         translations = json.load(open(langPath, "r", encoding="utf8"))
 
         Log("[ERROR] Language file isn't found or key mismatch")
@@ -1615,8 +1609,7 @@ def UpdateModFiles() -> None:
             if thing[0] == translations["update_fetching"]:
                 Ui.ERRORLIST.remove(thing)
 
-    thread = threading.Thread(target=UpdateThread)
-    thread.start()
+    threading.Thread(target=UpdateThread).start()
 
 def UpdateModClient() -> None:
     PreExit()
