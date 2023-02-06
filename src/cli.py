@@ -1,8 +1,8 @@
-import Scripts.GlobalVariables as GVars
-from Scripts.BasicLogger import Log, StartLog
-import Scripts.RunGame as RG
-import Scripts.Configs as cfg
-import Scripts.Updater as up
+import Services.GlobalVariables as GVars
+from Services.BasicLogger import Log, StartLog
+import Services.RunGame as RG
+import Services.Configs as cfg
+import Services.Updater as up
 import shutil
 import sys
 import os
@@ -47,7 +47,7 @@ def VerifyGamePath():
     valid = False
     while valid == False:
         gamepath = GVars.configData["portal2path"]["value"]
-        if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+        if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + "/portal2_dlc2") != True):
             Log("Game path is invalid!")
             GetGamePath()
         else:
@@ -118,9 +118,9 @@ def OnStart():
 
 
 def VerifyModFiles():
-    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    modFilesPath = GVars.modPath + "/ModFiles" + "/Portal 2" + "/install_dlc"
     Log("searching for mod files in: "+modFilesPath)
-    if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
+    if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + "/32playermod.identifier")):
         Log("Mod files found")
         return True
 
@@ -131,20 +131,20 @@ def VerifyModFiles():
 def DEVMOUNT():
     try:
         # delete the old modfiles
-        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
+        shutil.rmtree(GVars.modPath + "/ModFiles")
     except Exception as e:
-        Log("folder doesn't exist: "+ GVars.modPath + GVars.nf + "ModFiles")
+        Log("folder doesn't exist: "+ GVars.modPath + "/ModFiles")
         Log(str(e))
 
     # copy the one in the current directory to the modpath
-    shutil.copytree(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    shutil.copytree(cwd + "/ModFiles", GVars.modPath + "/ModFiles")
 
     Log("copied files to mod path")
 
 
 def UseFallbacks():
-    # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
-    shutil.copytree(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    # copy the "FALLBACK" folder to the modpath "GVars.modPath + "/ModFiles""
+    shutil.copytree(cwd + "/FALLBACK" + "/ModFiles", GVars.modPath + "/ModFiles")
 
 
 def Init():

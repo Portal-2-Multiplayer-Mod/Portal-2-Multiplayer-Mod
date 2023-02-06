@@ -1,9 +1,8 @@
 import os
 import json
 import locale
-from Scripts.BasicLogger import Log
-import Scripts.GlobalVariables as GVars
-import Scripts.DataSystem as DS
+from Services.BasicLogger import Log
+import Services.GlobalVariables as GVars
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
@@ -11,21 +10,27 @@ import Scripts.DataSystem as DS
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
 
 def GetSysLang() -> str:
-    sysDefaultLocale = locale.getdefaultlocale()[0]
-    if sysDefaultLocale.split('_')[0].lower() == 'fr'.lower() :
-        return 'Fran\u00e7ais'
-    elif sysDefaultLocale.split('_')[0].lower() == 'zh'.lower():
-        if sysDefaultLocale.split('_')[1].lower() == 'CN'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'SG'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'Hans'.lower():
+    """Get the default language of the system
+
+    Returns
+    -------
+    str
+        Full langueg name
+    """
+
+    sysLanguage = locale.getdefaultlocale()[0]
+
+    if sysLanguage.split('_')[0].lower() == "fr":
+        return "French"
+
+    if sysLanguage.split('_')[0].lower() == "zh":
+        if sysLanguage.split('_')[1].lower() in ["cn", "sg", "hans"]:
             return 'SChinese'
-        elif sysDefaultLocale.split('_')[1].lower() == 'TW'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'HK'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'MO'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'Hant'.lower():
+
+        if sysLanguage.split('_')[1].lower() in ["tw", "hk", "mo", "hant"]:
             return 'TChinese'
-    else:
-        return "English"
+
+    return "English"
 
 DefaultConfigFile = {
     "Discord-Rich-Presence":
@@ -72,7 +77,7 @@ DefaultConfigFile = {
             "warning": "",
             "prompt": "Enter the path to the Portal 2 folder",
         },
-    
+
     "Custom-Launch-Options":
         {
             "value": "+map mp_coop_lobby_3",
@@ -137,7 +142,7 @@ DefaultConfigFile = {
             "warning": "If You See This Something Is Wrong",
             "prompt": "If You See This Something Is Wrong",
         },
-    
+
     "Active-Language":
         {
             "value": GetSysLang(),
@@ -164,7 +169,7 @@ DefaultConfigFile = {
             "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
             "prompt": "",
         },
-    
+
     "Data-System-Debugging":
         {
             "value": False,
@@ -299,7 +304,7 @@ def DeletePlayer(index: int):
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
-    return GVars.configsPath + GVars.nf + "configs.cfg"
+    return GVars.configsPath + "/configs.cfg"
 
 # to import the config data from the local config file
 def ImportConfig() -> dict:
@@ -335,6 +340,5 @@ def ImportConfig() -> dict:
     except Exception as e:
         Log(f"Error importing the config file: {str(e)}")
         WriteConfigFile(DefaultConfigFile)
-        print("here3")
-        GVars.hadtoresetconfig = True
-        return ImportConfig()
+        GVars.hadToResetConfig = True
+        return DefaultConfigFile

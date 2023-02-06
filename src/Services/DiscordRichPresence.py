@@ -2,11 +2,11 @@ import requests
 import json
 import pypresence
 
-import Scripts.GlobalVariables as GVars
-import Scripts.BasicFunctions as BF
-from Scripts.BasicLogger import Log
-import Scripts.RunGame as RG
-import Scripts.Updater as UP
+import Services.GlobalVariables as GVars
+import Services.BasicFunctions as BF
+from Services.BasicLogger import Log
+import Services.RunGame as RG
+import Services.Updater as UP
 
 DRPHandle: tuple = None
 discordActive: bool = False
@@ -116,15 +116,15 @@ def updateRichPresenceRoutine() -> None:
         return
 
     publicIP = getPublicIP()
-    if (GVars.configData["Server-Password"]["value"] == "") and GVars.gameActive:
+    if (GVars.configData["Server-Password"]["value"] == "") and GVars.gameIsActive:
         DRPHandle.update(
             state="Playing with P2:MM!", 
             large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96",
             buttons=[{"label": "Join P2MM Play Session", "url": "steam://connect/" + publicIP + ":27015"}])
-    elif (GVars.configData["Server-Password"]["value"] != "") and GVars.gameActive:
+    elif (GVars.configData["Server-Password"]["value"] != "") and GVars.gameIsActive:
         DRPHandle.update(state="Playing with P2:MM!", 
         large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
-    elif not GVars.gameActive:
+    elif not GVars.gameIsActive:
         DRPHandle.update(state="In the Launcher Menu!", 
         large_image="https://cdn.discordapp.com/icons/839651379034193920/afd6c41c4cca707576f023a23f611de4.webp?size=96")
 

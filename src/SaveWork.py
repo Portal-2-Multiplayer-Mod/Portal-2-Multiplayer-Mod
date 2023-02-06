@@ -4,7 +4,7 @@ import shutil
 #set current dir to the directory of the script
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
-import Scripts.GlobalVariables as GVars
+import Services.GlobalVariables as GVars
 GVars.init()
 GVars.LoadConfig()
 gamepath = GVars.configData["portal2path"]["value"]

@@ -4,8 +4,8 @@
 import threading
 from socketserver import ThreadingMixIn
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-import Scripts.GlobalVariables as GVars
-from Scripts.BasicLogger import Log
+import Services.GlobalVariables as GVars
+from Services.BasicLogger import Log
 
 # Class to setup the HTTP Server to start in the users Portal 2 Path
 class Handler(SimpleHTTPRequestHandler):
@@ -17,7 +17,7 @@ class FastDLHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
     
     def serve_forever(self):
-        while GVars.gameActive:
+        while GVars.gameIsActive:
             self.handle_request()
         Log("FDLHTTP: Shutting down the FastDL HTTP server...")
         self.shutdown()

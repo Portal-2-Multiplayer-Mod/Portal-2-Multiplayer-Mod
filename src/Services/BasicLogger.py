@@ -1,16 +1,16 @@
 from pathlib import Path
+import Services.GlobalVariables as GVars
 
-import Scripts.GlobalVariables as GVars
 
 def Log(message: str) -> None:
     message = message.strip()
     # get the path of the mod launcher and make a floder inside it called "Logs"
-    path = GVars.modPath + GVars.nf + "Logs"
+    path = GVars.modPath + "/Logs"
     Path(path).mkdir(parents=True, exist_ok=True)
 
     # creates a log file and writes to it
-        # if the file already exists it will append to it
-    with open(path + GVars.nf + "Log-"+GVars.appStartDate+".log", "a", encoding="utf-8") as log:
+    # if the file already exists it will append to it
+    with open(path + "/Log-"+GVars.appStartDate+".log", "a", encoding="utf-8") as log:
         log.write(message + "\n")
 
     # Only write to the console if the message is not empty
@@ -22,15 +22,18 @@ def Log(message: str) -> None:
     else:
         print("")
 
-#////////////////////////////////////////#
-#//# Cool text to start the log with  #//#
-#////////////////////////////////////////#
+# ////////////////////////////////////////#
+# //# Cool text to start the log with  #//#
+# ////////////////////////////////////////#
+
+
 def StartLog() -> None:
     Log("")
     Log("")
     Log("")
     Log("")
-    Log("____________________NEW LAUNCH LOG " + GVars.appStartDate + "___________________")
+    Log("____________________NEW LAUNCH LOG " +
+        GVars.appStartDate + "___________________")
     Log("")
     Log("")
     Log("")
@@ -51,12 +54,12 @@ def StartLog() -> None:
     Log("")
 
     Log("______________________General Device Info______________________")
+    Log("")
     if (GVars.iow):
-        Log("")
         Log("Windows OS detected!")
     elif (GVars.iol):
-        Log("")
         Log("Linux OS: detected!")
     elif (GVars.iosd):
-        Log("")
         Log("SteamOS 3.0: detected!")
+
+    Log("_______________________________________________________________")
