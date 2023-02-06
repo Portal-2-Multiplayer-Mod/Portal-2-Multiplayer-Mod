@@ -30,35 +30,35 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to loop the Loop() function every 0.1 second
-    // This is the original way to loop the Loop() function, keeping it here in case we still need it
-    // Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
-    // for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
-    //     if (timer.GetName() == "p2mm_timer") {
-    //         EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-    //         EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
-    //         EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
-    //         EntFireByHandle(timer, "Enable", "", looptime, null, null)
-    //         break
-    //     }
-    // }
+    Create an entity to loop the Loop() function every 0.1 second
+    This is the original way to loop the Loop() function, keeping it here in case we still need it
+    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
+    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
+        if (timer.GetName() == "p2mm_timer") {
+            EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
+            EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
+            EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
+            EntFireByHandle(timer, "Enable", "", looptime, null, null)
+            break
+        }
+    }
 
     // Create an entity to loop the Loop() function every 0.1 second
     // While this method adds a extra entity, it is documented that logic_timers
     // use high amounts of server bandwith especially if triggered at low intervals
     // An I/O loop should reduce the lag but this method isn't working as intended and should be implemented at some point later
-    Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer")
-    for (local relay; relay = Entities.FindByClassname(relay, "logic_relay");) {
-        if (relay.GetName() == "p2mm_timer") {
-            p2mm_timer <- relay
-            p2mm_timer.__KeyValueFromString("spawnflags", "2")
-            EntFireByHandle(p2mm_timer, "AddOutput", "OnTrigger worldspawn:RunScriptCode:Loop():0.1:-1", 0, null, null)
-            break
-        }
-    }
+    // Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer")
+    // for (local relay; relay = Entities.FindByClassname(relay, "logic_relay");) {
+    //     if (relay.GetName() == "p2mm_timer") {
+    //         p2mm_timer <- relay
+    //         p2mm_timer.__KeyValueFromString("spawnflags", "2")
+    //         EntFireByHandle(p2mm_timer, "AddOutput", "OnTrigger worldspawn:RunScriptCode:Loop():0.1:-1", 0, null, null)
+    //         break
+    //     }
+    // }
 
     // For the I/O loop method we need to trigger the start of the loop
-    EntFireByHandle(p2mm_timer, "Trigger", "", 1, null, null)
+    // EntFireByHandle(p2mm_timer, "Trigger", "", 1, null, null)
 
     // Delay the creation of our map-specific entities before so
     // that we don't get an engine error from the entity limit
@@ -472,7 +472,7 @@ function Loop() {
         }
     }
     // Trigger the timer to run the loop again
-    EntFireByHandle(p2mm_timer, "Trigger", "", 0, null, null)
+    // EntFireByHandle(p2mm_timer, "Trigger", "", 0, null, null)
 }
 
 // 3
