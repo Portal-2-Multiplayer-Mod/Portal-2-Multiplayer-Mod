@@ -1388,7 +1388,30 @@ class Gui:
             # This also checks for any config changes that the Data System looks for
             updateCount += 1 # Every frame will add to the counter, every 60 frames is a second
             if updateCount == int(60 * 15):
-                UpdateTime()
+                def UpdateTime():
+                    # If its the first start, we won't update anything because the user will need
+                    # to download the ModFiles and restart the launcher
+                    if DS.firstStart:
+                        return
+                    
+                    # Check if Discord is still active or the user has internet
+                    DRP.updateRichPresenceCheck()
+
+                    # Go through the configs to update any DS related things as needed.
+                    configCheck = DS.configCheck()
+                    if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
+                        Ui.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
+                    elif "passwordcorrected" in configCheck:
+                        Ui.Error(translations["data_system_password_corrected"], 5, (75, 200, 75))
+                    elif "passwordcorrectionerror" in configCheck:
+                        Ui.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+                    elif "passwordupdaterror" in configCheck:
+                        Ui.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
+
+                    # Do a refresh of the Data System
+                    DS.dataSystemInitialization(True, GVars.configData["Data-System-Debugging"]["value"])
+                threading.Thread(target=UpdateTime).start()
+
                 updateCount = 0 # Reset the counter back to zero
 
         PreExit()
@@ -1399,21 +1422,6 @@ class Gui:
 # !######################################################
 # !                       Logic
 # !######################################################
-
-def UpdateTime():
-    if DS.firstStart:
-        return
-    DRP.updateRichPresenceCheck()
-    configCheck = DS.configCheck()
-    if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
-        Ui.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
-    elif "passwordcorrected" in configCheck:
-        Ui.Error(translations["data_system_password_corrected"], 5, (75, 200, 75))
-    elif "passwordcorrectionerror" in configCheck:
-        Ui.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-    elif "passwordupdaterror" in configCheck:
-        Ui.Error(translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-    DS.dataSystemInitialization(True, GVars.configData["Data-System-Debugging"]["value"])
 
 def PreExit() -> None:
     Log("Shutting down the P2MM launcher...")
@@ -1577,11 +1585,11 @@ def LoadTranslations() -> dict:
     global translations
     langPath = "languages/" + \
         GVars.configData["Active-Language"]["value"] + ".json"
-    print(langPath)
+
     if not os.path.exists(langPath):
         langPath = GVars.modPath + GVars.nf + "languages/" + \
             GVars.configData["Active-Language"]["value"] + ".json"
-    print(langPath)
+    
     translations = json.load(open(langPath, "r", encoding="utf8"))
     EnglishOriginal : dict[str, str] = json.load(open("languages/English.json", "r", encoding="utf8"))
     

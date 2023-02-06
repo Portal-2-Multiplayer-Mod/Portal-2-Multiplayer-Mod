@@ -59,7 +59,7 @@ def DSLogging(message: str, debugging: str = "false", hasstarted: bool = False) 
         Log(message)
         return
     elif not hasstarted:
-        Log("DS: " + message)
+        Log("[DS] " + message)
         return
 
 # This is our initialization function for the system, it will also act as the refresh function when the system requires a refresh
@@ -241,7 +241,7 @@ def masterDataFileStructureCheck(configsPath) -> None:
     # # Validate all the categories in presetCategories are correct in the masterDataFile file
     # for keys in masterDataFile:
     #     if keys not in presetKeys:
-    #         Log(f"DS: The category [{key}] is invalid, removing it...")
+    #         Log(f"[DS] The category [{key}] is invalid, removing it...")
     #         dataFileKeys.pop(key)
     #         errors +=1
 
@@ -249,14 +249,14 @@ def masterDataFileStructureCheck(configsPath) -> None:
     # #for values in dataFileKeys[key]:
     #     #if value not in mapValues:
     #         #if dataFile[key][values] != defaultDataStructure[key][values]:
-    #             #Log(f"DS: The value for [{key}][{values}] is invalid, fixing it...")
+    #             #Log(f"[DS] The value for [{key}][{values}] is invalid, fixing it...")
     #             #dataFile[key][values] = defaultDataStructure[key][values]
     #             #errors +=1
 
     # # Validate all the categories in presetCategories exist in the masterDataFile file
     # for key in defaultDataStructure.keys():
     #     if key not in dataFileKeys:
-    #         Log(f"DS: The category [{key}] is missing, readding it...")
+    #         Log(f"[DS] The category [{key}] is missing, readding it...")
     #         dataFileKeys[key] = defaultDataStructure[key]
     #         errors +=1
 
@@ -269,10 +269,10 @@ def masterDataFileStructureCheck(configsPath) -> None:
     #             #errors +=1
 
     # if errors > 0:
-    #     Log(f"DS: There are errors, {errors} error(s) was detected.")
-    #     #Log("DS: There are errors, need to wipe the masterDataFile and make a new one...")
+    #     Log(f"[DS] There are errors, {errors} error(s) was detected.")
+    #     #Log("[DS] There are errors, need to wipe the masterDataFile and make a new one...")
     #     #createNewMasterData()
-    # Log("DS: Structure check successfully performed!")
+    # Log("[DS] Structure check successfully performed!")
 
 def createNewMasterData() -> None:
     currentMasterData = (GVars.configsPath + GVars.nf + "masterData.cfg")
@@ -285,7 +285,7 @@ def createNewMasterData() -> None:
     json.dump(defaultDataStructure, newMasterDataFile, indent=4)
 
     if os.path.exists(GVars.modPath + GVars.nf + "masterData.cfg"):
-        DSLogging("DS: New masterData.cfg created in p2mm directory...", dsdebug, started)
+        DSLogging("[DS] New masterData.cfg created in p2mm directory...", dsdebug, started)
     else:
         raise masterDataFileCreationError
 
@@ -306,14 +306,14 @@ def updatePassword(newpassword: str) -> bool:
         #     servercfg.close()
         checkfile = open(dsSavesPath + GVars.nf + "datasystem-datacheck.nut", "x", encoding="utf-8")
         checkfile.close()
-        Log("DS: Previous Password: " + GVars.configData["Server-Password"]["value"])
+        Log("[DS] Previous Password: " + GVars.configData["Server-Password"]["value"])
         cfg.EditConfig("Server-Password", newpassword)
-        Log("DS: New Password: " + GVars.configData["Server-Password"]["value"])
+        Log("[DS] New Password: " + GVars.configData["Server-Password"]["value"])
         return True
     except FileExistsError:
         pass
     except Exception as error:
-        Log("DS: Failed to update password, exception:\n" + traceback.format_exc())
+        Log("[DS] Failed to update password, exception:\n" + traceback.format_exc())
         return False
 
 # Goes through all the configs the Data System
@@ -360,19 +360,19 @@ def configCheck() -> str:
 #def returnCleanUp() -> None:
 
 def cleanUpFolders() -> None:
-    Log("DS: Removing Data System folders and files...")
+    Log("[DS] Removing Data System folders and files...")
     if os.path.exists(dsSavesPath):
         BF.DeleteFolder(dsSavesPath)
     
-    Log("DS: Checking for any old screenshot file indicators left over...")
+    Log("[DS] Checking for any old screenshot file indicators left over...")
     if (not GVars.configData["Portal2-Path"]["value"] == "undefined") and (os.path.exists(ssFilesPath)):
         if not os.listdir(ssFilesPath) == []:
-            Log("DS: Found screenshot files, determining if they belong to the DS and removing them...")
+            Log("[DS] Found screenshot files, determining if they belong to the DS and removing them...")
             for dataSystemIndicator in os.listdir(ssFilesPath):
                 if dataSystemIndicator.startswith("datasystem-"):
                     os.remove(ssFilesPath + GVars.nf + dataSystemIndicator)
-                    Log("DS: Removed old screenshot file indicator " + dataSystemIndicator + "...")
-    Log("DS: Finished checking for any old screenshot file indicators...")
+                    Log("[DS] Removed old screenshot file indicator " + dataSystemIndicator + "...")
+    Log("[DS] Finished checking for any old screenshot file indicators...")
 
 # All the custom exceptions are defined here
 class firstStartWarning(Warning):
