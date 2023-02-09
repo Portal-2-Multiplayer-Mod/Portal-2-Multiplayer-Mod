@@ -411,10 +411,7 @@ class Gui:
                     # default to false to avoid errors
                     else:
                         cfg.EditConfig(self.cfgkey, False)
-                    if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
-                        self.outerSelf.Error(
-                            translations["data_system_disabled_error"], 5, (255, 21, 0))
-                    elif "passwordcorrected" in configCheck:
+                    if "passwordcorrected" in configCheck:
                         self.outerSelf.Error(
                             translations["data_system_password_corrected"], 5, (75, 200, 75))
                     elif "passwordcorrectionerror" in configCheck:
