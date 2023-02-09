@@ -21,7 +21,6 @@ import Services.RunGame as RG
 import Services.Updater as UP
 import Services.Workshop as workshop
 import Services.BasicFunctions as BF
-import Services.DataSystem as DS
 import Services.DiscordRichPresence as DRP
 from Services.BasicLogger import Log, StartLog
 
@@ -89,7 +88,6 @@ class Gui:
 
         self.DefineMainMenu()
         self.DefineSettingsMenu()
-        self.DefineDataMenu()
         self.DefineWorkshopMenu()
         self.DefineManualMountingMenu()
         self.DefineResourcesMenu()
@@ -225,7 +223,6 @@ class Gui:
             translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120), isasync=True)
         self.Button_Settings = self.ButtonTemplate(
             translations["settings_button"], self.Button_Settings_func)
-        # self.Button_Data = self.ButtonTemplate(translations["data_menu_button"], self.Button_Data_func, (235, 172, 14)) This will be the buttons position in the list onces its finished
         self.Button_Update = self.ButtonTemplate(
             translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
         self.Button_ManualMode = self.ButtonTemplate(
@@ -248,14 +245,11 @@ class Gui:
                                 self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
 
         if self.devMode:
-            # For now Data will be a dev mode button
-            self.Button_Data = self.ButtonTemplate(
-                translations["data_menu_button"], self.Button_Data_func, (235, 172, 14))
+
             self.Button_Test = self.ButtonTemplate(
                 "Test Button", self.Button_Test_func)
             self.Text_DevMode = self.DisplayText(translations["dev_mode_enabled"], textColor=(
                 255, 0, 0), xpos=75, xstart=75, xend=750, ypos=735)
-            self.MainMenuButtons.append(self.Button_Data)
             self.MainMenuButtons.append(self.Button_Test)
             self.MainMenuText.append(self.Text_DevMode)
 
@@ -291,32 +285,6 @@ class Gui:
             self.SettingsMenus.append(self.Button_HiddenSettings)
 
         self.SettingsMenus.append(self.Button_Back)
-
-    def DefineDataMenu(self) -> None:
-        self.Text_DataSystemStateTxt = self.DisplayText(
-            translations["data_system_state_txt"], textColor=(155, 155, 155), xpos=10, xstart=10, xend=1000, ypos=10, size=60)
-        if DS.dataSystemState:
-            self.Text_DataSystemState = self.DisplayText(
-                translations["data_system_enabled"],
-                textColor=(21, 255, 0),
-                xpos=670, xstart=670, xend=6700, ypos=15, size=75)
-        else:
-            self.Text_DataSystemState = self.DisplayText(
-                translations["data_system_disabled"],
-                textColor=(255, 21, 0),
-                xpos=670, xstart=670, xend=6700, ypos=15, size=75)
-        self.Button_RefreshDataSystem = self.ButtonTemplate(
-            translations["data_system_refresh"], self.Button_RefreshDataSystem_func)
-
-        self.Text_DataMenuInfo = self.DisplayText(
-            translations["data_menu_info"],
-            textColor=(255, 234, 0),
-            xpos=75, xstart=75, xend=1000, ypos=220, size=70)
-
-        self.DataMenuText = [self.Text_DataSystemStateTxt,
-                             self.Text_DataSystemState, self.Text_DataMenuInfo]
-        self.DataMenuButtons = [
-            self.Button_RefreshDataSystem, self.Button_Back]
 
     def DefineWorkshopMenu(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(
@@ -443,7 +411,6 @@ class Gui:
                     # default to false to avoid errors
                     else:
                         cfg.EditConfig(self.cfgkey, False)
-                    configCheck = DS.configCheck()
                     if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
                         self.outerSelf.Error(
                             translations["data_system_disabled_error"], 5, (255, 21, 0))
@@ -456,8 +423,6 @@ class Gui:
                     elif "passwordupdaterror" in configCheck:
                         self.outerSelf.Error(
                             translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-                    DS.dataSystemInitialization(
-                        True, GVars.configData["Data-System-Debugging"]["value"])
                     self.outerSelf.RefreshSettingsMenu(menu)
                 else:
                     def AfterInputGenericSetConfig(inp: str) -> None:
@@ -466,7 +431,6 @@ class Gui:
                             "' to config " + self.cfgkey)
                         self.outerSelf.Error(
                             translations["error_saved"], 5, (75, 200, 75))
-                        configCheck = DS.configCheck()
                         if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
                             self.outerSelf.Error(
                                 translations["data_system_disabled_error"], 5, (255, 21, 0))
@@ -479,9 +443,6 @@ class Gui:
                         elif "passwordupdaterror" in configCheck:
                             self.outerSelf.Error(
                                 translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-
-                        DS.dataSystemInitialization(
-                            True, GVars.configData["Data-System-Debugging"]["value"])
                         self.outerSelf.RefreshSettingsMenu(menu)
                     self.outerSelf.GetUserInputPYG(
                         AfterInputGenericSetConfig, translations[self.keyobj["prompt"]], self.cfgvalue)
@@ -492,31 +453,6 @@ class Gui:
                 Log(str(key) + ": " + str(GVars.configData[key]["value"]))
                 self.SettingsButtons.append(curkeyButton(key, self))
         self.SettingsButtons.append(self.Button_Back)
-
-    def RefreshDataMenu(self) -> None:
-        Log("Refreshing the data system...")
-        DS.dataSystemInitialization(
-            True, GVars.configData["Data-System-Debugging"]["value"])
-        self.Error(translations["data_system_refreshing"], 3, (75, 120, 255))
-        if DS.dataSystemState:
-            self.Error(
-                translations["data_system_refresh_success"], 5, (21, 255, 0))
-        else:
-            self.Error(
-                translations["data_system_refresh_failed"], 5, (255, 21, 0))
-        configCheck = DS.configCheck()
-        if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
-            self.Error(
-                translations["data_system_disabled_error"], 5, (255, 21, 0))
-        elif "passwordcorrected" in configCheck:
-            self.Error(
-                translations["data_system_password_corrected"], 5, (75, 200, 75))
-        elif "passwordcorrectionerror" in configCheck:
-            self.Error(
-                translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-        elif "passwordupdaterror" in configCheck:
-            self.Error(
-                translations["data_system_password_correct_fail"], 5, (255, 21, 0))
 
     def RefreshPlayersMenu(self) -> None:
         cfg.ValidatePlayerKeys()
@@ -667,11 +603,6 @@ class Gui:
     def Button_Settings_func(self) -> None:
         self.ChangeMenu(self.SettingsMenus, self.SettingsMenuText)
 
-    # Switches to the data menu
-    def Button_Data_func(self) -> None:
-        self.ChangeMenu(self.DataMenuButtons, self.DataMenuText)
-        self.RefreshDataMenu()
-
     # Checks for any updates for the launcher
     def Button_Update_func(self) -> None:
         if self.coolDown > 0:
@@ -728,13 +659,6 @@ class Gui:
     def Button_DevSettings_func(self) -> None:
         self.RefreshSettingsMenu("dev")
         self.ChangeMenu(self.SettingsButtons, append=True)
-
-    #!############################
-    #! DATA SYSTEM BUTTON FUNCTIONS
-    #!############################
-
-    def Button_RefreshDataSystem_func(self) -> None:
-        self.RefreshDataMenu()
 
     #!############################
     #! MANUAL MODE BUTTONS FUNCTIONS
@@ -863,9 +787,6 @@ class Gui:
         Log("With Log():")
         Log(GVars.modPath)
         Log(GVars.configsPath)
-        DS.DSLogging("With DSLogging():", "true", True)
-        DS.DSLogging(GVars.modPath, "true", True)
-        DS.DSLogging(GVars.configsPath, "true", True)
 
     ################################
 
@@ -1292,7 +1213,6 @@ class Gui:
                     if event.type == pygame.KEYDOWN:
                         # get the key and add it to self.CurInput
                         name = pygame.key.name(event.key)
-                        DS.DSLogging(name, DS.dsdebug, DS.started)
 
                         if name == "space":
                             self.CurInput += " "
@@ -1468,24 +1388,7 @@ class Gui:
 
 
 def UpdateTime():
-    if DS.firstStart:
-        return
     DRP.updateRichPresenceCheck()
-    configCheck = DS.configCheck()
-    if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
-        Ui.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
-    elif "passwordcorrected" in configCheck:
-        Ui.Error(
-            translations["data_system_password_corrected"], 5, (75, 200, 75))
-    elif "passwordcorrectionerror" in configCheck:
-        Ui.Error(
-            translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-    elif "passwordupdaterror" in configCheck:
-        Ui.Error(
-            translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-    DS.dataSystemInitialization(
-        True, GVars.configData["Data-System-Debugging"]["value"])
-
 
 def PreExit() -> None:
     Log("Shutting down the P2MM launcher...")
@@ -1511,7 +1414,6 @@ def PreExit() -> None:
         Log("Unmounted P2MM's ModFiles from Portal 2...")
 
     # Remove the datasystemsaves folder from the portal2 vscripts folder
-    DS.cleanUpFolders()
 
     # Wrap up Discord Rich Presence by closing the connection
     DRP.shutdownRichPresence()
@@ -1811,8 +1713,6 @@ def Initialize() -> None:
     # load the client's translations
     LoadTranslations()
     # Starts up the custom data system
-    DS.dataSystemInitialization(
-        False, GVars.configData["Data-System-Debugging"]["value"], False)
     # Start Discord Rich Presence so every knows that youre playing our cool mod
     DRP.startRichPresence()
 
@@ -1834,20 +1734,6 @@ def PostInitialize() -> None:
         CheckForUpdates()
 
     VerifyGamePath()
-
-    configCheck = DS.configCheck()
-    if ("false" in configCheck) and (GVars.configData["Data-System-Debugging"]["value"]):
-        Ui.Error(translations["data_system_disabled_error"], 5, (255, 21, 0))
-    elif "passwordcorrected" in configCheck:
-        Ui.Error(
-            translations["data_system_password_corrected"], 5, (75, 200, 75))
-    elif "passwordcorrectionerror" in configCheck:
-        Ui.Error(
-            translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-    elif "passwordupdaterror" in configCheck:
-        Ui.Error(
-            translations["data_system_password_correct_fail"], 5, (255, 21, 0))
-
     def NewAfterFunction() -> None:
         Ui.Error(translations["game_exited"], 5, (125, 0, 125))
         DRP.updateRichPresenceCheck()
