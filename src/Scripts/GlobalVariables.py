@@ -58,7 +58,7 @@ def init() -> None:
 
         # why does linux need to be different :uwaaah:
         modPath = os.path.expanduser("~") + "/.cache/p2mm"
-        modFilesPath = modPath + "/Modfiles/Portal 2/install_dlc"
+        modFilesPath = modPath + "/ModFiles/Portal 2/install_dlc"
         configsPath = os.path.expanduser("~") + "/.config/p2mm"
 
     else:

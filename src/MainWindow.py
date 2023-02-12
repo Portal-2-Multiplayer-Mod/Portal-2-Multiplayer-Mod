@@ -1434,11 +1434,8 @@ def VerifyGamePath(shouldgetpath: bool = True) -> bool:
 
 def VerifyModFiles() -> bool:
     Log("Searching for mod files in: " + GVars.modFilesPath)
-    print(os.path.exists(GVars.modFilesPath))
-    print(GVars.modFilesPath)
-    print(os.path.exists(GVars.modFilesPath + "/p2mm.identifier"))
-    print(GVars.modFilesPath + "/p2mm.identifier")
-    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + "/p2mm.identifier")):
+
+    if (os.path.isdir(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + "/p2mm.identifier")):
         Log("Mod files found!")
         return True
 
@@ -1457,8 +1454,8 @@ def DEVMOUNT() -> None:
         Log(traceback.format_exc())
 
     # copy the one in the current directory to the modpath
-    Log("DEV: Copying over files from src/Modfiles...")
-    BF.CopyFolder(cwd + "/ModFiles", GVars.modFilesPath)
+    Log("DEV: Copying over files from src/ModFiles...")
+    BF.CopyFolder(cwd + "/ModFiles", GVars.modPath)
 
 
 def MountModOnly() -> bool:
