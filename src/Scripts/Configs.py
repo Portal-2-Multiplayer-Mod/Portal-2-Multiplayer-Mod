@@ -227,7 +227,7 @@ def GetConfigList(search: str, val: str) -> list:
 
 
 def WriteConfigFile(configs: dict) -> None:
-    filepath = FindConfigPath()
+    filepath = GetConfigsPath()
     # just to make sure the file doesn't exist
     try:
         os.remove(filepath)
@@ -263,10 +263,10 @@ def DeletePlayer(index: int):
     WriteConfigFile(GVars.configsData)
 
 
-def FindConfigPath() -> str:
-    Log("Finding config path...")
+def GetConfigsPath() -> str:
+    Log("Getting configs path...")
     # default config path should be here
-    return GVars.configsFilePath + "/configs.cfg"
+    return GVars.configsFilePath + "/configs.json"
 
 # to import the config data from the local config file
 
@@ -276,7 +276,7 @@ def ImportConfig() -> dict:
         Log("            __________Config Data Start__________")
         Log("Importing Config...")
 
-        configpath = FindConfigPath()
+        configpath = GetConfigsPath()
 
         # if the file doesn't exist then create it
         if not os.path.exists(configpath):
