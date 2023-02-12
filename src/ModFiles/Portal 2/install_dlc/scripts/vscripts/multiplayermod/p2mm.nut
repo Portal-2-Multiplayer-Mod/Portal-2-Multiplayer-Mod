@@ -104,7 +104,7 @@ IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 //---------------------------------------------------
 
 // Print P2:MM game art in console
-foreach (line in ConsoleAscii) { printlP2MM(line) }
+foreach (line in ConsoleAscii) { printl(line) }
 delete ConsoleAscii
 
 //---------------------------------------------------
