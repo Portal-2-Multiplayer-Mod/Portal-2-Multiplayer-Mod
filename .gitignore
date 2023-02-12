@@ -1,10 +1,11 @@
+
+#* added by cabiste ;)
 tests/
-Logs/
-configs.cfg
+*.cfg
 !src/ModFiles/portal2
 .vscode/
 
-# normal folder
+#! plugin files
 !src/ModFiles/Portal 2/install_dlc/addons/p2mm.dll
 !src/ModFiles/Portal 2/install_dlc/addons/p2mm.so
 !src/ModFiles/Portal 2/install_dlc/p2mm.dll
