@@ -222,7 +222,6 @@ class Gui:
             translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120), isasync=True)
         self.Button_Settings = self.ButtonTemplate(
             translations["settings_button"], self.Button_Settings_func)
-        # self.Button_Data = self.ButtonTemplate(translations["data_menu_button"], self.Button_Data_func, (235, 172, 14)) This will be the buttons position in the list onces its finished
         self.Button_Update = self.ButtonTemplate(
             translations["update_button"], self.Button_Update_func, (255, 0, 255), isasync=True)
         self.Button_ManualMode = self.ButtonTemplate(
@@ -245,14 +244,10 @@ class Gui:
                                 self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
 
         if self.devMode:
-            # For now Data will be a dev mode button
-            self.Button_Data = self.ButtonTemplate(
-                translations["data_menu_button"], self.Button_Data_func, (235, 172, 14))
             self.Button_Test = self.ButtonTemplate(
                 "Test Button", self.Button_Test_func)
             self.Text_DevMode = self.DisplayText(translations["dev_mode_enabled"], textColor=(
                 255, 0, 0), xpos=75, xstart=75, xend=750, ypos=735)
-            self.MainMenuButtons.append(self.Button_Data)
             self.MainMenuButtons.append(self.Button_Test)
             self.MainMenuText.append(self.Text_DevMode)
 
@@ -581,11 +576,6 @@ class Gui:
     # Switches to the settings menu
     def Button_Settings_func(self) -> None:
         self.ChangeMenu(self.SettingsMenus, self.SettingsMenuText)
-
-    # Switches to the data menu
-    def Button_Data_func(self) -> None:
-        self.ChangeMenu(self.DataMenuButtons, self.DataMenuText)
-        self.RefreshDataMenu()
 
     # Checks for any updates for the launcher
     def Button_Update_func(self) -> None:
