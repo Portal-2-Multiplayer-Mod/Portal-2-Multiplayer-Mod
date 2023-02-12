@@ -30,8 +30,8 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    Create an entity to loop the Loop() function every 0.1 second
-    This is the original way to loop the Loop() function, keeping it here in case we still need it
+    // Create an entity to loop the Loop() function every 0.1 second
+    // This is the original way to loop the Loop() function, keeping it here in case we still need it
     Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
     for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
         if (timer.GetName() == "p2mm_timer") {

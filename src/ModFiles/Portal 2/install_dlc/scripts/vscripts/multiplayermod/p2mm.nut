@@ -96,7 +96,6 @@ IncludeScript("multiplayermod/chatcommands.nut")
 // } else {
 //     printlP2MM("[DS] Dedicated server detected, the Data System will not be activated!")
 // }
-    
 
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
@@ -116,9 +115,9 @@ delete ConsoleAscii
 // Import map support code
 // Map name will be wonky if the client VM attempts to get the map name
 function LoadMapSupportCode(gametype) {
-    printlP2MM( "\n=============================================================")
+    printl("\n=============================================================")
     printlP2MM("Attempting to load " + gametype + " mapsupport code!")
-    printlP2MM("=============================================================\n")
+    printl("=============================================================\n")
 
     if (gametype != "standard") {
         if (gametype == "speedrun") {
