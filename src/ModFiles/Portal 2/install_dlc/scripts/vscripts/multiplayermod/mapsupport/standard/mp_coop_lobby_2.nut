@@ -7,7 +7,6 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        EntFire("cleanser_preventduring_paint_reveal", "Kill", null, 0, null)
         Entities.FindByName(null, "robo_rampa_01b").__KeyValueFromString("mincpulevel", "0")
         Entities.FindByName(null, "robo_rampa_01b").__KeyValueFromString("mingpulevel", "0")
         Entities.FindByName(null, "robo_rampa_02b").__KeyValueFromString("mincpulevel", "0")

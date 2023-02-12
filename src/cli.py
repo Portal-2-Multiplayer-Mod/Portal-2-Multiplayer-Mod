@@ -46,8 +46,8 @@ def VerifyGamePath():
     Log("Verifying game path...")
     valid = False
     while valid == False:
-        gamepath = GVars.configsData["portal2path"]["value"]
-        if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + "/portal2_dlc2") != True):
+        gamepath = GVars.configData["portal2path"]["value"]
+        if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
             Log("Game path is invalid!")
             GetGamePath()
         else:
@@ -113,14 +113,14 @@ def OnStart():
     # checks if the client was launched from an older version
     IsNew()
     # only check for updates for normal users
-    if GVars.configsData["developer"]["value"] != True:
+    if GVars.configData["developer"]["value"] != True:
         CheckForUpdates()
 
 
 def VerifyModFiles():
-    modFilesPath = GVars.mainFolderPath + "/ModFiles/Portal 2/install_dlc"
+    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
     Log("searching for mod files in: "+modFilesPath)
-    if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + "/32playermod.identifier")):
+    if (os.path.exists(modFilesPath)) and (os.path.exists(modFilesPath + GVars.nf + "32playermod.identifier")):
         Log("Mod files found")
         return True
 
@@ -131,20 +131,20 @@ def VerifyModFiles():
 def DEVMOUNT():
     try:
         # delete the old modfiles
-        shutil.rmtree(GVars.mainFolderPath + "/ModFiles")
+        shutil.rmtree(GVars.modPath + GVars.nf + "ModFiles")
     except Exception as e:
-        Log("folder doesn't exist: "+ GVars.mainFolderPath + "/ModFiles")
+        Log("folder doesn't exist: "+ GVars.modPath + GVars.nf + "ModFiles")
         Log(str(e))
 
     # copy the one in the current directory to the modpath
-    shutil.copytree(cwd + "/ModFiles", GVars.mainFolderPath + "/ModFiles")
+    shutil.copytree(cwd + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
 
     Log("copied files to mod path")
 
 
 def UseFallbacks():
-    # copy the "FALLBACK" folder to the modpath "GVars.modPath + "/ModFiles""
-    shutil.copytree(cwd + "/FALLBACK/ModFiles", GVars.mainFolderPath + "/ModFiles")
+    # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles""
+    shutil.copytree(cwd + GVars.nf + "FALLBACK" + GVars.nf + "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
 
 
 def Init():
@@ -158,12 +158,12 @@ def Init():
     VerifyGamePath()
     Log("")
 
-    gamepath = GVars.configsData["portal2path"]["value"]
+    gamepath = GVars.configData["portal2path"]["value"]
 
 #//# Mount P2:MM #//#
     if (WillMount):
 
-        if (GVars.configsData["developer"]["value"] == True):
+        if (GVars.configData["developer"]["value"] == True):
             Log("Dev mode active")
             DEVMOUNT()
 
@@ -181,7 +181,7 @@ def Init():
 
     # it's annoying to be asked to exit when you're debugging
     # but don't remove it, it's there so the user can read the output when the game closes
-    if (GVars.configsData["developer"]["value"] != True):
+    if (GVars.configData["developer"]["value"] != True):
         input("Press enter to exit")
 
 

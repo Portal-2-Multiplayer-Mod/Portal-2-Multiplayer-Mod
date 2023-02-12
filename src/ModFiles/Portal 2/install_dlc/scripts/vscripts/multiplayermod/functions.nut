@@ -239,7 +239,7 @@ function GetPlayerColor(p, multiply = true) {
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255; colorname = "White";          break;
+            case 1 : R <- 255; G <- 255; B <- 255; colorname = "Bright White";   break;
             case 2 : R <-   0, G <- 200, B <-   0; colorname = "Green";          break;
             case 3 : R <- 120, G <- 140, B <- 255; colorname = "Blue";           break;
             case 4 : R <- 255, G <- 170, B <- 120; colorname = "Orange";         break;
@@ -1244,9 +1244,9 @@ function BestGuessSpawnpoint() {
         ]
 
         if (GetDeveloperLevelP2MM()) {
-            printlP2MM("===========================")
-            printlP2MM("Box ents")
-            printlP2MM("===========================")
+            printl("===========================")
+            printl("Box ents")
+            printl("===========================")
         }
 
         local BestSurrondingBoxEnt = -1
@@ -1583,16 +1583,6 @@ function CreateOurEntities() {
     // Create an entity that sends miscellaneous client commands
     p2mm_clientcommand <- Entities.CreateByClassname("point_clientcommand")
     p2mm_clientcommand.__KeyValueFromString("targetname", "p2mm_clientcommand") // Using the targetname in outputs causes invalid entity instance errors ??
-
-    // Create the env_global entities that P2MM utilizes
-    for (local i = 1; i < 5; i++) {
-        Entities.CreateByClassname("env_global").__KeyValueFromString("targetname", "p2mm_env_global0" + i.tostring())
-    }
-
-    Entities.FindByName(null, "p2mm_env_global01").__KeyValueFromString("globalstate", "no_pinging_blue")
-    Entities.FindByName(null, "p2mm_env_global02").__KeyValueFromString("globalstate", "no_pinging_orange")
-    Entities.FindByName(null, "p2mm_env_global03").__KeyValueFromString("globalstate", "no_taunting_blue")
-    Entities.FindByName(null, "p2mm_env_global04").__KeyValueFromString("globalstate", "no_taunting_orange")
 }
 
 function CalcNumPlayers() {
@@ -1612,6 +1602,15 @@ function Plyr_Disconnect_Function() {
 //--------------------------------------
 // Manage what each team can do
 //--------------------------------------
+
+for (local i = 1; i < 5; i++) {
+    Entities.CreateByClassname("env_global").__KeyValueFromString("targetname", "p2mm_env_global0" + i.tostring())
+}
+
+Entities.FindByName(null, "p2mm_env_global01").__KeyValueFromString("globalstate", "no_pinging_blue")
+Entities.FindByName(null, "p2mm_env_global02").__KeyValueFromString("globalstate", "no_pinging_orange")
+Entities.FindByName(null, "p2mm_env_global03").__KeyValueFromString("globalstate", "no_taunting_blue")
+Entities.FindByName(null, "p2mm_env_global04").__KeyValueFromString("globalstate", "no_taunting_orange")
 
 class UTIL_Team {
     bPortalgunEnabled_Blue = true

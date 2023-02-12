@@ -284,7 +284,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSp_A2_Core) {
             if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {
-                printlP2MM("(P2:MM): Elevator viewcontrol activated!")
+                printl("(P2:MM): Elevator viewcontrol activated!")
                 // Elevator viewcontrol
                 Sp_A2_CoreViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
                 Sp_A2_CoreViewcontrol.__KeyValueFromString("target_team", "-1")

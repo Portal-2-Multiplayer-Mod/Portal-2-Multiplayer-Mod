@@ -30,8 +30,7 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    Create an entity to loop the Loop() function every 0.1 second
-    This is the original way to loop the Loop() function, keeping it here in case we still need it
+    // Create an entity to loop the Loop() function every 0.1 second
     Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
     for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
         if (timer.GetName() == "p2mm_timer") {
@@ -42,23 +41,6 @@ function InstantRun() {
             break
         }
     }
-
-    // Create an entity to loop the Loop() function every 0.1 second
-    // While this method adds a extra entity, it is documented that logic_timers
-    // use high amounts of server bandwith especially if triggered at low intervals
-    // An I/O loop should reduce the lag but this method isn't working as intended and should be implemented at some point later
-    // Entities.CreateByClassname("logic_relay").__KeyValueFromString("targetname", "p2mm_timer")
-    // for (local relay; relay = Entities.FindByClassname(relay, "logic_relay");) {
-    //     if (relay.GetName() == "p2mm_timer") {
-    //         p2mm_timer <- relay
-    //         p2mm_timer.__KeyValueFromString("spawnflags", "2")
-    //         EntFireByHandle(p2mm_timer, "AddOutput", "OnTrigger worldspawn:RunScriptCode:Loop():0.1:-1", 0, null, null)
-    //         break
-    //     }
-    // }
-
-    // For the I/O loop method we need to trigger the start of the loop
-    // EntFireByHandle(p2mm_timer, "Trigger", "", 1, null, null)
 
     // Delay the creation of our map-specific entities before so
     // that we don't get an engine error from the entity limit
@@ -238,17 +220,17 @@ function Loop() {
 
     // if (cnt > EntityCap - EntityCapLeeway) {
     //     if (cnt >= FailsafeEntityCap) {
-    //         printlP2MM("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
+    //         printl("CRASH AND BURN!!!!: ENTITY COUNT HAS EXCEEDED THE ABSOLUTE MAXIMUM OF " + FailsafeEntityCap + "!  EXITING TO HUB TO PREVENT CRASH!")
     //         EntFire("p2mm_servercommand", "command", "changelevel mp_coop_lobby_3")
     //     }
-    //     printlP2MM("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
+    //     printl("LEEWAY EXCEEDED (AMOUNT: " + amtpast + ") CAP: " + EntityCap + " LEEWAY: " + EntityCapLeeway + " ENTITY COUNT: " + cnt + "AMT DELETED: " + amtdeleted)
     //     foreach (entclass in ExpendableEntities) {
 
     //         local curdelamt = amtpast - amtdeleted
     //         if (amtdeleted < amtpast) { // if we are still over the cap
 
     //             local amt = GetEntityCount(entclass)
-    //             printlP2MM("CURRENT AMOUNT OF " + entclass + ": " + amt)
+    //             printl("CURRENT AMOUNT OF " + entclass + ": " + amt)
 
     //             if (amt > 0) {
     //                 if (amt >= curdelamt) {
@@ -305,7 +287,7 @@ function Loop() {
                     DoneWaiting = true
                     PostPlayerSpawn()
                     if (GetDeveloperLevelP2MM()) {
-                        printlP2MM("=================================HEALTH SPAWN")
+                        printl("=================================HEALTH SPAWN")
                     }
                 }
             }
@@ -471,8 +453,6 @@ function Loop() {
             }
         }
     }
-    // Trigger the timer to run the loop again
-    // EntFireByHandle(p2mm_timer, "Trigger", "", 0, null, null)
 }
 
 // 3
@@ -673,20 +653,18 @@ function PostMapSpawn() {
 
     // Enable fast download (broken)
     // EntFire("p2mm_servercommand", "command", "sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
-    // EntFire("p2mm_servercommand", "command", "sv_allowdownload 1")
-    // EntFire("p2mm_servercommand", "command", "sv_allowupload 1")
 
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
-	// Aliases for Gelocity Maps
+	// Aliases for easier changelevel for custom maps
 	EntFire("p2mm_servercommand", "command", "alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	EntFire("p2mm_servercommand", "command", "alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	EntFire("p2mm_servercommand", "command", "alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
 
     // Aliases for Orsell's custom P2:MM maps
-    EntFire("p2mm_servercommand", "command", "alias 2v2coopbattle changelevel p2mm/mp_coop_2v2coopbattle")
-    EntFire("p2mm_servercommand", "command", "alias p2mmlobby changelevel p2mm/mp_coop_p2mmlobby")
+    EntFire("p2mm_servercommand", "command", "alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
+    EntFire("p2mm_servercommand", "command", "alias p2mmlobby changelevel mp_coop_p2mmlobby")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script CanCheckAngle = true", 0.32)
@@ -746,12 +724,12 @@ function OnPlayerJoin(p, script_scope) {
     //     /* 1.
     //         local entity = Entities.First()
     //         while (entity = Entities.Next(entity)) {
-    //             printlP2MM(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
+    //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
     //         }*/
 
     //     /* 2.
     //         for (local entity = Entities.First(); entity = Entities.Next(entity);) {
-    //             printlP2MM(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
+    //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
     //         }*/
 
     //     local bShouldRemovePortalguns = false
@@ -779,7 +757,7 @@ function OnPlayerJoin(p, script_scope) {
     //         RemoveAllClassname("weapon_portalgun")
     //         EntFire("p2mm_servercommand", "command", "changelevel mp_coop_doors", 3)
     //     } else {
-    //         printlP2MM("-----------WE DONT NEED TO REMOVE THE GUNS AND CHANGE LEVEL!!!")
+    //         printl("-----------WE DONT NEED TO REMOVE THE GUNS AND CHANGE LEVEL!!!")
     //     }
     // }
 
