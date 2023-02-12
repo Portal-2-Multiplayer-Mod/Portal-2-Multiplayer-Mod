@@ -1,25 +1,32 @@
 <h1>
-  <img src="Images/p2mm_logo.png" alt="p2mm_logo" width="200" align="left">
+  <img src="https://cdn.discordapp.com/attachments/1073818580539424882/1073869966543179806/P2MMBannerREADME.png" alt="p2mmbanner_logo" width="500" height="300" align="left">
   <a href="https://discord.gg/nXRygGNxyK">
-    <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge" alt="Discord Shield Badge" align="right">
+    <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
   </a>
   <br>
-    <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest">
-      <img src="https://img.shields.io/github/release-date/kyleraykbs/Portal2-32PlayerMod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
-    </a>
+  <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest">
+    <img src="https://img.shields.io/github/release-date/kyleraykbs/Portal2-32PlayerMod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
+  </a>
   <br>
-    <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/commits/main">
-      <img src="https://img.shields.io/github/last-commit/kyleraykbs/Portal2-32PlayerMod?label=Last%20Commit&style=for-the-badge" alt="Commit Shield Badge" align="right">
-    </a>
+  <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/commits/main">
+    <img src="https://img.shields.io/github/last-commit/kyleraykbs/Portal2-32PlayerMod?label=Last%20Commit&style=for-the-badge" alt="Commit Shield Badge" align="right">
+  </a>
   <br>
-    <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest">
-      <img src="https://img.shields.io/github/downloads/kyleraykbs/Portal2-32PlayerMod/total?style=for-the-badge" alt="Download Count Shield Badge" align="right">
-    </a>
+    <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/downloads/kyleraykbs/Portal2-32PlayerMod/total?style=for-the-badge" alt="Download Count Shield Badge" align="right">
+  </a>
   <br>
-  <p align="left">Portal 2: Multiplayer Mod</p>
+  <br>
+  <br>
+  <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
 </h1>
 
-### Ten mod jest po stronie serwera. Tylko host serwera musi zainstalować tego moda. Gracze dołączający do hosta powinni mieć niezmodyfikowaną wersje Portala 2.
+### Ten mod jest w całości po stronie serwera. Tylko host serwera musi zainstalować tego moda. Gracze dołączający do hosta powinni mieć niezmodyfikowaną wersje Portala 2.
+
+### Dziękujemy Krzyhau'owi za pożyczenie części kodu z Speedrun Mod
+
+## Języki
+English | [Español](README.es.md) | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+
 ## Funkcje moda
 ```
    -Limit 33 graczy
@@ -41,8 +48,9 @@
 
 ## Funkcje do dodania
 - Wparcie na Steam Deck/SteamOS 3.0
-- Wsparcie z Discord API żeby łatwiej zapraszać graczy do gry (Nie jest pewne czy my to dodamy)
+- Wsparcie z Discord API żeby łatwiej zapraszać graczy do gry
 - Więcej wsparcia dla map z Warsztatu
+- Wsparcie dla FastDL
 
 # Instalacja i użycie
 
@@ -62,11 +70,11 @@
 
 **Zależnośći**
 - pygame
+- pyperclip
 - requests
 - steamid-converter
-- pyperclip
 
-Mamy też je pliku dla łatwej instalacji `pip install -r requirements.txt`
+Mamy je też w pliku dla łatwej instalacji `pip install -r requirements.txt`
 
 **Kompilacja**
 
@@ -84,13 +92,11 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/FALL
 ```
 
 *Notatki:*  
-- Na Linux, upewnij się że masz pakiet tkinter `pacman -S tk`
 - Jeżeli chcesz zforkować projekt i zrobić swoje włąsne wydania, musisz zmienić dane na górze pliku `src/Scripts/Updater.py` 
 
 
 # Kontrybucje
 
-We are always happy to take whatever additional help we can get for this project. Specifically, we are in need of proficient coders in Squirrel or C++. If you think you can spare a hand, it will go a long way!
 Zawsze jesteśmy gotowi żeby otrymać jakąkolwiek pomoc dla tego projektu. Potrzebujemy programistów biegłch w Squirrel lub C++. Jeżeli możesz nam pomóc to będziemy wdźięczni!
 
 # Deweloperzy i kontrybutorzy
@@ -102,11 +108,14 @@ Zawsze jesteśmy gotowi żeby otrymać jakąkolwiek pomoc dla tego projektu. Pot
 - vista
 - Wolƒe Strider Shoσter
 - cabiste
-- Orsell
+- zwexit (Orsell)
 
 **Kontrybutorzy:**
 - wanderer (free bird)
+- \n
+- Luukex
 - MeblIkea
 - Luukex
 - PieCreeper
 - Areng
+- Krzyhau
