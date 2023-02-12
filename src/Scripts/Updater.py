@@ -10,7 +10,7 @@ from pathlib import Path
 
 import requests
 
-import Scripts.BasicFunctions as Funcs
+import Scripts.BasicFunctions as BasicFuncs
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
@@ -20,8 +20,6 @@ ownerName = "Portal-2-Multiplayer-Mod"
 repoName = "Portal-2-Multiplayer-Mod"  # we can't change this to the id :(
 
 # A quick easy way to check if the system is connected to the internet, thanks stackOverflow for this solution <3
-
-
 def haveInternet() -> bool:
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
     try:
@@ -82,9 +80,9 @@ def DownloadClient(cType: str = "") -> bool:
         f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
 
     # so we can easily edit it in the future if we want to
-    if (GVars.iow):
+    if (GVars.isWin):
         packageType = ".EXE"
-    elif (GVars.iol):
+    elif (GVars.isLinux):
         packageType = ".SH"
 
     downloadLink = ""
@@ -109,7 +107,7 @@ def DownloadClient(cType: str = "") -> bool:
     # if (GVars.iow):
     #     command = [path, "updated", executable]
     #     subprocess.Popen(command)
-    if (GVars.iol):
+    if (GVars.isLinux):
         Log("Linux system detected, gotta chmod that bad boy...")
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
@@ -175,7 +173,7 @@ def DownloadNewFiles() -> None:
     Log("Downloading "+str(len(r["Files"]))+" files...")
 
     # downlaod the files to a temp folder
-    tempPath = GVars.modPath + "/.temp"
+    tempPath = GVars.mainFolderPath + "/.temp"
     for file in r["Files"]:
         downloadLink = f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/"+urllib.parse.quote(
             r["Path"]+file)
@@ -191,13 +189,13 @@ def DownloadNewFiles() -> None:
 
     try:
         # when downloading is done delete the old mod files
-        Funcs.DeleteFolder(GVars.modPath + "/ModFiles/Portal 2/install_dlc")
+        BasicFuncs.DeleteFolder(GVars.mainFolderPath + "/ModFiles/Portal 2/install_dlc")
         Log("Deleted old files...")
     except Exception as e:
         Log("There was no old mod files...")
         Log(str(e))
 
     # then copy the new files there
-    shutil.move(tempPath, GVars.modPath + "/ModFiles/Portal 2/install_dlc")
-    Log("Copied new files to " + GVars.modPath +
+    shutil.move(tempPath, GVars.mainFolderPath + "/ModFiles/Portal 2/install_dlc")
+    Log("Copied new files to " + GVars.mainFolderPath +
         "/ModFiles/Portal 2/install_dlc...")

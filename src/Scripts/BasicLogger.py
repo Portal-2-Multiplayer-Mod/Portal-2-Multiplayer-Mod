@@ -5,7 +5,7 @@ import Scripts.GlobalVariables as GVars
 def Log(message: str) -> None:
     message = message.strip()
     # get the path of the mod launcher and make a floder inside it called "Logs"
-    path = GVars.modPath + "/Logs"
+    path = GVars.mainFolderPath + "/Logs"
     Path(path).mkdir(parents=True, exist_ok=True)
 
     # creates a log file and writes to it
@@ -51,12 +51,12 @@ def StartLog() -> None:
     Log("")
 
     Log("______________________General Device Info______________________")
-    if (GVars.iow):
+    if (GVars.isWin):
         Log("")
         Log("Windows OS detected!")
-    elif (GVars.iol):
+    elif (GVars.isLinux):
         Log("")
         Log("Linux OS: detected!")
-    elif (GVars.iosd):
+    elif (GVars.isSteamDeck):
         Log("")
         Log("SteamOS 3.0: detected!")

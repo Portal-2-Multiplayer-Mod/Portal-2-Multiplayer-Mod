@@ -109,7 +109,7 @@ class Gui:
             sound (pygame.mixer.Sound): the sound to play
         """
 
-        LauncherSFX = GVars.configData["Launcher-SFX"]["value"]
+        LauncherSFX = GVars.configsData["Launcher-SFX"]["value"]
         if LauncherSFX:
             pygame.mixer.Sound.play(sound)
 
@@ -374,14 +374,14 @@ class Gui:
 
         class curkeyButton:
             def __init__(self, key: str, outerSelf: Gui) -> None:
-                self.text = str(GVars.configData[key]["value"])
+                self.text = str(GVars.configsData[key]["value"])
                 self.mlen = 10
                 if len(self.text) > self.mlen:
                     self.text = self.text[:self.mlen] + "..."
                 self.text = translations[key] + ": " + self.text
                 self.cfgkey = key
-                self.cfgvalue = GVars.configData[key]["value"]
-                self.keyobj = GVars.configData[key]
+                self.cfgvalue = GVars.configsData[key]["value"]
+                self.keyobj = GVars.configsData[key]
                 self.activecolor = (255, 255, 0)
                 self.inactivecolor = (155, 155, 155)
                 self.sizemult = 1
@@ -427,9 +427,9 @@ class Gui:
                         AfterInputGenericSetConfig, translations[self.keyobj["prompt"]], self.cfgvalue)
             isasync = False
 
-        for key in GVars.configData:
-            if GVars.configData[key]["menu"] == menu:
-                Log(str(key) + ": " + str(GVars.configData[key]["value"]))
+        for key in GVars.configsData:
+            if GVars.configsData[key]["menu"] == menu:
+                Log(str(key) + ": " + str(GVars.configsData[key]["value"]))
                 self.SettingsButtons.append(curkeyButton(key, self))
         self.SettingsButtons.append(self.Button_Back)
 
@@ -437,7 +437,7 @@ class Gui:
         cfg.ValidatePlayerKeys()
 
         self.PlayersMenu.clear()
-        PlayerKey = GVars.configData["Players"]["value"][self.CurrentSelectedPlayer]
+        PlayerKey = GVars.configsData["Players"]["value"][self.CurrentSelectedPlayer]
         print(PlayerKey)
 
         # displays and changes the player name
@@ -514,7 +514,7 @@ class Gui:
         # changes the view to the next player
         def Button_NextPlayer_func() -> None:
 
-            if self.CurrentSelectedPlayer < len(GVars.configData["Players"]["value"]) - 1:
+            if self.CurrentSelectedPlayer < len(GVars.configsData["Players"]["value"]) - 1:
                 Log("Next player")
                 self.CurrentSelectedPlayer += 1
             else:
@@ -531,11 +531,11 @@ class Gui:
         def Button_AddPlayer_func() -> None:
 
             Log("Adding blank player...")
-            GVars.configData["Players"]["value"].append(cfg.defaultplayerarray)
-            cfg.WriteConfigFile(GVars.configData)
-            Log(str(len(GVars.configData["Players"]["value"]) - 1))
+            GVars.configsData["Players"]["value"].append(cfg.defaultplayerarray)
+            cfg.WriteConfigFile(GVars.configsData)
+            Log(str(len(GVars.configsData["Players"]["value"]) - 1))
             self.CurrentSelectedPlayer = len(
-                GVars.configData["Players"]["value"]) - 1
+                GVars.configsData["Players"]["value"]) - 1
             self.RefreshPlayersMenu()
 
         Button_AddPlayer = self.ButtonTemplate(
@@ -544,7 +544,7 @@ class Gui:
         # deletes a player from the list
         def Button_DeletePlayer_func() -> None:
 
-            if len(GVars.configData["Players"]["value"]) <= 1:
+            if len(GVars.configsData["Players"]["value"]) <= 1:
                 self.Error(
                     translations["players_error_must_be_at_least_one_player"], 5, (255, 50, 50))
                 return
@@ -885,7 +885,7 @@ class Gui:
         self.LanguagesMenu.clear()
         Languages = GetAvailableLanguages()
         for language in Languages:
-            if GVars.configData["Active-Language"]["value"] == language:
+            if GVars.configsData["Active-Language"]["value"] == language:
                 language = "→ " + language
 
             self.LanguagesMenu.append(self.ButtonTemplate(
@@ -972,7 +972,7 @@ class Gui:
             surf = pygame.transform.scale(surf, (W / 15, W / 15))
             surf = pygame.transform.rotate(surf, floater.rot)
             center = surf.get_rect().center
-            LauncherCubes = GVars.configData["Launcher-Cubes"]["value"]
+            LauncherCubes = GVars.configsData["Launcher-Cubes"]["value"]
             if (LauncherCubes):
                 self.screen.blit(
                     surf, (floater.x - center[0], floater.y - center[1]))
@@ -1003,7 +1003,7 @@ class Gui:
                     floater.negrot = random.randint(0, 1) == 1
 
         if (not self.LookingForInput):
-            if GVars.iosd:
+            if GVars.isSteamDeck:
                 # Puts assets/images/buttons.png on the bottom right corner of the screen
                 buttons = pygame.image.load(
                     "GUI/assets/images/buttons.png").convert_alpha()
@@ -1374,11 +1374,11 @@ def PreExit() -> None:
     Log("Shutting down the P2MM launcher...")
     Log("Shutting down Portal 2...")
     # Windows
-    if (GVars.iow):
+    if (GVars.isWin):
         os.system("taskkill /f /im portal2.exe")
 
     # Linux and Steam Deck/SteamOS 3.0
-    if (GVars.iol):
+    if (GVars.isLinux):
         os.system("killall -9 portal2_linux")
 
     # This waits to make sure the Portal 2 thread is dead
@@ -1387,7 +1387,7 @@ def PreExit() -> None:
     Log("Portal 2 has been shutdown...")
 
     # Make sure the P2MM ModFiles are unmounted from Portal 2
-    if (GVars.configData["Auto-Umount"]["value"]):
+    if (GVars.configsData["Auto-Umount"]["value"]):
         Log("Unmounting P2MM's ModFiles from Portal 2...")
         UnmountScript(False)
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
@@ -1417,7 +1417,7 @@ def GetGamePath() -> None:
 
 def VerifyGamePath(shouldgetpath: bool = True) -> bool:
     Log("Verifying game path...")
-    gamepath = GVars.configData["Portal2-Path"]["value"]
+    gamepath = GVars.configsData["Portal2-Path"]["value"]
 
     if not os.path.exists(gamepath):
         Ui.Error(translations["game_path-is-invalid"])
@@ -1447,15 +1447,15 @@ def DEVMOUNT() -> None:
     try:
         # delete the old modfiles
         Log("DEV: Deleteing p2mm/ModFiles...")
-        print(GVars.modPath + "/ModFiles")
-        BF.DeleteFolder(GVars.modPath + "/ModFiles")
+        print(GVars.mainFolderPath + "/ModFiles")
+        BF.DeleteFolder(GVars.mainFolderPath + "/ModFiles")
     except Exception:
         Log("Error deleting the old mod files, below is the error that caused this:")
         Log(traceback.format_exc())
 
     # copy the one in the current directory to the modpath
     Log("DEV: Copying over files from src/ModFiles...")
-    BF.CopyFolder(cwd + "/ModFiles", GVars.modPath)
+    BF.CopyFolder(cwd + "/ModFiles", GVars.mainFolderPath)
 
 
 def MountModOnly() -> bool:
@@ -1471,7 +1471,7 @@ def MountModOnly() -> bool:
     Ui.Error(translations["mounting_mod"], 5, (75, 255, 75))
 
     # Need to make sure the gamepath is in fact defined if not P2MM will not be run/mounted
-    gamepath = GVars.configData["Portal2-Path"]["value"]
+    gamepath = GVars.configsData["Portal2-Path"]["value"]
     if gamepath == "undefined":
         Ui.Error(translations["mount_nopath_error"], 5, (255, 21, 0))
         return False
@@ -1481,21 +1481,21 @@ def MountModOnly() -> bool:
         Ui.Error(translations["mount_nodlc_error"], 5, (255, 21, 0))
         return False
 
-    if (GVars.configData["Dev-Mode"]["value"]):
+    if (GVars.configsData["Dev-Mode"]["value"]):
         Ui.Error(translations["devmode_is_active"], 5, (255, 180, 75))
         DEVMOUNT()
         Ui.Error(
             translations["devmode_copied_from_local_repo"], 5, (75, 255, 75))
 
     if VerifyModFiles():
-        DoEncrypt = GVars.configData["Encrypt-Cvars"]["value"]
+        DoEncrypt = GVars.configsData["Encrypt-Cvars"]["value"]
         RG.MountMod(gamepath, DoEncrypt)
         Ui.Error(translations["mounted"], 5, (75, 255, 75))
         return True
 
     # If the they are not a developer and the mod files don't exist ask them to download the files from the repo
-    if (os.path.exists(GVars.modPath + "/ModFiles")):
-        BF.DeleteFolder(GVars.modPath + "/ModFiles")
+    if (os.path.exists(GVars.mainFolderPath + "/ModFiles")):
+        BF.DeleteFolder(GVars.mainFolderPath + "/ModFiles")
 
     if not UP.haveInternet():
         def OkInput() -> None:
@@ -1518,7 +1518,7 @@ def GetAvailableLanguages() -> list[str]:
     langs = []
     for file in os.listdir("languages"):
         langs.append(file[:-5])
-    customTranslationsPath = GVars.modPath + "/languages"
+    customTranslationsPath = GVars.mainFolderPath + "/languages"
     if os.path.exists(customTranslationsPath):
         for file in os.listdir(customTranslationsPath):
             langs.append(file[:-5])
@@ -1529,11 +1529,11 @@ def GetAvailableLanguages() -> list[str]:
 def LoadTranslations() -> dict:
     global translations
     langPath = "languages/" + \
-        GVars.configData["Active-Language"]["value"] + ".json"
+        GVars.configsData["Active-Language"]["value"] + ".json"
 
     if not os.path.exists(langPath):
-        langPath = GVars.modPath + "/languages/" + \
-            GVars.configData["Active-Language"]["value"] + ".json"
+        langPath = GVars.mainFolderPath + "/languages/" + \
+            GVars.configsData["Active-Language"]["value"] + ".json"
 
     translations = json.load(open(langPath, "r", encoding="utf8"))
     EnglishOriginal: dict[str, str] = json.load(
@@ -1543,7 +1543,7 @@ def LoadTranslations() -> dict:
         cfg.EditConfig("Active-Language",
                        cfg.DefaultConfigFile["Active-Language"]["value"])
         langPath = "languages/" + \
-            GVars.configData["Active-Language"]["value"] + ".json"
+            GVars.configsData["Active-Language"]["value"] + ".json"
         print(langPath)
         translations = json.load(open(langPath, "r", encoding="utf8"))
 
@@ -1588,8 +1588,8 @@ def UpdateModClient() -> None:
 
 def RunGameScript() -> None:
     if MountModOnly():
-        gamepath = GVars.configData["Portal2-Path"]["value"]
-        GVars.gameActive = True
+        gamepath = GVars.configsData["Portal2-Path"]["value"]
+        GVars.isGameActive = True
         RG.LaunchGame(gamepath)
         Ui.Error(translations["game_launched"], 5, (75, 255, 75))
     else:
@@ -1600,14 +1600,14 @@ def RunGameScript() -> None:
 def UnmountScript(shouldgetpath: bool = True) -> None:
     Log("___Unmounting Mod___")
     VerifyGamePath(shouldgetpath)
-    gamepath = GVars.configData["Portal2-Path"]["value"]
+    gamepath = GVars.configsData["Portal2-Path"]["value"]
     RG.DeleteUnusedDLCs(gamepath)
     RG.UnpatchBinaries(gamepath)
     Log("____DONE UNMOUNTING____")
 
 
 def RestartClient(path: str = sys.executable) -> None:
-    if (GVars.iol):
+    if (GVars.isLinux):
         permissioncommand = "chmod +x " + path
         os.system(permissioncommand)
 
@@ -1695,8 +1695,8 @@ def Initialize() -> None:
     IsNew()  # Check for first time setup after update
 
     # remove old temp files
-    if (os.path.exists(GVars.modPath + "/.temp")):
-        BF.DeleteFolder(GVars.modPath + "/.temp")
+    if (os.path.exists(GVars.mainFolderPath + "/.temp")):
+        BF.DeleteFolder(GVars.mainFolderPath + "/.temp")
 
 
 def PostInitialize() -> None:
@@ -1708,13 +1708,13 @@ def PostInitialize() -> None:
 
     def NewAfterFunction() -> None:
         Ui.Error(translations["game_exited"], 5, (125, 0, 125))
-        if (GVars.configData["Auto-Umount"]["value"]):
+        if (GVars.configsData["Auto-Umount"]["value"]):
             UnmountScript()
             Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
 
     GVars.AfterFunction = NewAfterFunction
 
-    if (GVars.hadtoresetconfig):
+    if (GVars.resetConfig):
         Log("Config has been reset to default settings!")
         OkButton = Ui.ButtonTemplate(
             translations["error_ok"], activeColor=(75, 255, 75))
@@ -1726,7 +1726,7 @@ if __name__ == '__main__':
     try:
         cwd = os.getcwd()
         Initialize()
-        Ui = Gui(GVars.configData["Dev-Mode"]["value"])
+        Ui = Gui(GVars.configsData["Dev-Mode"]["value"])
         PostInitialize()
         Ui.Main()
     # Called when a unexpected error results in a launcher crash

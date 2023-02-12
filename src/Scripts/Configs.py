@@ -189,7 +189,7 @@ def ValidatePlayerKeys() -> None:
         indx = 0
         errs = 0
         player: dict
-        for player in GVars.configData["Players"]["value"]:
+        for player in GVars.configsData["Players"]["value"]:
             if player.keys() != defaultplayerarray.keys():
                 errs += 1
                 tempPlayer = defaultplayerarray
@@ -200,7 +200,7 @@ def ValidatePlayerKeys() -> None:
                         tempPlayer[key] = player[key]
                     except Exception as e:
                         Log(str(e))
-                GVars.configData["Players"]["value"][indx] = tempPlayer
+                GVars.configsData["Players"]["value"][indx] = tempPlayer
 
             if errs > 0:
                 Log(f"found {str(errs)} key errors in a player property")
@@ -208,20 +208,20 @@ def ValidatePlayerKeys() -> None:
             indx += 1
 
         if errs > 0:
-            WriteConfigFile(GVars.configData)
+            WriteConfigFile(GVars.configsData)
 
         Log("validated all keys!")
 
     except Exception as e:
         Log("ERROR: " + str(e))
-        GVars.configData["Players"]["value"] = [defaultplayerarray]
-        WriteConfigFile(GVars.configData)
+        GVars.configsData["Players"]["value"] = [defaultplayerarray]
+        WriteConfigFile(GVars.configsData)
 
 
 def GetConfigList(search: str, val: str) -> list:
     lst = []
-    for key in GVars.configData:
-        if GVars.configData[key][search] == val:
+    for key in GVars.configsData:
+        if GVars.configsData[key][search] == val:
             lst.append(key)
     return lst
 
@@ -243,30 +243,30 @@ def WriteConfigFile(configs: dict) -> None:
 
 
 def EditConfig(search: str, newvalue: any) -> None:
-    GVars.configData[search]["value"] = newvalue
-    WriteConfigFile(GVars.configData)
+    GVars.configsData[search]["value"] = newvalue
+    WriteConfigFile(GVars.configsData)
 
 
 def EditPlayer(index: int, name: str = None, steamId: str = None, level: str = None):
     if name is not None:
-        GVars.configData["Players"]["value"][index]["name"] = name
+        GVars.configsData["Players"]["value"][index]["name"] = name
     if steamId is not None:
-        GVars.configData["Players"]["value"][index]["steamid"] = steamId
+        GVars.configsData["Players"]["value"][index]["steamid"] = steamId
     if level is not None:
-        GVars.configData["Players"]["value"][index]["adminlevel"] = level
+        GVars.configsData["Players"]["value"][index]["adminlevel"] = level
 
-    WriteConfigFile(GVars.configData)
+    WriteConfigFile(GVars.configsData)
 
 
 def DeletePlayer(index: int):
-    GVars.configData["Players"]["value"].pop(index)
-    WriteConfigFile(GVars.configData)
+    GVars.configsData["Players"]["value"].pop(index)
+    WriteConfigFile(GVars.configsData)
 
 
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
-    return GVars.configsPath + "/configs.cfg"
+    return GVars.configsFilePath + "/configs.cfg"
 
 # to import the config data from the local config file
 
@@ -305,5 +305,5 @@ def ImportConfig() -> dict:
         Log(f"Error importing the config file: {str(e)}")
         WriteConfigFile(DefaultConfigFile)
         print("here3")
-        GVars.hadtoresetconfig = True
+        GVars.resetConfig = True
         return ImportConfig()

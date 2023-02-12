@@ -106,7 +106,7 @@ def SetVscriptConfigFile(vsconfigfile: str) -> None:
 
         for p2cfg in p2cfgs:
             if (key == p2cfg):
-                val = GVars.configData[p2cfg]["value"]
+                val = GVars.configsData[p2cfg]["value"]
                 Log("Setting " + p2cfg + " To " + val)
                 line = key + " <- " + val
                 Log(line)
@@ -122,7 +122,7 @@ def SetVscriptConfigFile(vsconfigfile: str) -> None:
     # find the next [ after the admins section
     nextObrack = lines.find("[", admins)
     # add the player line after the admins section
-    for player in GVars.configData["Players"]["value"]:
+    for player in GVars.configsData["Players"]["value"]:
         name = player["name"]
         level = player["adminlevel"]
         steamid = player["steamid"]
@@ -304,7 +304,7 @@ def PatchBinaries(gamepath: str) -> None:
         Log("")
 
     # The other files don't need to be patched since they don't exist on windows
-    if GVars.iow:
+    if GVars.isWin:
         # rename the files so the new files are used
         Log("Renaming binaries...")
         RenameBinaries(gamepath, binaries)
@@ -530,31 +530,31 @@ def LaunchGame(gamepath: str) -> None:
     Log("Running Game...")
     # LAUNCH OPTIONS: -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels (Custom-Launch-Options)
     try:
-        if (GVars.iow):  # Launching for Windows
-            GVars.gameActive = True
+        if (GVars.isWin):  # Launching for Windows
+            GVars.isGameActive = True
             # start portal 2 with the launch options and dont wait for it to finish
 
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
                 Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, -nopreloadmodels, " +
-                    GVars.configData["Custom-Launch-Options"]["value"])
+                    GVars.configsData["Custom-Launch-Options"]["value"])
                 subprocess.run([gamepath + "/portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612",
-                               "+clear", "-conclearlog", "-usercon", "-nopreloadmodels", GVars.configData["Custom-Launch-Options"]["value"]])
+                               "+clear", "-conclearlog", "-usercon", "-nopreloadmodels", GVars.configsData["Custom-Launch-Options"]["value"]])
                 Log("Game exited successfully.")
                 # Run The AfterFunction
-                GVars.gameActive = False
+                GVars.isGameActive = False
                 GVars.AfterFunction()
             # start the game in a new thread
             threading.Thread(target=RunGame).start()
-        elif ((GVars.iol)):  # Launching for Linux and SteamOS 3.0
-            GVars.gameActive = True
+        elif ((GVars.isLinux)):  # Launching for Linux and SteamOS 3.0
+            GVars.isGameActive = True
 
             def RunGame():
                 def RunSteam():
                     Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, -nopreloadmodels, " +
-                        GVars.configData["Custom-Launch-Options"]["value"])
+                        GVars.configsData["Custom-Launch-Options"]["value"])
                     os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels " +
-                              GVars.configData["Custom-Launch-Options"]["value"])
+                              GVars.configsData["Custom-Launch-Options"]["value"])
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:
@@ -571,7 +571,7 @@ def LaunchGame(gamepath: str) -> None:
                             lached = True
                         time.sleep(1)
                 CheckForGame()
-                GVars.gameActive = False
+                GVars.isGameActive = False
             threading.Thread(target=RunGame).start()
     except Exception as e:
         Log("Failed to launch Portal 2!")
