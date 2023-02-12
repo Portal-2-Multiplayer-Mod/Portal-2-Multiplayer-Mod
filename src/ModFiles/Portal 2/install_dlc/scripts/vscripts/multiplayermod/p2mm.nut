@@ -15,7 +15,7 @@
 //---------------------------------------------------
 // Purpose: The heart of the mod's content. Runs on
 // every map transition to bring about features and
-//                 fixes for 3+ MP.
+//                 fixes for 2+ MP.
 //---------------------------------------------------
 
 /*
@@ -89,7 +89,14 @@ IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
 // Load the data system after everything else has been loaded
-// IncludeScript("multiplayermod/datasystem/datasystem-main.nut") Commented out for now, still need to finish
+// STILL WIP AND DOESN'T WORK ON DEDICATED SERVERS!!!
+// if (!IsDedicatedServer()) {
+//     printlP2MM("[DS] Loading the data system for launcher and Portal 2 communication!")
+//     IncludeScript("multiplayermod/datasystem.nut")
+// } else {
+//     printlP2MM("[DS] Dedicated server detected, the Data System will not be activated!")
+// }
+    
 
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
@@ -98,7 +105,7 @@ IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 //---------------------------------------------------
 
 // Print P2:MM game art in console
-foreach (line in ConsoleAscii) { printl(line) }
+foreach (line in ConsoleAscii) { printlP2MM(line) }
 delete ConsoleAscii
 
 //---------------------------------------------------
@@ -109,9 +116,9 @@ delete ConsoleAscii
 // Import map support code
 // Map name will be wonky if the client VM attempts to get the map name
 function LoadMapSupportCode(gametype) {
-    printl( "\n=============================================================")
+    printlP2MM( "\n=============================================================")
     printlP2MM("Attempting to load " + gametype + " mapsupport code!")
-    printl("=============================================================\n")
+    printlP2MM("=============================================================\n")
 
     if (gametype != "standard") {
         if (gametype == "speedrun") {

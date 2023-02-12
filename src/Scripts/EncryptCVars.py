@@ -14,14 +14,14 @@ def Encrypt(path: str, search: str, replace: str) -> None:
             for file in files:
                 try:
                     ###############
-                    f = open(root + GVars.nf + file, rt, encoding=enc)
+                    f = open(root + "/" + file, rt, encoding=enc)
                     ###############
                     data = f.read()
                     f.close()
                     data = data.replace(search, replace)
 
                     ###############
-                    f = open(root + GVars.nf + file, wt, encoding=enc)
+                    f = open(root + "/" + file, wt, encoding=enc)
                     ###############
                     f.write(data)
                     f.close()
@@ -39,14 +39,14 @@ def Encrypt(path: str, search: str, replace: str) -> None:
             Log("Encrypting file: " + file + " With encoding: " + enc + " and read mode: " + rt + " and write mode: " + wt)
 
             ###############
-            f = open(root + GVars.nf + file, rt, encoding=enc)
+            f = open(root + "/" + file, rt, encoding=enc)
             ###############
             data = f.read()
             f.close()
             data = data.replace(search, replace)
 
             ###############
-            f = open(root + GVars.nf + file, wt, encoding=enc)
+            f = open(root + "/" + file, wt, encoding=enc)
             ###############
             f.write(data)
             f.close()
