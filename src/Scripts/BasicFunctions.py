@@ -7,29 +7,19 @@ from Scripts.BasicLogger import Log
 # CONVERSION #
 ##############
 
-# Converts paths to make sure they are read properly by the OS
-def ConvertPath(path: str) -> str:
-    if (GVars.iol) or (GVars.iosd):
-        path = path.replace("\\", GVars.nf)
-        path = path.replace("~", os.path.expanduser("~"))
-
-    elif (GVars.iow):
-        path = path.replace("/", GVars.nf)
-
-    return path
 
 # Deletes the folder using the OSes delete command
 def DeleteFolder(path: str) -> None:
     if (GVars.iow):
         os.system("rmdir /s /q \"" + path + "\"")
-    elif (GVars.iol) or (GVars.iosd):
+    elif (GVars.iol):
         os.system("rm -rf \"" + path + "\"")
 
 # Copies a folder using the OSes copy command
 def CopyFolder(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("xcopy /E /H /C /I /Y \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol) or (GVars.iosd):
+    elif (GVars.iol):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
 
@@ -37,7 +27,7 @@ def CopyFolder(src: str, dst: str) -> str:
 def CopyFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("copy \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol) or (GVars.iosd):
+    elif (GVars.iol):
         os.system("cp \"" + src + "\" \"" + dst + "\"")
     return dst
 
@@ -45,18 +35,20 @@ def CopyFile(src: str, dst: str) -> str:
 def MoveFile(src: str, dst: str) -> str:
     if (GVars.iow):
         os.system("move \"" + src + "\" \"" + dst + "\"")
-    elif (GVars.iol) or (GVars.iosd):
+    elif (GVars.iol):
         os.system("mv \"" + src + "\" \"" + dst + "\"")
     return dst
 
 # Used to grab Portal 2's game directory for the launcher if it hasn't been defined yet
 # On Windows it will use the manifest file that is in the steamapps directory to detect Portal 2
 def TryFindPortal2Path() -> str:
-    # Should be default linux path for the game
-    defpathlin = ConvertPath("~/.local/share/Steam/steamapps/common/Portal 2")
 
-    if ((GVars.iol or GVars.iosd) and (os.path.isfile(defpathlin + "/portal2_linux"))):
-        return defpathlin
+    if GVars.iol:
+        # Should be default linux path for the game
+        defpathlin = os.path.expanduser("~") + "/.local/share/Steam/steamapps/common/Portal 2"
+
+        if os.path.isfile(defpathlin + "/portal2_linux"):
+            return defpathlin
 
     if (GVars.iow):
         import winreg
@@ -65,7 +57,7 @@ def TryFindPortal2Path() -> str:
             print(hkey)
             steam_path = winreg.QueryValueEx(hkey, "InstallPath")
             print(steam_path)
-            manifestpath = steam_path[0] + ConvertPath("/steamapps/libraryfolders.vdf")
+            manifestpath = steam_path[0] + "/steamapps/libraryfolders.vdf"
             print(manifestpath)
             if (os.path.isfile(manifestpath)):
                 # read the manifest file
@@ -84,8 +76,8 @@ def TryFindPortal2Path() -> str:
 
                 for path in paths:
                     print(path)
-                    if (os.path.isdir(path + ConvertPath("/steamapps/common/Portal 2"))):
-                        return path + ConvertPath("/steamapps/common/Portal 2")
+                    if (os.path.isdir(path + "/steamapps/common/Portal 2")):
+                        return path + "/steamapps/common/Portal 2"
 
         except Exception as e:
             Log("ERROR: " + str(e))

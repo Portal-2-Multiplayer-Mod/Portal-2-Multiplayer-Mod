@@ -3,39 +3,33 @@ import json
 import locale
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
-import Scripts.DataSystem as DS
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
 
+
 def GetSysLang() -> str:
     sysDefaultLocale = locale.getdefaultlocale()[0]
-    if sysDefaultLocale.split('_')[0].lower() == 'fr'.lower() :
-        return 'Fran\u00e7ais'
-    elif sysDefaultLocale.split('_')[0].lower() == 'zh'.lower():
-        if sysDefaultLocale.split('_')[1].lower() == 'CN'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'SG'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'Hans'.lower():
-            return 'SChinese'
-        elif sysDefaultLocale.split('_')[1].lower() == 'TW'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'HK'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'MO'.lower() \
-        or sysDefaultLocale.split('_')[1].lower() == 'Hant'.lower():
-            return 'TChinese'
-    else:
-        return "English"
+
+    if sysDefaultLocale.split("_")[0].lower() == "fr":
+        return "French"
+
+    if sysDefaultLocale.split("_")[0].lower() == "zh":
+
+        chineseType = sysDefaultLocale.split("_")[1].lower()
+
+        if chineseType in ["cn", "sg", "hans"]:
+            return "SChinese"
+
+        if chineseType in ["hk", "mo", "hant"]:
+            return "TChinese"
+
+    return "English"
+
 
 DefaultConfigFile = {
-    "Discord-Rich-Presence":
-        {
-            "value": True,
-            "menu": "launcher",
-            "description": "Enable Discord Rich Presense For P2MM. This is needed for easy joinning for public servers.",
-            "warning": "Please give around 15 seconds for the change to take effect.",
-            "prompt": "",
-        },
 
     "Auto-Umount":
         {
@@ -72,7 +66,7 @@ DefaultConfigFile = {
             "warning": "",
             "prompt": "Enter the path to the Portal 2 folder",
         },
-    
+
     "Custom-Launch-Options":
         {
             "value": "+map mp_coop_lobby_3",
@@ -89,24 +83,6 @@ DefaultConfigFile = {
             "description": "Set a password for your P2MM server. This can be changed while the server is up.",
             "warning": "It is recommended to set this if you don't want unwanted visitors!",
             "prompt": "Type the password for your P2MM server.\nCharacters \"\'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.",
-        },
-
-    "FastDL-Server-IP":
-        {
-            "value": "",
-            "menu": "portal2",
-            "description": "The local IP you want to use to host the FastDL HTTP Server.",
-            "warning": "This is required if you want to use FastDL in P2MM!",
-            "prompt": "The local IP you want to\nuse to host the FastDL HTTP Server.\nIt should be the same local\nIP you used to port foward Portal 2.",
-        },
-
-    "FastDL-Server-Port":
-        {
-            "value": "27016",
-            "menu": "portal2",
-            "description": "The port you want the FastDL HTTP Server to run on.",
-            "warning": "This is required if you want to use FastDL in P2MM!",
-            "prompt": "The port you want the\nFastDL HTTP Server to run on.\nIt's recommended to use 27016\nbut another open port should work.",
         },
 
     "Encrypt-Cvars":
@@ -137,7 +113,7 @@ DefaultConfigFile = {
             "warning": "If You See This Something Is Wrong",
             "prompt": "If You See This Something Is Wrong",
         },
-    
+
     "Active-Language":
         {
             "value": GetSysLang(),
@@ -149,28 +125,10 @@ DefaultConfigFile = {
 
     "Dev-Mode":
         {
-            "value": True, #REMEMBER TO CHANGE THIS WHEN RELEASING NEW VERSION!
+            "value": True,  # REMEMBER TO CHANGE THIS WHEN RELEASING NEW VERSION!
             "menu": "dev",
             "description": "Makes the mod's files mount from src/ModFiles",
             "warning": "Only enable this if you know what you're doing!",
-            "prompt": "",
-        },
-
-    "Data-System-Overide":
-        {
-            "value": True,
-            "menu": "dev",
-            "description": "Manually overide if the datasystem will operate next play session.",
-            "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
-            "prompt": "",
-        },
-    
-    "Data-System-Debugging":
-        {
-            "value": False,
-            "menu": "dev",
-            "description": "Enables debug messaging for the Data System",
-            "warning": "Leave this off if you wish to not clog up the logs!",
             "prompt": "",
         }
 }
@@ -179,6 +137,8 @@ ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
 
 # verifies the config file by making sure that the processed data has the same keys as the default
 # if it doesn't then the values are transfered from the local config file to the default one and write the default one
+
+
 def VerifyConfigFileIntegrity(config: dict) -> dict:
     Log("=========================")
     Log("Validating config data...")
@@ -190,7 +150,7 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
         if key not in DefaultConfigFile.keys():
             Log(f"The key [{key}] is invalid, fixing it...")
             config.pop(key)
-            errors +=1
+            errors += 1
 
         # validate all the immutable values
         for property in config[key]:
@@ -198,14 +158,14 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
                 if config[key][property] != DefaultConfigFile[key][property]:
                     Log(f"The value for [{key}][{property}] is invalid, fixing it...")
                     config[key][property] = DefaultConfigFile[key][property]
-                    errors +=1
+                    errors += 1
 
     # VALIDATE ALL THE KEYS EXIST
     for key in DefaultConfigFile.keys():
         if key not in config.keys():
             Log(f"The key [{key}] is missing, fixing it...")
             config[key] = DefaultConfigFile[key]
-            errors +=1
+            errors += 1
 
     # VALIDATE THAT ALL THE KEYS HAVE ALL THE VALUES
     for key in DefaultConfigFile:
@@ -213,7 +173,7 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
             if property not in config[key]:
                 Log(f"The value for [{key}][{property}] is missing, fixing it...")
                 config[key][property] = DefaultConfigFile[key][property]
-                errors +=1
+                errors += 1
     Log("=========================")
 
     if errors > 0:
@@ -233,7 +193,8 @@ def ValidatePlayerKeys() -> None:
             if player.keys() != defaultplayerarray.keys():
                 errs += 1
                 tempPlayer = defaultplayerarray
-                print(f"local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
+                print(
+                    f"local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
                 for key in tempPlayer.keys():
                     try:
                         tempPlayer[key] = player[key]
@@ -264,6 +225,7 @@ def GetConfigList(search: str, val: str) -> list:
             lst.append(key)
     return lst
 
+
 def WriteConfigFile(configs: dict) -> None:
     filepath = FindConfigPath()
     # just to make sure the file doesn't exist
@@ -278,9 +240,12 @@ def WriteConfigFile(configs: dict) -> None:
         json.dump(configs, cfg, indent=4)
 
 # since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
+
+
 def EditConfig(search: str, newvalue: any) -> None:
     GVars.configData[search]["value"] = newvalue
     WriteConfigFile(GVars.configData)
+
 
 def EditPlayer(index: int, name: str = None, steamId: str = None, level: str = None):
     if name is not None:
@@ -292,16 +257,20 @@ def EditPlayer(index: int, name: str = None, steamId: str = None, level: str = N
 
     WriteConfigFile(GVars.configData)
 
+
 def DeletePlayer(index: int):
     GVars.configData["Players"]["value"].pop(index)
     WriteConfigFile(GVars.configData)
 
+
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
-    return GVars.configsPath + GVars.nf + "configs.cfg"
+    return GVars.configsPath + "/configs.cfg"
 
 # to import the config data from the local config file
+
+
 def ImportConfig() -> dict:
     try:
         Log("            __________Config Data Start__________")
