@@ -123,11 +123,10 @@ local IncludeScriptCC = function(script) {
 // Organized alphabetically...
 
 IncludeScriptCC("adminmodify")
-//IncludeScriptCC("ban") // INDEV By Orsell
 IncludeScriptCC("changeteam")
 IncludeScriptCC("help")
 IncludeScriptCC("hub")
-//IncludeScriptCC("kick") // Still needs fixed by Orsell
+IncludeScriptCC("kick")
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
@@ -137,7 +136,7 @@ IncludeScriptCC("restartlevel")
 IncludeScriptCC("rocket")
 IncludeScriptCC("slap")
 IncludeScriptCC("spchapter")
-//IncludeScriptCC("spectate") // broken
+// IncludeScriptCC("spectate") // broken
 IncludeScriptCC("speed")
 IncludeScriptCC("teleport")
 IncludeScriptCC("vote")
