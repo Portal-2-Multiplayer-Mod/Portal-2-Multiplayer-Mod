@@ -1445,7 +1445,7 @@ def DEVMOUNT() -> None:
 
     # copy the one in the current directory to the modpath
     Log("DEV: Copying over files from src/ModFiles...")
-    BF.CopyFolder(cwd + "/ModFiles", GVars.mainFolderPath)
+    BF.CopyFolder(cwd + "/ModFiles", GVars.mainFolderPath + "/ModFiles")
 
 
 def MountModOnly() -> bool:
