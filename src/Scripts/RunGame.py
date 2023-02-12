@@ -194,7 +194,7 @@ def UnpatchBinaries(gamepath: str) -> None:
     Log("Unpatching binaries...")
     for binary in binaries:
         # get the filename
-        filename = binary.rsplit(os.sep, 1)[1]
+        filename = binary.rsplit("/", 1)[1]
         # delete the file from the gamepath if it exitsts
         if (os.path.isfile(gamepath + "/" + filename)):
             Log("Deleting " + gamepath + "/" + filename + "...")
@@ -224,7 +224,7 @@ def PatchBinaries(gamepath: str) -> None:
     for binary in binaries:
         Log("Moving " + binary + " to " + gamepath + "...")
         # Get the filename
-        filename = binary.rsplit(os.sep, 1)[1]
+        filename = binary.rsplit("/", 1)[1]
 
         # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
@@ -391,7 +391,7 @@ def RenameBinaries(gamepath: str, binaries: list[str]) -> None:
 
     # go through the list of binaries
     for binary in binaries:
-        filename = binary.rsplit(os.sep, 1)[1]
+        filename = binary.rsplit("/", 1)[1]
         # if the binary exists
         extra = "Portal2/bin/"
         if (os.path.isfile(gamepath + "/" + binary)):
