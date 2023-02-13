@@ -634,12 +634,6 @@ class Gui:
         self.RefreshSettingsMenu("dev")
         self.ChangeMenu(self.SettingsButtons, append=True)
 
-    #!############################
-    #! DATA SYSTEM BUTTON FUNCTIONS
-    #!############################
-
-    def Button_RefreshDataSystem_func(self) -> None:
-        self.RefreshDataMenu()
 
     #!############################
     #! MANUAL MODE BUTTONS FUNCTIONS
@@ -694,7 +688,7 @@ class Gui:
     def Button_GitHub_func(self) -> None:
         # open the discord invite in the default browser
         webbrowser.open(
-            "https://github.com/kyleraykbs/Portal2-32PlayerMod#readme")
+            "https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod")
 
     # this simply opens the steam guide
 
