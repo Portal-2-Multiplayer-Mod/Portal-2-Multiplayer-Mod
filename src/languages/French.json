@@ -44,7 +44,7 @@
   "update_complete": "Mise à jour terminé !",
   "update_available": "Mise à jour disponible!",
   "update_would_you_like_to": "Voulez vous mettre à jour les fichiers du mod?",
-  "no_internet_error": "Une connexion Internet est nécessaire pour télécharger les fichier de Mod.\n\nVérifiez votre connexion puis réessayez.",
+  "no_internet_error": "Une connexion Internet est nécessaire pour télécharger les fichier du Mod.\n\nVérifiez votre connexion puis réessayez.",
   "launcher_settings_button": "Configuration du lanceur",
   "launcher_config_reset": "Configuration réinitialisée",
   "launcher_had_to_reset": "Nous avons dû réinitialiser votre configuration \n\nS'il vous plaît vérifiez vos paramètres",
