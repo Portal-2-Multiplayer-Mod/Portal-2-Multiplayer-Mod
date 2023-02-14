@@ -141,24 +141,24 @@ class Gui:
 
     def DefineMainMenu(self) -> None:
         self.Button_LaunchGame = ButtonTemplate(
-            translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120), isAsync=True)
+            Translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120), isAsync=True)
         self.Button_Settings = ButtonTemplate(
-            translations["settings_button"], self.Button_Settings_func)
+            Translations["settings_button"], self.Button_Settings_func)
         # self.Button_Data = ButtonTemplate(translations["data_menu_button"], self.Button_Data_func, (235, 172, 14)) This will be the buttons position in the list onces its finished
         self.Button_Update = ButtonTemplate(
-            translations["update_button"], self.Button_Update_func, (255, 0, 255), isAsync=True)
+            Translations["update_button"], self.Button_Update_func, (255, 0, 255), isAsync=True)
         self.Button_ManualMode = ButtonTemplate(
-            translations["manual_mounting_button"], self.Button_ManualMode_func)
+            Translations["manual_mounting_button"], self.Button_ManualMode_func)
         self.Button_Workshop = ButtonTemplate(
-            translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
+            Translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
         self.Button_ResourcesMenu = ButtonTemplate(
-            translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
+            Translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
         self.Button_Exit = ButtonTemplate(
-            translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isAsync=True, selectanim="none")
-        self.Text_MainMenuText = DisplayText(translations["welcome"], textColor=(
+            Translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isAsync=True, selectanim="none")
+        self.Text_MainMenuText = DisplayText(Translations["welcome"], textColor=(
             255, 234, 0), posX=750, endX=1870, posY=20, size=75)
         self.Text_LauncherVersionText = DisplayText(
-            translations["version"] + self.currentVersion, textColor=(255, 234, 0), posX=75, endX=750, posY=770)
+            Translations["version"] + self.currentVersion, textColor=(255, 234, 0), posX=75, endX=750, posY=770)
 
         # The DisplayText class needs a seperate table for displaying nonfunctional text
         self.MainMenuText = [self.Text_MainMenuText,
@@ -170,7 +170,7 @@ class Gui:
             self.Button_Test = ButtonTemplate(
                 "Test Button", self.Button_Test_func)
 
-            self.Text_DevMode = DisplayText(translations["dev_mode_enabled"], textColor=(
+            self.Text_DevMode = DisplayText(Translations["dev_mode_enabled"], textColor=(
                 255, 0, 0), posX=75, endX=750, posY=735)
             self.MainMenuButtons.append(self.Button_Test)
             self.MainMenuText.append(self.Text_DevMode)
@@ -178,23 +178,23 @@ class Gui:
         self.MainMenuButtons.append(self.Button_Exit)
         # We don't need the back button in the main menu but I thought it will be better the declare it here -Cabiste
         self.Button_Back = ButtonTemplate(
-            translations["back_button"], self.Button_Back_func)
+            Translations["back_button"], self.Button_Back_func)
 
     def DefineSettingsMenu(self) -> None:
         self.Button_LauncherSettingsMenu = ButtonTemplate(
-            translations["launcher_settings_button"], self.Button_LauncherSettingsMenu_func)
+            Translations["launcher_settings_button"], self.Button_LauncherSettingsMenu_func)
         self.Button_Portal2Settings = ButtonTemplate(
-            translations["portal2_config_button"], self.Button_Portal2Settings_func)
+            Translations["portal2_config_button"], self.Button_Portal2Settings_func)
         self.Button_AdminsMenu = ButtonTemplate(
-            translations["player_button"], self.Button_AdminsMenu_func, (0, 255, 255))
+            Translations["player_button"], self.Button_AdminsMenu_func, (0, 255, 255))
         self.Button_LanguageMenu = ButtonTemplate(
-            translations["languages_button"], self.Button_LanguageMenu_func, (175, 75, 0))
+            Translations["languages_button"], self.Button_LanguageMenu_func, (175, 75, 0))
         self.Text_SettingsLaunchText = DisplayText(
-            translations["language_menu_launch_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=540, size=75)
+            Translations["language_menu_launch_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=540, size=75)
         self.Text_SettingsPortal2Text = DisplayText(
-            translations["language_menu_portal2_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=620, size=75)
+            Translations["language_menu_portal2_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=620, size=75)
         self.Text_SettingsPlayersText = DisplayText(
-            translations["language_menu_players_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=700, size=75)
+            Translations["language_menu_players_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=700, size=75)
 
         self.SettingsMenus = [self.Button_LauncherSettingsMenu, self.Button_Portal2Settings,
                               self.Button_AdminsMenu, self.Button_LanguageMenu]
@@ -203,16 +203,16 @@ class Gui:
 
         if self.devMode:
             self.Button_HiddenSettings = ButtonTemplate(
-                translations["dev_settings_button"], self.Button_DevSettings_func)
+                Translations["dev_settings_button"], self.Button_DevSettings_func)
             self.SettingsMenus.append(self.Button_HiddenSettings)
 
         self.SettingsMenus.append(self.Button_Back)
 
     def DefineWorkshopMenu(self) -> None:
         self.Button_GetWorkShopCommand = ButtonTemplate(
-            translations["get_level_button"], self.Button_GetWorkShopCommand_func)
+            Translations["get_level_button"], self.Button_GetWorkShopCommand_func)
         self.Text_WorkshopMenuInfo = DisplayText(
-            translations["workshop_menu_info"],
+            Translations["workshop_menu_info"],
             textColor=(255, 234, 0),
             posX=75, endX=1100, posY=220, size=70)
 
@@ -222,20 +222,20 @@ class Gui:
 
     def DefineManualMountingMenu(self) -> None:
         self.Button_ManualMount = ButtonTemplate(
-            translations["mount_button"], self.Button_ManualMount_func, (50, 255, 120), isAsync=True)
+            Translations["mount_button"], self.Button_ManualMount_func, (50, 255, 120), isAsync=True)
         self.Button_ManualUnmount = ButtonTemplate(
-            translations["unmount_button"], self.Button_ManualUnmount_func, (255, 50, 50), isAsync=True)
+            Translations["unmount_button"], self.Button_ManualUnmount_func, (255, 50, 50), isAsync=True)
 
         self.ManualButtons = [self.Button_ManualMount,
                               self.Button_ManualUnmount, self.Button_Back]
 
     def DefineResourcesMenu(self) -> None:
         self.Button_GitHub = ButtonTemplate(
-            translations["github_button"], self.Button_GitHub_func, (255, 255, 255), isAsync=True)
+            Translations["github_button"], self.Button_GitHub_func, (255, 255, 255), isAsync=True)
         self.Button_Guide = ButtonTemplate(
-            translations["guide_button"], self.Button_Guide_func, (35, 35, 50), isAsync=True)
+            Translations["guide_button"], self.Button_Guide_func, (35, 35, 50), isAsync=True)
         self.Button_Discord = ButtonTemplate(
-            translations["discord_server_button"], self.Button_Discord_func, (75, 75, 150), isAsync=True)
+            Translations["discord_server_button"], self.Button_Discord_func, (75, 75, 150), isAsync=True)
 
         self.ResourcesButtons = [
             self.Button_GitHub, self.Button_Guide, self.Button_Discord, self.Button_Back]
@@ -248,7 +248,7 @@ class Gui:
         self.Button_PrintToConsole = ButtonTemplate(
             "Print to Console", self.Button_PrintToConsole_func)
         self.Button_Back = ButtonTemplate(
-            translations["back_button"], self.Button_Back_func)
+            Translations["back_button"], self.Button_Back_func)
 
         self.Text_TestMenuTextTest1 = DisplayText(
             "displaytext: All default settings")
@@ -297,15 +297,15 @@ class Gui:
 
         for key in GVars.configsData:
             if GVars.configsData[key]["menu"] == menuName:
-                Log(str(key) + ": " + str(GVars.configsData[key]["value"]))
-                self.SettingsButtons.append(curkeyButton(key, self, menuName,
-                                                         {
-                                                             "name": translations[key],
-                                                             "description": translations[GVars.configsData[key]["description"]],
-                                                             "warning": translations[GVars.configsData[key]["warning"]],
-                                                             "error_saved": translations["error_saved"],
-                                                             "prompt": translations[GVars.configsData[key]["prompt"]]
-                                                         }))
+                self.SettingsButtons.append(
+                    curkeyButton(key, self, menuName,
+                                 {
+                                     "name": Translations[key],
+                                     "description": Translations[GVars.configsData[key]["description"]],
+                                     "warning": Translations[GVars.configsData[key]["warning"]],
+                                     "error_saved": Translations["error_saved"],
+                                     "prompt": Translations[GVars.configsData[key]["prompt"]]
+                                 }))
 
         self.SettingsButtons.append(self.Button_Back)
 
@@ -322,14 +322,14 @@ class Gui:
             def AfterInputPlayerName(inp: str) -> None:
                 Log("Saving player name: " + inp)
                 cfg.EditPlayer(self.CurrentSelectedPlayer, name=inp.strip())
-                self.Error(translations["error_saved"], 5, (75, 200, 75))
+                self.Error(Translations["error_saved"], 5, (75, 200, 75))
                 self.RefreshPlayersMenu()
 
-            self.GetUserInputPYG(
-                AfterInputPlayerName, translations["players_enter_username"], PlayerKey["name"])
+            self.GetUserInput(
+                AfterInputPlayerName, Translations["players_enter_username"], PlayerKey["name"])
 
         Button_PlayerName = ButtonTemplate(
-            translations["players_name"] + PlayerKey["name"], Button_PlayerName_func, (255, 255, 120))
+            Translations["players_name"] + PlayerKey["name"], Button_PlayerName_func, (255, 255, 120))
 
         # sets the steam id for the player
         def Button_PlayerSteamId_func() -> None:
@@ -345,19 +345,19 @@ class Gui:
                         # only get everything after the last ":"
                         inp = inp.split(":")[-1]
                         self.Error(
-                            translations["players_converted_steamid"], 5, (75, 120, 255))
+                            Translations["players_converted_steamid"], 5, (75, 120, 255))
                     except Exception as e:
                         self.Error(
-                            translations["players_invalid_steamid"], 5, (255, 50, 50))
+                            Translations["players_invalid_steamid"], 5, (255, 50, 50))
                         Log(str(e))
                         return
 
                 cfg.EditPlayer(self.CurrentSelectedPlayer, steamId=inp)
-                self.Error(translations["error_saved"], 5, (75, 200, 75))
+                self.Error(Translations["error_saved"], 5, (75, 200, 75))
                 self.RefreshPlayersMenu()
 
-            self.GetUserInputPYG(
-                AfterInputSteamID, translations["players_enter_steamid"], PlayerKey["steamid"])
+            self.GetUserInput(
+                AfterInputSteamID, Translations["players_enter_steamid"], PlayerKey["steamid"])
 
         Button_PlayerSteamId = ButtonTemplate(
             "SteamID: " + PlayerKey["steamid"], Button_PlayerSteamId_func, (255, 255, 120))
@@ -368,25 +368,25 @@ class Gui:
 
                 if not inp.isdigit():
                     self.Error(
-                        translations["players_admin_error_not-a-number"], 5, (255, 50, 50))
+                        Translations["players_admin_error_not-a-number"], 5, (255, 50, 50))
                     return
 
                 if int(inp) > 6 or int(inp) < 0:
                     self.Error(
-                        translations["admin_level_error_out-of-range"], 5, (255, 255, 50))
+                        Translations["admin_level_error_out-of-range"], 5, (255, 255, 50))
                     return
 
                 # here i'm converting to int then to str so it removes all the extra 0s on the left side (05 -> 5)
                 cfg.EditPlayer(self.CurrentSelectedPlayer, level=str(int(inp)))
-                self.Error(translations["error_saved"], 5, (75, 200, 75))
+                self.Error(Translations["error_saved"], 5, (75, 200, 75))
                 Log("Saving admin level as " + str(inp))
                 self.RefreshPlayersMenu()
 
-            self.GetUserInputPYG(
-                AfterInputAdminLevel, translations["players_admin-enter-admin-level"], PlayerKey["adminlevel"])
+            self.GetUserInput(
+                AfterInputAdminLevel, Translations["players_admin-enter-admin-level"], PlayerKey["adminlevel"])
 
         Button_AdminLevel = ButtonTemplate(
-            translations["players_admin_level"] + PlayerKey["adminlevel"], Button_AdminLevel_func, (255, 255, 120))
+            Translations["players_admin_level"] + PlayerKey["adminlevel"], Button_AdminLevel_func, (255, 255, 120))
 
         # changes the view to the next player
         def Button_NextPlayer_func() -> None:
@@ -402,29 +402,23 @@ class Gui:
             self.ChangeMenu(self.PlayersMenu, append=False)
 
         Button_NextPlayer = ButtonTemplate(
-            translations["players_next_button"], Button_NextPlayer_func, (255, 255, 120))
+            Translations["players_next_button"], Button_NextPlayer_func, (255, 255, 120))
 
         # adds a player to the list
         def Button_AddPlayer_func() -> None:
-
-            Log("Adding blank player...")
-            GVars.configsData["Players"]["value"].append(
-                cfg.defaultplayerarray)
-            cfg.WriteConfigFile(GVars.configsData)
-            Log(str(len(GVars.configsData["Players"]["value"]) - 1))
-            self.CurrentSelectedPlayer = len(
-                GVars.configsData["Players"]["value"]) - 1
+            cfg.AddPlayer()
+            self.CurrentSelectedPlayer = len(GVars.configsData["Players"]["value"]) - 1
             self.RefreshPlayersMenu()
 
         Button_AddPlayer = ButtonTemplate(
-            translations["players_add_player"], Button_AddPlayer_func, (120, 255, 120))
+            Translations["players_add_player"], Button_AddPlayer_func, (120, 255, 120))
 
         # deletes a player from the list
         def Button_DeletePlayer_func() -> None:
 
             if len(GVars.configsData["Players"]["value"]) <= 1:
                 self.Error(
-                    translations["players_error_must_be_at_least_one_player"], 5, (255, 50, 50))
+                    Translations["players_error_must_be_at_least_one_player"], 5, (255, 50, 50))
                 return
 
             Log("Deleting player...")
@@ -433,7 +427,7 @@ class Gui:
             self.RefreshPlayersMenu()
 
         Button_DeletePlayer = ButtonTemplate(
-            translations["players_remove_player"], Button_DeletePlayer_func, (255, 50, 50))
+            Translations["players_remove_player"], Button_DeletePlayer_func, (255, 50, 50))
 
         ####################
         self.PlayersMenu.append(Button_PlayerName)
@@ -469,7 +463,7 @@ class Gui:
 
         if not CheckForUpdates():
             self.Error(
-                translations["update_already_up_to_date"], 5, (200, 75, 220))
+                Translations["update_already_up_to_date"], 5, (200, 75, 220))
 
     # Switches to the manual mod mounting and unmounting menu
     def Button_ManualMode_func(self) -> None:
@@ -517,12 +511,12 @@ class Gui:
         self.RefreshSettingsMenu("dev")
         self.ChangeMenu(self.SettingsButtons)
 
-
     #!############################
     #! MANUAL MODE BUTTONS FUNCTIONS
     #!############################
 
     # Button to manually mount P2MM
+
     def Button_ManualMount_func(self) -> None:
         if self.CoolDown > 0:
             return
@@ -537,7 +531,7 @@ class Gui:
 
         self.CoolDown = int(3 * 60)
         UnmountScript()
-        Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+        Ui.Error(Translations["unmounted_error"], 5, (125, 0, 125))
 
     #!############################
     #! WORKSHOP BUTTONS FUNCTIONS
@@ -552,15 +546,15 @@ class Gui:
                 map = map.replace(".bsp", "")
                 pyperclip.copy("changelevel " + map)
                 self.Error(
-                    translations["workshop_changelevel_command"], 3, (255, 0, 255))
+                    Translations["workshop_changelevel_command"], 3, (255, 0, 255))
                 self.Error(
-                    translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
+                    Translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
                 return
 
             self.Error(
-                translations["workshop_map_not_found"], 6, (255, 255, 0))
+                Translations["workshop_map_not_found"], 6, (255, 255, 0))
 
-        self.GetUserInputPYG(AfterInput, translations["workshop_link"])
+        self.GetUserInput(AfterInput, Translations["workshop_link"])
 
     #!############################
     #! RESOURCES BUTTONS FUNCTIONS
@@ -618,7 +612,7 @@ class Gui:
     def Button_InputField_func(self) -> None:
         def AfterInput(input) -> None:
             self.Error("Input: " + input, 3, (255, 255, 0))
-        self.GetUserInputPYG(
+        self.GetUserInput(
             AfterInput, "As you can see this text can \n go onto another line :)")
 
     # this is a test for popup boxes
@@ -630,9 +624,9 @@ class Gui:
             self.Error("Bruh...", 3, (255, 75, 75))
 
         Button_Confirm = ButtonTemplate(
-            translations["error_yes"], YesInput, (75, 200, 75))
+            Translations["error_yes"], YesInput, (75, 200, 75))
         Button_Decline = ButtonTemplate(
-            translations["error_no"], NoInput, (255, 75, 75))
+            Translations["error_no"], NoInput, (255, 75, 75))
         self.PopupBox("Trolling Time!?!?!", "Have you given Cabiste an\naneruism today?",
                       [Button_Confirm, Button_Decline])
 
@@ -672,15 +666,12 @@ class Gui:
             y = self.screen.get_height() / 16
 
         if (len(txt) > 0):
-            text = pygame.font.Font(translations["font"], int(int(
+            text = pygame.font.Font(Translations["font"], int(int(
                 int((int(self.screen.get_width() / 15) + int(self.screen.get_height() / 25)) / (len(txt) * 0.1))))).render(txt, True, clr)
             if not (self.LookingForInput):
                 self.screen.blit(text, (x, y))
 
-    def GetUserInputPYG(self,
-                        afterfunc=None,
-                        prompt: list = [],
-                        preinput: str = "") -> None:
+    def GetUserInput(self, afterfunc=None, prompt: list = [], preinput: str = "") -> None:
 
         Log("Getting user input...")
         self.LookingForInput = True
@@ -745,7 +736,7 @@ class Gui:
         cfg.EditConfig("Active-Language", lang)
         LoadTranslations()
         self.__init__(self.devMode)
-        self.Error(translations["language_error0_language_update"])
+        self.Error(Translations["language_error0_language_update"])
 
     def LanguageButton(self) -> None:
         self.LanguagesMenu.clear()
@@ -791,7 +782,7 @@ class Gui:
             self.RunAnimation(button, button.curanim)
 
             text1 = pygame.font.Font(
-                translations["font"], (button.Width + button.Height)).render(button.Text, True, clr)
+                Translations["font"], (button.Width + button.Height)).render(button.Text, True, clr)
 
             if not (self.LookingForInput):
                 self.screen.blit(
@@ -808,7 +799,7 @@ class Gui:
             displaytext.Width = int(W / displaytext.Size)
             displaytext.Height = int(H / displaytext.Size)
             text = pygame.font.Font(
-                translations["font"], (displaytext.Width + displaytext.Height))
+                Translations["font"], (displaytext.Width + displaytext.Height))
             # 2D array where each row is a list of words.
             words = [word.split(' ') for word in displaytext.Text.splitlines()]
             space = text.size(' ')[0]  # The width of a space.
@@ -832,9 +823,9 @@ class Gui:
         # BACKGROUND
         for floater in self.FloatingCubesList:
             surf = floater.Surface
-            if (self.SelectedButton.Text == translations["unmount_button"] or self.SelectedButton.Text == translations["exit_button"]):
+            if (self.SelectedButton.Text == Translations["unmount_button"] or self.SelectedButton.Text == Translations["exit_button"]):
                 surf = self.CubeRedAsset
-            if (self.SelectedButton.Text == translations["back_button"]):
+            if (self.SelectedButton.Text == Translations["back_button"]):
                 surf = self.CubeGoldAsset
             surf = pygame.transform.scale(surf, (W / 15, W / 15))
             surf = pygame.transform.rotate(surf, floater.Rotation)
@@ -847,14 +838,14 @@ class Gui:
                 floater.Rotation -= (1 + random.randint(0, 2))
             else:
                 floater.Rotation += (1 + random.randint(0, 2))
-            if (self.SelectedButton.Text == translations["back_button"]):
+            if (self.SelectedButton.Text == Translations["back_button"]):
                 floater.PosX -= W / 60
                 if floater.PosX < (floater.Surface.get_width() * -2):
                     floater.PosY = random.randint(0, H)
                     floater.PosX = (floater.Surface.get_width() * 2) + \
                         (random.randint(W, W * 2)) * 1
                     floater.NegativeRotation = random.randint(0, 1) == 1
-            elif (self.SelectedButton.Text == translations["unmount_button"] or self.SelectedButton.Text == translations["exit_button"]):
+            elif (self.SelectedButton.Text == Translations["unmount_button"] or self.SelectedButton.Text == Translations["exit_button"]):
                 floater.PosY -= H / 60
                 if floater.PosY < (floater.Surface.get_height() * -2):
                     floater.PosY = (floater.Surface.get_height() * 2) + \
@@ -895,7 +886,7 @@ class Gui:
         for error in self.ErrorList[::-1]:
             indx += 1
             errortext = pygame.font.Font(
-                translations["font"],
+                Translations["font"],
                 int(int(W / 60) + int(H / 85))
             ).render(error[0], True, error[2])
 
@@ -912,7 +903,7 @@ class Gui:
 
         try:
             # if self.CurrentMenu == setti
-            self.SelectedButton.whileSelectedfunction(self)
+            self.SelectedButton.WhileSelectedfunction(self)
 
         except Exception as e:
             # Log(str(e))
@@ -935,7 +926,7 @@ class Gui:
             by = H / 2 - (bh / 2)
 
             # put the title in the box
-            boxtitle = pygame.font.Font(translations["font"], fntsize).render(self.PopupBoxList[0][0], True,
+            boxtitle = pygame.font.Font(Translations["font"], fntsize).render(self.PopupBoxList[0][0], True,
                                                                               (255, 255, 0))
             titlew = boxtitle.get_width()
             titleh = boxtitle.get_height()
@@ -948,7 +939,7 @@ class Gui:
             indx = 0
             for line in ctext:
                 text = pygame.font.Font(
-                    translations["font"], int(fntsize / 1.5)).render(line, True, (0, 0, 0))
+                    Translations["font"], int(fntsize / 1.5)).render(line, True, (0, 0, 0))
                 textw = text.get_width()
                 texth = text.get_height()
                 textx = bx + (bw / 2) - (textw / 2)
@@ -978,7 +969,7 @@ class Gui:
                 button.Height = surfh
                 self.screen.blit(buttonsurf, (surfx, surfy))
 
-                text = pygame.font.Font(translations["font"], int(
+                text = pygame.font.Font(Translations["font"], int(
                     fntsize / 1.5)).render(button.Text, True, (255, 255, 255))
                 textw = text.get_width()
                 texth = text.get_height()
@@ -1000,7 +991,7 @@ class Gui:
             InputText = ""
             for i in range(len(lines)):
                 InputText = pygame.font.Font(
-                    translations["font"], fntsize).render(lines[i], True, (255, 255, 175))
+                    Translations["font"], fntsize).render(lines[i], True, (255, 255, 175))
                 self.screen.blit(InputText, (W / 2 - (InputText.get_width() / 2), (
                     (((H / 2) - (InputText.get_height() * 1.25)) + ((text1.get_height() * 1.25) * i))) - (
                     (((text1.get_height() * 1.25) * (len(lines) / 2))))))
@@ -1014,7 +1005,7 @@ class Gui:
             # We need to check if breaks were detected before in the prompt part of the code (line 868)
             if self.HasBreaks == True:
                 for breaks in range(0, self.PromptBreaks):
-                    surfInputPrompt = pygame.font.Font(translations["font"],
+                    surfInputPrompt = pygame.font.Font(Translations["font"],
                                                        int(fntsize/1.5)).render(self.InputPrompt[breaks], True, (255, 255, 255))
 
                     # blit it right below the surf1
@@ -1022,7 +1013,7 @@ class Gui:
                                      (blitpos[0] + (surf1.get_width() / 2) - (surfInputPrompt.get_width() / 2),
                                       ((blitpos[1] + 15) + (surfInputPrompt.get_height() * breaks))))
             else:
-                surfInputPrompt = pygame.font.Font(translations["font"],
+                surfInputPrompt = pygame.font.Font(Translations["font"],
                                                    int(fntsize/1.5)).render(self.InputPrompt, True, (255, 255, 255))
 
                 # blit it right below the surf1
@@ -1143,9 +1134,9 @@ class Gui:
                     elif event.type == MOUSEBUTTONDOWN:
                         # if the mouse is over a button
                         for btn in self.PopupBoxList[0][2]:
-                            if (btn.x < mousex < btn.x + btn.width) and (btn.y < mousey < btn.y + btn.height):
+                            if (btn.CurrentPosX < mousex < btn.CurrentPosX + btn.Width) and (btn.CurrentPosY < mousey < btn.CurrentPosY + btn.Height):
                                 self.SelectedPopupButton = btn
-                                self.SelectedPopupButton.function()
+                                self.SelectedPopupButton.Function()
                                 self.PopupBoxList.pop()
                                 break
 
@@ -1157,11 +1148,13 @@ class Gui:
                             continue
 
                         elif event.key in [K_SPACE]:
-                            self.SelectAnimation(self.SelectedButton, self.SelectedButton.selectanim)
+                            self.SelectAnimation(
+                                self.SelectedButton, self.SelectedButton.selectanim)
 
                             if self.SelectedButton.Function:
                                 if self.SelectedButton.IsAsync:
-                                    threading.Thread(target=self.SelectedButton.Function).start()
+                                    threading.Thread(
+                                        target=self.SelectedButton.Function).start()
                                 else:
                                     self.SelectedButton.Function()
 
@@ -1178,11 +1171,12 @@ class Gui:
                             if self.CurrentButtonIndex > 0:
                                 self.CurrentButtonIndex -= 1
                             else:
-                                self.CurrentButtonIndex = len(self.CurrentMenuButtons) - 1
+                                self.CurrentButtonIndex = len(
+                                    self.CurrentMenuButtons) - 1
 
-                        self.SelectedButton: ButtonTemplate = self.CurrentMenuButtons[self.CurrentButtonIndex]
+                        self.SelectedButton: ButtonTemplate = self.CurrentMenuButtons[
+                            self.CurrentButtonIndex]
                         self.PlaySound(self.SelectedButton.HoverSound)
-
 
                 # LMB
                 # executes the button's function on left mouse click IF the mouse is above the button
@@ -1242,7 +1236,7 @@ class Gui:
 
 def PreExit() -> None:
     Log("Shutting down the P2MM launcher...")
-    Log("Shutting down Portal 2...")
+
     # Windows
     if (GVars.isWin):
         os.system("taskkill /f /im portal2.exe")
@@ -1260,7 +1254,7 @@ def PreExit() -> None:
     if (GVars.configsData["Auto-Umount"]["value"]):
         Log("Unmounting P2MM's ModFiles from Portal 2...")
         UnmountScript(False)
-        Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+        Ui.Error(Translations["unmounted_error"], 5, (125, 0, 125))
         Log("Unmounted P2MM's ModFiles from Portal 2...")
 
     Log("The P2MM launcher has been shutdown...")
@@ -1272,17 +1266,17 @@ def GetGamePath() -> None:
     if tmpp:
         cfg.EditConfig("Portal2-Path", tmpp.strip())
         Log("Saved '" + tmpp.strip() + "' as the game path!")
-        Ui.Error(translations["game_path_error-founded"], 5, (255, 255, 75))
+        Ui.Error(Translations["game_path_error-founded"], 5, (255, 255, 75))
         VerifyGamePath(False)
         return
 
-    def AfterInputGP(inp) -> None:
+    def AfterInputGP(inp: str) -> None:
         cfg.EditConfig("Portal2-Path", inp.strip())
-        Log("Saved '" + inp.strip() + "' as the game path!")
-        Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
+        Log(f"Changed Value of 'Portal2-Path' to '{inp.strip()}'")
+        Ui.Error(Translations["game_path_error-saved"], 5, (75, 200, 75))
         VerifyGamePath(False)
 
-    Ui.GetUserInputPYG(AfterInputGP, translations["game_path_enter_path"])
+    Ui.GetUserInput(AfterInputGP, Translations["game_path_enter_path"])
 
 
 def VerifyGamePath(shouldgetpath: bool = True) -> bool:
@@ -1290,11 +1284,11 @@ def VerifyGamePath(shouldgetpath: bool = True) -> bool:
     gamepath = GVars.configsData["Portal2-Path"]["value"]
 
     if not os.path.exists(gamepath):
-        Ui.Error(translations["game_path-is-invalid"])
+        Ui.Error(Translations["game_path-is-invalid"])
 
         if shouldgetpath:
             Ui.Error(
-                translations["game_path-attempt-to-fetch"], 5, (255, 255, 75))
+                Translations["game_path-attempt-to-fetch"], 5, (255, 255, 75))
             GetGamePath()
 
         return False
@@ -1332,35 +1326,35 @@ def MountModOnly() -> bool:
     cfg.ValidatePlayerKeys()
 
     if Ui.IsUpdating:
-        Ui.Error(translations["update_is-updating"], 5, (255, 75, 75))
+        Ui.Error(Translations["update_is-updating"], 5, (255, 75, 75))
         return False
 
     if not VerifyGamePath():
         return False
 
-    Ui.Error(translations["mounting_mod"], 5, (75, 255, 75))
+    Ui.Error(Translations["mounting_mod"], 5, (75, 255, 75))
 
     # Need to make sure the gamepath is in fact defined if not P2MM will not be run/mounted
     gamepath = GVars.configsData["Portal2-Path"]["value"]
     if gamepath == "undefined":
-        Ui.Error(translations["mount_nopath_error"], 5, (255, 21, 0))
+        Ui.Error(Translations["mount_nopath_error"], 5, (255, 21, 0))
         return False
 
     # Check if both of Portal 2's DLC folders exist
     if not RG.CheckForRequiredDLC(gamepath):
-        Ui.Error(translations["mount_nodlc_error"], 5, (255, 21, 0))
+        Ui.Error(Translations["mount_nodlc_error"], 5, (255, 21, 0))
         return False
 
     if (GVars.configsData["Dev-Mode"]["value"]):
-        Ui.Error(translations["devmode_is_active"], 5, (255, 180, 75))
+        Ui.Error(Translations["devmode_is_active"], 5, (255, 180, 75))
         DEVMOUNT()
         Ui.Error(
-            translations["devmode_copied_from_local_repo"], 5, (75, 255, 75))
+            Translations["devmode_copied_from_local_repo"], 5, (75, 255, 75))
 
     if VerifyModFiles():
         DoEncrypt = GVars.configsData["Encrypt-Cvars"]["value"]
         RG.MountMod(gamepath, DoEncrypt)
-        Ui.Error(translations["mounted"], 5, (75, 255, 75))
+        Ui.Error(Translations["mounted"], 5, (75, 255, 75))
         return True
 
     # If the they are not a developer and the mod files don't exist ask them to download the files from the repo
@@ -1372,23 +1366,33 @@ def MountModOnly() -> bool:
             Log("Downloading the latest mod files...")
             UpdateModFiles()
 
-        OkButton = Ui.ButtonTemplate(
-            translations["error_ok"], OkInput, (75, 255, 75))
+        OkButton = ButtonTemplate(
+            Translations["error_ok"], OkInput, (75, 255, 75))
         Ui.Error(
-            translations["update_error_connection_problem"], 5, (255, 75, 75))
-        Ui.PopupBox(translations["update_error_connection_problem"],
-                    translations["no_internet_error"], OkButton)
+            Translations["update_error_connection_problem"], 5, (255, 75, 75))
+        Ui.PopupBox(Translations["update_error_connection_problem"],
+                    Translations["no_internet_error"], OkButton)
         return False
 
     return True
 
 
 def GetAvailableLanguages() -> list[str]:
+    """Returns a list of all available translations.
+
+    Returns
+    -------
+    list[str]
+        List of languages available.
+    """
+
     Log("searching for available languages")
+
     langs = []
-    for file in os.listdir("languages"):
+    for file in os.listdir("Translations"):
         langs.append(file[:-5])
-    customTranslationsPath = GVars.mainFolderPath + "/languages"
+
+    customTranslationsPath = GVars.mainFolderPath + "/Translations"
     if os.path.exists(customTranslationsPath):
         for file in os.listdir(customTranslationsPath):
             langs.append(file[:-5])
@@ -1397,41 +1401,35 @@ def GetAvailableLanguages() -> list[str]:
 
 
 def LoadTranslations() -> dict:
-    global translations
-    langPath = "languages/" + \
-        GVars.configsData["Active-Language"]["value"] + ".json"
+    global Translations
+
+    langPath = "Translations/" + GVars.configsData["Active-Language"]["value"] + ".json"
 
     if not os.path.exists(langPath):
-        langPath = GVars.mainFolderPath + "/languages/" + \
-            GVars.configsData["Active-Language"]["value"] + ".json"
+        langPath = GVars.mainFolderPath + "/" + langPath
 
-    translations = json.load(open(langPath, "r", encoding="utf8"))
-    EnglishOriginal: dict[str, str] = json.load(
-        open("languages/English.json", "r", encoding="utf8"))
-
+    # Default to english if else failed
     if (not os.path.exists(langPath)):
-        cfg.EditConfig("Active-Language",
-                       cfg.DefaultConfigFile["Active-Language"]["value"])
-        langPath = "languages/" + \
-            GVars.configsData["Active-Language"]["value"] + ".json"
-        print(langPath)
-        translations = json.load(open(langPath, "r", encoding="utf8"))
+        Log("[ERROR] Couldn't find translation file")
+        cfg.EditConfig("Active-Language", "English")
+        langPath = "Translations/English.json"
 
-        Log("[ERROR] Language file isn't found or key mismatch")
+    Translations = json.load(open(langPath, "r", encoding="utf8"))
+
 
 
 def UpdateModFiles() -> None:
     PreExit()
-    Ui.Error(translations["update_fetching"], 5000, (255, 150, 75))
+    Ui.Error(Translations["update_fetching"], 5000, (255, 150, 75))
 
     def UpdateThread() -> None:
         Log("Updating...")
         Ui.IsUpdating = True
         UP.DownloadNewFiles()
-        Ui.Error(translations["update_complete"], 5, (75, 255, 75))
+        Ui.Error(Translations["update_complete"], 5, (75, 255, 75))
         Ui.IsUpdating = False
         for thing in Ui.ErrorList:
-            if thing[0] == translations["update_fetching"]:
+            if thing[0] == Translations["update_fetching"]:
                 Ui.ErrorList.remove(thing)
 
     threading.Thread(target=UpdateThread).start()
@@ -1439,7 +1437,7 @@ def UpdateModFiles() -> None:
 
 def UpdateModClient() -> None:
     PreExit()
-    Ui.Error(translations["updating_client"], 5000, (255, 150, 75))
+    Ui.Error(Translations["updating_client"], 5000, (255, 150, 75))
 
     def UpdateThread() -> None:
         Log("Updating client...")
@@ -1447,7 +1445,7 @@ def UpdateModClient() -> None:
 
         if not UP.DownloadClient():
             Ui.Error(
-                translations["update_nolink_error"])
+                Translations["update_nolink_error"])
             return
 
         Ui.running = False
@@ -1461,9 +1459,9 @@ def RunGameScript() -> None:
         gamepath = GVars.configsData["Portal2-Path"]["value"]
         GVars.isGameActive = True
         RG.LaunchGame(gamepath)
-        Ui.Error(translations["game_launched"], 5, (75, 255, 75))
+        Ui.Error(Translations["game_launched"], 5, (75, 255, 75))
     else:
-        Ui.Error(translations["game_path_undefined_fetch"], 5)
+        Ui.Error(Translations["game_path_undefined_fetch"], 5)
         GetGamePath()
 
 
@@ -1514,22 +1512,22 @@ def IsNew() -> None:
 
 
 def ClientUpdateBox(update: dict) -> None:
-    YesButton = Ui.ButtonTemplate(
-        translations["error_yes"], UpdateModClient, (75, 200, 75))
-    NoButton = Ui.ButtonTemplate(
-        translations["error_no"], activeColor=(255, 75, 75))
+    YesButton = ButtonTemplate(
+        Translations["error_yes"], UpdateModClient, (75, 200, 75))
+    NoButton = ButtonTemplate(
+        Translations["error_no"], activeColor=(255, 75, 75))
 
     Ui.PopupBox(update["name"], update["message"], [YesButton, NoButton])
 
 
 def ModFilesUpdateBox() -> None:
-    YesButton = Ui.ButtonTemplate(
-        translations["error_yes"], UpdateModFiles, (75, 200, 75))
-    NoButton = Ui.ButtonTemplate(
-        translations["error_no"], activeColor=(255, 75, 75))
+    YesButton = ButtonTemplate(
+        Translations["error_yes"], UpdateModFiles, (75, 200, 75))
+    NoButton = ButtonTemplate(
+        Translations["error_no"], activeColor=(255, 75, 75))
 
-    Ui.PopupBox(translations["update_available"],
-                translations["update_would_you_like_to"], [YesButton, NoButton])
+    Ui.PopupBox(Translations["update_available"],
+                Translations["update_would_you_like_to"], [YesButton, NoButton])
 
 
 def CheckForUpdates() -> bool:
@@ -1577,19 +1575,19 @@ def PostInitialize() -> None:
     VerifyGamePath()
 
     def NewAfterFunction() -> None:
-        Ui.Error(translations["game_exited"], 5, (125, 0, 125))
+        Ui.Error(Translations["game_exited"], 5, (125, 0, 125))
         if (GVars.configsData["Auto-Umount"]["value"]):
             UnmountScript()
-            Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+            Ui.Error(Translations["unmounted_error"], 5, (125, 0, 125))
 
     GVars.AfterFunction = NewAfterFunction
 
     if (GVars.resetConfig):
         Log("Config has been reset to default settings!")
-        OkButton = Ui.ButtonTemplate(
-            translations["error_ok"], activeColor=(75, 255, 75))
-        Ui.PopupBox(translations["launcher_config_reset"],
-                    translations["launcher_had_to_reset"], [OkButton])
+        OkButton = ButtonTemplate(
+            Translations["error_ok"], activeColor=(75, 255, 75), func=None)
+        Ui.PopupBox(Translations["launcher_config_reset"],
+                    Translations["launcher_had_to_reset"], [OkButton])
 
 
 if __name__ == '__main__':

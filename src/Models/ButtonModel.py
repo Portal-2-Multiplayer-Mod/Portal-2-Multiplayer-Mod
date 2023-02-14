@@ -18,6 +18,7 @@ class ButtonTemplate:
 
         self.Text:str = text
         self.Function = func
+        if self.Function == None: self.Function = self.Empty
         self.SizeMultiplier = sizemult
         self.IsAsync: bool = isAsync
         self.RelativePosX: int = xpos
@@ -41,3 +42,6 @@ class ButtonTemplate:
         self.blipsnd.set_volume(0.25)
         self.selectsnd = self.pwrsnd
         self.HoverSound = self.blipsnd
+
+    def Empty(self):
+        return

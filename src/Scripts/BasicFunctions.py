@@ -99,7 +99,7 @@ def TryFindPortal2Path() -> str:
 # Allows to check if certain processes are running
 
 
-def checkIfProcessRunning(processName) -> bool:
+def checkIfProcessRunning(processName: str) -> bool:
     for proc in psutil.process_iter():
         try:
             if processName.lower() in proc.name().lower():

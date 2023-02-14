@@ -17,18 +17,22 @@ from Scripts.BasicLogger import Log
 #! REMEMBER TO CHANGE THESE BEFORE RELEASEING A NEW VERSION OF THE LAUNCHER
 ownerName = "Portal-2-Multiplayer-Mod"
 repoName = "Portal-2-Multiplayer-Mod"  # we can't change this to the id :(
-currentVersion = "2.1.0"
+currentVersion = "2.2.0"
 
-# A quick easy way to check if the system is connected to the internet, thanks stackOverflow for this solution <3
+# thanks stackOverflow for this solution <3
+# https://stackoverflow.com/a/29854274/12429279
+
+
 def haveInternet() -> bool:
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
     try:
         conn.request("HEAD", "/")
-        conn.close()
         return True
     except Exception as e:
-        Log(f"Failed to connect to the internet:\n{str(e)}")
+        Log(f"Failed to connect to the internet: {str(e)}")
         return False
+    finally:
+        conn.close()
 
 
 def CheckForNewClient() -> dict:
@@ -189,13 +193,15 @@ def DownloadNewFiles() -> None:
 
     try:
         # when downloading is done delete the old mod files
-        BasicFuncs.DeleteFolder(GVars.mainFolderPath + "/ModFiles/Portal 2/install_dlc")
+        BasicFuncs.DeleteFolder(GVars.mainFolderPath +
+                                "/ModFiles/Portal 2/install_dlc")
         Log("Deleted old files...")
     except Exception as e:
         Log("There was no old mod files...")
         Log(str(e))
 
     # then copy the new files there
-    shutil.move(tempPath, GVars.mainFolderPath + "/ModFiles/Portal 2/install_dlc")
+    shutil.move(tempPath, GVars.mainFolderPath +
+                "/ModFiles/Portal 2/install_dlc")
     Log("Copied new files to " + GVars.mainFolderPath +
         "/ModFiles/Portal 2/install_dlc...")

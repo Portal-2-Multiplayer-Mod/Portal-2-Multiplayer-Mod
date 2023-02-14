@@ -7,8 +7,6 @@ import Scripts.GlobalVariables as GVars
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
-defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
-
 
 def GetSysLang() -> str:
     sysDefaultLocale = locale.getdefaultlocale()[0]
@@ -28,6 +26,9 @@ def GetSysLang() -> str:
 
     return "English"
 
+
+defaultPlayerArray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
+subProperties = {"value", "description", "warning", "prompt", "menu"}
 
 DefaultConfigFile = {
 
@@ -106,7 +107,7 @@ DefaultConfigFile = {
     "Players":
         {
             "value": [
-                defaultplayerarray,
+                defaultPlayerArray,
             ],
             "menu": "players",
             "description": "If You See This Something Is Wrong",
@@ -133,28 +134,37 @@ DefaultConfigFile = {
         }
 }
 
-ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
 
-# verifies the config file by making sure that the processed data has the same keys as the default
-# if it doesn't then the values are transfered from the local config file to the default one and write the default one
+def VerifyConfigsIntegrity(config: dict) -> dict:
+    """Verifies that all the properties of the config file are similar to the default config.
 
+    Parameters
+    ----------
+    config : dict
+        The config file to verify.
 
-def VerifyConfigFileIntegrity(config: dict) -> dict:
+    Returns
+    -------
+    dict
+        Same config file if there's no errors or a fixed one.
+    """
+
     Log("=========================")
     Log("Validating config data...")
 
-    copiedConfigKeys = config.keys()
+    configKeysCopy = config.keys()
     errors = 0
     # VALIDATE ALL THE KEYS ARE CORRECT
-    for key in copiedConfigKeys:
+    for key in configKeysCopy:
         if key not in DefaultConfigFile.keys():
-            Log(f"The key [{key}] is invalid, fixing it...")
+            Log(f"Property [{key}] is invalid, deleting it...")
             config.pop(key)
             errors += 1
+            continue
 
         # validate all the immutable values
         for property in config[key]:
-            if property not in ImmutableKeys:
+            if property not in subProperties:
                 if config[key][property] != DefaultConfigFile[key][property]:
                     Log(f"The value for [{key}][{property}] is invalid, fixing it...")
                     config[key][property] = DefaultConfigFile[key][property]
@@ -163,7 +173,7 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
     # VALIDATE ALL THE KEYS EXIST
     for key in DefaultConfigFile.keys():
         if key not in config.keys():
-            Log(f"The key [{key}] is missing, fixing it...")
+            Log(f"Property [{key}] is missing, fixing it...")
             config[key] = DefaultConfigFile[key]
             errors += 1
 
@@ -174,49 +184,53 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
                 Log(f"The value for [{key}][{property}] is missing, fixing it...")
                 config[key][property] = DefaultConfigFile[key][property]
                 errors += 1
+
     Log("=========================")
 
     if errors > 0:
         WriteConfigFile(config)
 
-    # if the config keys are the same as the default then just return them
     return config
 
 
 def ValidatePlayerKeys() -> None:
     Log("validating player keys...")
+    i = 0
+    errors = 0
+    player: dict
+
     try:
-        indx = 0
-        errs = 0
-        player: dict
         for player in GVars.configsData["Players"]["value"]:
-            if player.keys() != defaultplayerarray.keys():
-                errs += 1
-                tempPlayer = defaultplayerarray
-                print(
-                    f"local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
+            if player.keys() != defaultPlayerArray.keys():
+                errors += 1
+                tempPlayer = defaultPlayerArray
+
                 for key in tempPlayer.keys():
                     try:
                         tempPlayer[key] = player[key]
                     except Exception as e:
                         Log(str(e))
-                GVars.configsData["Players"]["value"][indx] = tempPlayer
 
-            if errs > 0:
-                Log(f"found {str(errs)} key errors in a player property")
+                GVars.configsData["Players"]["value"][i] = tempPlayer
 
-            indx += 1
+            if errors > 0:
+                Log(f"found {str(errors)} key errors in a player property")
 
-        if errs > 0:
-            WriteConfigFile(GVars.configsData)
+            i += 1
 
-        Log("validated all keys!")
+        Log("Validated all players!")
 
     except Exception as e:
         Log("ERROR: " + str(e))
-        GVars.configsData["Players"]["value"] = [defaultplayerarray]
+        errors +=1
+        GVars.configsData["Players"]["value"] = [defaultPlayerArray]
+
+    if errors > 0:
         WriteConfigFile(GVars.configsData)
 
+
+def GetValue(property: str) -> str:
+    return GVars.configsData[property]["value"]
 
 def GetConfigList(search: str, val: str) -> list:
     lst = []
@@ -228,24 +242,32 @@ def GetConfigList(search: str, val: str) -> list:
 
 def WriteConfigFile(configs: dict) -> None:
     filepath = GetConfigsPath()
-    # just to make sure the file doesn't exist
-    try:
-        os.remove(filepath)
-        Log("Deleted old file")
-    except Exception as e:
-        Log(f"Config file doesn't exist? {str(e)}")
 
     Log("Writing to file...")
     with open(filepath, "w", encoding="utf-8") as cfg:
         json.dump(configs, cfg, indent=4)
 
-# since we already checked for the integrity of the config file earlier we don't need to re-read from it just change the value in the loaded file and write the whole thing back
 
+def EditConfig(property: str, newValue: any) -> None:
+    """Updates the given propertie's value and writes to the config file
 
-def EditConfig(search: str, newvalue: any) -> None:
-    GVars.configsData[search]["value"] = newvalue
+    Parameters
+    ----------
+    property : str
+        The property name to update.
+
+    newValue : any
+        The new value can be anything that can be written to a json file.
+    """
+
+    GVars.configsData[property]["value"] = newValue
+    Log(f"Changed Value of '{property}' to '{str(newValue)}'")
     WriteConfigFile(GVars.configsData)
 
+def AddPlayer():
+    Log("Adding blank player...")
+    GVars.configsData["Players"]["value"].append(defaultPlayerArray)
+    WriteConfigFile(GVars.configsData)
 
 def EditPlayer(index: int, name: str = None, steamId: str = None, level: str = None):
     if name is not None:
@@ -264,46 +286,52 @@ def DeletePlayer(index: int):
 
 
 def GetConfigsPath() -> str:
-    Log("Getting configs path...")
-    # default config path should be here
+    """Returns the configs' file path.
+
+    Returns
+    -------
+    str
+        The absolute path of the configs file.
+    """
+
+    # why is this it's own function you ask?
+    # simply so we can change the file's path in one place easily
+
+    Log("Getting configs' file path...")
     return GVars.configsFilePath + "/configs.json"
 
 # to import the config data from the local config file
-
-
 def ImportConfig() -> dict:
+    Log("            __________Config Data Start__________")
+    Log("Importing Config...")
+
+    configpath = GetConfigsPath()
+
     try:
-        Log("            __________Config Data Start__________")
-        Log("Importing Config...")
-
-        configpath = GetConfigsPath()
-
         # if the file doesn't exist then create it
         if not os.path.exists(configpath):
-            print("here")
-            WriteConfigFile(DefaultConfigFile)
+            raise Exception("Couldn't find config File!")
 
         # read all the lines in the config file
         config = open(configpath, "r", encoding="utf-8").read().strip()
 
         # if the file is empty then re-create it
         if len(config) == 0:
-            print("here2")
-            WriteConfigFile(DefaultConfigFile)
+            raise Exception("Config File is empty!")
 
         # process the config file into useable data
-        Log("Processing config...")
         Log("")
+        Log("Processing config...")
 
         processedconfig = json.loads(config)
 
         Log("")
         Log("Configs imported successfully!")
         # at last pass the data to the verify function to make sure everything is clean
-        return VerifyConfigFileIntegrity(processedconfig)
+        return VerifyConfigsIntegrity(processedconfig)
+
     except Exception as e:
-        Log(f"Error importing the config file: {str(e)}")
+        Log(f"Encountared an error while importing the config file: {str(e)}")
         WriteConfigFile(DefaultConfigFile)
-        print("here3")
         GVars.resetConfig = True
-        return ImportConfig()
+        return DefaultConfigFile

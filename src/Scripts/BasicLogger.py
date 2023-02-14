@@ -50,13 +50,19 @@ def StartLog() -> None:
     Log("")
     Log("")
 
-    Log("______________________General Device Info______________________")
+    Log("______________________General Info______________________")
+    Log("")
     if (GVars.isWin):
-        Log("")
         Log("Windows OS detected!")
     elif (GVars.isLinux):
-        Log("")
         Log("Linux OS: detected!")
     elif (GVars.isSteamDeck):
-        Log("")
         Log("SteamOS 3.0: detected!")
+
+    Log("")
+    Log("Launcher variables:")
+    Log("App started at " + str(GVars.appStartDate))
+    Log("p2mm folder is: " + str(GVars.mainFolderPath))
+    Log("The mod files are located in: " + str(GVars.modFilesPath))
+    Log("The config file is in: " + str(GVars.configsFilePath))
+    Log("")

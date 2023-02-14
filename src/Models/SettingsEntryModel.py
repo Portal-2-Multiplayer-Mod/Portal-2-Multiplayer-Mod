@@ -6,11 +6,11 @@ import Scripts.GlobalVariables as GVars
 
 
 class curkeyButton:
-    def __init__(self, key: str, outerSelf, menuName: str, translations: dict[str]):
+    def __init__(self, key: str, Ui, menuName: str, translations: dict[str]):
 
         self.Translations = translations
         self.MenuName = menuName
-        self.OuterSelf = outerSelf
+        self.ParentUi = Ui
         self.Value = GVars.configsData[key]["value"]
         self.IsAsync = False
 
@@ -43,7 +43,7 @@ class curkeyButton:
         self.hoversnd.set_volume(0.25)
         self.curanim = ""
 
-    def whileSelectedfunction(self, outerSelf) -> None:
+    def WhileSelectedfunction(self, outerSelf) -> None:
         outerSelf.BlitDescription(
             self.Translations["description"], 75, 590, (130, 130, 255))
         outerSelf.BlitDescription(
@@ -51,18 +51,12 @@ class curkeyButton:
 
     def Function(self) -> None:
         if type(self.Value) is bool:
-            if self.Value == False:
-                cfg.EditConfig(self.Property, True)
-            # default to false to avoid errors
-            else:
-                cfg.EditConfig(self.Property, False)
+            cfg.EditConfig(self.Property, not self.Value)
         else:
-            def AfterInputGenericSetConfig(inp: str) -> None:
-                cfg.EditConfig(self.Property, inp.strip())
-                Log(f"Saved '{inp.strip()}' to config {self.Property}")
-                self.OuterSelf.Error(
-                    self.Translations["error_saved"], 5, (75, 200, 75))
+            self.ParentUi.GetUserInput(self.SaveUserInput, self.Translations["prompt"], self.Value)
 
-                self.OuterSelf.RefreshSettingsMenu(self.MenuName)
-            self.OuterSelf.GetUserInputPYG(
-                AfterInputGenericSetConfig, self.Translations["prompt"], self.Value)
+        self.ParentUi.RefreshSettingsMenu(self.MenuName)
+
+    def SaveUserInput(self, inp: str) -> None:
+        cfg.EditConfig(self.Property, inp.strip())
+        self.ParentUi.Error(self.Translations["error_saved"], 5, (75, 200, 75))

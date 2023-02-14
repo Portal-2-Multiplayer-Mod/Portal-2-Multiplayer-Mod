@@ -66,13 +66,7 @@ def init() -> None:
         Log("We only support Windows, Linux, and SteamOS 3.0 (Steam Deck) as of version 2.2.0!")
         quit()
 
-    Log("Launcher variables:" +
-        "" + str(appStartDate) +
-        "" + str(mainFolderPath) +
-        "" + str(modFilesPath) +
-        "" + str(configsFilePath) +
-        "" + str(isWin) +
-        "" + str(isLinux))
+
 
     # Check if the modpath exists, if not create it
     if not os.path.exists(mainFolderPath):

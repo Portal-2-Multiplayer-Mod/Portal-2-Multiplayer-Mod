@@ -1,14 +1,12 @@
 import os
 
-import Scripts.BasicFunctions as BF
 import Scripts.GlobalVariables as GVars
 
 
-def UpdateMapList(workshoppath) -> None:
-    global maplist
+def UpdateMapList(workshopFolderPath: str) -> list[str]:
     maplist = []
-    for root, dirs, files in os.walk(workshoppath):
-        if (".jpg" in str(files)) and (".bsp" in str(files)):
+    for root, dirs, files in os.walk(workshopFolderPath):
+        if (".jpg" in files) and (".bsp" in files):
             CMap = {
                 "name" : "",
                 "bsp" : "",
@@ -18,9 +16,10 @@ def UpdateMapList(workshoppath) -> None:
             for file in files:
                 if ".bsp" in file:
                     CMap["name"] = file.replace(".bsp", "")
-                    CMap["bsp"] = "workshop" + os.path.join(root, file).replace(workshoppath, "")
+                    CMap["bsp"] = "workshop" + os.path.join(root, file).replace(workshopFolderPath, "")
                 elif ".jpg" in file:
                     CMap["id"] = file.replace("thumb", "").replace(".jpg", "")
+
             maplist.append(CMap)
 
 def SteamIDFromLink(link : str) -> str:
@@ -44,9 +43,9 @@ def MapFromSteamID(workshopLink: str, workshoppath: str = None) -> str:
         workshoppath = GVars.configsData["Portal2-Path"]["value"] + "/portal2/maps/workshop"
 
     SteamID = SteamIDFromLink(workshopLink)
-    UpdateMapList(workshoppath)
+    maplist = UpdateMapList(workshoppath)
 
     for map in maplist:
         if map["id"] == SteamID:
-            return map["bsp"]
+            return "changelevel " + map["bsp"]
     return None

@@ -477,7 +477,7 @@ def DeleteUnusedDLCs(gamepath: str) -> None:
     Log("")
     Log("            _________Dealing with Folders________")
 
-    if ((os.path.exists(gamepath)) != True):
+    if not os.path.exists(gamepath):
         Log("Portal 2 game path not found!")
         return
 
@@ -528,52 +528,60 @@ def FindAvailableDLC(gamepath: str) -> str:
 def LaunchGame(gamepath: str) -> None:
     Log("")
     Log("Running Game...")
+
+    GVars.isGameActive = True
+    Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, -nopreloadmodels, " +
+        cfg.GetValue("Custom-Launch-Options"))
     # LAUNCH OPTIONS: -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels (Custom-Launch-Options)
+
     try:
-        if (GVars.isWin):  # Launching for Windows
-            GVars.isGameActive = True
+        if GVars.isWin:
             # start portal 2 with the launch options and dont wait for it to finish
+            threading.Thread(target=RunGameOnWindows(gamepath)).start()
 
-            def RunGame() -> None:
-                # start portal 2 with the launch options and dont wait for it to finish
-                Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, -nopreloadmodels, " +
-                    GVars.configsData["Custom-Launch-Options"]["value"])
-                subprocess.run([gamepath + "/portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612",
-                               "+clear", "-conclearlog", "-usercon", "-nopreloadmodels", GVars.configsData["Custom-Launch-Options"]["value"]])
-                Log("Game exited successfully.")
-                # Run The AfterFunction
-                GVars.isGameActive = False
-                GVars.AfterFunction()
-            # start the game in a new thread
-            threading.Thread(target=RunGame).start()
-        elif ((GVars.isLinux)):  # Launching for Linux and SteamOS 3.0
-            GVars.isGameActive = True
+        elif GVars.isLinux:
+            threading.Thread(target=RunGameOnLinux).start()
 
-            def RunGame():
-                def RunSteam():
-                    Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, -nopreloadmodels, " +
-                        GVars.configsData["Custom-Launch-Options"]["value"])
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels " +
-                              GVars.configsData["Custom-Launch-Options"]["value"])
-                threading.Thread(target=RunSteam).start()
-
-                def CheckForGame() -> None:
-                    shouldcheck = True
-                    lached = False  # what is "lached" ???
-                    while shouldcheck:
-                        gamerunning = str(os.system("pidof portal2_linux"))
-                        if gamerunning == "256":
-                            if lached:
-                                Log("Game exited successfully.")
-                                GVars.AfterFunction()
-                                shouldcheck = False
-                        elif not lached:
-                            lached = True
-                        time.sleep(1)
-                CheckForGame()
-                GVars.isGameActive = False
-            threading.Thread(target=RunGame).start()
     except Exception as e:
         Log("Failed to launch Portal 2!")
         Log("Error: " + str(e))
-        quit()
+
+
+def RunGameOnWindows(gamepath: str) -> None:
+    # start portal 2 with the launch options and dont wait for it to finish
+
+    subprocess.run([gamepath + "/portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612",
+                    "+clear", "-conclearlog", "-usercon", "-nopreloadmodels", cfg.GetValue("Custom-Launch-Options")])
+
+    Log("Game exited successfully.")
+
+    # Run The AfterFunction
+    GVars.isGameActive = False
+    GVars.AfterFunction()
+
+
+def RunGameOnLinux() -> None:
+    def RunSteam():
+        os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels " +
+                  cfg.GetValue("Custom-Launch-Options"))
+
+    threading.Thread(target=RunSteam).start()
+
+    shouldCheck = True
+    gameIsRunning = False
+
+    while shouldCheck:
+        # * os.system returns 256 if the command doesn't return anything
+        gameNotExist = os.system("pidof portal2_linux") == 256
+
+        if gameNotExist and not gameIsRunning:
+            Log("Game exited successfully.")
+            shouldCheck = False
+            GVars.AfterFunction()
+
+        if not gameIsRunning:
+            gameIsRunning = True
+
+        time.sleep(1)
+
+    GVars.isGameActive = False
