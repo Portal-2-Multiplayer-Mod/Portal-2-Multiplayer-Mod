@@ -167,14 +167,11 @@ class Gui:
                                 self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
 
         if self.devMode:
-            # For now Data will be a dev mode button
-            self.Button_Data = ButtonTemplate(
-                translations["data_menu_button"], self.Button_Data_func, (235, 172, 14))
             self.Button_Test = ButtonTemplate(
                 "Test Button", self.Button_Test_func)
+
             self.Text_DevMode = DisplayText(translations["dev_mode_enabled"], textColor=(
-                255, 0, 0), posX=75, endX=750, posY=735)
-            self.MainMenuButtons.append(self.Button_Data)
+                255, 0, 0), xpos=75, xstart=75, xend=750, ypos=735)
             self.MainMenuButtons.append(self.Button_Test)
             self.MainMenuText.append(self.Text_DevMode)
 
@@ -463,11 +460,6 @@ class Gui:
     def Button_Settings_func(self) -> None:
         self.ChangeMenu(self.SettingsMenus, self.SettingsMenuText)
 
-    # Switches to the data menu
-    def Button_Data_func(self) -> None:
-        self.ChangeMenu(self.DataMenuButtons, self.DataMenuText)
-        self.RefreshDataMenu()
-
     # Checks for any updates for the launcher
     def Button_Update_func(self) -> None:
         if self.CoolDown > 0:
@@ -525,12 +517,6 @@ class Gui:
         self.RefreshSettingsMenu("dev")
         self.ChangeMenu(self.SettingsButtons)
 
-    #!############################
-    #! DATA SYSTEM BUTTON FUNCTIONS
-    #!############################
-
-    def Button_RefreshDataSystem_func(self) -> None:
-        self.RefreshDataMenu()
 
     #!############################
     #! MANUAL MODE BUTTONS FUNCTIONS
@@ -585,7 +571,7 @@ class Gui:
     def Button_GitHub_func(self) -> None:
         # open the discord invite in the default browser
         webbrowser.open(
-            "https://github.com/kyleraykbs/Portal2-32PlayerMod#readme")
+            "https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod")
 
     # this simply opens the steam guide
 
@@ -1339,7 +1325,7 @@ def DEVMOUNT() -> None:
 
     # copy the one in the current directory to the modpath
     Log("DEV: Copying over files from src/ModFiles...")
-    BF.CopyFolder(cwd + "/ModFiles", GVars.mainFolderPath)
+    BF.CopyFolder(cwd + "/ModFiles", GVars.mainFolderPath + "/ModFiles")
 
 
 def MountModOnly() -> bool:

@@ -25,7 +25,7 @@
 ### Special thanks to Krzyhau for allowing us to use his code from Speedrun Mod.
 
 ## Languages
-English | [Español](README.es.md) | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+English | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
 
 ## Mod features
 ```
@@ -69,12 +69,8 @@ English | [Español](README.es.md) | [Polski](README.pl.md) | [简体中文](REA
 *We use Python 3.10 for the launcher*
 
 **Dependencies**
-- pygame
-- pyperclip
-- requests
-- steamid-converter
 
-We also have them in a file for easy install `pip install -r requirements.txt`
+we're using a requirements file `pip install -r requirements.txt`
 
 **Compilation**
 
