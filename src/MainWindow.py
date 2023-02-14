@@ -171,7 +171,7 @@ class Gui:
                 "Test Button", self.Button_Test_func)
 
             self.Text_DevMode = DisplayText(translations["dev_mode_enabled"], textColor=(
-                255, 0, 0), xpos=75, xstart=75, xend=750, ypos=735)
+                255, 0, 0), posX=75, endX=750, posY=735)
             self.MainMenuButtons.append(self.Button_Test)
             self.MainMenuText.append(self.Text_DevMode)
 
