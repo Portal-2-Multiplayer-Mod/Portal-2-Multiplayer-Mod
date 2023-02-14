@@ -135,9 +135,10 @@
   "Enable background cubes?": "Enable background cubes?",
   "Enter the path to the Portal 2 folder": "Enter the path to the Portal 2 folder",
   "Type any custom launch options you want.\nExample: \"+map 'mapname'\"": "Type any custom launch options you want.\nExample: \"+map 'mapname'\"",
-  "Type the password for your P2MM server.\nCharacters \"'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.": "Type the password for your P2MM server.\nCharacters \"'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.",
+  "Type the password for your P2MM server.\nCharacters \"'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.": "Type the password for your P2MM server.\nCharacters \"'\", \"\\\", and \";\" are not allowed",
   "The local IP you want to\nuse to host the FastDL HTTP Server.\nIt should be the same local\nIP you used to port foward Portal 2.": "The local IP you want to\nuse to host the FastDL HTTP Server.\nIt should be the same local\nIP you used to port foward Portal 2.",
   "The port you want the\nFastDL HTTP Server to run on.\nIt's recommended to use 27016\nbut another open port should work.": "The port you want the\nFastDL HTTP Server to run on.\nIt's recommended to use 27016\nbut another open port should work.",
   "Encrypt cvars?": "Encrypt cvars?",
-  "Encrypt specific vscript functions?": "Encrypt specific vscript functions?"
+  "Encrypt specific vscript functions?": "Encrypt specific vscript functions?",
+  "": ""
 }

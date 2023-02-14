@@ -135,9 +135,10 @@
   "Enable background cubes?": "想启用背景方块雨吗？",
   "Enter the path to the Portal 2 folder": "输入 Portal 2 文件夹的路径",
   "Type any custom launch options you want.\nExample: \"+map 'mapname'\"": "键入需要的自定义启动选项\n如：\"+map 'mapname'\"",
-  "Type the password for your P2MM server.\nCharacters \"'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.": "输入联机模组服务器的密码。\n不允许 \"'\"、\"\\\" 和 \";\" 字符\n并将会被自动移除。",
+  "Type the password for your P2MM server.\nCharacters \"'\", \"\\\", and \";\" are disallowed\nand will be automatically removed.": "输入联机模组服务器的密码。\n不允许 \"'\"、\"\\\" 和 \";\" 字符",
   "The local IP you want to\nuse to host the FastDL HTTP Server.\nIt should be the same local\nIP you used to port foward Portal 2.": "用于启用 FastDL HTTP 服务器的本地 IP。\n需要和欲端口转发 Portal 2 端口的本地 IP 相同。",
   "The port you want the\nFastDL HTTP Server to run on.\nIt's recommended to use 27016\nbut another open port should work.": "用于启用 FastDL HTTP 服务器的端口。\n推荐使用 27016 但其他端口也不是不行。",
   "Encrypt cvars?": "想加密控制台变量吗？",
-  "Encrypt specific vscript functions?": "想加密指定的 vscript 功能吗？"
+  "Encrypt specific vscript functions?": "想加密指定的 vscript 功能吗？",
+  "": ""
 }

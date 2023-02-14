@@ -14,10 +14,10 @@ import Scripts.BasicFunctions as BasicFuncs
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
-# REMEMBER TO CHANGE THIS BEFORE RELEASEING A NEW VERSION OF THE LAUNCHER
-currentVersion = "2.1.0"
+#! REMEMBER TO CHANGE THESE BEFORE RELEASEING A NEW VERSION OF THE LAUNCHER
 ownerName = "Portal-2-Multiplayer-Mod"
 repoName = "Portal-2-Multiplayer-Mod"  # we can't change this to the id :(
+currentVersion = "2.1.0"
 
 # A quick easy way to check if the system is connected to the internet, thanks stackOverflow for this solution <3
 def haveInternet() -> bool:
