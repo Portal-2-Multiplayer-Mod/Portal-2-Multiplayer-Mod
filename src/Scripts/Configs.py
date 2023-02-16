@@ -246,6 +246,7 @@ def WriteConfigFile(configs: dict) -> None:
     Log("Writing to file...")
     with open(filepath, "w", encoding="utf-8") as cfg:
         json.dump(configs, cfg, indent=4)
+    
 
 
 def EditConfig(property: str, newValue: any) -> None:

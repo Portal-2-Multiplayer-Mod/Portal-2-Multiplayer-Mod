@@ -140,132 +140,138 @@ class Gui:
     #!############################
 
     def DefineMainMenu(self) -> None:
-        self.Button_LaunchGame = ButtonTemplate(
+        # * Buttons
+        Button_LaunchGame = ButtonTemplate(
             Translations["play_button"], self.Button_LaunchGame_func, (50, 255, 120), isAsync=True)
-        self.Button_Settings = ButtonTemplate(
+        Button_Settings = ButtonTemplate(
             Translations["settings_button"], self.Button_Settings_func)
-        # self.Button_Data = ButtonTemplate(translations["data_menu_button"], self.Button_Data_func, (235, 172, 14)) This will be the buttons position in the list onces its finished
-        self.Button_Update = ButtonTemplate(
+        Button_Update = ButtonTemplate(
             Translations["update_button"], self.Button_Update_func, (255, 0, 255), isAsync=True)
-        self.Button_ManualMode = ButtonTemplate(
+        Button_ManualMode = ButtonTemplate(
             Translations["manual_mounting_button"], self.Button_ManualMode_func)
-        self.Button_Workshop = ButtonTemplate(
+        Button_Workshop = ButtonTemplate(
             Translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
-        self.Button_ResourcesMenu = ButtonTemplate(
+        Button_ResourcesMenu = ButtonTemplate(
             Translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
-        self.Button_Exit = ButtonTemplate(
+        Button_Exit = ButtonTemplate(
             Translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isAsync=True, selectanim="none")
-        self.Text_MainMenuText = DisplayText(Translations["welcome"], textColor=(
+
+        self.MainMenuButtons = [Button_LaunchGame, Button_Settings,
+                                Button_Update, Button_ManualMode, Button_Workshop, Button_ResourcesMenu]
+
+        # * text
+        Text_MainMenuText = DisplayText(Translations["welcome"], textColor=(
             255, 234, 0), posX=750, endX=1870, posY=20, size=75)
-        self.Text_LauncherVersionText = DisplayText(
+        Text_LauncherVersionText = DisplayText(
             Translations["version"] + self.currentVersion, textColor=(255, 234, 0), posX=75, endX=750, posY=770)
 
-        # The DisplayText class needs a seperate table for displaying nonfunctional text
-        self.MainMenuText = [self.Text_MainMenuText,
-                             self.Text_LauncherVersionText]
-        self.MainMenuButtons = [self.Button_LaunchGame, self.Button_Settings, self.Button_Update,
-                                self.Button_ManualMode, self.Button_Workshop, self.Button_ResourcesMenu]
+        self.MainMenuText = [Text_MainMenuText, Text_LauncherVersionText]
 
         if self.devMode:
-            self.Button_Test = ButtonTemplate(
-                "Test Button", self.Button_Test_func)
-
-            self.Text_DevMode = DisplayText(Translations["dev_mode_enabled"], textColor=(
+            Button_Test = ButtonTemplate("Test Button", self.Button_Test_func)
+            Text_DevMode = DisplayText(Translations["dev_mode_enabled"], textColor=(
                 255, 0, 0), posX=75, endX=750, posY=735)
-            self.MainMenuButtons.append(self.Button_Test)
-            self.MainMenuText.append(self.Text_DevMode)
 
-        self.MainMenuButtons.append(self.Button_Exit)
-        # We don't need the back button in the main menu but I thought it will be better the declare it here -Cabiste
+            self.MainMenuButtons.append(Button_Test)
+            self.MainMenuText.append(Text_DevMode)
+
+        self.MainMenuButtons.append(Button_Exit)
+
+        # * We don't need the back button in the main menu but I thought it will be better the declare it here -Cabiste
         self.Button_Back = ButtonTemplate(
             Translations["back_button"], self.Button_Back_func)
 
     def DefineSettingsMenu(self) -> None:
-        self.Button_LauncherSettingsMenu = ButtonTemplate(
+        # * buttons
+        Button_LauncherSettingsMenu = ButtonTemplate(
             Translations["launcher_settings_button"], self.Button_LauncherSettingsMenu_func)
-        self.Button_Portal2Settings = ButtonTemplate(
+        Button_Portal2Settings = ButtonTemplate(
             Translations["portal2_config_button"], self.Button_Portal2Settings_func)
-        self.Button_AdminsMenu = ButtonTemplate(
-            Translations["player_button"], self.Button_AdminsMenu_func, (0, 255, 255))
-        self.Button_LanguageMenu = ButtonTemplate(
+        Button_AdminsMenu = ButtonTemplate(
+            Translations["admin_button"], self.Button_AdminsMenu_func, (0, 255, 255))
+        Button_LanguageMenu = ButtonTemplate(
             Translations["languages_button"], self.Button_LanguageMenu_func, (175, 75, 0))
-        self.Text_SettingsLaunchText = DisplayText(
-            Translations["language_menu_launch_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=540, size=75)
-        self.Text_SettingsPortal2Text = DisplayText(
-            Translations["language_menu_portal2_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=620, size=75)
-        self.Text_SettingsPlayersText = DisplayText(
-            Translations["language_menu_players_text"], textColor=(255, 234, 0), posX=40, endX=1000, posY=700, size=75)
+        Button_ResetConfig = ButtonTemplate(
+            "RESET CONFIG!", self.Button_ResetConfig_func, (255, 0, 0))
 
-        self.SettingsMenus = [self.Button_LauncherSettingsMenu, self.Button_Portal2Settings,
-                              self.Button_AdminsMenu, self.Button_LanguageMenu]
-        self.SettingsMenuText = [self.Text_SettingsLaunchText, self.Text_SettingsPortal2Text,
-                                 self.Text_SettingsPlayersText]
+        self.SettingsMenus = [Button_LauncherSettingsMenu,
+                              Button_Portal2Settings,
+                              Button_AdminsMenu,
+                              Button_LanguageMenu,
+                              Button_ResetConfig]
+
+        # * helper text
+        Text_SettingsLaunchText = DisplayText(Translations["language_menu_launch_text"], textColor=(
+            255, 234, 0), posX=40, endX=1000, posY=540, size=75)
+        Text_SettingsPortal2Text = DisplayText(Translations["language_menu_portal2_text"], textColor=(
+            255, 234, 0), posX=40, endX=1000, posY=620, size=75)
+        Text_SettingsPlayersText = DisplayText(Translations["language_menu_players_text"], textColor=(
+            255, 234, 0), posX=40, endX=1000, posY=700, size=75)
+        self.SettingsMenuText = [Text_SettingsLaunchText,
+                                 Text_SettingsPortal2Text,
+                                 Text_SettingsPlayersText]
 
         if self.devMode:
-            self.Button_HiddenSettings = ButtonTemplate(
-                Translations["dev_settings_button"], self.Button_DevSettings_func)
-            self.SettingsMenus.append(self.Button_HiddenSettings)
+            Button_HiddenSettings = ButtonTemplate(
+                Translations["dev_settings_button"], self.Button_DevSettings_func, (255, 0, 0))
+            self.SettingsMenus.append(Button_HiddenSettings)
 
         self.SettingsMenus.append(self.Button_Back)
 
-    def DefineWorkshopMenu(self) -> None:
-        self.Button_GetWorkShopCommand = ButtonTemplate(
-            Translations["get_level_button"], self.Button_GetWorkShopCommand_func)
-        self.Text_WorkshopMenuInfo = DisplayText(
-            Translations["workshop_menu_info"],
-            textColor=(255, 234, 0),
-            posX=75, endX=1100, posY=220, size=70)
-
-        self.WorkshopMenuText = [self.Text_WorkshopMenuInfo]
-        self.WorkshopButtons = [
-            self.Button_GetWorkShopCommand, self.Button_Back]
-
     def DefineManualMountingMenu(self) -> None:
-        self.Button_ManualMount = ButtonTemplate(
+        Button_ManualMount = ButtonTemplate(
             Translations["mount_button"], self.Button_ManualMount_func, (50, 255, 120), isAsync=True)
-        self.Button_ManualUnmount = ButtonTemplate(
+        Button_ManualUnmount = ButtonTemplate(
             Translations["unmount_button"], self.Button_ManualUnmount_func, (255, 50, 50), isAsync=True)
 
-        self.ManualButtons = [self.Button_ManualMount,
-                              self.Button_ManualUnmount, self.Button_Back]
+        self.ManualButtons = [Button_ManualMount,
+                              Button_ManualUnmount,
+                              self.Button_Back]
+
+    def DefineWorkshopMenu(self) -> None:
+        Button_GetWorkShopCommand = ButtonTemplate(
+            Translations["get_level_button"], self.Button_GetWorkShopCommand_func)
+        self.WorkshopButtons = [Button_GetWorkShopCommand, self.Button_Back]
+
+        Text_WorkshopMenuInfo = DisplayText(Translations["workshop_menu_info"], textColor=(
+            255, 234, 0), posX=75, endX=1100, posY=220, size=70)
+        self.WorkshopMenuText = [Text_WorkshopMenuInfo]
 
     def DefineResourcesMenu(self) -> None:
-        self.Button_GitHub = ButtonTemplate(
+        Button_GitHub = ButtonTemplate(
             Translations["github_button"], self.Button_GitHub_func, (255, 255, 255), isAsync=True)
-        self.Button_Guide = ButtonTemplate(
+        Button_Guide = ButtonTemplate(
             Translations["guide_button"], self.Button_Guide_func, (35, 35, 50), isAsync=True)
-        self.Button_Discord = ButtonTemplate(
+        Button_Discord = ButtonTemplate(
             Translations["discord_server_button"], self.Button_Discord_func, (75, 75, 150), isAsync=True)
 
-        self.ResourcesButtons = [
-            self.Button_GitHub, self.Button_Guide, self.Button_Discord, self.Button_Back]
+        self.ResourcesButtons = [Button_GitHub,
+                                 Button_Guide,
+                                 Button_Discord, self.Button_Back]
 
     def DefineTestingMenu(self) -> None:
-        self.Button_InputField = ButtonTemplate(
+        Button_InputField = ButtonTemplate(
             "User Input", self.Button_InputField_func)
-        self.PopupBox_Gui = ButtonTemplate(
-            "Popup Box", self.PopupBox_test_func)
-        self.Button_PrintToConsole = ButtonTemplate(
+        PopupBox_Gui = ButtonTemplate("Popup Box", self.PopupBox_test_func)
+        Button_PrintToConsole = ButtonTemplate(
             "Print to Console", self.Button_PrintToConsole_func)
-        self.Button_Back = ButtonTemplate(
-            Translations["back_button"], self.Button_Back_func)
 
-        self.Text_TestMenuTextTest1 = DisplayText(
+        self.TestMenu = [Button_InputField, PopupBox_Gui,
+                         Button_PrintToConsole, self.Button_Back]
+
+        Text_TestMenuTextTest1 = DisplayText(
             "displaytext: All default settings")
-        self.Text_TestMenuTextTest2 = DisplayText(
+        Text_TestMenuTextTest2 = DisplayText(
             "displaytext2: textColor=(52, 67, 235), ypos=600", textColor=(52, 67, 235), posY=600)
-        self.Text_TestMenuTextTest3 = DisplayText(
+        Text_TestMenuTextTest3 = DisplayText(
             "displaytext3: textColor=(214, 30, 17), xpos=600, xstart=600", textColor=(214, 30, 17), posX=600)
-        self.Text_TestMenuTextTest4 = DisplayText(
+        Text_TestMenuTextTest4 = DisplayText(
             "displaytext4: textColor=(143, 222, 24), xpos=600, xstart=600, ypos=600", textColor=(143, 222, 24), posX=600, posY=600)
-        self.Text_TestMenuTextTest5 = DisplayText(
-            "displaytext5: textColor=(255, 255, 0), xpos=600, xstart=600, xend=2000, ypos=300", textColor=(255, 255, 0), posX=600, endX=2000, posY=300)
+        Text_TestMenuTextTest5 = DisplayText("displaytext5: textColor=(255, 255, 0), xpos=600, xstart=600, xend=2000, ypos=300", textColor=(
+            255, 255, 0), posX=600, endX=2000, posY=300)
 
-        self.TestMenuText = [self.Text_TestMenuTextTest1, self.Text_TestMenuTextTest2,
-                             self.Text_TestMenuTextTest3, self.Text_TestMenuTextTest4,
-                             self.Text_TestMenuTextTest5]
-        self.TestMenu = [self.Button_InputField, self.PopupBox_Gui,
-                         self.Button_PrintToConsole, self.Button_Back]
+        self.TestMenuText = [Text_TestMenuTextTest1, Text_TestMenuTextTest2,
+                             Text_TestMenuTextTest3, Text_TestMenuTextTest4, Text_TestMenuTextTest5]
 
 #######################################################################
 
@@ -407,7 +413,8 @@ class Gui:
         # adds a player to the list
         def Button_AddPlayer_func() -> None:
             cfg.AddPlayer()
-            self.CurrentSelectedPlayer = len(GVars.configsData["Players"]["value"]) - 1
+            self.CurrentSelectedPlayer = len(
+                GVars.configsData["Players"]["value"]) - 1
             self.RefreshPlayersMenu()
 
         Button_AddPlayer = ButtonTemplate(
@@ -447,7 +454,7 @@ class Gui:
         if self.CoolDown > 0:
             return
 
-        self.CoolDown = int(3 * 60)
+        self.CoolDown = int(3 * self.FPS)
         RunGameScript()
 
     # Switches to the settings menu
@@ -459,7 +466,7 @@ class Gui:
         if self.CoolDown > 0:
             return
 
-        self.CoolDown = int(3 * 60)
+        self.CoolDown = int(3 * self.FPS) # 3 seconds
 
         if not CheckForUpdates():
             self.Error(
@@ -505,6 +512,17 @@ class Gui:
         # for choosing a languages
         self.LanguageButton()
         self.ChangeMenu(self.LanguagesMenu)
+
+    def Button_ResetConfig_func(self) -> None:
+        def reset():
+            cfg.WriteConfigFile(cfg.DefaultConfigFile)
+            GVars.configsData = cfg.DefaultConfigFile
+
+        ButtonYes = ButtonTemplate(Translations["error_yes"], reset, (75, 255, 75))
+        ButtonNo = ButtonTemplate(Translations["error_no"], None, (255, 75, 75))
+
+        Ui.PopupBox(Translations["launcher_config_reset"],
+                    Translations["ask_for_reset"], [ButtonYes, ButtonNo])
 
     # Access to the launchers Developer settings
     def Button_DevSettings_func(self) -> None:
@@ -713,19 +731,26 @@ class Gui:
         for i in range(0, len(text)):
             self.ErrorList.append([text[i], time, color])
 
-    def PopupBox(self, title: str, text: str, buttons: list) -> None:
+    def PopupBox(self, title: str, text: str, buttons: list[ButtonTemplate]) -> None:
+        """a function to make a pop up window, you can add as many buttons as you wish
 
-        # MANUAL #
-        # title = "A String Title For The Box"
-        # text = "A String Of Text To Display In The Box (use \n for newlines)"
-        # buttons = [["Button Text", "Button Function"], ["Button Text", "Button Function"], etc, etc.....]
-        ##########
+        Parameters
+        ----------
+        title : str
+            the title of the window, this will be rendered at the top with big font
+
+        text : str
+            the body of the window, you can use `\\n` to return to line
+
+        buttons : list[ButtonTemplate]
+            a list of buttons for the user to choose between.
+            first button is selected by default.
+        """
 
         self.SelectedPopupButton = buttons[0]
 
-        PopupBox = [title, text, buttons]  # TITLE, TEXT, BUTTONS
-        Log("Creating popup box... Tile: " + str(title) +
-            " Text: " + text + " Buttons: " + str(buttons))
+        PopupBox = [title, text, buttons]
+        Log("Creating popup box : " + str(title))
         self.PopupBoxList.append(PopupBox)
 
     # the language button (English, French, etc...)
@@ -1403,7 +1428,8 @@ def GetAvailableLanguages() -> list[str]:
 def LoadTranslations() -> dict:
     global Translations
 
-    langPath = "Translations/" + GVars.configsData["Active-Language"]["value"] + ".json"
+    langPath = "Translations/" + \
+        GVars.configsData["Active-Language"]["value"] + ".json"
 
     if not os.path.exists(langPath):
         langPath = GVars.mainFolderPath + "/" + langPath
@@ -1415,7 +1441,6 @@ def LoadTranslations() -> dict:
         langPath = "Translations/English.json"
 
     Translations = json.load(open(langPath, "r", encoding="utf8"))
-
 
 
 def UpdateModFiles() -> None:
