@@ -650,7 +650,12 @@ class Gui:
 
     # this is a test to print text to console
     def Button_PrintToConsole_func(self) -> None:
-        print("hello from p2mm")
+        print("Without Log():")
+        print(GVars.modPath)
+        print(GVars.configsPath)
+        Log("With Log():")
+        Log(GVars.modPath)
+        Log(GVars.configsPath)
 
     ################################
 
@@ -1360,9 +1365,9 @@ def MountModOnly() -> bool:
     Ui.Error(Translations["mounting_mod"], 5, (75, 255, 75))
 
     # Need to make sure the gamepath is in fact defined if not P2MM will not be run/mounted
-    gamepath = GVars.configsData["Portal2-Path"]["value"]
-    if gamepath == "undefined":
-        Ui.Error(Translations["mount_nopath_error"], 5, (255, 21, 0))
+    gamepath = GVars.configData["Portal2-Path"]["value"]
+    if ("undefined" in gamepath):
+        Ui.Error(translations["mount_nopath_error"], 5, (255, 21, 0))
         return False
 
     # Check if both of Portal 2's DLC folders exist

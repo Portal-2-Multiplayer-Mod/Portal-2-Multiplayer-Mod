@@ -461,7 +461,7 @@ def findP2MMDLCFolder(gamepath: str) -> str:
 def CheckForRequiredDLC(gamepath: str) -> bool:
     Log("")
     Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
-    if (gamepath == "undefined"):
+    if ("undefined" in gamepath):
         return "portal2pathundefined"
     if (not os.path.exists(gamepath + "/portal2_dlc1")) or (not os.path.exists(gamepath + "/portal2_dlc2")):
         Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
