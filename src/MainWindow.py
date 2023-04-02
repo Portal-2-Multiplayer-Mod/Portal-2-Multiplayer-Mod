@@ -1367,7 +1367,7 @@ def MountModOnly() -> bool:
     # Need to make sure the gamepath is in fact defined if not P2MM will not be run/mounted
     gamepath = GVars.configsData["Portal2-Path"]["value"]
     if ("undefined" in gamepath):
-        Ui.Error(translations["mount_nopath_error"], 5, (255, 21, 0))
+        Ui.Error(Translations["mount_nopath_error"], 5, (255, 21, 0))
         return False
 
     # Check if both of Portal 2's DLC folders exist

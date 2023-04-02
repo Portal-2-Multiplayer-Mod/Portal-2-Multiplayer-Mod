@@ -229,9 +229,10 @@ def PatchBinaries(gamepath: str) -> None:
         # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
             # copy the binary to the gamepath
-            BF.CopyFile(gamepath + "/" + binary,
-                        gamepath + "/" + filename)
-            Log("Copied " + binary+" to " + gamepath + "/" + filename)
+            fileFrom = gamepath + "/" + binary
+            fileTo = gamepath + "/" + filename
+            BF.CopyFile(fileFrom, fileTo)
+            Log("Copied " + binary + " to " + fileTo)
         except:
             # On Windows there is no "linux32" folder, so it just is Logged that it doesn't exist
             Log("Unable to copy " + binary + ", since it doesn't exist!")

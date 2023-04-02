@@ -11,8 +11,11 @@ from Scripts.BasicLogger import Log
 
 
 def CopyFile(src: str, dst: str) -> str:
+    src = os.path.normpath(src)
+    dst = os.path.normpath(dst)
     if (GVars.isWin):
-        os.system("copy \"" + src + "\" \"" + dst + "\"")
+        command = "copy \"" + src + "\" \"" + dst + "\""
+        os.system(command)
     elif (GVars.isLinux):
         os.system("cp \"" + src + "\" \"" + dst + "\"")
     return dst
@@ -21,6 +24,8 @@ def CopyFile(src: str, dst: str) -> str:
 
 
 def MoveFile(src: str, dst: str) -> str:
+    src = os.path.normpath(src)
+    dst = os.path.normpath(dst)
     if (GVars.isWin):
         os.system("move \"" + src + "\" \"" + dst + "\"")
     elif (GVars.isLinux):
@@ -31,6 +36,8 @@ def MoveFile(src: str, dst: str) -> str:
 
 
 def CopyFolder(src: str, dst: str) -> str:
+    src = os.path.normpath(src)
+    dst = os.path.normpath(dst)
     if (GVars.isWin):
         os.system("xcopy /E /H /C /I /Y \"" + src + "\" \"" + dst + "\"")
     elif (GVars.isLinux):
@@ -41,6 +48,7 @@ def CopyFolder(src: str, dst: str) -> str:
 
 
 def DeleteFolder(path: str) -> None:
+    path = os.path.normpath(path)
     if (GVars.isWin):
         os.system("rmdir /s /q \"" + path + "\"")
     elif (GVars.isLinux):
@@ -63,8 +71,7 @@ def TryFindPortal2Path() -> str:
     if (GVars.isWin):
         import winreg
         try:
-            hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE,
-                                  "SOFTWARE\WOW6432Node\Valve\Steam")
+            hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\WOW6432Node\Valve\Steam")
             print(hkey)
             steam_path = winreg.QueryValueEx(hkey, "InstallPath")
             print(steam_path)
@@ -72,8 +79,7 @@ def TryFindPortal2Path() -> str:
             print(manifestpath)
             if (os.path.isfile(manifestpath)):
                 # read the manifest file
-                manifest = open(manifestpath, "r",
-                                encoding="utf-8").readlines()
+                manifest = open(manifestpath, "r", encoding="utf-8").readlines()
                 paths = []
 
                 for line in manifest:
@@ -84,7 +90,7 @@ def TryFindPortal2Path() -> str:
                     if (line.startswith("path")):
                         line = line.replace("path", "")
                         line = line.strip()
-                        paths.append(line)
+                        paths.append(os.path.normpath(line))
 
                 for path in paths:
                     print(path)
