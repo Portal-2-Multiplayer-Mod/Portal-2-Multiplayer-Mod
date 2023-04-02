@@ -1365,7 +1365,7 @@ def MountModOnly() -> bool:
     Ui.Error(Translations["mounting_mod"], 5, (75, 255, 75))
 
     # Need to make sure the gamepath is in fact defined if not P2MM will not be run/mounted
-    gamepath = GVars.configData["Portal2-Path"]["value"]
+    gamepath = GVars.configsData["Portal2-Path"]["value"]
     if ("undefined" in gamepath):
         Ui.Error(translations["mount_nopath_error"], 5, (255, 21, 0))
         return False
