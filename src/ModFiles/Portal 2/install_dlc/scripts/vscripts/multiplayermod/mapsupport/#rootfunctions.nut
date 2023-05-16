@@ -16,7 +16,7 @@ function NewApertureStartElevatorFixes() {
 
     // Open elevator tube
     try {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "Open", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
     } catch(exception) {}
 
@@ -120,7 +120,7 @@ function NewApertureStartElevatorFixes() {
     }
     // Enable vgui displays
     try {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "Trigger", "", 0, null, null)
         Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
     } catch(exception) {}
 }

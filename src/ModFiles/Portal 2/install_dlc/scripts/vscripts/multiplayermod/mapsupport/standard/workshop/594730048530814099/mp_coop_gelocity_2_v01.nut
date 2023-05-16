@@ -119,17 +119,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //     EntFire(ent.GetName(), "kill", "", 1)
         // }
         // Yeet Paint
-        //EntFire("gel_relay", "addoutput", "OnTrigger:p2mm_servercommand:command:script YeetThePaint():2.2", 0.1)
+        //EntFire("gel_relay", "AddOutput", "OnTrigger:p2mm_servercommand:command:script YeetThePaint():2.2", 0.1)
 
         // Nessasary Stuff
-        // EntFire("door_end_2", "addoutput", "targetname door_end_2_override", 5)
-        // EntFire("door_end_1", "addoutput", "targetname door_end_1_override", 5)
+        // EntFire("door_end_2", "AddOutput", "targetname door_end_2_override", 5)
+        // EntFire("door_end_1", "AddOutput", "targetname door_end_1_override", 5)
         //Entities.FindByName(null, "red_dropper-initial_spawn").__KeyValueFromString("targetname", "p2mmspawn_override_red")
         redspawncoords <- Entities.FindByName(null, "red_dropper-initial_spawn").GetOrigin()
         //Entities.FindByName(null, "blue_dropper-initial_spawn").__KeyValueFromString("targetname", "p2mmspawn_override_blue")
         bluespawncoords <- Entities.FindByName(null, "blue_dropper-initial_spawn").GetOrigin()
-        EntFire("p2mmspawn_override_red", "enable")
-        EntFire("p2mmspawn_override_blue", "enable")
+        EntFire("p2mmspawn_override_red", "Disable")
+        EntFire("p2mmspawn_override_blue", "Disable")
         EntFire("p2mmspawn_override_red", "setasactivespawn", "", 0.05)
         EntFire("p2mmspawn_override_blue", "setasactivespawn", "", 0.05)
         local ent = null
@@ -140,7 +140,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         Entities.FindByName(null, "gel_relay").__KeyValueFromString("targetname", "gel_relay_override")
-        // EntFire("gel_relay_override", "trigger", "", 2)
+        // EntFire("gel_relay_override", "Trigger", "", 2)
         //EntFire("gel_relay_override", "kill", "", 0.2)
         Entities.FindByName(null, "gel_killer").Destroy()
         //relay_death_field_off_3
@@ -163,15 +163,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "button_1").__KeyValueFromString("targetname", "button_1_override")
         Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p2mm_laps_text")
         //AddLapButton
-        EntFire("rounds_button_2_override", "addoutput", "OnPressed button_2_override:SetAnimation:press_release")
-        EntFire("rounds_button_2_override", "addoutput", "OnPressed p2mm_servercommand:command:script Gelocity2AddLap()")
+        EntFire("rounds_button_2_override", "AddOutput", "OnPressed button_2_override:SetAnimation:press_release")
+        EntFire("rounds_button_2_override", "AddOutput", "OnPressed p2mm_servercommand:command:script Gelocity2AddLap()")
         //RemoveLapButton
-        EntFire("rounds_button_1_override", "addoutput", "OnPressed button_1_override:SetAnimation:press_release")
-        EntFire("rounds_button_1_override", "addoutput", "OnPressed p2mm_servercommand:command:script Gelocity2RemoveLap()")
-    }
-
-    if (MSPostPlayerSpawn) {
-        printlP2MM("Removed: " + TotalRemovedEnts + " Entities")
+        EntFire("rounds_button_1_override", "AddOutput", "OnPressed button_1_override:SetAnimation:press_release")
+        EntFire("rounds_button_1_override", "AddOutput", "OnPressed p2mm_servercommand:command:script Gelocity2RemoveLap()")
     }
 
     if (MSLoop) {
@@ -185,11 +181,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //     local CurrentPlayerClass = FindPlayerClass(p)
         //     try {
         //         local test1 = CurrentPlayerClass.Gelocity2Checkpoint
-        //         local test2 = CurrentPlayerClass.Laps
+        //         local test2 = CurrentPlayerClass.nCurrentLap
         //         local test3 = CurrentPlayerClass.Gelocity2CheckpointMove
         //     } catch(e) {
         //         CurrentPlayerClass.Gelocity2Checkpoint <- true
-        //         CurrentPlayerClass.Laps <- -1
+        //         CurrentPlayerClass.nCurrentLap <- -1
         //         CurrentPlayerClass.Gelocity2CheckpointMove <- class {
         //             pos = Vector(2580, -4399,  267)
         //             rot = Vector(0, 90, 0)
@@ -214,7 +210,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
             if (OneTimeGel) {
                 OneTimeGel <- false
-                EntFire("gel_relay_override", "trigger", "", 1)
+                EntFire("gel_relay_override", "Trigger", "", 1)
                 EntFire("j_sphere_3", "paint", "", 0)
                 EntFire("j_sphere_3", "paint", "", 30)
                 EntFire("j_sphere_4", "paint", "", 0)
@@ -341,8 +337,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local PlayerUsername = CurrentPlayerClass.username
                 if (CurrentPlayerClass.Gelocity2Checkpoint) {
                     WinCondition <- false
-                    CurrentPlayerClass.Laps <- CurrentPlayerClass.Laps + 1
-                    if (CurrentPlayerClass.Laps >= Gelocity2LapCount) {
+                    CurrentPlayerClass.nCurrentLap <- CurrentPlayerClass.nCurrentLap + 1
+                    if (CurrentPlayerClass.nCurrentLap >= Gelocity2LapCount) {
                         WinCondition <- true
                     }
                     CurrentPlayerClass.Gelocity2Checkpoint <- false
@@ -350,23 +346,23 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     local pcolor = GetPlayerColor(p, true)
                     Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
                     if (!WinCondition) {
-                        printlP2MM(PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps)
-                        EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps, 0.1)
+                        printlP2MM(PlayerUsername + " Completed Lap " + CurrentPlayerClass.nCurrentLap)
+                        EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.nCurrentLap, 0.1)
                     } else {
                         printlP2MM(PlayerUsername + " Won The Race!")
                         SendToConsoleP2MM("say " + PlayerUsername + " Won The Race!")
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Race!", 0.1)
                         //ent_fire first_blue addoutput "rendercolor 255 0 0"
                         if (p.GetTeam() >= TEAM_BLUE) {
-                            EntFire("blue_wins", "trigger")
+                            EntFire("blue_wins", "Trigger")
                         } else {
-                            EntFire("orange_wins", "trigger")
+                            EntFire("orange_wins", "Trigger")
                         }
                         local pcolor2 = GetPlayerColor(p, false)
                         Entities.FindByName(null, "first_orange").__KeyValueFromString("rendercolor", pcolor2.r.tostring() + " " + pcolor2.g.tostring() + " " + pcolor2.b.tostring())
                         Entities.FindByName(null, "first_blue").__KeyValueFromString("rendercolor", pcolor2.r.tostring() + " " + pcolor2.g.tostring() + " " + pcolor2.b.tostring())
                     }
-                    EntFire("p2mm_laps_text", "display", "", 0.2)
+                    EntFire("p2mm_laps_text", "Display", "", 0.2)
                 }
             }
         }

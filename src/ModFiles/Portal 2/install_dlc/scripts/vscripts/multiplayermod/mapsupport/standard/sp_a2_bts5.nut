@@ -71,7 +71,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make the elevator go up with the players in it
         if (OnlyOnceTPSP_A2_BTS5) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(2941.5, 944, 3662), 20)) {
-                printlP2MM("Triggered")
+                printl("Triggered")
                 //Find all players
                 local p = null
                 while (p = Entities.FindByClassname(p, "player")) {
@@ -85,7 +85,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSp_A2_Bts5) {
             if (!Entities.FindByName(null, "exit_tube_1_exit_trigger")) {
-                printlP2MM("Suction viewcontrol activated")
+                printl("Suction viewcontrol activated")
                 // Sp_A2_Bts5 viewcontrol
                 Sp_A2_Bts5Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
                 Sp_A2_Bts5Viewcontrol.__KeyValueFromString("target_team", "-1")
@@ -94,7 +94,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 Sp_A2_Bts5Viewcontrol.SetOrigin(Vector(2285, 512, 4508))
                 EntFire("Sp_A2_Bts5Viewcontrol", "setparent", "podtrain_player", 0, null)
                 Sp_A2_Bts5Viewcontrol.SetAngles(0, 180, 0)
-                EntFire("Sp_A2_Bts5Viewcontrol", "enable", "", 0, null)
+                EntFire("Sp_A2_Bts5Viewcontrol", "Disable", "", 0, null)
 
                 local tube_path1 = Entities.CreateByClassname("path_track")
                 tube_path1.__KeyValueFromString("targetname", "tube_path1")

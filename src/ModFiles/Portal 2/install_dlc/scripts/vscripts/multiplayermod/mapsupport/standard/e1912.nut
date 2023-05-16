@@ -15,18 +15,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "crash-movie_logo").__KeyValueFromString("targetname", "p2mmcrashmovielogooverride")
         EntFireByHandle(Entities.FindByName(null, "timescale"), "SetTimescaleBlendTime", "0.1", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "timescale"), "SetDesiredTimescale", "0.5", 0.5, null, null)
-        EntFireByHandle(Entities.FindByName(null, "crash-trigger_scare"), "addoutput", "OnStartTouch crash-relay_cannisters_monster_expolode:Trigger::0.1", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "crash-relay_break_out"), "addoutput", "OnTrigger p2mmcrashmovielogooverride:playmovieforallplayers::15.70", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "crash-trigger_scare"), "addoutput", "OnTrigger p2mm_servercommand:command:changelevel mp_coop_lobby_3:26", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "crash-trigger_scare"), "AddOutput", "OnStartTouch crash-relay_cannisters_monster_expolode:Trigger::0.1", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "crash-relay_break_out"), "AddOutput", "OnTrigger p2mmcrashmovielogooverride:playmovieforallplayers::15.70", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "crash-trigger_scare"), "AddOutput", "OnTrigger p2mm_servercommand:command:changelevel mp_coop_lobby_3:26", 0, null, null)
         Entities.FindByClassnameNearest("info_player_start", Vector(-722, -924, 26), 128).Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-900, 6110, 11), 16).Destroy()
         Entities.FindByName(null, "crash-aisc_monster_car_push").Destroy()
 
         // Set up function fires
-        EntFire("relay_view_crash", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912CrashViewcontrol():0.1")
-        EntFire("@relay_Intro_setup_view2", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912AfterCrashViewcontrol()")
-        EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912ScareViewcontrol():1.9")
-        EntFire("crash-trigger_scare", "addoutput", "OnTrigger p2mm_servercommand:command:script E1912PostScare():23")
+        EntFire("relay_view_crash", "AddOutput", "OnTrigger p2mm_servercommand:command:script E1912CrashViewcontrol():0.1")
+        EntFire("@relay_Intro_setup_view2", "AddOutput", "OnTrigger p2mm_servercommand:command:script E1912AfterCrashViewcontrol()")
+        EntFire("crash-trigger_scare", "AddOutput", "OnTrigger p2mm_servercommand:command:script E1912ScareViewcontrol():1.9")
+        EntFire("crash-trigger_scare", "AddOutput", "OnTrigger p2mm_servercommand:command:script E1912PostScare():23")
 
         HasStartedE1912 <- false
         OnlyOnceE1912 <- true
@@ -137,10 +137,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         E1912Viewcontrol.SetAngles(0, 0, 0)
         EntFire("E1912Viewcontrol", "setparent", "vehicle_intro")
         EntFire("E1912Viewcontrol", "setparentattachment", "vehicle_driver_eyes")
-        EntFire("E1912Viewcontrol", "enable")
+        EntFire("E1912Viewcontrol", "Disable")
         EntFire("E1912ViewcontrolTele", "disable", "", 9)
-        EntFire("E1912Viewcontrol", "addoutput", "targetname E1912ViewcontrolTele", 0.25)
-        EntFire("E1912ViewcontrolTele", "addoutput", "targetname E1912ViewcontrolDone", 9)
+        EntFire("E1912Viewcontrol", "AddOutput", "targetname E1912ViewcontrolTele", 0.25)
+        EntFire("E1912ViewcontrolTele", "AddOutput", "targetname E1912ViewcontrolDone", 9)
     }
 
     // TODO: This will interfere if someone uses the !speed chat command
@@ -163,10 +163,10 @@ function E1912CrashViewcontrol() {
     E1912CrashViewcontrol.SetAngles(0, 0, 0)
     EntFire("E1912CrashViewcontrol", "setparent", "vehicle_crash")
     EntFire("E1912CrashViewcontrol", "setparentattachment", "vehicle_driver_eyes")
-    EntFire("E1912CrashViewcontrol", "enable")
+    EntFire("E1912CrashViewcontrol", "Disable")
     EntFire("E1912CrashViewcontrolTele", "disable")
-    EntFire("E1912CrashViewcontrol", "addoutput", "targetname E1912CrashViewcontrolTele", 0.1)
-    EntFire("E1912CrashViewcontrolTele", "addoutput", "targetname E1912CrashViewcontrolDone", 4)
+    EntFire("E1912CrashViewcontrol", "AddOutput", "targetname E1912CrashViewcontrolTele", 0.1)
+    EntFire("E1912CrashViewcontrolTele", "AddOutput", "targetname E1912CrashViewcontrolDone", 4)
     UTIL_Team.Pinging(true, "all")
     UTIL_Team.Taunting(true, "all")
 }
@@ -179,10 +179,10 @@ function E1912AfterCrashViewcontrol() {
     E1912AfterCrashViewcontrol.SetAngles(0, 0, 0)
     EntFire("E1912AfterCrashViewcontrol", "setparent", "crash-vehicle_intro")
     EntFire("E1912AfterCrashViewcontrol", "setparentattachment", "vehicle_driver_eyes")
-    EntFire("E1912AfterCrashViewcontrol", "enable", "")
+    EntFire("E1912AfterCrashViewcontrol", "Disable", "")
     EntFire("E1912AfterCrashViewcontrolTele", "disable", "", 17.5)
-    EntFire("E1912AfterCrashViewcontrol", "addoutput", "targetname E1912AfterCrashViewcontrolTele", 0.25)
-    EntFire("E1912AfterCrashViewcontrolTele", "addoutput", "targetname E1912AfterCrashViewcontrolDone", 17.5)
+    EntFire("E1912AfterCrashViewcontrol", "AddOutput", "targetname E1912AfterCrashViewcontrolTele", 0.25)
+    EntFire("E1912AfterCrashViewcontrolTele", "AddOutput", "targetname E1912AfterCrashViewcontrolDone", 17.5)
 
     local ent = null
     while (ent = Entities.FindByClassname(ent, "player")) {
@@ -198,10 +198,10 @@ function E1912ScareViewcontrol() {
     E1912ScareViewcontrol.SetAngles(0, 0, 0)
     EntFire("E1912ScareViewcontrol", "setparent", "p2mmcrashvehicleoutrooverride")
     EntFire("E1912ScareViewcontrol", "setparentattachment", "vehicle_driver_eyes")
-    EntFire("E1912ScareViewcontrol", "enable", "")
+    EntFire("E1912ScareViewcontrol", "Disable", "")
     EntFire("E1912ScareViewcontrolTele", "disable", "", 10)
-    EntFire("E1912ScareViewcontrol", "addoutput", "targetname E1912ScareViewcontrolTele", 0.1)
-    EntFire("E1912ScareViewcontrolTele", "addoutput", "targetname E1912ScareViewcontrolDone", 10)
+    EntFire("E1912ScareViewcontrol", "AddOutput", "targetname E1912ScareViewcontrolTele", 0.1)
+    EntFire("E1912ScareViewcontrolTele", "AddOutput", "targetname E1912ScareViewcontrolDone", 10)
     UTIL_Team.Pinging(true, "all")
     UTIL_Team.Taunting(true, "all")
 }

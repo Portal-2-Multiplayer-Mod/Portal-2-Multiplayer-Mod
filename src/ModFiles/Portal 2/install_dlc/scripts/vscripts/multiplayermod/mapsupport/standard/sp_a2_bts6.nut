@@ -8,10 +8,10 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Disable nametags this load
-        AllowNametags <- false
+        g_bAllowNametags = false
 
         // Disable color indicator this load
-        AllowColorIndicator <- false
+        g_bAllowColorIndicator = false
 
         // Make some blackkkkk
         inffade <- true
@@ -24,13 +24,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         UTIL_Team.Taunting(false)
 
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_core:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_core:0.3", 0, null)
     }
 
     if (MSOnPlayerJoin) {
-        printlP2MM("Player Joined (Reseting Viewcontrols)")
+        printl("Player Joined (Reseting Viewcontrols)")
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 0.5, null)
-        EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0.6, null)
+        EntFire("Sp_A2_Bts6Viewcontrol", "Disable", "", 0.6, null)
         UTIL_Team.Pinging(false)
         UTIL_Team.Taunting(false)
     }
@@ -78,7 +78,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A2_Bts6Viewcontrol.SetAngles(270, 0, 0)
         EntFire("Sp_A2_Bts6Viewcontrol", "setparent", "tube_ride_chell_proxy", 0, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "setparentattachment", "chell_bts6_attach", 0, null)
-        EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0, null)
+        EntFire("Sp_A2_Bts6Viewcontrol", "Disable", "", 0, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 51, null)
 
         // Disable taunting & pinging

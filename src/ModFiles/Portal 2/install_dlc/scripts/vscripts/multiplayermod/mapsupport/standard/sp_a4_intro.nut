@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
         PermaPotato = true
         rollang <- 0
         // self.PrecacheSoundScript("ambient\\industrial\\delivery_tubes_lp_01.wav") // Causes errors?
@@ -30,19 +30,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "cube_dropper_droptrigger"), "setparent", "cube_dropper_prop", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "companion_cube_skin_trigger"), "setparent", "cube_dropper_prop", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "cube_dropper_blocker"), "setparent", "cube_dropper_prop", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "@entrance_door1-door_open_relay"), "addoutput", "OnTrigger wheatley_monitor1-relay_disable_screen:Kill::0.5", 0, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(96, 768, 64), 20), "addoutput", "OnTrigger moja2:FadeAndKill", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "@entrance_door1-door_open_relay"), "AddOutput", "OnTrigger wheatley_monitor1-relay_disable_screen:Kill::0.5", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(96, 768, 64), 20), "AddOutput", "OnTrigger moja2:FadeAndKill", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(1504.01, -640, 696), 20), "setparent", "cube_dropper_prop", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "catwalk_lift_door"), "addoutput", "OnFullyClosed catwalk_lift_trigger:Enable::2", 0.25, null, null)
-        EntFireByHandle(Entities.FindByName(null, "catwalk_lift_door"), "addoutput", "OnOpen catwalk_lift_trigger:Disable", 0.25, null, null)
-        EntFireByHandle(Entities.FindByName(null, "catwalk_lift_door"), "addoutput", "OnFullyOpen catwalk_lift_trigger:Disable", 0.25, null, null)
-        EntFireByHandle(Entities.FindByName(null, "catwalk_lift_door"), "addoutput", "OnFullyOpen catwalk_lift_door:Close::1.25", 0.25, null, null)
-        EntFireByHandle(Entities.FindByName(null, "cube_test_button"), "addoutput", "OnPressed indicator_door_toggle:SetTextureIndex:1", 1, null, null)
-        EntFireByHandle(Entities.FindByName(null, "cube_test_button"), "addoutput", "OnPressed moja3:OnProxyRelay2:open", 1, null, null)
-        EntFireByHandle(Entities.FindByName(null, "cube_test_button"), "addoutput", "OnPressed button_1_solved:Trigger", 1, null, null)
-        EntFireByHandle(Entities.FindByName(null, "button_1_unpressed"), "addoutput", "OnTrigger moja3:OnProxyRelay1:close", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "catwalk_lift_door"), "AddOutput", "OnFullyClosed catwalk_lift_trigger:Enable::2", 0.25, null, null)
+        EntFireByHandle(Entities.FindByName(null, "catwalk_lift_door"), "AddOutput", "OnOpen catwalk_lift_trigger:Disable", 0.25, null, null)
+        EntFireByHandle(Entities.FindByName(null, "catwalk_lift_door"), "AddOutput", "OnFullyOpen catwalk_lift_trigger:Disable", 0.25, null, null)
+        EntFireByHandle(Entities.FindByName(null, "catwalk_lift_door"), "AddOutput", "OnFullyOpen catwalk_lift_door:Close::1.25", 0.25, null, null)
+        EntFireByHandle(Entities.FindByName(null, "cube_test_button"), "AddOutput", "OnPressed indicator_door_toggle:SetTextureIndex:1", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "cube_test_button"), "AddOutput", "OnPressed moja3:OnProxyRelay2:open", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "cube_test_button"), "AddOutput", "OnPressed button_1_solved:Trigger", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "button_1_unpressed"), "AddOutput", "OnTrigger moja3:OnProxyRelay1:close", 1, null, null)
         // Setup function ent_fires
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20), "addoutput", "OnTrigger p2mm_servercommand:command:script MoveCubeDropper()", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20), "AddOutput", "OnTrigger p2mm_servercommand:command:script MoveCubeDropper()", 0, null, null)
         // Destroy objects
         Entities.FindByName(null, "door_0-close_door_rl").Destroy()
         Entities.FindByName(null, "catwalk_lift_reset_trigger").Destroy()
@@ -60,10 +60,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OnlyOnceSpA4Intro <- true
         OnlyOnceSp_A4_Intro_1 <- true
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "button_1_solved_TURRETNAMECHANGE")
-        EntFire("button_1_solved", "addoutput", "OnTrigger button_1_solved_TURRETNAMECHANGE:kill::17", 0.25, null)
+        EntFire("button_1_solved", "AddOutput", "OnTrigger button_1_solved_TURRETNAMECHANGE:kill::17", 0.25, null)
 
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_tb_intro:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_tb_intro:0.3", 0, null)
 
         CanSpawnCubeInit <- false
         SpawnCube <- false
@@ -125,7 +125,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     try {
                         output = MoveEntityOnTrack(CubeBeingSpawned, TrackPoints, movespeed)
                     } catch (e) {
-                        printlP2MM("ERROR: " + e + " : SPAWNING BACKUP")
+                        printl("ERROR: " + e + " : SPAWNING BACKUP")
                         SpawnCube = false
                         SpawnBackupCube()
                     }
@@ -142,7 +142,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     CubeBeingSpawned.SetAngles(0, CubeBeingSpawned.GetAngles().y+RandomInt(3, 8), CubeBeingSpawned.GetAngles().z+RandomInt(3, 8))
 
                     if (output == true) {
-                        printlP2MM("Cube spawned! Output: " + output)
+                        printl("Cube spawned! Output: " + output)
                         SpawnCube = false
                         EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
                         EntFireByHandle(CubeBeingSpawned, "BecomeMonster", "", 3, null, null)
@@ -150,10 +150,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         CubeBeingSpawned.SetAngles(0, 0, 0)
                         CubeBeingSpawned.SetVelocity(Vector(0, 0, 0))
                         CubeBeingSpawned = null
-                        EntFire("cube_dropper_drop", "trigger")
+                        EntFire("cube_dropper_drop", "Trigger")
                     }
                 } else {
-                    printlP2MM("ERROR: CubeBeingSpawned is null")
+                    printl("ERROR: CubeBeingSpawned is null")
                     SpawnCube = false
                     SpawnBackupCube()
                 }
@@ -233,11 +233,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSpA4Intro) {
             if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
-                printlP2MM("(P2:MM): Elevator viewcontrol activated!")
+                printl("(P2:MM): Elevator viewcontrol activated!")
                 // Elevator viewcontrol
                 Entities.FindByName(null, "@exit_door2-close_door_rl").__KeyValueFromString("targetname", "moja5")
 
-                EntFireByHandle(Entities.FindByName(null, "button_2_unpressed"), "addoutput", "OnTrigger moja5:Trigger", 0, null, null)
+                EntFireByHandle(Entities.FindByName(null, "button_2_unpressed"), "AddOutput", "OnTrigger moja5:Trigger", 0, null, null)
 
                 OnlyOnceSpA4Intro <- false
             }
@@ -253,7 +253,7 @@ function SpawnBackupCube() {
     EntFire("p2mm_servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
     EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p2mm_box_yes\")", 0.1, null)
     EntFire("p2mm_servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-394, -270, 1350))", 0.1, null)
-    EntFire("p2mm_servercommand", "command", "script printlP2MM(CubeBeingSpawned)", 0.13, null)
+    EntFire("p2mm_servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
 }
 
 function MoveCubeDropper() {

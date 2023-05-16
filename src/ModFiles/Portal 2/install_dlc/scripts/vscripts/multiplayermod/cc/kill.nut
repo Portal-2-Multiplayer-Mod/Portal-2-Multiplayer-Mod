@@ -15,6 +15,8 @@ CommandList.push(
                     "Killed player.",
                     "Killed all players."
                     "[ERROR] Player not found."
+                    "You are already dead."
+                    "Player is already dead."
                 ]
                 SendChatMessage(KillPlayerText[iTextIndex], player)
             }
@@ -30,6 +32,10 @@ CommandList.push(
                     if (args[0] != "all") {
                         local q = FindPlayerByName(args[0])
                         if (q != null) {
+                            if (q.GetHealth() == 0) {
+                                KillPlayerMessage(5, p)
+                                return
+                            }
                             KillPlayer(q)
                             KillPlayerMessage(1, p)
                         } else {
@@ -43,6 +49,10 @@ CommandList.push(
                         KillPlayerMessage(2, p)
                     }
                 } catch (exception) {
+                    if (p.GetHealth() == 0) {
+                        KillPlayerMessage(4, p)
+                        return
+                    }
                     KillPlayer(p)
                     KillPlayerMessage(0, p)
                 }

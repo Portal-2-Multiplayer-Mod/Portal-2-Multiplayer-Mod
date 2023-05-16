@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Offset coop repsawn nodes for elevators (left and right side)
-        GlobalSpawnClass.useautospawn <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
 
         // This could be repurposed for speedrun mode where the teleport node
         // is offset exactly where we want to spawn players in the actual elevator
@@ -29,7 +29,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
 
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro3:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro3:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {

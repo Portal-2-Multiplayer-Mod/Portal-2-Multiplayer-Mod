@@ -25,7 +25,7 @@ CommandList.push(
                     if (plr != null) {
                         SendChatMessage(GetPlayerName(plr.entindex()) + "'s admin level: " + GetAdminLevel(plr), p)
 
-                        // Update the config.nut admins array in case their name was on here
+                        // Update the config.nut admins array memory in case their name was on there
                         // This way, they can't just leave and reconnect
                         foreach (admin in Admins) {
                             // Separate the SteamID and the admin level

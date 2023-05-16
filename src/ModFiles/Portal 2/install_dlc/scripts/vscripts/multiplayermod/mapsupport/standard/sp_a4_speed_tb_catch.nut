@@ -9,10 +9,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     // Music doesn't play at the end (Moja)
     if (MSInstantRun) {
         PermaPotato = true
-        // GlobalSpawnClass.blue.spawnpoint <- Vector(-609.265137, 1875.096680, -100)
-        // GlobalSpawnClass.red.spawnpoint <- Vector(-609.265137, 1875.096680, -100)
-        // GlobalSpawnClass.blue.rotation <- Vector(0, -90, 0)
-        // GlobalSpawnClass.red.rotation <- Vector(0, -90, 0)
+        // GlobalSpawnClass.m_cBluePlayers.spawnpoint <- Vector(-609.265137, 1875.096680, -100)
+        // GlobalSpawnClass.m_cRedPlayers.spawnpoint <- Vector(-609.265137, 1875.096680, -100)
+        // GlobalSpawnClass.m_cBluePlayers.rotation <- Vector(0, -90, 0)
+        // GlobalSpawnClass.m_cRedPlayers.rotation <- Vector(0, -90, 0)
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
@@ -27,6 +27,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_jump_polarity:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_jump_polarity:0.3", 0, null)
     }
 }

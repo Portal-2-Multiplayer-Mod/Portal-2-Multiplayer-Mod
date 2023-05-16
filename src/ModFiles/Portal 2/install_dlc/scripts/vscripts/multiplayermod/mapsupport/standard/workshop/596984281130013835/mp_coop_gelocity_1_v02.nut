@@ -5,178 +5,167 @@
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗╚██████╔╝███████╗███████╗╚█████╔╝╚█████╔╝██║   ██║      ██║   ██████████╗███████╗██████████╗  ╚██╔╝  ╚█████╔╝███████╗
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝ ╚═════╝ ╚══════╝╚══════╝ ╚════╝  ╚════╝ ╚═╝   ╚═╝      ╚═╝   ╚═════════╝╚══════╝╚═════════╝   ╚═╝    ╚════╝ ╚══════╝
 
-LapCount <- 3
-WonGame <- false
+GelocityRounds <- 3
+GameDoneGelocity <- false
 
-function StartGelocity() {
+const LAP_CHECKPOINT1 = 0
+const LAP_CHECKPOINT2 = 1
+const LAP_FINISHLINE = 2
+
+function StartGelocityTeleport() {
     for (local p; p = Entities.FindByClassname(p, "player");) {
+        p.SetAngles(0, 90, 0)
         if (p.GetTeam() == TEAM_RED) {
             p.SetOrigin(Vector(2047, -3583, 64))
         } else {
             p.SetOrigin(Vector(2240, -3583, 64))
         }
     }
+
+    // Lock this so no one can change the laps once the game started
+    EntFire("rounds_button_2", "lock")
+    EntFire("button_2", "skin", "1")
 }
 
+// TODO: remove these functions and call the lap increment/decrement in the output itself
 function AddLap() {
-    LapCount = LapCount + 1
-    printlP2MM("LapCount: " + LapCount)
-    EntFire("p2mm_change_rounds_text", "settext", "Laps: " + LapCount)
-    EntFire("p2mm_change_rounds_text", "display")
-    if (LapCount >= 50) {
-        LapCount = 50
-        printlP2MM("Hit Max Laps")
-        EntFire("rounds_button_2", "lock")
-        EntFire("button_2", "skin", "1")
+    GelocityRounds++
+    if (GetDeveloperLevelP2MM()) {
+        printlP2MM(GelocityRounds)
     }
 }
 
-function RemoveLap() {
-    LapCount = LapCount - 1
-    printlP2MM("LapCount: " + LapCount)
-    EntFire("p2mm_change_rounds_text", "settext", "Laps: " + LapCount)
-    EntFire("p2mm_change_rounds_text", "display")
-    if (LapCount <= 2) {
-        LapCount = 2
-        printlP2MM("Hit Min Laps")
-        EntFire("rounds_button_1", "lock")
-        EntFire("button_1", "skin", "1")
-    }
-}
-
-function Lap(player) {
-    if (!WonGame) {
-        local playerclass = FindPlayerClass(player)
-        try { playerclass.laps } catch(e) { playerclass.laps <- -1 }
-        playerclass.laps <- playerclass.laps + 1
-
-        local WinCondition = false
-        if (playerclass.laps >= LapCount) {
-            WinCondition = true
-        }
-
-        if (playerclass.laps == LapCount - 1) {
-            EntFire("last_lap_text", "display")
-            EntFire("music_0_relay", "trigger")
-            EntFire("last_lap", "playsound")
-        }
-
-        local pcolor = GetPlayerColor(player, true)
-        local PlayerUsername = playerclass.username
-        Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
-        if (!WinCondition) {
-            EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + playerclass.laps, 0.1)
-        } else {
-            WonGame = true
-            Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("holdtime", "8")
-            EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Game!", 0.1)
-            EntFire("p2mm_laps_text", "display", "", 0.2)
-            SendToConsoleP2MM("say " + PlayerUsername + " Won The Game!")
-            if (player.GetTeam() == TEAM_RED) {
-                EntFire("orange_wins", "trigger")
-                EntFire("win_door_2_orange", "color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
-                Entities.FindByName(null, "win_door_2_blue").Destroy()
-            } else {
-                EntFire("blue_wins", "trigger")
-                EntFire("win_door_1_blue", "color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
-                Entities.FindByName(null, "win_door_2_orange").Destroy()
-            }
-        }
-        EntFire("p2mm_laps_text", "display", "", 0.2)
+function SubtractLap() {
+    GelocityRounds--
+    if (GetDeveloperLevelP2MM()) {
+        printlP2MM(GelocityRounds)
     }
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "info_coop_spawn")) {
-            if (ent.GetName() != "blue_dropper-initial_spawn" && ent.GetName() != "red_dropper-initial_spawn" && ent.GetName() != "blue_spawner1" && ent.GetName() != "red_spawner1") {
+        // We have our own respawning system for all players
+        // Delete the unnecessary ones
+        for (local ent; ent = Entities.FindByClassname(ent, "info_coop_spawn");) {
+            if (ent.GetName() != "blue_dropper-initial_spawn" &&
+                ent.GetName() != "blue_spawner1" &&
+                ent.GetName() != "red_dropper-initial_spawn" &&
+                ent.GetName() != "red_spawner1") {
                 ent.Destroy()
             }
         }
 
-        Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(2165, -2195, 368))
-        Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p2mm_laps_text")
-            Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("holdtime", "2.2")
-        Entities.FindByName(null, "change_rounds_text").__KeyValueFromString("targetname", "p2mm_change_rounds_text")
+        // Steal this one to display stuff properly
+        Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p2mm_rounds_text_override")
 
-        EntFire(Entities.FindByName(null, "start_relay"), "addoutput", "OnTrigger p2mm_servercommand:command:script StartGelocity():0.1")
+        Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(2165, -2195, 368))
+
         Entities.FindByName(null, "checkpoint_orange_1").Destroy()
         Entities.FindByName(null, "checkpoint_blue_1").Destroy()
 
-        EntFire("rounds_button_2", "addoutput", "OnPressed p2mm_servercommand:command:script AddLap()", 0.1)
-        EntFire("rounds_button_1", "addoutput", "OnPressed p2mm_servercommand:command:script RemoveLap()", 0.1)
+        Entities.FindByName(null, "start_relay").ConnectOutput("OnTrigger", "StartGelocityTeleport")
+        Entities.FindByName(null, "rounds_button_2").ConnectOutput("OnPressed", "AddLap")
+        Entities.FindByName(null, "rounds_button_1").ConnectOutput("OnPressed", "SubtractLap")
 
         Entities.FindByName(null, "win_door_1_orange").__KeyValueFromString("targetname", "win_door_1_orange_override")
         Entities.FindByName(null, "win_door_1_blue").__KeyValueFromString("targetname", "win_door_1_blue_override")
 
-        Entities.FindByName(null, "rounds").Destroy()
-
-    }
-
-    if (MSPostPlayerSpawn) {
-
-    }
-
-    if (MSOnPlayerJoin) {
-
+        // Entities.FindByName(null, "rounds").Destroy()
     }
 
     if (MSLoop) {
-
-        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(2165, -2195, 368), 128);) {
-
-            local playerclass = FindPlayerClass(p)
-
-            try { playerclass.GelocityCheckPoint } catch(e) {
-                playerclass.GelocityCheckPoint <- 2
-                p.SetOrigin(Vector(2164, -1866, -191))
-                p.SetAngles(0, 90, 0)
+        // TODO: Combine all of the loops below
+        // If we are still racing, update the statuses of everyone
+        if (!GameDoneGelocity) {
+            // Respawning system ?
+            // (get all players at finish line coordinates aka info_player_start repositioned)
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(2165, -2195, 368), 128);) {
+                switch (FindPlayerClass(p).GelocityCheckPointType) {
+                case 0:
+                    p.SetOrigin(Vector(2164, -1866, -191))
+                    p.SetAngles(0, 90, 0)
+                    break
+                case 1:
+                    p.SetOrigin(Vector(-3329, 1250, 386))
+                    p.SetAngles(0, -180, 0)
+                    break
+                case 2:
+                    p.SetOrigin(Vector(-5363, -3072, 64))
+                    p.SetAngles(0, 0, 0)
+                    break
+                default:
+                    p.SetOrigin(Vector(2164, -1866, -191))
+                    p.SetAngles(0, 90, 0)
+                }
             }
 
-            if (playerclass.GelocityCheckPoint == 0) {
-                p.SetOrigin(Vector(2164, -1866, -191))
-                p.SetAngles(0, 90, 0)
+            // Checkpoint
+            // All players must hit this area in the map before they can increment their laps
+            local Checkpoint1 = CreateTrigger("player", -3131.35, 1598.79, -423.305, -3868.24, 814.012, 801.228)
+            foreach (player in Checkpoint1) {
+                local playerclass = FindPlayerClass(player)
+                if (playerclass.GelocityCheckPointType == LAP_CHECKPOINT1) {
+                    playerclass.GelocityCheckPointType = LAP_CHECKPOINT2
+                }
             }
 
-            if (playerclass.GelocityCheckPoint == 1) {
-                p.SetOrigin(Vector(-3329, 1250, 386))
-                p.SetAngles(0, -180, 0)
+            // Checkpoint2
+            // All players must hit this area in the map before they can increment their laps
+            local Checkpoint2 = CreateTrigger("player", -4878.03, -3548.62, 602.766, -5098.68, -2747.39, -235.222)
+            foreach (player in Checkpoint2) {
+                local playerclass = FindPlayerClass(player)
+                if (playerclass.GelocityCheckPointType == LAP_CHECKPOINT2) {
+                    playerclass.GelocityCheckPointType = LAP_FINISHLINE
+                }
             }
 
-            if (playerclass.GelocityCheckPoint == 2) {
-                p.SetOrigin(Vector(-5363, -3072, 64))
-                p.SetAngles(0, 0, 0)
-            }
-        }
+            // Finish line
+            local FinishLinePlayer = CreateTrigger("player", 1892.304077, -1919.934570, -294.686737, 2472.500732, -1682.512573, 163.864502)
+            foreach (player in FinishLinePlayer) {
+                local playerclass = FindPlayerClass(player)
+                if (playerclass.GelocityCheckPointType == LAP_FINISHLINE) {
+                    playerclass.GelocityCheckPointType = LAP_CHECKPOINT1
 
-        local FinishLinePlayer = CreateTrigger("player", 1892.304077, -1919.934570, -294.686737, 2472.500732, -1682.512573, 163.864502)
-        foreach (player in FinishLinePlayer) {
-            for (local p; p = Entities.FindByClassname(p, "player");) {
-                local playerclass = FindPlayerClass(p)
-                try { playerclass.GelocityCheckPoint } catch(e) { playerclass.GelocityCheckPoint <- 2 }
-            }
-            local playerclass = FindPlayerClass(player)
-            if (playerclass.GelocityCheckPoint == 2) {
-                playerclass.GelocityCheckPoint <- 0
-                printlP2MM("Player " + player.GetName() + " reached the finish line!")
-                Lap(player)
-            }
-        }
-        local Checkpoint1 = CreateTrigger("player", -3131.35, 1598.79, -423.305, -3868.24, 814.012, 801.228)
-        foreach (player in Checkpoint1) {
-            local playerclass = FindPlayerClass(player)
-            if (playerclass.GelocityCheckPoint == 0) {
-                playerclass.GelocityCheckPoint <- 1
-                printlP2MM("Player " + player.GetName() + " reached checkpoint 1!")
-            }
-        }
-        local Checkpoint2 = CreateTrigger("player", -4878.03, -3548.62, 602.766, -5098.68, -2747.39, -235.222)
-        foreach (player in Checkpoint2) {
-            local playerclass = FindPlayerClass(player)
-            if (playerclass.GelocityCheckPoint == 1) {
-                playerclass.GelocityCheckPoint <- 2
-                printlP2MM("Player " + player.GetName() + " reached checkpoint 2!")
+                    // Lap logic
+                    local playerclass = FindPlayerClass(player)
+                    playerclass.nCurrentLap++
+
+                    // Second to last lap
+                    if (playerclass.nCurrentLap == GelocityRounds - 1) {
+                        EntFire("last_lap_text", "Display")
+                        EntFire("music_0_relay", "Trigger")
+                        EntFire("last_lap", "playsound")
+                    }
+
+                    // Set message text color
+                    local pcolor = playerclass.color
+                    Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
+
+                    // Set message text (and trigger ending game event if final lap)
+                    if (playerclass.nCurrentLap < GelocityRounds) {
+                        EntFire("p2mm_rounds_text_override", "SetText", playerclass.username + " is now on lap " + playerclass.nCurrentLap, 0.1)
+                    } else {
+                        GameDoneGelocity = true
+
+                        // Set Message Text
+                        Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("message", playerclass.username +" has won the game!")
+                        
+                        if (player.GetTeam() == TEAM_RED) {
+                            EntFire("orange_wins", "Trigger")
+                            EntFire("win_door_2_orange", "color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
+                            Entities.FindByName(null, "win_door_2_blue").Destroy()
+                        } else {
+                            EntFire("blue_wins", "Trigger")
+                            EntFire("win_door_1_blue", "color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
+                            Entities.FindByName(null, "win_door_2_orange").Destroy()
+                        }
+
+                        Entities.FindByName(null, "p2mm_rounds_text_override").__KeyValueFromString("holdtime", "8")
+                    }
+
+                    // Display it
+                    EntFire("p2mm_rounds_text_override", "Display")
+                }
             }
         }
     }

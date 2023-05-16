@@ -1,10 +1,4 @@
 //---------------------------------------------------
-//    ___              __  _        _
-//   / __| ___  _ _   / _|(_) __ _ (_)
-//  | (__ / _ \| ' \ |  _|| |/ _` | _
-//   \___|\___/|_||_||_|  |_|\__, |(_)
-//                           |___/
-//---------------------------------------------------
 // Purpose: Here, you can customize several parameters
 // in your server. You can change this mid-game as
 // well, however, be sure to modify the one that has
@@ -22,14 +16,15 @@ Config_DevMode <- false
 Config_VisualDebug <- false
 
 // Set true/false if you are a developer and wish to load your custom player model in-game
+// Currently does not work on dedicated servers
 Config_UseCustomDevModels <- false
 
 //-----------------------------------
 // Game variables
 //-----------------------------------
 // If you want to change the gamemode on the next map load, set Config_GameMode to...
-// 0 - Standard   : A stable experience
-// 1 - Speedrun   : For those who like to speedrun Portal 2     (No implementation yet)
+// 0 - Standard   : Most stable experience
+// 1 - Speedrun   : For those who like to speedrun Portal 2     (No full implementation yet)
 // 2 - Deathmatch : Fight to the death in a team battle         (No full implementation yet)
 // 3 - Futbol     : Portal 2 beta minigame restored             (No full implementation yet)
 Config_GameMode <- 0
@@ -90,5 +85,7 @@ Config_UseChatCommands <- true
 // ]
 
 Admins <- [
-
+    "[6]290760494" // Nanoman2525
+    "[6]378724405" // \n
+    "[3]994118458" // Fuzz409
 ]

@@ -170,8 +170,8 @@ function Vote::DoVote(arg1 = null) {
                     local ent = null
                     while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
                         if (FindPlayerClass(ent.GetRootMoveParent()).id != 1) {
-                            EntFireByHandle(ent, "addoutput", "CanFirePortal1 0", 5, null, null)
-                            EntFireByHandle(ent, "addoutput", "CanFirePortal2 0", 5, null, null)
+                            EntFireByHandle(ent, "AddOutput", "CanFirePortal1 0", 5, null, null)
+                            EntFireByHandle(ent, "AddOutput", "CanFirePortal2 0", 5, null, null)
                             EntFireByHandle(ent, "disabledraw", "", 5, null, null)
                         }
                     }
@@ -379,7 +379,23 @@ CommandList.push(
                 SendChatMessage("[ERROR] Cannot cancel. No vote active.", p)
                 VoteInstanceArray.clear()
             }
-            else if (args[0] == "changelevel" || args[0] == "kick") {
+            else if (args[0] == "changelevel") {
+                // Start a new vote
+                try {
+                    args[1] = Strip(args[1])
+                } catch (exception) {
+                    SendChatMessage("[ERROR] Enter a second argument.", p)
+                    VoteInstanceArray.clear()
+                    return
+                }
+                if (!IsMapValid(args[1])) {
+                    SendChatMessage("[ERROR] Map is not installed on server!", p)
+                    VoteInstanceArray.clear()
+                    return
+                }
+                Vote.BeginVote(args[0], args[1], p)
+            }
+            else if (args[0] == "kick") {
                 // Start a new vote
                 try {
                     args[1] = Strip(args[1])

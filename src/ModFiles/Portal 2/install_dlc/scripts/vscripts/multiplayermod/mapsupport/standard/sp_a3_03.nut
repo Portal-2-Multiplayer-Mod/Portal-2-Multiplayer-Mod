@@ -11,10 +11,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "pumproom_door_bottom_prop").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "pumproom_door_bottom_portal").__KeyValueFromString("targetname", "moja2")
         // Here if we need to ent_fire something
-        EntFireByHandle(Entities.FindByName(null, "pumproom_door_bottom_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "pumproom_door_bottom_button"), "AddOutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
         EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
-        EntFireByHandle(Entities.FindByName(null, "AutoInstance1-push_button_knob"), "addoutput", "OnIn powerup_door_prop:SetAnimation:open", 3, null, null)
-        EntFireByHandle(Entities.FindByName(null, "AutoInstance1-push_button_knob"), "addoutput", "OnIn powerup_door_sprite:ShowSprite", 3, null, null)
+        EntFireByHandle(Entities.FindByName(null, "AutoInstance1-push_button_knob"), "AddOutput", "OnIn powerup_door_prop:SetAnimation:open", 3, null, null)
+        EntFireByHandle(Entities.FindByName(null, "AutoInstance1-push_button_knob"), "AddOutput", "OnIn powerup_door_sprite:ShowSprite", 3, null, null)
         // Destroy objects
         Entities.FindByName(null, "fade_to_death-proxy").Destroy()
         Entities.FindByName(null, "lift_shaft_gate").Destroy()
@@ -41,7 +41,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printlP2MM()}
+        if (GooHurtTimerPred) { printl()}
         } catch (exception) {
             GooHurtTimerPred <- 0
         }

@@ -32,7 +32,7 @@ function CubeCoreLoad(){
         CreateTriggerCubeHoldLockOrSomething(-688,3106,2532, true);
         local cubeSpawnDelay = 11
         EntFire("cubecore_cube", "EnableMotion", "", cubeSpawnDelay+1);
-        EntFire("cubecore_dropper", "SetAnimation", "open", cubeSpawnDelay+0.5);
+        EntFire("cubecore_dropper", "SetAnimation", "Open", cubeSpawnDelay+0.5);
         EntFire("cubecore_dropper", "SetAnimation", "close", cubeSpawnDelay+2);
 
         EntFire("glass_break_193x193_d1", "SetAnimation", "collapse1", cubeSpawnDelay+2.5);

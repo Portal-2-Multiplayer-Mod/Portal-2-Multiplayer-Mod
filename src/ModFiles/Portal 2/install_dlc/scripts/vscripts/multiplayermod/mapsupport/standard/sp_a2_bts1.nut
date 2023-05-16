@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         // Destroy objects
         Entities.FindByName(null, "chamber_door-close_door_rl").Destroy()
@@ -26,11 +26,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damagecap", "25")
         Entities.FindByName(null, "pre_solved_chamber-toxin_kill_trigger").__KeyValueFromString("damage", "25")
 
-        EntFire("pre_solved_chamber-jailbreak_wall_row_5_open_logic", "addoutput", "OnTrigger MPModSliding_Door_2_5Override:Open", 0, null)
-        EntFire("pre_solved_chamber-jailbreak_wall_row_6_open_logic", "addoutput", "OnTrigger MPModSliding_Door_2_6Override:Open", 0, null)
-        EntFire("@pre_solved_chamber_start_rl", "addoutput", "OnTrigger MPModBridgeOverride:Enable::2.5", 0, null)
+        EntFire("pre_solved_chamber-jailbreak_wall_row_5_open_logic", "AddOutput", "OnTrigger MPModSliding_Door_2_5Override:Open", 0, null)
+        EntFire("pre_solved_chamber-jailbreak_wall_row_6_open_logic", "AddOutput", "OnTrigger MPModSliding_Door_2_6Override:Open", 0, null)
+        EntFire("@pre_solved_chamber_start_rl", "AddOutput", "OnTrigger MPModBridgeOverride:Enable::2.5", 0, null)
 
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(864, -1488, -16), 16), "addoutput", "OnTrigger MPModBridgeOverride:Disable", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(864, -1488, -16), 16), "AddOutput", "OnTrigger MPModBridgeOverride:Disable", 0, null, null)
 
         OneTimeRunSp_A2_Bts1 <- true
     }

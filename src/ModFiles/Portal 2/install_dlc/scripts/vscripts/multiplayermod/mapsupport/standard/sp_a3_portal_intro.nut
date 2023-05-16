@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
         PermaPotato = true
         OnlyOnceSp_A3_Portal_Intro <- false
 
@@ -21,9 +21,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "paint_sprayer_2").__KeyValueFromString("targetname", "moja8")
 
         // Here if we need to ent_fire something
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2505.95, -48, -2384), 20), "addoutput", "OnTrigger moja4:Open", 1, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2505.95, -48, -2384), 20), "addoutput", "OnTrigger moja5:Open", 1, null, null)
-        EntFireByHandle(Entities.FindByName(null, "sphere_entrance_lift_train_path_2"), "addoutput", "OnPass moja8:Start", 1, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2505.95, -48, -2384), 20), "AddOutput", "OnTrigger moja4:Open", 1, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2505.95, -48, -2384), 20), "AddOutput", "OnTrigger moja5:Open", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "sphere_entrance_lift_train_path_2"), "AddOutput", "OnPass moja8:Start", 1, null, null)
         EntFireByHandle(Entities.FindByName(null, "moja3"), "Open", "", 1, null, null)
         EntFireByHandle(Entities.FindByName(null, "moja6"), "Open", "", 1, null, null)
         EntFireByHandle(Entities.FindByName(null, "moja7"), "Open", "", 1, null, null)
@@ -41,7 +41,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(2416, -128, 640.01), 20).Destroy()
 
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a3_end:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a3_end:0.3", 0, null)
     }
 
     local p = null
@@ -73,7 +73,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Goo Damage Code
         try {
             if (GooHurtTimerPred) {
-                printlP2MM()
+                printl()
             }
         } catch (exception) {
             GooHurtTimerPred <- 0

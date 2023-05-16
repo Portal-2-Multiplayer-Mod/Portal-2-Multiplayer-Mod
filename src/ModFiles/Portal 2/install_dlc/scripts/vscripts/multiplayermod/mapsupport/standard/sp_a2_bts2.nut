@@ -124,7 +124,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (PreviousTimeSP_A2_BTS2 + 31 <= Time()) {
                 if (Entities.FindByName(null, "EndDeathEventMPMod")) {
                     if (NoPlayerMadeItOnlyOnceSp_A2_Bts2) {
-                        printlP2MM("No Player Made It")
+                        printl("No Player Made It")
                         PreviousTimeSP_A2_BTS2Again <- Time()
                         // Create an on screen text message entity
                         onscreendisplay69.__KeyValueFromString("targetname", "p2mm_wait_for_players_textbts2")
@@ -145,7 +145,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         envfade.__KeyValueFromString("rendercolor", "0 0 0")
                         envfade.__KeyValueFromString("renderamt", "255")
                         envfade.__KeyValueFromString("targetname", "FadeyBoi")
-                        DoEntFire("p2mm_wait_for_players_textbts2", "display", "", 0.1, null, null)
+                        DoEntFire("p2mm_wait_for_players_textbts2", "Display", "", 0.1, null, null)
                         DoEntFire("FadeyBoi", "fade", "", 0.1, null, null)
                         if (GetDeveloperLevelP2MM()) {
                             printlP2MM("stuff=====================thing")

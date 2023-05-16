@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
         PermaPotato = true
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
@@ -15,7 +15,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "lift_1_door_1").__KeyValueFromString("dmg", "100")
         Entities.FindByName(null, "lift_1_door_2").__KeyValueFromString("dmg", "100")
         Entities.FindByName(null, "lift_1_door_3").__KeyValueFromString("dmg", "100")
-        EntFireByHandle(Entities.FindByClassnameNearest("prop_laser_catcher", Vector(405, -832, 32), 20), "addoutput", "OnPowered lift_1_powered_rl:Trigger", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("prop_laser_catcher", Vector(405, -832, 32), 20), "AddOutput", "OnPowered lift_1_powered_rl:Trigger", 0, null, null)
         // Destroy objects
         Entities.FindByName(null, "@entry_door-close_door_rl").Destroy()
         Entities.FindByName(null, "lift_1_powered_branch").Destroy()
@@ -25,7 +25,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(624, -512, 576), 20).Destroy()
 
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_laser_platform:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_laser_platform:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {

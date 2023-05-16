@@ -10,11 +10,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("info_player_start", Vector(2715.680664, -4926.100586, 6720.031250), 320).Destroy()
 
         // 799.647827 -2908.963623 7232.031250;
-        GlobalSpawnClass.useautospawn <- true
-        GlobalSpawnClass.blue.spawnpoint <- Vector(799.647827, -2908.963623, 7232.031250)
-        GlobalSpawnClass.red.spawnpoint <- Vector(799.647827, -2908.963623, 7232.031250)
-        GlobalSpawnClass.blue.rotation <- Vector(0, -90, 0)
-        GlobalSpawnClass.red.rotation <- Vector(0, -90, 0)
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
+        GlobalSpawnClass.m_cBluePlayers.spawnpoint <- Vector(799.647827, -2908.963623, 7232.031250)
+        GlobalSpawnClass.m_cRedPlayers.spawnpoint <- Vector(799.647827, -2908.963623, 7232.031250)
+        GlobalSpawnClass.m_cBluePlayers.rotation <- Vector(0, -90, 0)
+        GlobalSpawnClass.m_cRedPlayers.rotation <- Vector(0, -90, 0)
 
         // Here if we need to ent_fire something
         //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
@@ -34,12 +34,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-4080, -7232, 6328), 20).Destroy()
         // Fix dummy room door closing
         local ent = Entities.FindByName(null, "dummy_shoot_entry_door").__KeyValueFromString("targetname", "moja")
-        EntFire("moja", "setanimation", "open", 2, null)
+        EntFire("moja", "setanimation", "Open", 2, null)
         TriggerOnceSP_A2_BTS4_1 <- true
         DisableLookDisablerSP_A2_BTS4 <- false
 
         TestingHackStart <- function() {
-            printlP2MM("DOOR HACK START")
+            printl("DOOR HACK START")
             WheatleyPlayerLookSP_A2_BTS4 <- false
         }
     }
@@ -112,8 +112,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // On trigger hit, smash the door 18 seconds later
         if (TriggerOnceSP_A2_BTS4_1) {
             if (!Entities.FindByName(null, "wheatley_scanner_intro_vcd_trigger")) {
-                printlP2MM("Wheatley Sequance Started")
-                EntFire("wheatley_start_smash_window_relay", "trigger", "", 18, null)
+                printl("Wheatley Sequance Started")
+                EntFire("wheatley_start_smash_window_relay", "Trigger", "", 18, null)
                 EntFire("@glados", "RunScriptCode", "FactoryControlRoomHackSuccess()", 18, null)
                 TriggerOnceSP_A2_BTS4_1 <- false
             }

@@ -8,10 +8,10 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // 2231.027100 187.758835 -386.163635;
-         GlobalSpawnClass.useautospawn <- true
-        // GlobalSpawnClass.usesetspawn <- true
-        // GlobalSpawnClass.setspawn.position <- Vector(2231.027100, 187.758835, -386.163635)
-        // GlobalSpawnClass.setspawn.radius <- 200
+         GlobalSpawnClass.m_bUseAutoSpawn <- true
+        // GlobalSpawnClass.m_bUseSetSpawn <- true
+        // GlobalSpawnClass.m_cSetSpawn.position <- Vector(2231.027100, 187.758835, -386.163635)
+        // GlobalSpawnClass.m_cSetSpawn.radius <- 200
         isopen <- false
         rollang <- 0
         movecube <- false
@@ -30,8 +30,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
        
         Entities.FindByName(null, "AutoInstance1-door_prop").__KeyValueFromString("targetname", "DisableDoorMpMod")
-        EntFire("DisableDoorMpMod", "setanimation", "open", 1, null)
-        //EntFire("room_1_door_open_trigger", "addoutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
+        EntFire("DisableDoorMpMod", "setanimation", "Open", 1, null)
+        //EntFire("room_1_door_open_trigger", "AddOutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
         WaitDontFizzleTime <- 0
         WaitDontFizzle <- false
     }
@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printlP2MM()}
+        if (GooHurtTimerPred) { printl()}
         } catch (exception) {
             GooHurtTimerPred <- 0
         }
@@ -96,15 +96,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (p.GetClassname()=="prop_weighted_cube") {
                 if (!isopen) {
                     isopen = true
-                    printlP2MM("OPENED")
-                    EntFire("genericcustomprop_maindropper", "setanimation", "open", 0.4, null)
+                    printl("OPENED")
+                    EntFire("genericcustomprop_maindropper", "setanimation", "Open", 0.4, null)
                 }
                 stayopen = true
             }
         }
 
         if (!stayopen && isopen) {
-            printlP2MM("CLOSED")
+            printl("CLOSED")
             EntFire("genericcustomprop_maindropper", "setanimation", "close", 2.5, null)
             isopen = false
         }

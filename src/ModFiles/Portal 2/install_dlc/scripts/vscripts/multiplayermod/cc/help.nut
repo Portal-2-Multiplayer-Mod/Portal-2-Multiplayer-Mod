@@ -1,6 +1,5 @@
 commandtable <- {}
 commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
-// commandtable["ban"] <- "Bans a player from the play session and will prevent them from joinning again for future play sessions."
 commandtable["changeteam"] <- "Changes your current team."
 commandtable["help"] <- "List available commands or print a description of a specific one."
 commandtable["kick"] <- "Kicks acts as a temp ban, kicks the player from the play session and won't let them back in until the next session."
@@ -28,10 +27,10 @@ CommandList.push(
             try {
                 args[0] = Strip(args[0])
                 if (commandtable.rawin(args[0])) {
-                    EntFireByHandle(p2mm_clientcommand, "Command", "say [HELP] " + args[0] + ": " + commandtable[args[0]], 0, p, p)
+                    SendChatMessage("[HELP] " + args[0] + ": " + commandtable[args[0]], p)
                 }
                 else {
-                    EntFireByHandle(p2mm_clientcommand, "Command", "say [HELP] Unknown chat command: " + args[0], 0, p, p)
+                    SendChatMessage("[HELP] Unknown chat command: " + args[0], p)
                 }
             } catch (exception) {
                 SendChatMessage("[HELP] Your available commands:", p)
@@ -48,7 +47,7 @@ CommandList.push(
                     }
                 }
                 SendChatMessage("[HELP] " + availablecommands.slice(0, availablecommands.len() - 2), p) // Remove excess comma and space
-                // SendChatMessage("[HELP] This command can also print a description for another if supplied with it.", p)
+                // SendChatMessage("[HELP] This command can also print a description for another if supplied with it.", p) // bloated the chat
             }
         }
     }

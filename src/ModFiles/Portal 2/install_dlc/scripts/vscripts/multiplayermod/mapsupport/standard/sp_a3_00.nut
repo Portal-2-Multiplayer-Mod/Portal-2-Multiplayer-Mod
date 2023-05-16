@@ -20,10 +20,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EndingTriggered <- false
 
         // Disable nametags this load
-        AllowNametags <- false
+        g_bAllowNametags = false
 
         // Disable color indicator this load
-        AllowColorIndicator <- false
+        g_bAllowColorIndicator = false
 
         // Shake the camera when you fall through the wood
         Entities.FindByName(null, "crash_landing_shake").__KeyValueFromString("spawnflags", "29")
@@ -31,11 +31,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         UTIL_Team.Pinging(false, "all", 1)
         UTIL_Team.Taunting(false, "all", 1)
 
-        printlP2MM(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
+        printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
         Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
         Entities.FindByName(null, "@environment_bottomless_pit_falling_fog").__KeyValueFromString("farz", "0")
         // Entities.FindByName(null, "potatos_prop").__KeyValueFromString("solid", "0")
-        EntFire("potatos_end_relay", "addoutput", "OnTrigger p2mm_servercommand:Command:script EndingTriggered <- true:0")
+        EntFire("potatos_end_relay", "AddOutput", "OnTrigger p2mm_servercommand:Command:script EndingTriggered <- true:0")
         Entities.FindByName(null, "@display_chapter_title").__KeyValueFromString("startdisabled", "1")
 
         // Destroy objects
@@ -46,7 +46,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Changing levels works without modifying anything
-        // EntFire(Entities.FindByClassnameNearest("trigger_once", Vector(-2048, -4608, 64), 5), "addoutput", "OnTrigger p2mm_servercommand:Command:changelevel sp_a3_01", 0, null)
+        // EntFire(Entities.FindByClassnameNearest("trigger_once", Vector(-2048, -4608, 64), 5), "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel sp_a3_01", 0, null)
     }
 
     if (MSPostPlayerSpawn) {

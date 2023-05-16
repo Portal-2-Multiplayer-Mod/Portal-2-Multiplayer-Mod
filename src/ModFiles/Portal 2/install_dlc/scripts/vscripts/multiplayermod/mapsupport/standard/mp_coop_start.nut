@@ -25,10 +25,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("orange_door_4-airlock_entry_door_close_rl", "Disable", "", 0.5)
         EntFire("orange_door_5-airlock_entry_door_close_rl", "Disable", "", 0.5)
 
-        EntFire("coop_man_close_box2_door", "addoutput" "OnChangeToAnyTrue blue_door_6-airlock_entry_door_close_rl:Disable")
-        EntFire("coop_man_close_box2_door", "addoutput" "OnChangeToAnyTrue orange_door_6-airlock_entry_door_close_rl:Disable")
+        EntFire("coop_man_close_box2_door", "AddOutput" "OnChangeToAnyTrue blue_door_6-airlock_entry_door_close_rl:Disable")
+        EntFire("coop_man_close_box2_door", "AddOutput" "OnChangeToAnyTrue orange_door_6-airlock_entry_door_close_rl:Disable")
 
-        EntFire("coopman_exit_level", "addoutput", "OnChangeToAllTrue p2mm_servercommand:command:changelevel mp_coop_lobby_3:10")
+        EntFire("coopman_exit_level", "AddOutput", "OnChangeToAllTrue p2mm_servercommand:command:changelevel mp_coop_lobby_3:10")
     }
 
     if (MSLoop) {
@@ -99,5 +99,5 @@ function coop_startHasPortalGun(args) {
     GamePlayerEquip.Destroy()
 
     // Enable secondary fire for all guns
-    EntFire("weapon_portalgun", "addoutput", "CanFirePortal2 1", 0, null)
+    EntFire("weapon_portalgun", "AddOutput", "CanFirePortal2 1", 0, null)
 }

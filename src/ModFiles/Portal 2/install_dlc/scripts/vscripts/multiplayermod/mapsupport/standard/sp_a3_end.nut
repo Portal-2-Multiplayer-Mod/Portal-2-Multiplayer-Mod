@@ -19,12 +19,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "departure_elevator-elevator_1").__KeyValueFromString("dmg", "100")
 
         // Here if we need to ent_fire something
-        EntFireByHandle(Entities.FindByName(null, "entrance_door_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja3:Start", 1, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja4:Start", 1, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "addoutput", "OnTrigger moja5:Start", 1, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-552, 256, -2200), 20), "addoutput", "OnTrigger moja6:Start", 1, null, null)
-        EntFire("big_door_open_relay", "addoutput", "OnTrigger big_door_save:kill::57", 0, 0)
+        EntFireByHandle(Entities.FindByName(null, "entrance_door_button"), "AddOutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "AddOutput", "OnTrigger moja3:Start", 1, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "AddOutput", "OnTrigger moja4:Start", 1, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(192, 256, -3336), 20), "AddOutput", "OnTrigger moja5:Start", 1, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-552, 256, -2200), 20), "AddOutput", "OnTrigger moja6:Start", 1, null, null)
+        EntFire("big_door_open_relay", "AddOutput", "OnTrigger big_door_save:kill::57", 0, 0)
         EntFire("pumproom_lift_tracktrain", "spawnflags", "3", 0, null)
         // Fix func_portal_detectors
         local ent = null
@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         OnlyOnceSp_A3_End_1 <- false
 
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_intro:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_intro:0.3", 0, null)
     }
 
     if (MSOnPlayerJoin) {
@@ -101,7 +101,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printlP2MM()}
+        if (GooHurtTimerPred) { printl()}
         } catch (exception) {
             GooHurtTimerPred <- 0
         }

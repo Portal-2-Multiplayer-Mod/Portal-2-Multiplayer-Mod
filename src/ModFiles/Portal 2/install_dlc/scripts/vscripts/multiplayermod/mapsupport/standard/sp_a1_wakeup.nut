@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_intro:0.29", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_intro:0.29", 0, null)
 
         UTIL_Team.Pinging(false, "all", 1)
 
@@ -48,11 +48,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSOnPlayerJoin) {
         if (Entities.FindByName(null, "TPPLAYERS1")) {
             EntFire("SpA1WakeupViewcontrol", "disable", "", 0.5, null)
-            EntFire("SpA1WakeupViewcontrol", "enable", "", 0.6, null)
+            EntFire("SpA1WakeupViewcontrol", "Disable", "", 0.6, null)
         }
         if (Entities.FindByName(null, "TPPLAYERS3")) {
             EntFire("SpA1WakeupViewcontrol2", "disable", "", 0.5, null)
-            EntFire("SpA1WakeupViewcontrol2", "enable", "", 0.6, null)
+            EntFire("SpA1WakeupViewcontrol2", "Disable", "", 0.6, null)
         }
     }
 
@@ -136,7 +136,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("@sphere", "ClearParent", "", 24.94, null)
                 EntFire("@sphere", "DisableMotion", "", 24.95, null)
                 EntFire("@sphere", "ClearParent", "", 24.96, null)
-                EntFire("NOLLENTITY", "addoutput", "targetname Startelevatorrecreationsp_a1_wakeup", 25, null)
+                EntFire("NOLLENTITY", "AddOutput", "targetname Startelevatorrecreationsp_a1_wakeup", 25, null)
                 SpA1WakeupONCE3 <- false
             }
         }
@@ -171,7 +171,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 printlP2MM("Wakeup sequence started")
                 EntFire("@glados", "runscriptcode", "sp_a1_wakeup_gantry_door_open()", 0, null)
                 Entities.FindByName(null, "training_door").__KeyValueFromString("targetname", "training_door_open_dis")
-                EntFire("training_door_open_dis", "open", "", 0.1, null)
+                EntFire("training_door_open_dis", "Open", "", 0.1, null)
                 SpA1WakeupONCE1 <- false
             }
         }
@@ -210,19 +210,19 @@ function elevatorrecreationsp_a1_wakeup() {
     SpA1WakeupViewcontrol.SetOrigin(Vector(8976, 1119, -412))
     SpA1WakeupViewcontrol.SetAngles(27, -90, 0)
     EntFire("SpA1WakeupViewcontrol", "setparent", "core_receptacle_socket", 0, null)
-    EntFire("SpA1WakeupViewcontrol", "enable", "", 0.8, null)
+    EntFire("SpA1WakeupViewcontrol", "Disable", "", 0.8, null)
     EntFire("SpA1WakeupViewcontrol", "disable", "", 28, null)
-    EntFire("TPPLAYERS1", "addoutput", "targetname TPPLAYERS2", 28.1, null)
+    EntFire("TPPLAYERS1", "AddOutput", "targetname TPPLAYERS2", 28.1, null)
 
     SpA1WakeupViewcontrol2 <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
     SpA1WakeupViewcontrol2.__KeyValueFromString("targetname", "SpA1WakeupViewcontrol2")
     SpA1WakeupViewcontrol2.__KeyValueFromString("target_team", "-1")
     SpA1WakeupViewcontrol2.SetOrigin(Entities.FindByName(null, "camera_ghostAnim_2").GetOrigin())
     EntFire("SpA1WakeupViewcontrol2", "setparent", "camera_ghostAnim_2", 0.50, null)
-    EntFire("SpA1WakeupViewcontrol2", "enable", "", 74, null)
+    EntFire("SpA1WakeupViewcontrol2", "Disable", "", 74, null)
     EntFire("SpA1WakeupViewcontrol2", "disable", "", 108, null)
-    EntFire("TPPLAYERS2", "addoutput", "targetname TPPLAYERS3", 74, null)
-    EntFire("TPPLAYERS3", "addoutput", "targetname TPPLAYERS4", 108, null)
+    EntFire("TPPLAYERS2", "AddOutput", "targetname TPPLAYERS3", 74, null)
+    EntFire("TPPLAYERS3", "AddOutput", "targetname TPPLAYERS4", 108, null)
     // Ent_fire PIT OF PAIN AND AGONY !!!!!!!
 
     EntFire("glados_postwake_soundscape", "Enable", "", 2, null)
@@ -241,5 +241,5 @@ function elevatorrecreationsp_a1_wakeup() {
     EntFire("basement_breakers_start", "Trigger", "", 4, null)
 
     Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "TPPLAYERS1DIS")
-    EntFire("TPPLAYERS1DIS", "addoutput", "targetname TPPLAYERS1", 1, null)
+    EntFire("TPPLAYERS1DIS", "AddOutput", "targetname TPPLAYERS1", 1, null)
 }

@@ -29,7 +29,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Reload main camera with new params
         Entities.FindByName(null, "camera").__KeyValueFromString("target_team", "-1")
         EntFireByHandle(Entities.FindByName(null, "camera"), "disable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "camera"), "enable", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "camera"), "Disable", "", 0, null, null)
     }
 
     // Replace females with P-bodys
@@ -42,14 +42,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local tmpname = MPMCoopCreditNames[MPMCredits]
         if (tmpname.slice(0,3) == "###") {
             CreditsRemovePod()
-            printlP2MM("HIDDEN!!!!!!M" + tmpname)
+            printl("HIDDEN!!!!!!M" + tmpname)
             EntFireByHandle(Entities.FindByNameNearest("female*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
-            EntFire("stock_scanner_model", "addoutput", "targetname disabled_stock_scanner_model", 0.5)
+            EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
         } else {
-            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
+            EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
         }
 
-        printlP2MM(tmpname)
+        printl(tmpname)
         // Preset animation
         local RandomAnimation = RandomInt(0, CRAnimationTypesPB)
 
@@ -88,14 +88,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local tmpname = MPMCoopCreditNames[MPMCredits]
         if (tmpname.slice(0,3) == "###") {
             CreditsRemovePod()
-            printlP2MM("HIDDEN!!!!!!M" + tmpname)
+            printl("HIDDEN!!!!!!M" + tmpname)
             EntFireByHandle(Entities.FindByNameNearest("male*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
-            EntFire("stock_scanner_model", "addoutput", "targetname disabled_stock_scanner_model", 0.5)
+            EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
         } else {
-            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
+            EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
         }
 
-        printlP2MM(tmpname)
+        printl(tmpname)
 
         // Preset animation
         local RandomAnimation = RandomInt(0, CRAnimationTypesAL)
@@ -205,7 +205,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 CreditsSetModelPB(ent)
             }
         } else {
-            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
+            EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
         }
     }
 }

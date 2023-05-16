@@ -31,7 +31,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay8", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "knockout_start"), "Trigger", "", 1, null, null)
 
-        printlP2MM("Ran")
+        printl("Ran")
         Sp_A3_01Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         Sp_A3_01Viewcontrol.__KeyValueFromString("targetname", "Sp_A3_01Viewcontrol")
         Sp_A3_01Viewcontrol.__KeyValueFromString("target_team", "-1")
@@ -39,17 +39,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A3_01Viewcontrol.SetAngles(0, 270, 0)
         EntFire("Sp_A3_01Viewcontrol", "setparent", "knockout-viewcontroller", 0, null)
         EntFire("Sp_A3_01Viewcontrol", "setparentattachment", "knockout-viewcontroller", 0, null)
-        EntFire("Sp_A3_01Viewcontrol", "enable", "", 0, null)
+        EntFire("Sp_A3_01Viewcontrol", "Disable", "", 0, null)
         EntFire("Sp_A3_01ViewcontrolTele", "disable", "", 13, null)
-        EntFire("Sp_A3_01Viewcontrol", "addoutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
-        EntFire("Sp_A3_01ViewcontrolTele", "addoutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)
+        EntFire("Sp_A3_01Viewcontrol", "AddOutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
+        EntFire("Sp_A3_01ViewcontrolTele", "AddOutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)
     }
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
-            printlP2MM("Player Joined (Reseting Viewcontrols)")
+            printl("Player Joined (Reseting Viewcontrols)")
             EntFire("Sp_A3_01Viewcontrol", "disable", "", 0.5, null)
-            EntFire("Sp_A3_01Viewcontrol", "enable", "", 0.6, null)
+            EntFire("Sp_A3_01Viewcontrol", "Disable", "", 0.6, null)
         }
     }
 

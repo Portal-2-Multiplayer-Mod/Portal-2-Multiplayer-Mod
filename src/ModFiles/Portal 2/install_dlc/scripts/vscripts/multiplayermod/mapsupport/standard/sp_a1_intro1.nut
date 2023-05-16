@@ -8,7 +8,7 @@
 HasSleptInContainer1 <- false
 function p2mmDestroyedSequence() {
     if (GetDeveloperLevelP2MM()) {
-        printlP2MM("(P2:MM): p2mmDestroyedSequence() has ran!")
+        printl("(P2:MM): p2mmDestroyedSequence() has ran!")
     }
     HasSleptInContainer1 = true
 }
@@ -135,77 +135,77 @@ function p2mmDropCollision() {
     // ContainerBedBrush
     // ContainerBedBrush.SetOrigin(Vector(ContainerBedBrush.GetOrigin().x, ContainerBedBrush.GetOrigin().y, ContainerBedBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerBedBrush", "disable")
-    // EntFire("ContainerBedBrush", "enable", "", ceiltime)
+    // EntFire("ContainerBedBrush", "Disable", "", ceiltime)
 
     // ContainerFloorBrush
     // ContainerFloorBrush.SetOrigin(Vector(ContainerFloorBrush.GetOrigin().x, ContainerFloorBrush.GetOrigin().y, ContainerFloorBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerFloorBrush", "disable")
-    // EntFire("ContainerFloorBrush", "enable", "", ceiltime)
+    // EntFire("ContainerFloorBrush", "Disable", "", ceiltime)
 
     // ContainerCeilingBrush
     // ContainerCeilingBrush.SetOrigin(Vector(ContainerCeilingBrush.GetOrigin().x, ContainerCeilingBrush.GetOrigin().y, ContainerCeilingBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerCeilingBrush", "disable")
-    // EntFire("ContainerCeilingBrush", "enable", "", ceiltime)
+    // EntFire("ContainerCeilingBrush", "Disable", "", ceiltime)
 
     // ContainerRightWallBrush
     // ContainerRightWallBrush.SetOrigin(Vector(ContainerRightWallBrush.GetOrigin().x, ContainerRightWallBrush.GetOrigin().y, ContainerRightWallBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerRightWallBrush", "disable")
-    // EntFire("ContainerRightWallBrush", "enable", "", ceiltime)
+    // EntFire("ContainerRightWallBrush", "Disable", "", ceiltime)
 
     // ContainerLeftWallBrush
     // ContainerLeftWallBrush.SetOrigin(Vector(ContainerLeftWallBrush.GetOrigin().x, ContainerLeftWallBrush.GetOrigin().y, ContainerLeftWallBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerLeftWallBrush", "disable")
-    // EntFire("ContainerLeftWallBrush", "enable", "", ceiltime)
+    // EntFire("ContainerLeftWallBrush", "Disable", "", ceiltime)
 
     // ContainerFrontWallBrush
     // ContainerFrontWallBrush.SetOrigin(Vector(ContainerFrontWallBrush.GetOrigin().x, ContainerFrontWallBrush.GetOrigin().y, ContainerFrontWallBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerFrontWallBrush", "disable")
-    // EntFire("ContainerFrontWallBrush", "enable", "", ceiltime)
+    // EntFire("ContainerFrontWallBrush", "Disable", "", ceiltime)
 
     // ContainerBackDoorBrush
     // ContainerBackDoorBrush.SetOrigin(Vector(ContainerBackDoorBrush.GetOrigin().x, ContainerBackDoorBrush.GetOrigin().y, ContainerBackDoorBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerBackDoorBrush", "disable")
-    // EntFire("ContainerBackDoorBrush", "enable", "", ceiltime)
+    // EntFire("ContainerBackDoorBrush", "Disable", "", ceiltime)
 
     // ContainerBathroomBrush
     // ContainerBathroomBrush.SetOrigin(Vector(ContainerBathroomBrush.GetOrigin().x, ContainerBathroomBrush.GetOrigin().y, ContainerBathroomBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerBathroomBrush", "disable")
-    // EntFire("ContainerBathroomBrush", "enable", "", ceiltime)
+    // EntFire("ContainerBathroomBrush", "Disable", "", ceiltime)
 
     // ContainerClosetBrush
     // ContainerClosetBrush.SetOrigin(Vector(ContainerClosetBrush.GetOrigin().x, ContainerClosetBrush.GetOrigin().y, ContainerClosetBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerClosetBrush", "disable")
-    // EntFire("ContainerClosetBrush", "enable", "", ceiltime)
+    // EntFire("ContainerClosetBrush", "Disable", "", ceiltime)
 
     // ContainerNightstandsBrush
     // ContainerNightstandsBrush.SetOrigin(Vector(ContainerNightstandsBrush.GetOrigin().x, ContainerNightstandsBrush.GetOrigin().y, ContainerNightstandsBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerNightstandsBrush", "disable")
-    // EntFire("ContainerNightstandsBrush", "enable", "", ceiltime)
+    // EntFire("ContainerNightstandsBrush", "Disable", "", ceiltime)
 
     // // ContainerLightBrush
     // ContainerLightBrush.SetOrigin(Vector(ContainerLightBrush.GetOrigin().x, ContainerLightBrush.GetOrigin().y, ContainerLightBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerLightBrush", "disable")
-    // EntFire("ContainerLightBrush", "enable", "", ceiltime)
+    // EntFire("ContainerLightBrush", "Disable", "", ceiltime)
 
     // // ContainerWheatleyBrush
     // ContainerWheatleyBrush.SetOrigin(Vector(ContainerWheatleyBrush.GetOrigin().x, ContainerWheatleyBrush.GetOrigin().y, ContainerWheatleyBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerWheatleyBrush", "disable")
-    // EntFire("ContainerWheatleyBrush", "enable", "", ceiltime)
+    // EntFire("ContainerWheatleyBrush", "Disable", "", ceiltime)
 
     // ContainerDeskBrush
     // ContainerDeskBrush.SetOrigin(Vector(ContainerDeskBrush.GetOrigin().x, ContainerDeskBrush.GetOrigin().y, ContainerDeskBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerDeskBrush", "disable")
-    // EntFire("ContainerDeskBrush", "enable", "", ceiltime)
+    // EntFire("ContainerDeskBrush", "Disable", "", ceiltime)
 
     // ContainerPlantBrush
     // ContainerPlantBrush.SetOrigin(Vector(ContainerPlantBrush.GetOrigin().x, ContainerPlantBrush.GetOrigin().y, ContainerPlantBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerPlantBrush", "disable")
-    // EntFire("ContainerPlantBrush", "enable", "", ceiltime)
+    // EntFire("ContainerPlantBrush", "Disable", "", ceiltime)
 
     // ContainerChairBrush
     // ContainerChairBrush.SetOrigin(Vector(ContainerChairBrush.GetOrigin().x, ContainerChairBrush.GetOrigin().y, ContainerChairBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerChairBrush", "disable")
-    // EntFire("ContainerChairBrush", "enable", "", ceiltime)
+    // EntFire("ContainerChairBrush", "Disable", "", ceiltime)
 
     //DebugDrawBox(ContainerBedBrush.GetOrigin(), ContainerBedBrush.GetBoundingMins(), ContainerBedBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
     //DebugDrawBox(ContainerFloorBrush.GetOrigin(), ContainerFloorBrush.GetBoundingMins(), ContainerFloorBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
@@ -238,12 +238,12 @@ function p2mmParentAndStartMath() {
         EntFire("Actor_container_12", "SetAnimation", "anim2", 0)
         EntFire("Actor_container_13", "SetAnimation", "anim2", 0)
 
-        EntFire("Actor_container_01", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_03", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_05", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_07", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_09", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_11", "addoutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_01", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_03", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_05", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_07", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_09", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_11", "AddOutput", "OnAnimationDone !self:Kill")
 
         EntFire("Actor_container_master", "SetDefaultAnimation", "halt2", 0)
         EntFire("Actor_container_01", "SetDefaultAnimation", "halt2", 0)
@@ -477,7 +477,7 @@ function StopStickAndTeleport() {
     DisableJumpmsp = false
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
-        EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
+        EntFireByHandle(p, "AddOutput", "MoveType 2", 0, null, null)
         p.SetOrigin(Vector(-1710, 4380, 3100))
         p.SetVelocity(Vector(80, 0, 0))
     }
@@ -486,7 +486,7 @@ function StopStickAndTeleport() {
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro2:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro2:0.3", 0, null)
 
         ContainerFloorBrush <- false
         currentCartCache <- false
@@ -523,15 +523,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("container_collision", "DisableCollision", "", 0)
 
-        EntFire("return_to_bed_button", "addoutput", "OnPressed p2mm_servercommand:command:script p2mmDestroyedSequence():5")
-        EntFire("@rl_container_ride", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmDropCollision()")
-        EntFire("crane_second_startup_relay", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():1")
-        EntFire("@debug_start_perf_test", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():10")
-        EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p2mm_servercommand:command:script StopStickAndTeleport()")
-        EntFire("enter_chamber_trigger", "addoutput", "OnTrigger p2mmportalrelay:Trigger::34")
+        EntFire("return_to_bed_button", "AddOutput", "OnPressed p2mm_servercommand:command:script p2mmDestroyedSequence():5")
+        EntFire("@rl_container_ride", "AddOutput", "OnTrigger p2mm_servercommand:command:script p2mmDropCollision()")
+        EntFire("crane_second_startup_relay", "AddOutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():1")
+        EntFire("@debug_start_perf_test", "AddOutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():10")
+        EntFire("@rl_container_ride_third_section", "AddOutput", "OnTrigger p2mm_servercommand:command:script StopStickAndTeleport()")
+        EntFire("enter_chamber_trigger", "AddOutput", "OnTrigger p2mmportalrelay:Trigger::34")
         //@rl_container_ride
-        EntFire("relay_start_map", "addoutput", "OnTrigger p2mmclockflashrelay:Trigger")
-        EntFire("p2mmclockflashrelay", "addoutput", "OnTrigger p2mmclockflashrelay:Trigger::1")
+        EntFire("relay_start_map", "AddOutput", "OnTrigger p2mmclockflashrelay:Trigger")
+        EntFire("p2mmclockflashrelay", "AddOutput", "OnTrigger p2mmclockflashrelay:Trigger::1")
         Entities.FindByName(null, "@rl_container_pause_motion").Destroy()
         Entities.FindByName(null, "@rl_container_resume_motion").Destroy()
         Entities.FindByName(null, "@rl_container_ride_second_section").Destroy()
@@ -563,10 +563,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A1_Intro1Viewcontrol.SetAngles(0, 0, 0)
         EntFire("Sp_A1_Intro1Viewcontrol", "setparent", "camera_intro", 0, null)
         EntFire("Sp_A1_Intro1Viewcontrol", "setparentattachment", "camera_intro", 0, null)
-        EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0, null)
+        EntFire("Sp_A1_Intro1Viewcontrol", "Disable", "", 0, null)
         EntFire("Sp_A1_Intro1ViewcontrolTele", "disable", "", 12, null)
-        EntFire("Sp_A1_Intro1Viewcontrol", "addoutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
-        EntFire("Sp_A1_Intro1ViewcontrolTele", "addoutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
+        EntFire("Sp_A1_Intro1Viewcontrol", "AddOutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
+        EntFire("Sp_A1_Intro1ViewcontrolTele", "AddOutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
 
         // kill people block exit elevator
         Entities.FindByName(null, "departure_elevator-elevator_1").__KeyValueFromString("dmg", "100")
@@ -761,7 +761,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 printlP2MM("Player joined (Resetting viewcontrol)")
             }
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
-            EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
+            EntFire("Sp_A1_Intro1Viewcontrol", "Disable", "", 0.6, null)
         }
     }
 
@@ -906,7 +906,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             rotval1 <- 2
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                EntFireByHandle(p, "addoutput", "MoveType 4", 0, null, null)
+                EntFireByHandle(p, "AddOutput", "MoveType 4", 0, null, null)
 
                 planepitch <- currentCartRot.x * rotval 
                 planeroll <- currentCartRot.z * rotval1

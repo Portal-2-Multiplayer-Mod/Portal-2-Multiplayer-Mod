@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // We need to control the viewmodel/real simulated grab controllers for inserting Wheatley
-        GlobalOverridePluginGrabController <- false
+        g_bOverridePluginGrabController = false
         p2mm_startfade <- Entities.CreateByClassname("env_fade")
         p2mm_startfade.__KeyValueFromString("targetname", "p2mm_startfade")
         p2mm_startfade.__KeyValueFromString("duration", "0")
@@ -17,16 +17,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         p2mm_startfade.__KeyValueFromString("spawnflags", "8")
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "RedFogKillTriggerMPMOD")
-        EntFireByHandle(Entities.FindByName(null, "red_light_pit_open_relay"), "addoutput", "OnTrigger RedFogKillTriggerMPMOD:kill", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "red_light_pit_open_relay"), "AddOutput", "OnTrigger RedFogKillTriggerMPMOD:kill", 1, null, null)
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "WhiteFogKillTriggerMPMOD")
-        EntFireByHandle(Entities.FindByName(null, "wheatly_takes_over_relay"), "addoutput", "OnTrigger WhiteFogKillTriggerMPMOD:kill", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "wheatly_takes_over_relay"), "AddOutput", "OnTrigger WhiteFogKillTriggerMPMOD:kill", 1, null, null)
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "EvilFogKillTriggerMPMOD")
-        EntFireByHandle(Entities.FindByName(null, "wheatly_turns_evil_relay"), "addoutput", "OnTrigger EvilFogKillTriggerMPMOD:kill", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "wheatly_turns_evil_relay"), "AddOutput", "OnTrigger EvilFogKillTriggerMPMOD:kill", 1, null, null)
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "StaleMateButtonKillTrigger")
-        EntFireByHandle(Entities.FindByName(null, "StaleMateButtonKillTriggetr"), "addoutput", "OnPressed StaleMateButtonKillTrigger:kill", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "StaleMateButtonKillTriggetr"), "AddOutput", "OnPressed StaleMateButtonKillTrigger:kill", 1, null, null)
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "TPSp_A2_CoreForSure")
 
@@ -144,7 +144,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFireByHandle(p, "setfogcontroller", "@environment_darkness_fog", 0, null, null)
         }
         EntFire("Sp_A2_CoreViewcontrol", "disable", "", 0, null)
-        EntFire("Sp_A2_CoreViewcontrol", "enable", "", 0.1, null)
+        EntFire("Sp_A2_CoreViewcontrol", "Disable", "", 0.1, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -155,7 +155,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         if (!TempGrabControllerToggled) {
             if (PluginLoaded) {
-                if (!GlobalOverridePluginGrabController && !Entities.FindByName(null, "rv_player_clip")) {
+                if (!g_bOverridePluginGrabController && !Entities.FindByName(null, "rv_player_clip")) {
                     if (Entities.FindByName(null, "pit_clip")) {
                         if (Entities.FindByClassnameWithin(null, "player", Vector(320, 0, 0), 128)) {
                             SetPhysTypeConvar(-1)
@@ -164,7 +164,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         }
                     } else {
                         TempGrabControllerToggled <- true
-                        GlobalOverridePluginGrabController <- true
+                        g_bOverridePluginGrabController = true
                     }
                 }
             }
@@ -204,7 +204,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFireByHandle(Entities.FindByName(null, "start_rv_scene_rl"), "Trigger", "", 8, null, null)
                 EntFireByHandle(Entities.FindByName(null, "MUSICOVERRIDEMPMOD"), "PlaySound", "", 8, null, null)
                 Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "OnMoveStartOnlyOnceSp_A2_Core_2DIS")
-                EntFire("OnMoveStartOnlyOnceSp_A2_Core_2DIS", "addoutput", "targetname OnMoveStartOnlyOnceSp_A2_Core_2", 8, null)
+                EntFire("OnMoveStartOnlyOnceSp_A2_Core_2DIS", "AddOutput", "targetname OnMoveStartOnlyOnceSp_A2_Core_2", 8, null)
                 OnlyOnceSp_A2_Core_2 <- false
             }
         }
@@ -284,7 +284,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSp_A2_Core) {
             if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {
-                printlP2MM("(P2:MM): Elevator viewcontrol activated!")
+                printl("(P2:MM): Elevator viewcontrol activated!")
                 // Elevator viewcontrol
                 Sp_A2_CoreViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
                 Sp_A2_CoreViewcontrol.__KeyValueFromString("target_team", "-1")
@@ -292,7 +292,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 Sp_A2_CoreViewcontrol.SetOrigin(Vector(0, 324, 0))
                 EntFire("Sp_A2_CoreViewcontrol", "setparent", "exit_elevator_train", 0, null)
                 Sp_A2_CoreViewcontrol.SetAngles(0, 270, 0)
-                EntFire("Sp_A2_CoreViewcontrol", "enable", "", 0, null)
+                EntFire("Sp_A2_CoreViewcontrol", "Disable", "", 0, null)
                 EntFire("Sp_A2_CoreViewcontrol", "disable", "", 144.8, null)
                 EntFire("TPSp_A2_CoreForSure", "kill", "", 144.8, null)
 
