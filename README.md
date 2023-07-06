@@ -39,12 +39,6 @@
   - Native support for dedicated servers if you manage to get one working :)
 ```
 
-## Features to be added
-- Steam Deck/SteamOS 3.0 support
-- Discord API for easy invites
-- More support for workshop maps
-- FastDL Support
-
 # Installation & use
 
 **Steam guide on how to host and join a game:**
