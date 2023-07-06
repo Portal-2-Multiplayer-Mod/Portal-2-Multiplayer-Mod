@@ -96,7 +96,7 @@ def DownloadClient(cType: str = "") -> bool:
 
     # download the file in the same directory
     # i don't want to bother with folders
-    path = os.path.dirname(GVars.executable) + GVars.nf + "p2mm" + packageType
+    path = os.path.dirname(GVars.executable) + os.sep + "p2mm" + packageType
     urllib.request.urlretrieve(downloadLink, path)
     Log(f"Downloaded new client in: {path}")
 
@@ -130,7 +130,7 @@ def CheckForNewFiles() -> bool:
 
 
     # check if the identifier file exists or no
-    localIdPath = GVars.modPath + GVars.nf + f"ModFiles{GVars.nf}Portal 2{GVars.nf}install_dlc{GVars.nf}32playermod.identifier"
+    localIdPath = GVars.modPath + os.sep + f"ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}32playermod.identifier"
     if not os.path.isfile(localIdPath):
         Log("identifier file doesn't exist so the mod files are probably unavailable too")
         return True
@@ -167,13 +167,13 @@ def DownloadNewFiles() -> None:
     Log("downloading "+str(len(r["Files"]))+" files...")
 
     # downlaod the files to a temp folder
-    tempPath = GVars.modPath + GVars.nf + ".temp"
+    tempPath = GVars.modPath + os.sep + ".temp"
     for file in r["Files"]:
         downloadLink = f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/"+urllib.parse.quote(r["Path"]+file)
 
-        Path(os.path.dirname(tempPath + file.replace("/", GVars.nf))).mkdir(parents=True,exist_ok=True)  # create the folder where the file exists
+        Path(os.path.dirname(tempPath + file.replace("/", os.sep))).mkdir(parents=True,exist_ok=True)  # create the folder where the file exists
         try:
-            urllib.request.urlretrieve(downloadLink, tempPath + file.replace("/", GVars.nf))
+            urllib.request.urlretrieve(downloadLink, tempPath + file.replace("/", os.sep))
         except Exception as e:
             Log(f"failed to download a file: {str(e)}")
     Log("finished downloading")

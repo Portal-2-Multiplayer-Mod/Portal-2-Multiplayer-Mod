@@ -1,16 +1,16 @@
 from pathlib import Path
-
+import os
 import Scripts.GlobalVariables as GVars
 
 def Log(message: str) -> None:
     message = message.strip()
-    # get the path of the mod launcher and make a floder inside it called "Logs"
-    path = GVars.modPath + GVars.nf + "Logs"
+    # get the path of the mod launcher and make a folder inside it called "Logs"
+    path = GVars.modPath + os.sep + "Logs"
     Path(path).mkdir(parents=True, exist_ok=True)
 
     # creates a log file and writes to it
         # if the file already exists it will append to it
-    with open(path + GVars.nf + "Log-"+GVars.appStartDate+".log", "a", encoding="utf-8") as log:
+    with open(path + os.sep + "Log-"+GVars.appStartDate+".log", "a", encoding="utf-8") as log:
         log.write(message + "\n")
 
     # Only write to the console if the message is not empty
@@ -56,4 +56,7 @@ def StartLog() -> None:
         Log("Windows OS detected!")
     elif (GVars.iol):
         Log("")
-        Log("Linux OS detected!")
+        Log("Linux OS: detected!")
+    elif (GVars.iosd):
+        Log("")
+        Log("SteamOS 3.0: detected!")

@@ -2,7 +2,6 @@ import os
 import json
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
-import Scripts.DataSystem as DS
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
@@ -45,30 +44,12 @@ DefaultConfigFile = {
             "warning": "",
             "prompt": "Enable background cubes?",
         },
-
-    "Server-Password":
-        {
-            "value": "",
-            "menu": "portal2",
-            "description": "Set a password for your P2MM server, this can be changed while the server is up but a level restart is required",
-            "warning": "Its recommended to also set Public Server to false to have your server not on the Steam Servers",
-            "prompt": "Please type the password for your P2MM server",
-        },
-    
-    "Public-Server":
-        {
-            "value": "false",
-            "menu": "portal2",
-            "description": "Have your server display public on steam servers?",
-            "warning": "Those with your IP Address will still be able to join. Set a password if you want a private server.",
-            "prompt": "Have your server display public on steam servers?",
-        },
     
     "Custom-Launch-Options":
         {
             "value": "+map mp_coop_lobby_3",
             "menu": "portal2",
-            "description": "Type any custom launch options you want. Example (+map 'mapname').",
+            "description": "Type any custom launch options you want. Example (+map 'map-name').",
             "warning": "Leave this to default if you don't know what it does!",
             "prompt": "Custom launch options for debugging or starting the server at a different map",
         },
@@ -77,18 +58,18 @@ DefaultConfigFile = {
         {
             "value": "false",
             "menu": "portal2",
-            "description": "Encrypts cvars such as \"restart_level\" and \"reset_all_progress\")",
-            "warning": "(only use for public games) may break some functionality",
-            "prompt": "Encrypt cvars?",
+            "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\")",
+            "warning": "Only use for public games, this may break some functionality!",
+            "prompt": "Encrypt CVars?",
         },
 
     "Safe-Guard":
         {
             "value": "false",
             "menu": "portal2",
-            "description": "Encrypts vscript functions such as \"SendToConsole(\"\")\"",
-            "warning": "(only use for public games) may break some functionality",
-            "prompt": "Encrypt specific vscript functions?",
+            "description": "Encrypts VScript functions such as \"SendToConsole(\"\")\"",
+            "warning": "Only use for public games, this may break some functionality!",
+            "prompt": "Encrypt specific VScript functions?",
         },
 
     "Players":
@@ -111,20 +92,11 @@ DefaultConfigFile = {
             "prompt": "",
         },
 
-    "Manual-Data-System-Overide":
-        {
-            "value": "true",
-            "menu": "hidden",
-            "description": "Manually overide if the server will operate next play session.",
-            "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
-            "prompt": "",
-        },
-
     "Active-Language":
         {
             "value": "English",
             "menu": "",
-            "description": "the language of the p2mm client and not the game",
+            "description": "the language of the P2MM client and not the game",
             "warning": "",
             "prompt": "",
         }
@@ -256,7 +228,7 @@ def DeletePlayer(index: int):
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
-    return GVars.configPath + GVars.nf + "configs.cfg"
+    return GVars.configPath + os.sep + "configs.cfg"
 
 # to import the config data from the local config file
 def ImportConfig() -> dict:

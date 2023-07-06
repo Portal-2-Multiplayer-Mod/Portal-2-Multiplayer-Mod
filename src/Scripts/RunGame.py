@@ -138,15 +138,15 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
 
-    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
+    modFilesPath = GVars.modPath + os.sep + "ModFiles" + os.sep + "Portal 2" + os.sep + "install_dlc"
 
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
 
-    destination = BF.CopyFolder(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
+    destination = BF.CopyFolder(modFilesPath + os.sep+".", gamepath + os.sep + dlcmountpoint)
     Log("Successfully copied the mod files to "+ destination)
 
-    nutConfigFile = gamepath + GVars.nf + dlcmountpoint + GVars.nf + "scripts" + GVars.nf + "vscripts" + GVars.nf + "multiplayermod" + GVars.nf + "config.nut"
+    nutConfigFile = gamepath + os.sep + dlcmountpoint + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "multiplayermod" + os.sep + "config.nut"
     if os.path.exists(nutConfigFile):
         SetVscriptConfigFile(nutConfigFile)
 
@@ -156,7 +156,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
         SetNewEncryptions()
     else:
         UnEncryptEncryptions()
-    path = gamepath + GVars.nf + dlcmountpoint
+    path = gamepath + os.sep + dlcmountpoint
 
     if encrypt:
         for cmdrep in CommandReplacements:
@@ -174,10 +174,10 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
 
 def UnpatchBinaries(gamepath: str) -> None:
     binaries = [
-        "bin" + GVars.nf + "linux32" + GVars.nf + "engine.so",
-        "bin" + GVars.nf + "engine.dll",
-        "portal2" + GVars.nf + "bin" + GVars.nf + "linux32" + GVars.nf + "server.so",
-        "portal2" + GVars.nf + "bin" + GVars.nf + "server.dll",
+        "bin" + os.sep + "linux32" + os.sep + "engine.so",
+        "bin" + os.sep + "engine.dll",
+        "portal2" + os.sep + "bin" + os.sep + "linux32" + os.sep + "server.so",
+        "portal2" + os.sep + "bin" + os.sep + "server.dll",
     ]
 
     Log("")
@@ -185,11 +185,11 @@ def UnpatchBinaries(gamepath: str) -> None:
     Log("Unpatching binaries...")
     for binary in binaries:
         # get the filename
-        filename = binary.rsplit(GVars.nf, 1)[1]
+        filename = binary.rsplit(os.sep, 1)[1]
         # delete the file from the gamepath if it exitsts
-        if (os.path.isfile(gamepath + GVars.nf + filename)):
-            Log("Deleting " + gamepath + GVars.nf + filename + "...")
-            os.remove(gamepath + GVars.nf + filename)
+        if (os.path.isfile(gamepath + os.sep + filename)):
+            Log("Deleting " + gamepath + os.sep + filename + "...")
+            os.remove(gamepath + os.sep + filename)
 
     # unrename the binaries so we can move them
     UnRenameBinaries(gamepath, binaries)
@@ -203,10 +203,10 @@ def PatchBinaries(gamepath: str) -> None:
     Log("")
 
     binaries = [
-        "bin" + GVars.nf + "engine.dll",
-        "portal2" + GVars.nf + "bin" + GVars.nf + "server.dll",
-        "bin" + GVars.nf + "linux32" + GVars.nf + "engine.so",
-        "portal2" + GVars.nf + "bin" + GVars.nf + "linux32" + GVars.nf + "server.so",
+        "bin" + os.sep + "engine.dll",
+        "portal2" + os.sep + "bin" + os.sep + "server.dll",
+        "bin" + os.sep + "linux32" + os.sep + "engine.so",
+        "portal2" + os.sep + "bin" + os.sep + "linux32" + os.sep + "server.so",
     ]
 
     Log("")
@@ -214,13 +214,13 @@ def PatchBinaries(gamepath: str) -> None:
     for binary in binaries:
         Log("Moving " + binary + " to " + gamepath + "...")
         # Get the filename
-        filename = binary.rsplit(GVars.nf, 1)[1]
+        filename = binary.rsplit(os.sep, 1)[1]
 
         # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
             # copy the binary to the gamepath
-            BF.CopyFile(gamepath + GVars.nf + binary, gamepath + GVars.nf + filename)
-            Log("Copied " + binary+" to " + gamepath + GVars.nf + filename)
+            BF.CopyFile(gamepath + os.sep + binary, gamepath + os.sep + filename)
+            Log("Copied " + binary+" to " + gamepath + os.sep + filename)
         except:
             # On Windows there is no "linux32" folder, so we avoid an error.
             Log("Unable to copy "+ binary+", since it doesn't exist!" )
@@ -229,14 +229,14 @@ def PatchBinaries(gamepath: str) -> None:
 
     # patch the binaries
     ###/// ENGINE.DLL ///###
-    if (os.path.isfile(gamepath + GVars.nf + "engine.dll")):
+    if (os.path.isfile(gamepath + os.sep + "engine.dll")):
         Log("")
         Log("Patching engine.dll...")
 
-        data = open(gamepath + GVars.nf + "engine.dll", "rb").read()
+        data = open(gamepath + os.sep + "engine.dll", "rb").read()
 
         # Delete the file
-        os.remove(gamepath + GVars.nf + "engine.dll")
+        os.remove(gamepath + os.sep + "engine.dll")
         # replace the data
 
         # Reject_Single_Player
@@ -246,16 +246,16 @@ def PatchBinaries(gamepath: str) -> None:
         data = data.replace(b'\x74\x7d\x8b\x17', b'\xeb\x7d\x8b\x17')
 
         # write the data back to the file
-        open(gamepath + GVars.nf + "engine.dll", "wb").write(data)
+        open(gamepath + os.sep + "engine.dll", "wb").write(data)
 
     ###/// SERVER.DLL ///###
-    if (os.path.isfile(gamepath + GVars.nf + "server.dll")):
+    if (os.path.isfile(gamepath + os.sep + "server.dll")):
         Log("Patching server.dll...")
 
-        data = open(gamepath + GVars.nf + "server.dll", "rb").read()
+        data = open(gamepath + os.sep + "server.dll", "rb").read()
 
         # Delete the file
-        os.remove(gamepath + GVars.nf + "server.dll")
+        os.remove(gamepath + os.sep + "server.dll")
         # replace the data
         
         # 32 player cap edit
@@ -277,7 +277,7 @@ def PatchBinaries(gamepath: str) -> None:
         Log("==========Done=========")
 
         # write the data back to the file
-        open(gamepath + GVars.nf + "server.dll", "wb").write(data)
+        open(gamepath + os.sep + "server.dll", "wb").write(data)
         Log("")
 
     # we don't need to patch the other files since they don't exist on windows
@@ -288,14 +288,14 @@ def PatchBinaries(gamepath: str) -> None:
         return
 
     ###/// ENGINE.SO ///###
-    if (os.path.isfile(gamepath + GVars.nf + "engine.so")):
+    if (os.path.isfile(gamepath + os.sep + "engine.so")):
         Log("")
         Log("Patching engine.so...")
 
-        data = open(gamepath + GVars.nf + "engine.so", "rb").read()
+        data = open(gamepath + os.sep + "engine.so", "rb").read()
 
         # remove the file
-        os.remove(gamepath + GVars.nf + "engine.so")
+        os.remove(gamepath + os.sep + "engine.so")
         # replace the data
 
         # commentary fix (i think)
@@ -306,16 +306,16 @@ def PatchBinaries(gamepath: str) -> None:
         data = data.replace(b'\x74\xc5\x8b\x06\x8d\x93', b'\xeb\xc5\x8b\x06\x8d\x93')
 
         # write the data back to the file
-        open(gamepath + GVars.nf + "engine.so", "wb").write(data)
+        open(gamepath + os.sep + "engine.so", "wb").write(data)
 
     ###/// SERVER.SO ///###
-    if (os.path.isfile(gamepath + GVars.nf + "server.so")):
+    if (os.path.isfile(gamepath + os.sep + "server.so")):
         Log("Patching server.so...")
 
-        data = open(gamepath + GVars.nf + "server.so", "rb").read()
+        data = open(gamepath + os.sep + "server.so", "rb").read()
 
         # remove the file
-        os.remove(gamepath + GVars.nf + "server.so")
+        os.remove(gamepath + os.sep + "server.so")
         # replace the data
         # 32 player cap edit
         data = data.replace(b'\x01\x00\x00\x00\x8bD$\x14\xc7\x00\x01', b'\x1f\x00\x00\x00\x8bD$\x14\xc7\x00\x1f')
@@ -336,7 +336,7 @@ def PatchBinaries(gamepath: str) -> None:
         Log("==========Done=========")
 
         # write the data back to the file
-        open(gamepath + GVars.nf + "server.so", "wb").write(data)
+        open(gamepath + os.sep + "server.so", "wb").write(data)
         Log("")
 
     # rename the files so the new files are used
@@ -353,19 +353,19 @@ def RenameBinaries(gamepath: str, binaries: list[str]) -> None:
 
     # go through the list of binaries
     for binary in binaries:
-        filename = binary.rsplit(GVars.nf, 1)[1]
+        filename = binary.rsplit(os.sep, 1)[1]
         # if the binary exists
-        extra = "Portal2" + GVars.nf + "bin" + GVars.nf
-        if (os.path.isfile(gamepath + GVars.nf + binary)):
+        extra = "Portal2" + os.sep + "bin" + os.sep
+        if (os.path.isfile(gamepath + os.sep + binary)):
             # add a ".p2mmoverride" to the end of the binary
-            os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary + ".p2mmoverride")
+            os.rename(gamepath + os.sep + binary, gamepath + os.sep + binary + ".p2mmoverride")
             Log("Renamed " + binary + " to " + binary + ".p2mmoverride")
 
             if filename.startswith("engine"):
-                extra = "bin" + GVars.nf
+                extra = "bin" + os.sep
             # copy the binary to the gamepath
-            BF.MoveFile(gamepath + GVars.nf + filename,
-                        gamepath + GVars.nf + extra + filename)
+            BF.MoveFile(gamepath + os.sep + filename,
+                        gamepath + os.sep + extra + filename)
 
 def UnRenameBinaries(gamepath: str, binaries: list[str]) -> None:
     # binaries = [
@@ -383,33 +383,33 @@ def UnRenameBinaries(gamepath: str, binaries: list[str]) -> None:
         # Add a ".p2mmoverride" file extension to the end of the binary's name
         binary = Og_binary + ".p2mmoverride"
         # If the binary exists
-        if (os.path.isfile(gamepath + GVars.nf + binary)):
+        if (os.path.isfile(gamepath + os.sep + binary)):
             Log("Un-renaming " + binary + " to " + Og_binary)
 
             # If a file with the original binary's name exist delete it
-            if (os.path.isfile(gamepath + GVars.nf + Og_binary)):
-                os.remove(gamepath + GVars.nf + Og_binary)
+            if (os.path.isfile(gamepath + os.sep + Og_binary)):
+                os.remove(gamepath + os.sep + Og_binary)
 
             # Rename the binary back to it's original name
-            os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + Og_binary)
+            os.rename(gamepath + os.sep + binary, gamepath + os.sep + Og_binary)
 
 def DeleteUnusedDlcs(gamepath: str) -> None:
     Log("")
     Log("            _________Dealing with Folders________")
 
-    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + os.sep + "portal2_dlc2") != True):
         Log("Portal 2 game path not found!")
         return
 
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
-        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
+        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
             # if inside the folder there is a file called "32playermod.identifier" delete this folder
-            if "32playermod.identifier" in os.listdir(gamepath + GVars.nf + file):
+            if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
                 Log("Found old DLC: " + file)
                 # delete the folder even if it's not empty
-                BF.DeleteFolder(gamepath + GVars.nf + file)
+                BF.DeleteFolder(gamepath + os.sep + file)
                 Log("Deleted old DLC: " + file)
 
 def FindAvailableDLC(gamepath: str) -> str:
@@ -419,7 +419,7 @@ def FindAvailableDLC(gamepath: str) -> str:
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
-        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
+        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
             # get everything after "portal2_dlc"
             try:
                 dlcnumber = file.split("portal2_dlc")[1]
@@ -455,9 +455,9 @@ def LaunchGame(gamepath: str) -> None:
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
                 if GVars.configData["Public-Server"]["value"] == "false":
-                    subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", "-nomaster", GVars.configData["Custom-Launch-Options"]["value"]])
+                    subprocess.run([gamepath + os.sep + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", "-nomaster", GVars.configData["Custom-Launch-Options"]["value"]])
                 else:
-                    subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
+                    subprocess.run([gamepath + os.sep + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
