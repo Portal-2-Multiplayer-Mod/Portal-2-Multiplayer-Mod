@@ -54,7 +54,7 @@ DefaultConfigFile = {
             "prompt": "Custom launch options for debugging or starting the server at a different map",
         },
 
-    "Encrypt-Cvars":
+    "Encrypt-CVars":
         {
             "value": "false",
             "menu": "portal2",

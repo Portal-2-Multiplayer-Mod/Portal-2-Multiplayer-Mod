@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://cdn.discordapp.com/attachments/1073818580539424882/1073869966543179806/P2MMBannerREADME.png" alt="p2mmbanner_logo" width="500" height="300" align="left">
+  <img src="/Images/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
   <a href="https://discord.gg/nXRygGNxyK">
     <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
   </a>
@@ -21,6 +21,10 @@
 </h1>
 
 ### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
+
+## Languages
+***English*** | [Español](README.es.md) | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+
 ## Mod features
 ```
   - A maximum player cap of 33
@@ -36,7 +40,6 @@
   - Support for Linux, Windows 7 and above
   - Togglable game options and config system exposed through VScript and a custom plugin
   - Support for SAR (SourceAutoRecord) for speedrunning
-  - Native support for dedicated servers if you manage to get one working :)
 ```
 
 # Installation & use
@@ -69,7 +72,7 @@ We use `pyinstaller` to make the executable
 - Windows:
 
 ```
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/assets/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/languages;languages"
+pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/languages;languages"
 ```
 
 - Linux:
@@ -95,9 +98,9 @@ We are always happy to take whatever additional help we can get for this project
 - vista
 - Wolƒe Strider Shoσter
 - cabiste
-- zwexit (Orsell) 
 
 **Contributors:**
+- zwexit\ (Orsell) 
 - wanderer (free bird)
 - \n
 - Luukex
@@ -105,3 +108,4 @@ We are always happy to take whatever additional help we can get for this project
 - Luukex
 - PieCreeper
 - Areng
+- Krzyhau
