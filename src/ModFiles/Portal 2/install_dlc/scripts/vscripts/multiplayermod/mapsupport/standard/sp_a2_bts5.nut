@@ -94,7 +94,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 Sp_A2_Bts5Viewcontrol.SetOrigin(Vector(2285, 512, 4508))
                 EntFire("Sp_A2_Bts5Viewcontrol", "setparent", "podtrain_player", 0, null)
                 Sp_A2_Bts5Viewcontrol.SetAngles(0, 180, 0)
-                EntFire("Sp_A2_Bts5Viewcontrol", "enable", "", 0, null)
+                EntFire("Sp_A2_Bts5Viewcontrol", "Disable", "", 0, null)
 
                 local tube_path1 = Entities.CreateByClassname("path_track")
                 tube_path1.__KeyValueFromString("targetname", "tube_path1")

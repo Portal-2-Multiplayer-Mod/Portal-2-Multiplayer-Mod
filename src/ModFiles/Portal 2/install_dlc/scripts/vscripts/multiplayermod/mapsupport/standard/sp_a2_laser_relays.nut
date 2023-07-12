@@ -25,14 +25,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         SingleplayerOneTimeTrigger1 <- true
                     
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_turret_blocker:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_turret_blocker:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
         // Fix Valve's stupid bug
         Entities.FindByClassnameNearest("trigger_once", Vector(-450.29, -703, 61.5), 24).__KeyValueFromString("targetname", "temptrigger")
-        EntFire("temptrigger", "addoutput", "OnStartTouch player_on_top_branch:SetValue:1:0.7", 2, null)
+        EntFire("temptrigger", "AddOutput", "OnStartTouch player_on_top_branch:SetValue:1:0.7", 2, null)
     }
 
     if (MSOnPlayerJoin) {
@@ -57,7 +57,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetVelocity(Vector(0, 0, 0))
                 }
                 Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "TPUpLaserRelaysDIS")
-                EntFire("TPUpLaserRelaysDIS", "addoutput", "targetname TPUpLaserRelays", 12, null)
+                EntFire("TPUpLaserRelaysDIS", "AddOutput", "targetname TPUpLaserRelays", 12, null)
             }
         }
 
