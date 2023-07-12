@@ -7,7 +7,7 @@ import threading
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
-import Scripts.Configs as cfg
+import Scripts.Configs as CFG
 import subprocess
 import Scripts.BasicFunctions as BF
 import random
@@ -57,7 +57,7 @@ def UnEncryptEncryptions() -> None:
         cmdrep[2] = cmdrep[1]
     Log("Finished UnEncrypting Encryptions")
 
-def SetVscriptConfigFile(vsconfigfile: str) -> None:
+def SetVScriptConfigFile(vsconfigfile: str) -> None:
     Log("")
     Log("")
     Log("")
@@ -66,7 +66,7 @@ def SetVscriptConfigFile(vsconfigfile: str) -> None:
     Log("====================================================")
     Log("Setting VScript config file: " + vsconfigfile)
     Log("")
-    p2cfgs = cfg.GetConfigList("menu", "portal2")
+    p2cfgs = CFG.GetConfigList("menu", "portal2")
 
     lines = open(vsconfigfile, "r", encoding="utf-8").readlines()
 
@@ -148,7 +148,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
 
     nutConfigFile = gamepath + os.sep + dlcmountpoint + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "multiplayermod" + os.sep + "config.nut"
     if os.path.exists(nutConfigFile):
-        SetVscriptConfigFile(nutConfigFile)
+        SetVScriptConfigFile(nutConfigFile)
 
     #### ENCRYPT THE CVARS #####
     Log("____ENCRYPTING CVARS____")

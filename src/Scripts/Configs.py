@@ -13,23 +13,23 @@ DefaultConfigFile = {
         {
             "value": "undefined",
             "menu": "launcher",
-            "description": "Path of the Portal 2 Folder",
+            "description": "Path of the Portal 2 Folder.",
             "warning": "",
-            "prompt": "Enter the path to the Portal 2 folder",
+            "prompt": "Enter the path to the Portal 2 folder.",
         },
 
-    "Auto-Umount":
+    "Auto-Unmount":
         {
-            "value": "true",
+            "value": True,
             "menu": "launcher",
-            "description": "Automatically unmounts the mod when the game is closed",
-            "warning": "",
+            "description": "Automatically unmount the mod when the game is closed.",
+            "warning": "Recommended to ",
             "prompt": "",
         },
 
     "Launcher-SFX":
         {
-            "value": "true",
+            "value": True,
             "menu": "launcher",
             "description": "Makes the buttons play sound effects",
             "warning": "",
@@ -38,7 +38,7 @@ DefaultConfigFile = {
 
     "Launcher-Cubes":
         {
-            "value": "true",
+            "value": True,
             "menu": "launcher",
             "description": "Makes cubes rain in the background",
             "warning": "",
@@ -51,12 +51,12 @@ DefaultConfigFile = {
             "menu": "portal2",
             "description": "Type any custom launch options you want. Example (+map 'map-name').",
             "warning": "Leave this to default if you don't know what it does!",
-            "prompt": "Custom launch options for debugging or starting the server at a different map",
+            "prompt": "Custom launch options for debugging or starting the server at a different map.",
         },
 
     "Encrypt-CVars":
         {
-            "value": "false",
+            "value": False,
             "menu": "portal2",
             "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\")",
             "warning": "Only use for public games, this may break some functionality!",
@@ -65,7 +65,7 @@ DefaultConfigFile = {
 
     "Safe-Guard":
         {
-            "value": "false",
+            "value": False,
             "menu": "portal2",
             "description": "Encrypts VScript functions such as \"SendToConsole(\"\")\"",
             "warning": "Only use for public games, this may break some functionality!",
@@ -78,25 +78,25 @@ DefaultConfigFile = {
                 defaultplayerarray,
             ],
             "menu": "players",
-            "description": "If You See This Something Is Wrong",
-            "warning": "If You See This Something Is Wrong",
-            "prompt": "If you see this something is wrong",
+            "description": "If you see this something is wrong!",
+            "warning": "If you see this something is wrong!",
+            "prompt": "If you see this something is wrong!",
         },
 
     "Dev-Mode":
         {
-            "value": "false",
+            "value": False,
             "menu": "hidden",
             "description": "Makes the mod's files mount from src/ModFiles",
-            "warning": "only enable this if you know what you're doing!",
+            "warning": "Only enable this if you know what you're doing!",
             "prompt": "",
         },
 
     "Active-Language":
         {
-            "value": "English",
+            "value": GetSysLang(),
             "menu": "",
-            "description": "the language of the P2MM client and not the game",
+            "description": "The language used in the P2MM launcher.",
             "warning": "",
             "prompt": "",
         }

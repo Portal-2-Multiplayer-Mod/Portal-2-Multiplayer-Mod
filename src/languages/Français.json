@@ -80,7 +80,7 @@
   "language_menu_launch_text": "La configuration du lanceur implique tout ce qui concerne le lanceur",
   "language_menu_portal2_text": "La configuration de Portal 2 implique tout ce qui concerne votre session de jeu Portal 2",
   "language_menu_players_text": "Le menu Joueurs permet de définir des joueurs supplémentaires en tant qu'administrateurs",
-  "Auto-Umount": "Auto-Umount",
+  "Auto-Unmount": "Auto-Unmount",
   "Launcher-SFX": "Launcher-SFX",
   "Launcher-Cubes": "Launcher-Cubes",
   "Portal2-Path": "Portal2-Path",

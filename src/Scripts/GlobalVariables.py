@@ -7,7 +7,7 @@ import sys
 import platform
 import ctypes.wintypes
 from datetime import datetime
-import Scripts.Configs as cfg
+import Scripts.Configs as CFG
 from Scripts.BasicLogger import Log
 
 #//////////////////////////////////////////#
@@ -78,5 +78,5 @@ def init() -> None:
 
 def LoadConfig() -> None:
     global configData
-    configData = cfg.ImportConfig()
+    configData = CFG.ImportConfig()
     Log("Config data loaded.")

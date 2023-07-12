@@ -80,7 +80,7 @@
   "language_menu_launch_text": "启动器设置用于配置与启动器有关的内容",
   "language_menu_portal2_text": "Portal 2 设置用于配置 Portal 2 游戏会话有关的内容。",
   "language_menu_players_text": "玩家菜单允许将玩家设置为管理员",
-  "Auto-Umount": "自动卸载",
+  "Auto-Unmount": "自动卸载",
   "Launcher-SFX": "启动器音效",
   "Launcher-Cubes": "启动器方块",
   "Portal2-Path": "Portal2-路径",

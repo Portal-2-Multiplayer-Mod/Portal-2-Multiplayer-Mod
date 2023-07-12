@@ -16,7 +16,7 @@ from pygame.locals import *
 from steamid_converter import Converter
 
 import Scripts.BasicFunctions as BF
-import Scripts.Configs as cfg
+import Scripts.Configs as CFG
 import Scripts.GlobalVariables as GVars
 import Scripts.RunGame as RG
 import Scripts.Updater as UP
@@ -58,13 +58,13 @@ class Gui:
 
     ###############################################################################
         # The resolution of the launcher when it opens. 
-        # Why the height is 800 is to accommodatee the Steam Decks resolution if launching the launcher in Gaming Mode
+        # Why the height is 800 is to accommodate the Steam Decks resolution if launching the launcher in Gaming Mode
         self.screen = pygame.display.set_mode((1280, 800), RESIZABLE)
         self.fpsclock = pygame.time.Clock()
         self.devMode: bool = devMode
         self.running: bool = True
         self.FPS: int = 60
-        self.currentVersion: str = "2.2.0 (DEV)" # REMEMBER TO CHANGE THIS BEFORE RELEASINGA NEW VERSION OF THE LAUNCHER
+        self.currentVersion: str = "2.2.0"
 
         # Define the name and image of the window
         pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
@@ -302,7 +302,7 @@ class Gui:
         self.Text_TestMenuTextTest4 = self.DisplayText(
             "DisplayText4: textColor=(143, 222, 24), xpos=600, xstart=600, ypos=600", textColor=(143, 222, 24), xpos=600, xstart=600, ypos=600)
         self.Text_TestMenuTextTest5 = self.DisplayText(
-            "DisplayText5: textColor=(255, 255, 0), xpos=600, xstart=600, xend=2000, ypos=300", textColor=(255, 255, 0), xpos=600, xstart=600, xend=2000, ypos=300)
+            "DisplayText5: textColor=(255, 255, 0), xpos=600, xstart=600, xend=1900, ypos=300", textColor=(255, 255, 0), xpos=600, xstart=600, xend=1900, ypos=300)
 
         self.TestMenuText = [self.Text_TestMenuTextTest1, self.Text_TestMenuTextTest2,
                             self.Text_TestMenuTextTest3, self.Text_TestMenuTextTest4,
@@ -370,14 +370,14 @@ class Gui:
             def function(self) -> None:
                 if type(self.cfgvalue) is bool:
                     if self.cfgvalue == False:
-                        cfg.EditConfig(self.cfgkey, True)
+                        CFG.EditConfig(self.cfgkey, True)
                     # default to false to avoid errors
                     else:
-                        cfg.EditConfig(self.cfgkey, False)
+                        CFG.EditConfig(self.cfgkey, False)
                     self.outerSelf.RefreshSettingsMenu(menu)
                 else:
                     def AfterInputGenericSetConfig(inp: str) -> None:
-                        cfg.EditConfig(self.cfgkey, inp.strip())
+                        CFG.EditConfig(self.cfgkey, inp.strip())
                         Log("Saved '" + inp.strip() +
                             "' to config " + self.cfgkey)
                         self.outerSelf.Error(
@@ -394,7 +394,7 @@ class Gui:
         self.SettingsButtons.append(self.Button_Back)
 
     def RefreshPlayersMenu(self) -> None:
-        cfg.ValidatePlayerKeys()
+        CFG.ValidatePlayerKeys()
 
         self.PlayersMenu.clear()
         PlayerKey = GVars.configData["Players"]["value"][self.CurrentSelectedPlayer]
@@ -404,7 +404,7 @@ class Gui:
         def Button_PlayerName_func() -> None:
             def AfterInputPlayerName(inp: str) -> None:
                 Log("Saving player name: "+ inp)
-                cfg.EditPlayer(self.CurrentSelectedPlayer, name=inp.strip())
+                CFG.EditPlayer(self.CurrentSelectedPlayer, name=inp.strip())
                 self.Error(translations["error_saved"], 5, (75, 200, 75))
                 self.RefreshPlayersMenu()
 
@@ -435,7 +435,7 @@ class Gui:
                         Log(str(e))
                         return
 
-                cfg.EditPlayer(self.CurrentSelectedPlayer, steamId=inp)
+                CFG.EditPlayer(self.CurrentSelectedPlayer, steamId=inp)
                 self.Error(translations["error_saved"], 5, (75, 200, 75))
                 self.RefreshPlayersMenu()
 
@@ -460,7 +460,7 @@ class Gui:
                     return
 
                 # here i'm converting to int then to str so it removes all the extra 0s on the left side (05 -> 5)
-                cfg.EditPlayer(self.CurrentSelectedPlayer, level=str(int(inp)))
+                CFG.EditPlayer(self.CurrentSelectedPlayer, level=str(int(inp)))
                 self.Error(translations["error_saved"], 5, (75, 200, 75))
                 Log("Saving admin level as " + str(inp))
                 self.RefreshPlayersMenu()
@@ -491,8 +491,8 @@ class Gui:
         def Button_AddPlayer_func() -> None:
 
             Log("Adding blank player...")
-            GVars.configData["Players"]["value"].append(cfg.defaultplayerarray)
-            cfg.WriteConfigFile(GVars.configData)
+            GVars.configData["Players"]["value"].append(CFG.defaultplayerarray)
+            CFG.WriteConfigFile(GVars.configData)
             Log(str(len(GVars.configData["Players"]["value"]) - 1))
             self.CurrentSelectedPlayer = len(
                 GVars.configData["Players"]["value"]) - 1
@@ -510,7 +510,7 @@ class Gui:
                 return
 
             Log("Deleting player...")
-            cfg.DeletePlayer(self.CurrentSelectedPlayer)
+            CFG.DeletePlayer(self.CurrentSelectedPlayer)
             self.CurrentSelectedPlayer -= 1
             self.RefreshPlayersMenu()
 
@@ -695,13 +695,13 @@ class Gui:
 
     ####################
 
-    # this is a test for input fields
+    # Test for input fields
     def Button_InputField_func(self) -> None:
         def AfterInput(input) -> None:
             self.Error("Input: " + input, 3, (255, 255, 0))
         self.GetUserInputPYG(AfterInput, "As you can see this text can \n go onto another line :)")
 
-    # this is a test for popup boxes
+    # Test for popup boxes
     def PopupBox_test_func(self) -> None:
         def YesInput() -> None:
             self.Error("Let's go!!!", 3, (75, 255, 75))
@@ -716,17 +716,17 @@ class Gui:
         self.PopupBox("Trolling Time!?!?!", "Have you given Cabiste an\naneruism today?",
                       [Button_Confirm, Button_Decline])
 
-    # this is a test to print text to console
+    # Test to print text to console
     def Button_PrintToConsole_func(self) -> None:
-        print("Without Log():")
+        print("Without Log(), just print():")
         print(GVars.modPath)
-        print(GVars.configsPath)
+        print(GVars.modFilesPath)
+        print(GVars.configPath)
+
         Log("With Log():")
         Log(GVars.modPath)
-        Log(GVars.configsPath)
-        DS.DSLogging("With DSLogging():", True, True)
-        DS.DSLogging(GVars.modPath, True, True)
-        DS.DSLogging(GVars.configsPath, True, True)
+        Log(GVars.modFilesPath)
+        Log(GVars.configPath)
 
     ################################
 
@@ -828,10 +828,10 @@ class Gui:
         lang: str = self.LanguagesMenu[self.CurrentButtonsIndex].text.replace(
             "→ ", "")
         Log("Language set: " + lang)
-        cfg.EditConfig("Active-Language", lang)
+        CFG.EditConfig("Active-Language", lang)
         LoadTranslations()
         self.__init__(self.devMode)
-        self.Error(translations["language_error0_language_update"])
+        self.Error(translations["language_error_language_update"])
 
     def LanguageButton(self) -> None:
         self.LanguagesMenu.clear()
@@ -985,7 +985,7 @@ class Gui:
             self.SelectedButton.whileSelectedfunction(self)
 
         except Exception as e:
-            # Log(str(e))
+            #Log(str(e))
             pass
 
         # DRAW POPUP BOX
@@ -1321,7 +1321,7 @@ def PreExit() -> None:
     Log("Portal 2 has been shutdown...")
 
     # Make sure the P2MM ModFiles are unmounted from Portal 2
-    if (GVars.configData["Auto-Umount"]["value"]):
+    if (GVars.configData["Auto-Unmount"]["value"]):
         Log("Unmounting P2MM's ModFiles from Portal 2...")
         UnmountScript(False)
         Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
@@ -1333,14 +1333,14 @@ def GetGamePath() -> None:
     tmpp = BF.TryFindPortal2Path()
 
     if tmpp:
-        cfg.EditConfig("Portal2-Path", tmpp.strip())
+        CFG.EditConfig("Portal2-Path", tmpp.strip())
         Log("Saved '" + tmpp.strip() + "' as the game path!")
         Ui.Error(translations["game_path_error-founded"], 5, (255, 255, 75))
         VerifyGamePath(False)
         return
 
     def AfterInputGP(inp) -> None:
-        cfg.EditConfig("Portal2-Path", inp.strip())
+        CFG.EditConfig("Portal2-Path", inp.strip())
         Log("Saved '" + inp.strip() + "' as the game path!")
         Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
         VerifyGamePath(False)
@@ -1391,7 +1391,7 @@ def DEVMOUNT() -> None:
     BF.CopyFolder(cwd + os.sep + "ModFiles", GVars.modPath)
 
 def MountModOnly() -> bool:
-    cfg.ValidatePlayerKeys()
+    CFG.ValidatePlayerKeys()
 
     if Ui.IsUpdating:
         Ui.Error(translations["update_is-updating"], 5, (255, 75, 75))
@@ -1469,8 +1469,8 @@ def LoadTranslations() -> dict:
     EnglishOriginal : dict[str, str] = json.load(open("languages/English.json", "r", encoding="utf8"))
     
     if (not os.path.exists(langPath)):
-        cfg.EditConfig("Active-Language",
-                       cfg.DefaultConfigFile["Active-Language"]["value"])
+        CFG.EditConfig("Active-Language",
+                       CFG.DefaultConfigFile["Active-Language"]["value"])
         langPath = "languages/" + \
             GVars.configData["Active-Language"]["value"] + ".json"
         print(langPath)
@@ -1516,7 +1516,6 @@ def RunGameScript() -> None:
     if MountModOnly():
         gamepath = GVars.configData["Portal2-Path"]["value"]
         GVars.gameActive = True
-        DRP.updateRichPresenceCheck()
         RG.LaunchGame(gamepath)
         Ui.Error(translations["game_launched"], 5, (75, 255, 75))
     else:
@@ -1625,7 +1624,7 @@ def PostInitialize() -> None:
 
     def NewAfterFunction() -> None:
         Ui.Error(translations["game_exited"], 5, (125, 0, 125))
-        if (GVars.configData["Auto-Umount"]["value"]):
+        if (GVars.configData["Auto-Unmount"]["value"]):
             UnmountScript()
             Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
 
@@ -1645,6 +1644,8 @@ if __name__ == '__main__':
         Ui = Gui(GVars.configData["Dev-Mode"]["value"])
         PostInitialize()
         Ui.Main()
+    except KeyboardInterrupt:
+        pass
     # Called when a unexpected error results in a launcher crash
     except:
         Log("")
