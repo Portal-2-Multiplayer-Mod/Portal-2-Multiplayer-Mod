@@ -73,8 +73,6 @@
   "game_path_undefined_fetch": "Le chemin vers le jeu est indéfini,\nrécupération automatique...",
   "game_path_error-founded": "Chemin trouvé !",
   "game_path_error-saved": "Chemin sauvegardé !",
-  "devmode_is_active": "Le mode de développement est maintenant actif!",
-  "devmode_copied_from_local_repo": "Fichiers du mod copiés à partir de l'emplacement de développement !",
   "testing_button": "Menu de test",
   "language_error_language_update": "Langage mis à jour !",
   "language_menu_launch_text": "La configuration du lanceur implique tout ce qui concerne le lanceur",

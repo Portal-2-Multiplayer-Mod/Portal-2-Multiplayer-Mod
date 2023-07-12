@@ -1374,21 +1374,7 @@ def VerifyModFiles() -> bool:
         return True
 
     Log("Mod files not found!")
-    return False    
-
-def DEVMOUNT() -> None:
-    try:
-        # delete the old modfiles
-        Log("DEV: Deleteing p2mm/ModFiles...")
-        print(GVars.modPath + os.sep + "ModFiles")
-        BF.DeleteFolder(GVars.modPath + os.sep + "ModFiles")
-    except Exception:
-        Log("Error deleting the old mod files, below is the error that caused this:")
-        Log(traceback.format_exc())
-
-    # copy the one in the current directory to the modpath
-    Log("DEV: Copying over files from src/Modfiles...")
-    BF.CopyFolder(cwd + os.sep + "ModFiles", GVars.modPath)
+    return False
 
 def MountModOnly() -> bool:
     CFG.ValidatePlayerKeys()
@@ -1412,12 +1398,6 @@ def MountModOnly() -> bool:
     if not RG.CheckForRequiredDLC(gamepath):
         Ui.Error(translations["mount_nodlc_error"], 5, (255, 21, 0))
         return False
-
-    if (GVars.configData["Dev-Mode"]["value"]):
-        Ui.Error(translations["devmode_is_active"], 5, (255, 180, 75))
-        DEVMOUNT()
-        Ui.Error(
-            translations["devmode_copied_from_local_repo"], 5, (75, 255, 75))
 
     if VerifyModFiles():
         DoEncrypt = GVars.configData["Encrypt-Cvars"]["value"]

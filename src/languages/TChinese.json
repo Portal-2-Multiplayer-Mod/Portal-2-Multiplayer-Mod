@@ -73,8 +73,6 @@
   "game_path_undefined_fetch": "未設定遊戲路徑，\n正在嘗試自動獲取…",
   "game_path_error-founded": "已找到遊戲路徑！",
   "game_path_error-saved": "路徑已儲存！",
-  "devmode_is_active": "開發者模式已啟用！",
-  "devmode_copied_from_local_repo": "已複製原始碼/ModFiles 資料夾中的模組文件！",
   "testing_button": "測試選單",
   "language_error_language_update": "語言已設定！",
   "language_menu_launch_text": "啟動器設定用於配置與啟動器有關的內容",

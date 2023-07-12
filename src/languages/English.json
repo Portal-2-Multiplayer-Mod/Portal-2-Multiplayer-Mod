@@ -73,8 +73,6 @@
   "game_path_undefined_fetch": "Game path was undefined,\nautomatically retrieving...",
   "game_path_error-founded": "Found game path!",
   "game_path_error-saved": "Saved path!",
-  "devmode_is_active": "Dev mode is active!",
-  "devmode_copied_from_local_repo": "Copying mod files directly from src/ModFiles!",
   "testing_button": "Test Menu",
   "language_error_language_update": "Language Set!",
   "language_menu_launch_text": "The Launcher Config involves everything related to the launcher",
