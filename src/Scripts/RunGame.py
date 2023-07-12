@@ -222,8 +222,8 @@ def PatchBinaries(gamepath: str) -> None:
             BF.CopyFile(gamepath + os.sep + binary, gamepath + os.sep + filename)
             Log("Copied " + binary+" to " + gamepath + os.sep + filename)
         except:
-            # On Windows there is no "linux32" folder, so we avoid an error.
-            Log("Unable to copy "+ binary+", since it doesn't exist!" )
+            # On Windows there is no "linux32" folder, so it just is logged that it doesn't exist
+            Log("Unable to copy " + binary + ", since it doesn't exist!" )
     Log("             __________Binary Moving End_________")
 
 
@@ -245,6 +245,9 @@ def PatchBinaries(gamepath: str) -> None:
         # Validation
         data = data.replace(b'\x74\x7d\x8b\x17', b'\xeb\x7d\x8b\x17')
 
+        # Server Password Fix
+        data = data.replace(b'\x0F\x95\xC1\x51\x8D\x4D\xE8', b'\x03\xC9\x90\x51\x8D\x4D\xE8')
+
         # write the data back to the file
         open(gamepath + os.sep + "engine.dll", "wb").write(data)
 
@@ -256,13 +259,14 @@ def PatchBinaries(gamepath: str) -> None:
 
         # Delete the file
         os.remove(gamepath + os.sep + "server.dll")
-        # replace the data
         
-        # 32 player cap edit
+        # Replace the data
+        # Player cap edit
         data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15', b'\x8bM\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
         data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]', b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0 \x89\x01]')
         data = data.replace(b'\xff\xd0\x85\xc0t\x05\xbe\x03\x00\x00\x00\x8b', b'\xff\xd0\x85\xc0t\x05\xbe\x21\x00\x00\x00\x8b')
         data = data.replace(b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x01_^', b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x20_^')
+        
         # Rename the server game description to our mod
         data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70', b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
 
@@ -280,7 +284,7 @@ def PatchBinaries(gamepath: str) -> None:
         open(gamepath + os.sep + "server.dll", "wb").write(data)
         Log("")
 
-    # we don't need to patch the other files since they don't exist on windows
+    # The other files don't need to be patched since they don't exist on windows
     if GVars.iow:
         # rename the files so the new files are used
         Log("Renaming binaries...")
@@ -305,6 +309,9 @@ def PatchBinaries(gamepath: str) -> None:
         # Validation
         data = data.replace(b'\x74\xc5\x8b\x06\x8d\x93', b'\xeb\xc5\x8b\x06\x8d\x93')
 
+        # Server Password Fix
+        data = data.replace(b'\x0F\x95\xC1\x51\x8D\x4D\xE8', b'\x03\xC9\x90\x51\x8D\x4D\xE8')
+
         # write the data back to the file
         open(gamepath + os.sep + "engine.so", "wb").write(data)
 
@@ -314,14 +321,16 @@ def PatchBinaries(gamepath: str) -> None:
 
         data = open(gamepath + os.sep + "server.so", "rb").read()
 
-        # remove the file
+        # Remove the file
         os.remove(gamepath + os.sep + "server.so")
-        # replace the data
-        # 32 player cap edit
+
+        # Replace the data
+        # Player cap edit
         data = data.replace(b'\x01\x00\x00\x00\x8bD$\x14\xc7\x00\x01', b'\x1f\x00\x00\x00\x8bD$\x14\xc7\x00\x1f')
         data = data.replace(b'\xc0\x0f\xb6\xc0\x83\xc0\x02\x89\x02\x83\xc4', b'\xc0\x0f\xb6\xc0\x83\xc0 \x89\x02\x83\xc4')
         data = data.replace(b'\x0f\xb6\xc0\x83\xc0\x02\x83\xec\x04\x89\xf3', b'\x0f\xb6\xc0\x83\xc0 \x83\xec\x04\x89\xf3')
         data = data.replace(b'K\x8de\xf4\xb8\x01\x00\x00\x00[^', b'K\x8de\xf4\xb8\x1f\x00\x00\x00[^')
+
         # Rename the server game description to our mod
         data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70', b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
 
@@ -344,13 +353,6 @@ def PatchBinaries(gamepath: str) -> None:
     RenameBinaries(gamepath, binaries)
 
 def RenameBinaries(gamepath: str, binaries: list[str]) -> None:
-    # binaries = [
-    #     "bin/linux32/engine.so",
-    #     "bin/engine.dll",
-    #     "portal2/bin/linux32/server.so",
-    #     "portal2/bin/server.dll",
-    # ]
-
     # go through the list of binaries
     for binary in binaries:
         filename = binary.rsplit(os.sep, 1)[1]
@@ -393,29 +395,59 @@ def UnRenameBinaries(gamepath: str, binaries: list[str]) -> None:
             # Rename the binary back to it's original name
             os.rename(gamepath + os.sep + binary, gamepath + os.sep + Og_binary)
 
-def DeleteUnusedDlcs(gamepath: str) -> None:
-    Log("")
-    Log("            _________Dealing with Folders________")
-
-    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + os.sep + "portal2_dlc2") != True):
-        Log("Portal 2 game path not found!")
-        return
-
-    # go through each file in the gamepath
+# Using the identifier file in P2MM's DLC folder, it can be determined 
+# which DLC that is mounted to Portal 2 is in fact P2MM's DLC folder
+def findP2MMDLCFolder(gamepath: str) -> str:
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
-            # if inside the folder there is a file called "32playermod.identifier" delete this folder
-            if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
-                Log("Found old DLC: " + file)
-                # delete the folder even if it's not empty
-                BF.DeleteFolder(gamepath + os.sep + file)
-                Log("Deleted old DLC: " + file)
+            # if inside the folder there is a file called "p2mm.identifier" return where it is
+            if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
+                p2mmdlcfolder = gamepath + os.sep + file
+                Log("Found P2MM's DLC folder: " + p2mmdlcfolder)
+                return p2mmdlcfolder
+    Log("P2MM's DLC folder was not found...")
+    Log("It's most likely not been mounted to Portal 2 yet or the gamepath is incorrect...")
+    return False
 
+# Make sure the dlc folders that come with Portal 2 exist
+# They are required since they include stuff for multiplayer and fixes for other things Portal 2 related
+# portal2_dlc1 is required for multiplayer to work since it includes mp_coop_lobby_3 and the stuff for the DLC course Art Therapy
+# portal2_dlc2 is also required, while its mainly for PeTi, it also includes a bunch of other assets and fixes for Portal 2 that Valve had done
+# If either of these folders are not detected P2MM won't start or be mounted
+def CheckForRequiredDLC(gamepath: str) -> bool:
+    Log("")
+    Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
+    if ("undefined" in gamepath):
+        return "portal2pathundefined"
+    if (not os.path.exists(gamepath + os.sep + "portal2_dlc1")) or (not os.path.exists(gamepath + os.sep + "portal2_dlc2")):
+        Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
+        Log("P2MM with not be mounted/started!")
+        return False
+    Log("DLC folders were found...")
+    return True
+
+# Find and delete P2MM's portal2_dlc folder
+def DeleteUnusedDLCs(gamepath: str) -> None:
+    Log("")
+    Log("            _________Dealing with Folders________")
+
+    if ((os.path.exists(gamepath)) != True):
+        Log("Portal 2 game path not found!")
+        return
+
+    foundp2mmdlcfolder = findP2MMDLCFolder(gamepath)
+    if foundp2mmdlcfolder != False:
+        Log("Found old DLC: " + foundp2mmdlcfolder)
+        # delete the folder even if it's not empty
+        BF.DeleteFolder(foundp2mmdlcfolder)
+        Log("Deleted old DLC: " + foundp2mmdlcfolder)
+
+# Find what DLC folders exist for Portal 2 and create a incremented folder for P2MM
 def FindAvailableDLC(gamepath: str) -> str:
     Log("Finding the next increment in DLC folders...")
     dlcs = []
-    DeleteUnusedDlcs(gamepath)
+    DeleteUnusedDLCs(gamepath)
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
@@ -454,10 +486,7 @@ def LaunchGame(gamepath: str) -> None:
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                if GVars.configData["Public-Server"]["value"] == "false":
-                    subprocess.run([gamepath + os.sep + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", "-nomaster", GVars.configData["Custom-Launch-Options"]["value"]])
-                else:
-                    subprocess.run([gamepath + os.sep + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
+                subprocess.run([gamepath + os.sep + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
@@ -467,10 +496,7 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol): #launching for linux
             def RunGame():
                 def RunSteam():
-                    if GVars.configData["Public-Server"]["value"] == "false":
-                        os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nomaster" + GVars.configData["Custom-Launch-Options"]["value"])
-                    else:
-                        os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["Custom-Launch-Options"]["value"])
+                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["Custom-Launch-Options"]["value"])
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:
