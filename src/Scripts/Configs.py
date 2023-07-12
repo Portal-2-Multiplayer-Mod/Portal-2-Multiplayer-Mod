@@ -1,5 +1,6 @@
 import os
 import json
+import locale
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 
@@ -7,6 +8,28 @@ import Scripts.GlobalVariables as GVars
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
+
+language_translations = {
+    "fr_FR": "Fran\u00e7ais",
+    "fr_BE": "Fran\u00e7ais",
+    "fr_CA": "Fran\u00e7ais",
+    "fr_CH": "Fran\u00e7ais",
+    "zh_CN": "SChinese",
+    "zh_SG": "SChinese",
+    "zh_Hans": "SChinese",
+    "zh_TW": "TChinese",
+    "zh_HK": "TChinese",
+    "zh_MO": "TChinese",
+    "zh_Hant": "TChinese",
+}
+
+# Function called on first launch, or whenever the config resets, to automatically get the users language
+def GetSysLang() -> str:
+    sysDefaultLocale = locale.getdefaultlocale()[0]
+    if sysDefaultLocale in language_translations:
+        return str(language_translations[sysDefaultLocale])
+    else:
+        return "English"
 
 DefaultConfigFile = {
     "Portal2-Path":
