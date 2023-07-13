@@ -15,6 +15,10 @@ fogs <- [
     {name = "environment_darkness_4", fogname = "@environment_darkness_fog_4", fogdelay = 0}
 ]
 
+function GoodByeIdaho() {
+    PermaPotato = false
+}
+
 function CatwalkDisableRender() {
     Entities.FindByName(null, "p2mmcatwalkmodeloverride").__KeyValueFromString("rendermode", "10")
     Entities.FindByName(null, "p2mmcatwalk2modeloverride").__KeyValueFromString("rendermode", "10")
@@ -31,7 +35,7 @@ function MoveSoundScape() {
     printl("JELLO")
     // EntFire("end_soundscape", "disable")
     // Entities.FindByName(null, "end_soundscape").SetOrigin(Vector(-11264, 576, 128))
-    // EntFire("end_soundscape", "Disable", "", 0.1)
+    // EntFire("end_soundscape", "enable", "", 0.1)
 
     for (local p; p = Entities.FindByClassname(p, "player");) {
         p.SetOrigin(Vector(-11258, 342, 1072))
@@ -44,18 +48,31 @@ function TeleportPlayersUp() {
     Entities.FindByClassname(null, "player").SetOrigin(Vector(-190 0 64))
 }
 
-PermaPotato = true
+PermaPotato <- true
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Assign env_globals
-        env_global01 <- Entities.FindByName(null, "p2mm_env_global01")
-        env_global02 <- Entities.FindByName(null, "p2mm_env_global02")
-        env_global03 <- Entities.FindByName(null, "p2mm_env_global03")
-        env_global04 <- Entities.FindByName(null, "p2mm_env_global04")
+        // Create env_globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
 
-        UTIL_Team.Pinging(true, "all", 1)
-        UTIL_Team.Taunting(true, "all", 1)
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
 
         // Sp_A2_Finale4 first elevator viewcontrol creation
         Sp_A2_Finale4Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
@@ -80,26 +97,26 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("lightworld", "1")
         Entities.FindByName(null, "light_dynamic_moon").__KeyValueFromString("spawnflags", "2")
 
-        EntFire("catwalk_break_relay", "AddOutput", "OnTrigger p2mmcatwalkmodeloverride:Kill")
-        EntFire("catwalk_break_relay", "AddOutput", "OnTrigger p2mmcatwalk2modeloverride:Kill")
+        EntFire("catwalk_break_relay", "addoutput", "OnTrigger p2mmcatwalkmodeloverride:Kill")
+        EntFire("catwalk_break_relay", "addoutput", "OnTrigger p2mmcatwalk2modeloverride:Kill")
 
         // Setup function ent_fires
-        EntFire("breaker_path2", "AddOutput", "OnPass p2mm_servercommand:command:script TeleportPlayersUp():1")
-        EntFire("socket1_start_relay", "AddOutput", "OnTrigger p2mm_servercommand:command:script CatwalkDisableRender():2")
-        EntFire("replace_relay", "AddOutput", "OnTrigger p2mm_servercommand:command:script TeleportPlayersBehindEndingElevator()")
-        EntFire("container_path2", "AddOutput", "OnPass p2mm_servercommand:command:script MoveSoundScape()")
+        EntFire("breaker_path2", "addoutput", "OnPass p2mm_servercommand:command:script TeleportPlayersUp():1")
+        EntFire("socket1_start_relay", "addoutput", "OnTrigger p2mm_servercommand:command:script CatwalkDisableRender():2")
+        EntFire("replace_relay", "addoutput", "OnTrigger p2mm_servercommand:command:script TeleportPlayersBehindEndingElevator()")
+        EntFire("container_path2", "addoutput", "OnPass p2mm_servercommand:command:script MoveSoundScape()")
 
-        EntFire("breaker_path2", "AddOutput", "OnPass Sp_A2_Finale4Viewcontrol:disable::1")
-        EntFire("claw3_movelinear", "AddOutput", "OnFullyOpen pipe_orange_relay:trigger::10")
+        EntFire("breaker_path2", "addoutput", "OnPass Sp_A2_Finale4Viewcontrol:disable::1")
+        EntFire("claw3_movelinear", "addoutput", "OnFullyOpen pipe_orange_relay:trigger::10")
 
-        EntFire("breaker_path2", "AddOutput", "OnPass env_global01:turnoff::1")
-        EntFire("breaker_path2", "AddOutput", "OnPass env_global02:turnoff::1")
-        EntFire("breaker_path2", "AddOutput", "OnPass env_global03:turnoff::1")
-        EntFire("breaker_path2", "AddOutput", "OnPass env_global04:turnoff::1")
+        EntFire("breaker_path2", "addoutput", "OnPass env_global01:turnoff::1")
+        EntFire("breaker_path2", "addoutput", "OnPass env_global02:turnoff::1")
+        EntFire("breaker_path2", "addoutput", "OnPass env_global03:turnoff::1")
+        EntFire("breaker_path2", "addoutput", "OnPass env_global04:turnoff::1")
 
 
-        EntFire("relay_neurotoxin_death", "AddOutput", "OnTrigger p2mm_servercommand:command:changelevel sp_a4_finale4:7")
-        EntFire("relay_destruction_death", "AddOutput", "OnTrigger p2mm_servercommand:command:changelevel sp_a4_finale4:7")
+        EntFire("relay_neurotoxin_death", "addoutput", "OnTrigger p2mm_servercommand:command:changelevel sp_a4_finale4:7")
+        EntFire("relay_destruction_death", "addoutput", "OnTrigger p2mm_servercommand:command:changelevel sp_a4_finale4:7")
 
 
         Entities.FindByName(null, "@arrival_video_master").SetOrigin(Vector(574.587524, -30.347410, 235.043121))
@@ -110,7 +127,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("forceprecache", "0")
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("looping", "0")
         Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("stretch", "0")
-        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("targetname", "p2mm_video")
+        Entities.FindByName(null, "@arrival_video_master").__KeyValueFromString("targetname", "p2mppenis")
 
         Entities.FindByName(null, "transition_portal1").Destroy()
         Entities.FindByName(null, "transition_portal2").Destroy()
@@ -125,19 +142,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "ending_playmovie").__KeyValueFromString("targetname", "ending_playmovie_p2mp_override")
         Entities.FindByName(null, "credits_music").__KeyValueFromString("targetname", "credits_music_meme")
         
-        EntFire("container_path2", "AddOutput", "OnPass ending_playmovie_p2mp_override:playmovieforallplayers::2")
+        EntFire("container_path2", "addoutput", "OnPass ending_playmovie_p2mp_override:playmovieforallplayers::2")
         memeplaymovie <- Entities.CreateByClassname("logic_playmovie")
         memeplaymovie.__KeyValueFromString("targetname", "credits_playmovie_p2mp")
         memeplaymovie.__KeyValueFromString("MovieFilename", "sp_credits_bg")
         memeplaymovie.__KeyValueFromString("loopvideo", "1")
         memeplaymovie.__KeyValueFromString("fadeintime", "1")
-        EntFire("container_path2", "AddOutput", "OnPass credits_playmovie_p2mp:PlayLevelTransitionMovie::131")
-        EntFire("container_path2", "AddOutput", "OnPass credits_music_meme:playsound::131.2")
+        EntFire("container_path2", "addoutput", "OnPass credits_playmovie_p2mp:PlayLevelTransitionMovie::131")
+        EntFire("container_path2", "addoutput", "OnPass credits_music_meme:playsound::131.2")
 
         memeplaymovie2 <- Entities.CreateByClassname("logic_playmovie")
         memeplaymovie2.__KeyValueFromString("targetname", "after_credits_playmovie_p2mp")
         memeplaymovie2.__KeyValueFromString("MovieFilename", "sp_ending_callback")
-        EntFire("container_path2", "AddOutput", "OnPass after_credits_playmovie_p2mp:playmovieforallplayers::272")
+        EntFire("container_path2", "addoutput", "OnPass after_credits_playmovie_p2mp:playmovieforallplayers::272")
         
         memeplaymovie23 <- Entities.CreateByClassname("logic_playmovie")
         memeplaymovie23.__KeyValueFromString("targetname", "after_credits_playmovie_p2mp_loop")
@@ -145,28 +162,28 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         LoopTeleportPlayersEnding <- false
 
-        EntFire("container_path2", "AddOutput", "OnPass after_credits_playmovie_p2mp_loop:playmovieforallplayers::317")
+        EntFire("container_path2", "addoutput", "OnPass after_credits_playmovie_p2mp_loop:playmovieforallplayers::317")
 
         memecounter <- Entities.CreateByClassname("point_servercommand")
         memecounter.__KeyValueFromString("targetname", "point_servercommand_credits_counter")
-        EntFire("container_path2", "AddOutput", "OnPass point_servercommand_credits_counter:command:changelevel mp_coop_lobby_3:320")
+        EntFire("container_path2", "addoutput", "OnPass point_servercommand_credits_counter:command:changelevel mp_coop_lobby_3:320")
 
-        EntFire("container_path2", "AddOutput", "OnPass env_global01:turnoff::318")
-        EntFire("container_path2", "AddOutput", "OnPass env_global02:turnoff::318")
-        EntFire("container_path2", "AddOutput", "OnPass env_global03:turnoff::318")
-        EntFire("container_path2", "AddOutput", "OnPass env_global04:turnoff::318")
+        EntFire("container_path2", "addoutput", "OnPass env_global01:turnoff::318")
+        EntFire("container_path2", "addoutput", "OnPass env_global02:turnoff::318")
+        EntFire("container_path2", "addoutput", "OnPass env_global03:turnoff::318")
+        EntFire("container_path2", "addoutput", "OnPass env_global04:turnoff::318")
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "notinelevator")
-        EntFire("breaker_socket_button", "AddOutput", "OnPressed notinelevator:kill", 0, null)
+        EntFire("breaker_socket_button", "addoutput", "OnPressed notinelevator:kill", 0, null)
         
-        EntFire("@core01", "AddOutput", "OnPlayerPickup @core01:disablepickup", 0, null)
-        EntFire("@core01", "AddOutput", "OnPlayerDrop @core01:enablepickup", 0, null)
+        EntFire("@core01", "addoutput", "OnPlayerPickup @core01:disablepickup", 0, null)
+        EntFire("@core01", "addoutput", "OnPlayerDrop @core01:enablepickup", 0, null)
 
-        EntFire("@core02", "AddOutput", "OnPlayerPickup @core02:disablepickup", 0, null)
-        EntFire("@core02", "AddOutput", "OnPlayerDrop @core02:enablepickup", 0, null)
+        EntFire("@core02", "addoutput", "OnPlayerPickup @core02:disablepickup", 0, null)
+        EntFire("@core02", "addoutput", "OnPlayerDrop @core02:enablepickup", 0, null)
 
-        EntFire("@core03", "AddOutput", "OnPlayerPickup @core03:disablepickup", 0, null)
-        EntFire("@core03", "AddOutput", "OnPlayerDrop @core03:enablepickup", 0, null)
+        EntFire("@core03", "addoutput", "OnPlayerPickup @core03:disablepickup", 0, null)
+        EntFire("@core03", "addoutput", "OnPlayerDrop @core03:enablepickup", 0, null)
 
         OneTimeRenableViewControl <- false
 
@@ -174,7 +191,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
             ent.__KeyValueFromString("CheckAllIDs", "1")
             //printl("Found func_portal_detector")
-            EntFireByHandle(ent, "AddOutput", "OnStartTouchPortal ReEnableViewControl:kill::3", 0, null, null)
+            EntFireByHandle(ent, "addoutput", "OnStartTouchPortal ReEnableViewControl:kill::3", 0, null, null)
         }
 
         Sp_A2_CoreViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
@@ -193,8 +210,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         WatchPlayerWheatley <- true
         DoDestroyDummy <- true
         socketnum <- 1
-        EntFire("core_hit_trigger", "AddOutput", "OnTrigger DummyObjectWheatlyLook:kill", 0, null)
-        EntFire("wheatley_lookat_player_relay", "AddOutput", "OnTrigger DummyObjectWheatlyLookOn:kill", 0, null)
+        EntFire("core_hit_trigger", "addoutput", "OnTrigger DummyObjectWheatlyLook:kill", 0, null)
+        EntFire("wheatley_lookat_player_relay", "addoutput", "OnTrigger DummyObjectWheatlyLookOn:kill", 0, null)
 
         Entities.FindByClassnameNearest("trigger_once", Vector(0, -384, 96), 350).__KeyValueFromString("targetname", "topofelevator")
         Sp_A4_Finale4ElevatorTeleport <- true
@@ -245,10 +262,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
 
             if (!Entities.FindByName(null, "ReEnableViewControl")) {
-                EntFireByHandle(Sp_A2_CoreViewcontrol, "Disable", "", 0, null, null)
+                EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0, null, null)
                 if (!OneTimeRenableViewControl) {
-                    UTIL_Team.Pinging(false, "all", 1)
-                    UTIL_Team.Taunting(false, "all", 1)
+                    EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                    EntFireByHandle(env_global04, "turnon", "", 1, null, null)
                     OneTimeRenableViewControl <- true
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "chell", 55.15, null, null)
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 55.25, null, null)
@@ -274,10 +293,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFireByHandle(player, "disabledraw", "", 0, null, null)
                 }
                 EntFire("rollcameracontrol", "kill", "", 16.1, null)
-                UTIL_Team.Pinging(false, "all", 1)
-                UTIL_Team.Taunting(false, "all", 1)
+                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "disable", "", 16, null, null)
-                EntFireByHandle(Sp_A2_CoreViewcontrol, "Disable", "", 0.3, null, null)
+                EntFireByHandle(Sp_A2_CoreViewcontrol, "enable", "", 0.3, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "ending_vehicle", 0.1, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 0.2, null, null)
                 for (local p; p = Entities.FindByClassname(p, "player");) {
@@ -286,14 +307,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-        EntFire("@core01", "AddOutput", "OnPlayerPickup @core01:disablepickup", 0, null)
-        EntFire("@core01", "AddOutput", "OnPlayerDrop @core01:enablepickup", 0, null)
+        EntFire("@core01", "addoutput", "OnPlayerPickup @core01:disablepickup", 0, null)
+        EntFire("@core01", "addoutput", "OnPlayerDrop @core01:enablepickup", 0, null)
 
-        EntFire("@core02", "AddOutput", "OnPlayerPickup @core02:disablepickup", 0, null)
-        EntFire("@core02", "AddOutput", "OnPlayerDrop @core02:enablepickup", 0, null)
+        EntFire("@core02", "addoutput", "OnPlayerPickup @core02:disablepickup", 0, null)
+        EntFire("@core02", "addoutput", "OnPlayerDrop @core02:enablepickup", 0, null)
 
-        EntFire("@core03", "AddOutput", "OnPlayerPickup @core03:disablepickup", 0, null)
-        EntFire("@core03", "AddOutput", "OnPlayerDrop @core03:enablepickup", 0, null)
+        EntFire("@core03", "addoutput", "OnPlayerPickup @core03:disablepickup", 0, null)
+        EntFire("@core03", "addoutput", "OnPlayerDrop @core03:enablepickup", 0, null)
 
         if (!Entities.FindByName(null, "socket1_trigger")) {
             EntFire("@core01" "disablepickup")
@@ -384,11 +405,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!Entities.FindByName(null, "notinelevator")) {
             if (Sp_A4_Finale4ElevatorTeleport) {
-                EntFireByHandle(Sp_A2_Finale4Viewcontrol, "Disable", "", 0, null, null)
-                PermaPotato = false
-                UTIL_Team.Pinging(false, "all", 1)
-                UTIL_Team.Taunting(false, "all", 1)
-                EntFire("environment_darkness_1", "Trigger", "", 5, null)
+                EntFireByHandle(Sp_A2_Finale4Viewcontrol, "enable", "", 0, null, null)
+                GoodByeIdaho()
+                EntFireByHandle(env_global01, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 1, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+                EntFire("environment_darkness_1", "trigger", "", 5, null)
                 EntFire("light_dynamic_wheatley", "TurnOn", "", 5, null)
                 // EntFireByHandle(Sp_A2_Finale4Viewcontrol, "disable", "", 13, null, null)
                 // EntFire("p2mm_servercommand", "command", "script Entities.FindByClassname(null, \"player\").SetOrigin(Vector(-191.816742 -0.485268 64.031250))", 13)

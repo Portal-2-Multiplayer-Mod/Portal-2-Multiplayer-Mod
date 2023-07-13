@@ -7,12 +7,11 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.m_bUseAutoSpawn <- true
-        g_bOverridePluginGrabController = false
+        GlobalSpawnClass.useautospawn <- true
 
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        EntFire("@sphere", "AddOutput", "OnPlayerPickup p2mm_servercommand:command:script disablewheatleyplayerpickup()", 0, null)
-        EntFire("@sphere", "AddOutput", "OnPlayerDrop p2mm_servercommand:command:script enablewheatleyplayerpickup()", 0, null)
+        EntFire("@sphere", "addoutput", "OnPlayerPickup p2mm_servercommand:command:script disablewheatleyplayerpickup()", 0, null)
+        EntFire("@sphere", "addoutput", "OnPlayerDrop p2mm_servercommand:command:script enablewheatleyplayerpickup()", 0, null)
 
         // Destroy objects
         Entities.FindByName(null, "arrival_elevator-elevator_1_interior_start_trigger").Destroy()
@@ -44,13 +43,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-2688, -208, 1272), 20).__KeyValueFromString("spawnflags", "4105")
         Entities.FindByClassnameNearest("trigger_once", Vector(-2688, -208, 1272), 20).__KeyValueFromString("targetname", "TRIG3")
 
-        EntFire("InstanceAuto9-socket_powered_rl", "AddOutput", "OnTrigger @sphere:setparentattachment:sphere_attach:0.1")
-        EntFire("InstanceAuto9-socket_powered_rl", "AddOutput", "OnTrigger @glados:RunScriptCode:sp_a1_intro7_TurnAroundNow():5")
-        EntFire("InstanceAuto9-socket_powered_rl", "AddOutput", "OnTrigger @sphere:disablepickup::0.11")
-        EntFire("sphere_impact_trigger", "AddOutput", "OnTrigger p2mm_servercommand:command:script SphereBotFix():0")
+        EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger @sphere:setparentattachment:sphere_attach:0.1")
+        EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger @glados:RunScriptCode:sp_a1_intro7_TurnAroundNow():5")
+        EntFire("InstanceAuto9-socket_powered_rl", "addoutput", "OnTrigger @sphere:disablepickup::0.11")
+        EntFire("sphere_impact_trigger", "addoutput", "OnTrigger p2mm_servercommand:command:script SphereBotFix():0")
 
         // Make changing levels work
-        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_wakeup:2.45", 0, null)
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_wakeup:2.45", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -71,11 +70,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // portal_detector
         Entities.FindByName(null, "portal_in_wheatley_room_detector").__KeyValueFromString("CheckAllIDs", "1")
         Entities.FindByName(null, "portal_detector").__KeyValueFromString("CheckAllIDs", "1")
-
-        // Wheatley made it past the locked door (pancake one)
-        if (Entities.FindByNameWithin(null, "@sphere", Vector(-1500, -415.95, 1280), 128)) {
-            g_bOverridePluginGrabController = true
-        }
     }
 }
 

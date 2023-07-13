@@ -8,10 +8,10 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // 2231.027100 187.758835 -386.163635;
-         GlobalSpawnClass.m_bUseAutoSpawn <- true
-        // GlobalSpawnClass.m_bUseSetSpawn <- true
-        // GlobalSpawnClass.m_cSetSpawn.position <- Vector(2231.027100, 187.758835, -386.163635)
-        // GlobalSpawnClass.m_cSetSpawn.radius <- 200
+         GlobalSpawnClass.useautospawn <- true
+        // GlobalSpawnClass.usesetspawn <- true
+        // GlobalSpawnClass.setspawn.position <- Vector(2231.027100, 187.758835, -386.163635)
+        // GlobalSpawnClass.setspawn.radius <- 200
         isopen <- false
         rollang <- 0
         movecube <- false
@@ -30,8 +30,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
        
         Entities.FindByName(null, "AutoInstance1-door_prop").__KeyValueFromString("targetname", "DisableDoorMpMod")
-        EntFire("DisableDoorMpMod", "setanimation", "Open", 1, null)
-        //EntFire("room_1_door_open_trigger", "AddOutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
+        EntFire("DisableDoorMpMod", "setanimation", "open", 1, null)
+        //EntFire("room_1_door_open_trigger", "addoutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
         WaitDontFizzleTime <- 0
         WaitDontFizzle <- false
     }
@@ -73,7 +73,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 jerry.__KeyValueFromString("targetname", "tubecap")
                 movecube <- true
             } else {
-                EntFire("p2mm_servercommand", "command", "sv_cheats 1; ent_create_portal_weighted_antique; sv_cheats 0")
+                SendToConsoleP2MM("sv_cheats 1")
+                SendToConsoleP2MM("ent_create_portal_weighted_antique ")
+                SendToConsoleP2MM("sv_cheats 0")
                 //OVERRIDE CUBE FIZZLE
                 WaitDontFizzle <- true
                 WaitDontFizzleTime <- Time()+1
@@ -97,7 +99,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 if (!isopen) {
                     isopen = true
                     printl("OPENED")
-                    EntFire("genericcustomprop_maindropper", "setanimation", "Open", 0.4, null)
+                    EntFire("genericcustomprop_maindropper", "setanimation", "open", 0.4, null)
                 }
                 stayopen = true
             }
@@ -150,7 +152,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         local p = null
         while(p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100)) {
              
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_transition01")
+            SendToConsoleP2MM("changelevel sp_a3_transition01")
         }
     }
 }

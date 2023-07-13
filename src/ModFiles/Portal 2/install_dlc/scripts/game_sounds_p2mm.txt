@@ -1,0 +1,41 @@
+// P2:MM server-side game sounds
+
+"Bullets.DefaultNearmiss"
+{
+	"channel"		"CHAN_STATIC"
+	"volume"		"0.7"
+	"soundlevel"		"SNDLVL_140dB"
+	"pitch"			"PITCH_NORM"
+	"wave"			"common/null.wav"
+
+	"soundentry_version" "2"
+
+	"operator_stacks"
+	{
+		"start_stack"
+		{
+			"import_stack" 	"P2_exclusion_time_and_poly_limiting_start"
+
+			"limit_sound"
+			{
+				"match_entry" "Bullets.DefaultNearmiss"
+				"input_max_entries" "3.000000"
+				"match_substring" "false"
+			}
+
+			"get_random"
+			{
+				"input_execute" "1.0"
+				"input_min" "0.0"
+				"input_max" "0.3"
+			}
+
+			"block_entries"
+			{
+				"input_duration" "@get_random.output" //in seconds
+				"match_entry" "Bullets.DefaultNearmiss" //The sound entry to use
+				"match_entity" "false"
+			}
+		}
+	}
+}

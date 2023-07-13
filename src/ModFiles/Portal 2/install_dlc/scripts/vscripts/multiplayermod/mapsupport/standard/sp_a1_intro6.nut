@@ -7,7 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.m_bUseAutoSpawn <- true
+        GlobalSpawnClass.useautospawn <- true
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "room_1_entry_door-close_door_rl").Destroy()
         Entities.FindByName(null, "room_1_fling_portal_activate_rl").Destroy()
@@ -21,7 +21,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         fallenautoportal.SetAngles(-90, 69, 0)
 
         // Make changing levels work
-        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro7:0.3", 0, null)
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro7:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {

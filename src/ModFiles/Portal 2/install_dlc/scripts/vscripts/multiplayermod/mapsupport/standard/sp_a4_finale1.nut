@@ -7,8 +7,8 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.m_bUseAutoSpawn <- true
-        PermaPotato = true
+        GlobalSpawnClass.useautospawn <- true
+        PermaPotato <- true
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
         // Destroy objects
@@ -25,22 +25,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Entities.FindByName(null, "catapult_3").__KeyValueFromString("playerSpeed", "14400")
         Entities.FindByName(null, "areaportal_bounce2").__KeyValueFromString("targetname", "areaportal_disable_mp_2")
         //Entities.FindByName(null, "tbeam_crusher_delivery").__KeyValueFromString("targetname", "beam_override_mp")
-        EntFire("relay_hatch", "AddOutput", "OnTrigger areaportal_disable_mp:open", 1, null)
+        EntFire("relay_hatch", "addoutput", "OnTrigger areaportal_disable_mp:open", 1, null)
         Entities.FindByClassnameNearest("trigger_once", Vector(-10792, -2048.01, 144), 20).Destroy()
         Entities.FindByName(null, "backstop").Destroy()
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "spawnpoint1")
 
-        EntFire("catapult_3", "AddOutput", "OnCatapulted tbeam_crusher_delivery:disable", 1, null)
-        EntFire("catapult_3", "AddOutput", "OnCatapulted tbeam_crusher_delivery:enable::0.2", 1, null)
+        EntFire("catapult_3", "addoutput", "OnCatapulted tbeam_crusher_delivery:disable", 1, null)
+        EntFire("catapult_3", "addoutput", "OnCatapulted tbeam_crusher_delivery:enable::0.2", 1, null)
 
-        EntFire("hurt_crushers", "AddOutput", "OnHurtPlayer hurt_crushers:kill::0.2", 1, null)
+        EntFire("hurt_crushers", "addoutput", "OnHurtPlayer hurt_crushers:kill::0.2", 1, null)
 
         Sp_A4_Finale1_One_Time_Beam <- false
 
         // Make changing levels work
         Entities.FindByClassnameNearest("trigger_once", Vector(-12832, -3040, -112), 20).__KeyValueFromString("targetname", "transition_trigger")
-        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_finale2:0.45", 0, null)
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_finale2:0.45", 0, null)
     }
 
     if (MSPostPlayerSpawn) {

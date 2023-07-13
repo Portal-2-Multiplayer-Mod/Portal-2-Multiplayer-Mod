@@ -16,7 +16,7 @@ function NewApertureStartElevatorFixes() {
 
     // Open elevator tube
     try {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "Open", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setanimation", "open", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_tube_opener"), "setdefaultanimation", "open_idle", 0.10, null, null)
     } catch(exception) {}
 
@@ -114,13 +114,13 @@ function NewApertureStartElevatorFixes() {
         // Entities.FindByName(null, "@arrival_elevator_soundscape").__KeyValueFromString("radius", "300")
         // Entities.FindByName(null, "@arrival_elevator_soundscape").SetOrigin(Vector(vec.x, vec.y, vec.z + 200))
     } catch(exception) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Exception occured in NewApertureStartElevatorFixes()!")
+        if (GetDeveloperLevel()) {
+            printl("(P2:MM): Exception occured in NewApertureStartElevatorFixes()!")
         }
     }
     // Enable vgui displays
     try {
-        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "Trigger", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "arrival_elevator-signs_on"), "trigger", "", 0, null, null)
         Entities.FindByName(null, "arrival_elevator-signs_off").Destroy()
     } catch(exception) {}
 }
@@ -128,15 +128,15 @@ function NewApertureStartElevatorFixes() {
 //## Disable Wheatley Pickup ##//
 function disablewheatleyplayerpickup() {
     try {
-        EntFire("@sphere", "disablepickup")
-        EntFire("@sphereDummy", "enablepickup")
+        EntFire("@sphere", "disablepickup", "", 0, null)
+        EntFire("@sphereDummy", "enablepickup", "", 0, null)
     } catch(exception) {}
 }
 
 //## Enable Wheatley Pickup ##//
 function enablewheatleyplayerpickup() {
     try {
-        EntFire("@sphere", "enablepickup")
-        EntFire("@sphereDummy", "enablepickup")
+        EntFire("@sphere", "enablepickup", "", 0, null)
+        EntFire("@sphereDummy", "enablepickup", "", 0, null)
     } catch(exception) {}
 }

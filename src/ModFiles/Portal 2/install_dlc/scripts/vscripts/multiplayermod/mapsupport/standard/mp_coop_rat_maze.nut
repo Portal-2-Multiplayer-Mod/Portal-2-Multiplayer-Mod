@@ -1,7 +1,7 @@
 // ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗            ██████╗  █████╗ ████████╗           ███╗   ███╗ █████╗ ███████╗███████╗
 // ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔══██╗██╔══██╗╚══██╔══╝           ████╗ ████║██╔══██╗╚════██║██╔════╝
-// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██████╔╝███████║   ██║              ██╔████╔██║███████║  ███╔═╝█████╗
-// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██╔══██╗██╔══██║   ██║              ██║╚██╔╝██║██╔══██║██╔══╝  ██╔══╝
+// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██████╔╝███████║   ██║              ██╔████╔██║███████║  ███╔═╝█████╗  
+// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██╔══██╗██╔══██║   ██║              ██║╚██╔╝██║██╔══██║██╔══╝  ██╔══╝  
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗██║  ██║██║  ██║   ██║   ██████████╗██║ ╚═╝ ██║██║  ██║███████╗███████╗
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═════════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝
 
@@ -11,7 +11,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         HasTauntedBlue <- false
         HasTauntedOrange <- false
     }
-
+    
     if (MSPostPlayerSpawn) {
         GameStarted <- true
     }
@@ -23,11 +23,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (!HasTauntedBlue) {
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-256, -832, -575.97), 128)) {
-                    if (p.GetTeam() == TEAM_BLUE) {
+                    if (p.GetTeam() == 3) {
                         HasTauntedBlue <- true
                         local q = null
                         while (q = Entities.FindByClassnameWithin(q, "player", Vector(-160, -736, -575.97), 256)) {
-                            if (q.GetTeam() == TEAM_BLUE) {
+                            if (q.GetTeam() == 3) {
                                 EntFireByHandle(p2mm_clientcommand, "command", "taunt rps", 0.40, q, q)
                             }
                         }
@@ -38,11 +38,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 if (!HasTauntedOrange) {
                     local p = null
                     while (p = Entities.FindByClassnameWithin(p, "player", Vector(-256, -640, -575.97), 128)) {
-                        if (p.GetTeam() == TEAM_RED) {
+                        if (p.GetTeam() == 2) {
                             HasTauntedOrange <- true
                             local q = null
                             while (q = Entities.FindByClassnameWithin(q, "player", Vector(-160, -736, -575.97), 256)) {
-                                if (q.GetTeam() == TEAM_RED) {
+                                if (q.GetTeam() == 2) {
                                     EntFireByHandle(p2mm_clientcommand, "command", "taunt rps", 0.40, q, q)
                                 }
                             }

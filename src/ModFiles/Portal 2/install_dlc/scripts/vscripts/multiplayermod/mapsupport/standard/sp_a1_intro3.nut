@@ -8,9 +8,13 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Remove Portal Gun
-        UTIL_Team.Spawn_PortalGun(false)
+        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
+        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
 
-        GlobalSpawnClass.m_bUseAutoSpawn <- true
+        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
+        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+
+        GlobalSpawnClass.useautospawn <- true
         Entities.FindByName(null, "door_0-door_close_relay").Destroy()
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "player_clips").Destroy()
@@ -30,7 +34,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         startwheatleycheck <- false
         
         // Make changing levels work
-        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro4:0.3", 0, null)
+        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro4:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -76,7 +80,7 @@ function a1HasPortalGun() {
         GamePlayerEquip.Destroy()
 
         // Enable secondary fire for all guns
-        EntFire("weapon_portalgun", "AddOutput", "CanFirePortal2 1", 0, null)
+        EntFire("weapon_portalgun", "addoutput", "CanFirePortal2 1", 0, null)
         a1AlreadyGavePortalGun <- true
     }
 }

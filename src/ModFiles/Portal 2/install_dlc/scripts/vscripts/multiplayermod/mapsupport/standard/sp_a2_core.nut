@@ -8,7 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // We need to control the viewmodel/real simulated grab controllers for inserting Wheatley
-        g_bOverridePluginGrabController = false
+        GlobalOverridePluginGrabController <- false
         p2mm_startfade <- Entities.CreateByClassname("env_fade")
         p2mm_startfade.__KeyValueFromString("targetname", "p2mm_startfade")
         p2mm_startfade.__KeyValueFromString("duration", "0")
@@ -17,16 +17,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         p2mm_startfade.__KeyValueFromString("spawnflags", "8")
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "RedFogKillTriggerMPMOD")
-        EntFireByHandle(Entities.FindByName(null, "red_light_pit_open_relay"), "AddOutput", "OnTrigger RedFogKillTriggerMPMOD:kill", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "red_light_pit_open_relay"), "addoutput", "OnTrigger RedFogKillTriggerMPMOD:kill", 1, null, null)
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "WhiteFogKillTriggerMPMOD")
-        EntFireByHandle(Entities.FindByName(null, "wheatly_takes_over_relay"), "AddOutput", "OnTrigger WhiteFogKillTriggerMPMOD:kill", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "wheatly_takes_over_relay"), "addoutput", "OnTrigger WhiteFogKillTriggerMPMOD:kill", 1, null, null)
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "EvilFogKillTriggerMPMOD")
-        EntFireByHandle(Entities.FindByName(null, "wheatly_turns_evil_relay"), "AddOutput", "OnTrigger EvilFogKillTriggerMPMOD:kill", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "wheatly_turns_evil_relay"), "addoutput", "OnTrigger EvilFogKillTriggerMPMOD:kill", 1, null, null)
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "StaleMateButtonKillTrigger")
-        EntFireByHandle(Entities.FindByName(null, "StaleMateButtonKillTriggetr"), "AddOutput", "OnPressed StaleMateButtonKillTrigger:kill", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "StaleMateButtonKillTriggetr"), "addoutput", "OnPressed StaleMateButtonKillTrigger:kill", 1, null, null)
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "TPSp_A2_CoreForSure")
 
@@ -132,8 +132,27 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         TempGrabControllerToggled <- false
         StartFadeDone <- false
 
-        UTIL_Team.Pinging(true, "all", 1)
-        UTIL_Team.Taunting(true, "all", 1)
+        // Create env_globals
+        env_global01 <- Entities.CreateByClassname("env_global")
+        env_global01.__KeyValueFromString("targetname", "env_global01")
+        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+
+        env_global02 <- Entities.CreateByClassname("env_global")
+        env_global02.__KeyValueFromString("targetname", "env_global02")
+        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
+
+        env_global03 <- Entities.CreateByClassname("env_global")
+        env_global03.__KeyValueFromString("targetname", "env_global03")
+        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
+
+        env_global04 <- Entities.CreateByClassname("env_global")
+        env_global04.__KeyValueFromString("targetname", "env_global04")
+        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
+
+        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
+        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
     }
 
     if (MSOnPlayerJoin) {
@@ -144,7 +163,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFireByHandle(p, "setfogcontroller", "@environment_darkness_fog", 0, null, null)
         }
         EntFire("Sp_A2_CoreViewcontrol", "disable", "", 0, null)
-        EntFire("Sp_A2_CoreViewcontrol", "Disable", "", 0.1, null)
+        EntFire("Sp_A2_CoreViewcontrol", "enable", "", 0.1, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -155,7 +174,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         if (!TempGrabControllerToggled) {
             if (PluginLoaded) {
-                if (!g_bOverridePluginGrabController && !Entities.FindByName(null, "rv_player_clip")) {
+                if (!GlobalOverridePluginGrabController && !Entities.FindByName(null, "rv_player_clip")) {
                     if (Entities.FindByName(null, "pit_clip")) {
                         if (Entities.FindByClassnameWithin(null, "player", Vector(320, 0, 0), 128)) {
                             SetPhysTypeConvar(-1)
@@ -164,7 +183,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         }
                     } else {
                         TempGrabControllerToggled <- true
-                        g_bOverridePluginGrabController = true
+                        GlobalOverridePluginGrabController <- true
                     }
                 }
             }
@@ -204,7 +223,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFireByHandle(Entities.FindByName(null, "start_rv_scene_rl"), "Trigger", "", 8, null, null)
                 EntFireByHandle(Entities.FindByName(null, "MUSICOVERRIDEMPMOD"), "PlaySound", "", 8, null, null)
                 Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "OnMoveStartOnlyOnceSp_A2_Core_2DIS")
-                EntFire("OnMoveStartOnlyOnceSp_A2_Core_2DIS", "AddOutput", "targetname OnMoveStartOnlyOnceSp_A2_Core_2", 8, null)
+                EntFire("OnMoveStartOnlyOnceSp_A2_Core_2DIS", "addoutput", "targetname OnMoveStartOnlyOnceSp_A2_Core_2", 8, null)
                 OnlyOnceSp_A2_Core_2 <- false
             }
         }
@@ -292,7 +311,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 Sp_A2_CoreViewcontrol.SetOrigin(Vector(0, 324, 0))
                 EntFire("Sp_A2_CoreViewcontrol", "setparent", "exit_elevator_train", 0, null)
                 Sp_A2_CoreViewcontrol.SetAngles(0, 270, 0)
-                EntFire("Sp_A2_CoreViewcontrol", "Disable", "", 0, null)
+                EntFire("Sp_A2_CoreViewcontrol", "enable", "", 0, null)
                 EntFire("Sp_A2_CoreViewcontrol", "disable", "", 144.8, null)
                 EntFire("TPSp_A2_CoreForSure", "kill", "", 144.8, null)
 
@@ -307,8 +326,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 EntFire("glados_pointer", "SetTargetEntity", "lookat_exit_elevator_bullseye", 0, null)
 
-                UTIL_Team.Pinging(true, "all", 0.1)
-                UTIL_Team.Taunting(true, "all", 0.1)
+                EntFireByHandle(env_global01, "turnon", "", 0.1, null, null)
+                EntFireByHandle(env_global02, "turnon", "", 0.1, null, null)
+                EntFireByHandle(env_global03, "turnon", "", 0.1, null, null)
+                EntFireByHandle(env_global04, "turnon", "", 0.1, null, null)
             }
         }
 
