@@ -48,5 +48,5 @@ def MapFromSteamID(workshopLink: str, workshoppath: str = None) -> str:
 
     for map in maplist:
         if map["id"] == SteamID:
-            return map["bsp"].replace(".bsp")
+            return map["bsp"].replace(".bsp", "")
     return None

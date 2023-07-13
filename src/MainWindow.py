@@ -630,7 +630,6 @@ class Gui:
             map = workshop.MapFromSteamID(input)
 
             if map is not None:
-                #map = map.replace(".bsp", "")
                 pyperclip.copy("changelevel " + map)
                 self.Error(
                     translations["workshop_changelevel_command"], 3, (255, 0, 255))
