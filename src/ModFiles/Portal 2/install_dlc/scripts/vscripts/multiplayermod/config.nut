@@ -80,11 +80,8 @@ Config_UseChatCommands <- true
 // "[AdminLevel]SteamID", // (Username to keep track)
 
 Admins <- [
-"[400]182933216", // kyleraykbs
-"[400]75927374", // Wolƒe Strider Shoσter
-"[400]290760494", // Nanoman2525
-"[400]1106347501", // vista
-"[400]181670710", // Bumpy
-"[400]72399433", // cabiste
-"[400]242453954", // sear
+// Leave empty or put in a user to be admin.
+// Make sure to add commas after each entry if you have multiple admins.
+// Also add a comment afterward to keep track of who is who.
+//Example: "[6]123456789 //Username here"
 ]

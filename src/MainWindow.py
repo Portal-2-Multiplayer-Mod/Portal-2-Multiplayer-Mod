@@ -477,6 +477,7 @@ class Gui:
                 self.Error(translations["error_saved"], 5, (75, 200, 75))
                 Log("Saving admin level as " + str(inp))
                 self.RefreshPlayersMenu()
+                self.BackMenu()
 
             self.ChangeMenu(self.BlankButton, append=True)
             self.GetUserInputPYG(
@@ -1388,12 +1389,22 @@ def VerifyModFiles() -> bool:
     print(GVars.modFilesPath)
     print(os.path.exists(GVars.modFilesPath + os.sep + "p2mm.identifier"))
     print(GVars.modFilesPath + os.sep + "p2mm.identifier")
-    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "p2mm.identifier")):
+
+    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
         Log("Mod files found!")
         return True
 
     Log("Mod files not found!")
     return False
+
+def UseFallbacks(gamepath: str) -> None:
+    # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles"
+    BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf +
+                  "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
+    DoEncrypt = GVars.configData["Encrypt-CVars"]["value"] == "true"
+    RG.MountMod(gamepath, DoEncrypt)
+    Ui.Error(translations["mount_complete"], 5, (75, 255, 75))
+    RG.LaunchGame(gamepath)
 
 def MountModOnly() -> bool:
     CFG.ValidatePlayerKeys()
@@ -1419,7 +1430,7 @@ def MountModOnly() -> bool:
         return False
 
     if VerifyModFiles():
-        DoEncrypt = GVars.configData["Encrypt-Cvars"]["value"]
+        DoEncrypt = GVars.configData["Encrypt-CVars"]["value"]
         RG.MountMod(gamepath, DoEncrypt)
         Ui.Error(translations["mounted"], 5, (75, 255, 75))
         return True
@@ -1428,20 +1439,29 @@ def MountModOnly() -> bool:
     if (os.path.exists(GVars.modPath + os.sep + "ModFiles")):
         BF.DeleteFolder(GVars.modPath + os.sep + "ModFiles")
 
-    if not UP.haveInternet():
-        def OkInput() -> None:
-            Log("Downloading the latest mod files...")
-            UpdateModFiles()
+    def YesInput() -> None:
+        Log("User agreed to download the mod files! Fetching mod...")
+        if not UP.haveInternet():
+            Ui.Error(
+                translations["update_error_connection_problem"], 5, (255, 75, 75))
+            UseFallbacks(gamepath)
+            Ui.Error(translations["mounted"], 5, (75, 255, 75))
+            return True
+        UpdateModFiles()
+    
+    def NoInput() -> None:
+        Log("User wants to use the FALLBACK files!")
+        UseFallbacks(gamepath)
+        Ui.Error(translations["mounted"], 5, (75, 255, 75))
+        return True
 
-        OkButton = Ui.ButtonTemplate(
-            translations["error_ok"], OkInput, (75, 255, 75))
-        Ui.Error(
-            translations["update_error_connection_problem"], 5, (255, 75, 75))
-        Ui.PopupBox(translations["update_error_connection_problem"],
-            translations["no_internet_error"], OkButton)
-        return False
+    YesButton = Ui.ButtonTemplate(
+        translations["error_yes"], YesInput, (75, 200, 75))
+    NoButton = Ui.ButtonTemplate(
+        translations["game_files_use_fallbacks"], 0, (255, 75, 75))
 
-    return True
+    Ui.PopupBox(translations["game_files_fetch_game"],
+                translations["game_files_no_cached_files"], [YesButton, NoButton])
 
 def GetAvailableLanguages() -> list[str]:
     Log("searching for available languages")
