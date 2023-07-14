@@ -46,7 +46,7 @@ DefaultConfigFile = {
             "value": True,
             "menu": "launcher",
             "description": "Automatically unmount the mod when the game is closed.",
-            "warning": "Recommended to ",
+            "warning": "Recommended to leave on for a clean unmount of the mod.",
             "prompt": "",
         },
 
@@ -54,7 +54,7 @@ DefaultConfigFile = {
         {
             "value": True,
             "menu": "launcher",
-            "description": "Makes the buttons play sound effects",
+            "description": "Makes the buttons play sound effects.",
             "warning": "",
             "prompt": "Enable sound effects?",
         },
@@ -63,7 +63,7 @@ DefaultConfigFile = {
         {
             "value": True,
             "menu": "launcher",
-            "description": "Makes cubes rain in the background",
+            "description": "Makes the cubes rain.",
             "warning": "",
             "prompt": "Enable background cubes?",
         },
@@ -72,7 +72,7 @@ DefaultConfigFile = {
         {
             "value": "+map mp_coop_lobby_3",
             "menu": "portal2",
-            "description": "Type any custom launch options you want. Example (+map 'map-name').",
+            "description": "Type any custom launch options you want.\nExample: \"+map 'map-name'\".",
             "warning": "Leave this to default if you don't know what it does!",
             "prompt": "Custom launch options for debugging or starting the server at a different map.",
         },
@@ -81,7 +81,7 @@ DefaultConfigFile = {
         {
             "value": False,
             "menu": "portal2",
-            "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\")",
+            "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\".",
             "warning": "Only use for public games, this may break some functionality!",
             "prompt": "Encrypt CVars?",
         },
@@ -90,7 +90,7 @@ DefaultConfigFile = {
         {
             "value": False,
             "menu": "portal2",
-            "description": "Encrypts VScript functions such as \"SendToConsole(\"\")\"",
+            "description": "Encrypts VScript functions such as \"SendToConsole()\".",
             "warning": "Only use for public games, this may break some functionality!",
             "prompt": "Encrypt specific VScript functions?",
         },
@@ -110,7 +110,7 @@ DefaultConfigFile = {
         {
             "value": False,
             "menu": "hidden",
-            "description": "Makes the mod's files mount from src/ModFiles",
+            "description": "Makes the mod's files mount from src/ModFiles.",
             "warning": "Only enable this if you know what you're doing!",
             "prompt": "",
         },
