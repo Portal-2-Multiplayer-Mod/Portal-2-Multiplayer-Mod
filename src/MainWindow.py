@@ -1397,15 +1397,6 @@ def VerifyModFiles() -> bool:
     Log("Mod files not found!")
     return False
 
-def UseFallbacks(gamepath: str) -> None:
-    # copy the "FALLBACK" folder to the modpath "GVars.modPath + GVars.nf + "ModFiles"
-    BF.CopyFolder(cwd + GVars.nf + "FALLBACK" + GVars.nf +
-                  "ModFiles", GVars.modPath + GVars.nf + "ModFiles")
-    DoEncrypt = GVars.configData["Encrypt-CVars"]["value"] == "true"
-    RG.MountMod(gamepath, DoEncrypt)
-    Ui.Error(translations["mount_complete"], 5, (75, 255, 75))
-    RG.LaunchGame(gamepath)
-
 def MountModOnly() -> bool:
     CFG.ValidatePlayerKeys()
 
@@ -1439,26 +1430,23 @@ def MountModOnly() -> bool:
     if (os.path.exists(GVars.modPath + os.sep + "ModFiles")):
         BF.DeleteFolder(GVars.modPath + os.sep + "ModFiles")
 
-    def YesInput() -> None:
+    def YesInput():
         Log("User agreed to download the mod files! Fetching mod...")
         if not UP.haveInternet():
-            Ui.Error(
-                translations["update_error_connection_problem"], 5, (255, 75, 75))
-            UseFallbacks(gamepath)
-            Ui.Error(translations["mounted"], 5, (75, 255, 75))
-            return True
+            Ui.Error(translations["update_error_connection_problem"], 5, (255, 75, 75))
+            return False
         UpdateModFiles()
     
-    def NoInput() -> None:
-        Log("User wants to use the FALLBACK files!")
-        UseFallbacks(gamepath)
-        Ui.Error(translations["mounted"], 5, (75, 255, 75))
-        return True
+    def NoInput():
+        Log("User cancelled downloading the ModFiles...")
+        Ui.Error(translations["game_launch_cancel"], 5)
+        return False
 
     YesButton = Ui.ButtonTemplate(
         translations["error_yes"], YesInput, (75, 200, 75))
+    
     NoButton = Ui.ButtonTemplate(
-        translations["game_files_use_fallbacks"], 0, (255, 75, 75))
+            translations["error_no"], NoInput, (255, 0, 0))
 
     Ui.PopupBox(translations["game_files_fetch_game"],
                 translations["game_files_no_cached_files"], [YesButton, NoButton])
@@ -1485,7 +1473,6 @@ def LoadTranslations() -> dict:
             GVars.configData["Active-Language"]["value"] + ".json"
     
     translations = json.load(open(langPath, "r", encoding="utf8"))
-    EnglishOriginal : dict[str, str] = json.load(open("languages/English.json", "r", encoding="utf8"))
     
     if (not os.path.exists(langPath)):
         CFG.EditConfig("Active-Language",

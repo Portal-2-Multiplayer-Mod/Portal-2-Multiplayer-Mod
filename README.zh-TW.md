@@ -23,7 +23,7 @@
 ### 該模組僅服務端使用。只有伺服器管理員需要安裝該模組至 Portal 2 來執行。其他玩家僅需使用原版即可進入該伺服器。
 
 ## 語言
-[English](README.md) | [Español](README.es.md) | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | ***繁體中文***
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | ***繁體中文***
 
 ## 模組功能
 ```
@@ -68,7 +68,7 @@
 
 **編譯**
 
-我們使用 `pyinstaller` 來編譯為可執行文件
+我們使用 `pyinstaller` 來編譯為可執行文件，`pip install pyinstaller`
 - Windows:
 
 ```

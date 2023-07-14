@@ -23,12 +23,12 @@
 ### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
 
 ## Languages
-***English*** | [Español](README.es.md) | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+***English*** | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
 
 ## Mod features
 ```
   - A maximum player cap of 33
-  - Nametags
+  - Name Tags
   - Custom Player colors
   - Chat commands (!help)
   - In-game Admin system
@@ -68,7 +68,7 @@ We also have them in a file for easy install `pip install -r requirements.txt`
 
 **Compilation**
 
-We use `pyinstaller` to make the executable
+We use `pyinstaller` to make the executable, `pip install pyinstaller`
 - Windows:
 
 ```

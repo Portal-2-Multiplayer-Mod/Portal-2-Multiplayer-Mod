@@ -9,13 +9,13 @@ from pathlib import Path
 
 import requests
 
-import Scripts.BasicFunctions as Funcs
+import Scripts.BasicFunctions as BF
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
-currentVersion = "2.1.0" # change this before releasing a new version
-ownerName = "kyleraykbs"
-repoName = "Portal2-Multiplayer-Mod"  # we can't change this to the id :(
+currentVersion = "2.2.0" # change this before releasing a new version
+ownerName = "Portal-2-Multiplayer-Mod"
+repoName = "Portal-2-Multiplayer-Mod"  # we can't change this to the id :(
 
 
 # thanks stackOverflow for this solution <3
@@ -57,7 +57,7 @@ def CheckForNewClient() -> dict:
     results = {
         "status": True,
         "name": "Client Update",
-        "message": "Would you like to download \n the new client?"
+        "message": "Would you like to download \n the new version of the ModFiles?"
     }
 
     return results
@@ -66,7 +66,7 @@ def CheckForNewClient() -> dict:
 def DownloadClient(cType: str = "") -> bool:
 
     if not haveInternet():
-        Log("No internet Connection")
+        Log("No internet Connection!")
         return False
 
     # cType is the Client Type (gui / cli)
@@ -111,7 +111,7 @@ def DownloadClient(cType: str = "") -> bool:
 
     command = path + " updated " + GVars.executable
     subprocess.Popen(command, shell=True)
-    Log("launched the new client")
+    Log("Launched the new client")
     return True
 
 def CheckForNewFiles() -> bool:
@@ -130,18 +130,18 @@ def CheckForNewFiles() -> bool:
 
 
     # check if the identifier file exists or no
-    localIdPath = GVars.modPath + os.sep + f"ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}32playermod.identifier"
+    localIdPath = GVars.modPath + os.sep + f"ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}p2mm.identifier"
     if not os.path.isfile(localIdPath):
-        Log("identifier file doesn't exist so the mod files are probably unavailable too")
+        Log("Identifier file doesn't exist so the mod files are probably unavailable too")
         return True
 
-    Log("found local identifier file")
+    Log("Found local identifier file")
 
     # if there was an error retrieving this file that means most likely that we changed it's name and released a new client
     try:
         r = requests.get(f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json").json()
     except Exception as e:
-        Log(f"error getting the index file: {str(e)}")
+        Log(f"Error getting the index file: {str(e)}")
         return False
 
     # compare the dates of the local file and the file on the repo
@@ -149,10 +149,10 @@ def CheckForNewFiles() -> bool:
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
     # if the remote date is less or equal to the local date that means our client is up to date
     if (remoteDate <= localDate):
-        Log("mod files are up to date")
+        Log("Mod files are up to date")
         return False
 
-    Log(f"the remote date {remoteDate} is greater than the local date {localDate}")
+    Log(f"The remote date {remoteDate} is greater than the local date {localDate}")
 
     return True
 
@@ -175,18 +175,18 @@ def DownloadNewFiles() -> None:
         try:
             urllib.request.urlretrieve(downloadLink, tempPath + file.replace("/", os.sep))
         except Exception as e:
-            Log(f"failed to download a file: {str(e)}")
-    Log("finished downloading")
+            Log(f"Gailed to download a file: {str(e)}")
+    Log("Finished downloading")
 
     try:
         # when downloading is done delete the old mod files
-        Funcs.DeleteFolder(Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
-        Log("deleted old files")
+        BF.DeleteFolder(BF.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
+        Log("Deleted old files")
     except Exception as e:
-        Log("there was no old mod files")
+        Log("There was no old mod files")
         Log(str(e))
 
     # then copy the new files there
-    shutil.move(tempPath, Funcs.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
-    Log("copied new files to " + GVars.modPath + Funcs.ConvertPath("/ModFiles/Portal 2/install_dlc"))
+    shutil.move(tempPath, BF.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
+    Log("Vopied new files to " + GVars.modPath + BF.ConvertPath("/ModFiles/Portal 2/install_dlc"))
 

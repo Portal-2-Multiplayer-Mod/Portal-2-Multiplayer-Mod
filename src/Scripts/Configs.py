@@ -110,7 +110,7 @@ DefaultConfigFile = {
         {
             "value": False,
             "menu": "hidden",
-            "description": "Makes the mod's files mount from src/ModFiles.",
+            "description": "Shows the Testing Button on the main menu.",
             "warning": "Only enable this if you know what you're doing!",
             "prompt": "",
         },
