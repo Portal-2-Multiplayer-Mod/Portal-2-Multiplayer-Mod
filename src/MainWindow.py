@@ -80,6 +80,7 @@ class Gui:
 
         self.DefineMainMenu()
         self.DefineSettingsMenu()
+        self.DefineBlankMenu()
         self.DefineWorkshopMenu()
         self.DefineManualMountingMenu()
         self.DefineResourcesMenu()
@@ -252,6 +253,11 @@ class Gui:
 
         self.SettingsMenus.append(self.Button_Back)
 
+    def DefineBlankMenu(self) -> None:
+        self.Button_BlankButton = self.ButtonTemplate("", ypos=8)
+
+        self.BlankButton = [self.Button_BlankButton]
+
     def DefineWorkshopMenu(self) -> None:
         self.Button_GetWorkShopCommand = self.ButtonTemplate(
             translations["get_level_button"], self.Button_GetWorkShopCommand_func)
@@ -383,6 +389,9 @@ class Gui:
                         self.outerSelf.Error(
                             translations["error_saved"], 5, (75, 200, 75))
                         self.outerSelf.RefreshSettingsMenu(menu)
+                        self.outerSelf.BackMenu()
+                    
+                    self.outerSelf.ChangeMenu(self.outerSelf.BlankButton, append=True)
                     self.outerSelf.GetUserInputPYG(
                         AfterInputGenericSetConfig, translations[self.keyobj["prompt"]], self.cfgvalue)
             isasync = False
@@ -407,7 +416,9 @@ class Gui:
                 CFG.EditPlayer(self.CurrentSelectedPlayer, name=inp.strip())
                 self.Error(translations["error_saved"], 5, (75, 200, 75))
                 self.RefreshPlayersMenu()
-
+                self.BackMenu()
+            
+            self.ChangeMenu(self.BlankButton, append=True)
             self.GetUserInputPYG(
                 AfterInputPlayerName, translations["players_enter_username"], PlayerKey["name"])
 
@@ -438,7 +449,9 @@ class Gui:
                 CFG.EditPlayer(self.CurrentSelectedPlayer, steamId=inp)
                 self.Error(translations["error_saved"], 5, (75, 200, 75))
                 self.RefreshPlayersMenu()
+                self.BackMenu()
 
+            self.ChangeMenu(self.BlankButton, append=True)
             self.GetUserInputPYG(
                 AfterInputSteamID, translations["players_enter_steamid"], PlayerKey["steamid"])
 
@@ -465,6 +478,7 @@ class Gui:
                 Log("Saving admin level as " + str(inp))
                 self.RefreshPlayersMenu()
 
+            self.ChangeMenu(self.BlankButton, append=True)
             self.GetUserInputPYG(
                 AfterInputAdminLevel, translations["players_admin-enter-admin-level"], PlayerKey["adminlevel"])
 
@@ -638,7 +652,9 @@ class Gui:
                 return
 
             self.Error(translations["workshop_map_not_found"], 6, (255, 255, 0))
-
+            self.BackMenu()
+        
+        self.ChangeMenu(self.BlankButton, append=True)
         self.GetUserInputPYG(AfterInput, translations["workshop_link"])
 
     #!############################
@@ -698,6 +714,8 @@ class Gui:
     def Button_InputField_func(self) -> None:
         def AfterInput(input) -> None:
             self.Error("Input: " + input, 3, (255, 255, 0))
+        
+        self.ChangeMenu(self.BlankButton, append=True)
         self.GetUserInputPYG(AfterInput, "As you can see this text can \n go onto another line :)")
 
     # Test for popup boxes
@@ -1147,6 +1165,7 @@ class Gui:
                             self.AfterInputFunction(self.CurInput)
                         elif name == "escape":
                             self.LookingForInput = False
+                            self.BackMenu()
                         elif name == "tab":
                             self.CurInput += "    "
                         elif CTRLHELD and name == "v":
@@ -1343,7 +1362,8 @@ def GetGamePath() -> None:
         Log("Saved '" + inp.strip() + "' as the game path!")
         Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
         VerifyGamePath(False)
-
+    
+    Ui.ChangeMenu(Ui.BlankButton, append=True)
     Ui.GetUserInputPYG(AfterInputGP, translations["game_path_enter_path"])
 
 def VerifyGamePath(shouldgetpath: bool = True) -> bool:
