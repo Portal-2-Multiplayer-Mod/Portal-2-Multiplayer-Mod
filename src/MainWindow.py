@@ -605,7 +605,7 @@ class Gui:
 
     # Switches to the Language menu where you can pick a language for the launcher
     def Button_LanguageMenu_func(self) -> None:
-        # for choosing a languages
+        # for choosing a language
         self.LanguageButton()
         self.ChangeMenu(self.LanguagesMenu, append=True)
 
@@ -715,6 +715,7 @@ class Gui:
     def Button_InputField_func(self) -> None:
         def AfterInput(input) -> None:
             self.Error("Input: " + input, 3, (255, 255, 0))
+            self.BackMenu()
         
         self.ChangeMenu(self.BlankButton, append=True)
         self.GetUserInputPYG(AfterInput, "As you can see this text can \n go onto another line :)")
@@ -1452,11 +1453,11 @@ def MountModOnly() -> bool:
                 translations["game_files_no_cached_files"], [YesButton, NoButton])
 
 def GetAvailableLanguages() -> list[str]:
-    Log("searching for available languages")
+    Log("Searching for available languages...")
     langs = []
-    for file in os.listdir("languages"):
+    for file in os.listdir("Languages"):
         langs.append(file[:-5])
-    customTranslationsPath = GVars.modPath + os.sep + "languages"
+    customTranslationsPath = GVars.modPath + os.sep + "Languages"
     if os.path.exists(customTranslationsPath):
         for file in os.listdir(customTranslationsPath):
             langs.append(file[:-5])
@@ -1465,11 +1466,11 @@ def GetAvailableLanguages() -> list[str]:
 
 def LoadTranslations() -> dict:
     global translations
-    langPath = "languages/" + \
+    langPath = "Languages/" + \
         GVars.configData["Active-Language"]["value"] + ".json"
 
     if not os.path.exists(langPath):
-        langPath = GVars.modPath + os.sep + "languages/" + \
+        langPath = GVars.modPath + os.sep + "Languages/" + \
             GVars.configData["Active-Language"]["value"] + ".json"
     
     translations = json.load(open(langPath, "r", encoding="utf8"))
@@ -1477,7 +1478,7 @@ def LoadTranslations() -> dict:
     if (not os.path.exists(langPath)):
         CFG.EditConfig("Active-Language",
                        CFG.DefaultConfigFile["Active-Language"]["value"])
-        langPath = "languages/" + \
+        langPath = "Languages/" + \
             GVars.configData["Active-Language"]["value"] + ".json"
         print(langPath)
         translations = json.load(open(langPath, "r", encoding="utf8"))

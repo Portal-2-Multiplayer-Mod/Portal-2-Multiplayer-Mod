@@ -108,4 +108,3 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 - Luukex
 - PieCreeper
 - Areng
-- Krzyhau

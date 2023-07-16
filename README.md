@@ -108,4 +108,3 @@ We are always happy to take whatever additional help we can get for this project
 - Luukex
 - PieCreeper
 - Areng
-- Krzyhau

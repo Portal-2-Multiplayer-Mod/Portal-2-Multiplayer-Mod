@@ -10,17 +10,20 @@ import Scripts.GlobalVariables as GVars
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
 
 language_translations = {
-    "fr_FR": "Fran\u00e7ais",
-    "fr_BE": "Fran\u00e7ais",
-    "fr_CA": "Fran\u00e7ais",
-    "fr_CH": "Fran\u00e7ais",
-    "zh_CN": "SChinese",
-    "zh_SG": "SChinese",
-    "zh_Hans": "SChinese",
-    "zh_TW": "TChinese",
-    "zh_HK": "TChinese",
-    "zh_MO": "TChinese",
-    "zh_Hant": "TChinese",
+    "es_ES": "Espa\xf1ol", # Spanish
+    "es_US": "Espa\xf1ol", # Spanish
+    "fr_FR": "Fran\u00e7ais", # French
+    "fr_BE": "Fran\u00e7ais", # French
+    "fr_CA": "Fran\u00e7ais", # French
+    "fr_CH": "Fran\u00e7ais", # French
+    "pl_PL": "Polski", # Polish
+    "zh_CN": "简体中文 (Simplified Chinese)", # Simplified Chinese
+    "zh_SG": "简体中文 (Simplified Chinese)", # Simplified Chinese
+    "zh_Hans": "简体中文 (Simplified Chinese)", # Simplified Chinese
+    "zh_TW": "繁體中文 (Traditional Chinese)", # Traditional Chinese
+    "zh_HK": "繁體中文 (Traditional Chinese)", # Traditional Chinese
+    "zh_MO": "繁體中文 (Traditional Chinese)", # Traditional Chinese
+    "zh_Hant": "繁體中文 (Traditional Chinese)", # Traditional Chinese
 }
 
 # Function called on first launch, or whenever the config resets, to automatically get the users language
