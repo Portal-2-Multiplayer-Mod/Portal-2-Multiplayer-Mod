@@ -1,23 +1,23 @@
 <h1>
-  <img src="/Images/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
+  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
   <a href="https://discord.gg/nXRygGNxyK">
-    <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20%E7%94%A8%E6%88%B7&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
+    <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
   </a>
   <br>
-  <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest">
-    <img src="https://img.shields.io/github/release-date/kyleraykbs/Portal2-32PlayerMod?color=red&label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC&style=for-the-badge" alt="Release Shield Badge" align="right">
+  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest">
+    <img src="https://img.shields.io/github/release-date/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
   </a>
   <br>
-  <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/commits/main">
-    <img src="https://img.shields.io/github/last-commit/kyleraykbs/Portal2-32PlayerMod?label=%E6%9C%80%E5%90%8E%E6%8F%90%E4%BA%A4&style=for-the-badge" alt="Commit Shield Badge" align="right">
+  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/main">
+    <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?label=Last%20Commit&style=for-the-badge" alt="Commit Shield Badge" align="right">
   </a>
   <br>
-    <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/downloads/kyleraykbs/Portal2-32PlayerMod/total?label=%E4%B8%8B%E8%BD%BD%E6%AC%A1%E6%95%B0&style=for-the-badge" alt="Download Count Shield Badge" align="right">
+    <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest"><img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge" alt="Download Count Shield Badge" align="right">
   </a>
   <br>
   <br>
   <br>
-  <p align="right">PORTAL 2: 多人联机模组</p>
+  <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
 </h1>
 
 ### 该模组仅服务端使用。只有服务器管理员需要安装该模组至 Portal 2 来运行。其他玩家仅需使用原版即可进入该服务器。
