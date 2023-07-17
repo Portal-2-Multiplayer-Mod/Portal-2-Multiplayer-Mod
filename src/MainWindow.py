@@ -20,7 +20,7 @@ import Scripts.Configs as CFG
 import Scripts.GlobalVariables as GVars
 import Scripts.RunGame as RG
 import Scripts.Updater as UP
-import Scripts.Workshop as workshop
+import Scripts.Workshop as Workshop
 from Scripts.BasicLogger import Log, StartLog
 
 # set current directory to the directory of this file
@@ -642,7 +642,7 @@ class Gui:
     # Get's the id from a map's url then copies the changelevel command to the clipboard
     def Button_GetWorkShopCommand_func(self) -> None:
         def AfterInput(input: str):
-            map = workshop.MapFromSteamID(input)
+            map = Workshop.MapFromSteamID(input)
 
             if map is not None:
                 pyperclip.copy("changelevel " + map)
@@ -1156,12 +1156,25 @@ class Gui:
                 if (self.LookingForInput):
                     CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
                     SHIFTHELD = pygame.key.get_mods() & pygame.KMOD_SHIFT
+                    # For debugging input prompt inputs
+                    if GVars.configData["Dev-Mode"]:
+                        print(f"event: {event}")
+                        print(f"event.type: {event.type}")
+                        print(f"event.dict: {event.dict}")
                     if event.type == pygame.KEYDOWN:
+                        if GVars.configData["Dev-Mode"]:
+                            print(f"event.key: {event.key}")
+                            print(f"event.key Name: {pygame.key.name(event.key)}")
+                        
                         # get the key and add it to self.CurInput
                         name = pygame.key.name(event.key)
 
                         if name == "space":
                             self.CurInput += " "
+                        # For Steam Deck
+                        elif name == "backspace":
+                            if (len(self.CurInput) > 0):
+                                self.CurInput = self.CurInput[:-1]
                         elif name in ["return", "enter"]:
                             self.LookingForInput = False
                             self.AfterInputFunction(self.CurInput)
@@ -1170,6 +1183,8 @@ class Gui:
                             self.BackMenu()
                         elif name == "tab":
                             self.CurInput += "    "
+                        # Can't paste for Steam Deck as Paste button 
+                        # acts as "v" and there is no ctrl key on the on-screen keyboard
                         elif CTRLHELD and name == "v":
                             try:
                                 pastedstr = str(pyperclip.paste().replace("\n", ""))
@@ -1179,6 +1194,7 @@ class Gui:
                                 Log(str(e))  # Log a error in case it fails
                                 pass
                         elif len(name) == 1:
+                            # On Steam Deck the on-screen shift button doesn't work :(
                             if SHIFTHELD:
                                 # if the name doesnt contain a letter
                                 if not name.isalpha():
@@ -1238,7 +1254,12 @@ class Gui:
 
                 # NORMAL INPUT
                 if (not self.LookingForInput):
+                    # Leaving this here for testing
+                    # print(f"event: {event}")
+                    # print(f"event.type: {event.type}")
+                    # print(f"event.dict: {event.dict}")
                     if event.type == KEYDOWN:
+                        # print(f"event.key: {event.key}")
                         if event.key in [K_ESCAPE, K_BACKSPACE]:
                             self.BackMenu()
                         elif event.key in [K_DOWN, K_s]:
@@ -1260,7 +1281,9 @@ class Gui:
                                     self.CurrentMenuButtons) - 1
                                 self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
                                 self.PlaySound(self.SelectedButton.hoversnd)
-                        elif event.key in [K_SPACE]:
+                        # On Steam Deck, for some reason the Y button also acts as a enter key, 
+                        # but for the users sake the A button is going to be used 
+                        elif event.key in [K_SPACE] or event.key == 13:
                             self.SelectAnimation(
                                 self.SelectedButton, self.SelectedButton.selectanim)
                             if self.SelectedButton.function:
