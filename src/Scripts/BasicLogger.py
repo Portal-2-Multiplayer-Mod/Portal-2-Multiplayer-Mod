@@ -1,31 +1,40 @@
 from pathlib import Path
 import os
 import Scripts.GlobalVariables as GVars
+import logging
 
 def Log(message: str) -> None:
     message = message.strip()
-    # get the path of the mod launcher and make a folder inside it called "Logs"
-    path = GVars.modPath + os.sep + "Logs"
-    Path(path).mkdir(parents=True, exist_ok=True)
-
-    # creates a log file and writes to it
-        # if the file already exists it will append to it
-    with open(path + os.sep + "Log-"+GVars.appStartDate+".log", "a", encoding="utf-8") as log:
-        log.write(message + "\n")
 
     # Only write to the console if the message is not empty
     if len(message) > 0:
-        try:
-            print("(P2:MM): " + message)
-        except Exception as e:
-            print(str(e))
+        logging.info("(P2:MM): " + message)
+        print("(P2:MM): " + message)
     else:
+        logging.info("")
         print("")
 
-#////////////////////////////////////////#
-#//# Cool text to start the log with  #//#
-#////////////////////////////////////////#
+#///////////////////////////////////////////////#
+#//# Setup logging for P2MM launcher session #//#
+#///////////////////////////////////////////////#
 def StartLog() -> None:
+
+    log_path = os.path.join(GVars.modPath, "Logs")
+
+    if not os.path.exists(log_path):
+        os.mkdir(log_path)
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    handler = logging.FileHandler(
+        filename = os.path.join(log_path, f"Log-({GVars.appStartDate}).log"), # Log location
+        mode= "w", # Mode to write to the log
+        encoding = "utf-8", # Log encoding
+    )
+    logger.addHandler(handler)
+    
+    # Cool text to start the log with
     Log("")
     Log("")
     Log("")

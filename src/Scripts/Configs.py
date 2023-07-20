@@ -35,97 +35,95 @@ def GetSysLang() -> str:
         return "English"
 
 DefaultConfigFile = {
-    "Portal2-Path":
-        {
-            "value": "undefined",
-            "menu": "launcher",
-            "description": "Path of the Portal 2 Folder.",
-            "warning": "",
-            "prompt": "Enter the path to the Portal 2 folder.",
-        },
+    "Active-Language": {
+        "value": GetSysLang(),
+        "menu": "",
+        "description": "The language used in the P2MM launcher.",
+        "warning": "",
+        "prompt": ""
+    },
 
-    "Auto-Unmount":
-        {
-            "value": True,
-            "menu": "launcher",
-            "description": "Automatically unmount the mod when the game is closed.",
-            "warning": "Recommended to leave on for a clean unmount of the mod.",
-            "prompt": "",
-        },
+    "Auto-Unmount": {
+        "value": True,
+        "menu": "launcher",
+        "description": "Automatically unmount the mod when the game is closed.",
+        "warning": "Recommended to leave on for a clean unmount of the mod.",
+        "prompt": ""
+    },
 
-    "Launcher-SFX":
-        {
-            "value": True,
-            "menu": "launcher",
-            "description": "Makes the buttons play sound effects.",
-            "warning": "",
-            "prompt": "Enable sound effects?",
-        },
+    "Custom-Launch-Options": {
+        "value": "+map mp_coop_lobby_3",
+        "menu": "portal2",
+        "description": "Type any custom launch options you want. Example: \"+map 'map-name'\".",
+        "warning": "Leave this to default if you don't know what it does!",
+        "prompt": "Custom launch options for debugging or starting the server at a different map."
+    },
 
-    "Launcher-Cubes":
-        {
-            "value": True,
-            "menu": "launcher",
-            "description": "Makes the cubes rain.",
-            "warning": "",
-            "prompt": "Enable background cubes?",
-        },
+    "Encrypt-CVars": {
+        "value": False,
+        "menu": "portal2",
+        "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\".",
+        "warning": "Only use for public games, this may break some functionality!",
+        "prompt": "Encrypt CVars?"
+    },
+
+    "Dev-Mode": {
+        "value": False,
+        "menu": "dev",
+        "description": "Shows the Testing Button on the main menu, and also shows other debug information in the console/log.",
+        "warning": "Only enable this if you know what you're doing!",
+        "prompt": ""
+    },
+
+    "Encrypt-CVars": {
+        "value": False,
+        "menu": "portal2",
+        "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\".",
+        "warning": "Only use for public games, this may break some functionality!",
+        "prompt": "Encrypt CVars?"
+    },
+
+    "Launcher-Cubes": {
+        "value": True,
+        "menu": "launcher",
+        "description": "Makes the cubes rain.",
+        "warning": "",
+        "prompt": "Enable background cubes?"
+    },
+
+    "Launcher-SFX": {
+        "value": True,
+        "menu": "launcher",
+        "description": "Makes the buttons play sound effects.",
+        "warning": "",
+        "prompt": "Enable sound effects?"
+    },
     
-    "Custom-Launch-Options":
-        {
-            "value": "+map mp_coop_lobby_3",
-            "menu": "portal2",
-            "description": "Type any custom launch options you want.\nExample: \"+map 'map-name'\".",
-            "warning": "Leave this to default if you don't know what it does!",
-            "prompt": "Custom launch options for debugging or starting the server at a different map.",
-        },
+    "Players": {
+        "value": [
+            defaultplayerarray
+        ],
+        "menu": "players",
+        "description": "If you see this something is wrong!\nPlease report this on our Discord!",
+        "warning": "If you see this something is wrong!\nPlease report this on our Discord!",
+        "prompt": "If you see this something is wrong!\nPlease report this on our Discord!"
+    },
+    
+    "Portal2-Path": {
+        "value": "undefined",
+        "menu": "launcher",
+        "description": "Path of the Portal 2 Folder.",
+        "warning": "",
+        "prompt": "Enter the path to the Portal 2 folder."
+    },
 
-    "Encrypt-CVars":
-        {
-            "value": False,
-            "menu": "portal2",
-            "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\".",
-            "warning": "Only use for public games, this may break some functionality!",
-            "prompt": "Encrypt CVars?",
-        },
-
-    "Safe-Guard":
-        {
-            "value": False,
-            "menu": "portal2",
-            "description": "Encrypts VScript functions such as \"SendToConsole()\".",
-            "warning": "Only use for public games, this may break some functionality!",
-            "prompt": "Encrypt specific VScript functions?",
-        },
-
-    "Players":
-        {
-            "value": [
-                defaultplayerarray,
-            ],
-            "menu": "players",
-            "description": "If you see this something is wrong!",
-            "warning": "If you see this something is wrong!",
-            "prompt": "If you see this something is wrong!",
-        },
-
-    "Dev-Mode":
-        {
-            "value": False,
-            "menu": "hidden",
-            "description": "Shows the Testing Button on the main menu.",
-            "warning": "Only enable this if you know what you're doing!",
-            "prompt": "",
-        },
-
-    "Active-Language":
-        {
-            "value": GetSysLang(),
-            "menu": "",
-            "description": "The language used in the P2MM launcher.",
-            "warning": "",
-            "prompt": "",
-        }
+    "Safe-Guard": {
+        "value": False,
+        "menu": "portal2",
+        "description": "Encrypts VScript functions such as \"SendToConsole()\".",
+        "warning": "Only use for public games, this may break some functionality!",
+        "prompt": "Encrypt specific VScript functions?"
+    }
 }
 
 ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
