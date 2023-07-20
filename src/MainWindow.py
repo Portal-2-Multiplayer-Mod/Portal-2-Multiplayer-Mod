@@ -40,6 +40,7 @@ class Gui:
         self.CurInput: str = ""
         self.ERRORLIST: list = []
         self.InputPrompt: list = []
+        self.SDShift = False
         self.PromptBreaks: int = 0
         self.HasBreaks: bool = False
         self.PlayersMenu: list = []
@@ -208,7 +209,7 @@ class Gui:
         self.Button_Workshop = self.ButtonTemplate(translations["workshop_button"], self.Button_Workshop_func, (14, 216, 235))
         self.Button_ResourcesMenu = self.ButtonTemplate(translations["resources_button"], self.Button_ResourcesMenu_func, (75, 0, 255))
         self.Button_Exit = self.ButtonTemplate(translations["exit_button"], self.Button_Exit_func, (255, 50, 50), isasync=True, selectanim="none")
-        self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=750, xstart=750, xend=1870, ypos=20, size=75)
+        self.Text_MainMenuText = self.DisplayText(translations["welcome"], textColor=(255, 234, 0), xpos=790, xstart=790, xend=1850, ypos=20, size=80)
         self.Text_LauncherVersionText = self.DisplayText(translations["version"] + self.currentVersion, textColor=(255, 234, 0), xpos=75, xstart=75, xend=750, ypos=770)
 
         # The DisplayText class needs a separate table for displaying nonfunctional text
@@ -407,7 +408,7 @@ class Gui:
 
         self.PlayersMenu.clear()
         PlayerKey = GVars.configData["Players"]["value"][self.CurrentSelectedPlayer]
-        print(PlayerKey)
+        if GVars.configData["Dev-Mode"]["Value"]: Log(f"Selected players key information: {PlayerKey}")
 
         # displays and changes the player name
         def Button_PlayerName_func() -> None:
@@ -804,16 +805,19 @@ class Gui:
             prompt = prompt.split("\n")
             for breaktxt in prompt:
                 self.PromptBreaks += 1
-                print(breaktxt)
-                print(self.PromptBreaks)
-            print(prompt)
+                if GVars.configData["Dev-Mode"]["value"]:
+                    print(breaktxt)
+                    print(self.PromptBreaks)
+            if GVars.configData["Dev-Mode"]["value"]: print(prompt)
             self.InputPrompt = prompt
         else:
-            print(prompt)
+            if GVars.configData["Dev-Mode"]["value"]:
+                print(prompt)
             self.InputPrompt = str(prompt)
 
         self.AfterInputFunction = afterfunc
-        Log("AfterInputFunction: " + str(self.AfterInputFunction))
+        if GVars.configData["Dev-Mode"]["value"]:
+            Log("AfterInputFunction: " + str(self.AfterInputFunction))
 
     def Error(self, text: str, time: int = 3, color: tuple = (255, 75, 75)) -> None:
         Log(text)
@@ -963,17 +967,35 @@ class Gui:
                     floater.x = random.randint(0, W)
                     floater.negrot = random.randint(0, 1) == 1
 
+        # Displaying button icons for keyboard or Steam Deck controller input
         if (not self.LookingForInput):
             if GVars.iosd:
-                # Puts assets/images/buttons.png on the bottom right corner of the screen
-                buttons = pygame.image.load("GUI/images/buttons.png").convert_alpha()
-                buttons = pygame.transform.scale(buttons, (W / 10, W / 10))
-                self.screen.blit(buttons, ((W / 1.03) - buttons.get_width(), H / 1.22))
+                # Puts assets/images/sdbuttons.png on the bottom right corner of the screen
+                sdbuttons = pygame.image.load("GUI/images/sdbuttons.png").convert_alpha()
+                sdbuttons = pygame.transform.scale(sdbuttons, (W / 10, W / 10))
+                self.screen.blit(sdbuttons, ((W / 1.03) - sdbuttons.get_width(), H / 1.22))
             else:
                 # Puts assets/images/keys.png on the bottom right corner of the screen
                 keys = pygame.image.load("GUI/images/keys.png").convert_alpha()
                 keys = pygame.transform.scale(keys, (W / 10, W / 10))
                 self.screen.blit(keys, ((W / 1.03) - keys.get_width(), H / 1.22))
+
+        # For showing the button to press to get up the on-screen keyboard on Steam Deck
+        if (self.LookingForInput and GVars.iosd):
+            keyboardbutton = pygame.image.load("GUI/images/sdkeyboard.png").convert_alpha()
+            keyboardbutton = pygame.transform.scale(keyboardbutton, (W / 10, W / 10))
+            self.screen.blit(keyboardbutton, ((W / 1.03) - keyboardbutton.get_width(), H / 1.22))
+            pastebutton = pygame.image.load("GUI/images/sdclipboard.png").convert_alpha()
+            pastebutton = pygame.transform.scale(pastebutton, (W / 12, W / 17))
+            self.screen.blit(pastebutton, ((W / 1.14) - pastebutton.get_width(), H / 1.22))
+            if self.SDShift:
+                shiftindicator = pygame.image.load("GUI/images/sdshifton.png").convert_alpha()
+                shiftindicator = pygame.transform.scale(shiftindicator, (W / 6, W / 16))
+                self.screen.blit(shiftindicator, ((W / 1.13) - shiftindicator.get_width(), H / 1.11))
+            else:
+                shiftindicator = pygame.image.load("GUI/images/sdshiftoff.png").convert_alpha()
+                shiftindicator = pygame.transform.scale(shiftindicator, (W / 6, W / 16))
+                self.screen.blit(shiftindicator, ((W / 1.13) - shiftindicator.get_width(), H / 1.11))
 
         # MENU
 
@@ -1121,7 +1143,6 @@ class Gui:
 
     def Main(self) -> None:
         LastBackspace = 0
-        updateCount = 0
         while self.running:
             mouse = pygame.mouse.get_pos()
             mousex = mouse[0]
@@ -1139,7 +1160,7 @@ class Gui:
                 self.coolDown -= 1
 
             # so you can hold backspace to delete
-            if (self.LookingForInput):
+            if self.LookingForInput:
                 BACKSPACEHELD = pygame.key.get_pressed()[pygame.K_BACKSPACE]
                 if (BACKSPACEHELD):
                     LastBackspace += 0.25
@@ -1153,16 +1174,16 @@ class Gui:
                 if event.type == QUIT:
                     self.running = False
 
-                if (self.LookingForInput):
+                if self.LookingForInput:
                     CTRLHELD = pygame.key.get_mods() & pygame.KMOD_CTRL
                     SHIFTHELD = pygame.key.get_mods() & pygame.KMOD_SHIFT
                     # For debugging input prompt inputs
-                    if GVars.configData["Dev-Mode"]:
+                    if GVars.configData["Dev-Mode"]["value"] and not event.type == pygame.MOUSEMOTION:
                         print(f"event: {event}")
                         print(f"event.type: {event.type}")
                         print(f"event.dict: {event.dict}")
                     if event.type == pygame.KEYDOWN:
-                        if GVars.configData["Dev-Mode"]:
+                        if GVars.configData["Dev-Mode"]["value"]:
                             print(f"event.key: {event.key}")
                             print(f"event.key Name: {pygame.key.name(event.key)}")
                         
@@ -1171,8 +1192,8 @@ class Gui:
 
                         if name == "space":
                             self.CurInput += " "
-                        # For Steam Deck
-                        elif name == "backspace":
+                        # In order to delete characters for input prompts on Steam Deck
+                        elif name == "backspace" and GVars.iosd:
                             if (len(self.CurInput) > 0):
                                 self.CurInput = self.CurInput[:-1]
                         elif name in ["return", "enter"]:
@@ -1183,8 +1204,22 @@ class Gui:
                             self.BackMenu()
                         elif name == "tab":
                             self.CurInput += "    "
-                        # Can't paste for Steam Deck as Paste button 
-                        # acts as "v" and there is no ctrl key on the on-screen keyboard
+                        # Pasting on Steam Deck, Right Arrow on on-screen keyboard
+                        elif event.key == 4:
+                            try:
+                                pastedstr = str(pyperclip.paste().replace("\n", ""))
+                                self.CurInput += pastedstr
+                                Log(f"Pasted: {pastedstr}")
+                            except Exception as e:
+                                Log(str(e))  # Log a error in case it fails
+                                pass
+                        # Shifting on Steam Deck, Left Arrow on on-screen keyboard
+                        elif event.key == 3:
+                            if self.SDShift:
+                                self.SDShift = False
+                            else:
+                                self.SDShift = True
+                            print(self.SDShift)
                         elif CTRLHELD and name == "v":
                             try:
                                 pastedstr = str(pyperclip.paste().replace("\n", ""))
@@ -1195,7 +1230,7 @@ class Gui:
                                 pass
                         elif len(name) == 1:
                             # On Steam Deck the on-screen shift button doesn't work :(
-                            if SHIFTHELD:
+                            if SHIFTHELD or self.SDShift:
                                 # if the name doesnt contain a letter
                                 if not name.isalpha():
                                     name = name.replace("1", "!").replace("2", "@").replace("3", "#").replace("4",
@@ -1254,7 +1289,8 @@ class Gui:
 
                 # NORMAL INPUT
                 if (not self.LookingForInput):
-                    # Leaving this here for testing
+                    # Leaving this here for testing inputs when not in a input prompt
+                    # Too many log messages to have for a Developer Mode thing
                     # print(f"event: {event}")
                     # print(f"event.type: {event.type}")
                     # print(f"event.dict: {event.dict}")
@@ -1409,10 +1445,12 @@ def VerifyGamePath(shouldgetpath: bool = True) -> bool:
 
 def VerifyModFiles() -> bool:
     Log("Searching for mod files in: " + GVars.modFilesPath)
-    print(os.path.exists(GVars.modFilesPath))
-    print(GVars.modFilesPath)
-    print(os.path.exists(GVars.modFilesPath + os.sep + "p2mm.identifier"))
-    print(GVars.modFilesPath + os.sep + "p2mm.identifier")
+    if GVars.configData["Dev-Mode"]["value"]:
+        Log("modFilesPath and identifier file exist?")
+        print(os.path.exists(GVars.modFilesPath))
+        print(GVars.modFilesPath)
+        print(os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier"))
+        print(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")
 
     if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
         Log("Mod files found!")
@@ -1479,10 +1517,11 @@ def GetAvailableLanguages() -> list[str]:
     Log("Searching for available languages...")
     langs = []
     for file in os.listdir("Languages"):
+        print(f"File 1: {file}")
         langs.append(file[:-5])
-    customTranslationsPath = GVars.modPath + os.sep + "Languages"
-    if os.path.exists(customTranslationsPath):
-        for file in os.listdir(customTranslationsPath):
+    if os.path.exists(GVars.modPath + os.sep + "Languages"):
+        for file in os.listdir(GVars.modPath + os.sep + "Languages"):
+            print(f"File 2: {file}")
             langs.append(file[:-5])
 
     return langs
@@ -1503,7 +1542,7 @@ def LoadTranslations() -> dict:
                        CFG.DefaultConfigFile["Active-Language"]["value"])
         langPath = "Languages/" + \
             GVars.configData["Active-Language"]["value"] + ".json"
-        print(langPath)
+        if GVars.configData["Dev-Mode"]["value"]: print(langPath)
         translations = json.load(open(langPath, "r", encoding="utf8"))
 
         Log("[ERROR] Language file isn't found or key mismatch")
@@ -1633,6 +1672,11 @@ def Initialize() -> None:
     GVars.LoadConfig()
     # load the client's translations
     LoadTranslations()
+
+    # For pasting on Steam Deck
+    # Thankfully doesn't need to be installed as its preinstalled on Steam Deck
+    if GVars.iosd:
+        import PyQt5
 
     # checks if this is a dev or release build
     if sys.argv[0].endswith(".py"):

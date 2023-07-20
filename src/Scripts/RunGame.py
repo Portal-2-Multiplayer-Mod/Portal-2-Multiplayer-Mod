@@ -493,7 +493,7 @@ def LaunchGame(gamepath: str) -> None:
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
-        elif (GVars.iol): #launching for linux
+        elif (GVars.iol or GVars.iosd): #launching for linux
             def RunGame():
                 def RunSteam():
                     os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["Custom-Launch-Options"]["value"])
@@ -501,15 +501,15 @@ def LaunchGame(gamepath: str) -> None:
 
                 def CheckForGame() -> None:
                     shouldcheck = True
-                    lached = False
+                    latched = False
                     while shouldcheck:
                         gamerunning = str(os.system("pidof portal2_linux"))
                         if gamerunning == "256":
-                            if lached == True:
+                            if latched == True:
                                 GVars.AfterFunction()
                                 shouldcheck = False
-                        elif not lached:
-                            lached = True
+                        elif not latched:
+                            latched = True
                         time.sleep(1)
                 CheckForGame()
             thread = threading.Thread(target=RunGame)

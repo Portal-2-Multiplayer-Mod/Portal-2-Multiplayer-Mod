@@ -266,7 +266,6 @@ def ImportConfig() -> dict:
 
         # if the file doesn't exist then create it
         if not os.path.exists(configpath):
-            print("here")
             WriteConfigFile(DefaultConfigFile)
 
         # read all the lines in the config file
@@ -274,7 +273,6 @@ def ImportConfig() -> dict:
 
         # if the file is empty then re-create it
         if len(config) == 0:
-            print("here2")
             WriteConfigFile(DefaultConfigFile)
 
         # process the config file into useable data
@@ -290,6 +288,5 @@ def ImportConfig() -> dict:
     except Exception as e:
         Log(f"Error importing the config file: {str(e)}")
         WriteConfigFile(DefaultConfigFile)
-        print("here3")
         GVars.hadtoresetconfig = True
         return ImportConfig()

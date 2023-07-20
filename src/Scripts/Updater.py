@@ -79,7 +79,7 @@ def DownloadClient(cType: str = "") -> bool:
     # so we can easily edit it in the future if we want to
     if (GVars.iow):
         packageType = ".EXE"
-    elif (GVars.iol):
+    elif (GVars.iol or GVars.iosd):
         packageType = ".SH"
 
     downloadLink = ""
@@ -103,11 +103,10 @@ def DownloadClient(cType: str = "") -> bool:
     # if (GVars.iow):
     #     command = [path, "updated", GVars.executable]
     #     subprocess.Popen(command)
-    #     \n was here, how DARE you misspell linux
-    if (GVars.iol):
-        Log("Linux detected, gotta chmod that bad boy")
-        permissioncommand = "chmod +x " + path
-        os.system(permissioncommand)
+
+    if (GVars.iol or GVars.iosd):
+        Log("Linux detected, gotta chmod that bad boy!")
+        os.system(f"chmod +x {path}")
 
     command = path + " updated " + GVars.executable
     subprocess.Popen(command, shell=True)
@@ -117,7 +116,7 @@ def DownloadClient(cType: str = "") -> bool:
 def CheckForNewFiles() -> bool:
 
     if not haveInternet():
-        Log("No internet Connection")
+        Log("No internet Connection!")
         return False
 
     Log("Checking for new files...")
@@ -166,7 +165,7 @@ def DownloadNewFiles() -> None:
     r = r.json()
     Log("downloading "+str(len(r["Files"]))+" files...")
 
-    # downlaod the files to a temp folder
+    # download the files to a temp folder
     tempPath = GVars.modPath + os.sep + ".temp"
     for file in r["Files"]:
         downloadLink = f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/"+urllib.parse.quote(r["Path"]+file)
@@ -175,7 +174,7 @@ def DownloadNewFiles() -> None:
         try:
             urllib.request.urlretrieve(downloadLink, tempPath + file.replace("/", os.sep))
         except Exception as e:
-            Log(f"Gailed to download a file: {str(e)}")
+            Log(f"Failed to download a file: {str(e)}")
     Log("Finished downloading")
 
     try:
@@ -188,5 +187,5 @@ def DownloadNewFiles() -> None:
 
     # then copy the new files there
     shutil.move(tempPath, BF.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
-    Log("Vopied new files to " + GVars.modPath + BF.ConvertPath("/ModFiles/Portal 2/install_dlc"))
+    Log("Copied new files to " + GVars.modPath + BF.ConvertPath("/ModFiles/Portal 2/install_dlc"))
 
