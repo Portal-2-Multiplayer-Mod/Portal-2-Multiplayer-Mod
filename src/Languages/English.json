@@ -103,9 +103,9 @@
   "Enable sound effects?": "Enable sound effects?",
   "Enable background cubes?": "Enable background cubes?",
   "Enter the path to the Portal 2 folder.": "Enter the path to the Portal 2 folder.",
-  "Type any custom launch options you want.\nExample: \"+map 'map-name'\".": "Type any custom launch options you want.\nExample: \"+map 'map-name'\".",
+  "Type any custom launch options you want. Example: \"+map 'map-name'\".": "Type any custom launch options you want. Example: \"+map 'map-name'\".",
   "Encrypt CVars?": "Encrypt CVars?",
   "Encrypt specific VScript functions?": "Encrypt specific VScript functions?",
   "Only use for public games, this may break some functionality!": "Only use for public games, this may break some functionality!",
-  "If you see this something is wrong!": "If you see this something is wrong!"
+  "If you see this something is wrong!\nPlease report this on our Discord!": "If you see this something is wrong!\nPlease report this on our Discord!"
 }

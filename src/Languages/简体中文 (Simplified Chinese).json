@@ -103,9 +103,9 @@
   "Enable sound effects?": "启用声音效果？",
   "Enable background cubes?": "启用背景方块雨？",
   "Enter the path to the Portal 2 folder.": "输入 Portal 2 文件夹的路径。",
-  "Type any custom launch options you want.\nExample: \"+map 'map-name'\".": "输入您想要的任何自定义启动选项。\n例如：\"+map 'map-name'\"。",
+  "Type any custom launch options you want. Example: \"+map 'map-name'\".": "输入您想要的任何自定义启动选项。 例如：\"+map 'map-name'\"。",
   "Encrypt CVars?": "加密 CVars？",
   "Encrypt specific VScript functions?": "加密特定的 VScript 函数？",
   "Only use for public games, this may break some functionality!": "仅适用于公开游戏，可能会破坏某些功能！",
-  "If you see this something is wrong!": "如果您看到此消息，则表示出现了错误！"
+  "If you see this something is wrong!\nPlease report this on our Discord!": "如果您看到这个，说明出现了问题！\n请在我们的Discord上报告此事！"
 }
