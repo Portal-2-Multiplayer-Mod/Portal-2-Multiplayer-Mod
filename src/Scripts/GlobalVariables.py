@@ -6,7 +6,6 @@ import os
 import sys
 import platform
 import ctypes.wintypes
-from datetime import datetime
 import Scripts.Configs as CFG
 from Scripts.BasicLogger import Log
 
@@ -14,7 +13,6 @@ from Scripts.BasicLogger import Log
 #//#    Global Variables Declarations   #//#
 #//////////////////////////////////////////#
 
-appStartDate: str # appStartDate is the dateTime when the launcher was started, this is used to name the logs
 configData: dict[str, dict[str, str]]
 modPath: str # \p2mm
 modFilesPath: str # \p2mm\Modfiles
@@ -28,9 +26,7 @@ translations: dict[str, str]
 AfterFunction: None
 
 def init() -> None:
-    global appStartDate, modPath, modFilesPath, configPath, iow, iol, iosd, nf, translations
-
-    appStartDate = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+    global modPath, modFilesPath, configPath, iow, iol, iosd, nf, translations
 
     if (sys.platform == "win32"):
         iow = True
@@ -48,8 +44,9 @@ def init() -> None:
         modFilesPath = buf.value + os.sep + "p2mm\\ModFiles"
         configPath = buf.value + os.sep + "p2mm"
     elif (sys.platform.startswith("linux")):
-        # Both Linux and SteamOS 3.0 system platform names return as "linux"
-        # We need to use the platform release name to differentiate a normal Linux distribution from SteamOS 3.0, SteamOS 3.0 includes "valve" in the release
+        # Both Linux and Steam Deck system platform names return as "linux"
+        # We need to use the platform release name to differentiate a normal Linux distribution from Steam Decks one
+        # Steam Deck uses SteamOS 3.0 which is built off Arch, includes "valve" in the platform release.
         if ("valve" in platform.release()):
             iosd = True
             # Steam OS 3.0 has some directories set to read-only
@@ -67,7 +64,7 @@ def init() -> None:
     else:
         # Feel sad for the poor people who are running templeOS :(
         Log("This operating system is not supported!")
-        Log("We only support Windows, Linux, and SteamOS 3.0 (Steam Deck) as of current.")
+        Log("We only support Windows, Linux, and Steam Deck as of current.")
         exit()
 
     # Check if the modpath exists, if not create it

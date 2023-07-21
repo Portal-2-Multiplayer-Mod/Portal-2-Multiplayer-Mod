@@ -1390,7 +1390,7 @@ def PreExit() -> None:
     if (GVars.iow):
         os.system("taskkill /f /im portal2.exe")
 
-    # Linux and Steam Deck/SteamOS 3.0
+    # Linux and Steam Deck
     if (GVars.iol) or (GVars.iosd):
         os.system("killall -9 portal2_linux")
 
