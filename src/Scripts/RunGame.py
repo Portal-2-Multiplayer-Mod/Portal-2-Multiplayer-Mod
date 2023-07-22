@@ -6,7 +6,6 @@ import threading
 
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
-import Scripts.EncryptCVars as EncryptCVars
 import Scripts.Configs as CFG
 import subprocess
 import Scripts.BasicFunctions as BF
@@ -38,6 +37,43 @@ CommandReplacements = [
 
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
+
+def Encrypt(path: str, search: str, replace: str) -> None:
+    if os.path.isdir(path):
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                try:
+                    file_path = os.path.join(root, file)
+
+                    with open(file_path, 'r', encoding="utf-8") as f:
+                        data = f.read()
+
+                    data = data.replace(search, replace)
+
+                    with open(file_path, 'w', encoding="utf-8") as f:
+                        f.write(data)
+
+                    Log("Encrypted file: " + file_path)
+                except Exception as e:
+                    Log("Error occurred while encrypting file: " + file_path)
+                    Log("Error message: " + str(e))
+
+    elif os.path.isfile(path):
+        try:
+            Log("Encrypting file: " + path + " With encoding: " + "utf-8")
+
+            with open(path, 'r', encoding="utf-8") as f:
+                data = f.read()
+
+            data = data.replace(search, replace)
+
+            with open(path, 'w', encoding="utf-8") as f:
+                f.write(data)
+
+            Log("Encrypted file: " + path)
+        except Exception as e:
+            Log("Error occurred while encrypting file: " + path)
+            Log("Error message: " + str(e))
 
 def SetNewEncryptions() -> None:
     # set the new encryptions
@@ -160,7 +196,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
 
     if encrypt:
         for cmdrep in CommandReplacements:
-            EncryptCVars.Encrypt(BF.ConvertPath(path), cmdrep[1], cmdrep[2])
+            Encrypt(BF.ConvertPath(path), cmdrep[1], cmdrep[2])
 
     Log("__ENCRYPTING CVARS END__")
 
@@ -402,7 +438,8 @@ def findP2MMDLCFolder(gamepath: str) -> str:
         # find all the folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
             # if inside the folder there is a file called "p2mm.identifier" return where it is
-            if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
+            if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
+            # if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
                 p2mmdlcfolder = gamepath + os.sep + file
                 Log("Found P2MM's DLC folder: " + p2mmdlcfolder)
                 return p2mmdlcfolder

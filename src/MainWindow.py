@@ -408,7 +408,7 @@ class Gui:
 
         self.PlayersMenu.clear()
         PlayerKey = GVars.configData["Players"]["value"][self.CurrentSelectedPlayer]
-        if GVars.configData["Dev-Mode"]["Value"]: Log(f"Selected players key information: {PlayerKey}")
+        if GVars.configData["Dev-Mode"]["value"]: Log(f"Selected players key information: {PlayerKey}")
 
         # displays and changes the player name
         def Button_PlayerName_func() -> None:
@@ -1452,7 +1452,9 @@ def VerifyModFiles() -> bool:
         print(os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier"))
         print(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")
 
-    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
+    #
+    # if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
+    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "32playermod.identifier")):
         Log("Mod files found!")
         return True
 
@@ -1484,7 +1486,9 @@ def MountModOnly() -> bool:
 
     if VerifyModFiles():
         DoEncrypt = GVars.configData["Encrypt-CVars"]["value"]
+        if DoEncrypt: Ui.Error(translations["mounting_mod_with_encryption"], 10, (255, 255, 0))
         RG.MountMod(gamepath, DoEncrypt)
+        if DoEncrypt: Ui.Error(translations["finished_encryption"], 5, (75, 255, 75))
         Ui.Error(translations["mounted"], 5, (75, 255, 75))
         return True
 

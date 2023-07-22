@@ -115,14 +115,6 @@ DefaultConfigFile = {
         "description": "Path of the Portal 2 Folder.",
         "warning": "",
         "prompt": "Enter the path to the Portal 2 folder."
-    },
-
-    "Safe-Guard": {
-        "value": False,
-        "menu": "portal2",
-        "description": "Encrypts VScript functions such as \"SendToConsole()\".",
-        "warning": "Only use for public games, this may break some functionality!",
-        "prompt": "Encrypt specific VScript functions?"
     }
 }
 
