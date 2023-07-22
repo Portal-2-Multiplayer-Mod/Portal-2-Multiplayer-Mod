@@ -1,18 +1,20 @@
 import os
+import re
+from typing import List, Dict
 
 import Scripts.BasicFunctions as BF
 import Scripts.GlobalVariables as GVars
+from Scripts.BasicLogger import Log
 
-
-def UpdateMapList(workshoppath) -> None:
-    global maplist
+# Get a full list of all the users workshop maps so we can find the requested map
+def UpdateMapList(workshoppath: str) -> List[Dict[str, str]]:
     maplist = []
     for root, dirs, files in os.walk(workshoppath):
         if (".jpg" in str(files)) and (".bsp" in str(files)):
             CMap = {
-                "name" : "",
-                "bsp" : "",
-                "id" : ""
+                "name": "",
+                "bsp": "",
+                "id": ""
             }
 
             for file in files:
@@ -22,31 +24,23 @@ def UpdateMapList(workshoppath) -> None:
                 elif ".jpg" in file:
                     CMap["id"] = file.replace("thumb", "").replace(".jpg", "")
             maplist.append(CMap)
+    return maplist
 
-def SteamIDFromLink(link : str) -> str:
-    # remove the usual url
-    link = link.replace("https://steamcommunity.com/sharedfiles/filedetails/?id=", "")
-    # removes the searchtext
-    # when you search for a map and you copy the link it will append the search text to the end of the url
-    # like this -> https://steamcommunity.com/sharedfiles/filedetails/?id=91038223&searchtext=gelocity
-    # so to remove it we loop through the string we have until we find a letter then we substring all that's before it
-    i : int = 0
-    for letter in link:
-        if not letter.isdigit():
-            link = link[0:i]
-            break
-        i += 1
+# Use regular expression to extract the workshop's SteamID
+def SteamIDFromLink(link: str) -> str:
+    match = re.search(r"https://steamcommunity.com/sharedfiles/filedetails/\?id=(\d+)", link)
+    if match:
+        return match.group(1)
+    else:
+        Log("Invalid Steam Workshop link format!")
+        return
 
-    return link
-
-def MapFromSteamID(workshopLink: str, workshoppath: str = None) -> str:
-    if workshoppath is None:
-        workshoppath = GVars.configData["Portal2-Path"]["value"] + BF.ConvertPath("/portal2/maps/workshop")
-
+# Get the changelevel command of a map from the workshop maps Steam page link
+def MapFromSteamID(workshopLink: str) -> str:
     SteamID = SteamIDFromLink(workshopLink)
-    UpdateMapList(workshoppath)
+    maplist = UpdateMapList(GVars.configData["Portal2-Path"]["value"] + BF.ConvertPath("/portal2/maps/workshop"))
 
-    for map in maplist:
-        if map["id"] == SteamID:
-            return map["bsp"].replace(".bsp", "")
+    for map_info in maplist:
+        if map_info["id"] == SteamID:
+            return map_info["bsp"].replace(".bsp", "")
     return None

@@ -651,6 +651,7 @@ class Gui:
                     translations["workshop_changelevel_command"], 3, (255, 0, 255))
                 self.Error(
                     translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
+                self.BackMenu()
                 return
 
             self.Error(translations["workshop_map_not_found"], 6, (255, 255, 0))
