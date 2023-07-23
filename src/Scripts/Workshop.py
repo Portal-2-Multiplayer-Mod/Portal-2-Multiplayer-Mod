@@ -1,5 +1,4 @@
 import os
-import re
 from typing import List, Dict
 
 import Scripts.BasicFunctions as BF
@@ -26,16 +25,30 @@ def UpdateMapList(workshoppath: str) -> List[Dict[str, str]]:
             maplist.append(CMap)
     return maplist
 
-# Use regular expression to extract the workshop's SteamID
+# Get the workshop pages Steam ID from its link
 def SteamIDFromLink(link: str) -> str:
-    match = re.search(r"https://steamcommunity.com/sharedfiles/filedetails/\?id=(\d+)", link)
-    if match:
-        return match.group(1)
-    else:
-        Log("Invalid Steam Workshop link format!")
-        return
+    # Check if it's a valid Steam Workshop link
+    if not link.startswith("https://steamcommunity.com/sharedfiles"):
+        Log("Not a valid Steam Workshop link!")
+        return None
+    
+    # Find the index of '?id=' in the link
+    id_index = link.find('?id=')
 
-# Get the changelevel command of a map from the workshop maps Steam page link
+    if id_index != -1:
+        # Extract the substring after '?id='
+        link = link[id_index + 4:]
+
+        # Find the index of '&' in the remaining substring )if present)
+        ampersand_index = link.find('&')
+
+        if ampersand_index != -1:
+            # Remove everything after '&' to get the Steam ID
+            link = link[:ampersand_index]
+
+    return link
+
+# Get the changelevel command of a map from the workshop maps Steam Workshop page link
 def MapFromSteamID(workshopLink: str) -> str:
     SteamID = SteamIDFromLink(workshopLink)
     maplist = UpdateMapList(GVars.configData["Portal2-Path"]["value"] + BF.ConvertPath("/portal2/maps/workshop"))
