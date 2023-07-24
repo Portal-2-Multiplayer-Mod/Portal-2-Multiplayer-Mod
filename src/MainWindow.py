@@ -1723,11 +1723,9 @@ if __name__ == '__main__':
         Ui = Gui(GVars.configData["Dev-Mode"]["value"])
         PostInitialize()
         Ui.Main()
-    except KeyboardInterrupt:
-        pass
-    # Called when a unexpected error results in a launcher crash
-    except:
+
+    except Exception as e:
         Log("")
         Log("__________FATAL LAUNCHER ERROR!!!__________")
-        Log("Exception encountered:\n" + traceback.format_exc())
+        Log("Exception encountered:\n" + str(e))
         Log("__________FATAL LAUNCHER ERROR!!!__________")
