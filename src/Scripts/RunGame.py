@@ -78,7 +78,6 @@ def Encrypt(path: str, search: str, replace: str) -> None:
 def SetNewEncryptions() -> None:
     # set the new encryptions
     Log("Setting new encryptions...")
-    Log("")
     minlen = 3
     for cmdrep in CommandReplacements:
         Log("===========")
@@ -94,14 +93,8 @@ def UnEncryptEncryptions() -> None:
     Log("Finished UnEncrypting Encryptions")
 
 def SetVScriptConfigFile(vsconfigfile: str) -> None:
-    Log("")
-    Log("")
-    Log("")
-    Log("")
-    Log("")
     Log("====================================================")
     Log("Setting VScript config file: " + vsconfigfile)
-    Log("")
     p2cfgs = CFG.GetConfigList("menu", "portal2")
 
     lines = open(vsconfigfile, "r", encoding="utf-8").readlines()
@@ -163,14 +156,8 @@ def SetVScriptConfigFile(vsconfigfile: str) -> None:
     open(vsconfigfile, "w", encoding="utf-8").write(lines)
 
     Log("====================================================")
-    Log("")
-    Log("")
-    Log("")
-    Log("")
-    Log("")
 
 def MountMod(gamepath: str, encrypt: bool = False) -> bool:
-    Log("")
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
 
@@ -216,7 +203,6 @@ def UnpatchBinaries(gamepath: str) -> None:
         "portal2" + os.sep + "bin" + os.sep + "server.dll",
     ]
 
-    Log("")
     Log("             __________Binary Restoration_________")
     Log("Unpatching binaries...")
     for binary in binaries:
@@ -231,12 +217,11 @@ def UnpatchBinaries(gamepath: str) -> None:
     UnRenameBinaries(gamepath, binaries)
 
 def PatchBinaries(gamepath: str) -> None:
-    Log("")
+    Log("=============")
     Log("Patching binaries...")
 
     # move the binaries to the game directory
     Log("Moving the patched binaries to " + gamepath + "...")
-    Log("")
 
     binaries = [
         "bin" + os.sep + "engine.dll",
@@ -245,7 +230,6 @@ def PatchBinaries(gamepath: str) -> None:
         "portal2" + os.sep + "bin" + os.sep + "linux32" + os.sep + "server.so",
     ]
 
-    Log("")
     Log("             _________Binary Moving Start________")
     for binary in binaries:
         Log("Moving " + binary + " to " + gamepath + "...")
@@ -266,7 +250,6 @@ def PatchBinaries(gamepath: str) -> None:
     # patch the binaries
     ###/// ENGINE.DLL ///###
     if (os.path.isfile(gamepath + os.sep + "engine.dll")):
-        Log("")
         Log("Patching engine.dll...")
 
         data = open(gamepath + os.sep + "engine.dll", "rb").read()
@@ -318,7 +301,6 @@ def PatchBinaries(gamepath: str) -> None:
 
         # write the data back to the file
         open(gamepath + os.sep + "server.dll", "wb").write(data)
-        Log("")
 
     # The other files don't need to be patched since they don't exist on windows
     if GVars.iow:
@@ -329,7 +311,6 @@ def PatchBinaries(gamepath: str) -> None:
 
     ###/// ENGINE.SO ///###
     if (os.path.isfile(gamepath + os.sep + "engine.so")):
-        Log("")
         Log("Patching engine.so...")
 
         data = open(gamepath + os.sep + "engine.so", "rb").read()
@@ -382,7 +363,6 @@ def PatchBinaries(gamepath: str) -> None:
 
         # write the data back to the file
         open(gamepath + os.sep + "server.so", "wb").write(data)
-        Log("")
 
     # rename the files so the new files are used
     Log("Renaming binaries...")
@@ -413,7 +393,6 @@ def UnRenameBinaries(gamepath: str, binaries: list[str]) -> None:
     #     "portal2/bin/server.dll",
     # ]
 
-    Log("")
     Log("Un-renaming binaries...")
 
     # Go through the list of binaries
@@ -453,7 +432,6 @@ def findP2MMDLCFolder(gamepath: str) -> str:
 # portal2_dlc2 is also required, while its mainly for PeTi, it also includes a bunch of other assets and fixes for Portal 2 that Valve had done
 # If either of these folders are not detected P2MM won't start or be mounted
 def CheckForRequiredDLC(gamepath: str) -> bool:
-    Log("")
     Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
     if ("undefined" in gamepath):
         return "portal2pathundefined"
@@ -466,7 +444,6 @@ def CheckForRequiredDLC(gamepath: str) -> bool:
 
 # Find and delete P2MM's portal2_dlc folder
 def DeleteUnusedDLCs(gamepath: str) -> None:
-    Log("")
     Log("            _________Dealing with Folders________")
 
     if ((os.path.exists(gamepath)) != True):
@@ -514,7 +491,7 @@ def FindAvailableDLC(gamepath: str) -> str:
 # █ █░▀█ █ ░█░
 
 def LaunchGame(gamepath: str) -> None:
-    Log("")
+    Log("=============")
     Log("Running Game...")
 
     # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon (Custom-Launch-Options)

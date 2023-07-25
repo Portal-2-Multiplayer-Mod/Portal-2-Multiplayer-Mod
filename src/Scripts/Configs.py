@@ -266,11 +266,9 @@ def ImportConfig() -> dict:
 
         # process the config file into useable data
         Log("Processing config...")
-        Log("")
 
         processedconfig = json.loads(config)
 
-        Log("")
         Log("Configs imported successfully!")
         # at last pass the data to the verify function to make sure everything is clean
         return VerifyConfigFileIntegrity(processedconfig)

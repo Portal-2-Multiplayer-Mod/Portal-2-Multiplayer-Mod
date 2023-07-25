@@ -1725,7 +1725,7 @@ if __name__ == '__main__':
         Ui.Main()
 
     except Exception as e:
-        Log("")
+        Log("=============")
         Log("__________FATAL LAUNCHER ERROR!!!__________")
         Log("Exception encountered:\n" + str(e))
         Log("__________FATAL LAUNCHER ERROR!!!__________")

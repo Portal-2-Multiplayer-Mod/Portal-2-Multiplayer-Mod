@@ -4,29 +4,43 @@ from datetime import datetime
 from pathlib import Path
 import Scripts.GlobalVariables as GVars
 
-# Used to Log messages to the log file
+
 def Log(message: str) -> None:
-    if len(message) > 0:
-        logging.info("(P2:MM): " + message)
-        print("(P2:MM): " + message)
-    else:
-        logging.info("")
-        print("")
+    """Writes a message to the log file and prints it in the console
 
-# Setup logging for P2MM launcher session
+    Parameters
+    ----------
+    message : str
+        message to be logged
+
+    Raises
+    ------
+    ValueError
+        raises error if log is called with an empty message
+    """
+    message = message.strip()
+
+    if not len(message) > 0:
+        raise ValueError("can't log a message with no content")
+
+    logging.info("(P2:MM): " + message)
+    print("(P2:MM): " + message)
+
 def StartLog() -> None:
-    log_path = os.path.join(GVars.modPath, "Logs")
+    """Configures the logger and prints the log header"""
 
-    Path(log_path).mkdir(parents=True, exist_ok=True)
+    logsPath = os.path.join(GVars.modPath, "Logs")
+
+    Path(logsPath).mkdir(parents=True, exist_ok=True)
 
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    log_file = os.path.join(log_path, f"Log-({datetime.now().strftime('%Y-%m-%d %H-%M-%S')}).log")
-    handler = logging.FileHandler(filename=log_file, mode="w", encoding="utf-8")
+    logFile = os.path.join(logsPath, f"Log-({datetime.now().strftime('%Y-%m-%d %H-%M-%S')}).log")
+    handler = logging.FileHandler(filename=logFile, mode="w", encoding="utf-8")
     logger.addHandler(handler)
 
-    log_banner = """
+    logBanner = """
     ____________________NEW LAUNCH LOG {timestamp}___________________
 
     ██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░░██████╗░
@@ -35,7 +49,7 @@ def StartLog() -> None:
     ██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░░██╔══╝░░
     ██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░░███████╗
     ╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░░╚══════╝
-    
+
     ░░░░░░███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░░░░░░░
     ░░░░░░████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗░░░░░░
     ░░░░░░██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║░░░░░░
@@ -44,7 +58,7 @@ def StartLog() -> None:
     ░░░░░░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░╚═╝░░░░░╚═╝░╚════╝░╚═════╝░░░░░░░
     """.format(timestamp=datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
 
-    Log(log_banner)
+    Log(logBanner)
 
     if GVars.iow:
         Log("Windows OS detected!")
