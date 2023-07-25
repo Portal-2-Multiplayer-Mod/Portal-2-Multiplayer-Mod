@@ -179,13 +179,13 @@ def DownloadNewFiles() -> None:
 
     try:
         # when downloading is done delete the old mod files
-        BF.DeleteFolder(BF.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
+        BF.DeleteFolder(BF.NormalizePath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
         Log("Deleted old files")
     except Exception as e:
         Log("There was no old mod files")
         Log(str(e))
 
     # then copy the new files there
-    shutil.move(tempPath, BF.ConvertPath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
-    Log("Copied new files to " + GVars.modPath + BF.ConvertPath("/ModFiles/Portal 2/install_dlc"))
+    shutil.move(tempPath, BF.NormalizePath(GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
+    Log("Copied new files to " + GVars.modPath + BF.NormalizePath("/ModFiles/Portal 2/install_dlc"))
 

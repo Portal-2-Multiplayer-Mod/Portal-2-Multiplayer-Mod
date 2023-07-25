@@ -196,7 +196,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
 
     if encrypt:
         for cmdrep in CommandReplacements:
-            Encrypt(BF.ConvertPath(path), cmdrep[1], cmdrep[2])
+            Encrypt(BF.NormalizePath(path), cmdrep[1], cmdrep[2])
 
     Log("__ENCRYPTING CVARS END__")
 

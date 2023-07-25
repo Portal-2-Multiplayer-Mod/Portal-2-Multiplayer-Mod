@@ -51,7 +51,7 @@ def SteamIDFromLink(link: str) -> str:
 # Get the changelevel command of a map from the workshop maps Steam Workshop page link
 def MapFromSteamID(workshopLink: str) -> str:
     SteamID = SteamIDFromLink(workshopLink)
-    maplist = UpdateMapList(GVars.configData["Portal2-Path"]["value"] + BF.ConvertPath("/portal2/maps/workshop"))
+    maplist = UpdateMapList(GVars.configData["Portal2-Path"]["value"] + BF.NormalizePath("/portal2/maps/workshop"))
 
     for map_info in maplist:
         if map_info["id"] == SteamID:
