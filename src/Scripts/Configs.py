@@ -9,7 +9,6 @@ import Scripts.GlobalVariables as GVars
 
 defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
 
-# Function called on first launch, or whenever the config resets, to automatically get the users language
 def GetSysLang() -> str:
     """Gets the default system language
 
@@ -46,7 +45,7 @@ DefaultConfigFile = {
     "Active-Language": {
         "value": GetSysLang(),
         "menu": "",
-        "description": "The language used in the P2MM launcher.",
+        "description": "Launcher's language.",
         "warning": "",
         "prompt": ""
     },
@@ -54,15 +53,15 @@ DefaultConfigFile = {
     "Auto-Unmount": {
         "value": True,
         "menu": "launcher",
-        "description": "Automatically unmount the mod when the game is closed.",
-        "warning": "Recommended to leave on for a clean unmount of the mod.",
+        "description": "Automatically unmount the mod when the game closes.",
+        "warning": "It's recommended to leave this on.",
         "prompt": ""
     },
 
     "Custom-Launch-Options": {
         "value": "+map mp_coop_lobby_3",
         "menu": "portal2",
-        "description": "Type any custom launch options you want. Example: \"+map 'map-name'\".",
+        "description": "Launch options for portal 2. default is '+map mp_coop_lobby_3'",
         "warning": "Leave this to default if you don't know what it does!",
         "prompt": "Custom launch options for debugging or starting the server at a different map."
     },
@@ -72,23 +71,15 @@ DefaultConfigFile = {
         "menu": "portal2",
         "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\".",
         "warning": "Only use for public games, this may break some functionality!",
-        "prompt": "Encrypt CVars?"
+        "prompt": ""
     },
 
     "Dev-Mode": {
         "value": False,
         "menu": "dev",
-        "description": "Shows the Testing Button on the main menu, and also shows other debug information in the console/log.",
+        "description": "Enables debugging.",
         "warning": "Only enable this if you know what you're doing!",
         "prompt": ""
-    },
-
-    "Encrypt-CVars": {
-        "value": False,
-        "menu": "portal2",
-        "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\".",
-        "warning": "Only use for public games, this may break some functionality!",
-        "prompt": "Encrypt CVars?"
     },
 
     "Launcher-Cubes": {
@@ -96,7 +87,7 @@ DefaultConfigFile = {
         "menu": "launcher",
         "description": "Makes the cubes rain.",
         "warning": "",
-        "prompt": "Enable background cubes?"
+        "prompt": ""
     },
 
     "Launcher-SFX": {
@@ -104,7 +95,7 @@ DefaultConfigFile = {
         "menu": "launcher",
         "description": "Makes the buttons play sound effects.",
         "warning": "",
-        "prompt": "Enable sound effects?"
+        "prompt": ""
     },
     
     "Players": {
@@ -112,9 +103,9 @@ DefaultConfigFile = {
             defaultplayerarray
         ],
         "menu": "players",
-        "description": "If you see this something is wrong!\nPlease report this on our Discord!",
-        "warning": "If you see this something is wrong!\nPlease report this on our Discord!",
-        "prompt": "If you see this something is wrong!\nPlease report this on our Discord!"
+        "description": "A list of Admins.",
+        "warning": "",
+        "prompt": ""
     },
     
     "Portal2-Path": {
