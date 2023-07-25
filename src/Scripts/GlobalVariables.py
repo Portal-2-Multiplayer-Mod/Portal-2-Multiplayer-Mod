@@ -1,6 +1,6 @@
 # This is a file to store all the global variables needed
-# It's initiated only once when the mainwindow is created
-# Please don't tammper with it
+# It's initiated only once when the mainWindow is created
+# Please don't tamper with it
 
 import os
 import sys
@@ -14,8 +14,8 @@ from Scripts.BasicLogger import Log
 #//////////////////////////////////////////#
 
 configData: dict[str, dict[str, str]]
-modPath: str # \p2mm
-modFilesPath: str # \p2mm\Modfiles
+modPath: str # /p2mm
+modFilesPath: str # /p2mm/ModFiles
 configPath: str
 iow: bool = False # Windows system
 iol: bool = False # Linux system
@@ -53,13 +53,13 @@ def init() -> None:
             # We are going to install p2mm to the home\Documents directory instead of .cache and .config because of this
             # We are also gonna keep stuff together like with the Windows paths, configs will be placed into the same directory as the ModFiles
             modPath = os.path.expanduser("~") + os.sep + "Documents/p2mm"
-            modFilesPath = os.path.expanduser("~") + os.sep + "Documents/p2mm/Modfiles"
+            modFilesPath = os.path.expanduser("~") + os.sep + "Documents/p2mm/ModFiles"
             configPath = os.path.expanduser("~") + os.sep + "Documents/p2mm"
         else:
             iol = True
             # Set the modpath the to the users .cache and .config directories in the home directory
-            modPath = os.path.expanduser("~") + os.sep + ".cache/p2mm"
-            modFilesPath = os.path.expanduser("~") + os.sep + ".cache/p2mm/Modfiles"
+            modPath = os.path.expanduser("~") + os.sep + ".config/p2mm"
+            modFilesPath = os.path.expanduser("~") + os.sep + ".config/p2mm/ModFiles"
             configPath = os.path.expanduser("~") + os.sep + ".config/p2mm"
     else:
         # Feel sad for the poor people who are running templeOS :(
