@@ -153,3 +153,33 @@ def TryFindPortal2Path() -> str | bool:
             print("ERROR: " + str(e))
 
     return False
+
+def StringToParagraph(text: str, length: int) -> str:
+    """formats a string to a paragraph like text
+
+    Parameters
+    ----------
+    text : str
+        text to format
+    length : int
+        how many characters can be in 1 line
+
+    Returns
+    -------
+    str
+        formatted text
+    """
+
+    words = text.split(" ")
+    newText : str = ""
+    currentLineLength = 0
+
+    for i in range(len(words)):
+        if (currentLineLength + len(words[i])) > length:
+            newText += "\n"
+            currentLineLength = 0
+
+        newText += " " + words[i]
+        currentLineLength += len(words[i]) +1
+
+    return newText.strip()

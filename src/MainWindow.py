@@ -1499,7 +1499,7 @@ def MountModOnly() -> bool:
 
     def YesInput():
         Log("User agreed to download the mod files! Fetching mod...")
-        if not UP.haveInternet():
+        if not UP.HasInternet():
             Ui.Error(translations["update_error_connection_problem"], 5, (255, 75, 75))
             return False
         UpdateModFiles()
@@ -1568,7 +1568,7 @@ def UpdateModFiles() -> None:
 
     threading.Thread(target=UpdateThread).start()
 
-def UpdateModClient() -> None:
+def UpdateModClient(data: dict) -> None:
     PreExit()
     Ui.Error(translations["updating_client"], 5000, (255, 150, 75))
 
@@ -1576,7 +1576,7 @@ def UpdateModClient() -> None:
         Log("Updating client...")
         Ui.IsUpdating = True
 
-        if not UP.DownloadClient():
+        if not UP.DownloadClient(data["newRepo"]):
             Ui.Error(
                 translations["update_nolink_error"])
             return
@@ -1639,11 +1639,18 @@ def IsNew() -> None:
 
 def ClientUpdateBox(update: dict) -> None:
     YesButton = Ui.ButtonTemplate(
-        translations["error_yes"], UpdateModClient, (75, 200, 75))
+        translations["error_yes"],lambda: UpdateModClient(update), (75, 200, 75))
     NoButton = Ui.ButtonTemplate(
         translations["error_no"], activeColor=(255, 75, 75))
 
-    Ui.PopupBox(update["name"], update["message"], [YesButton, NoButton])
+
+def NewClientNotifyPopup(update: dict) -> None:
+    YesButton = Ui.ButtonTemplate(
+        translations["error_ok"], activeColor=(75, 200, 75))
+
+    message = "There's a new client available, if you want to update please check the github repo for more info"
+
+    Ui.PopupBox(update["name"], BF.StringToParagraph(message, 37), [YesButton])
 
 def ModFilesUpdateBox() -> None:
     YesButton = Ui.ButtonTemplate(
@@ -1659,7 +1666,10 @@ def CheckForUpdates() -> bool:
     clientUpdate = UP.CheckForNewClient()
 
     if clientUpdate["status"]:
-        ClientUpdateBox(clientUpdate)
+        if clientUpdate["newRepo"] and (GVars.iol or GVars.iosd):
+            NewClientNotifyPopup(clientUpdate)
+        else:
+            ClientUpdateBox(clientUpdate)
         return True
 
     if UP.CheckForNewFiles():
