@@ -7,7 +7,7 @@ import Scripts.GlobalVariables as GVars
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
-defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
+DefaultPlayer = {"name": "New Player", "steamid": "0", "adminLevel": "0"}
 
 def GetSysLang() -> str:
     """Gets the default system language
@@ -63,7 +63,7 @@ DefaultConfigFile = {
         "menu": "portal2",
         "description": "Launch options for portal 2. default is '+map mp_coop_lobby_3'",
         "warning": "Leave this to default if you don't know what it does!",
-        "prompt": "Custom launch options for debugging or starting the server at a different map."
+        "prompt": "Launch options for portal 2. default is '+map mp_coop_lobby_3'"
     },
 
     "Encrypt-CVars": {
@@ -100,7 +100,7 @@ DefaultConfigFile = {
     
     "Players": {
         "value": [
-            defaultplayerarray
+            DefaultPlayer
         ],
         "menu": "players",
         "description": "A list of Admins.",
@@ -168,25 +168,25 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
 def ValidatePlayerKeys() -> None:
     Log("validating player keys...")
     try:
-        indx = 0
+        index = 0
         errs = 0
         player: dict
         for player in GVars.configData["Players"]["value"]:
-            if player.keys() != defaultplayerarray.keys():
+            if player.keys() != DefaultPlayer.keys():
                 errs += 1
-                tempPlayer = defaultplayerarray
+                tempPlayer = DefaultPlayer
                 print(f"local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
                 for key in tempPlayer.keys():
                     try:
                         tempPlayer[key] = player[key]
                     except Exception as e:
                         Log(str(e))
-                GVars.configData["Players"]["value"][indx] = tempPlayer
+                GVars.configData["Players"]["value"][index] = tempPlayer
 
             if errs > 0:
                 Log(f"found {str(errs)} key errors in a player property")
 
-            indx += 1
+            index += 1
 
         if errs > 0:
             WriteConfigFile(GVars.configData)
@@ -195,7 +195,7 @@ def ValidatePlayerKeys() -> None:
 
     except Exception as e:
         Log("ERROR: " + str(e))
-        GVars.configData["Players"]["value"] = [defaultplayerarray]
+        GVars.configData["Players"]["value"] = [DefaultPlayer]
         WriteConfigFile(GVars.configData)
 
 
@@ -230,7 +230,7 @@ def EditPlayer(index: int, name: str = None, steamId: str = None, level: str = N
     if steamId is not None:
         GVars.configData["Players"]["value"][index]["steamid"] = steamId
     if level is not None:
-        GVars.configData["Players"]["value"][index]["adminlevel"] = level
+        GVars.configData["Players"]["value"][index]["adminLevel"] = level
 
     WriteConfigFile(GVars.configData)
 
@@ -238,7 +238,7 @@ def DeletePlayer(index: int):
     GVars.configData["Players"]["value"].pop(index)
     WriteConfigFile(GVars.configData)
 
-# why this is a seperate function that only has 2 lines?
+# why this is a separate function that only has 2 lines?
 # well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
 def FindConfigPath() -> str:
     Log("Finding config path...")
@@ -251,14 +251,14 @@ def ImportConfig() -> dict:
         Log("            __________Config Data Start__________")
         Log("Importing Config...")
 
-        configpath = FindConfigPath()
+        configPath = FindConfigPath()
 
         # if the file doesn't exist then create it
-        if not os.path.exists(configpath):
+        if not os.path.exists(configPath):
             WriteConfigFile(DefaultConfigFile)
 
         # read all the lines in the config file
-        config = open(configpath, "r", encoding="utf-8").read().strip()
+        config = open(configPath, "r", encoding="utf-8").read().strip()
 
         # if the file is empty then re-create it
         if len(config) == 0:
@@ -267,13 +267,15 @@ def ImportConfig() -> dict:
         # process the config file into useable data
         Log("Processing config...")
 
-        processedconfig = json.loads(config)
+        processedConfig = json.loads(config)
 
         Log("Configs imported successfully!")
+
         # at last pass the data to the verify function to make sure everything is clean
-        return VerifyConfigFileIntegrity(processedconfig)
+        return VerifyConfigFileIntegrity(processedConfig)
+
     except Exception as e:
         Log(f"Error importing the config file: {str(e)}")
         WriteConfigFile(DefaultConfigFile)
-        GVars.hadtoresetconfig = True
+        GVars.HadToResetConfig = True
         return ImportConfig()

@@ -20,7 +20,7 @@ configPath: str
 iow: bool = False # Windows system
 iol: bool = False # Linux system
 iosd: bool = False # Steam Deck/Steam OS 3.0 system
-hadtoresetconfig: bool = False
+HadToResetConfig: bool = False
 executable: str = os.path.abspath(sys.executable)
 translations: dict[str, str]
 AfterFunction: None

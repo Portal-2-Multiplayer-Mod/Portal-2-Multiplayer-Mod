@@ -147,7 +147,7 @@ def SetVScriptConfigFile(vsconfigfile: str) -> None:
     # add the player line after the admins section
     for player in GVars.configData["Players"]["value"]:
         name = player["name"]
-        level = player["adminlevel"]
+        level = player["adminLevel"]
         steamid = player["steamid"]
         print("Adding " + name + " to admins")
 
@@ -189,13 +189,13 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
 
     # patch the binaries
     Log("            ___________Moving Files End__________")
-    UnpatchBinaries(gamepath)
+    UnPatchBinaries(gamepath)
 
     PatchBinaries(gamepath)
     Log("            ___________Mounting Mod End__________")
     return True
 
-def UnpatchBinaries(gamepath: str) -> None:
+def UnPatchBinaries(gamepath: str) -> None:
     binaries = [
         "bin" + os.sep + "linux32" + os.sep + "engine.so",
         "bin" + os.sep + "engine.dll",
