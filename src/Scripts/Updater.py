@@ -81,8 +81,6 @@ def CheckForNewClient() -> dict:
     if foundNewRepo or foundNewVer:
         results = {
             "status": True,
-            "name": "Client Update",
-            "message": "Would you like to download \n the new version of the Client?",
             "newRepo": False
         }
 

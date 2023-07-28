@@ -264,11 +264,11 @@ class Gui:
         self.Button_LanguageMenu = self.ButtonModel(
             translations["languages_button"], self.Button_LanguageMenu_func, (175, 75, 0))
         self.Text_SettingsLaunchText = self.DisplayText(
-            translations["language_menu_launch_text"], textColor=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=540, size=75)
+            translations["settings_menu_launcher_toast"], textColor=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=540, size=75)
         self.Text_SettingsPortal2Text = self.DisplayText(
-            translations["language_menu_portal2_text"], textColor=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=620, size=75)
+            translations["settings_menu_portal2_toast"], textColor=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=620, size=75)
         self.Text_SettingsPlayersText = self.DisplayText(
-            translations["language_menu_players_text"], textColor=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=700, size=75)
+            translations["settings_menu_languages_toast"], textColor=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=700, size=75)
 
         self.SettingsMenus = [self.Button_LauncherSettingsMenu, self.Button_Portal2Settings,
                               self.Button_AdminsMenu, self.Button_LanguageMenu]
@@ -378,7 +378,7 @@ class Gui:
                 self.text = self.text[:maxTextLength] + "..."
 
             self.text = translations[key] + ": " + self.text
-            self.ConfigKey = key
+            self.Key = key
             self.ConfigValue = GVars.configData[key]["value"]
             self.KeyObject = GVars.configData[key]
             self.ActiveColor = (255, 255, 0)
@@ -401,33 +401,37 @@ class Gui:
             self.HoverSound.set_volume(0.25)
 
         def Hovered(self, outerSelf) -> None:
+            #! trust me we need 2 try/catch clauses -cabiste
+
             try:
-                outerSelf.BlitDescription(
-                    translations[self.KeyObject["description"]], 75, 590, (130, 130, 255))
-                outerSelf.BlitDescription(
-                    translations[self.KeyObject["warning"]], 75, 625, (255, 50, 50))
-            # * this is not really needed and thus commented out
-            except Exception as e:
-                # print(str(e))
+                outerSelf.BlitDescription(translations[self.Key+"-description"], 75, 590, (130, 130, 255))
+            except:
+                outerSelf.BlitDescription(self.KeyObject["description"], 75, 590, (130, 130, 255))
+                pass
+
+            try:
+                outerSelf.BlitDescription(translations[self.Key+"-warning"], 75, 625, (255, 50, 50))
+            except:
+                outerSelf.BlitDescription(self.KeyObject["warning"], 75, 625, (255, 50, 50))
                 pass
 
         def function(self) -> None:
             if type(self.ConfigValue) is bool:
-                CFG.EditConfig(self.ConfigKey, not self.ConfigValue)
+                CFG.EditConfig(self.Key, not self.ConfigValue)
 
             else:
-                def AfterInputGenericSetConfig(inp: str) -> None:
-                    CFG.EditConfig(self.ConfigKey, inp.strip())
-                    Log("Saved '" + inp.strip() +
-                        "' to config " + self.ConfigKey)
-                    self.OuterSelf.Error(
-                        translations["error_saved"], 5, (75, 200, 75))
+                def SetConfig(inp: str) -> None:
+                    CFG.EditConfig(self.Key, inp.strip())
+                    Log(f"Saved '{inp.strip()}' to as value to: {self.Key}")
+                    self.OuterSelf.CreateToast(translations["saved_toast"], 5, (75, 200, 75))
                     self.OuterSelf.BackMenu()
 
-                self.OuterSelf.ChangeMenu(
-                    self.OuterSelf.BlankButton, append=True)
-                self.OuterSelf.GetUserInput(
-                    AfterInputGenericSetConfig, translations[self.KeyObject["prompt"]], self.ConfigValue)
+                self.OuterSelf.ChangeMenu(self.OuterSelf.BlankButton, append=True)
+
+                try:
+                    self.OuterSelf.GetUserInput(SetConfig, translations[self.Key+"-prompt"], self.ConfigValue)
+                except:
+                    self.OuterSelf.GetUserInput(SetConfig, self.KeyObject["prompt"], self.ConfigValue)
 
             self.OuterSelf.RefreshSettingsMenu(self.Menu)
 
@@ -459,7 +463,7 @@ class Gui:
             def AfterInputPlayerName(inp: str) -> None:
                 Log("Saving player name: " + inp)
                 CFG.EditPlayer(self.CurrentSelectedPlayer, name=inp.strip())
-                self.Error(translations["error_saved"], 5, (75, 200, 75))
+                self.CreateToast(translations["saved_toast"], 5, (75, 200, 75))
                 self.RefreshPlayersMenu()
                 self.BackMenu()
 
@@ -483,16 +487,16 @@ class Gui:
                         inp = inp.replace("[", "").replace("]", "")
                         # only get everything after the last ":"
                         inp = inp.split(":")[-1]
-                        self.Error(
+                        self.CreateToast(
                             translations["players_converted_steamid"], 5, (75, 120, 255))
                     except Exception as e:
-                        self.Error(
+                        self.CreateToast(
                             translations["players_invalid_steamid"], 5, (255, 50, 50))
                         Log(str(e))
                         return
 
                 CFG.EditPlayer(self.CurrentSelectedPlayer, steamId=inp)
-                self.Error(translations["error_saved"], 5, (75, 200, 75))
+                self.CreateToast(translations["saved_toast"], 5, (75, 200, 75))
                 self.RefreshPlayersMenu()
                 self.BackMenu()
 
@@ -508,18 +512,18 @@ class Gui:
             def AfterInputAdminLevel(inp: str) -> None:
 
                 if not inp.isdigit():
-                    self.Error(
-                        translations["players_admin_error_not-a-number"], 5, (255, 50, 50))
+                    self.CreateToast(
+                        translations["players_admin_toast_not-a-number"], 5, (255, 50, 50))
                     return
 
                 if int(inp) > 6 or int(inp) < 0:
-                    self.Error(
-                        translations["admin_level_error_out-of-range"], 5, (255, 255, 50))
+                    self.CreateToast(
+                        translations["admin_level_toast_out-of-range"], 5, (255, 255, 50))
                     return
 
                 # here i'm converting to int then to str so it removes all the extra 0s on the left side (05 -> 5)
                 CFG.EditPlayer(self.CurrentSelectedPlayer, level=str(int(inp)))
-                self.Error(translations["error_saved"], 5, (75, 200, 75))
+                self.CreateToast(translations["saved_toast"], 5, (75, 200, 75))
                 Log("Saving admin level as " + str(inp))
                 self.RefreshPlayersMenu()
                 self.BackMenu()
@@ -565,8 +569,8 @@ class Gui:
         def Button_DeletePlayer_func() -> None:
 
             if len(GVars.configData["Players"]["value"]) <= 1:
-                self.Error(
-                    translations["players_error_must_be_at_least_one_player"], 5, (255, 50, 50))
+                self.CreateToast(
+                    translations["players_toast_must_be_at_least_one_player"], 5, (255, 50, 50))
                 return
 
             Log("Deleting player...")
@@ -610,8 +614,8 @@ class Gui:
         self.coolDown = int(3 * 60)
 
         if not CheckForUpdates():
-            self.Error(
-                translations["update_already_up_to_date"], 5, (200, 75, 220))
+            self.CreateToast(
+                translations["already_updated_toast"], 5, (200, 75, 220))
 
     # Switches to the manual mod mounting and unmounting menu
     def Button_ManualMode_func(self) -> None:
@@ -678,7 +682,7 @@ class Gui:
 
         self.coolDown = int(3 * 60)
         UnmountScript()
-        Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+        Ui.CreateToast(translations["unmounted_toast"], 5, (125, 0, 125))
 
     #!############################
     #! WORKSHOP BUTTONS FUNCTIONS
@@ -691,14 +695,11 @@ class Gui:
 
             if map is not None:
                 pyperclip.copy("changelevel " + map)
-                self.Error(
-                    translations["workshop_changelevel_command"], 3, (255, 0, 255))
-                self.Error(
-                    translations["workshop_copied_to_clipboard"], 3, (0, 255, 0))
+                self.CreateToast(translations["workshop_changelevel_command_copied"], 3, (255, 0, 255))
                 self.BackMenu()
                 return
 
-            self.Error(
+            self.CreateToast(
                 translations["workshop_map_not_found"], 6, (255, 255, 0))
             self.BackMenu()
 
@@ -761,7 +762,7 @@ class Gui:
     # Test for input fields
     def Button_InputField_func(self) -> None:
         def AfterInput(input) -> None:
-            self.Error("Input: " + input, 3, (255, 255, 0))
+            self.CreateToast("Input: " + input, 3, (255, 255, 0))
             self.BackMenu()
 
         self.ChangeMenu(self.BlankButton, append=True)
@@ -771,15 +772,15 @@ class Gui:
     # Test for popup boxes
     def PopupBox_test_func(self) -> None:
         def YesInput() -> None:
-            self.Error("Let's go!!!", 3, (75, 255, 75))
+            self.CreateToast("Let's go!!!", 3, (75, 255, 75))
 
         def NoInput() -> None:
-            self.Error("Bruh...", 3, (255, 75, 75))
+            self.CreateToast("Bruh...", 3, (255, 75, 75))
 
         Button_Confirm = self.ButtonModel(
-            translations["error_yes"], YesInput, (75, 200, 75))
+            translations["yes_toast"], YesInput, (75, 200, 75))
         Button_Decline = self.ButtonModel(
-            translations["error_no"], NoInput, (255, 75, 75))
+            translations["no_toast"], NoInput, (255, 75, 75))
         self.PopupBox("Trolling Time!?!?!", "Have you given Cabiste an\nAneurysm today?",
                       [Button_Confirm, Button_Decline])
 
@@ -841,7 +842,7 @@ class Gui:
         self.InputPrompt = prompt
         self.AfterInputFunction = action
 
-    def Error(self, text: str, time: int = 3, color: tuple = (255, 75, 75)) -> None:
+    def CreateToast(self, text: str, time: int = 3, color: tuple = (255, 75, 75)) -> None:
         Log(text)
 
         if "\n" not in text:
@@ -862,7 +863,7 @@ class Gui:
         ##########
 
         self.SelectedPopupButton = buttons[0]
-
+        title = BF.StringToParagraph(title, 37)
         PopupBox = [title, text, buttons]  # TITLE, TEXT, BUTTONS
         Log("Creating popup box... Tile: " + str(title) + " Text: " + text )
         self.PopupBoxList.append(PopupBox)
@@ -875,7 +876,7 @@ class Gui:
         CFG.EditConfig("Active-Language", lang)
         LoadTranslations()
         self.__init__(self.devMode)
-        self.Error(translations["language_error_language_update"])
+        self.CreateToast(translations["language_updated_toast"])
 
     def LanguageButton(self) -> None:
         self.LanguagesMenu.clear()
@@ -1443,7 +1444,7 @@ def PreExit() -> None:
     if (GVars.configData["Auto-Unmount"]["value"]):
         Log("Unmounting P2MM's ModFiles from Portal 2...")
         UnmountScript(False)
-        Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+        Ui.CreateToast(translations["unmounted_toast"], 5, (125, 0, 125))
         Log("Unmounted P2MM's ModFiles from Portal 2...")
 
     Log("The P2MM launcher has been shutdown...")
@@ -1455,14 +1456,14 @@ def GetGamePath() -> None:
     if tempPath:
         CFG.EditConfig("Portal2-Path", tempPath.strip())
         Log("Saved '" + tempPath.strip() + "' as the game path!")
-        Ui.Error(translations["game_path_error-founded"], 5, (255, 255, 75))
+        Ui.CreateToast(translations["game_path_found_toast"], 5, (255, 255, 75))
         VerifyGamePath(False)
         return
 
     def AfterInputGP(inp) -> None:
         CFG.EditConfig("Portal2-Path", inp.strip())
         Log("Saved '" + inp.strip() + "' as the game path!")
-        Ui.Error(translations["game_path_error-saved"], 5, (75, 200, 75))
+        Ui.CreateToast(translations["game_path_saved_toast"], 5, (75, 200, 75))
         VerifyGamePath(False)
 
     Ui.ChangeMenu(Ui.BlankButton, append=True)
@@ -1474,10 +1475,10 @@ def VerifyGamePath(shouldGetPath: bool = True) -> bool:
     gamePath = GVars.configData["Portal2-Path"]["value"]
 
     if not os.path.exists(gamePath):
-        Ui.Error(translations["game_path-is-invalid"])
+        Ui.CreateToast(translations["game_path-is-invalid"])
 
         if shouldGetPath:
-            Ui.Error(
+            Ui.CreateToast(
                 translations["game_path-attempt-to-fetch"], 5, (255, 255, 75))
             GetGamePath()
 
@@ -1511,32 +1512,31 @@ def MountModOnly() -> bool:
     CFG.ValidatePlayerKeys()
 
     if Ui.IsUpdating:
-        Ui.Error(translations["update_is-updating"], 5, (255, 75, 75))
+        Ui.CreateToast(translations["update_inProgress_toast"], 5, (255, 75, 75))
         return False
 
     if not VerifyGamePath():
         return False
 
-    Ui.Error(translations["mounting_mod"], 5, (75, 255, 75))
+    Ui.CreateToast(translations["mounting_mod"], 5, (75, 255, 75))
 
     # Need to make sure the game path is in fact defined if not P2MM will not be run/mounted
     gamePath = GVars.configData["Portal2-Path"]["value"]
     if ("undefined" in gamePath):
-        Ui.Error(translations["mount_nopath_error"], 5, (255, 21, 0))
+        Ui.CreateToast(translations["mount_nopath_toast"], 5, (255, 21, 0))
         return False
 
     # Check if both of Portal 2's DLC folders exist
     if not RG.CheckForRequiredDLC(gamePath):
-        Ui.Error(translations["mount_nodlc_error"], 5, (255, 21, 0))
+        Ui.CreateToast(translations["mount_nodlc_toast"], 5, (255, 21, 0))
         return False
 
     if VerifyModFiles():
         DoEncrypt = GVars.configData["Encrypt-CVars"]["value"]
         if DoEncrypt:
-            Ui.Error(
-                translations["mounting_mod_with_encryption"], 10, (255, 255, 0))
+            Ui.CreateToast(translations["Encryption-Is-On"], 10, (255, 255, 0))
         RG.MountMod(gamePath, DoEncrypt)
-        Ui.Error(translations["mounted"], 5, (75, 255, 75))
+        Ui.CreateToast(translations["mounted"], 5, (75, 255, 75))
         return True
 
     # If the they are not a developer and the mod files don't exist ask them to download the files from the repo
@@ -1546,24 +1546,24 @@ def MountModOnly() -> bool:
     def YesInput():
         Log("User agreed to download the mod files! Fetching mod...")
         if not UP.HasInternet():
-            Ui.Error(
-                translations["update_error_connection_problem"], 5, (255, 75, 75))
+            Ui.CreateToast(
+                translations["no_internet_toast"], 5, (255, 75, 75))
             return False
         UpdateModFiles()
 
     def NoInput():
         Log("User cancelled downloading the ModFiles...")
-        Ui.Error(translations["game_launch_cancel"], 5)
+        Ui.CreateToast(translations["game_launch_cancel"], 5)
         return False
 
     YesButton = Ui.ButtonModel(
-        translations["error_yes"], YesInput, (75, 200, 75))
+        translations["yes_toast"], YesInput, (75, 200, 75))
 
     NoButton = Ui.ButtonModel(
-        translations["error_no"], NoInput, (255, 0, 0))
+        translations["no_toast"], NoInput, (255, 0, 0))
 
-    Ui.PopupBox(translations["game_files_fetch_game"],
-                translations["game_files_no_cached_files"], [YesButton, NoButton])
+    Ui.PopupBox(translations["modfiles_ask_download"],
+                translations["modfiles_not_found"], [YesButton, NoButton])
 
 
 def GetAvailableLanguages() -> list[str]:
@@ -1605,13 +1605,13 @@ def LoadTranslations() -> dict:
 
 def UpdateModFiles() -> None:
     PreExit()
-    Ui.Error(translations["update_fetching"], 5000, (255, 150, 75))
+    Ui.CreateToast(translations["update_fetching"], 5000, (255, 150, 75))
 
     def UpdateThread() -> None:
         Log("Updating...")
         Ui.IsUpdating = True
         UP.DownloadNewFiles()
-        Ui.Error(translations["update_complete"], 5, (75, 255, 75))
+        Ui.CreateToast(translations["update_complete_toast"], 5, (75, 255, 75))
         Ui.IsUpdating = False
         for thing in Ui.ERRORLIST:
             if thing[0] == translations["update_fetching"]:
@@ -1622,15 +1622,15 @@ def UpdateModFiles() -> None:
 
 def UpdateModClient(data: dict) -> None:
     PreExit()
-    Ui.Error(translations["updating_client"], 5000, (255, 150, 75))
+    Ui.CreateToast(translations["updating_client_toast"], 5000, (255, 150, 75))
 
     def UpdateThread() -> None:
         Log("Updating client...")
         Ui.IsUpdating = True
 
         if not UP.DownloadClient(data["newRepo"]):
-            Ui.Error(
-                translations["update_nolink_error"])
+            Ui.CreateToast(
+                translations["update_nolink_toast"])
             return
 
         Ui.running = False
@@ -1644,9 +1644,9 @@ def RunGameScript() -> None:
         gamePath = GVars.configData["Portal2-Path"]["value"]
         GVars.gameActive = True
         RG.LaunchGame(gamePath)
-        Ui.Error(translations["game_launched"], 5, (75, 255, 75))
+        Ui.CreateToast(translations["game_launched"], 5, (75, 255, 75))
     else:
-        Ui.Error(translations["game_path_undefined_fetch"], 5)
+        Ui.CreateToast(translations["game_path_undefined_fetch"], 5)
         GetGamePath()
 
 
@@ -1697,30 +1697,30 @@ def IsNew() -> None:
 
 def ClientUpdateBox(update: dict) -> None:
     YesButton = Ui.ButtonModel(
-        translations["error_yes"], lambda: UpdateModClient(update), (75, 200, 75))
+        translations["yes_toast"], lambda: UpdateModClient(update), (75, 200, 75))
     NoButton = Ui.ButtonModel(
-        translations["error_no"], activeColor=(255, 75, 75))
+        translations["no_toast"], activeColor=(255, 75, 75))
 
-    Ui.PopupBox(update["name"], update["message"], [YesButton, NoButton])
+    Ui.PopupBox(translations["update_available"], translations["update_client_text"], [YesButton, NoButton])
 
 
-def NewClientNotifyPopup(update: dict) -> None:
+def NewClientNotifyPopup() -> None:
     YesButton = Ui.ButtonModel(
-        translations["error_ok"], activeColor=(75, 200, 75))
+        translations["ok_toast"], activeColor=(75, 200, 75))
 
     message = "There's a new client available, if you want to update please check the github repo for more info"
 
-    Ui.PopupBox(update["name"], BF.StringToParagraph(message, 37), [YesButton])
+    Ui.PopupBox(translations["update_available"], message, [YesButton])
 
 
 def ModFilesUpdateBox() -> None:
     YesButton = Ui.ButtonModel(
-        translations["error_yes"], UpdateModFiles, (75, 200, 75))
+        translations["yes_toast"], UpdateModFiles, (75, 200, 75))
     NoButton = Ui.ButtonModel(
-        translations["error_no"], activeColor=(255, 75, 75))
+        translations["no_toast"], activeColor=(255, 75, 75))
 
     Ui.PopupBox(translations["update_available"],
-                translations["update_would_you_like_to"], [YesButton, NoButton])
+                translations["update_modFiles_text"], [YesButton, NoButton])
 
 
 def CheckForUpdates() -> bool:
@@ -1729,7 +1729,7 @@ def CheckForUpdates() -> bool:
 
     if clientUpdate["status"]:
         if clientUpdate["newRepo"] and (GVars.iol or GVars.iosd):
-            NewClientNotifyPopup(clientUpdate)
+            NewClientNotifyPopup()
         else:
             ClientUpdateBox(clientUpdate)
         return True
@@ -1776,17 +1776,17 @@ def PostInitialize() -> None:
     VerifyGamePath()
 
     def NewAfterFunction() -> None:
-        Ui.Error(translations["game_exited"], 5, (125, 0, 125))
+        Ui.CreateToast(translations["game_exited"], 5, (125, 0, 125))
         if (GVars.configData["Auto-Unmount"]["value"]):
             UnmountScript()
-            Ui.Error(translations["unmounted_error"], 5, (125, 0, 125))
+            Ui.CreateToast(translations["unmounted_toast"], 5, (125, 0, 125))
 
     GVars.AfterFunction = NewAfterFunction
 
     if (GVars.HadToResetConfig):
         Log("Config has been reset to default settings!")
         OkButton = Ui.ButtonModel(
-            translations["error_ok"], activeColor=(75, 255, 75))
+            translations["ok_toast"], activeColor=(75, 255, 75))
         Ui.PopupBox(translations["launcher_config_reset"],
                     translations["launcher_had_to_reset"], [OkButton])
 
