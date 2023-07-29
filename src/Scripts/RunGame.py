@@ -285,8 +285,8 @@ def PatchBinaries(gamepath: str) -> None:
         data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]', b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0 \x89\x01]')
         data = data.replace(b'\xff\xd0\x85\xc0t\x05\xbe\x03\x00\x00\x00\x8b', b'\xff\xd0\x85\xc0t\x05\xbe\x21\x00\x00\x00\x8b')
         data = data.replace(b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x01_^', b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x20_^')
-        
-        # Rename the server game description to our mod
+
+        # Rename the server game description to "P2MM"
         data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70', b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
 
         # Partner disconnect edit
@@ -433,8 +433,7 @@ def findP2MMDLCFolder(gamepath: str) -> str:
 # If either of these folders are not detected P2MM won't start or be mounted
 def CheckForRequiredDLC(gamepath: str) -> bool:
     Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
-    if ("undefined" in gamepath):
-        return "portal2pathundefined"
+
     if (not os.path.exists(gamepath + os.sep + "portal2_dlc1")) or (not os.path.exists(gamepath + os.sep + "portal2_dlc2")):
         Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
         Log("P2MM with not be mounted/started!")

@@ -41,7 +41,7 @@ def GetSysLang() -> str:
 
     return "English"
 
-DefaultConfigFile = {
+DefaultConfig = {
     "Active-Language": {
         "value": GetSysLang(),
         "menu": "",
@@ -129,7 +129,7 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
     errors = 0
     # VALIDATE ALL THE KEYS ARE CORRECT
     for key in copiedConfigKeys:
-        if key not in DefaultConfigFile.keys():
+        if key not in DefaultConfig.keys():
             Log(f"The key [{key}] is invalid, fixing it...")
             config.pop(key)
             errors +=1
@@ -137,24 +137,24 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
         # validate all the immutable values
         for property in config[key]:
             if property not in ImmutableKeys:
-                if config[key][property] != DefaultConfigFile[key][property]:
+                if config[key][property] != DefaultConfig[key][property]:
                     Log(f"The value for [{key}][{property}] is invalid, fixing it...")
-                    config[key][property] = DefaultConfigFile[key][property]
+                    config[key][property] = DefaultConfig[key][property]
                     errors +=1
 
     # VALIDATE ALL THE KEYS EXIST
-    for key in DefaultConfigFile.keys():
+    for key in DefaultConfig.keys():
         if key not in config.keys():
             Log(f"The key [{key}] is missing, fixing it...")
-            config[key] = DefaultConfigFile[key]
+            config[key] = DefaultConfig[key]
             errors +=1
 
     # VALIDATE THAT ALL THE KEYS HAVE ALL THE VALUES
-    for key in DefaultConfigFile:
-        for property in DefaultConfigFile[key]:
+    for key in DefaultConfig:
+        for property in DefaultConfig[key]:
             if property not in config[key]:
                 Log(f"The value for [{key}][{property}] is missing, fixing it...")
-                config[key][property] = DefaultConfigFile[key][property]
+                config[key][property] = DefaultConfig[key][property]
                 errors +=1
     Log("=========================")
 
@@ -238,8 +238,8 @@ def DeletePlayer(index: int):
     GVars.configData["Players"]["value"].pop(index)
     WriteConfigFile(GVars.configData)
 
-# why this is a separate function that only has 2 lines?
-# well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
+#? why this is a separate function that only has 2 lines?
+#* well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
@@ -255,14 +255,14 @@ def ImportConfig() -> dict:
 
         # if the file doesn't exist then create it
         if not os.path.exists(configPath):
-            WriteConfigFile(DefaultConfigFile)
+            WriteConfigFile(DefaultConfig)
 
         # read all the lines in the config file
         config = open(configPath, "r", encoding="utf-8").read().strip()
 
         # if the file is empty then re-create it
         if len(config) == 0:
-            WriteConfigFile(DefaultConfigFile)
+            WriteConfigFile(DefaultConfig)
 
         # process the config file into useable data
         Log("Processing config...")
@@ -276,6 +276,6 @@ def ImportConfig() -> dict:
 
     except Exception as e:
         Log(f"Error importing the config file: {str(e)}")
-        WriteConfigFile(DefaultConfigFile)
+        WriteConfigFile(DefaultConfig)
         GVars.HadToResetConfig = True
         return ImportConfig()
