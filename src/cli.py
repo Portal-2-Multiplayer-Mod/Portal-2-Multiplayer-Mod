@@ -7,6 +7,8 @@ import shutil
 import sys
 import os
 
+# If you need to print stuff, you can use the funciton "print". For example: "print("I like cheese, and cheedar.")" will show up in the console "I like cheese and cheedar."
+
 # set current directory to the directory of this file
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 cwd = os.getcwd()
