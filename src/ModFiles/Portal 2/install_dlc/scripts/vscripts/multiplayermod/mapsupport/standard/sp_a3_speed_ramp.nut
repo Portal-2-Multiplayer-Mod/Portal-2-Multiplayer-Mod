@@ -1,14 +1,14 @@
-// ██████╗██████╗             █████╗ ██████╗             ██████╗██████╗ ███████╗███████╗██████╗            ██████╗  █████╗ ███╗   ███╗██████╗
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔════╝██╔══██╗██╔════╝██╔════╝██╔══██╗           ██╔══██╗██╔══██╗████╗ ████║██╔══██╗
-//╚█████╗ ██████╔╝           ███████║ █████╔╝           ╚█████╗ ██████╔╝█████╗  █████╗  ██║  ██║           ██████╔╝███████║██╔████╔██║██████╔╝
-// ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗            ╚═══██╗██╔═══╝ ██╔══╝  ██╔══╝  ██║  ██║           ██╔══██╗██╔══██║██║╚██╔╝██║██╔═══╝
-//██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗██████╔╝██║     ███████╗███████╗██████╔╝██████████╗██║  ██║██║  ██║██║ ╚═╝ ██║██║
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚═════╝ ╚═╝     ╚══════╝╚══════╝╚═════╝ ╚═════════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝
+//  ██████╗██████╗             █████╗ ██████╗             ██████╗██████╗ ███████╗███████╗██████╗            ██████╗  █████╗ ███╗   ███╗██████╗
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔════╝██╔══██╗██╔════╝██╔════╝██╔══██╗           ██╔══██╗██╔══██╗████╗ ████║██╔══██╗
+// ╚█████╗ ██████╔╝           ███████║ █████╔╝           ╚█████╗ ██████╔╝█████╗  █████╗  ██║  ██║           ██████╔╝███████║██╔████╔██║██████╔╝
+//  ╚═══██╗██╔═══╝            ██╔══██║ ╚═══██╗            ╚═══██╗██╔═══╝ ██╔══╝  ██╔══╝  ██║  ██║           ██╔══██╗██╔══██║██║╚██╔╝██║██╔═══╝
+// ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗██████╔╝██║     ███████╗███████╗██████╔╝██████████╗██║  ██║██║  ██║██║ ╚═╝ ██║██║
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚═════╝ ╚═╝     ╚══════╝╚══════╝╚═════╝ ╚═════════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
-        PermaPotato <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
+        PermaPotato = true
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto20-entrance_lift_train"), "StartForward", "", 0, null, null)
         // Destroy objects
@@ -23,14 +23,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printl()}
+            if (GooHurtTimerPred) { printl() }
         } catch (exception) {
             GooHurtTimerPred <- 0
         }
 
         if (GooHurtTimerPred<=Time()) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().z<=-617) {
                     EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
                 }
@@ -38,10 +37,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             GooHurtTimerPred = Time()+1
         }
         // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100)) {
-             
-            SendToConsoleP232("changelevel sp_a3_speed_flings")
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100);) {
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_speed_flings")
         }
     }
 }

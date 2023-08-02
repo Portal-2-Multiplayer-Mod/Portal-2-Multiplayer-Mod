@@ -29,7 +29,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Reload main camera with new params
         Entities.FindByName(null, "camera").__KeyValueFromString("target_team", "-1")
         EntFireByHandle(Entities.FindByName(null, "camera"), "disable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "camera"), "enable", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "camera"), "Disable", "", 0, null, null)
     }
 
     // Replace females with P-bodys
@@ -44,9 +44,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             CreditsRemovePod()
             printl("HIDDEN!!!!!!M" + tmpname)
             EntFireByHandle(Entities.FindByNameNearest("female*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
-            EntFire("stock_scanner_model", "addoutput", "targetname disabled_stock_scanner_model", 0.5)
+            EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
         } else {
-            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
+            EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
         }
 
         printl(tmpname)
@@ -90,9 +90,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             CreditsRemovePod()
             printl("HIDDEN!!!!!!M" + tmpname)
             EntFireByHandle(Entities.FindByNameNearest("male*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
-            EntFire("stock_scanner_model", "addoutput", "targetname disabled_stock_scanner_model", 0.5)
+            EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
         } else {
-            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
+            EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
         }
 
         printl(tmpname)
@@ -170,10 +170,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
     }
 
-    if (MSPostPlayerSpawn) {
-
-    }
-
     if (MSLoop) {
         // If mod credits aren't finished change humans to robots
         if (MPMCredits <= MPModCreditNumber) {
@@ -209,7 +205,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 CreditsSetModelPB(ent)
             }
         } else {
-            EntFire("disabled_stock_scanner_model", "addoutput", "targetname stock_scanner_model")
+            EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
         }
     }
 }

@@ -5,7 +5,6 @@ import os
 import threading
 
 from Scripts.BasicLogger import Log
-import Scripts.Workshop as workshop
 import Scripts.GlobalVariables as GVars
 import Scripts.EncryptCVars as EncryptCVars
 import Scripts.Configs as cfg
@@ -15,26 +14,35 @@ import random
 import time
 
 CommandReplacements = [
-    ['restart_level', 'portal2mprslv', 'portal2mprslv'],
-    ['mp_restart_level', 'portal2mpmprslev', 'portal2mpmprslev'],
-    ['mp_earn_taunt', 'portal2mpmper', 'portal2mpmper'],
-    ['pre_go_to_calibration', 'portal2multiplayrpgtc', 'portal2multiplayrpgtc'],
-    ['erase_mp_progress', 'portal2multiemppg', 'portal2multiemppg'],
-    ['mp_mark_all_maps_complete', 'portal2multiplayermpmamcp', 'portal2multiplayermpmamcp'],
-    ['mp_mark_all_maps_incomplete', 'portal2multiplayermodmpmami', 'portal2multiplayermodmpmami'],
-    ['pre_go_to_hub', 'portal2mppgth', 'portal2mppgth'],
-    ['transition_map', 'portal2mptrmap', 'portal2mptrmap'],
-    ['select_map', 'p2mpselmap', 'p2mpselmap'],
-    ['mp_select_level', 'portal2mpmpsell', 'portal2mpmpsell'],
-    ['mp_mark_course_complete', 'portal2multiplayermpmcc', 'portal2multiplayermpmcc'],
-    ['script_execute', 'script_execute', 'script_execute'],
+    ['pre_go_to_hub', 'p2mm_tran_hub', 'p2mm_tran_hub'],
+    ['pre_go_to_calibration', 'p2mm_tran_calibration', 'p2mm_tran_calibration'],
+
+    # (We are able to patch this through mapsupport for cali, c2, c3, and c4 ending maps)
+    ['go_to_hub', 'p2mm__gth', 'p2mm__gth'],
+    ['go_to_calibration', 'p2mm_go_to_calibr', 'p2mm_go_to_calibr'],
+
+    ['restart_level', 'p2mm__restart', 'p2mm__restart'],
+    ['mp_restart_level', 'p2mm__mp_restart', 'p2mm__mp_restart'],
+
+    ['transition_map', 'p2mm_next_maps', 'p2mm_next_maps'],
+
+    ['select_map', 'p2mmselmap', 'p2mmselmap'],
+    ['mp_select_level', 'p2mm_goto_level', 'p2mm_goto_level'],
+
+    ['erase_mp_progress', 'p2mm_cut_progress', 'p2mm_cut_progress'],
+    ['mp_earn_taunt', 'p2mm_earn_tnt', 'p2mm_earn_tnt'],
+    ['mp_mark_all_maps_complete', 'p2mm_label_coop_completed',
+        'p2mm_label_coop_completed'],
+    ['mp_mark_all_maps_incomplete', 'p2mm_label_coop_incompleted',
+        'p2mm_label_coop_incompleted'],
+    ['mp_mark_course_complete', 'p2mm_course_#_completed', 'p2mm_course_#_completed'],
 ]
 
 
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
 
-def SetNewEncryptions():
+def SetNewEncryptions() -> None:
     # set the new encryptions
     Log("Setting new encryptions...")
     Log("")
@@ -42,17 +50,20 @@ def SetNewEncryptions():
     for cmdrep in CommandReplacements:
         Log("===========")
         Log("Original CVAR: " + cmdrep[1])
-        cmdrep[2] = cmdrep[1][:len(cmdrep[1]) - int(len(cmdrep[1]) / minlen)] + ''.join(random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") for i in range(int(len(cmdrep[1]) / minlen)))
+        cmdrep[2] = cmdrep[1][:len(cmdrep[1]) - int(len(cmdrep[1]) / minlen)] + ''.join(random.choice(
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") for i in range(int(len(cmdrep[1]) / minlen)))
         Log("New CVAR:      " + cmdrep[2])
         Log("===========")
 
-def UnEncryptEncryptions():
+
+def UnEncryptEncryptions() -> None:
     Log("UnEncrypting Encryptions...")
     for cmdrep in CommandReplacements:
         cmdrep[2] = cmdrep[1]
     Log("Finished UnEncrypting Encryptions")
 
-def SetVscriptConfigFile(vsconfigfile):
+
+def SetVscriptConfigFile(vsconfigfile: str) -> None:
     Log("")
     Log("")
     Log("")
@@ -95,13 +106,13 @@ def SetVscriptConfigFile(vsconfigfile):
 
         for p2cfg in p2cfgs:
             if (key == p2cfg):
-                val = GVars.configData[p2cfg]["value"]
+                val = GVars.configsData[p2cfg]["value"]
                 Log("Setting " + p2cfg + " To " + val)
                 line = key + " <- " + val
                 Log(line)
                 lines[indx] = line + "\n"
 
-    ################## ADMINS
+    # ADMINS
     # convert the lines to a string with newlines
     lines = ''.join(lines)
     print(lines)
@@ -111,13 +122,14 @@ def SetVscriptConfigFile(vsconfigfile):
     # find the next [ after the admins section
     nextObrack = lines.find("[", admins)
     # add the player line after the admins section
-    for player in GVars.configData["Players"]["value"]:
+    for player in GVars.configsData["Players"]["value"]:
         name = player["name"]
         level = player["adminlevel"]
         steamid = player["steamid"]
         print("Adding " + name + " to admins")
 
-        lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + steamid + '", // ' + name + lines[nextObrack + 1:]
+        lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + \
+            steamid + '", // ' + name + lines[nextObrack + 1:]
 
     open(vsconfigfile, "w", encoding="utf-8").write(lines)
 
@@ -128,20 +140,21 @@ def SetVscriptConfigFile(vsconfigfile):
     Log("")
     Log("")
 
-def MountMod(gamepath, encrypt = False):
+
+def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     Log("")
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
 
-    modFilesPath = GVars.modPath + GVars.nf + "ModFiles" + GVars.nf + "Portal 2" + GVars.nf + "install_dlc"
-
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
 
-    destination = BF.CopyFolder(modFilesPath + GVars.nf+".", gamepath + GVars.nf + dlcmountpoint)
-    Log("Successfully copied the mod files to "+ destination)
+    destination = BF.CopyFolder(
+        GVars.modFilesPath + "/.", gamepath + "/" + dlcmountpoint)
+    Log("Successfully copied the mod files to " + destination)
 
-    nutConfigFile = gamepath + GVars.nf + dlcmountpoint + GVars.nf + "scripts" + GVars.nf + "vscripts" + GVars.nf + "multiplayermod" + GVars.nf + "config.nut"
+    nutConfigFile = gamepath + "/" + dlcmountpoint + "/scripts" + \
+        "/vscripts/multiplayermod/config.nut"
     if os.path.exists(nutConfigFile):
         SetVscriptConfigFile(nutConfigFile)
 
@@ -151,11 +164,11 @@ def MountMod(gamepath, encrypt = False):
         SetNewEncryptions()
     else:
         UnEncryptEncryptions()
-    path = gamepath + GVars.nf + dlcmountpoint
+    path = gamepath + "/" + dlcmountpoint
 
     if encrypt:
         for cmdrep in CommandReplacements:
-            EncryptCVars.Encrypt(BF.ConvertPath(path), cmdrep[1], cmdrep[2])
+            EncryptCVars.Encrypt(path, cmdrep[1], cmdrep[2])
 
     Log("__ENCRYPTING CVARS END__")
 
@@ -167,29 +180,31 @@ def MountMod(gamepath, encrypt = False):
     Log("            ___________Mounting Mod End__________")
     return True
 
-def UnpatchBinaries(gamepath):
-    binarys = [
-        "bin" + GVars.nf + "linux32" + GVars.nf + "engine.so",
-        "bin" + GVars.nf + "engine.dll",
-        "portal2" + GVars.nf + "bin" + GVars.nf + "linux32" + GVars.nf + "server.so",
-        "portal2" + GVars.nf + "bin" + GVars.nf + "server.dll",
+
+def UnpatchBinaries(gamepath: str) -> None:
+    binaries = [
+        "bin/engine.dll",
+        "portal2/bin/server.dll",
+        "bin/linux32/engine.so",
+        "portal2/bin/linux32/server.so",
     ]
 
     Log("")
     Log("             __________Binary Restoration_________")
     Log("Unpatching binaries...")
-    for binary in binarys:
+    for binary in binaries:
         # get the filename
-        filename = binary.rsplit(GVars.nf, 1)[1]
+        filename = binary.rsplit("/", 1)[1]
         # delete the file from the gamepath if it exitsts
-        if (os.path.isfile(gamepath + GVars.nf + filename)):
-            Log("Deleting " + gamepath + GVars.nf + filename + "...")
-            os.remove(gamepath + GVars.nf + filename)
+        if (os.path.isfile(gamepath + "/" + filename)):
+            Log("Deleting " + gamepath + "/" + filename + "...")
+            os.remove(gamepath + "/" + filename)
 
-    # unrename the binaries so we can move them
-    UnRenameBinaries(gamepath, binarys)
+    # unrename the binaries so they can be moved
+    UnRenameBinaries(gamepath, binaries)
 
-def PatchBinaries(gamepath):
+
+def PatchBinaries(gamepath: str) -> None:
     Log("")
     Log("Patching binaries...")
 
@@ -197,164 +212,178 @@ def PatchBinaries(gamepath):
     Log("Moving the patched binaries to " + gamepath + "...")
     Log("")
 
-    binarys = [
-        "bin" + GVars.nf + "engine.dll",
-        "portal2" + GVars.nf + "bin" + GVars.nf + "server.dll",
-        "bin" + GVars.nf + "linux32" + GVars.nf + "engine.so",
-        "portal2" + GVars.nf + "bin" + GVars.nf + "linux32" + GVars.nf + "server.so",
+    binaries = [
+        "bin/engine.dll",
+        "portal2/bin/server.dll",
+        "bin/linux32/engine.so",
+        "portal2/bin/linux32/server.so",
     ]
 
     Log("")
     Log("             _________Binary Moving Start________")
-    for binary in binarys:
+    for binary in binaries:
         Log("Moving " + binary + " to " + gamepath + "...")
         # Get the filename
-        filename = binary.rsplit(GVars.nf, 1)[1]
+        filename = binary.rsplit("/", 1)[1]
 
         # If the file already exists, it will be replaced. There's no need to delete it manually.
         try:
             # copy the binary to the gamepath
-            BF.CopyFile(gamepath + GVars.nf + binary,gamepath + GVars.nf + filename)
-            Log("Copied " + binary+" to " + gamepath + GVars.nf + filename)
+            fileFrom = gamepath + "/" + binary
+            fileTo = gamepath + "/" + filename
+            BF.CopyFile(fileFrom, fileTo)
+            Log("Copied " + binary + " to " + fileTo)
         except:
-            # On Windows there is no "linux32" folder, so we avoid an error.
-            Log("Unable to copy "+ binary+", since it doesn't exist!" )
+            # On Windows there is no "linux32" folder, so it just is Logged that it doesn't exist
+            Log("Unable to copy " + binary + ", since it doesn't exist!")
     Log("             __________Binary Moving End_________")
 
-
     # patch the binaries
-    ###/// ENGINE.DLL ///###
-    if (os.path.isfile(gamepath + GVars.nf + "engine.dll")):
+    ### /// ENGINE.DLL ///###
+    if (os.path.isfile(gamepath + "/engine.dll")):
         Log("")
         Log("Patching engine.dll...")
 
-        data = open(gamepath + GVars.nf + "engine.dll", "rb").read()
+        data = open(gamepath + "/engine.dll", "rb").read()
 
         # Delete the file
-        os.remove(gamepath + GVars.nf + "engine.dll")
+        os.remove(gamepath + "/engine.dll")
         # replace the data
-        data = data.replace(bytes.fromhex("84 c0 74 1f 8b 16 8b 82 cc 00 00 00 68 98 b0 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b"), bytes.fromhex("84 d8 74 1f 8b 16 8b 82 cc 00 00 00 68 98 b0 37 10 53 56 ff d0 83 c4 0c 5b 5f 33 c0 5e 8b e5 5d c2 2c 00 8b 16 8b 42 6c 8b ce ff d0 84 c0 75 78 8b 16 8b 42 70 8b ce ff d0 84 c0 75 6b 8b 45 14 8b 16 8b 92 d0 00 00 00 50 53 8b ce ff d2 84 c0 75 0c 8b"))
 
-        # data = data.replace(bytes.fromhex("83 f8 03 0f 85 dd 00 00 00 8b 4d 08 33 c0 8d 55 f8 52 89 45 f8 89 45 fc e8 10 27 f2 ff 8b 5d 1c 8d 43 ff 3d fe 07 00 00 0f 87 90 00 00 00 8b 75 10 8b 0e 8b 56 04 8b 46 08 89 4d ec 8b ce 89 55 f0 89 45 f4 e8 c4 3b 14 00 83 f8 01 74 0b 8b ce e8 48 3b 14 00 84 c0 74 13 b9 ac e0 6a 10 e8 ca 3b 14 00 50 8d 4d ec e8 01 3d 14 00 8b 4d 18 8b 45 0c 53 51 8b 4d 08 8d 55 ec 52 50 51 e8 ab a2 ff ff 8b c8 e8 d4"), bytes.fromhex("83 f8 69 0f 85 dd 00 00 00 8b 4d 08 33 c0 8d 55 f8 52 89 45 f8 89 45 fc e8 10 27 f2 ff 8b 5d 1c 8d 43 ff 3d fe 07 00 00 0f 87 90 00 00 00 8b 75 10 8b 0e 8b 56 04 8b 46 08 89 4d ec 8b ce 89 55 f0 89 45 f4 e8 c4 3b 14 00 83 f8 01 74 0b 8b ce e8 48 3b 14 00 84 c0 74 13 b9 ac e0 6a 10 e8 ca 3b 14 00 50 8d 4d ec e8 01 3d 14 00 8b 4d 18 8b 45 0c 53 51 8b 4d 08 8d 55 ec 52 50 51 e8 ab a2 ff ff 8b c8 e8 d4"))
+        # Reject_Single_Player
+        data = data.replace(b'\x84\xc0\x74\x1f\x8b\x16',
+                            b'\x84\xc0\xeb\x1f\x8b\x16')
+
+        # Validation
+        data = data.replace(b'\x74\x7d\x8b\x17', b'\xeb\x7d\x8b\x17')
+
+        # Server Password Fix
+        data = data.replace(b'\x0F\x95\xC1\x51\x8D\x4D\xE8',
+                            b'\x03\xC9\x90\x51\x8D\x4D\xE8')
+
         # write the data back to the file
-        open(gamepath + GVars.nf + "engine.dll", "wb").write(data)
+        open(gamepath + "/engine.dll", "wb").write(data)
 
-    ###/// SERVER.DLL ///###
-    if (os.path.isfile(gamepath + GVars.nf + "server.dll")):
+    ### /// SERVER.DLL ///###
+    if (os.path.isfile(gamepath + "/server.dll")):
         Log("Patching server.dll...")
 
-        data = open(gamepath + GVars.nf + "server.dll", "rb").read()
+        data = open(gamepath + "/server.dll", "rb").read()
 
         # Delete the file
-        os.remove(gamepath + GVars.nf + "server.dll")
-        # replace the data
-        # 33 player cap edit
-        data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15', b'\x8bM\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
-        data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]', b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0 \x89\x01]')
-        data = data.replace(b'\xff\xd0\x85\xc0t\x05\xbe\x03\x00\x00\x00\x8b', b'\xff\xd0\x85\xc0t\x05\xbe\x21\x00\x00\x00\x8b')
-        data = data.replace(b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x01_^', b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x20_^')
+        os.remove(gamepath + "/server.dll")
+
+        # Replace the data
+        # Player cap edit
+        data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15',
+                            b'\x8bM\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
+        data = data.replace(b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0\x02\x89\x01]',
+                            b'\xf7\xd8\x1b\xc0\xf7\xd8\x83\xc0 \x89\x01]')
+        data = data.replace(b'\xff\xd0\x85\xc0t\x05\xbe\x03\x00\x00\x00\x8b',
+                            b'\xff\xd0\x85\xc0t\x05\xbe\x21\x00\x00\x00\x8b')
+        data = data.replace(b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x01_^',
+                            b'\xff\xd0\x85\xc0\x0f\x85\xaf\x05\x00\x00\xb0\x20_^')
+
         # Rename the server game description to our mod
-        data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70', b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
+        data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70',
+                            b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
 
         # Partner disconnect edit
-        data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
+        data = data.replace(b'disconnect "Partner disconnected"',
+                            b'script Plyr_Disconnect_Function()')
 
         # Command patch edit
         Log("===Patching commands===")
         for cmdrep in CommandReplacements:
             Log("Replacing " + cmdrep[0] + " with " + cmdrep[2])
-            data = data.replace(bytes(cmdrep[0], 'utf-8'), bytes(cmdrep[2], 'utf-8'))
+            data = data.replace(
+                bytes(cmdrep[0], 'utf-8'), bytes(cmdrep[2], 'utf-8'))
         Log("==========Done=========")
-        # data = data.replace(b'restart_level', b'portal2mprslv')
-        # data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
-        # data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
-        # data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
-        # data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
-        # data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
-        # data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
-        # data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
-        # data = data.replace(b'transition_map', b'portal2mptrmap')
-        # data = data.replace(b'select_map', b'p2mpselmap')
-        # data = data.replace(b'mp_select_level', b'portal2mpmpsell')
-        # data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
         # write the data back to the file
-        open(gamepath + GVars.nf + "server.dll", "wb").write(data)
+        open(gamepath + "/server.dll", "wb").write(data)
         Log("")
 
-    # we don't need to patch the other files since they don't exist on windows
-    if GVars.iow:
+    # The other files don't need to be patched since they don't exist on windows
+    if GVars.isWin:
         # rename the files so the new files are used
         Log("Renaming binaries...")
-        RenameBinaries(gamepath, binarys)
+        RenameBinaries(gamepath, binaries)
         return
 
-    ###/// ENGINE.SO ///###
-    if (os.path.isfile(gamepath + GVars.nf + "engine.so")):
+    ### /// ENGINE.SO ///###
+    if (os.path.isfile(gamepath + "/engine.so")):
         Log("")
         Log("Patching engine.so...")
 
-        data = open(gamepath + GVars.nf + "engine.so", "rb").read()
+        data = open(gamepath + "/engine.so", "rb").read()
 
         # remove the file
-        os.remove(gamepath + GVars.nf + "engine.so")
+        os.remove(gamepath + "/engine.so")
         # replace the data
-        # commentary fix (i think)
-        data = data.replace(bytes.fromhex("84 c0 0f 84 f5 fc ff ff 8b 06 8d 93 ee 96 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 31 76 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 b7 74 2a 00 5a ff b4 24 88 00 00 00 50 8d 83 44 a0 d5 ff 50 ff b4 24 8c 00 00 00 56 ff d7 83 c4 20 31 ff e9 ff fe ff ff 8d"), bytes.fromhex("84 d8 0f 84 f5 fc ff ff 8b 06 8d 93 ee 96 d5 ff 83 ec 04 e9 6b ff ff ff 83 ec 0c ff b4 24 80 00 00 00 e8 31 76 2a 00 89 c7 89 34 24 e8 47 c1 ff ff 83 c4 10 84 c0 8b 06 0f 84 99 fc ff ff 8b 96 6c 01 00 00 0b 96 70 01 00 00 0f 85 87 fc ff ff 89 f9 84 c9 0f 85 7d fc ff ff 83 ec 08 8b b8 d0 00 00 00 6a 00 ff b4 24 80 00 00 00 e8 b7 74 2a 00 5a ff b4 24 88 00 00 00 50 8d 83 44 a0 d5 ff 50 ff b4 24 8c 00 00 00 56 ff d7 83 c4 20 31 ff e9 ff fe ff ff 8d"))
-        # steam validation removal
-        data = data.replace(b"\xFF\x90\xD0\x00\x00\x00\x83\xC4\x10\x31\xC0", b"\x31\xC0\x40\x83\xC4\x10\xEB\x03\x10\x31\xC0")
-        # write the data back to the file
-        open(gamepath + GVars.nf + "engine.so", "wb").write(data)
 
-    ###/// SERVER.SO ///###
-    if (os.path.isfile(gamepath + GVars.nf + "server.so")):
+        # commentary fix (i think)
+        # Reject_Single_Player
+        data = data.replace(b'\x84\xc0\x0f\x84\xf5\xfc',
+                            b'\x84\xc0\x90\xe9\xf5\xfc')
+
+        # Validation
+        data = data.replace(b'\x74\xc5\x8b\x06\x8d\x93',
+                            b'\xeb\xc5\x8b\x06\x8d\x93')
+
+        # Server Password Fix
+        data = data.replace(b'\x0F\x95\xC1\x51\x8D\x4D\xE8',
+                            b'\x03\xC9\x90\x51\x8D\x4D\xE8')
+
+        # write the data back to the file
+        open(gamepath + "/engine.so", "wb").write(data)
+
+    ### /// SERVER.SO ///###
+    if (os.path.isfile(gamepath + "/server.so")):
         Log("Patching server.so...")
 
-        data = open(gamepath + GVars.nf + "server.so", "rb").read()
+        data = open(gamepath + "/server.so", "rb").read()
 
-        # remove the file
-        os.remove(gamepath + GVars.nf + "server.so")
-        # replace the data
-        # 33 player cap edit
-        data = data.replace(b'\x01\x00\x00\x00\x8bD$\x14\xc7\x00\x01', b'\x1f\x00\x00\x00\x8bD$\x14\xc7\x00\x1f')
-        data = data.replace(b'\xc0\x0f\xb6\xc0\x83\xc0\x02\x89\x02\x83\xc4', b'\xc0\x0f\xb6\xc0\x83\xc0 \x89\x02\x83\xc4')
-        data = data.replace(b'\x0f\xb6\xc0\x83\xc0\x02\x83\xec\x04\x89\xf3', b'\x0f\xb6\xc0\x83\xc0 \x83\xec\x04\x89\xf3')
-        data = data.replace(b'K\x8de\xf4\xb8\x01\x00\x00\x00[^', b'K\x8de\xf4\xb8\x1f\x00\x00\x00[^')
+        # Remove the file
+        os.remove(gamepath + "/server.so")
+
+        # Replace the data
+        # Player cap edit
+        data = data.replace(b'\x01\x00\x00\x00\x8bD$\x14\xc7\x00\x01',
+                            b'\x1f\x00\x00\x00\x8bD$\x14\xc7\x00\x1f')
+        data = data.replace(b'\xc0\x0f\xb6\xc0\x83\xc0\x02\x89\x02\x83\xc4',
+                            b'\xc0\x0f\xb6\xc0\x83\xc0 \x89\x02\x83\xc4')
+        data = data.replace(b'\x0f\xb6\xc0\x83\xc0\x02\x83\xec\x04\x89\xf3',
+                            b'\x0f\xb6\xc0\x83\xc0 \x83\xec\x04\x89\xf3')
+        data = data.replace(
+            b'K\x8de\xf4\xb8\x01\x00\x00\x00[^', b'K\x8de\xf4\xb8\x1f\x00\x00\x00[^')
         # Rename the server game description to our mod
-        data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70', b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
+        data = data.replace(b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x43\x6f\x6f\x70',
+                            b'\x50\x6f\x72\x74\x61\x6c\x20\x32\x20\x3a\x20\x4d\x4d')
 
         # Partner disconnect edit
-        data = data.replace(b'disconnect "Partner disconnected"', b'script EntFire("pdcm", "display")')
+        data = data.replace(b'disconnect "Partner disconnected"',
+                            b'script Plyr_Disconnect_Function()')
 
         # Command patch edit
         Log("===Patching commands===")
         for cmdrep in CommandReplacements:
             Log("Replacing " + cmdrep[0] + " with " + cmdrep[2])
-            data = data.replace(bytes(cmdrep[0], 'utf-8'), bytes(cmdrep[2], 'utf-8'))
+            data = data.replace(
+                bytes(cmdrep[0], 'utf-8'), bytes(cmdrep[2], 'utf-8'))
         Log("==========Done=========")
-        # data = data.replace(b'restart_level', b'portal2mprslv')
-        # data = data.replace(b'mp_restart_level', b'portal2mpmprslev')
-        # data = data.replace(b'mp_earn_taunt', b'portal2mpmper')
-        # data = data.replace(b'pre_go_to_calibration', b'portal2multiplayrpgtc')
-        # data = data.replace(b'erase_mp_progress', b'portal2multiemppg')
-        # data = data.replace(b'mp_mark_all_maps_complete', b'portal2multiplayermpmamcp')
-        # data = data.replace(b'mp_mark_all_maps_incomplete', b'portal2multiplayermodmpmami')
-        # data = data.replace(b'pre_go_to_hub', b'portal2mppgth')
-        # data = data.replace(b'transition_map', b'portal2mptrmap')
-        # data = data.replace(b'select_map', b'p2mpselmap')
-        # data = data.replace(b'mp_select_level', b'portal2mpmpsell')
-        # data = data.replace(b'mp_mark_course_complete', b'portal2multiplayermpmcc')
 
         # write the data back to the file
-        open(gamepath + GVars.nf + "server.so", "wb").write(data)
+        open(gamepath + "/server.so", "wb").write(data)
         Log("")
 
     # rename the files so the new files are used
     Log("Renaming binaries...")
-    RenameBinaries(gamepath, binarys)
+    RenameBinaries(gamepath, binaries)
 
-def RenameBinaries(gamepath, binarys):
-    # binarys = [
+
+def RenameBinaries(gamepath: str, binaries: list[str]) -> None:
+    # binaries = [
     #     "bin/linux32/engine.so",
     #     "bin/engine.dll",
     #     "portal2/bin/linux32/server.so",
@@ -362,15 +391,25 @@ def RenameBinaries(gamepath, binarys):
     # ]
 
     # go through the list of binaries
-    for binary in binarys:
+    for binary in binaries:
+        filename = binary.rsplit("/", 1)[1]
         # if the binary exists
-        if (os.path.isfile(gamepath + GVars.nf + binary)):
+        extra = "Portal2/bin/"
+        if (os.path.isfile(gamepath + "/" + binary)):
             # add a ".p2mmoverride" to the end of the binary
-            os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary + ".p2mmoverride")
+            os.rename(gamepath + "/" + binary, gamepath +
+                      "/" + binary + ".p2mmoverride")
             Log("Renamed " + binary + " to " + binary + ".p2mmoverride")
 
-def UnRenameBinaries(gamepath, binarys):
-    # binarys = [
+            if filename.startswith("engine"):
+                extra = "bin/"
+            # copy the binary to the gamepath
+            BF.MoveFile(gamepath + "/" + filename,
+                        gamepath + "/" + extra + filename)
+
+
+def UnRenameBinaries(gamepath: str, binaries: list[str]) -> None:
+    # binaries = [
     #     "bin/linux32/engine.so",
     #     "bin/engine.dll",
     #     "portal2/bin/linux32/server.so",
@@ -381,49 +420,86 @@ def UnRenameBinaries(gamepath, binarys):
     Log("Un-renaming binaries...")
 
     # Go through the list of binaries
-    for binary in binarys:
-        # Add a ".p2mmoverride" file extension to the end of the binary
-        binary = binary + ".p2mmoverride"
-        # If the binary exists,
-        if (os.path.isfile(gamepath + GVars.nf + binary)):
-            Log("Un-renaming " + binary + " to " + binary[:-13])
-            # If a file with the name gamepath + GVars.nf + binary[:-13] exists
-            if (os.path.isfile(gamepath + GVars.nf + binary[:-13])):
-                # Remove it
-                os.remove(gamepath + GVars.nf + binary)
-            else:
-                # Rename the binary back to the original
-                os.rename(gamepath + GVars.nf + binary, gamepath + GVars.nf + binary[:-13])
+    for Og_binary in binaries:
+        # Add a ".p2mmoverride" file extension to the end of the binary's name
+        binary = Og_binary + ".p2mmoverride"
+        # If the binary exists
+        if (os.path.isfile(gamepath + "/" + binary)):
+            Log("Un-renaming " + binary + " to " + Og_binary)
 
-def DeleteUnusedDlcs(gamepath):
+            # If a file with the original binary's name exist delete it
+            if (os.path.isfile(gamepath + "/" + Og_binary)):
+                os.remove(gamepath + "/" + Og_binary)
+
+            # Rename the binary back to it's original name
+            os.rename(gamepath + "/" + binary,
+                      gamepath + "/" + Og_binary)
+
+# Using the identifier file in P2MM's DLC folder, it can be determined
+# which DLC that is mounted to Portal 2 is in fact P2MM's DLC folder
+
+
+def findP2MMDLCFolder(gamepath: str) -> str:
+    for file in os.listdir(gamepath):
+        # find all the folders that start with "portal2_dlc"
+        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + "/" + file):
+            # if inside the folder there is a file called "p2mm.identifier" delete this folder
+            if "p2mm.identifier" in os.listdir(gamepath + "/" + file):
+                p2mmdlcfolder = gamepath + "/" + file
+                Log("Found P2MM's DLC folder: " + p2mmdlcfolder)
+                return p2mmdlcfolder
+    Log("P2MM's DLC folder was not found...")
+    Log("It's most likely not been mounted to Portal 2 yet or the gamepath is incorrect...")
+    return False
+
+# Make sure the dlc folders that come with Portal 2 exist
+# They are required since they include stuff for multiplayer and fixes for other things Portal 2 related
+# portal2_dlc1 is required for multiplayer to work since it includes mp_coop_lobby_3 and the stuff for the DLC course Art Therapy
+# portal2_dlc2 is also required, while its mainly for PeTi, it also includes a bunch of other assets and fixes for Portal 2
+# If either of these folders are not detected P2MM won't start or be mounted
+
+
+def CheckForRequiredDLC(gamepath: str) -> bool:
+    Log("")
+    Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
+    if ("undefined" in gamepath):
+        return "portal2pathundefined"
+    if (not os.path.exists(gamepath + "/portal2_dlc1")) or (not os.path.exists(gamepath + "/portal2_dlc2")):
+        Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
+        Log("P2MM with not be mounted/started!")
+        return False
+    Log("DLC folders were found...")
+    return True
+
+# Find and delete P2MM's portal2_dlc folder
+
+
+def DeleteUnusedDLCs(gamepath: str) -> None:
     Log("")
     Log("            _________Dealing with Folders________")
 
-    if ((os.path.exists(gamepath)) != True) or (os.path.exists(gamepath + GVars.nf + "portal2_dlc2") != True):
+    if not os.path.exists(gamepath):
         Log("Portal 2 game path not found!")
-        return "undefined"
+        return
 
-    # go through each file in the gamepath
-    for file in os.listdir(gamepath):
-        # find all the folders that start with "portal2_dlc"
-        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
-            # if inside the folder there is a file called "32playermod.identifier" delete this folder
-            if "32playermod.identifier" in os.listdir(gamepath + GVars.nf + file):
-                Log("Found old DLC: " + file)
-                # delete the folder even if it's not empty
-                BF.DeleteFolder(gamepath + GVars.nf + file)
-                Log("Deleted old DLC: " + file)
+    foundp2mmdlcfolder = findP2MMDLCFolder(gamepath)
+    if foundp2mmdlcfolder != False:
+        Log("Found old DLC: " + foundp2mmdlcfolder)
+        # delete the folder even if it's not empty
+        BF.DeleteFolder(foundp2mmdlcfolder)
+        Log("Deleted old DLC: " + foundp2mmdlcfolder)
 
-    return True
+# Find what DLC folders exist for Portal 2 and create a incremented folder for P2MM
 
-def FindAvailableDLC(gamepath):
+
+def FindAvailableDLC(gamepath: str) -> str:
     Log("Finding the next increment in DLC folders...")
     dlcs = []
-    DeleteUnusedDlcs(gamepath)
+    DeleteUnusedDLCs(gamepath)
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
-        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + GVars.nf + file):
+        if file.startswith("portal2_dlc") and os.path.isdir(gamepath + "/" + file):
             # get everything after "portal2_dlc"
             try:
                 dlcnumber = file.split("portal2_dlc")[1]
@@ -438,59 +514,75 @@ def FindAvailableDLC(gamepath):
                 Log("DLC " + dlcnumber + " is not a number!")
             else:
                 dlcs.append(str(dlcnumber))
-                Log("Adding DLC: " + dlcnumber + " to our internal list to ignore...")
+                Log("Adding DLC: " + dlcnumber +
+                    " to our internal list to ignore...")
 
     # sort each dlc number lower to higher
     dlcs.sort(key=int)
     # return the folder where to mount the mod
     return "portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1)
 
-
-
 # █ █▄░█ █ ▀█▀
 # █ █░▀█ █ ░█░
 
-def LaunchGame(gamepath):
+
+def LaunchGame(gamepath: str) -> None:
     Log("")
     Log("Running Game...")
 
-    # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 -conclearlog -condebug -console -usercon
+    GVars.isGameActive = True
+    Log("Launching Portal 2 With Launch Commands: -novid, -allowspectators, -nosixense, +developer 918612, +clear, -conclearlog, -usercon, -nopreloadmodels, " +
+        cfg.GetValue("Custom-Launch-Options"))
+    # LAUNCH OPTIONS: -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels (Custom-Launch-Options)
+
     try:
-        if (GVars.iow):
+        if GVars.isWin:
             # start portal 2 with the launch options and dont wait for it to finish
-            def RunGame():
-                # start portal 2 with the launch options and dont wait for it to finish
-                subprocess.run([gamepath + GVars.nf + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+map mp_coop_lobby_3", "+developer 918612", "+clear", "-conclearlog", "-condebug", "-console", "-usercon"])
-                Log("Game exited successfully.")
-                # Run The AfterFunction
-                GVars.AfterFunction()
-            # start the game in a new thread
-            thread = threading.Thread(target=RunGame)
-            thread.start()
-        elif (GVars.iol):
-            def RunGame():
-                def RunSteam():
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +map mp_coop_lobby_3 +developer 918612 +clear -conclearlog -condebug -console -usercon")
-                threading.Thread(target=RunSteam).start()
+            threading.Thread(target=RunGameOnWindows(gamepath)).start()
 
-                def CheckForGame():
-                    shouldcheck = True
-                    lached = False
-                    while shouldcheck:
-                        gamerunning = str(os.system("pidof portal2_linux"))
-                        if gamerunning == "256":
-                            if lached == True:
-                                GVars.AfterFunction()
-                                shouldcheck = False
-                        elif not lached:
-                            lached = True
-                        time.sleep(1)
-                CheckForGame()
-            thread = threading.Thread(target=RunGame)
-            thread.start()
-
+        elif GVars.isLinux:
+            threading.Thread(target=RunGameOnLinux).start()
 
     except Exception as e:
         Log("Failed to launch Portal 2!")
         Log("Error: " + str(e))
-        quit()
+
+
+def RunGameOnWindows(gamepath: str) -> None:
+    # start portal 2 with the launch options and dont wait for it to finish
+
+    subprocess.run([gamepath + "/portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612",
+                    "+clear", "-conclearlog", "-usercon", "-nopreloadmodels", cfg.GetValue("Custom-Launch-Options")])
+
+    Log("Game exited successfully.")
+
+    # Run The AfterFunction
+    GVars.isGameActive = False
+    GVars.AfterFunction()
+
+
+def RunGameOnLinux() -> None:
+    def RunSteam():
+        os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon -nopreloadmodels " +
+                  cfg.GetValue("Custom-Launch-Options"))
+
+    threading.Thread(target=RunSteam).start()
+
+    shouldCheck = True
+    gameIsRunning = False
+
+    while shouldCheck:
+        # * os.system returns 256 if the command doesn't return anything
+        gameNotExist = os.system("pidof portal2_linux") == 256
+
+        if gameNotExist and not gameIsRunning:
+            Log("Game exited successfully.")
+            shouldCheck = False
+            GVars.AfterFunction()
+
+        if not gameIsRunning:
+            gameIsRunning = True
+
+        time.sleep(1)
+
+    GVars.isGameActive = False

@@ -1,57 +1,38 @@
-// ██████╗██████╗             █████╗ ██████╗            ██████╗ ████████╗ ██████╗ █████╗
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚══██╔══╝██╔════╝██╔═══╝
-//╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██████╦╝   ██║   ╚█████╗ ██████╗
-// ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██╔══██╗   ██║    ╚═══██╗██╔══██╗
-//██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝╚█████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝  ╚════╝
+//  ██████╗██████╗             █████╗ ██████╗            ██████╗ ████████╗ ██████╗ █████╗
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██╔══██╗╚══██╔══╝██╔════╝██╔═══╝
+// ╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██████╦╝   ██║   ╚█████╗ ██████╗
+//  ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██╔══██╗   ██║    ╚═══██╗██╔══██╗
+// ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝╚█████╔╝
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝  ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
+        // Disable nametags this load
+        g_bAllowNametags = false
+
+        // Disable color indicator this load
+        g_bAllowColorIndicator = false
+
         // Make some blackkkkk
         inffade <- true
 
-        // Set up the changelevel command entity
-        Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_Bts6ServerCommand")
         // Destroy objects
         Entities.FindByName(null, "tube_ride_start_relay").Destroy()
 
-                // Create Env Globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+        UTIL_Team.Spawn_PortalGun(false)
+        UTIL_Team.Pinging(false)
+        UTIL_Team.Taunting(false)
 
-
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+        // Make changing levels work
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_core:0.3", 0, null)
     }
 
-    if (MSOnPlayerJoin != false) {
+    if (MSOnPlayerJoin) {
         printl("Player Joined (Reseting Viewcontrols)")
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 0.5, null)
-        EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0.6, null)
-        EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
-        EntFireByHandle(env_global01, "turnon", "", 1.1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1.1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1.1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1.1, null, null)
+        EntFire("Sp_A2_Bts6Viewcontrol", "Disable", "", 0.6, null)
+        UTIL_Team.Pinging(false)
+        UTIL_Team.Taunting(false)
     }
 
     if (MSLoop) {
@@ -87,6 +68,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "tube_straight_start"), "Trigger", "", 32, null, null)
         EntFireByHandle(Entities.FindByName(null, "tube_collision_start"), "Trigger", "", 36.75, null, null)
         EntFireByHandle(Entities.FindByName(null, "shadowed_light_03"), "TurnOn", "", 37, null, null)
+        EntFireByHandle(Entities.FindByName(null, "ending_relay"), "Trigger", "", 50.50, null, null)
 
         // Sp_A2_Bts6 viewcontrol creation
         Sp_A2_Bts6Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
@@ -96,23 +78,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A2_Bts6Viewcontrol.SetAngles(270, 0, 0)
         EntFire("Sp_A2_Bts6Viewcontrol", "setparent", "tube_ride_chell_proxy", 0, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "setparentattachment", "chell_bts6_attach", 0, null)
-        EntFire("Sp_A2_Bts6Viewcontrol", "enable", "", 0, null)
-        EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 50.66, null)
+        EntFire("Sp_A2_Bts6Viewcontrol", "Disable", "", 0, null)
+        EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 51, null)
 
         // Disable taunting & pinging
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+        UTIL_Team.Pinging(false, "all", 1)
+        UTIL_Team.Taunting(false, "all", 1)
 
         // Enable taunting & pinging
-        EntFireByHandle(env_global01, "turnoff", "", 50, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 50, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 50, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 50, null, null)
-
-        EntFire("Sp_A2_Bts6ServerCommand", "command", "echo Changing level...", 51, null)
-        EntFire("Sp_A2_Bts6ServerCommand", "command", "changelevel sp_a2_core", 51, null)
+        UTIL_Team.Pinging(false, "all", 50)
+        UTIL_Team.Taunting(false, "all", 50)
 
         // Remove some blackkkk
         inffade <- false

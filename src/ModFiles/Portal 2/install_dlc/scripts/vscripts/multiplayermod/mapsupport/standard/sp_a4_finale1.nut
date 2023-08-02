@@ -1,14 +1,14 @@
-// ██████╗██████╗             █████╗   ██╗██╗           ███████╗██╗███╗  ██╗ █████╗ ██╗     ███████╗  ███╗
-//██╔════╝██╔══██╗           ██╔══██╗ ██╔╝██║           ██╔════╝██║████╗ ██║██╔══██╗██║     ██╔════╝ ████║
-//╚█████╗ ██████╔╝           ███████║██╔╝ ██║           █████╗  ██║██╔██╗██║███████║██║     █████╗  ██╔██║
-// ╚═══██╗██╔═══╝            ██╔══██║███████║           ██╔══╝  ██║██║╚████║██╔══██║██║     ██╔══╝  ╚═╝██║
-//██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║     ██║██║ ╚███║██║  ██║███████╗███████╗███████╗
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+//  ██████╗██████╗             █████╗   ██╗██╗           ███████╗██╗███╗  ██╗ █████╗ ██╗     ███████╗  ███╗
+// ██╔════╝██╔══██╗           ██╔══██╗ ██╔╝██║           ██╔════╝██║████╗ ██║██╔══██╗██║     ██╔════╝ ████║
+// ╚█████╗ ██████╔╝           ███████║██╔╝ ██║           █████╗  ██║██╔██╗██║███████║██║     █████╗  ██╔██║
+//  ╚═══██╗██╔═══╝            ██╔══██║███████║           ██╔══╝  ██║██║╚████║██╔══██║██║     ██╔══╝  ╚═╝██║
+// ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║     ██║██║ ╚███║██║  ██║███████╗███████╗███████╗
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
-        PermaPotato <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
+        PermaPotato = true
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "StartForward", "", 0, null, null)
         // Destroy objects
@@ -25,19 +25,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Entities.FindByName(null, "catapult_3").__KeyValueFromString("playerSpeed", "14400")
         Entities.FindByName(null, "areaportal_bounce2").__KeyValueFromString("targetname", "areaportal_disable_mp_2")
         //Entities.FindByName(null, "tbeam_crusher_delivery").__KeyValueFromString("targetname", "beam_override_mp")
-        EntFire("relay_hatch", "addoutput", "OnTrigger areaportal_disable_mp:open", 1, null)
+        EntFire("relay_hatch", "AddOutput", "OnTrigger areaportal_disable_mp:open", 1, null)
         Entities.FindByClassnameNearest("trigger_once", Vector(-10792, -2048.01, 144), 20).Destroy()
-        Entities.FindByClassnameNearest("trigger_once", Vector(-12832, -3040, -112), 20).Destroy()
         Entities.FindByName(null, "backstop").Destroy()
 
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "spawnpoint1")
 
-        EntFire("catapult_3", "addoutput", "OnCatapulted tbeam_crusher_delivery:disable", 1, null)
-        EntFire("catapult_3", "addoutput", "OnCatapulted tbeam_crusher_delivery:enable::0.2", 1, null)
+        EntFire("catapult_3", "AddOutput", "OnCatapulted tbeam_crusher_delivery:disable", 1, null)
+        EntFire("catapult_3", "AddOutput", "OnCatapulted tbeam_crusher_delivery:enable::0.2", 1, null)
 
-        EntFire("hurt_crushers", "addoutput", "OnHurtPlayer hurt_crushers:kill::0.2", 1, null)
+        EntFire("hurt_crushers", "AddOutput", "OnHurtPlayer hurt_crushers:kill::0.2", 1, null)
 
         Sp_A4_Finale1_One_Time_Beam <- false
+
+        // Make changing levels work
+        Entities.FindByClassnameNearest("trigger_once", Vector(-12832, -3040, -112), 20).__KeyValueFromString("targetname", "transition_trigger")
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_finale2:0.45", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -46,8 +49,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSLoop) {
         // Slow down player so they land on the platform
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8905, -2048, -196), 100)) {
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-8905, -2048, -196), 100);) {
             try {
             Entities.FindByName(null, "spawnpoint1").Destroy()
             } catch (e) {}
@@ -59,26 +61,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Set spawn to be on the platform
         if (!Entities.FindByName(null, "spawnpoint1")) {
             if (Entities.FindByName(null, "hurt_crushers")) {
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1596, -7680, 0), 1200)) {
+                for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1596, -7680, 0), 1200);) {
                     p.SetOrigin(Vector(-8903, -2055, -196))
                     p.SetAngles(-16, -167, 0)
                 }
             } else {
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1596, -7680, 0), 1200)) {
+                for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1596, -7680, 0), 1200);) {
                     p.SetOrigin(Vector(-9622, -2460, 141))
                     p.SetAngles(18, 37, -0)
                 }
             }
-        }
-
-
-        // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-12832, -3040, -112), 100)) {
-             
-            SendToConsoleP232("changelevel sp_a4_finale2")
         }
     }
 }

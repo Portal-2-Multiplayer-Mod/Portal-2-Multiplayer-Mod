@@ -1,9 +1,9 @@
-// ██████╗██████╗             █████╗ ██████╗            ██╗███╗  ██╗████████╗██████╗  █████╗
-//██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗
-//╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██║██╔██╗██║   ██║   ██████╔╝██║  ██║
-// ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██║██║╚████║   ██║   ██╔══██╗██║  ██║
-//██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
+//  ██████╗██████╗             █████╗ ██████╗            ██╗███╗  ██╗████████╗██████╗  █████╗
+// ██╔════╝██╔══██╗           ██╔══██╗╚════██╗           ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗
+// ╚█████╗ ██████╔╝           ███████║  ███╔═╝           ██║██╔██╗██║   ██║   ██████╔╝██║  ██║
+//  ╚═══██╗██╔═══╝            ██╔══██║██╔══╝             ██║██║╚████║   ██║   ██╔══██╗██║  ██║
+// ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -14,11 +14,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("FadeStartDist", "1750")
         Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("FadeDist", "1950")
         Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("targetname", "incinerator_portal_custom")
-        EntFire("@enable_arms", "trigger", "", 0, null)
+        EntFire("@enable_arms", "Trigger", "", 0, null)
         Entities.FindByName(null, "InstanceAuto13-dangle_ceiling-disable_arms").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(2704, -1260, 112), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-2250.5, 605.5, 6668), 1024).Destroy()
-        a1HasPortalGun <- false
+        a2HasPortalGun <- false
+
+        // Make changing levels work
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_laser_intro:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
@@ -29,15 +32,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         SpA2IntroViewcontrol.SetOrigin(Entities.FindByName(null, "ghostAnim").GetOrigin())
         EntFire("SpA2IntroViewcontrol", "setparent", "ghostAnim", 0, null)
         EntFire("SpA2IntroViewcontrol", "setparentattachment", "attach_1", 0, null)
-        EntFire("SpA2IntroViewcontrol", "enable", "", 0, null)
+        EntFire("SpA2IntroViewcontrol", "Disable", "", 0, null)
         EntFire("SpA2IntroViewcontrolTele", "disable", "", 20.75, null)
-        EntFire("SpA2IntroViewcontrol", "addoutput", "targetname SpA2IntroViewcontrolTele", 0.25, null)
-        EntFire("SpA2IntroViewcontrolTele", "addoutput", "targetname SpA2IntroViewcontrolDone", 20.80, null)
+        EntFire("SpA2IntroViewcontrol", "AddOutput", "targetname SpA2IntroViewcontrolTele", 0.25, null)
+        EntFire("SpA2IntroViewcontrolTele", "AddOutput", "targetname SpA2IntroViewcontrolDone", 20.80, null)
         self.PrecacheSoundScript("ScriptedSequence.IncineratorFall")
         local TempEnt = Entities.CreateByClassname("prop_dynamic")
         TempEnt.__KeyValueFromString("targetname", "TempEnt")
-        EntFire("TempEnt", "addoutput", "targetname PlayFallSound", 0, null)
-        EntFire("start_fall_anim_relay", "trigger", "", 0, null)
+        EntFire("TempEnt", "AddOutput", "targetname PlayFallSound", 0, null)
+        EntFire("start_fall_anim_relay", "Trigger", "", 0, null)
     }
 
     if (MSLoop) {
@@ -60,50 +63,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 p.SetOrigin(Vector(-3308, 536, -10737))
                 p.SetAngles(0 0 0)
             }
-            EntFire("SpA2IntroViewcontrolDone", "addoutput", "targetname SpA2IntroViewcontrolFinished", 0.15, null)
+            EntFire("SpA2IntroViewcontrolDone", "AddOutput", "targetname SpA2IntroViewcontrolFinished", 0.15, null)
         }
 
-        EntFire("shaft_areaportal_1", "open", "", 0, null)
-        EntFire("shaft_areaportal_2", "open", "", 0, null)
+        EntFire("shaft_areaportal_1", "Open", "", 0, null)
+        EntFire("shaft_areaportal_2", "Open", "", 0, null)
 
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-736, 1594, -11038), 50)) {
-             
-            SendToConsoleP232("changelevel sp_a2_laser_intro")
-        }
-
-        // // Remove the player's Portal Gun
-        // if (Entities.FindByName(null, "portalgun")) {
-        //     local ent = null
-        //     while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
-        //         ent.Destroy()
-        //     }
-        // }
-
-        // // Give the player a Portal Gun
-        // if (!Entities.FindByName(null, "portalgun")) {
-        //     local p = null
-        //     while (p = Entities.FindByClassname(p, "player")) {
-        //         if (Entities.FindByName(null, "CustomPortalGun")) {
-        //         } else {
-        //             PortalGunGiveContinue <- true
-        //             local ent = null
-        //             while (ent = Entities.FindByClassnameWithin(ent, "weapon_portalgun", p.GetOrigin(), 2)) {
-        //                 PortalGunGiveContinue <- false
-        //             }
-        //             if (PortalGunGiveContinue) {
-        //             PortalGun <- Entities.CreateByClassname("weapon_portalgun")
-        //             PortalGun.__KeyValueFromString("StartingTeamNum", "0")
-        //             PortalGun.__KeyValueFromString("targetname", "CustomPortalGun")
-        //             PortalGun.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, p.GetOrigin().z+20))
-        //             EntFireByHandle(PortalGun, "use", "", 0.25, p, p)
-        //             EntFireByHandle(PortalGun, "kill", "", 1.25, p, p)
-        //             }
-        //         }
-        //     }
-        // }
-
-        if (!a1HasPortalGun) {
+        if (!a2HasPortalGun) {
             // Remove Portal Gun
             local ent = null
             while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
@@ -130,7 +96,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (!Entities.FindByName(null, "portalgun")) {
-            a1HasPortalGun = true
+            a2HasPortalGun = true
         }
     }
 }

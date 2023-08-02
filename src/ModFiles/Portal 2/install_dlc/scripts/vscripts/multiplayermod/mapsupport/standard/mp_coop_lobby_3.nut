@@ -15,77 +15,65 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "robo_rampa_03b").__KeyValueFromString("mingpulevel", "0")
         Entities.FindByName(null, "robo_rampa_04b").__KeyValueFromString("mincpulevel", "0")
         Entities.FindByName(null, "robo_rampa_04b").__KeyValueFromString("mingpulevel", "0")
-        EntFire("trigger_run_script", "addoutput", "OnStartTouchBluePlayer coop_man_enter_hub:SetStateBTrue", 0, null)
-        EntFire("trigger_quick_spawn", "addoutput", "OnStartTouchBluePlayer coop_man_quick_open:SetStateBTrue", 0, null)
-        EntFire("trigger_set_course", "addoutput", "OnStartTouchBluePlayer coop_man_set_course:SetStateBTrue", 0, null)
+        EntFire("trigger_run_script", "AddOutput", "OnStartTouchBluePlayer coop_man_enter_hub:SetStateBTrue", 0, null)
+        EntFire("trigger_quick_spawn", "AddOutput", "OnStartTouchBluePlayer coop_man_quick_open:SetStateBTrue", 0, null)
+        EntFire("trigger_set_course", "AddOutput", "OnStartTouchBluePlayer coop_man_set_course:SetStateBTrue", 0, null)
+        enablehub <- false
     }
 
     if (MSPostPlayerSpawn) {
-        // Enable the hub entirely
-        try {
-            // Enable team building course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_teambuilding"))
+        for (local course = 1; course <= 6; course++) {
+            // 9 levels is the highest that a course has
+            for (local level = 1; level <= 9; level++) {
+                if (IsLevelComplete(course - 1, level - 1)) {
+                    enablehub <- true
+                }
+            }
+        }
 
-            // Enable tbeam course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_tbeam"))
-
-            // Enable mass and velocity course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_bridge"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_bridge"))
-
-            // Enable paint course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_paint"))
-
-            // Enable fling course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_fling"))
-
-            // Enable extra course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_extra"))
-
-            // Enable all finished course
-            DoEntFire("!self", "enable", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
-            DoEntFire("!self", "trigger", "", 0.0, null, Entities.FindByName(null, "relay_reveal_all_finished"))
+        if (enablehub) {
+            // If any level was completed outside of calibration, enable the hub entirely
+            EntFire("case_open_course", "invalue", "7", 0, null)
 
             // Enable music
             DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
-            Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
-            Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
-            
-            // Enable retrigger for all logic_relay entities except for those defined otherwise
-            // in the bsp to prevent desync on clients and remove errors from the console
-            local ent = null
-            while (ent = Entities.FindByClassname(ent, "logic_relay")) {
-                ent.__KeyValueFromString("spawnflags", "2")
-            }
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit_finished"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track2-rl_start_exit_finished"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track3-rl_start_exit"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track3-rl_start_exit_finished"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track4-rl_start_exit"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track4-rl_start_exit_finished"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-relay_open_doors"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-rl_start_exit"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-rl_start_exit_finished"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit"))
-            DoEntFire("!self", "addoutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit_finished"))
-        } catch(exception) {}
+        }
+
+        // Allow the players to drop from spawn tube
+        Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
+        Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
+
+        // Enable retrigger for all logic_relay entities except for those defined otherwise
+        // in the bsp to prevent desync on clients and remove errors from the console
+        local ent = null
+        while (ent = Entities.FindByClassname(ent, "logic_relay")) {
+            ent.__KeyValueFromString("spawnflags", "2")
+        }
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit_finished"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track2-rl_start_exit_finished"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track3-rl_start_exit"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track3-rl_start_exit_finished"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track4-rl_start_exit"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track4-rl_start_exit_finished"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-relay_open_doors"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-rl_start_exit"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-rl_start_exit_finished"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit"))
+        DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit_finished"))
 
         // Remove useless entities so that the entity limit does not crash the game
 
+        // Paint reveal cutscene cleanser doesn't properly turn off (there's two of them)
+        Entities.FindByName(Entities.FindByName(null, "cleanser_preventduring_paint_reveal"), "cleanser_preventduring_paint_reveal").Destroy()
+        Entities.FindByName(null, "cleanser_preventduring_paint_reveal").Destroy()
+
         // Remove func_portal_bumper's from the map
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "func_portal_bumper")) {
+        for (local ent; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
             ent.Destroy() // 165 entities removed
         }
         // Remove env_sprite's from the map
-        local ent = null
-        while(ent = Entities.FindByClassname(ent, "env_sprite")) {
+        for (local ent; ent = Entities.FindByClassname(ent, "env_sprite");) {
             ent.Destroy() // 31 entities removed
         }
 
@@ -151,8 +139,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) {
             local LCatEn = null
             while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
-                DoEntFire("!self", "enable", "", 0.0, null, LCatEn)
-                DoEntFire("!self", "trigger", "", 0.0, null, LCatEn)
+                DoEntFire("!self", "Disable", "", 0.0, null, LCatEn)
+                DoEntFire("!self", "Trigger", "", 0.0, null, LCatEn)
             }
         }
 
@@ -166,8 +154,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) {
             local RCatEn = null
             while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
-                DoEntFire("!self", "enable", "", 0.0, null, RCatEn)
-                DoEntFire("!self", "trigger", "", 0.0, null, RCatEn)
+                DoEntFire("!self", "Disable", "", 0.0, null, RCatEn)
+                DoEntFire("!self", "Trigger", "", 0.0, null, RCatEn)
             }
         }
 
@@ -181,13 +169,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) {
             local LCatDis = null
             while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
-                DoEntFire("!self", "enable", "", 0.0, null, LCatDis)
-                DoEntFire("!self", "trigger", "", 0.0, null, LCatDis)
+                DoEntFire("!self", "Disable", "", 0.0, null, LCatDis)
+                DoEntFire("!self", "Trigger", "", 0.0, null, LCatDis)
             }
             local RCatDis = null
             while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
-                DoEntFire("!self", "enable", "", 0.0, null, RCatDis)
-                DoEntFire("!self", "trigger", "", 0.0, null, RCatDis)
+                DoEntFire("!self", "Disable", "", 0.0, null, RCatDis)
+                DoEntFire("!self", "Trigger", "", 0.0, null, RCatDis)
             }
         }
 

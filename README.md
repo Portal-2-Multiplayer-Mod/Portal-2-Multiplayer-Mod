@@ -1,48 +1,118 @@
-# Created by ***kyleraykbs, Nanoman2525, vista, Bumpy, & Wolƒe Strider Shoσter***
-**Big thanks to our team members: ***cabiste, sear, & Jeffrey*****
+<h1>
+  <img src="https://cdn.discordapp.com/attachments/1073818580539424882/1073869966543179806/P2MMBannerREADME.png" alt="p2mmbanner_logo" width="500" height="300" align="left">
+  <a href="https://discord.gg/nXRygGNxyK">
+    <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
+  </a>
+  <br>
+  <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest">
+    <img src="https://img.shields.io/github/release-date/kyleraykbs/Portal2-32PlayerMod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
+  </a>
+  <br>
+  <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/commits/main">
+    <img src="https://img.shields.io/github/last-commit/kyleraykbs/Portal2-32PlayerMod?label=Last%20Commit&style=for-the-badge" alt="Commit Shield Badge" align="right">
+  </a>
+  <br>
+    <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/downloads/kyleraykbs/Portal2-32PlayerMod/total?style=for-the-badge" alt="Download Count Shield Badge" align="right">
+  </a>
+  <br>
+  <br>
+  <br>
+  <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
+</h1>
 
-**Note: This mod is completely server-side. Only the host needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.**
+### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
 
-***Version 2.0***
-```
-+ Presents tons of new features that were not in 1.5
-+ Much better launcher
-+ Makes use of a custom plugin to bring about some of the features
-+ Full Linux and Windows support
-+ Rewritten codebase to allow for efficiency
-+ Coded in a way to more likely work with future Portal 2 updates.
-+ A lot more stability than v1.5
-+ More organized file-structure
-+ Easy to set up
-```
+### Special thanks to Krzyhau for allowing us to use his code from Speedrun Mod.
 
+## Languages
+English | [Polski](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
 
 ## Mod features
-1. Maximum player cap of 33 (not 32!)
-2. Elastic player collision
-3. Custom player colors
-4. Player join/disconnect messages
-5. Patched some game breaking commands to prevent abuse from other players
-6. Full cooperative campaign support
-7. Full singleplayer campaign support (Almost finished, needs a bit more polishing)
-8. Nametags
-9. Full support for the cooperative Gelocity workshop maps
-10. Chat commands
-11. Allow the server to cache objects server-side without crashing
-12. Encryption of game-breaking cvars to random characters on each game launch
-13. Support for Linux, Windows 11, 10, 8.1, 8, 7, Vista, and XP
+```
+  - A maximum player cap of 33
+  - Nametags
+  - Custom Player colors
+  - Chat commands (!help)
+  - In-game Admin system
+  - Full cooperative campaign support
+  - Full singleplayer campaign support (needs minor polishing)
+  - Full Super 8 map support
+  - In-house map support for select workshop maps
+  - Encryption of client commands invoked through the active GameRules class
+  - Support for Linux, Windows 7 and above
+  - Togglable game options and config system exposed through VScript and a custom plugin
+  - Support for SAR (SourceAutoRecord) for speedrunning
+  - Native support for dedicated servers if you manage to get one working :)
+  - Different game modes (standard, speedrun, futbol, deathmatch)
+```
 
-## Features on the table
-- Sixense support
-- Player specific colored portals
+## Features to be added
+- Steam Deck/SteamOS 3.0 support
+- Discord API for easy invites
+- More support for workshop maps
+- FastDL Support
 
 # Installation & use
 
-- Latest version released: https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
+**Steam guide on how to host and join a game:**
+- https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
 
-The build guide & default installation is on the steam guide
-- Steam guide: https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
-  - ***The Steam guide goes over everything you need to know in order to get the mod working, so be sure to read through it to prevent confusion.***
+**Latest version:**
+- https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
 
-and if you still want some help setting up the mod or are having some issues then join our discord server for help
-https://discord.gg/kW3nG6GKpF
+**Discord Server for technical help (MAKE SURE YOU READ THE FAQ!!!), bug report or to just chat:**
+- https://discord.gg/kW3nG6GKpF
+
+
+# Build
+
+*We use Python 3.10 for the launcher*
+
+**Dependencies**
+
+we're using a requirements file `pip install -r requirements.txt`
+
+**Compilation**
+
+We use `pyinstaller` to make the executable
+- Windows:
+
+```
+pyinstaller "src/MainWindow.py" -F -i "src/GUI/assets/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/languages;languages"
+```
+
+- Linux:
+
+```
+pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/languages:languages"
+```
+
+*Note:*
+- If you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Updater.py` to your own information
+
+
+# Contributions
+
+We are always happy to take whatever additional help we can get for this project. Specifically, we are in need of proficient coders in Squirrel or C++. If you think you can spare a hand, it will go a long way!
+
+# Credits
+
+**Developers:**
+- kyleraykbs
+- Bumpy
+- Nanoman2525
+- vista
+- Wolƒe Strider Shoσter
+- cabiste
+- zwexit (Orsell)
+
+
+**Contributors:**
+- wanderer (free bird)
+- \n
+- Luukex
+- MeblIkea
+- Luukex
+- PieCreeper
+- Areng
+- Krzyhau

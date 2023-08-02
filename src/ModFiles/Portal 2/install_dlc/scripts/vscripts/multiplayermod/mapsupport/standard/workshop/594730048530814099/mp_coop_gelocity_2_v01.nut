@@ -1,7 +1,7 @@
-// ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗ ███████╗██╗      █████╗  █████╗ ██╗████████╗██╗   ██╗           ██████╗            ██╗   ██╗ █████╗   ███╗  
-// ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝ ██╔════╝██║     ██╔══██╗██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝           ╚════██╗           ██║   ██║██╔══██╗ ████║  
-// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██║  ██╗ █████╗  ██║     ██║  ██║██║  ╚═╝██║   ██║    ╚████╔╝              ███╔═╝           ╚██╗ ██╔╝██║  ██║██╔██║  
-// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██║  ╚██╗██╔══╝  ██║     ██║  ██║██║  ██╗██║   ██║     ╚██╔╝             ██╔══╝              ╚████╔╝ ██║  ██║╚═╝██║  
+// ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗ ███████╗██╗      █████╗  █████╗ ██╗████████╗██╗   ██╗           ██████╗            ██╗   ██╗ █████╗   ███╗
+// ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝ ██╔════╝██║     ██╔══██╗██╔══██╗██║╚══██╔══╝╚██╗ ██╔╝           ╚════██╗           ██║   ██║██╔══██╗ ████║
+// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ██║  ██╗ █████╗  ██║     ██║  ██║██║  ╚═╝██║   ██║    ╚████╔╝              ███╔═╝           ╚██╗ ██╔╝██║  ██║██╔██║
+// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝            ██║  ╚██╗██╔══╝  ██║     ██║  ██║██║  ██╗██║   ██║     ╚██╔╝             ██╔══╝              ╚████╔╝ ██║  ██║╚═╝██║
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗╚██████╔╝███████╗███████╗╚█████╔╝╚█████╔╝██║   ██║      ██║   ██████████╗███████╗██████████╗  ╚██╔╝  ╚█████╔╝███████╗
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝ ╚═════╝ ╚══════╝╚══════╝ ╚════╝  ╚════╝ ╚═╝   ╚═╝      ╚═╝   ╚═════════╝╚══════╝╚═════════╝   ╚═╝    ╚════╝ ╚══════╝
 
@@ -34,8 +34,8 @@ function Gelocity2AddLap() {
             }
         }
     }
-    
-    printl("Gelocity2LapCount: " + Gelocity2LapCount)
+
+    printlP2MM("Gelocity2LapCount: " + Gelocity2LapCount)
     Entities.FindByName(null, "change_rounds_text_override").__KeyValueFromString("message", Gelocity2LapCount + " Laps")
     EntFire("change_rounds_text_override", "Display")
     EntFire("button_1_override", "Skin", "0")
@@ -70,7 +70,7 @@ function Gelocity2RemoveLap() {
             }
         }
     }
-    printl("Gelocity2LapCount: " + Gelocity2LapCount)
+    printlP2MM("Gelocity2LapCount: " + Gelocity2LapCount)
     Entities.FindByName(null, "change_rounds_text_override").__KeyValueFromString("message", Gelocity2LapCount + " Laps")
     EntFire("change_rounds_text_override", "Display")
     if (Gelocity2LapCount <= 2) {
@@ -80,7 +80,7 @@ function Gelocity2RemoveLap() {
 }
 
 function YeetThePaint() {
-    printl("Yall Playing GELOCITY");
+    printlP2MM("Yall Playing GELOCITY");
     local ent = null
     while (ent = Entities.FindByClassname(ent, "paint_sphere")) {
         // EntFire(ent.GetName(), "paint", "", 0.8)
@@ -99,7 +99,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         RemoveAllClassname("keyframe_rope")
         RemoveAllClassname("env_sprite")
         Entities.FindByName(null, "clip_start").Destroy()
-        
+
         local ent = null
         while (ent = Entities.FindByName(null, "door_start_1_1")) {
             ent.__KeyValueFromString("targetname", "door_start_1_1_override")
@@ -112,24 +112,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("checkpoint_orange_1", "kill")
         EntFire("checkpoint_blue_1", "kill")
 
-        // printl("Yall Playing GELOCITY");
+        // printlP2MM("Yall Playing GELOCITY");
         // local ent = null
         // while (ent = Entities.FindByClassname(ent, "paint_sphere")) {
         //     EntFire(ent.GetName(), "paint", "", 0.8)
         //     EntFire(ent.GetName(), "kill", "", 1)
         // }
         // Yeet Paint
-        //EntFire("gel_relay", "addoutput", "OnTrigger:p2mm_servercommand:command:script YeetThePaint():2.2", 0.1)
+        //EntFire("gel_relay", "AddOutput", "OnTrigger:p2mm_servercommand:command:script YeetThePaint():2.2", 0.1)
 
         // Nessasary Stuff
-        // EntFire("door_end_2", "addoutput", "targetname door_end_2_override", 5)
-        // EntFire("door_end_1", "addoutput", "targetname door_end_1_override", 5)
+        // EntFire("door_end_2", "AddOutput", "targetname door_end_2_override", 5)
+        // EntFire("door_end_1", "AddOutput", "targetname door_end_1_override", 5)
         //Entities.FindByName(null, "red_dropper-initial_spawn").__KeyValueFromString("targetname", "p2mmspawn_override_red")
         redspawncoords <- Entities.FindByName(null, "red_dropper-initial_spawn").GetOrigin()
         //Entities.FindByName(null, "blue_dropper-initial_spawn").__KeyValueFromString("targetname", "p2mmspawn_override_blue")
         bluespawncoords <- Entities.FindByName(null, "blue_dropper-initial_spawn").GetOrigin()
-        EntFire("p2mmspawn_override_red", "enable")
-        EntFire("p2mmspawn_override_blue", "enable")
+        EntFire("p2mmspawn_override_red", "Disable")
+        EntFire("p2mmspawn_override_blue", "Disable")
         EntFire("p2mmspawn_override_red", "setasactivespawn", "", 0.05)
         EntFire("p2mmspawn_override_blue", "setasactivespawn", "", 0.05)
         local ent = null
@@ -140,7 +140,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         Entities.FindByName(null, "gel_relay").__KeyValueFromString("targetname", "gel_relay_override")
-        // EntFire("gel_relay_override", "trigger", "", 2)
+        // EntFire("gel_relay_override", "Trigger", "", 2)
         //EntFire("gel_relay_override", "kill", "", 0.2)
         Entities.FindByName(null, "gel_killer").Destroy()
         //relay_death_field_off_3
@@ -163,74 +163,64 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "button_1").__KeyValueFromString("targetname", "button_1_override")
         Entities.FindByName(null, "rounds_text_blue").__KeyValueFromString("targetname", "p2mm_laps_text")
         //AddLapButton
-        EntFire("rounds_button_2_override", "addoutput", "OnPressed button_2_override:SetAnimation:press_release")
-        EntFire("rounds_button_2_override", "addoutput", "OnPressed p2mm_servercommand:command:script Gelocity2AddLap()")
+        EntFire("rounds_button_2_override", "AddOutput", "OnPressed button_2_override:SetAnimation:press_release")
+        EntFire("rounds_button_2_override", "AddOutput", "OnPressed p2mm_servercommand:command:script Gelocity2AddLap()")
         //RemoveLapButton
-        EntFire("rounds_button_1_override", "addoutput", "OnPressed button_1_override:SetAnimation:press_release")
-        EntFire("rounds_button_1_override", "addoutput", "OnPressed p2mm_servercommand:command:script Gelocity2RemoveLap()")
-    }
-
-    if (MSPostPlayerSpawn) {
-        printl("Removed: " + TotalRemovedEnts + " Entities")
+        EntFire("rounds_button_1_override", "AddOutput", "OnPressed button_1_override:SetAnimation:press_release")
+        EntFire("rounds_button_1_override", "AddOutput", "OnPressed p2mm_servercommand:command:script Gelocity2RemoveLap()")
     }
 
     if (MSLoop) {
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(2556, -7747, 441), 100)) {
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(2556, -7747, 441), 100);) {
             CanCheckpointGel <- true
         }
 
-        // Setup Everyones Class
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local CurrentPlayerClass = FindPlayerClass(p)
-            try {
-                local test1 = CurrentPlayerClass.Gelocity2Checkpoint
-                local test2 = CurrentPlayerClass.Laps
-                local test3 = CurrentPlayerClass.Gelocity2CheckpointMove
-            } catch(e) {
-                CurrentPlayerClass.Gelocity2Checkpoint <- true
-                CurrentPlayerClass.Laps <- -1
-                CurrentPlayerClass.Gelocity2CheckpointMove <- class {
-                    pos = Vector(2580, -4399,  267)
-                    rot = Vector(0, 90, 0)
-                }
-            }
-        }
+        // Setup Everyone's Class
+        // MOVED TO CreateGenericPlayerClass()
+        // for (local p; p = Entities.FindByClassname(p, "player");) {
+        //     local CurrentPlayerClass = FindPlayerClass(p)
+        //     try {
+        //         local test1 = CurrentPlayerClass.Gelocity2Checkpoint
+        //         local test2 = CurrentPlayerClass.nCurrentLap
+        //         local test3 = CurrentPlayerClass.Gelocity2CheckpointMove
+        //     } catch(e) {
+        //         CurrentPlayerClass.Gelocity2Checkpoint <- true
+        //         CurrentPlayerClass.nCurrentLap <- -1
+        //         CurrentPlayerClass.Gelocity2CheckpointMove <- class {
+        //             pos = Vector(2580, -4399,  267)
+        //             rot = Vector(0, 90, 0)
+        //         }
+        //     }
+        // }
 
         if (CanCheckpointGel) {
             // Teleport Player to Checkpoint
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", redspawncoords, 250)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", redspawncoords, 250);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 TeleportPlayerToClass(p, CurrentPlayerClass.Gelocity2CheckpointMove)
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", bluespawncoords, 250)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", bluespawncoords, 250);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 TeleportPlayerToClass(p, CurrentPlayerClass.Gelocity2CheckpointMove)
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(2558, -8673, -303), 600)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(2558, -8673, -303), 600);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 TeleportPlayerToClass(p, CurrentPlayerClass.Gelocity2CheckpointMove)
             }
 
             if (OneTimeGel) {
                 OneTimeGel <- false
-                EntFire("gel_relay_override", "trigger", "", 1)
+                EntFire("gel_relay_override", "Trigger", "", 1)
                 EntFire("j_sphere_3", "paint", "", 0)
                 EntFire("j_sphere_3", "paint", "", 30)
                 EntFire("j_sphere_4", "paint", "", 0)
                 EntFire("j_sphere_4", "paint", "", 30)
-                
             }
 
             // // Checkpoint Stuff
             // local CPPos = Vector(0, 0, 0)
             // local CPRadius = 0
-            // local p = null
-            // while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            // for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 // local CurrentPlayerClass = FindPlayerClass(p)
                 // CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                 //     pos = Vector(0, 0, 0)
@@ -242,8 +232,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Fan Checkpoint
             local CPPos = Vector(-4736, 670, 500)
             local CPRadius = 550
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(-4737, 1335, 523)
@@ -254,8 +243,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Finish Line Checkpoint
             local CPPos = Vector(2560, -4160, 64)
             local CPRadius = 550
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(2580, -4399, 267)
@@ -266,8 +254,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Funnel Checkpoint
             local CPPos = Vector(2561, 1493, -191)
             local CPRadius = 550
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(2561, 1493, -191)
@@ -278,8 +265,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Crusher Checkpoint
             local CPPos = Vector(2675, 4715, 192)
             local CPRadius = 600
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(2494, 5592, 192)
@@ -290,8 +276,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // First Jump Checkpoint
             local CPPos = Vector(-1334, 5547, 192)
             local CPRadius = 550
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(-550, 5567, 192)
@@ -302,8 +287,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // PitFling 1 Checkpoint
             local CPPos = Vector(-1791, 2439, 192)
             local CPRadius = 600
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(-1791, 2439, 192)
@@ -314,8 +298,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Moving Platform Checkpoint
             local CPPos = Vector(-7546, 404, -191)
             local CPRadius = 600
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(-7546, 404, -191)
@@ -326,8 +309,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // PitFling 2 Checkpoint
             local CPPos = Vector(-6145, -3584, -191)
             local CPRadius = 600
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(-6145, -3584, -191)
@@ -338,8 +320,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Laser Checkpoint
             local CPPos = Vector(-2251, -6339, 64)
             local CPRadius = 600
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", CPPos, CPRadius);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 CurrentPlayerClass.Gelocity2CheckpointMove <- class {
                     pos = Vector(-2251, -6339, 64)
@@ -351,14 +332,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Finish Line
         if (!WinCondition) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(2558, -3646, 64), 420)) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(2558, -3646, 64), 420);) {
                 local CurrentPlayerClass = FindPlayerClass(p)
                 local PlayerUsername = CurrentPlayerClass.username
                 if (CurrentPlayerClass.Gelocity2Checkpoint) {
                     WinCondition <- false
-                    CurrentPlayerClass.Laps <- CurrentPlayerClass.Laps + 1
-                    if (CurrentPlayerClass.Laps >= Gelocity2LapCount) {
+                    CurrentPlayerClass.nCurrentLap <- CurrentPlayerClass.nCurrentLap + 1
+                    if (CurrentPlayerClass.nCurrentLap >= Gelocity2LapCount) {
                         WinCondition <- true
                     }
                     CurrentPlayerClass.Gelocity2Checkpoint <- false
@@ -366,35 +346,34 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     local pcolor = GetPlayerColor(p, true)
                     Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
                     if (!WinCondition) {
-                        printl(PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps)
-                        EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.Laps, 0.1)
+                        printlP2MM(PlayerUsername + " Completed Lap " + CurrentPlayerClass.nCurrentLap)
+                        EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.nCurrentLap, 0.1)
                     } else {
-                        printl(PlayerUsername + " Won The Race!")
-                        SendToConsoleP232("say " + PlayerUsername + " Won The Race!")
+                        printlP2MM(PlayerUsername + " Won The Race!")
+                        SendToConsoleP2MM("say " + PlayerUsername + " Won The Race!")
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Race!", 0.1)
                         //ent_fire first_blue addoutput "rendercolor 255 0 0"
-                        if (p.GetTeam() >= 3) {
-                            EntFire("blue_wins", "trigger")
+                        if (p.GetTeam() >= TEAM_BLUE) {
+                            EntFire("blue_wins", "Trigger")
                         } else {
-                            EntFire("orange_wins", "trigger")
+                            EntFire("orange_wins", "Trigger")
                         }
                         local pcolor2 = GetPlayerColor(p, false)
                         Entities.FindByName(null, "first_orange").__KeyValueFromString("rendercolor", pcolor2.r.tostring() + " " + pcolor2.g.tostring() + " " + pcolor2.b.tostring())
                         Entities.FindByName(null, "first_blue").__KeyValueFromString("rendercolor", pcolor2.r.tostring() + " " + pcolor2.g.tostring() + " " + pcolor2.b.tostring())
                     }
-                    EntFire("p2mm_laps_text", "display", "", 0.2)
+                    EntFire("p2mm_laps_text", "Display", "", 0.2)
                 }
             }
         }
 
         // Checkpoint
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-4736, -123, -2373), 420)) {
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-4736, -123, -2373), 420);) {
             local CurrentPlayerClass = FindPlayerClass(p)
             local PlayerUsername = CurrentPlayerClass.username
             if (!CurrentPlayerClass.Gelocity2Checkpoint) {
                 CurrentPlayerClass.Gelocity2Checkpoint <- true
-                printl(PlayerUsername + " Completed Checkpoint")
+                printlP2MM(PlayerUsername + " Completed Checkpoint")
             }
         }
     }

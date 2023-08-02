@@ -7,7 +7,9 @@
 
 HasSleptInContainer1 <- false
 function p2mmDestroyedSequence() {
-    printl("p2mmDestroyedSequence")
+    if (GetDeveloperLevelP2MM()) {
+        printl("(P2:MM): p2mmDestroyedSequence() has ran!")
+    }
     HasSleptInContainer1 = true
 }
 
@@ -38,7 +40,10 @@ function p2mmSecondDrop() {
 }
 
 function p2mmDropCollision() {
-    printl("Dropping container collision")
+    if (GetDeveloperLevelP2MM()) {
+        printlP2MM("Dropping container collision via p2mmDropCollision().")
+    }
+
     local dropamount = 45
     local ceiltime = 2.6
 
@@ -130,77 +135,77 @@ function p2mmDropCollision() {
     // ContainerBedBrush
     // ContainerBedBrush.SetOrigin(Vector(ContainerBedBrush.GetOrigin().x, ContainerBedBrush.GetOrigin().y, ContainerBedBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerBedBrush", "disable")
-    // EntFire("ContainerBedBrush", "enable", "", ceiltime)
+    // EntFire("ContainerBedBrush", "Disable", "", ceiltime)
 
     // ContainerFloorBrush
     // ContainerFloorBrush.SetOrigin(Vector(ContainerFloorBrush.GetOrigin().x, ContainerFloorBrush.GetOrigin().y, ContainerFloorBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerFloorBrush", "disable")
-    // EntFire("ContainerFloorBrush", "enable", "", ceiltime)
+    // EntFire("ContainerFloorBrush", "Disable", "", ceiltime)
 
     // ContainerCeilingBrush
     // ContainerCeilingBrush.SetOrigin(Vector(ContainerCeilingBrush.GetOrigin().x, ContainerCeilingBrush.GetOrigin().y, ContainerCeilingBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerCeilingBrush", "disable")
-    // EntFire("ContainerCeilingBrush", "enable", "", ceiltime)
+    // EntFire("ContainerCeilingBrush", "Disable", "", ceiltime)
 
     // ContainerRightWallBrush
     // ContainerRightWallBrush.SetOrigin(Vector(ContainerRightWallBrush.GetOrigin().x, ContainerRightWallBrush.GetOrigin().y, ContainerRightWallBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerRightWallBrush", "disable")
-    // EntFire("ContainerRightWallBrush", "enable", "", ceiltime)
+    // EntFire("ContainerRightWallBrush", "Disable", "", ceiltime)
 
     // ContainerLeftWallBrush
     // ContainerLeftWallBrush.SetOrigin(Vector(ContainerLeftWallBrush.GetOrigin().x, ContainerLeftWallBrush.GetOrigin().y, ContainerLeftWallBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerLeftWallBrush", "disable")
-    // EntFire("ContainerLeftWallBrush", "enable", "", ceiltime)
+    // EntFire("ContainerLeftWallBrush", "Disable", "", ceiltime)
 
     // ContainerFrontWallBrush
     // ContainerFrontWallBrush.SetOrigin(Vector(ContainerFrontWallBrush.GetOrigin().x, ContainerFrontWallBrush.GetOrigin().y, ContainerFrontWallBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerFrontWallBrush", "disable")
-    // EntFire("ContainerFrontWallBrush", "enable", "", ceiltime)
+    // EntFire("ContainerFrontWallBrush", "Disable", "", ceiltime)
 
     // ContainerBackDoorBrush
     // ContainerBackDoorBrush.SetOrigin(Vector(ContainerBackDoorBrush.GetOrigin().x, ContainerBackDoorBrush.GetOrigin().y, ContainerBackDoorBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerBackDoorBrush", "disable")
-    // EntFire("ContainerBackDoorBrush", "enable", "", ceiltime)
+    // EntFire("ContainerBackDoorBrush", "Disable", "", ceiltime)
 
     // ContainerBathroomBrush
     // ContainerBathroomBrush.SetOrigin(Vector(ContainerBathroomBrush.GetOrigin().x, ContainerBathroomBrush.GetOrigin().y, ContainerBathroomBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerBathroomBrush", "disable")
-    // EntFire("ContainerBathroomBrush", "enable", "", ceiltime)
+    // EntFire("ContainerBathroomBrush", "Disable", "", ceiltime)
 
     // ContainerClosetBrush
     // ContainerClosetBrush.SetOrigin(Vector(ContainerClosetBrush.GetOrigin().x, ContainerClosetBrush.GetOrigin().y, ContainerClosetBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerClosetBrush", "disable")
-    // EntFire("ContainerClosetBrush", "enable", "", ceiltime)
+    // EntFire("ContainerClosetBrush", "Disable", "", ceiltime)
 
     // ContainerNightstandsBrush
     // ContainerNightstandsBrush.SetOrigin(Vector(ContainerNightstandsBrush.GetOrigin().x, ContainerNightstandsBrush.GetOrigin().y, ContainerNightstandsBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerNightstandsBrush", "disable")
-    // EntFire("ContainerNightstandsBrush", "enable", "", ceiltime)
+    // EntFire("ContainerNightstandsBrush", "Disable", "", ceiltime)
 
     // // ContainerLightBrush
     // ContainerLightBrush.SetOrigin(Vector(ContainerLightBrush.GetOrigin().x, ContainerLightBrush.GetOrigin().y, ContainerLightBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerLightBrush", "disable")
-    // EntFire("ContainerLightBrush", "enable", "", ceiltime)
+    // EntFire("ContainerLightBrush", "Disable", "", ceiltime)
 
     // // ContainerWheatleyBrush
     // ContainerWheatleyBrush.SetOrigin(Vector(ContainerWheatleyBrush.GetOrigin().x, ContainerWheatleyBrush.GetOrigin().y, ContainerWheatleyBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerWheatleyBrush", "disable")
-    // EntFire("ContainerWheatleyBrush", "enable", "", ceiltime)
+    // EntFire("ContainerWheatleyBrush", "Disable", "", ceiltime)
 
     // ContainerDeskBrush
     // ContainerDeskBrush.SetOrigin(Vector(ContainerDeskBrush.GetOrigin().x, ContainerDeskBrush.GetOrigin().y, ContainerDeskBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerDeskBrush", "disable")
-    // EntFire("ContainerDeskBrush", "enable", "", ceiltime)
+    // EntFire("ContainerDeskBrush", "Disable", "", ceiltime)
 
     // ContainerPlantBrush
     // ContainerPlantBrush.SetOrigin(Vector(ContainerPlantBrush.GetOrigin().x, ContainerPlantBrush.GetOrigin().y, ContainerPlantBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerPlantBrush", "disable")
-    // EntFire("ContainerPlantBrush", "enable", "", ceiltime)
+    // EntFire("ContainerPlantBrush", "Disable", "", ceiltime)
 
     // ContainerChairBrush
     // ContainerChairBrush.SetOrigin(Vector(ContainerChairBrush.GetOrigin().x, ContainerChairBrush.GetOrigin().y, ContainerChairBrush.GetOrigin().z - dropamount))
     // EntFire("ContainerChairBrush", "disable")
-    // EntFire("ContainerChairBrush", "enable", "", ceiltime)
+    // EntFire("ContainerChairBrush", "Disable", "", ceiltime)
 
     //DebugDrawBox(ContainerBedBrush.GetOrigin(), ContainerBedBrush.GetBoundingMins(), ContainerBedBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
     //DebugDrawBox(ContainerFloorBrush.GetOrigin(), ContainerFloorBrush.GetBoundingMins(), ContainerFloorBrush.GetBoundingMaxs(), 255, 155, 0, 15, 9999999)
@@ -233,12 +238,12 @@ function p2mmParentAndStartMath() {
         EntFire("Actor_container_12", "SetAnimation", "anim2", 0)
         EntFire("Actor_container_13", "SetAnimation", "anim2", 0)
 
-        EntFire("Actor_container_01", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_03", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_05", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_07", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_09", "addoutput", "OnAnimationDone !self:Kill")
-        EntFire("Actor_container_11", "addoutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_01", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_03", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_05", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_07", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_09", "AddOutput", "OnAnimationDone !self:Kill")
+        EntFire("Actor_container_11", "AddOutput", "OnAnimationDone !self:Kill")
 
         EntFire("Actor_container_master", "SetDefaultAnimation", "halt2", 0)
         EntFire("Actor_container_01", "SetDefaultAnimation", "halt2", 0)
@@ -472,7 +477,7 @@ function StopStickAndTeleport() {
     DisableJumpmsp = false
     local p = null
     while (p = Entities.FindByClassname(p, "player")) {
-        EntFireByHandle(p, "addoutput", "MoveType 2", 0, null, null)
+        EntFireByHandle(p, "AddOutput", "MoveType 2", 0, null, null)
         p.SetOrigin(Vector(-1710, 4380, 3100))
         p.SetVelocity(Vector(80, 0, 0))
     }
@@ -480,41 +485,20 @@ function StopStickAndTeleport() {
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
+        // Make changing levels work
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro2:0.3", 0, null)
+
         ContainerFloorBrush <- false
         currentCartCache <- false
         stoprenable <- false
         dummyent <- Entities.CreateByClassname("prop_dynamic")
 
         // Remove Portal Gun
-        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
-        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+        UTIL_Team.Spawn_PortalGun(false)
 
-        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
-        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
-
-        // Create Env Globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
-
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+        // Disable pinging and taunting
+        UTIL_Team.Pinging(false)
+        UTIL_Team.Taunting(false)
 
         HasStartedSp_A1_Intro1 <- false
 
@@ -539,15 +523,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("container_collision", "DisableCollision", "", 0)
 
-        EntFire("return_to_bed_button", "addoutput", "OnPressed p2mm_servercommand:command:script p2mmDestroyedSequence():5")
-        EntFire("@rl_container_ride", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmDropCollision()")
-        EntFire("crane_second_startup_relay", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():1")
-        EntFire("@debug_start_perf_test", "addoutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():10")
-        EntFire("@rl_container_ride_third_section", "addoutput", "OnTrigger p2mm_servercommand:command:script StopStickAndTeleport()")
-        EntFire("enter_chamber_trigger", "addoutput", "OnTrigger p2mmportalrelay:Trigger::34")
+        EntFire("return_to_bed_button", "AddOutput", "OnPressed p2mm_servercommand:command:script p2mmDestroyedSequence():5")
+        EntFire("@rl_container_ride", "AddOutput", "OnTrigger p2mm_servercommand:command:script p2mmDropCollision()")
+        EntFire("crane_second_startup_relay", "AddOutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():1")
+        EntFire("@debug_start_perf_test", "AddOutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():10")
+        EntFire("@rl_container_ride_third_section", "AddOutput", "OnTrigger p2mm_servercommand:command:script StopStickAndTeleport()")
+        EntFire("enter_chamber_trigger", "AddOutput", "OnTrigger p2mmportalrelay:Trigger::34")
         //@rl_container_ride
-        EntFire("relay_start_map", "addoutput", "OnTrigger p2mmclockflashrelay:Trigger")
-        EntFire("p2mmclockflashrelay", "addoutput", "OnTrigger p2mmclockflashrelay:Trigger::1")
+        EntFire("relay_start_map", "AddOutput", "OnTrigger p2mmclockflashrelay:Trigger")
+        EntFire("p2mmclockflashrelay", "AddOutput", "OnTrigger p2mmclockflashrelay:Trigger::1")
         Entities.FindByName(null, "@rl_container_pause_motion").Destroy()
         Entities.FindByName(null, "@rl_container_resume_motion").Destroy()
         Entities.FindByName(null, "@rl_container_ride_second_section").Destroy()
@@ -572,7 +556,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("announcer_ding_on_wav", "PlaySound", "", 1.5)
         EntFire("good_morning_vcd", "Start", "", 3)
 
-        printl("Ran")
         Sp_A1_Intro1Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         Sp_A1_Intro1Viewcontrol.__KeyValueFromString("targetname", "Sp_A1_Intro1Viewcontrol")
         Sp_A1_Intro1Viewcontrol.__KeyValueFromString("target_team", "-1")
@@ -580,10 +563,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A1_Intro1Viewcontrol.SetAngles(0, 0, 0)
         EntFire("Sp_A1_Intro1Viewcontrol", "setparent", "camera_intro", 0, null)
         EntFire("Sp_A1_Intro1Viewcontrol", "setparentattachment", "camera_intro", 0, null)
-        EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0, null)
+        EntFire("Sp_A1_Intro1Viewcontrol", "Disable", "", 0, null)
         EntFire("Sp_A1_Intro1ViewcontrolTele", "disable", "", 12, null)
-        EntFire("Sp_A1_Intro1Viewcontrol", "addoutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
-        EntFire("Sp_A1_Intro1ViewcontrolTele", "addoutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
+        EntFire("Sp_A1_Intro1Viewcontrol", "AddOutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
+        EntFire("Sp_A1_Intro1ViewcontrolTele", "AddOutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
+
+        // kill people block exit elevator
+        Entities.FindByName(null, "departure_elevator-elevator_1").__KeyValueFromString("dmg", "100")
 
         // Create container collisson brushes with an offset of (-19, 510, -3)
         // ContainerBedBrush
@@ -771,9 +757,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
-            printl("Player joined (Reseting viewcontrol)")
+            if (GetDeveloperLevelP2MM()) {
+                printlP2MM("Player joined (Resetting viewcontrol)")
+            }
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
-            EntFire("Sp_A1_Intro1Viewcontrol", "enable", "", 0.6, null)
+            EntFire("Sp_A1_Intro1Viewcontrol", "Disable", "", 0.6, null)
         }
     }
 
@@ -805,10 +793,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetOrigin(Vector(-8709.201172, 1690.068359, 36))
                     p.SetAngles(-4.158184, 64.797371, 0)
                 }
-                EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
                 stoprenable <- true
                 //Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
                 //Entities.FindByName(null, "knockout-portalgun").Destroy()
@@ -846,13 +830,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local p = null
                 while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5556.693848, 1838.821411, 280.240265), 35)) {
                     p.SetOrigin(Vector(-5556.693848, 1838.821411, 270))
-                    printl("Bumped out")
                 }
                 // // Bump desk
                 // local p = null
                 // while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5811.007813 1989.968750 282.031250), 35)) {
                 //     p.SetOrigin(Vector(-5825.083008, 1979.134399, 270))
-                //     printl("Bumped out")
                 // }
 
                 //-5811.007813 1989.968750 282.031250;
@@ -922,10 +904,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             rotval <- 2
             cartrotoffset1 <- 100
             rotval1 <- 2
-            //printl(offsettick)
             local p = null
             while (p = Entities.FindByClassname(p, "player")) {
-                EntFireByHandle(p, "addoutput", "MoveType 4", 0, null, null)
+                EntFireByHandle(p, "AddOutput", "MoveType 4", 0, null, null)
 
                 planepitch <- currentCartRot.x * rotval 
                 planeroll <- currentCartRot.z * rotval1
@@ -936,7 +917,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, currentCartPos.z + ((playermiddle.x + playermiddle.y) + 14)))
                 p.SetVelocity(Vector(p.GetVelocity().x/1.1, p.GetVelocity().y/1.1, 0))
             }
-            DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)
+            if (GetDeveloperLevelP2MM()) {
+                DebugDrawBox(currentCartPos, Vector(-5, -5, -5), Vector(5, 5, 5), 255, 100, 0, 100, 0)
+            }
             currentCartCache <- currentCartPos
 
 
@@ -1041,22 +1024,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
                 // Debug The Lines  ////////////////////////////////////////////////////
-                DebugDrawLine(frontwall[1][0], frontwall[1][1], 255, 255, 0, true, 0) // front wall
-                DebugDrawLine(frontwall[2][0], frontwall[2][1], 255, 255, 0, true, 0) // front wall
-                DebugDrawLine(leftwall[1][0], leftwall[1][1], 255, 255, 0, true, 0)   // left wall
-                DebugDrawLine(leftwall[2][0], leftwall[2][1], 255, 255, 0, true, 0)   // left wall
-                DebugDrawLine(backdoor[1][0], backdoor[1][1], 255, 255, 0, true, 0)   // back door
-                DebugDrawLine(backdoor[2][0], backdoor[2][1], 255, 255, 0, true, 0)   // back door
-                DebugDrawLine(bathroomwall[1][0], bathroomwall[1][1], 255, 255, 0, true, 0)   // bathroom wall
-                DebugDrawLine(bathroomwall[2][0], bathroomwall[2][1], 255, 255, 0, true, 0)   // bathroom wall
-                DebugDrawLine(closetwall[1][0], closetwall[1][1], 255, 255, 0, true, 0)   // closet wall
-                DebugDrawLine(closetwall[2][0], closetwall[2][1], 255, 255, 0, true, 0)   // closet wall
-                DebugDrawLine(rightwall[1][0], rightwall[1][1], 255, 255, 0, true, 0)   // right wall
-                DebugDrawLine(rightwall[2][0], rightwall[2][1], 255, 255, 0, true, 0)   // right wall
-                DebugDrawLine(frontclosetwall[1][0], frontclosetwall[1][1], 255, 255, 0, true, 0)   // front closet wall
-                DebugDrawLine(frontclosetwall[2][0], frontclosetwall[2][1], 255, 255, 0, true, 0)   // front closet wall
-                DebugDrawLine(leftclosetwall[1][0], leftclosetwall[1][1], 255, 255, 0, true, 0)   // left closet wall
-                DebugDrawLine(leftclosetwall[2][0], leftclosetwall[2][1], 255, 255, 0, true, 0)   // left closet wall
+                if (GetDeveloperLevelP2MM()) {
+                    DebugDrawLine(frontwall[1][0], frontwall[1][1], 255, 255, 0, true, 0) // front wall
+                    DebugDrawLine(frontwall[2][0], frontwall[2][1], 255, 255, 0, true, 0) // front wall
+                    DebugDrawLine(leftwall[1][0], leftwall[1][1], 255, 255, 0, true, 0)   // left wall
+                    DebugDrawLine(leftwall[2][0], leftwall[2][1], 255, 255, 0, true, 0)   // left wall
+                    DebugDrawLine(backdoor[1][0], backdoor[1][1], 255, 255, 0, true, 0)   // back door
+                    DebugDrawLine(backdoor[2][0], backdoor[2][1], 255, 255, 0, true, 0)   // back door
+                    DebugDrawLine(bathroomwall[1][0], bathroomwall[1][1], 255, 255, 0, true, 0)   // bathroom wall
+                    DebugDrawLine(bathroomwall[2][0], bathroomwall[2][1], 255, 255, 0, true, 0)   // bathroom wall
+                    DebugDrawLine(closetwall[1][0], closetwall[1][1], 255, 255, 0, true, 0)   // closet wall
+                    DebugDrawLine(closetwall[2][0], closetwall[2][1], 255, 255, 0, true, 0)   // closet wall
+                    DebugDrawLine(rightwall[1][0], rightwall[1][1], 255, 255, 0, true, 0)   // right wall
+                    DebugDrawLine(rightwall[2][0], rightwall[2][1], 255, 255, 0, true, 0)   // right wall
+                    DebugDrawLine(frontclosetwall[1][0], frontclosetwall[1][1], 255, 255, 0, true, 0)   // front closet wall
+                    DebugDrawLine(frontclosetwall[2][0], frontclosetwall[2][1], 255, 255, 0, true, 0)   // front closet wall
+                    DebugDrawLine(leftclosetwall[1][0], leftclosetwall[1][1], 255, 255, 0, true, 0)   // left closet wall
+                    DebugDrawLine(leftclosetwall[2][0], leftclosetwall[2][1], 255, 255, 0, true, 0)   // left closet wall
+                }
                 ////////////////////////////////////////////////////////////////////////
                 // Debug The Points ////////////////////////////////////////////////////
                 local minsize = Vector(-2, -2, -2)
@@ -1067,25 +1052,27 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local alpha = 100
                 local time = 0
                 // draw the boxes
-                DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(backleftcloset, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontleftcloset, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontrightcloset, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetfrontleft, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetfrontright, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetbackleft, minsize, maxsize, r, g, b, alpha, time)
-                //top
-                DebugDrawBox(frontlefttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontrighttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(backlefttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(backleftclosettop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontleftclosettop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(frontrightclosettop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetfrontlefttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetfrontrighttop, minsize, maxsize, r, g, b, alpha, time)
-                DebugDrawBox(dressingclosetbacklefttop, minsize, maxsize, r, g, b, alpha, time)
+                if (GetDeveloperLevelP2MM()) {
+                    DebugDrawBox(frontleft, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontright, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(backleft, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(backleftcloset, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontleftcloset, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontrightcloset, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetfrontleft, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetfrontright, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetbackleft, minsize, maxsize, r, g, b, alpha, time)
+                    //top
+                    DebugDrawBox(frontlefttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontrighttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(backlefttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(backleftclosettop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontleftclosettop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(frontrightclosettop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetfrontlefttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetfrontrighttop, minsize, maxsize, r, g, b, alpha, time)
+                    DebugDrawBox(dressingclosetbacklefttop, minsize, maxsize, r, g, b, alpha, time)
+                }
                 ////////////////////////////////////////////////////////////////////////
 
                 // // draw a line from intersect1 to finalpoint
@@ -1096,12 +1083,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 //////////////////////////
             }
-        }
-
-        // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-685, 3112, 2400), 100)) {
-            SendToConsole("changelevel sp_a1_intro2")
         }
     }
 }
@@ -1120,7 +1101,9 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
             playerforward = Vector(0, 5, 0)
         }
         inter = LineIntersect2DZTranslation(cull1, cull2, playerpoint, playerpoint + playerforward, dir)
-        DebugDrawBox(inter, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 75, 75, 255, 0)
+        if (GetDeveloperLevelP2MM()) {
+            DebugDrawBox(inter, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 75, 75, 255, 0)
+        }
     }
 
     if (outofbounds) {
@@ -1147,10 +1130,14 @@ function WallPush(wall, playerpoint, player, pushvec, distance, outofbounds = fa
         player.SetOrigin(player.GetOrigin() + pushvec)
         player.SetVelocity(player.GetVelocity() + (pushvec * 10))
         
-        DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 255, 75, 255, 0)
+        if (GetDeveloperLevelP2MM()) {
+            DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 75, 255, 75, 255, 0)
+        }
 
     } else {
-        DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0)
+        if (GetDeveloperLevelP2MM()) {
+            DebugDrawBox(point, Vector(-2, -2, -2), Vector(2, 2, 2), 255, 75, 255, 255, 0) 
+        }
     }
 }
 

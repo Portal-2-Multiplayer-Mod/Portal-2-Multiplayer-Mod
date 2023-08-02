@@ -1,45 +1,44 @@
-// ██████╗██████╗             █████╗   ███╗             ██╗███╗  ██╗████████╗██████╗  █████╗ ██████╗
-//██╔════╝██╔══██╗           ██╔══██╗ ████║             ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗╚════██╗
-//╚█████╗ ██████╔╝           ███████║██╔██║             ██║██╔██╗██║   ██║   ██████╔╝██║  ██║  ███╔═╝
-// ╚═══██╗██╔═══╝            ██╔══██║╚═╝██║             ██║██║╚████║   ██║   ██╔══██╗██║  ██║██╔══╝
-//██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝███████╗
-//╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚══════╝
+//  ██████╗██████╗             █████╗   ███╗             ██╗███╗  ██╗████████╗██████╗  █████╗ ██████╗
+// ██╔════╝██╔══██╗           ██╔══██╗ ████║             ██║████╗ ██║╚══██╔══╝██╔══██╗██╔══██╗╚════██╗
+// ╚█████╗ ██████╔╝           ███████║██╔██║             ██║██╔██╗██║   ██║   ██████╔╝██║  ██║  ███╔═╝
+//  ╚═══██╗██╔═══╝            ██╔══██║╚═╝██║             ██║██║╚████║   ██║   ██╔══██╗██║  ██║██╔══╝
+// ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝███████╗
+// ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚══════╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
-        // Remove Portal Gun
-        RemovePortalGunBlue <- Entities.CreateByClassname("info_target")
-        RemovePortalGunBlue.__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
+        // Offset coop repsawn nodes for elevators (left and right side)
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
 
-        RemovePortalGunOrange <- Entities.CreateByClassname("info_target")
-        RemovePortalGunOrange.__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
+        // This could be repurposed for speedrun mode where the teleport node
+        // is offset exactly where we want to spawn players in the actual elevator
+        // teleport <- Entities.FindByName(null, "@arrival_teleport")
+        // elevator <- Entities.FindByName(null, "arrival_elevator-elevator_1")
+        // teleport.SetOrigin(Vector(elevator.GetOrigin().x, elevator.GetOrigin().y, elevator.GetOrigin().z - 60.97))
+        // EntFireByHandle(Entities.FindByName(null, "@arrival_teleport"), "setparent", "arrival_elevator-elevator_1", 0, null, null)
+
+        // Make the first player spawn on the right side
+        // Entities.FindByClassnameNearest("trigger_once", Vector(1296, 512, 112), 50).Destroy()
+
+        // Remove Portal Gun
+        UTIL_Team.Spawn_PortalGun(false)
 
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
-        //Entities.FindByName(null, "@glados").__KeyValueFromString("targetname", "p2mmgladosoverride")
         Entities.FindByClassnameNearest("trigger_once", Vector(-320, 832, -24), 100).Destroy()
         Entities.FindByName(null, "Fizzle_Trigger").Destroy()
         Entities.FindByName(null, "@entry_door-door_close_relay").Destroy()
-        //Sparky <- Entities.CreateByClassname("env_spark")
-        //Sparky.__KeyValueFromString("targetname", "Sparky")
-        //Sparky.SetOrigin(Vector(-872, -440, -32))
-        //Sparky.SetAngles(0, 0, 0)
-        //EntFire("Sparky", "startspark", 0, null)
+
+        // Make changing levels work
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro3:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
-        //Entities.FindByName(null, "p2mmgladosoverride").__KeyValueFromString("targetname", "@glados")
     }
 
     if (MSLoop) {
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-320, 1248, -656), 50)) {
-            SendToConsoleP232("changelevel sp_a1_intro3")
-        }
-
         try {
             Entities.FindByName(null, "block_boxes").Destroy()
-        } catch(exception) {}
+        } catch (exception) {}
     }
 }

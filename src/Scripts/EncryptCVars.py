@@ -2,7 +2,7 @@ import os
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 
-def Encrypt(path, search, replace):
+def Encrypt(path: str, search: str, replace: str) -> None:
     enc = "utf-8"
     rt = "r"
     wt = "w"
@@ -14,14 +14,14 @@ def Encrypt(path, search, replace):
             for file in files:
                 try:
                     ###############
-                    f = open(root + GVars.nf + file, rt, encoding=enc)
+                    f = open(root + "/" + file, rt, encoding=enc)
                     ###############
                     data = f.read()
                     f.close()
                     data = data.replace(search, replace)
-                    
+
                     ###############
-                    f = open(root + GVars.nf + file, wt, encoding=enc)
+                    f = open(root + "/" + file, wt, encoding=enc)
                     ###############
                     f.write(data)
                     f.close()
@@ -33,20 +33,20 @@ def Encrypt(path, search, replace):
                     # Log("Could not encrypt file: " + os.path.join(root, file))
                     # Log("=======ERROR======")
                     pass
-                
+
     elif os.path.isfile(path):
         try:
             Log("Encrypting file: " + file + " With encoding: " + enc + " and read mode: " + rt + " and write mode: " + wt)
-            
+
             ###############
-            f = open(root + GVars.nf + file, rt, encoding=enc)
+            f = open(root + "/" + file, rt, encoding=enc)
             ###############
             data = f.read()
             f.close()
             data = data.replace(search, replace)
-            
+
             ###############
-            f = open(root + GVars.nf + file, wt, encoding=enc)
+            f = open(root + "/" + file, wt, encoding=enc)
             ###############
             f.write(data)
             f.close()
