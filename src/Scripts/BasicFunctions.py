@@ -183,3 +183,23 @@ def StringToParagraph(text: str, length: int) -> str:
         currentLineLength += len(words[i]) +1
 
     return newText.strip()
+
+def GetAvailableLanguages() -> list[str]:
+    """Returns a list of all available languages
+
+    Returns
+    -------
+    list[str]
+        a list with the file names of available languages
+    """
+
+    langs = []
+
+    for file in os.listdir("Languages"):
+        langs.append(file[:-5])
+
+    if os.path.exists(GVars.modPath + os.sep + "Languages"):
+        for file in os.listdir(GVars.modPath + os.sep + "Languages"):
+            langs.append(file[:-5])
+
+    return langs
