@@ -26,7 +26,7 @@ translations: dict[str, str]
 AfterFunction: None
 
 def init() -> None:
-    global modPath, modFilesPath, configPath, iow, iol, iosd, nf, translations
+    global modPath, modFilesPath, configPath, iow, iol, iosd, translations
 
     if (sys.platform == "win32"):
         iow = True

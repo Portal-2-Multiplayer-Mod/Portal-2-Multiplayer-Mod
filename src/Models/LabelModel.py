@@ -1,5 +1,5 @@
 class Label:
-    def __init__(self, text: str, color: tuple = (155, 155, 155), xPos: float = 0, yPos: float = 0, xStart: float = 0, xEnd: float = 100, size: float = 100) -> None:
+    def __init__(self, text: str, color: tuple = (155, 155, 155), xPos: float = 0, yPos: float = 0, xStart: float = 0, xEnd: float = 100, size: float = 26) -> None:
         """ Basic Label model
 
         Parameters
@@ -26,10 +26,10 @@ class Label:
             size of the text
         """
 
-        self.text = text
+        self.Text = text
         self.Color = color
         self.xPos = xPos
         self.xStart = xStart
         self.xEnd = xEnd
         self.yPos = yPos
-        self.size = size
+        self.Size = size

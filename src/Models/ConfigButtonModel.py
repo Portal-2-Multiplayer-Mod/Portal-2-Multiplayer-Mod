@@ -9,29 +9,28 @@ class ConfigButton:
 
     isAsync = False
 
-    def __init__(self, key: str, outerSelf, menu: str, translations: dict[str]) -> None:
+    def __init__(self, key: str, outerSelf, menu: str) -> None:
 
         self.Key = key
         self.Menu = menu
         self.OuterSelf = outerSelf
-        self.Translations = translations
 
         self.Value = GVars.configData[key]["value"]
 
-        self.text = str(self.Value)
+        self.Text = str(self.Value)
         maxTextLength = 10
 
-        if len(self.text) > maxTextLength:
-            self.text = self.text[:maxTextLength] + "..."
+        if len(self.Text) > maxTextLength:
+            self.Text = self.Text[:maxTextLength] + "..."
 
-        self.text = translations[key] + ": " + self.text
+        self.Text = GVars.translations[key] + ": " + self.Text
         self.KeyObject = GVars.configData[key]
 
         # * customizations
         self.ActiveColor = (255, 255, 0)
         self.InactiveColor = (155, 155, 155)
         self.sizeMultiplier = 1
-        self.size = 700
+        self.Size = 38
         self.xPos = 16
         self.yPos = 2
 
@@ -53,7 +52,7 @@ class ConfigButton:
 
         try:
             outerSelf.DrawLabel(
-                self.Translations[self.Key+"-description"], 75, 590, (130, 130, 255))
+                GVars.translations[self.Key+"-description"], 75, 590, (130, 130, 255))
         except:
             outerSelf.DrawLabel(
                 self.KeyObject["description"], 75, 590, (130, 130, 255))
@@ -61,7 +60,7 @@ class ConfigButton:
 
         try:
             outerSelf.DrawLabel(
-                self.Translations[self.Key+"-warning"], 75, 625, (255, 50, 50))
+                GVars.translations[self.Key+"-warning"], 75, 625, (255, 50, 50))
         except:
             outerSelf.DrawLabel(
                 self.KeyObject["warning"], 75, 625, (255, 50, 50))
@@ -72,20 +71,17 @@ class ConfigButton:
             CFG.EditConfig(self.Key, not self.Value)
 
         else:
-
-            self.OuterSelf.ChangeMenu(self.OuterSelf.BlankButton, append=True)
-
+            # self.OuterSelf.ChangeMenu(self.OuterSelf.BlankButton, append=True)
             try:
                 self.OuterSelf.GetUserInput(
-                    self.SetConfig, self.Translations[self.Key+"-prompt"], self.Value)
+                    self.SetConfig, GVars.translations[self.Key+"-prompt"], self.Value)
             except:
                 self.OuterSelf.GetUserInput(
                     self.SetConfig, self.KeyObject["prompt"], self.Value)
 
-        self.OuterSelf.RefreshSettingsMenu(self.Menu)
+        self.OuterSelf.RefreshSettingsMenu(self.Menu, False)
 
     def SetConfig(self, inp: str) -> None:
         CFG.EditConfig(self.Key, inp.strip())
         Log(f"Saved '{inp.strip()}' to as value to: {self.Key}")
-        self.OuterSelf.CreateToast(self.Translations["saved_toast"], 5, (75, 200, 75))
-        self.OuterSelf.BackMenu()
+        self.OuterSelf.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))

@@ -23,10 +23,10 @@ class Button:
                     width: float = 28,  # A duct tape fix to prevent errors with mouse movement detection
                     height: float = 14,  # A duct tape fix to prevent errors with mouse movement detection
                     # Size "700" appears to be default size. Increasing over "7500" will start to make the launcher unstable.
-                    size: float = 700,
+                    size: float = 38,
                     ) -> None:
 
-        self.text = text
+        self.Text = text
         self.function = func
         self.ActiveColor = activeColor
         self.InactiveColor = inactiveColor
@@ -42,8 +42,8 @@ class Button:
 
         self.xPos = xPos
         self.yPos = yPos
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.size = size
+        self.X = x
+        self.Y = y
+        self.Width = width
+        self.Height = height
+        self.Size = size
