@@ -6,14 +6,12 @@ import sys
 import threading
 import time
 import webbrowser
-import traceback
 
 import __main__
 import pygame
 import pyperclip
 from pygame.locals import *
 import pygame.locals
-from steamid_converter import Converter
 from Models.PopupBoxModel import PopupBox
 
 import Scripts.BasicFunctions as BF
@@ -148,145 +146,7 @@ class Gui:
 
     def RefreshPlayersMenu(self) -> None:
         self.ChangeView(Views.PlayersMenu, False)
-    #     CFG.ValidatePlayerKeys()
 
-    #     self.PlayersMenu.clear()
-    #     PlayerKey: dict[str,
-    #                     str] = GVars.configData["Players"]["value"][self.CurrentSelectedPlayer]
-    #     if GVars.configData["Dev-Mode"]["value"]:
-    #         Log(f"Selected players key information: {PlayerKey}")
-
-    #     # displays and changes the player name
-    #     def Button_PlayerName_func() -> None:
-    #         def AfterInputPlayerName(inp: str) -> None:
-    #             Log("Saving player name: " + inp)
-    #             CFG.EditPlayer(self.CurrentSelectedPlayer, name=inp.strip())
-    #             self.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))
-    #             self.RefreshPlayersMenu()
-    #             self.BackMenu()
-
-    #         # self.ChangeMenu(self.BlankButton, append=True)
-    #         self.GetUserInput(
-    #             AfterInputPlayerName, GVars.translations["players_enter_username"], PlayerKey["name"])
-
-    #     Button_PlayerName = Button(
-    #         GVars.translations["players_name"] + PlayerKey["name"], Button_PlayerName_func, (255, 255, 120))
-
-    #     # sets the steam id for the player
-    #     def Button_PlayerSteamId_func() -> None:
-    #         def AfterInputSteamID(inp: str) -> None:
-    #             Log("Saving SteamID: " + str(inp))
-
-    #             if not (inp.isdigit()):
-    #                 try:
-    #                     # this is only useful if the user gives a steamID2
-    #                     inp = Converter.to_steamID3(inp.strip())
-    #                     # replace all [] with ""
-    #                     inp = inp.replace("[", "").replace("]", "")
-    #                     # only get everything after the last ":"
-    #                     inp = inp.split(":")[-1]
-    #                     self.CreateToast(
-    #                         GVars.translations["players_converted_steamid"], 5, (75, 120, 255))
-    #                 except Exception as e:
-    #                     self.CreateToast(
-    #                         GVars.translations["players_invalid_steamid"], 5, (255, 50, 50))
-    #                     Log(str(e))
-    #                     return
-
-    #             CFG.EditPlayer(self.CurrentSelectedPlayer, steamId=inp)
-    #             self.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))
-    #             self.RefreshPlayersMenu()
-    #             self.BackMenu()
-
-    #         # self.ChangeMenu(self.BlankButton, append=True)
-    #         self.GetUserInput(
-    #             AfterInputSteamID, GVars.translations["players_enter_steamid"], PlayerKey["steamid"])
-
-    #     Button_PlayerSteamId = Button(
-    #         "SteamID: " + PlayerKey["steamid"], Button_PlayerSteamId_func, (255, 255, 120))
-
-    #     # sets the admin level for th player
-    #     def Button_AdminLevel_func() -> None:
-    #         def AfterInputAdminLevel(inp: str) -> None:
-
-    #             if not inp.isdigit():
-    #                 self.CreateToast(
-    #                     GVars.translations["players_admin_toast_not-a-number"], 5, (255, 50, 50))
-    #                 return
-
-    #             if int(inp) > 6 or int(inp) < 0:
-    #                 self.CreateToast(
-    #                     GVars.translations["admin_level_toast_out-of-range"], 5, (255, 255, 50))
-    #                 return
-
-    #             # here i'm converting to int then to str so it removes all the extra 0s on the left side (05 -> 5)
-    #             CFG.EditPlayer(self.CurrentSelectedPlayer, level=str(int(inp)))
-    #             self.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))
-    #             Log("Saving admin level as " + str(inp))
-    #             self.RefreshPlayersMenu()
-    #             self.BackMenu()
-
-    #         # self.ChangeMenu(self.BlankButton, append=True)
-    #         self.GetUserInput(
-    #             AfterInputAdminLevel, GVars.translations["players_admin-enter-admin-level"], PlayerKey["adminLevel"])
-
-    #     Button_AdminLevel = Button(
-    #         GVars.translations["players_admin_level"] + PlayerKey["adminLevel"], Button_AdminLevel_func, (255, 255, 120))
-
-    #     # changes the view to the next player
-    #     def Button_NextPlayer_func() -> None:
-
-    #         if self.CurrentSelectedPlayer < len(GVars.configData["Players"]["value"]) - 1:
-    #             Log("Next player")
-    #             self.CurrentSelectedPlayer += 1
-    #         else:
-    #             Log("No more players")
-    #             self.CurrentSelectedPlayer = 0
-
-    #         self.RefreshPlayersMenu()
-    #         self.ChangeView(self.PlayersMenu, append=False)
-
-    #     Button_NextPlayer = Button(
-    #         GVars.translations["players_next_button"], Button_NextPlayer_func, (255, 255, 120))
-
-    #    # adds a player to the list
-    #     def Button_AddPlayer_func() -> None:
-
-    #         Log("Adding blank player...")
-    #         GVars.configData["Players"]["value"].append(CFG.DefaultPlayer)
-    #         CFG.WriteConfigFile(GVars.configData)
-    #         Log(str(len(GVars.configData["Players"]["value"]) - 1))
-    #         self.CurrentSelectedPlayer = len(
-    #             GVars.configData["Players"]["value"]) - 1
-    #         self.RefreshPlayersMenu()
-
-    #     Button_AddPlayer = Button(
-    #         GVars.translations["players_add_player"], Button_AddPlayer_func, (120, 255, 120))
-
-    #     # deletes a player from the list
-    #     def Button_DeletePlayer_func() -> None:
-
-    #         if len(GVars.configData["Players"]["value"]) <= 1:
-    #             self.CreateToast(
-    #                 GVars.translations["players_toast_must_be_at_least_one_player"], 5, (255, 50, 50))
-    #             return
-
-    #         Log("Deleting player...")
-    #         CFG.DeletePlayer(self.CurrentSelectedPlayer)
-    #         self.CurrentSelectedPlayer -= 1
-    #         self.RefreshPlayersMenu()
-
-    #     Button_DeletePlayer = Button(
-    #         GVars.translations["players_remove_player"], Button_DeletePlayer_func, (255, 50, 50))
-
-    #     ####################
-    #     self.PlayersMenu.append(Button_PlayerName)
-    #     self.PlayersMenu.append(Button_PlayerSteamId)
-    #     self.PlayersMenu.append(Button_AdminLevel)
-    #     self.PlayersMenu.append(Button_NextPlayer)
-    #     self.PlayersMenu.append(Button_AddPlayer)
-    #     self.PlayersMenu.append(Button_DeletePlayer)
-    #     self.PlayersMenu.append(self.Button_Back)
 
     #!############################
     #! MAIN BUTTONS FUNCTIONS
@@ -430,33 +290,7 @@ class Gui:
 
 #! END OF BUTTON FUNCTIONS
 
-    # def ChangeMenu(self, menu: list, text: list = [], append: bool = True) -> None:
-    #     self.screen.fill((0, 0, 0))
-    #     self.gradientRect(self.screen, (0, 2, 10), (2, 2, 10), pygame.Rect(
-    #         0, 0, self.screen.get_width(), self.screen.get_height()))
-
-    #     if append:
-    #         self.DirectoryMenu.append(self.CurrentMenuButtons)
-    #         self.DirectoryMenuText.append(self.CurrentMenuText)
-
-    #     self.CurrentMenuButtons = menu
-    #     self.CurrentMenuText = text
-    #     print(text)
-
-    #     print("text 1")
-    #     if self.CurrentButtonsIndex >= len(menu):
-    #         self.CurrentButtonsIndex = len(menu) - 1
-
-    #     if self.CurrentMenuTextIndex >= len(text):
-    #         self.CurrentMenuTextIndex = len(text) - 1
-
-    #     self.SelectedButton = self.CurrentMenuButtons[self.CurrentButtonsIndex]
-
     def ChangeView(self, menu, append: bool = True):
-        # get a function that will return all the buttons and labels, clear the current view, add the new elements and draw the Ui
-        # also move the view functions to another file
-        # and keep an list of functions to go back
-
 
         if menu is None:
             self.Views.pop()
