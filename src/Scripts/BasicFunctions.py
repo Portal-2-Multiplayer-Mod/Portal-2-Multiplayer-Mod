@@ -154,7 +154,7 @@ def TryFindPortal2Path() -> str | bool:
 
     return False
 
-def StringToParagraph(text: str, length: int) -> str:
+def StringToParagraph(text: str, length: int) -> list[str]:
     """formats a string to a paragraph like text
 
     Parameters
@@ -171,18 +171,20 @@ def StringToParagraph(text: str, length: int) -> str:
     """
 
     words = text.split(" ")
-    newText : str = ""
+    lines : list[str] = []
+    line : str= ""
     currentLineLength = 0
 
     for i in range(len(words)):
-        if (currentLineLength + len(words[i])) > length:
-            newText += "\n"
-            currentLineLength = 0
-
-        newText += " " + words[i]
+        line += words[i] + " "
         currentLineLength += len(words[i]) +1
 
-    return newText.strip()
+        if (currentLineLength + len(words[i])) > length:
+            currentLineLength = 0
+            lines.append(line)
+            line = ""
+
+    return lines
 
 def GetAvailableLanguages() -> list[str]:
     """Returns a list of all available languages
