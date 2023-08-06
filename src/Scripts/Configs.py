@@ -83,7 +83,7 @@ DefaultConfig = {
     },
 
     "Launcher-Cubes": {
-        "value": True,
+        "value": False,
         "menu": "launcher",
         "description": "Makes the cubes rain.",
         "warning": "",

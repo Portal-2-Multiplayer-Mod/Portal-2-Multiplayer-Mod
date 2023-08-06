@@ -10,7 +10,6 @@ from Scripts.BasicLogger import Log
 from steamid_converter import Converter
 
 
-
 def MainMenu(ui: Gui) -> tuple[list[Button], list[Label]]:
     Button_LaunchGame = Button(
         GVars.translations["play_button"], ui.Button_LaunchGame_func, (50, 255, 120), isAsync=True)
@@ -32,12 +31,14 @@ def MainMenu(ui: Gui) -> tuple[list[Button], list[Label]]:
     Text_LauncherVersionText = Label(
         GVars.translations["version"] + Up.currentVersion, color=(255, 234, 0), xPos=75, xStart=75, xEnd=750, yPos=770)
 
-    Buttons = [Button_LaunchGame, Button_Settings, Button_Update, Button_ManualMode, Button_Workshop, Button_ResourcesMenu]
+    Buttons = [Button_LaunchGame, Button_Settings, Button_Update,
+               Button_ManualMode, Button_Workshop, Button_ResourcesMenu]
     Labels = [Text_MainMenuText, Text_LauncherVersionText]
 
     if ui.DevMode:
         Button_Test = Button("Test Button", ui.Button_Test_func)
-        Text_DevMode = Label(GVars.translations["dev_mode_enabled"], color=(255, 0, 0), xPos=75, xStart=75, xEnd=750, yPos=735)
+        Text_DevMode = Label(GVars.translations["dev_mode_enabled"], color=(
+            255, 0, 0), xPos=75, xStart=75, xEnd=750, yPos=735)
 
         Buttons.append(Button_Test)
         Labels.append(Text_DevMode)
@@ -56,7 +57,8 @@ def SettingsMenu(ui: Gui) -> None:
         GVars.translations["player_button"], ui.Button_AdminsMenu_func, (0, 255, 255))
     Button_LanguageMenu = Button(
         GVars.translations["languages_button"], ui.Button_LanguageMenu_func, (175, 75, 0))
-    Button_Back = Button(GVars.translations["back_button"], ui.Button_Back_func)
+    Button_Back = Button(
+        GVars.translations["back_button"], ui.Button_Back_func)
     Text_SettingsLaunchText = Label(
         GVars.translations["settings_menu_launcher_toast"], color=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=540)
     Text_SettingsPortal2Text = Label(
@@ -65,9 +67,9 @@ def SettingsMenu(ui: Gui) -> None:
         GVars.translations["settings_menu_languages_toast"], color=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=700)
 
     Buttons = [Button_LauncherSettingsMenu, Button_Portal2Settings,
-                     Button_AdminsMenu, Button_LanguageMenu]
+               Button_AdminsMenu, Button_LanguageMenu]
     Labels = [Text_SettingsLaunchText, Text_SettingsPortal2Text,
-                        Text_SettingsPlayersText]
+              Text_SettingsPlayersText]
 
     if ui.DevMode:
         Button_HiddenSettings = Button(
@@ -75,20 +77,15 @@ def SettingsMenu(ui: Gui) -> None:
         Buttons.append(Button_HiddenSettings)
 
     Buttons.append(Button_Back)
-    
+
     return (Buttons, Labels)
-
-
-def BlankMenu(ui: Gui) -> None:
-    Button_BlankButton = Button("", yPos=8)
-
-    BlankButton = [Button_BlankButton]
 
 
 def WorkshopMenu(ui: Gui) -> None:
     Button_GetWorkShopCommand = Button(
         GVars.translations["get_level_button"], ui.Button_GetWorkShopCommand_func)
-    Button_Back = Button(GVars.translations["back_button"], ui.Button_Back_func)
+    Button_Back = Button(
+        GVars.translations["back_button"], ui.Button_Back_func)
     Text_WorkshopMenuInfo = Label(
         GVars.translations["workshop_menu_info"],
         color=(255, 234, 0),
@@ -96,7 +93,7 @@ def WorkshopMenu(ui: Gui) -> None:
 
     Buttons = [Button_GetWorkShopCommand, Button_Back]
     Labels = [Text_WorkshopMenuInfo]
-    
+
     return (Buttons, Labels)
 
 
@@ -105,7 +102,8 @@ def ManualMountingMenu(ui: Gui) -> None:
         GVars.translations["mount_button"], ui.Button_ManualMount_func, (50, 255, 120), isAsync=True)
     Button_ManualUnmount = Button(
         GVars.translations["unmount_button"], ui.Button_ManualUnmount_func, (255, 50, 50), isAsync=True)
-    Button_Back = Button(GVars.translations["back_button"], ui.Button_Back_func)
+    Button_Back = Button(
+        GVars.translations["back_button"], ui.Button_Back_func)
 
     Buttons = [Button_ManualMount, Button_ManualUnmount, Button_Back]
 
@@ -119,10 +117,11 @@ def ResourcesMenu(ui: Gui) -> None:
         GVars.translations["guide_button"], ui.Button_Guide_func, (35, 35, 50), isAsync=True)
     Button_Discord = Button(
         GVars.translations["discord_server_button"], ui.Button_Discord_func, (75, 75, 150), isAsync=True)
-    Button_Back = Button(GVars.translations["back_button"], ui.Button_Back_func)
+    Button_Back = Button(
+        GVars.translations["back_button"], ui.Button_Back_func)
 
     Buttons = [Button_GitHub, Button_Guide, Button_Discord, Button_Back]
-    
+
     return (Buttons, [])
 
 
@@ -131,7 +130,8 @@ def TestingMenu(ui: Gui) -> None:
     PopupBox_Gui = Button("Popup Box", ui.PopupBox_test_func)
     Button_PrintToConsole = Button(
         "Print to Console", ui.Button_PrintToConsole_func)
-    Button_Back = Button(GVars.translations["back_button"], ui.Button_Back_func)
+    Button_Back = Button(
+        GVars.translations["back_button"], ui.Button_Back_func)
 
     Text_TestMenuTextTest1 = Label(
         "DisplayText: All default settings")
@@ -145,17 +145,17 @@ def TestingMenu(ui: Gui) -> None:
         "DisplayText5: color=(255, 255, 0), xPos=600, xStart=600, xEnd=1900, yPos=300", color=(255, 255, 0), xPos=600, xStart=600, xEnd=1900, yPos=300)
 
     Labels = [Text_TestMenuTextTest1, Text_TestMenuTextTest2,
-                    Text_TestMenuTextTest3, Text_TestMenuTextTest4,
-                    Text_TestMenuTextTest5]
+              Text_TestMenuTextTest3, Text_TestMenuTextTest4,
+              Text_TestMenuTextTest5]
     Buttons = [Button_InputField, PopupBox_Gui,
-                Button_PrintToConsole, Button_Back]
-    
+               Button_PrintToConsole, Button_Back]
+
     return (Buttons, Labels)
 
 
 def LanguageMenu(ui: Gui) -> None:
 
-    Buttons : list[Button] = []
+    Buttons: list[Button] = []
     Languages = BF.GetAvailableLanguages()
 
     for language in Languages:
@@ -165,7 +165,8 @@ def LanguageMenu(ui: Gui) -> None:
         Buttons.append(Button(
             language, ui.Button_Language_func, (150, 150, 255)))
 
-    Button_Back = Button(GVars.translations["back_button"], ui.Button_Back_func)
+    Button_Back = Button(
+        GVars.translations["back_button"], ui.Button_Back_func)
 
     Buttons.append(Button_Back)
 
@@ -174,21 +175,23 @@ def LanguageMenu(ui: Gui) -> None:
 
 def SettingsSubMenu(ui: Gui, menu: str) -> None:
 
-    Buttons : list[Button]= []
+    Buttons: list[Button] = []
     for key in GVars.configData:
         if GVars.configData[key]["menu"] == menu:
             Buttons.append(ConfigButton(key, ui, menu))
 
-    Button_Back = Button(GVars.translations["back_button"], ui.Button_Back_func)
+    Button_Back = Button(
+        GVars.translations["back_button"], ui.Button_Back_func)
     Buttons.append(Button_Back)
 
     return (Buttons, [])
 
 
-def PlayersMenu(ui : Gui) -> None:
+def PlayersMenu(ui: Gui) -> None:
     CFG.ValidatePlayerKeys()
 
-    PlayerKey: dict[str,str] = GVars.configData["Players"]["value"][ui.CurrentSelectedPlayer]
+    PlayerKey: dict[str,
+                    str] = GVars.configData["Players"]["value"][ui.CurrentSelectedPlayer]
 
     if GVars.configData["Dev-Mode"]["value"]:
         Log(f"Selected players key information: {PlayerKey}")
@@ -201,7 +204,8 @@ def PlayersMenu(ui : Gui) -> None:
             ui.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))
             ui.RefreshPlayersMenu()
 
-        ui.GetUserInput(AfterInputPlayerName, GVars.translations["players_enter_username"], PlayerKey["name"])
+        ui.GetUserInput(AfterInputPlayerName,
+                        GVars.translations["players_enter_username"], PlayerKey["name"])
 
     playerName = Button(
         GVars.translations["players_name"] + PlayerKey["name"], Button_PlayerName_func, (255, 255, 120))
@@ -311,10 +315,11 @@ def PlayersMenu(ui : Gui) -> None:
     deletePlayer = Button(
         GVars.translations["players_remove_player"], Button_DeletePlayer_func, (255, 50, 50))
 
-    Button_Back = Button(GVars.translations["back_button"], ui.Button_Back_func)
+    Button_Back = Button(
+        GVars.translations["back_button"], ui.Button_Back_func)
 
     ####################
-    Buttons : list[Button] = []
+    Buttons: list[Button] = []
     Buttons.append(playerName)
     Buttons.append(playerSteamId)
     Buttons.append(adminLevel)
