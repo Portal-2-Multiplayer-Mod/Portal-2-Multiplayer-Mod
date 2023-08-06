@@ -1,5 +1,4 @@
 altgraph==0.17.3
-autopep8==2.0.2
 certifi==2023.7.22
 charset-normalizer==3.2.0
 idna==3.4
@@ -9,6 +8,9 @@ pygame==2.5.0
 pyinstaller==5.13.0
 pyinstaller-hooks-contrib==2023.6
 pyperclip==1.8.2
+PyQt5==5.15.9
+PyQt5-Qt5==5.15.2
+PyQt5-sip==12.12.2
 requests==2.31.0
 steamid-converter==1.0.1
 urllib3==2.0.4
