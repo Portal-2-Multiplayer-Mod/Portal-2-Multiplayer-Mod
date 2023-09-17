@@ -9,45 +9,53 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
+        p2mm_startfade <- Entities.CreateByClassname("env_fade")
+        p2mm_startfade.__KeyValueFromString("targetname", "p2mm_startfade")
+        p2mm_startfade.__KeyValueFromString("duration", "0")
+        p2mm_startfade.__KeyValueFromString("rendercolor", "0 0 0")
+        p2mm_startfade.__KeyValueFromString("renderamt", "255")
+        p2mm_startfade.__KeyValueFromString("spawnflags", "8")
+        StartFadeDone <- false
+
+        EndingTriggered <- false
+
+        // Disable nametags this load
+        g_bAllowNametags = false
+
+        // Disable color indicator this load
+        g_bAllowColorIndicator = false
+
         // Shake the camera when you fall through the wood
         Entities.FindByName(null, "crash_landing_shake").__KeyValueFromString("spawnflags", "29")
 
-        // Create env_globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
+        UTIL_Team.Pinging(false, "all", 1)
+        UTIL_Team.Taunting(false, "all", 1)
 
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
-
-        Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A3_00ServerCommand")
         printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
         Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
         Entities.FindByName(null, "@environment_bottomless_pit_falling_fog").__KeyValueFromString("farz", "0")
         // Entities.FindByName(null, "potatos_prop").__KeyValueFromString("solid", "0")
+        EntFire("potatos_end_relay", "AddOutput", "OnTrigger p2mm_servercommand:Command:script EndingTriggered <- true:0")
+        Entities.FindByName(null, "@display_chapter_title").__KeyValueFromString("startdisabled", "1")
+
         // Destroy objects
         Entities.FindByClassnameNearest("logic_auto", Vector(144, -4048, 64), 20).Destroy()
         local ent = null
         while (ent = Entities.FindByClassname(ent, "trigger_push")) {
             ent.Destroy()
         }
+
+        // Changing levels works without modifying anything
+        // EntFire(Entities.FindByClassnameNearest("trigger_once", Vector(-2048, -4608, 64), 5), "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel sp_a3_01", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
+        StartFadeDone <- true
+        EntFire("fade_from_black", "Fade", "", 0, null)
+
+        EntFire("@display_chapter_title", "Enable")
+        EntFire("@display_chapter_title", "Trigger")
+
         EntFireByHandle(Entities.FindByName(null, "player_looktarget"), "SetParent", "!player", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "potatos_tank"), "SetTargetEntity", "player_looktarget", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "shaft_section_0"), "StartForward", "", 0, null, null)
@@ -59,22 +67,31 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "potatos_relay"), "Trigger", "", 3, null, null)
         EntFireByHandle(Entities.FindByName(null, "potatos_train"), "StartForward", "", 4, null, null)
 
-        EntFireByHandle(env_global01, "turnoff", "", 70, null, null)
-        EntFireByHandle(env_global02, "turnoff", "", 70, null, null)
-        EntFireByHandle(env_global03, "turnoff", "", 70, null, null)
-        EntFireByHandle(env_global04, "turnoff", "", 70, null, null)
+        UTIL_Team.Pinging(true, "all", 70)
+        UTIL_Team.Taunting(true, "all", 70)
+    }
 
-        EntFire("p2mm_servercommand", "command", "changelevel sp_a3_01", 76, null)
+    if (MSOnPlayerJoin) {
+        EntFire("global_ents-environment_bottomless_pit_falling", "Trigger")
+        for (local p; p = Entities.FindByClassname(p, "player");) {
+            EntFireByHandle(p, "SetFogController", "@environment_bottomless_pit_falling_fog", 0, p, p)
+        }
     }
 
     if (MSLoop) {
-        // Get all players
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 8))
+        if (!StartFadeDone) {
+            EntFire("p2mm_startfade", "Fade", "", 0, null)
+        }
+        // Make players invisible and not able to move
+        for (local p; p = Entities.FindByClassname(p, "player");) {
             p.SetVelocity(Vector(p.GetVelocity().x/2, p.GetVelocity().y/2, 0))
+            p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 8))
             p.__KeyValueFromString("rendermode", "10")
-            EntFireByHandle(p, "addoutput", "movetype 0", 0, null, null)
+            if (!EndingTriggered) {
+                EntFireByHandle(Entities.FindByName(null, "speedmod"), "ModifySpeed", "0", 0, p, p)
+            } else {
+                EntFireByHandle(Entities.FindByName(null, "speedmod"), "ModifySpeed", "1", 0, p, p)
+            }
         }
         // Make POTATOS tank point at nearest player
         try {

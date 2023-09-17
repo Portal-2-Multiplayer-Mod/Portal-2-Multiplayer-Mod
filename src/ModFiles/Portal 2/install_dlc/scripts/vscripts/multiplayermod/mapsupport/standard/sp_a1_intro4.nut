@@ -7,13 +7,13 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "door_0-door_close_relay").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(464, 136, 72), 1024).Destroy()
         EntFireByHandle(Entities.FindByName(null, "glass_pane_intact_model"), "kill", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "glass_pane_fractured_model"), "enable", "", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "glass_pane_1_door_1"), "open", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "glass_pane_fractured_model"), "Disable", "", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "glass_pane_1_door_1"), "Open", "", 0, null, null)
         Entities.FindByName(null, "glass_pane_1_door_1_blocker").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(878, -528, 137), 1024).Destroy()
         Entities.FindByName(null, "glass_shard").Destroy()
@@ -27,7 +27,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_2-close_door_rl").Destroy()
 
         // Make changing levels work
-        EntFire("transition_trigger", "addoutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro5:0.3", 0, null)
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro5:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {

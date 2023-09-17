@@ -9,27 +9,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         stoprenable <- false
 
-        // Create env_globals
-        env_global01 <- Entities.CreateByClassname("env_global")
-        env_global01.__KeyValueFromString("targetname", "env_global01")
-        env_global01.__KeyValueFromString("globalstate", "no_pinging_blue")
-
-        env_global02 <- Entities.CreateByClassname("env_global")
-        env_global02.__KeyValueFromString("targetname", "env_global02")
-        env_global02.__KeyValueFromString("globalstate", "no_pinging_orange")
-
-        env_global03 <- Entities.CreateByClassname("env_global")
-        env_global03.__KeyValueFromString("targetname", "env_global03")
-        env_global03.__KeyValueFromString("globalstate", "no_taunting_blue")
-
-        env_global04 <- Entities.CreateByClassname("env_global")
-        env_global04.__KeyValueFromString("targetname", "env_global04")
-        env_global04.__KeyValueFromString("globalstate", "no_taunting_orange")
-
-        EntFireByHandle(env_global01, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global02, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global03, "turnon", "", 1, null, null)
-        EntFireByHandle(env_global04, "turnon", "", 1, null, null)
+        UTIL_Team.Pinging(false, "all", 1)
+        UTIL_Team.Taunting(false, "all", 1)
 
         HasStartedSp_A3_01 <- false
 
@@ -58,17 +39,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A3_01Viewcontrol.SetAngles(0, 270, 0)
         EntFire("Sp_A3_01Viewcontrol", "setparent", "knockout-viewcontroller", 0, null)
         EntFire("Sp_A3_01Viewcontrol", "setparentattachment", "knockout-viewcontroller", 0, null)
-        EntFire("Sp_A3_01Viewcontrol", "enable", "", 0, null)
+        EntFire("Sp_A3_01Viewcontrol", "Disable", "", 0, null)
         EntFire("Sp_A3_01ViewcontrolTele", "disable", "", 13, null)
-        EntFire("Sp_A3_01Viewcontrol", "addoutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
-        EntFire("Sp_A3_01ViewcontrolTele", "addoutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)
+        EntFire("Sp_A3_01Viewcontrol", "AddOutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
+        EntFire("Sp_A3_01ViewcontrolTele", "AddOutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)
     }
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
             printl("Player Joined (Reseting Viewcontrols)")
             EntFire("Sp_A3_01Viewcontrol", "disable", "", 0.5, null)
-            EntFire("Sp_A3_01Viewcontrol", "enable", "", 0.6, null)
+            EntFire("Sp_A3_01Viewcontrol", "Disable", "", 0.6, null)
         }
     }
 
@@ -101,10 +82,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetOrigin(Vector(-720, -1852, 14))
                     p.SetAngles(0, 60, 0)
                 }
-                EntFireByHandle(env_global01, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global02, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global03, "turnoff", "", 1, null, null)
-                EntFireByHandle(env_global04, "turnoff", "", 1, null, null)
+                UTIL_Team.Pinging(true, "all", 1)
+                UTIL_Team.Taunting(true, "all", 1)
                 stoprenable <- true
                 Entities.FindByName(null, "knockout-viewcontroller-prop").Destroy()
                 Entities.FindByName(null, "knockout-portalgun").Destroy()
@@ -114,9 +93,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Elevator changelevel
         local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(6016, 4496, -448), 100)) {
-             
-            SendToConsoleP2MM("changelevel sp_a3_03")
+        while (p = Entities.FindByClassnameWithin(p, "player", Vector(6016, 4496, -448), 100)) {
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_03")
         }
     }
 }

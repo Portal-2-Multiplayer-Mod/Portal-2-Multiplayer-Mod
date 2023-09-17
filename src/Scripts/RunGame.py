@@ -240,7 +240,7 @@ def PatchBinaries(gamepath: str) -> None:
         try:
             # copy the binary to the gamepath
             BF.CopyFile(gamepath + os.sep + binary, gamepath + os.sep + filename)
-            Log("Copied " + binary+" to " + gamepath + os.sep + filename)
+            Log("Copied " + binary +" to " + gamepath + os.sep + filename)
         except:
             # On Windows there is no "linux32" folder, so it just is logged that it doesn't exist
             Log("Unable to copy " + binary + ", since it doesn't exist!" )
@@ -256,16 +256,12 @@ def PatchBinaries(gamepath: str) -> None:
 
         # Delete the file
         os.remove(gamepath + os.sep + "engine.dll")
-        # replace the data
 
-        # Reject_Single_Player
-        data = data.replace(b'\x84\xc0\x74\x1f\x8b\x16', b'\x84\xc0\xeb\x1f\x8b\x16')
-
-        # Validation
-        data = data.replace(b'\x74\x7d\x8b\x17', b'\xeb\x7d\x8b\x17')
-
-        # Server Password Fix
-        data = data.replace(b'\x0F\x95\xC1\x51\x8D\x4D\xE8', b'\x03\xC9\x90\x51\x8D\x4D\xE8')
+        # replace the data with our patches
+        data = data.replace(b'\x84\xc0\x74\x1f\x8b\x16', b'\x84\xc0\xeb\x1f\x8b\x16')	      # Reject_Single_Player, commentary fix (i think)
+        data = data.replace(b'\x74\x7d\x8b\x17', b'\xeb\x7d\x8b\x17')			              # Validation
+        data = data.replace(b"\x0F\x95\xC1\x51\x8D\x4D\xE8", b"\x03\xC9\x90\x51\x8D\x4D\xE8") # Server Password Fix
+        data = data.replace(b"\x85\xC0\x78\x13\x8B\x17", b"\x31\xC0\x04\x21\x8B\x17")		  # SetMaxClients always to 33
 
         # write the data back to the file
         open(gamepath + os.sep + "engine.dll", "wb").write(data)
@@ -279,6 +275,10 @@ def PatchBinaries(gamepath: str) -> None:
         # Delete the file
         os.remove(gamepath + os.sep + "server.dll")
         
+
+        data = data.replace(b'\x0F\xB6\x87\x04\x05\x00\x00', '\xEB\x14\x87\x04\x05\x00\x00')  # CPortal_Player::NotifySystemEvent - Linked portal doors player_portaled event
+        data = data.replace(b'\x83\xC0\x02\x89\x01', '\x83\xC0\x20\x89\x01')				  # GetPlayerLimits patch
+
         # Replace the data
         # Player cap edit
         data = data.replace(b'\x8bM\x08\xc7\x00\x01\x00\x00\x00\xc7\x01\x01\x00\x00\x00\xff\x15', b'\x8bM\x08\xc7\x00\x20\x00\x00\x00\xc7\x01\x20\x00\x00\x00\xff\x15')
@@ -317,6 +317,7 @@ def PatchBinaries(gamepath: str) -> None:
 
         # remove the file
         os.remove(gamepath + os.sep + "engine.so")
+        
         # replace the data
 
         # commentary fix (i think)
@@ -416,6 +417,9 @@ def findP2MMDLCFolder(gamepath: str) -> str:
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
+            # in testing updating and launching, the ModFiles on main don't have the p2mm identifier but instead have
+            # the 32playermod one, remember to remove the old if statement before merge to main
+
             # if inside the folder there is a file called "p2mm.identifier" return where it is
             if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
             # if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
@@ -436,7 +440,7 @@ def CheckForRequiredDLC(gamepath: str) -> bool:
 
     if (not os.path.exists(gamepath + os.sep + "portal2_dlc1")) or (not os.path.exists(gamepath + os.sep + "portal2_dlc2")):
         Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
-        Log("P2MM with not be mounted/started!")
+        Log("P2MM will not be mounted/started!")
         return False
     Log("DLC folders were found...")
     return True
