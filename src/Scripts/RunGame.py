@@ -276,8 +276,8 @@ def PatchBinaries(gamepath: str) -> None:
         os.remove(gamepath + os.sep + "server.dll")
         
 
-        data = data.replace(b'\x0F\xB6\x87\x04\x05\x00\x00', '\xEB\x14\x87\x04\x05\x00\x00')  # CPortal_Player::NotifySystemEvent - Linked portal doors player_portaled event
-        data = data.replace(b'\x83\xC0\x02\x89\x01', '\x83\xC0\x20\x89\x01')				  # GetPlayerLimits patch
+        data = data.replace(b'\x0F\xB6\x87\x04\x05\x00\x00', b'\xEB\x14\x87\x04\x05\x00\x00')  # CPortal_Player::NotifySystemEvent - Linked portal doors player_portaled event
+        data = data.replace(b'\x83\xC0\x02\x89\x01', b'\x83\xC0\x20\x89\x01')				  # GetPlayerLimits patch
 
         # Replace the data
         # Player cap edit
