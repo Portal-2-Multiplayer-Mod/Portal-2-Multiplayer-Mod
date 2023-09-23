@@ -47,7 +47,6 @@ class Gui:
         self.CurInput: str = ""
         self.ToastList: list = []
         self.InputPrompt: str
-        self.SDShift = False
         self.PlayersMenu: list = []
         self.PopupBox: PopupBox = None
         self.IsUpdating: bool = False
@@ -723,21 +722,6 @@ class Gui:
             pasteButton = pygame.transform.scale(pasteButton, (W / 12, W / 17))
             self.screen.blit(pasteButton, ((W / 1.14) -
                              pasteButton.get_width(), H / 1.22))
-            if self.SDShift:
-                shiftIndicator = pygame.image.load(
-                    "GUI/images/sdShiftOn.png").convert_alpha()
-                shiftIndicator = pygame.transform.scale(
-                    shiftIndicator, (W / 6, W / 16))
-                self.screen.blit(
-                    shiftIndicator, ((W / 1.13) - shiftIndicator.get_width(), H / 1.11))
-            else:
-                shiftIndicator = pygame.image.load(
-                    "GUI/images/sdShiftOff.png").convert_alpha()
-                shiftIndicator = pygame.transform.scale(
-                    shiftIndicator, (W / 6, W / 16))
-                self.screen.blit(
-                    shiftIndicator, ((W / 1.13) - shiftIndicator.get_width(), H / 1.11))
-
 
     def Main(self) -> None:
         # make the screen a gradient
@@ -816,13 +800,6 @@ class Gui:
                             except Exception as e:
                                 Log(str(e))
                                 pass
-                        # Shifting on Steam Deck, Left Arrow on on-screen keyboard
-                        elif event.key == 3:
-                            if self.SDShift:
-                                self.SDShift = False
-                            else:
-                                self.SDShift = True
-                            print(self.SDShift)
                         elif CTRL_HELD and event.key == pygame.locals.K_v:
                             try:
                                 pastedString = str(
@@ -834,8 +811,7 @@ class Gui:
                                 pass
                         name = pygame.key.name(event.key)
                         if len(name) == 1:
-                            # On Steam Deck the on-screen shift button doesn't work :(
-                            if SHIFT_HELD or self.SDShift:
+                            if SHIFT_HELD:
                                 # if the name doesn't contain a letter
                                 if not name.isalpha():
                                     name = name.replace("1", "!").replace("2", "@").replace("3", "#").replace("4",
