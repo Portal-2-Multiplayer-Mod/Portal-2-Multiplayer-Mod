@@ -4,21 +4,21 @@ import Scripts.BasicFunctions as BF
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
-def GetDownloadedMaps(workshopPath: str) -> set[dict[str, str]]:
+def GetDownloadedMaps(workshopPath: str) -> list[dict[str, str]]:
     """returns a list of all downloaded workshop maps
 
     Parameters
     ----------
     workshopPath : str
-        portal 2's workshop folder path
+        Portal 2's workshop folder path
 
     Returns
     -------
-    set[dict[str, str]]
-        a list of maps with their 'name', 'bsp' and 'id'
+    list[dict[str, str]]
+        A list of maps with their 'name', 'bsp' and 'id'
     """
 
-    mapsList : set[dict[str, str]] = {}
+    mapsList : list[dict[str, str]] = []
 
     for root, dirs, files in os.walk(workshopPath):
         if (".jpg" in str(files)) and (".bsp" in str(files)):
@@ -35,8 +35,7 @@ def GetDownloadedMaps(workshopPath: str) -> set[dict[str, str]]:
                 elif ".jpg" in file:
                     CMap["id"] = file.replace("thumb", "").replace(".jpg", "")
 
-            mapsList.add(CMap)
-
+            mapsList.append(CMap)
     return mapsList
 
 
