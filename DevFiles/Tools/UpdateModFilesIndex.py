@@ -5,7 +5,7 @@ import json
 
 # to update the files just
 # 1- run this code
-# 2- copy the relative path of the identifier file (ex: src\ModFiles\Portal 2\install_dlc\32playermod.identifier)
+# 2- copy the relative path of the identifier file (ex: src\ModFiles\Portal 2\install_dlc\p2mm.identifier)
 # 3- input it whe the mod asks for it 
 # 4- a file should be created / updated (ModIndex.json) that means everything ran correctly
 # 5- just push the changes to github
