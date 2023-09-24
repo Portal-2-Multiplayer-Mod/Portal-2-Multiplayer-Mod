@@ -2,6 +2,7 @@
 
 import Scripts.GlobalVariables as GVars
 import os
+import subprocess
 
 def NormalizePath(path: str) -> str:
     """Normalizes the given path
@@ -102,6 +103,50 @@ def MoveFile(src: str, dst: str) -> str:
     elif (GVars.iol) or (GVars.iosd):
         os.system("mv \"" + src + "\" \"" + dst + "\"")
     return dst
+
+def ClipboardOperation(data = None, copy: bool = True) -> str:
+    """Perform copy or pasting operations with the systems clipboard
+
+    Parameters
+    ----------
+    data (optional):
+        Data to be copied to the systems clipboard. Defaults to None.
+    
+    copy (optional): bool
+        Wether or not. Defaults to True.
+
+    Returns
+    -------
+    str 
+        Data that was taken from the clipboard
+        in order to be pasted into the Input Prompt.
+    """
+    # Remove any \r and \n characters from the received data
+    if data is not None:
+        data = data.replace("\r", "").replace("\n", "").strip()
+
+    if (GVars.iol or GVars.iosd):
+        # Linux and SteamOS clipboard operations
+        sessionType = os.environ.get("XDG_SESSION_TYPE")
+        copyCMD = ["xclip", "-selection", "c"] if sessionType == "x11" else ["wl-copy"]
+        pasteCMD = ["xclip", "-selection", "clipboard", "-o"] if sessionType == "x11" else ["wl-paste"]
+
+        if copy:
+            # Copy text to the clipboard
+            subprocess.run(copyCMD, input=data, text=True, check=True)
+        else:
+            # Paste text from the clipboard
+            pasteProcess = subprocess.Popen(pasteCMD, stdout=subprocess.PIPE)
+            return str(pasteProcess.stdout.read().decode().replace("\r", "").replace("\n", "").strip())
+    else:
+        # Windows clipboard operations
+        if copy:
+            # Copy text to the clipboard
+            subprocess.run(["clip"], input=data, text=True, check=True)
+        else:
+            # Paste text from the clipboard
+            pasteProcess = subprocess.Popen(["powershell", "get-clipboard"], stdout=subprocess.PIPE)
+            return str(pasteProcess.stdout.read().decode().replace("\r", "").replace("\n", "").strip())
 
 def TryFindPortal2Path() -> str | bool:
     """Attempts to find the game's path mainly on windows

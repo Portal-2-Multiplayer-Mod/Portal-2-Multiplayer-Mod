@@ -9,7 +9,6 @@ import webbrowser
 
 import __main__
 import pygame
-import pyperclip
 from pygame.locals import *
 import pygame.locals
 from Models.PopupBoxModel import PopupBox
@@ -249,7 +248,7 @@ class Gui:
             map = Workshop.MapFromSteamID(input)
 
             if map is not None:
-                pyperclip.copy("changelevel " + map)
+                BF.ClipboardOperation("changelevel " + map)
                 self.CreateToast(
                     GVars.translations["workshop_changelevel_command_copied"], 3, (255, 0, 255))
                 return
@@ -793,8 +792,7 @@ class Gui:
                         # Pasting on Steam Deck, Right Arrow on on-screen keyboard
                         elif event.key == 4:
                             try:
-                                pastedString = str(
-                                    pyperclip.paste().replace("\n", ""))
+                                pastedString = BF.ClipboardOperation(copy=False)
                                 self.CurInput += pastedString
                                 Log(f"Pasted: {pastedString}")
                             except Exception as e:
@@ -802,15 +800,14 @@ class Gui:
                                 pass
                         elif CTRL_HELD and event.key == pygame.locals.K_v:
                             try:
-                                pastedString = str(
-                                    pyperclip.paste().replace("\n", ""))
+                                pastedString = BF.ClipboardOperation(copy=False)
                                 self.CurInput += pastedString
                                 Log(f"Pasted: {pastedString}")
                             except Exception as e:
                                 Log(str(e))  # Log a error in case it fails
                                 pass
                         name = pygame.key.name(event.key)
-                        if len(name) == 1:
+                        if len(name) == 1 and not CTRL_HELD:
                             if SHIFT_HELD:
                                 # if the name doesn't contain a letter
                                 if not name.isalpha():
@@ -1290,11 +1287,6 @@ def Initialize() -> None:
     GVars.LoadConfig()
     # load the client's GVars.translations
     LoadTranslations()
-
-    # For pasting on Steam Deck
-    # Thankfully doesn't need to be installed as its preinstalled on Steam Deck
-    if GVars.iosd:
-        import PyQt5
 
     # checks if this is a dev or release build
     if sys.argv[0].endswith(".py"):
