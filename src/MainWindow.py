@@ -1088,7 +1088,7 @@ def VerifyModFiles() -> bool:
         print(GVars.modFilesPath + os.sep + "Portal 2" +
               os.sep + "install_dlc" + os.sep + "p2mm.identifier")
 
-    #
+    #! MAKE SURE TO CHANGE THIS BACK BEFORE 2.2 RELEASE!!!
     # if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
     if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "32playermod.identifier")):
         Log("Mod files found!")

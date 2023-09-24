@@ -417,12 +417,11 @@ def findP2MMDLCFolder(gamepath: str) -> str:
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
-            # in testing updating and launching, the ModFiles on main don't have the p2mm identifier but instead have
-            # the 32playermod one, remember to remove the old if statement before merge to main
 
-            # if inside the folder there is a file called "p2mm.identifier" return where it is
-            if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
+            # find and return where the identifier file is
+            #! REMEMBER TO CHANGE THIS BACK BEFORE 2.2 RELEASE!!!
             # if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
+            if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
                 p2mmdlcfolder = gamepath + os.sep + file
                 Log("Found P2MM's DLC folder: " + p2mmdlcfolder)
                 return p2mmdlcfolder
