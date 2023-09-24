@@ -34,7 +34,7 @@
   "workshop_menu_info": "創意工坊選單用於獲取切換至創意工坊地圖的指令。\n\n請在 Portal 2 控制台執行切換指令之前\n訂閱、下載該地圖並遊玩一次。",
   "workshop_link": "輸入一個 Steam 創意工坊地圖連結：",
   "workshop_map_not_found": "無法找到該創意工坊地圖！\n請確保已訂閱並遊玩過該地圖。",
-  "workshop_changelevel_command_copied": "更換關卡指令 已複製到剪貼板",
+  "workshop_changelevel_command_copied": "Changelevel 命令\n已複製到剪貼板！",
   "resources_button": "資源",
   "update_button": "更新",
   "update_inProgress_toast": "模組正在更新中，請稍候...",

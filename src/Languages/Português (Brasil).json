@@ -34,7 +34,7 @@
   "workshop_menu_info": "O Menu da Oficina é para conseguir o comando\nde mudar de nível para mudar para um mapa da oficina.\n\nVerifique que você tem o mapa da oficina baixado\nantes de usar o comando no console do Portal 2!",
   "workshop_link": "Insira um link para um mapa da oficina:",
   "workshop_map_not_found": "Não foi possível encontrar mapa da oficina!\nVerifique que você está inscrito\nao mapa e ter-lo jogado\npelo menos uma vez.",
-  "workshop_changelevel_command_copied": "Comando Changelevel Copiado para a Àrea de Transferência",
+  "workshop_changelevel_command_copied":  "Comando Changelevel\nCopiado para a Área de Transferência!",
   "resources_button": "Recursos",
   "update_button": "Atualizar",
   "update_fetching": "Procurando atualização...",

@@ -34,7 +34,7 @@
   "workshop_menu_info": "El menú del Workshop se utiliza para obtener el comando para cambiar a un mapa del Workshop.\n\nAsegúrate de suscribirte, descargar y jugar el mapa antes de ejecutar el comando de cambio de mapa en la consola de Portal 2.",
   "workshop_link": "Ingresa un enlace de mapa del Workshop de Steam:",
   "workshop_map_not_found": "¡No se pudo encontrar el mapa del Workshop!\nAsegúrate de haberlo suscrito, descargado y jugado.",
-  "workshop_changelevel_command_copied": "Comando de cambio de nivel Copiado al portapapeles",
+  "workshop_changelevel_command_copied": "Comando Changelevel\nCopiado al Portapapeles!",
   "resources_button": "Recursos",
   "update_button": "Actualizar",
   "update_inProgress_toast": "El módulo se está actualizando. Por favor, espera...",

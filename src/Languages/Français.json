@@ -34,7 +34,7 @@
   "workshop_menu_info": "Le menu de l'atelier est ici pour obtenir la commande de changement de niveau\nelle permet de changer pour un certain niveau.\n\nAssurez-vous d'avoir la carte de l'atelier téléchargée avant\nd'écrire et d'envoyer la commande dans la console de Portal 2 !",
   "workshop_link": "Entrez un lien de l'atelier :",
   "workshop_map_not_found": "Impossible de trouver la carte de l'atelier !\nAssurez-vous d'y être abonné(e) \net d'y avoir joué\nau moins une fois.",
-  "workshop_changelevel_command_copied": "Commande pour changer de niveau Copié dans le presse-papiers !",
+  "workshop_changelevel_command_copied":  "Commande Changelevel\nCopiée dans le Presse-papiers !",
   "resources_button": "Ressources",
   "update_button": "Mise à jour",
   "update_inProgress_toast": "Le mod est en cours de mise à jour. Veuillez patienter.",

@@ -34,7 +34,7 @@
   "workshop_menu_info": "Menu warsztatu służy do uzyskania polecenia zmiany poziomu,\naby przejść do określonej mapy z warsztatu.\n\nUpewnij się, że masz pobraną mapę z warsztatu\nprzed uruchomieniem polecenia w konsoli Portal 2!",
   "workshop_link": "Wprowadź link do mapy z warsztatu Steam:",
   "workshop_map_not_found": "Nie można znaleźć mapy z warsztatu!\nUpewnij się, że jesteś zasubskrybowany\nna mapę i że ją przegrałeś\nco najmniej raz.",
-  "workshop_changelevel_command_copied": "Polecenie zmiany poziomu Skopiowano do schowka",
+  "workshop_changelevel_command_copied": "Polecenie Changelevel\nSkopiowane do Schowka!",
   "resources_button": "Zasoby",
   "update_button": "Aktualizuj",
   "update_inProgress_toast": "Moduł jest aktualizowany. Proszę czekać...",

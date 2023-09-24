@@ -34,7 +34,7 @@
   "workshop_menu_info": "The Workshop Menu is for getting the change level\ncommand to change to a certain workshop map.\n\nMake sure you have the workshop map downloaded\nbefore running the command in the Portal 2 console!",
   "workshop_link": "Enter a Steam workshop map link:",
   "workshop_map_not_found": "Could not find workshop map!\nMake sure you are subscribed\nto the map and have played it\nat least once.",
-  "workshop_changelevel_command_copied": "Changelevel Command Copied To Clipboard",
+  "workshop_changelevel_command_copied": "Changelevel Command\nCopied To Clipboard!",
   "resources_button": "Resources",
   "update_button": "Update",
   "update_fetching": "Fetching update...",

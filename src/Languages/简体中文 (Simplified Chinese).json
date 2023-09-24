@@ -34,7 +34,7 @@
   "workshop_menu_info": "创意工坊菜单用于获取切换至创意工坊地图的命令。\n\n请在 Portal 2 控制台执行切换命令之前\n订阅、下载该地图并游玩一次。",
   "workshop_link": "输入 Steam 创意工坊地图链接：",
   "workshop_map_not_found": "无法找到该创意工坊地图！\n请确保已订阅并游玩过该地图。",
-  "workshop_changelevel_command_copied": "更换关卡命令 已复制到剪贴板",
+  "workshop_changelevel_command_copied": "Changelevel 命令\n已复制到剪贴板！",
   "resources_button": "资源",
   "update_button": "更新",
   "update_inProgress_toast": "模组正在更新中，请稍候...",
