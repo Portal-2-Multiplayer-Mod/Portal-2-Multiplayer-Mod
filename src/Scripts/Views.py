@@ -29,7 +29,7 @@ def MainMenu(ui: Gui) -> tuple[list[Button], list[Label]]:
     Text_MainMenuText = Label(GVars.translations["welcome"], color=(
         255, 234, 0), xPos=790, xStart=790, xEnd=1850, yPos=20)
     Text_LauncherVersionText = Label(
-        GVars.translations["version"] + Up.currentVersion, color=(255, 234, 0), xPos=75, xStart=75, xEnd=750, yPos=770)
+        GVars.translations["version"] + Up.currentVersion, color=(255, 234, 0), xPos=75, xStart=75, xEnd=750, yPos=760)
 
     Buttons = [Button_LaunchGame, Button_Settings, Button_Update,
                Button_ManualMode, Button_Workshop, Button_ResourcesMenu]
@@ -38,7 +38,7 @@ def MainMenu(ui: Gui) -> tuple[list[Button], list[Label]]:
     if ui.DevMode:
         Button_Test = Button("Test Button", ui.Button_Test_func)
         Text_DevMode = Label(GVars.translations["dev_mode_enabled"], color=(
-            255, 0, 0), xPos=75, xStart=75, xEnd=750, yPos=735)
+            255, 0, 0), xPos=75, xStart=75, xEnd=750, yPos=725)
 
         Buttons.append(Button_Test)
         Labels.append(Text_DevMode)
