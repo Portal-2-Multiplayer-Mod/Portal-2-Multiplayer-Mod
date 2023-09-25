@@ -100,7 +100,6 @@ Siempre estamos felices de recibir cualquier ayuda adicional que podamos obtener
 - cabiste
 
 **Contribuyentes:**
-- zwexit\ (Orsell) 
 - wanderer (free bird)
 - \n
 - Luukex
