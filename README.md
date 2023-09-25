@@ -100,7 +100,6 @@ We are always happy to take whatever additional help we can get for this project
 - cabiste
 
 **Contributors:**
-- zwexit\ (Orsell) 
 - wanderer (free bird)
 - \n
 - Luukex
