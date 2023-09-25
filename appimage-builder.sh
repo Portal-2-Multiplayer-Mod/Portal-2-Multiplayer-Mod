@@ -46,11 +46,11 @@ mv "./squashfs-root" "./appimagebuild"
 # This might not be working as intended and might be installing to the environments python installation
 echo -e "\nInstalling required dependencies into AppImage..."
 ./appimagebuild/squashfs-root/AppRun -m pip install python-appimage
-./appimagebuild/squashfs-root/AppRun -m pip install -r "$HOME/Desktop/Portal-2-Multiplayer-Mod/requirements.txt"
+./appimagebuild/squashfs-root/AppRun -m pip install -r "requirements.txt"
 
 # Copy over the src folder into the Appimage
 echo -e "\nCopying over the src folder into squashfs-root..."
-cp -r "$HOME/Desktop/Portal-2-Multiplayer-Mod/src" "./appimagebuild/squashfs-root"
+cp -r "src" "./appimagebuild/squashfs-root"
 
 # Change AppRun so that it launches MainWindow.py
 echo -e "\nChanging execution target of the AppImage..."
