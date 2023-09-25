@@ -100,7 +100,6 @@ Zawsze jesteśmy zadowoleni z każdej dodatkowej pomocy, którą możemy otrzyma
 - cabiste
 
 **Współpracownicy:**
-- zwexit\ (Orsell) 
 - wanderer (free bird)
 - \n
 - Luukex
