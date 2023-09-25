@@ -100,7 +100,6 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 - cabiste 
 
 **贡献者：**
-- zwexit\ (Orsell)
 - wanderer (free bird)
 - \n
 - Luukex
