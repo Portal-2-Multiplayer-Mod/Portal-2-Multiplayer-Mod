@@ -170,7 +170,6 @@ if (GetMapName() == "mp_coop_credits") {
         "Jeffrey | Previous Code Cleanup",
         "wanderer | Dedicated Server Functionality",
         "tnp (\\n) |thewoodster75 | Heavy Playtesting",
-        "Orsell | Custom Content Functionality + VScript",
         "###--------------------------",
         "###P2:MM Contributers",
         "###--------------------------",
