@@ -81,6 +81,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
+appimagebuild/
 dist/
 downloads/
 eggs/
