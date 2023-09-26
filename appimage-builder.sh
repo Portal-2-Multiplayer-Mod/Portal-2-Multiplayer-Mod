@@ -5,14 +5,14 @@
 # 2. Make a appimagebuild folder for the AppImage if one doesn't exist to compile the AppImage
 # 3. Download Python 1.10.13 AppImage
 # 4. Extract the downloaded 1.10.13 Python AppImage
-# 5. Use the preexisting install of Python in the AppImage to install the required dependences # Might not be working properly #
+#! 5. Use the preexisting install of Python in the AppImage to install the required dependences # Might not be working properly #
 # 6. Copy src into squashfs so all the files for P2MM are avaliable
 # 7. Set AppRun to target and run MainWindow.py instead of Python
 # 8. Copy the P2MM Launchers icon to be used for the AppImage
 # 9. Edit the .desktop to contain info on P2MM, as well as setting the icon
-# 10. Remove and cleanup unessisary files that won't be packed into the AppImage # NEEDS TO BE DONE #
-# 11. Convert back into AppImage # NEEDS FIXING #
-# 12. Rename then run the AppImage to check that it works # NEED TO FINISH #
+#! 10. Remove and cleanup unessisary files that won't be packed into the AppImage # NEEDS TO BE DONE #
+#! 11. Convert back into AppImage # NEEDS FIXING #
+#! 12. Rename then run the AppImage to check that it works # NEED TO FINISH #
 
 
 # Clean up previous build files
@@ -43,7 +43,7 @@ chmod +x "appimagebuild/python3.10.13-cp310-cp310-manylinux2014_x86_64.AppImage"
 mv "./squashfs-root" "./appimagebuild"
 
 # Install required dependencies into the extracted AppImage
-# This might not be working as intended and might be installing to the environments python installation
+#! This might not be working as intended and might be installing to the environments python installation
 echo -e "\nInstalling required dependencies into AppImage..."
 ./appimagebuild/squashfs-root/AppRun -m pip install python-appimage
 ./appimagebuild/squashfs-root/AppRun -m pip install -r "requirements.txt"
@@ -69,10 +69,10 @@ cp "./appimagebuild/squashfs-root/usr/share/applications/*.desktop" "./appimageb
 mv "./appimagebuild/squashfs-root/*.desktop" "./appimagebuild/squashfs-root/P2MMLauncher.desktop"
 
 # Remove unnesissary files to not get packed into the AppImage
-# NEEDS TO BE DONE
+#! NEEDS TO BE DONE
 
 echo -e "\nBuilding the P2MM Launcher AppImage..."
-# This is failing because it can't find the icon file in relation to the .desktop file. No clue why this is happening as it is in the right place.
+#! This is failing because it can't find the icon file in relation to the .desktop file. No clue why this is happening as it is in the right place.
 python -m python-appimage build app "./appimagebuild/squashfs-root"
 
 # Rename and test the created AppImage
