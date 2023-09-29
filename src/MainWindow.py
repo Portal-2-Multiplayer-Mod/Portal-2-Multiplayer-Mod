@@ -248,9 +248,14 @@ class Gui:
             map = Workshop.MapFromSteamID(input)
 
             if map is not None:
-                BF.ClipboardOperation("changelevel " + map)
+                clipboardOP = BF.ClipboardOperation("changelevel " + map)
+                if clipboardOP == False:
+                    self.CreateToast(
+                        GVars.translations["xclip_needed_toast_copy"] if GVars.linuxSessionType == "x11" 
+                        else GVars.translations["wl-clipboard_needed_toast_copy"], 3, (255, 0, 255))
+                    return
                 self.CreateToast(
-                    GVars.translations["workshop_changelevel_command_copied"], 3, (255, 0, 255))
+                        GVars.translations["workshop_changelevel_command_copied"], 3, (255, 0, 255))
                 return
 
             self.CreateToast(
@@ -793,8 +798,13 @@ class Gui:
                         elif event.key == 4:
                             try:
                                 pastedString = BF.ClipboardOperation(copy=False)
-                                self.CurInput += pastedString
-                                Log(f"Pasted: {pastedString}")
+                                if pastedString == False:
+                                    self.CurInput += GVars.translations["xclip_needed_paste_msg"] if GVars.linuxSessionType == "x11" else GVars.translations["wl-clipboard_needed_paste_msg"]
+                                    Log("Linux systems clipboard shell commands were not detected!")
+                                    Log("xclip for X11 and wl-clipboard for Wayland!")
+                                else:
+                                    self.CurInput += pastedString
+                                    Log(f"Pasted: {pastedString}")
                             except Exception as e:
                                 Log(str(e))
                                 pass
@@ -901,7 +911,7 @@ class Gui:
                                 self.SelectedButton = self.CurrentViewButtons[self.CurrentButtonsIndex]
                                 self.PlaySound(self.SelectedButton.HoverSound)
                         # On Steam Deck, for some reason the Y button also acts as a enter key,
-                        # but for the users sake the A button is going to be used
+                        # but for logic sake the A button is going to also be used
                         elif event.key in [K_SPACE] or event.key == 13:
                             self.SelectAnimation(
                                 self.SelectedButton, self.SelectedButton.ClickAnimation)
@@ -981,6 +991,18 @@ class Gui:
             GVars.translations["ok_toast"], activeColor=(75, 255, 75))
         self.CreatePopupBox(GVars.translations["launcher_config_reset"],
                     GVars.translations["launcher_had_to_reset"], [OkButton])
+    
+    def LinuxClipboardCommandsCheck(self):
+        OkButton = Button(
+            GVars.translations["ok_toast"], activeColor=(75, 255, 75))
+
+        if BF.CheckForClipboardCommandsLinux == False:
+            Log("Linux systems clipboard shell commands were not detected!")
+            Log("xclip for X11 and wl-clipboard for Wayland!")
+            Ui.CreatePopupBox(
+                GVars.translations["xclip_wl-clipboard_not_found_title"],
+                GVars.translations["xclip_not_found_description"] if GVars.linuxSessionType == "x11" 
+                else GVars.translations["wl-clipboard_not_found_description"], [OkButton])
         
     def DownloadModFilesPopup(self):
         def YesInput():
@@ -1016,7 +1038,7 @@ def PreExit() -> None:
     if (GVars.iow):
         os.system("taskkill /f /im portal2.exe")
 
-    # Linux and Steam Deck
+    # Linux and Steam Deck/Steam OS 3.0
     if (GVars.iol) or (GVars.iosd):
         os.system("killall -9 portal2_linux")
 
@@ -1319,6 +1341,10 @@ def PostInitialize() -> None:
     if (GVars.HadToResetConfig):
         Log("Config has been reset to default settings!")
         Ui.ConfigResetNotice()
+    
+    # If on a Linux system, check if xcopy (X11) or wl-clipboard (Wayland) are available
+    if GVars.iol or GVars.iosd:
+        Ui.LinuxClipboardCommandsCheck()
 
 
 if __name__ == '__main__':

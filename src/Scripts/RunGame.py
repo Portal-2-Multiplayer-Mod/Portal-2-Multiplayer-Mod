@@ -534,4 +534,4 @@ def LaunchGame(gamepath: str) -> None:
     except Exception as e:
         Log("Failed to launch Portal 2!")
         Log("Error: " + str(e))
-        quit()
+        os._exit(1)

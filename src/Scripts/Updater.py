@@ -46,7 +46,7 @@ def CheckForNewClient() -> dict:
         Log("No internet Connection")
         return {"status": False}
 
-    Log("searching for a new client...")
+    Log("Searching for a new client...")
 
     endpoint = "https://api.github.com/repos"
     foundNewVer = True
@@ -57,14 +57,14 @@ def CheckForNewClient() -> dict:
         repoData = requests.get(
             f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
     except Exception as e:
-        Log(f"error retrieving the latest releases: {str(e)}")
+        Log(f"Error retrieving the latest releases: {str(e)}")
         return {"status": False}
 
     if "tag_name" in repoData:
 
         # make sure that the latest release has a different version than the current one and is not a beta release
         if (currentVersion == repoData["tag_name"]) or ("beta" in repoData["tag_name"]):
-            Log("found release but it's old")
+            Log("Found release but it's old...")
             foundNewVer = False
 
     #! search for a new client on the new repo
@@ -72,7 +72,7 @@ def CheckForNewClient() -> dict:
         repoData = requests.get(
             f"{endpoint}/{ownerName}/{newRepoName}/releases/latest").json()
     except Exception as e:
-        Log(f"error retrieving the latest releases: {str(e)}")
+        Log(f"Error retrieving the latest releases: {str(e)}")
         return {"status": False}
 
     if "tag_name" in repoData:
@@ -145,7 +145,7 @@ def DownloadClient(newRepo: bool) -> bool:
 
     command = path + " updated " + GVars.executable
     subprocess.Popen(command, shell=True)
-    Log("Launched the new client")
+    Log("Launched the new client!")
     return True
 
 
@@ -167,10 +167,10 @@ def CheckForNewFiles() -> bool:
     localIdPath = GVars.modPath + os.sep + \
         f"ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}p2mm.identifier"
     if not os.path.isfile(localIdPath):
-        Log("Identifier file doesn't exist so the mod files are probably unavailable too")
+        Log("Identifier file doesn't exist so the ModFiles are probably unavailable too...")
         return True
 
-    Log("Found local identifier file")
+    Log("Found local identifier file!")
 
     # if there was an error retrieving this file that means most likely that we changed it's name and released a new client
     try:
@@ -185,10 +185,10 @@ def CheckForNewFiles() -> bool:
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
     # if the remote date is less or equal to the local date that means our client is up to date
     if (remoteDate <= localDate):
-        Log("Mod files are up to date")
+        Log("ModFiles are up to date!")
         return False
 
-    Log(f"The remote date {remoteDate} is greater than the local date {localDate}")
+    Log(f"The remote date {remoteDate} is greater than the local date {localDate}!")
 
     return True
 
@@ -196,13 +196,13 @@ def CheckForNewFiles() -> bool:
 def DownloadNewFiles() -> None:
 
     if not HasInternet():
-        Log("No internet Connection")
+        Log("No internet Connection!")
         return False
 
     r = requests.get(
         f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
-    Log("downloading "+str(len(r["Files"]))+" files...")
+    Log("Downloading "+str(len(r["Files"]))+" files...")
 
     # download the files to a temp folder
     tempPath = GVars.modPath + os.sep + ".temp"
@@ -210,22 +210,22 @@ def DownloadNewFiles() -> None:
         downloadLink = f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/"+urllib.parse.quote(
             r["Path"]+file)
 
-        Path(os.path.dirname(tempPath + file.replace("/", os.sep))).mkdir(parents=True,
-                                                                          exist_ok=True)  # create the folder where the file exists
+        Path(os.path.dirname(
+            tempPath + file.replace("/", os.sep))).mkdir(parents=True, exist_ok=True)  # create the folder where the file exists
         try:
             urllib.request.urlretrieve(
                 downloadLink, tempPath + file.replace("/", os.sep))
         except Exception as e:
             Log(f"Failed to download a file: {str(e)}")
-    Log("Finished downloading")
+    Log("Finished downloading!")
 
     try:
         # when downloading is done delete the old mod files
         BF.DeleteFolder(BF.NormalizePath(
             GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
-        Log("Deleted old files")
+        Log("Deleted old files!")
     except Exception as e:
-        Log("There was no old mod files")
+        Log("There was no old ModFiles...")
         Log(str(e))
 
     # then copy the new files there

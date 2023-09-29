@@ -104,8 +104,28 @@ def MoveFile(src: str, dst: str) -> str:
         os.system("mv \"" + src + "\" \"" + dst + "\"")
     return dst
 
-def ClipboardOperation(data = None, copy: bool = True) -> str:
-    """Perform copy or pasting operations with the systems clipboard
+def CheckForClipboardCommandsLinux() -> bool:
+    """Check if xclip (X11) or wl-clipboard (Wayland) exists on the Linux system.
+    
+    Returns
+    -------
+    bool
+        Whether or not the systems clipboard commands are available.
+    """
+
+    if GVars.linuxSessionType == "x11":
+        xclipCheck = subprocess.run("xclip", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if xclipCheck.returncode != 0:
+            return False
+    else:
+        wlcopyCheck = subprocess.run("wl-copy", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        wlpasteCheck = subprocess.run("wl-paste", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if (wlcopyCheck.returncode or wlpasteCheck.returncode) != 0:
+            return False
+    return True
+
+def ClipboardOperation(data = None, copy: bool = True) -> str | bool:
+    """Perform copy or pasting operations with the systems clipboard.
 
     Parameters
     ----------
@@ -113,23 +133,30 @@ def ClipboardOperation(data = None, copy: bool = True) -> str:
         Data to be copied to the systems clipboard. Defaults to None.
     
     copy (optional): bool
-        Wether or not. Defaults to True.
+        Whether or not to copy to the clipboard, or whether to paste. Defaults to True.
 
     Returns
     -------
-    str 
+    str | bool
         Data that was taken from the clipboard
         in order to be pasted into the Input Prompt.
+
+        Will return False bool for Linux if the shell
+        commands for pasting and copying aren't available.
     """
+
+    if (GVars.iol or GVars.iosd):
+        if not CheckForClipboardCommandsLinux():
+            return False
+
     # Remove any \r and \n characters from the received data
     if data is not None:
         data = data.replace("\r", "").replace("\n", "").strip()
 
     if (GVars.iol or GVars.iosd):
         # Linux and SteamOS clipboard operations
-        sessionType = os.environ.get("XDG_SESSION_TYPE")
-        copyCMD = ["xclip", "-selection", "c"] if sessionType == "x11" else ["wl-copy"]
-        pasteCMD = ["xclip", "-selection", "clipboard", "-o"] if sessionType == "x11" else ["wl-paste"]
+        copyCMD = ["xclip", "-selection", "c"] if GVars.linuxSessionType == "x11" else ["wl-copy"]
+        pasteCMD = ["xclip", "-selection", "clipboard", "-o"] if GVars.linuxSessionType == "x11" else ["wl-paste"]
 
         if copy:
             # Copy text to the clipboard

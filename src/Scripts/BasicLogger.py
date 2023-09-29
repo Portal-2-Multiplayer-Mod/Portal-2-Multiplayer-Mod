@@ -21,7 +21,7 @@ def Log(message: str) -> None:
     message = message.strip()
 
     if not len(message) > 0:
-        raise ValueError("can't log a message with no content")
+        raise ValueError("Can't log a message with no content!")
 
     logging.info("(P2:MM): " + message)
     print("(P2:MM): " + message)
@@ -65,4 +65,4 @@ def StartLog() -> None:
     elif GVars.iol:
         Log("Linux OS: detected!")
     elif GVars.iosd:
-        Log("Steam Deck: detected!")
+        Log("Steam Deck/Steam OS 3.0: detected!")
