@@ -150,8 +150,7 @@ def ClipboardOperation(data = None, copy: bool = True) -> str | bool:
             return False
 
     # Remove any \r and \n characters from the received data
-    if data is not None:
-        data = data.replace("\r", "").replace("\n", "").strip()
+    if data is not None: data = data.replace("\r", "").replace("\n", "").strip()
 
     if (GVars.iol or GVars.iosd):
         # Linux and SteamOS clipboard operations

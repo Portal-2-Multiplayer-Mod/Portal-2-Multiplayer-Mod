@@ -1,35 +1,45 @@
 #!/bin/bash
 
-# Steps to make P2MM AppImage:
-# 1. Clean up of previous build run and setup new build run
-# 2. Make a appimagebuild folder for the AppImage if one doesn't exist to compile the AppImage
-# 3. Download Python 1.10.13 AppImage
-# 4. Extract the downloaded 1.10.13 Python AppImage
-#! 5. Use the preexisting install of Python in the AppImage to install the required dependences # Might not be working properly #
-# 6. Copy src into squashfs so all the files for P2MM are avaliable
-# 7. Set AppRun to target and run MainWindow.py instead of Python
-# 8. Copy the P2MM Launchers icon to be used for the AppImage
-# 9. Edit the .desktop to contain info on P2MM, as well as setting the icon
-#! 10. Remove and cleanup unessisary files that won't be packed into the AppImage # NEEDS TO BE DONE #
-#! 11. Convert back into AppImage # NEEDS FIXING #
-#! 12. Rename then run the AppImage to check that it works # NEED TO FINISH #
+# Alternate script method I'm testing, might be easier in the long run
+# to just build a .sh file then pack that into a AppImage.
 
-echo -e "\nStarting operations to build AppImage from src and Python AppImage..."
+# Steps to make P2MM AppImage from a .sh file:
+# 1. Remove any old AppImage.
+# 2. Make the appimagebuild and appimagesrc folders if the don't exist.
+# 3. Get version of P2MM build.
+# 4. Check for required tools, appimage-builder, and pyinstaller.
+# 5. Run pyinstaller on Linux to make the .sh file.
+# 6. Move the .sh file from dist to the appimagesrc folder.
+# 7. Make the .desktop file for the AppImage to use and set its attributes.
+# 8. Copy the icon for the AppImage to use.
+# 9. Use appimage-builder build the AppImage.
 
-# Clean up previous build files
-echo "Cleaning up previous build run..."
-if [ -e "appimagebuild" ]; then
-    rm -rf "appimagebuild"
+echo -e "\nStarting operations to build AppImage from .sh..."
+
+# Remove any old AppImage
+echo -e "\nRemoving any old AppImages..."
+if [ -e "appimagebuild/*.AppImage" ]; then
+    rm -rf "appimagebuild/*.AppImage"
+    echo -e "\nRemoved old Appimage(s)..."
 fi
 
-# Make appimagebuild if it doesn't exist
-if [ ! -d "appimagebuild" ]; then
-    mkdir "appimagebuild"
-    echo "Folder 'appimagebuild' created!"
+# Make appimagebuild and appimagesrc if it doesn't exist
+if [ ! -d "appimagebuild" ] && [ ! -d "appimagebuild/appimagesrc" ]; then
+    mkdir "appimagebuild/appimagesrc"
+    echo "Folder 'appimagebuild' and 'appimagesrc' created!"
 fi
 
+# Get build version of the launcher being compiled
 echo -e "\nWhat verison of the launcher is this? (Example: 2.2.0)"
 read -r VERSION
+
+echo -e "\nChecking for required tools..."
+if [ ! -d "/usr/local/bin/appimage-builder" ]; then
+    echo -e "appimage-builder was not found! Installing, needs sudo to move appimage-builder's AppImage"
+    wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+    chmod +x appimage-builder-x86_64.AppImage
+
+fi
 
 echo -e "\nMaking P2MMLauncher.AppImage..."
 
