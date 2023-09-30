@@ -65,9 +65,26 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
             ent.Destroy() // 165 entities removed
         }
+
         // Remove env_sprite's from the map
         for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
             ent.Destroy() // 31 entities removed
+        }
+
+        // Remove trigger_portal_cleaner's from map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "trigger_portal_cleanser");) {
+            ent.Destroy() // 5 entities removed
+        }
+
+        // Remove point_viewcontrol and point_viewcontrol_multiplayer's from map
+        Entities.FindByClassname(null, "point_viewcontrol").Destroy()
+        for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
+            ent.Destroy() // 16 entities removed
+        }
+
+        // Remove logic_choreographed_scene, while this removes Glados speaking, it's 706 entities that we don't need
+        for (local ent = null; ent = Entities.FindByClassname(ent, "logic_choreographed_scene");) {
+            ent.Destroy() // 706 entities removed
         }
 
         // Fix track 5
@@ -81,16 +98,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@snd_light_outside").Destroy()
 
         // Remove orange exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit");) {
             ent.Destroy()
         }
 
         Entities.FindByName(null, "track5-orangeescape_elevator_clip").Destroy()
 
         // Remove blue exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit");) {
             ent.Destroy()
         }
 

@@ -64,19 +64,32 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Remove useless entities so that the entity limit does not crash the game
 
-        // Paint reveal cutscene cleanser doesn't properly turn off (there's two of them)
-        Entities.FindByName(Entities.FindByName(null, "cleanser_preventduring_paint_reveal"), "cleanser_preventduring_paint_reveal").Destroy()
-        Entities.FindByName(null, "cleanser_preventduring_paint_reveal").Destroy()
-
         // Remove func_portal_bumper's from the map
-        for (local ent; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
             ent.Destroy() // 165 entities removed
         }
+
         // Remove env_sprite's from the map
-        for (local ent; ent = Entities.FindByClassname(ent, "env_sprite");) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
             ent.Destroy() // 31 entities removed
         }
 
+        // Remove trigger_portal_cleaner's from map, two of these are bugged anyway and need to be removed
+        for (local ent = null; ent = Entities.FindByClassname(ent, "trigger_portal_cleanser");) {
+            ent.Destroy() // 5 entities removed
+        }
+
+        // Remove point_viewcontrol and point_viewcontrol_multiplayer's from map, they aren't used, and the one point_viewcontrol is for commentary
+        Entities.FindByClassname(null, "point_viewcontrol").Destroy()
+        for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
+            ent.Destroy() // 16 entities removed
+        }
+
+        // Remove logic_choreographed_scene, while this removes Glados speaking, it's 706 entities that we don't need
+        for (local ent = null; ent = Entities.FindByClassname(ent, "logic_choreographed_scene");) {
+            ent.Destroy() // 706 entities removed
+        }
+        
         // Fix art therapy tube glitches
         Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()
         Entities.FindByName(null, "dlc_room_fall_push_left").Destroy()
