@@ -918,6 +918,21 @@ function DisplayPlayerColor(player) {
     EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
+function ColorDisassemblerAnimation(activator) {
+    printlP2MM("ACTIVATED BY PLAYER:")
+    printlP2MM(activator)
+    activatedPlayer = Entities.FindByName(activator.GetName())
+    if (FindPlayerClass(activatedPlayer).GetTeam() == "TEAM_BLUE") {
+        local blueDisassemblerColor = FindPlayerClass(activatedPlayer).color.r + " " + FindPlayerClass(activatedPlayer).color.g + " " + FindPlayerClass(activatedPlayer).color.b
+        local blueDisassembler = Entities.FindByModel(null, "models/player/bot_assembly/ballbot_assembler.mdl")
+        EntFireByHandle(blueDisassembler, "Color", blueDisassemblerColor, 0, null, null)
+    } else {
+        local orangeDisassemblerColor = FindPlayerClass(activatedPlayer).color.r + " " + FindPlayerClass(activatedPlayer).color.g + " " + FindPlayerClass(activatedPlayer).color.b
+        local orangeDisassembler = Entities.FindByModel(null, "models/player/bot_assembly/eggbot_assembler.mdl")
+        EntFireByHandle(orangeDisassembler, "Color", orangeDisassemblerColor, 0, null, null)
+    }
+}
+
 function FindAndReplace(inputstr, findstr, replacestr) {
     local startstrip = inputstr.find(findstr)
     if (startstrip==null) {

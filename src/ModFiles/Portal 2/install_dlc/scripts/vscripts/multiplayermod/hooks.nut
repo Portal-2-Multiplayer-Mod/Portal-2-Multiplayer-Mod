@@ -49,6 +49,18 @@ function InstantRun() {
         }
         Player2Joined = true
     }
+
+    // For adding the output to the disassembler trigger_playerteams so the disassemblers disassembly animation is colored the players color
+    if (!g_bIsOnSingleplayerMaps) {
+        printlP2MM("REAL 1")
+        for (local disasemblerTrigger; disasemblerTrigger = Entities.FindByName(disasemblerTrigger, "trigger_exit_lift");) {
+            if (disasemblerTrigger.GetClassname() == "trigger_playerteam") {
+                printlP2MM(disasemblerTrigger)
+                printlP2MM("REAL 2")
+                EntFireByHandle(disasemblerTrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:ColorDisassemblerAnimation(activator):0:-1", 0, null, null)
+            }
+        }
+    }
 }
 
 // 2
