@@ -993,12 +993,11 @@ class Gui:
                     GVars.translations["launcher_had_to_reset"], [OkButton])
     
     def LinuxClipboardCommandsCheck(self):
-        OkButton = Button(
-            GVars.translations["ok_toast"], activeColor=(75, 255, 75))
-
         if BF.CheckForClipboardCommandsLinux == False:
             Log("Linux systems clipboard shell commands were not detected!")
             Log("xclip for X11 and wl-clipboard for Wayland!")
+            OkButton = Button(
+                GVars.translations["ok_toast"], activeColor=(75, 255, 75))
             Ui.CreatePopupBox(
                 GVars.translations["xclip_wl-clipboard_not_found_title"],
                 GVars.translations["xclip_not_found_description"] if GVars.linuxSessionType == "x11" 

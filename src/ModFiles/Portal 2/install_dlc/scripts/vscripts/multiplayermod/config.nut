@@ -85,7 +85,5 @@ Config_UseChatCommands <- true
 // ]
 
 Admins <- [
-    "[6]290760494" // Nanoman2525
-    "[6]378724405" // \n
-    "[3]994118458" // Fuzz409
+    // Add Admins Here
 ]
