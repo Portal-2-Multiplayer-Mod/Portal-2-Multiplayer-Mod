@@ -54,6 +54,9 @@ function InstantRun() {
     if (!g_bIsOnSingleplayerMaps) {
         printlP2MM("REAL 1")
         for (local disasemblerTrigger; disasemblerTrigger = Entities.FindByName(disasemblerTrigger, "trigger_exit_lift");) {
+            printlP2MM(disasemblerTrigger)
+            printlP2MM(disasemblerTrigger.GetClassname())
+            printlP2MM(disasemblerTrigger.GetClassname() == "trigger_playerteam")
             if (disasemblerTrigger.GetClassname() == "trigger_playerteam") {
                 printlP2MM(disasemblerTrigger)
                 printlP2MM("REAL 2")

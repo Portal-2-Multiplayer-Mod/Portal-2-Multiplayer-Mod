@@ -82,11 +82,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             ent.Destroy() // 16 entities removed
         }
 
-        // Remove logic_choreographed_scene, while this removes Glados speaking, it's 706 entities that we don't need
-        for (local ent = null; ent = Entities.FindByClassname(ent, "logic_choreographed_scene");) {
-            ent.Destroy() // 706 entities removed
-        }
-
         // Fix track 5
         // Entry door fix
         Entities.FindByName(null, "track5-door_paint-trigger_hurt_door").Destroy()

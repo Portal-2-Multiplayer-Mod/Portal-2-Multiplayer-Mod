@@ -84,11 +84,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
             ent.Destroy() // 16 entities removed
         }
-
-        // Remove logic_choreographed_scene, while this removes Glados speaking, it's 706 entities that we don't need
-        for (local ent = null; ent = Entities.FindByClassname(ent, "logic_choreographed_scene");) {
-            ent.Destroy() // 706 entities removed
-        }
         
         // Fix art therapy tube glitches
         Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()

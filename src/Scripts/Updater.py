@@ -220,7 +220,7 @@ def DownloadNewFiles() -> None:
     Log("Finished downloading!")
 
     try:
-        # when downloading is done delete the old mod files
+        # when downloading is done delete the old ModFiles
         BF.DeleteFolder(BF.NormalizePath(
             GVars.modPath + "/ModFiles/Portal 2/install_dlc"))
         Log("Deleted old files!")

@@ -167,7 +167,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     dlcmountpoint = FindAvailableDLC(gamepath)
 
     destination = BF.CopyFolder(modFilesPath + os.sep+".", gamepath + os.sep + dlcmountpoint)
-    Log("Successfully copied the mod files to "+ destination)
+    Log(f"Successfully copied the ModsFiles to {destination}")
 
     nutConfigFile = gamepath + os.sep + dlcmountpoint + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "multiplayermod" + os.sep + "config.nut"
     if os.path.exists(nutConfigFile):
@@ -420,8 +420,8 @@ def findP2MMDLCFolder(gamepath: str) -> str:
 
             # find and return where the identifier file is
             #! REMEMBER TO CHANGE THIS BACK BEFORE 2.2 RELEASE!!!
-            # if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
-            if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
+            if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
+            #if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
                 p2mmdlcfolder = gamepath + os.sep + file
                 Log("Found P2MM's DLC folder: " + p2mmdlcfolder)
                 return p2mmdlcfolder

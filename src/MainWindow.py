@@ -1005,7 +1005,7 @@ class Gui:
         
     def DownloadModFilesPopup(self):
         def YesInput():
-            Log("User agreed to download the mod files! Fetching mod...")
+            Log("User agreed to download the ModFiles! Fetching mod...")
             if not UP.HasInternet():
                 self.CreateToast(
                     GVars.translations["no_internet_toast"], 5, (255, 75, 75))
@@ -1096,7 +1096,7 @@ def VerifyGamePath(shouldGetPath: bool = True) -> bool:
 
 
 def VerifyModFiles() -> bool:
-    Log("Searching for mod files in: " + GVars.modFilesPath)
+    Log("Searching for ModFiles in: " + GVars.modFilesPath)
     if GVars.configData["Dev-Mode"]["value"]:
         Log("modFilesPath and identifier file exist?")
         print(os.path.exists(GVars.modFilesPath))
@@ -1107,12 +1107,19 @@ def VerifyModFiles() -> bool:
               os.sep + "install_dlc" + os.sep + "p2mm.identifier")
 
     #! MAKE SURE TO CHANGE THIS BACK BEFORE 2.2 RELEASE!!!
-    # if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
-    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "32playermod.identifier")):
-        Log("Mod files found!")
+    Log("modFilesPath and identifier file exist?")
+    print(os.path.exists(GVars.modFilesPath))
+    print(GVars.modFilesPath)
+    print(os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" +
+            os.sep + "install_dlc" + os.sep + "p2mm.identifier"))
+    print(GVars.modFilesPath + os.sep + "Portal 2" +
+            os.sep + "install_dlc" + os.sep + "p2mm.identifier")
+    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
+    #if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "32playermod.identifier")):
+        Log("ModFiles found!")
         return True
 
-    Log("Mod files not found!")
+    Log("ModFiles not found!")
     return False
 
 
@@ -1151,7 +1158,7 @@ def MountModOnly() -> bool:
         Ui.CreateToast(GVars.translations["mounted"], 5, (75, 255, 75))
         return True
 
-    # If the they are not a developer and the mod files don't exist ask them to download the files from the repo
+    # If the they are not a developer and the ModFiles don't exist ask them to download the files from the repo
     if (os.path.exists(GVars.modPath + os.sep + "ModFiles")):
         BF.DeleteFolder(GVars.modPath + os.sep + "ModFiles")
 
