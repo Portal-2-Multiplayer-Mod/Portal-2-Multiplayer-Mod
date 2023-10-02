@@ -918,18 +918,32 @@ function DisplayPlayerColor(player) {
     EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
-function ColorDisassemblerAnimation(activator) {
-    printlP2MM("ACTIVATED BY PLAYER:")
-    printlP2MM(activator)
-    activatedPlayer = Entities.FindByName(activator.GetName())
-    if (FindPlayerClass(activatedPlayer).GetTeam() == "TEAM_BLUE") {
-        local blueDisassemblerColor = FindPlayerClass(activatedPlayer).color.r + " " + FindPlayerClass(activatedPlayer).color.g + " " + FindPlayerClass(activatedPlayer).color.b
+function ColorDisassemblerAnimation(caller) {
+    printlP2MM("ACTIVATED BY CALLER:")
+    printlP2MM(caller)
+    // local activatedPlayer = Entities.FindByName(null, activator.GetName())
+    // printlP2MM(activatedPlayer)
+    // FindByClassnameNearest("player", activatedPlayer, 100)
+    // printlP2MM("Getting playerclasses")
+    // foreach (curclass in playerclasses) {
+    //     printlP2MM(curclass.player)
+    // }
+    // local activatorCenter = caller.GetCenter()
+    // printlP2MM(activatorCenter)
+
+    local p = Entities.FindByClassnameNearest("player", caller.GetOrigin(), 100)
+    printlP2MM(p)
+    printlP2MM(p.GetTeam())
+    if (p.GetTeam() == TEAM_BLUE) {
+        local blueDisassemblerColor = FindPlayerClass(p).color.r + " " + FindPlayerClass(p).color.g + " " + FindPlayerClass(p).color.b
         local blueDisassembler = Entities.FindByModel(null, "models/player/bot_assembly/ballbot_assembler.mdl")
         EntFireByHandle(blueDisassembler, "Color", blueDisassemblerColor, 0, null, null)
+        printlP2MM("Blue Disaseembler Colored!!!")
     } else {
-        local orangeDisassemblerColor = FindPlayerClass(activatedPlayer).color.r + " " + FindPlayerClass(activatedPlayer).color.g + " " + FindPlayerClass(activatedPlayer).color.b
+        local orangeDisassemblerColor = FindPlayerClass(p).color.r + " " + FindPlayerClass(p).color.g + " " + FindPlayerClass(p).color.b
         local orangeDisassembler = Entities.FindByModel(null, "models/player/bot_assembly/eggbot_assembler.mdl")
         EntFireByHandle(orangeDisassembler, "Color", orangeDisassemblerColor, 0, null, null)
+        printlP2MM("Orange Disaseembler Colored!!!")
     }
 }
 

@@ -71,12 +71,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             ent.Destroy() // 31 entities removed
         }
 
-        // Remove trigger_portal_cleaner's from map
+        // Remove trigger_portal_cleaner's from map, two of these are bugged anyway and need to be removed
         for (local ent = null; ent = Entities.FindByClassname(ent, "trigger_portal_cleanser");) {
             ent.Destroy() // 5 entities removed
         }
 
-        // Remove point_viewcontrol and point_viewcontrol_multiplayer's from map
+        // Remove point_viewcontrol and point_viewcontrol_multiplayer's from map, they aren't used because we've disabled them, and the one point_viewcontrol is for commentary mode
         Entities.FindByClassname(null, "point_viewcontrol").Destroy()
         for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
             ent.Destroy() // 16 entities removed
