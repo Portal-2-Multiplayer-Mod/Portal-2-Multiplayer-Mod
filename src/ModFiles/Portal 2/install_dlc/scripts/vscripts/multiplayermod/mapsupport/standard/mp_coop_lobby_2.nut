@@ -82,7 +82,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (ent.GetName().find("cam_botview") != null) {
                 continue
             }
-            ent.Destroy() // 20 entities removed
+            ent.Destroy() // 2 entities removed
         }
 
         // Fix track 5
