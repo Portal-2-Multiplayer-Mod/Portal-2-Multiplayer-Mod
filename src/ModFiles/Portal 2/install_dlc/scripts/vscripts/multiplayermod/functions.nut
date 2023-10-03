@@ -918,32 +918,23 @@ function DisplayPlayerColor(player) {
     EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
-function ColorDisassemblerAnimation(caller) {
-    printlP2MM("ACTIVATED BY CALLER:")
-    printlP2MM(caller)
-    // local activatedPlayer = Entities.FindByName(null, activator.GetName())
-    // printlP2MM(activatedPlayer)
-    // FindByClassnameNearest("player", activatedPlayer, 100)
-    // printlP2MM("Getting playerclasses")
-    // foreach (curclass in playerclasses) {
-    //     printlP2MM(curclass.player)
-    // }
-    // local activatorCenter = caller.GetCenter()
-    // printlP2MM(activatorCenter)
-
-    local p = Entities.FindByClassnameNearest("player", caller.GetOrigin(), 100)
-    printlP2MM(p)
-    printlP2MM(p.GetTeam())
-    if (p.GetTeam() == TEAM_BLUE) {
-        local blueDisassemblerColor = FindPlayerClass(p).color.r + " " + FindPlayerClass(p).color.g + " " + FindPlayerClass(p).color.b
-        local blueDisassembler = Entities.FindByModel(null, "models/player/bot_assembly/ballbot_assembler.mdl")
-        EntFireByHandle(blueDisassembler, "Color", blueDisassemblerColor, 0, null, null)
-        printlP2MM("Blue Disaseembler Colored!!!")
+function ColorDisassemblerAnimation(activator) {
+    if (activator.GetTeam() == TEAM_BLUE) {
+        local blueDisassemblerColor = FindPlayerClass(activator).color.r + " " + FindPlayerClass(activator).color.g + " " + FindPlayerClass(activator).color.b
+        for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", activator.GetOrigin(), 1);) {
+            if (ent.GetName().find("blue-ballbot_assembler") != null) {
+                EntFireByHandle(ent, "Color", blueDisassemblerColor, 0, null, null)
+                break
+            }
+        }
     } else {
-        local orangeDisassemblerColor = FindPlayerClass(p).color.r + " " + FindPlayerClass(p).color.g + " " + FindPlayerClass(p).color.b
-        local orangeDisassembler = Entities.FindByModel(null, "models/player/bot_assembly/eggbot_assembler.mdl")
-        EntFireByHandle(orangeDisassembler, "Color", orangeDisassemblerColor, 0, null, null)
-        printlP2MM("Orange Disaseembler Colored!!!")
+        local orangeDisassemblerColor = FindPlayerClass(activator).color.r + " " + FindPlayerClass(activator).color.g + " " + FindPlayerClass(activator).color.b
+        for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", activator.GetOrigin(), 1);) {
+            if (ent.GetName().find("orange-ballbot_assembler") != null) {
+                EntFireByHandle(ent, "Color", orangeDisassemblerColor, 0, null, null)
+                break
+            }
+        }
     }
 }
 

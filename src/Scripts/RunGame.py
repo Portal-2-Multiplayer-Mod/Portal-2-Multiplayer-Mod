@@ -398,18 +398,24 @@ def UnRenameBinaries(gamepath: str, binaries: list[str]) -> None:
 
     # Go through the list of binaries
     for Og_binary in binaries:
-        # Add a ".p2mmoverride" file extension to the end of the binary's name
-        binary = Og_binary + ".p2mmoverride"
-        # If the binary exists
-        if (os.path.isfile(gamepath + os.sep + binary)):
-            Log("Un-renaming " + binary + " to " + Og_binary)
+        try:
+            # Add a ".p2mmoverride" file extension to the end of the binary's name
+            binary = Og_binary + ".p2mmoverride"
+            # If the binary exists
+            if (os.path.isfile(gamepath + os.sep + binary)):
+                Log("Un-renaming " + binary + " to " + Og_binary)
 
-            # If a file with the original binary's name exist delete it
-            if (os.path.isfile(gamepath + os.sep + Og_binary)):
-                os.remove(gamepath + os.sep + Og_binary)
+                # If a file with the original binary's name exist delete it
+                if (os.path.isfile(gamepath + os.sep + Og_binary)):
+                    os.remove(gamepath + os.sep + Og_binary)
 
-            # Rename the binary back to it's original name
-            os.rename(gamepath + os.sep + binary, gamepath + os.sep + Og_binary)
+                # Rename the binary back to it's original name
+                os.rename(gamepath + os.sep + binary, gamepath + os.sep + Og_binary)
+        except Exception as e:
+            Log("Error un-renaming binary! Most likely the game was still using the binary... Moving on!")
+            Log("Error: " + str(e))
+            # move on to the next file
+            continue
 
 # Using the identifier file in P2MM's DLC folder, it can be determined 
 # which DLC that is mounted to Portal 2 is in fact P2MM's DLC folder

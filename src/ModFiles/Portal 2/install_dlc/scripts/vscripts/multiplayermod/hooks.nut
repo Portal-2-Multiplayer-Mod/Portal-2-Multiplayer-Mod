@@ -50,29 +50,12 @@ function InstantRun() {
         Player2Joined = true
     }
 
-    // For adding the a output to the disassembler trigger_playerteams so the disassemblers disassembly animation is colored the players color
+    // For adding the a output to the disassembler's trigger_playerteams trigger so the disassemblers disassembly animation is colored the players color
     if (!g_bIsOnSingleplayerMaps) {
-        // printlP2MM("REAL 1")
         for (local disasemblerTrigger = null; disasemblerTrigger = Entities.FindByClassname(disasemblerTrigger, "trigger_playerteam");) {
-            // printlP2MM(disasemblerTrigger)
-            // printlP2MM(disasemblerTrigger.GetName())
-            // printlP2MM(disasemblerTrigger.GetPreTemplateName())
-            // printlP2MM("trigger_exit_lift" in disasemblerTrigger.GetName())
-            // printlP2MM(disasemblerTrigger.GetPreTemplateName() == "trigger_exit_lift")
-            // printlP2MM(disasemblerTrigger.GetName().find("trigger_exit_lift"))
-            // if (disasemblerTrigger.GetPreTemplateName() == "trigger_exit_lift") {
-            //     printlP2MM("REAL 2")
-            //     EntFireByHandle(disasemblerTrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:ColorDisassemblerAnimation(activator):0:-1", 0, null, null)
-            // }
-            // if ("trigger_exit_lift" in disasemblerTrigger.GetName()) {
-            //     printlP2MM("REAL 2")
-            //     EntFireByHandle(disasemblerTrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:ColorDisassemblerAnimation(activator):0:-1", 0, null, null)
-            // }
             if (disasemblerTrigger.GetName().find("trigger_exit_lift") != null) {
-                // printlP2MM("REAL 2")
-                EntFireByHandle(disasemblerTrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:ColorDisassemblerAnimation(caller):0:-1", 0, null, null)
+                EntFireByHandle(disasemblerTrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:ColorDisassemblerAnimation(activator):0:-1", 0, null, null)
             }
-            // printlP2MM("\n")
         }
     }
 }

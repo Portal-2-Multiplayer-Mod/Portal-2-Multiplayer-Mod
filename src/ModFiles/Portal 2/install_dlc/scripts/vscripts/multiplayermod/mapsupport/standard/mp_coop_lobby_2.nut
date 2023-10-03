@@ -76,10 +76,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             ent.Destroy() // 5 entities removed
         }
 
-        // Remove point_viewcontrol and point_viewcontrol_multiplayer's from map, they aren't used because we've disabled them, and the one point_viewcontrol is for commentary mode
+        // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
         Entities.FindByClassname(null, "point_viewcontrol").Destroy()
         for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
-            ent.Destroy() // 16 entities removed
+            if (ent.GetName().find("cam_botview") != null) {
+                continue
+            }
+            ent.Destroy() // 20 entities removed
         }
 
         // Fix track 5

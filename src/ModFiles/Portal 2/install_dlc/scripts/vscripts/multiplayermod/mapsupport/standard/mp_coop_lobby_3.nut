@@ -79,12 +79,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             ent.Destroy() // 5 entities removed
         }
 
-        // Remove point_viewcontrol and point_viewcontrol_multiplayer's from map, they aren't used, and the one point_viewcontrol is for commentary
+        // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
         Entities.FindByClassname(null, "point_viewcontrol").Destroy()
         for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
-            ent.Destroy() // 16 entities removed
+            if (ent.GetName().find("cam_botview") != null) {
+                continue
+            }
+            ent.Destroy() // 20 entities removed
         }
-        
+
         // Fix art therapy tube glitches
         Entities.FindByName(null, "dlc_room_fall_push_right").Destroy()
         Entities.FindByName(null, "dlc_room_fall_push_left").Destroy()
@@ -147,7 +150,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) {
             local LCatEn = null
             while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
-                DoEntFire("!self", "Disable", "", 0.0, null, LCatEn)
+                DoEntFire("!self", "Enable", "", 0.0, null, LCatEn)
                 DoEntFire("!self", "Trigger", "", 0.0, null, LCatEn)
             }
         }
@@ -162,7 +165,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) {
             local RCatEn = null
             while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
-                DoEntFire("!self", "Disable", "", 0.0, null, RCatEn)
+                DoEntFire("!self", "Enable", "", 0.0, null, RCatEn)
                 DoEntFire("!self", "Trigger", "", 0.0, null, RCatEn)
             }
         }
@@ -177,12 +180,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) {
             local LCatDis = null
             while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
-                DoEntFire("!self", "Disable", "", 0.0, null, LCatDis)
+                DoEntFire("!self", "Enable", "", 0.0, null, LCatDis)
                 DoEntFire("!self", "Trigger", "", 0.0, null, LCatDis)
             }
             local RCatDis = null
             while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
-                DoEntFire("!self", "Disable", "", 0.0, null, RCatDis)
+                DoEntFire("!self", "Enable", "", 0.0, null, RCatDis)
                 DoEntFire("!self", "Trigger", "", 0.0, null, RCatDis)
             }
         }
