@@ -56,6 +56,7 @@ sar.pdb
 tests/
 Logs/
 configs.cfg
+appImages/
 !src/ModFiles/portal2
 # normal folder
 !src/ModFiles/Portal 2/install_dlc/addons/p2mm.dll
