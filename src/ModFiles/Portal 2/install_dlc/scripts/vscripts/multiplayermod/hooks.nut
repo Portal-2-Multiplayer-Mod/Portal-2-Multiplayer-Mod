@@ -50,11 +50,11 @@ function InstantRun() {
         Player2Joined = true
     }
 
-    // For adding the a output to the disassembler's trigger_playerteams trigger so the disassemblers disassembly animation is colored the players color
+    // For adding the a output to the disassembler's trigger_playerteams trigger so the disassembler's disassembly animation is colored the players color
     if (!g_bIsOnSingleplayerMaps) {
-        for (local disasemblerTrigger = null; disasemblerTrigger = Entities.FindByClassname(disasemblerTrigger, "trigger_playerteam");) {
-            if (disasemblerTrigger.GetName().find("trigger_exit_lift") != null) {
-                EntFireByHandle(disasemblerTrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:ColorDisassemblerAnimation(activator):0:-1", 0, null, null)
+        for (local disassemblerTrigger = null; disassemblerTrigger = Entities.FindByClassname(disassemblerTrigger, "trigger_playerteam");) {
+            if (disassemblerTrigger.GetName().find("trigger_exit_lift") != null) {
+                EntFireByHandle(disassemblerTrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:ColorDisassemblerAnimation(activator):0:-1", 0, null, null)
             }
         }
     }
