@@ -5,6 +5,179 @@
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗███████╗╚█████╔╝██████╦╝██████╦╝   ██║   ██████████╗██████╔╝
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚══════╝ ╚════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚═════════╝╚═════╝
 
+
+// * Functions for Lobby Music Control * \\
+
+//! FUNC_BUTTONS ARE MOVING, THEY SHOULDN'T NO CLUE WHY THEY ARE...
+//! THIS IS CAUSING THE LEFT BUTTON TO NOT WORK AFTER THE FIRST PRESS...
+
+// Play the track that is currently indicated by musicSelected
+function PlaySelectedTrack() {
+    EntFire("p2mm_lobbymusic_text", "SetText", "Music Track: " + musicSelected + "/" + musicMax, 0.6, null)
+    EntFire("p2mm_lobbymusic_text", "Display", "", 0.65, null)
+    Entities.FindByName(null, "p2mm_lobbymusic_music").__KeyValueFromString("message", musicTracks["musicTrack" + musicSelected])
+    EntFire("p2mm_lobbymusic_music", "PlaySound", "", 0.7, null)
+}
+
+// Called to change the current track playing in the lobby
+// A bool is given to tell whether its going to the next or previous track
+function ChangeMusicTrack(nextTrack = true) {
+    if (nextTrack) {
+        if (musicSelected == musicMax) {
+            return
+        }
+
+        musicSelected += 1
+
+        if (musicSelected == musicMax) {
+            EntFire("p2mm_lobbymusic_button1", "unlock", "", 0, null)
+            EntFire("p2mm_lobbymusic_button2", "lock", "", 0, null)
+            EntFire("prop_button_R", "Skin", "1", 0, null)
+            PlaySelectedTrack()
+            return
+        }
+
+        if (musicSelected < musicMax && musicSelected >= musicMin) {
+            EntFire("p2mm_lobbymusic_button1", "unlock", "", 0, null)
+            EntFire("p2mm_lobbymusic_button2", "unlock", "", 0, null)
+            EntFire("prop_button_L", "Skin", "0", 0, null)
+            PlaySelectedTrack()
+            return
+        }
+    } else {
+        if (musicSelected == musicMin) {
+            return
+        }
+
+        musicSelected -= 1
+
+        if (musicSelected == musicMin) {
+            EntFire("p2mm_lobbymusic_text", "settext", "No Music", 0, null)
+            EntFire("p2mm_lobbymusic_text", "display", "", 0.5, null)
+            EntFire("p2mm_lobbymusic_button1", "lock", "", 1, null)
+            EntFire("prop_button_L", "Skin", "1", 0, null)
+            return
+        }
+
+        if (musicSelected > musicMin && musicSelected <= musicMax) {      
+            EntFire("p2mm_lobbymusic_button1", "unlock", "", 0, null)
+            EntFire("p2mm_lobbymusic_button2", "unlock", "", 0, null)
+            EntFire("prop_button_R", "Skin", "0", 0, null)
+            PlaySelectedTrack()
+            return
+        }
+    }
+}
+
+// Music Control In The Lobby!
+// Initalize the music
+function MusicInit() {
+    // Remove all the old music entities and unneeded entities
+    Entities.FindByName(null, "case_music").Destroy()
+    Entities.FindByName(null, "counter_music").Destroy()
+
+    for (local i = 2; i < 8;) {
+        Entities.FindByName(null, "@music_lobby_" + i).Destroy()
+        i += 1
+    }
+
+    local armProp = "models/anim_wp/framework/hanging_arm_02.mdl"
+    for (local prop = null; prop = Entities.FindByModel(prop, armProp);) {
+        if (prop.entindex() == 131) {
+            prop.Destroy()
+            break
+        }
+    }
+
+    for (local button = null; button = Entities.FindByClassname(button, "func_button");) {
+        if (button.entindex() == 135) {
+            button.Destroy()
+            break
+        }
+    }
+
+    // Remove entities that the func_button buttons we are reusing are referencing, we don't need them
+    Entities.FindByName(null, "transition_script").Destroy()
+    Entities.FindByName(null, "track6-DLCElevatorRoomEntranceTrigger").Destroy()
+    Entities.FindByName(null, "track6-track_door_open_trigger").Destroy()
+    Entities.FindByName(null, "coopman_screen").Destroy()
+
+    // Setup the P2MM music entities
+    //`script Entities.FindByName(null, "p2mm_lobbymusic_button1").__KeyValueFromString(spawnflags, "1025")
+    // First the buttons, button1 goes back a track, button2 goes forward
+    p2mm_lobbymusic_button1 <- Entities.FindByName(null, "screen_button_L")
+    p2mm_lobbymusic_button1.__KeyValueFromString("targetname", "p2mm_lobbymusic_button1")
+    //p2mm_lobbymusic_button1.__KeyValueFromString("wait", "0.5")
+    //p2mm_lobbymusic_button1.__KeyValueFromString("spawnflags", "1025")
+    //p2mm_lobbymusic_button1.__KeyValueFromString("speed", "10")
+    //p2mm_lobbymusic_button1.__KeyValueFromString("movedir", "0 0 0")
+    //p2mm_lobbymusic_button1.SetAngles(0, 0, 0)
+    EntFireByHandle(p2mm_lobbymusic_button1, "AddOutput", "OnPressed !self:RunScriptCode:ChangeMusicTrack(false):0:-1", 0, null, null)
+    EntFireByHandle(p2mm_lobbymusic_button1, "AddOutput", "OnPressed p2mm_lobbymusic_music:StopSound::0:-1", 0, null, null)
+    p2mm_lobbymusic_button2 <- Entities.FindByName(null, "screen_button_R")
+    p2mm_lobbymusic_button2.__KeyValueFromString("targetname", "p2mm_lobbymusic_button2")
+    //p2mm_lobbymusic_button2.__KeyValueFromString("wait", "0.5")
+    //p2mm_lobbymusic_button2.__KeyValueFromString("spawnflags", "1025")
+    //p2mm_lobbymusic_button2.__KeyValueFromString("speed", "10")
+    //p2mm_lobbymusic_button2.__KeyValueFromString("movedir", "0 0 0")
+    //p2mm_lobbymusic_button2.SetAngles(0, 0, 0)
+    EntFireByHandle(p2mm_lobbymusic_button2, "AddOutput", "OnPressed !self:RunScriptCode:ChangeMusicTrack(true):0:-1", 0, null, null)
+    EntFireByHandle(p2mm_lobbymusic_button2, "AddOutput", "OnPressed p2mm_lobbymusic_music:StopSound::0:-1", 0, null, null)
+    
+    EntFireByHandle(p2mm_lobbymusic_button1, "Enable", "", 0, null, null)
+    EntFireByHandle(p2mm_lobbymusic_button2, "Enable", "", 0, null, null)
+    EntFireByHandle(p2mm_lobbymusic_button1, "unlock", "", 0, null, null)
+    EntFireByHandle(p2mm_lobbymusic_button2, "unlock", "", 0, null, null)
+    Entities.FindByName(null, "prop_button_L").__KeyValueFromString("skin", "0")
+    Entities.FindByName(null, "prop_button_R").__KeyValueFromString("skin", "0")
+    
+    // Create the game_text entity to see what track was selected
+    p2mm_lobbymusic_text <- Entities.CreateByClassname("game_text")
+    p2mm_lobbymusic_text.__KeyValueFromString("targetname", "p2mm_lobbymusic_text")
+    p2mm_lobbymusic_text.__KeyValueFromString("message", "Music Track " + musicDefault + "/" + musicMax)
+    p2mm_lobbymusic_text.__KeyValueFromString("spawnflags", "1")
+    p2mm_lobbymusic_text.__KeyValueFromString("fadein", "0.5")
+    p2mm_lobbymusic_text.__KeyValueFromString("fadeout", "0.5")
+    p2mm_lobbymusic_text.__KeyValueFromString("x", "-1")
+    p2mm_lobbymusic_text.__KeyValueFromString("y", "0.25")
+    p2mm_lobbymusic_text.__KeyValueFromString("channel", "2")
+    p2mm_lobbymusic_text.__KeyValueFromString("holdtime", "1.2")
+    p2mm_lobbymusic_text.__KeyValueFromString("color", "255 255 255")
+    
+    // Create the ambient generic which will play our music tracks, then move it to the lobby area
+    p2mm_lobbymusic_music <- Entities.FindByName(null, "@music_lobby_1")
+    p2mm_lobbymusic_music.__KeyValueFromString("targetname", "p2mm_lobbymusic_music")
+    p2mm_lobbymusic_music.__KeyValueFromString("message", musicTracks["musicTrack" + musicDefault])
+    p2mm_lobbymusic_music.__KeyValueFromString("spawnflags", "17")
+    p2mm_lobbymusic_music.SetOrigin(Vector(4930, 3705, -478))
+
+    // Precache the music
+    foreach (musicTrack in musicTracks) {
+        self.PrecacheSoundScript(musicTrack)
+    }
+
+    // Position everything in the map
+    Entities.FindByName(null, "snd_screen_button").SetOrigin(Vector(4928, 3713, -496))
+    DoEntFire("rot_screen_buttons", "open", "", 0.0, null, null)
+    DoEntFire("move_b_screen_buttons", "clearparent", "", 0.0, null, null)
+    Entities.FindByName(null, "move_b_screen_buttons").SetAngles(0, 90, 0)
+    DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"move_b_screen_buttons\").SetOrigin(Vector(4928, 3713, -496))", 0.2, null, null)
+
+    DoEntFire("prop_button_l", "clearparent", "", 0.3, null, null)
+    DoEntFire("prop_button_r", "clearparent", "", 0.3, null, null)
+    DoEntFire("p2mm_lobbymusic_button1", "clearparent", "", 0.3, null, null)
+    DoEntFire("p2mm_lobbymusic_button2", "clearparent", "", 0.3, null, null)
+    DoEntFire("rot_screen_buttons", "kill", "", 0.4, null, null)
+
+    DoEntFire("p2mm_lobbymusic_button1", "setparent", "prop_button_l", 0.4, null, null)
+    DoEntFire("p2mm_lobbymusic_button2", "setparent", "prop_button_r", 0.4, null, null)
+    DoEntFire("!self", "command", "script Entities.FindByName(null, \"prop_button_l\").SetOrigin(Vector(4889, 3709, -476))", 0.5, null, Entities.FindByName(null, "p2mm_servercommand"))
+    DoEntFire("!self", "command", "script Entities.FindByName(null, \"prop_button_r\").SetOrigin(Vector(4936.5, 3709, -476))", 0.5, null, Entities.FindByName(null, "p2mm_servercommand"))
+
+    // START THE MUSIC
+    DoEntFire("!self", "PlaySound", "", 0.0, null, Entities.FindByName(null, "p2mm_lobbymusic_music"))
+}
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         Entities.FindByName(null, "robo_rampa_01b").__KeyValueFromString("mincpulevel", "0")
@@ -18,6 +191,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("trigger_run_script", "AddOutput", "OnStartTouchBluePlayer coop_man_enter_hub:SetStateBTrue", 0, null)
         EntFire("trigger_quick_spawn", "AddOutput", "OnStartTouchBluePlayer coop_man_quick_open:SetStateBTrue", 0, null)
         EntFire("trigger_set_course", "AddOutput", "OnStartTouchBluePlayer coop_man_set_course:SetStateBTrue", 0, null)
+        EntFire("track6-prop_door_hall", "Open", "", 0, null)
         enablehub <- false
     }
 
@@ -34,10 +208,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (enablehub) {
             // If any level was completed outside of calibration, enable the hub entirely
             EntFire("case_open_course", "invalue", "7", 0, null)
-
-            // Enable music
-            DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
         }
+
+        // INITALIZE AND START THE MUSIC
+        MusicInit()
 
         // Allow the players to drop from spawn tube
         Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
@@ -132,6 +306,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
         }
+        
     }
 
     if (MSLoop) {
@@ -144,8 +319,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Art therapy left chute enabler
-        local vectorEEL
-        vectorEEL = Vector(5727, 3336, -441)
+        local vectorEEL = Vector(5727, 3336, -441)
         local EELent = null
         while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) {
             local LCatEn = null
@@ -159,8 +333,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         TeleportPlayerWithinDistance(Vector(5729, 3336, 1005), 30, Vector(3194, -1069, 1676))
 
         // Art therapy right chute enabler
-        local vectorEER
-        vectorEER = Vector(5727, 3192, -441)
+        local vectorEER = Vector(5727, 3192, -441)
         local EERent = null
         while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) {
             local RCatEn = null
@@ -174,8 +347,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         TeleportPlayerWithinDistance(Vector(5727, 3180, 1005), 30, Vector(3191, -1228, 1682))
 
         // Disable art therapy chutes
-        local vectorE
-        vectorE = Vector(3201, -1152, 1272)
+        local vectorE = Vector(3201, -1152, 1272)
         local Aent = null
         while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) {
             local LCatDis = null

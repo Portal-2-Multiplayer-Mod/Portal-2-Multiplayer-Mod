@@ -87,3 +87,32 @@ Config_UseChatCommands <- true
 Admins <- [
     // Add Admins Here
 ]
+
+// * Custom Lobby Music Control * \\
+
+// 14 music tracks total, this can be changed in the list of tracks but make sure to adjust musicMax
+// Don't adjust musicMin as this will just determine where No Music will be in the track list and can mess up other things
+// musicDefault is what is selected when music is called to start in MusicInit()
+// musicSelected is the current music track number, this should start as the same as musicDefault
+musicMax <- 14
+musicMin <- 0
+musicDefault <- 1
+musicSelected <- musicDefault
+
+// Music tracks to be played
+musicTracks <- {
+    musicTrack1 = "music/mp_coop_lobby_2_c1.wav"
+    musicTrack2 = "music/mp_coop_lobby_2_c2.wav"
+    musicTrack3 = "music/mp_coop_lobby_2_c4.wav"
+    musicTrack4 = "music/mp_coop_lobby_2_c5.wav"
+    musicTrack5 = "music/mp_coop_lobby_2_c6.wav"
+    musicTrack6 = "music/mp_coop_lobby_2_c7.wav"
+    musicTrack7 = "music/mp_coop_hallway_c4.wav"
+    musicTrack8 = "music/portal2_robots_ftw.wav"
+    musicTrack9 = "music/sp_a1_wakeup_b1.wav"
+    musicTrack10 = "music/sp_a2_bts1_b1.wav"
+    musicTrack11 = "music/sp_a4_tb_catch_b1a.wav"
+    musicTrack12 = "music/sp_a4_finale1_b2p2.wav"
+    musicTrack13 = "ambient/music/looping_radio_mix.wav"
+    musicTrack14 = "music/portal2_want_you_gone.wav"
+}
