@@ -430,8 +430,8 @@ def findP2MMDLCFolder(gamepath: str) -> str:
                 p2mmdlcfolder = gamepath + os.sep + file
                 Log("Found P2MM's DLC folder: " + p2mmdlcfolder)
                 return p2mmdlcfolder
-    Log("P2MM's DLC folder was not found...")
-    Log("It's most likely not been mounted to Portal 2 yet or the gamepath is incorrect...")
+    Log("P2MM's DLC folder was not found!")
+    Log("It's most likely not been mounted to Portal 2 yet, already been unmounted, or the gamepath is incorrect...")
     return False
 
 # Make sure the dlc folders that come with Portal 2 exist
