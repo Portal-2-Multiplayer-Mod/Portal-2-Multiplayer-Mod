@@ -1098,7 +1098,6 @@ def VerifyGamePath(shouldGetPath: bool = True) -> bool:
 def VerifyModFiles() -> bool:
     Log("Searching for ModFiles in: " + GVars.modFilesPath)
     if GVars.configData["Dev-Mode"]["value"]:
-        Log("modFilesPath and identifier file exist?")
         print(os.path.exists(GVars.modFilesPath))
         print(GVars.modFilesPath)
         print(os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" +
@@ -1106,16 +1105,10 @@ def VerifyModFiles() -> bool:
         print(GVars.modFilesPath + os.sep + "Portal 2" +
               os.sep + "install_dlc" + os.sep + "p2mm.identifier")
 
-    #! MAKE SURE TO CHANGE THIS BACK BEFORE 2.2 RELEASE!!!
-    Log("modFilesPath and identifier file exist?")
-    print(os.path.exists(GVars.modFilesPath))
-    print(GVars.modFilesPath)
-    print(os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" +
-            os.sep + "install_dlc" + os.sep + "p2mm.identifier"))
-    print(GVars.modFilesPath + os.sep + "Portal 2" +
-            os.sep + "install_dlc" + os.sep + "p2mm.identifier")
-    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
-    #if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "32playermod.identifier")):
+    identifierPath = GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep
+    if (os.path.exists(GVars.modFilesPath)) and (
+        (os.path.exists(identifierPath + "p2mm.identifier")) or (
+         os.path.exists(identifierPath + "32playermod.identifier"))):
         Log("ModFiles found!")
         return True
 

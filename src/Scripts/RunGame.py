@@ -424,12 +424,10 @@ def findP2MMDLCFolder(gamepath: str) -> str:
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
 
             # find and return where the identifier file is
-            #! REMEMBER TO CHANGE THIS BACK BEFORE 2.2 RELEASE!!!
-            if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
-            #if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
-                p2mmdlcfolder = gamepath + os.sep + file
-                Log("Found P2MM's DLC folder: " + p2mmdlcfolder)
-                return p2mmdlcfolder
+            if ("p2mm.identifier" in os.listdir(gamepath + os.sep + file)) or ("32playermod.identifier"in os.listdir(gamepath + os.sep + file)):
+                p2mmDLCFolder = gamepath + os.sep + file
+                Log("Found P2MM's DLC folder: " + p2mmDLCFolder)
+                return p2mmDLCFolder
     Log("P2MM's DLC folder was not found!")
     Log("It's most likely not been mounted to Portal 2 yet, already been unmounted, or the gamepath is incorrect...")
     return False
@@ -457,12 +455,12 @@ def DeleteUnusedDLCs(gamepath: str) -> None:
         Log("Portal 2 game path not found!")
         return
 
-    foundp2mmdlcfolder = findP2MMDLCFolder(gamepath)
-    if foundp2mmdlcfolder != False:
-        Log("Found old DLC: " + foundp2mmdlcfolder)
+    foundP2MMDLCFolder = findP2MMDLCFolder(gamepath)
+    if foundP2MMDLCFolder != False:
+        Log("Found old DLC: " + foundP2MMDLCFolder)
         # delete the folder even if it's not empty
-        BF.DeleteFolder(foundp2mmdlcfolder)
-        Log("Deleted old DLC: " + foundp2mmdlcfolder)
+        BF.DeleteFolder(foundP2MMDLCFolder)
+        Log("Deleted old DLC: " + foundP2MMDLCFolder)
 
 # Find what DLC folders exist for Portal 2 and create a incremented folder for P2MM
 def FindAvailableDLC(gamepath: str) -> str:

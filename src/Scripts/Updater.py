@@ -96,7 +96,7 @@ def CheckForNewClient() -> dict:
 def DownloadClient(newRepo: bool) -> bool:
 
     if not HasInternet():
-        Log("No internet Connection!")
+        Log("No Internet Connection!")
         return False
 
     Log("Downloading...")
@@ -152,11 +152,12 @@ def DownloadClient(newRepo: bool) -> bool:
 def CheckForNewFiles() -> bool:
 
     if not HasInternet():
-        Log("No internet Connection!")
+        Log("No Internet Connection!")
         return False
 
     Log("Checking for new files...")
     # plan
+    # check if identifier file exists, if not then ModFiles don't exist and need to be downloaded
     # download modIndex.json
     # check if the date is greater than the one saved in the local identifier file
     # ask the user if they want to update
@@ -164,9 +165,8 @@ def CheckForNewFiles() -> bool:
     # download all the files and delete the old ones
 
     # check if the identifier file exists or no
-    localIdPath = GVars.modPath + os.sep + \
-        f"ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}p2mm.identifier"
-    if not os.path.isfile(localIdPath):
+    localIdPath = f"{GVars.modPath}{os.sep}ModFiles{os.sep}Portal 2{os.sep}install_dlc"
+    if not (os.path.exists(localIdPath + "p2mm.identifier") or os.path.exists(localIdPath + "32playermod.identifier")):
         Log("Identifier file doesn't exist so the ModFiles are probably unavailable too...")
         return True
 
@@ -196,7 +196,7 @@ def CheckForNewFiles() -> bool:
 def DownloadNewFiles() -> None:
 
     if not HasInternet():
-        Log("No internet Connection!")
+        Log("No Internet Connection!")
         return False
 
     r = requests.get(
