@@ -89,17 +89,27 @@ Admins <- [
 ]
 
 // * Custom Lobby Music Control * \\
+// * Configs for the custom music controls in mp_coop_lobby_3 * \\
 
-// 14 music tracks total, this can be changed in the list of tracks but make sure to adjust musicMax
-// Don't adjust musicMin as this will just determine where No Music will be in the track list and can mess up other things
-// musicDefault is what is selected when music is called to start in MusicInit()
-// musicSelected is the current music track number, this should start as the same as musicDefault
-musicMax <- 14
-musicMin <- 0
+// musicEnable: Whether to enable custom music control in the lobby.
+musicEnable <- true
+
+// musicDefault: What music track is called to start by default in the lobby. 
+// Set this to zero if you don't want any music to start in the lobby.
 musicDefault <- 1
-musicSelected <- musicDefault
 
-// Music tracks to be played
+// musicTracks: The music track list containing tracks to be played in the lobby. For it to be heard by all 
+// players it must come with Portal 2, or it has to be in the same location on disk as the host and as listed here. 
+// 
+// Recommended to use .wav files, but .mp3 should also work but... It's also recommended that your sound file has 
+// build in looping, the ambient_generic we use can not automatically rerun tracks unless they have build in looping. 
+// You can tell if your music track has built in looping when you run the "snd_show 1" command in the console 
+// and you see "looped(1) to the left of the music tracks file name. Built in looping can be done to .wav files but 
+// isn't possible with .mp3 files. Those marked with "Doesn't loop", are some tracks we thought would be nice to be
+// there by default, but they don't loop.
+//
+// There needs to at least one specified track for things properly to work, this can be a empty string but if you 
+// don't want music just set musicDefault to zero.
 musicTracks <- {
     musicTrack1 = "music/mp_coop_lobby_2_c1.wav"
     musicTrack2 = "music/mp_coop_lobby_2_c2.wav"
@@ -108,11 +118,13 @@ musicTracks <- {
     musicTrack5 = "music/mp_coop_lobby_2_c6.wav"
     musicTrack6 = "music/mp_coop_lobby_2_c7.wav"
     musicTrack7 = "music/mp_coop_hallway_c4.wav"
-    musicTrack8 = "music/portal2_robots_ftw.wav"
-    musicTrack9 = "music/sp_a1_wakeup_b1.wav"
-    musicTrack10 = "music/sp_a2_bts1_b1.wav"
-    musicTrack11 = "music/sp_a4_tb_catch_b1a.wav"
-    musicTrack12 = "music/sp_a4_finale1_b2p2.wav"
-    musicTrack13 = "ambient/music/looping_radio_mix.wav"
-    musicTrack14 = "music/portal2_want_you_gone.wav"
+    musicTrack8 = "music/sp_a1_wakeup_b1.wav"
+    musicTrack9 = "music/sp_a2_bts1_b1.wav"
+    musicTrack10 = "music/sp_a4_tb_catch_b1a.wav"
+    musicTrack11 = "music/sp_a4_finale1_b2p2.wav"
+    musicTrack12 = "music/portal2_want_you_gone.wav"
+    musicTrack13 = "music/portal2_robots_ftw.wav"
+    musicTrack14 = "ambient/music/looping_radio_mix.wav"
+    musicTrack15 = "music/sp_a2_dual_lasers_r1.wav" // Doesn't loop
+    musicTrack16 = "music/sp_a2_laser_vs_turret_r1.wav" // Doesn't loop
 }
