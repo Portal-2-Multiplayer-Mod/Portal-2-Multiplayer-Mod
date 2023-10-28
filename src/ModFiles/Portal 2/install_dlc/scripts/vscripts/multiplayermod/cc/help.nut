@@ -6,7 +6,6 @@ commandtable["kick"] <- "Kicks acts as a temp ban, kicks the player from the pla
 commandtable["kill"] <- "Kill yourself, others, or \"all\"."
 commandtable["mpcourse"] <- "Changes the level to the specified cooperative course."
 commandtable["noclip"] <- "Toggles your noclip status."
-commandtable["password"] <- "Set the servers password, leave blank to remove the password on the server."
 commandtable["playercolor"] <- "Changes your player model's color through valid RGB values."
 commandtable["rcon"] <- "Execute commands on the server console."
 commandtable["restartlevel"] <- "Reset the current map."

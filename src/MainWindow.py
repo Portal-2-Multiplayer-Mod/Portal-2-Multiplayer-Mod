@@ -1216,7 +1216,6 @@ def UpdateModClient(data: dict) -> None:
 def RunGameScript() -> None:
     if MountModOnly():
         gamePath = GVars.configData["Portal2-Path"]["value"]
-        # GVars.gameActive = True
         RG.LaunchGame(gamePath)
         Ui.CreateToast(GVars.translations["game_launched"], 5, (75, 255, 75))
     else:
