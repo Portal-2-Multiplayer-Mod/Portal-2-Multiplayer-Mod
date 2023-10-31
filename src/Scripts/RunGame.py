@@ -166,7 +166,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     dlcmountpoint = FindAvailableDLC(gamepath)
 
     destination = BF.CopyFolder(modFilesPath + os.sep+".", gamepath + os.sep + dlcmountpoint)
-    Log(f"Successfully copied the ModsFiles to {destination}")
+    Log(f"Successfully copied the ModFiles to {destination}")
 
     nutConfigFile = gamepath + os.sep + dlcmountpoint + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "multiplayermod" + os.sep + "config.nut"
     if os.path.exists(nutConfigFile):
@@ -440,7 +440,7 @@ def findP2MMDLCFolder(gamepath: str) -> str:
 def CheckForRequiredDLC(gamepath: str) -> bool:
     Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
 
-    if (not os.path.exists(gamepath + os.sep + "portal2_dlc1")) or (not os.path.exists(gamepath + os.sep + "portal2_dlc2")):
+    if (not (os.path.exists(gamepath + os.sep + "portal2_dlc1") or os.path.exists(gamepath + os.sep + "portal2_dlc2"))):
         Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
         Log("P2MM will not be mounted/started!")
         return False

@@ -13,11 +13,12 @@ import Scripts.BasicFunctions as BF
 import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
-currentVersion = "2.2.0" # change this before releasing a new version
-ownerName = "Portal-2-Multiplayer-Mod"
-repoName = "Portal-2-Multiplayer-Mod"  # we can't change this to the id :(
-# this is to download the new client if it ever releases
-newRepoName = "P2MM-Entanglement"
+# When making your fork, make sure to change these to accommodate your version
+currentVersion = "2.2.0" #! Change this before releasing a new version!
+ownerName = "Portal-2-Multiplayer-Mod" # The user or organization that owns the repository
+repoName = "Portal-2-Multiplayer-Mod"  # The repository name, you can't use the id :(
+
+newRepoName = "P2MM-Entanglement" # Repository name for P2MM 3.0, this is checked when it's released
 
 
 # thanks stackOverflow for this solution <3
@@ -61,10 +62,10 @@ def CheckForNewClient() -> dict:
         return {"status": False}
 
     if "tag_name" in repoData:
-
-        # make sure that the latest release has a different version than the current one and is not a beta release
-        if (currentVersion == repoData["tag_name"]) or ("beta" in repoData["tag_name"]):
-            Log("Found release but it's old...")
+        # If the current version of the launcher is a greater or equal to whats currently 
+        # released, then we have a newer version compared to whats released. We won't update the client.
+        if ((int(str(currentVersion).replace(".", "")) >= int(str(repoData["tag_name"]).replace(".", ""))) or ("beta" in repoData["tag_name"])):
+            Log("Found release but it's old, we won't update the client...")
             foundNewVer = False
 
     #! search for a new client on the new repo
@@ -72,7 +73,7 @@ def CheckForNewClient() -> dict:
         repoData = requests.get(
             f"{endpoint}/{ownerName}/{newRepoName}/releases/latest").json()
     except Exception as e:
-        Log(f"Error retrieving the latest releases: {str(e)}")
+        Log(f"Error retrieving the latest releases in the new repository: {str(e)}")
         return {"status": False}
 
     if "tag_name" in repoData:
@@ -164,9 +165,15 @@ def CheckForNewFiles() -> bool:
     # if yes read where the files are saved on the github repo
     # download all the files and delete the old ones
 
-    # check if the identifier file exists or no
-    localIdPath = f"{GVars.modPath}{os.sep}ModFiles{os.sep}Portal 2{os.sep}install_dlc"
-    if not (os.path.exists(localIdPath + "p2mm.identifier") or os.path.exists(localIdPath + "32playermod.identifier")):
+    # check if the identifier file exists or not
+    localIDPath = f"{GVars.modPath}{os.sep}ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}"
+    if GVars.configData["Dev-Mode"]["value"]:
+        print("localIDPath and which identifier file exists?")
+        print(localIDPath)
+        print(localIDPath + "p2mm.identifier: " + os.path.exists(localIDPath + "p2mm.identifier"))
+        print(localIDPath + "32playermod.identifier: " + os.path.exists(localIDPath + "32playermod.identifier"))
+    
+    if (not (os.path.exists(localIDPath + "p2mm.identifier") or os.path.exists(localIDPath + "32playermod.identifier"))):
         Log("Identifier file doesn't exist so the ModFiles are probably unavailable too...")
         return True
 
@@ -181,7 +188,11 @@ def CheckForNewFiles() -> bool:
         return False
 
     # compare the dates of the local file and the file on the repo
-    localDate = datetime.strptime(open(localIdPath, "r").read(), "%Y-%m-%d")
+    try:
+        localDate = datetime.strptime(open(localIDPath + "p2mm.identifier", "r").read(), "%Y-%m-%d")
+    except:
+        localDate = datetime.strptime(open(localIDPath + "32playermod.identifier", "r").read(), "%Y-%m-%d")
+    
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
     # if the remote date is less or equal to the local date that means our client is up to date
     if (remoteDate <= localDate):
@@ -202,7 +213,7 @@ def DownloadNewFiles() -> None:
     r = requests.get(
         f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
     r = r.json()
-    Log("Downloading "+str(len(r["Files"]))+" files...")
+    Log(f'Downloading {str(len(r["Files"]))} files...')
 
     # download the files to a temp folder
     tempPath = GVars.modPath + os.sep + ".temp"
