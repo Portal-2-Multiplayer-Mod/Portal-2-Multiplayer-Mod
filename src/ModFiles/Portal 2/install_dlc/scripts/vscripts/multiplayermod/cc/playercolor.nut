@@ -10,7 +10,7 @@ CommandList.push(
             }
 
             try {
-                args[0] = Strip(args[0])
+                args[0] = strip(args[0])
             } catch (exception) {
                 return ErrorOut(p)
             }
@@ -19,10 +19,10 @@ CommandList.push(
                 local pTargetPlayer = p
                 local pTargetPlayerText = "your"
                 try {
-                    args[1] = Strip(args[1])
+                    args[1] = strip(args[1])
                     local plr = FindPlayerByName(args[1])
                     if (plr == null) {
-                        return SendChatMessage("[ERROR] Player not found.", pTargetPlayer)
+                        return SendChatMessage("[ERROR] Player not found!", pTargetPlayer)
                     }
                     if (plr != p) {
                         pTargetPlayer = plr
@@ -49,8 +49,8 @@ CommandList.push(
             }
 
             try {
-                args[1] = Strip(args[1])
-                args[2] = Strip(args[2])
+                args[1] = strip(args[1])
+                args[2] = strip(args[2])
             } catch (exception) {
                 return ErrorOut(p)
             }
@@ -81,15 +81,15 @@ CommandList.push(
 
             // Is there a player name specified?
             try {
-                args[3] = Strip(args[3])
+                args[3] = strip(args[3])
                 local plr = FindPlayerByName(args[3])
 
                 if (plr == null) {
-                    return SendChatMessage("[ERROR] Player not found.", p)
+                    return SendChatMessage("[ERROR] Player not found!", p)
                 }
 
                 if (GetAdminLevel(p) < 2 && plr != p) {
-                    return SendChatMessage("[ERROR] You need to have admin level 2 or higher to use on others.", p)
+                    return SendChatMessage("[ERROR] You need to have admin level 2 or higher to use on others!", p)
                 }
 
                 if (plr != p) {

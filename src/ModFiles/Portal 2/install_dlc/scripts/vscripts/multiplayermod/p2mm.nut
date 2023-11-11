@@ -141,10 +141,12 @@ function LoadMapSupportCode(gametype) {
 // Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
 switch (Config_GameMode) {
-case 0:     LoadMapSupportCode("standard");     break
-default:
-    printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
-    LoadMapSupportCode("standard"); break
+    case 0: LoadMapSupportCode("standard"); break
+    case 1: LoadMapSupportCode("speedrun"); break
+    default:
+        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
+        LoadMapSupportCode("standard")
+        break
 }
 
 //---------------------------------------------------

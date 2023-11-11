@@ -3,13 +3,13 @@ CommandList.push(
         name = "adminmodify"
         level = 6
 
-        // !adminmodify (player name) (new admin level)
+        // !adminmodify (target: player name) (new admin level)
         function CC(p, args) {
             try {
-                args[0] = Strip(args[0])
+                args[0] = strip(args[0])
                 local plr = FindPlayerByName(args[0])
                 try {
-                    args[1] = Strip(args[1])
+                    args[1] = strip(args[1])
                     args[1] = args[1].tointeger()
                     try {
                         if (typeof args[1] == "integer") {
@@ -18,7 +18,7 @@ CommandList.push(
                             }
                         }
                     } catch (exception) {
-                        SendChatMessage("[ERROR] Input a number after the player name to set a new admin level.", p)
+                    SendChatMessage("[ERROR] Input a number after the player name to set a new admin level!", p)
                         return
                     }
                 } catch (exception) {
@@ -45,11 +45,11 @@ CommandList.push(
                             }
                         }
                     } else {
-                        SendChatMessage("[ERROR] Player not found.", p)
+                        SendChatMessage("[ERROR] Player not found!", p)
                     }
                 }
             } catch (exception) {
-                SendChatMessage("[ERROR] Input a player name.", p)
+                SendChatMessage("[ERROR] Input a player name!", p)
             }
         }
     }

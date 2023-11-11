@@ -79,11 +79,11 @@ function Vote::UpdatePlayerCountText() {
 function Vote::BeginVote(arg1, arg2, pPlayer) {
     if (arg1 == "kick") {
         if (FindPlayerByName(arg2) == null) {
-            return SendChatMessage("[ERROR] Player not found.", pPlayer)
+            return SendChatMessage("[ERROR] Player not found!", pPlayer)
         }
         if (!IsDedicatedServer()) {
             if (FindPlayerByName(arg2) == UTIL_PlayerByIndex(1)) {
-                return SendChatMessage("[ERROR] Cannot kick server operator.", pPlayer)
+                return SendChatMessage("[ERROR] Cannot kick server operator!", pPlayer)
             }
         }
     }
@@ -311,7 +311,7 @@ CommandList.push(
                 return
             }
 
-            args[0] = Strip(args[0]).tolower()
+            args[0] = strip(args[0]).tolower()
 
             //----------------------------
             // There is a vote in progress
@@ -347,7 +347,7 @@ CommandList.push(
                 }
                 else if (args[0] == "changelevel" || args[0] == "kick" || args[0] == "hostgunonly" && !IsDedicatedServer()) {
                     // Don't start new votes
-                    SendChatMessage("[ERROR] Cannot start another vote if one is in progress.", p)
+                    SendChatMessage("[ERROR] Cannot start another vote if one is in progress!", p)
                 }
                 else if (args[0] == "yes" || args[0] == "no") {
                     // Submit a vote
@@ -376,15 +376,15 @@ CommandList.push(
             //--------------------------------
 
             if (args[0] == "cancel") {
-                SendChatMessage("[ERROR] Cannot cancel. No vote active.", p)
+                SendChatMessage("[ERROR] Cannot cancel. No vote active!", p)
                 VoteInstanceArray.clear()
             }
             else if (args[0] == "changelevel") {
                 // Start a new vote
                 try {
-                    args[1] = Strip(args[1])
+                    args[1] = strip(args[1])
                 } catch (exception) {
-                    SendChatMessage("[ERROR] Enter a second argument.", p)
+                    SendChatMessage("[ERROR] Enter a second argument!", p)
                     VoteInstanceArray.clear()
                     return
                 }
@@ -398,9 +398,9 @@ CommandList.push(
             else if (args[0] == "kick") {
                 // Start a new vote
                 try {
-                    args[1] = Strip(args[1])
+                    args[1] = strip(args[1])
                 } catch (exception) {
-                    SendChatMessage("[ERROR] Enter a second argument.", p)
+                    SendChatMessage("[ERROR] Enter a second argument!", p)
                     VoteInstanceArray.clear()
                     return
                 }
@@ -412,14 +412,14 @@ CommandList.push(
             }
             else if (args[0] == "yes" || args[0] == "no" || args[0] == "succeed" || args[0] == "fail") {
                 // Cannot vote for something yet
-                SendChatMessage("[ERROR] No vote is active.", p)
+                SendChatMessage("[ERROR] No vote is active!", p)
                 VoteInstanceArray.clear()
             } else {
                 // No valid option chosen
                 if (IsDedicatedServer()) {
-                    SendChatMessage("[ERROR] Voting options are: changelevel, kick.", p)
+                    SendChatMessage("[ERROR] Voting options are: changelevel, kick!", p)
                 } else {
-                    SendChatMessage("[ERROR] Voting options are: changelevel, kick, hostgunonly.", p)
+                    SendChatMessage("[ERROR] Voting options are: changelevel, kick, hostgunonly!", p)
                 }
                 VoteInstanceArray.clear()
             }

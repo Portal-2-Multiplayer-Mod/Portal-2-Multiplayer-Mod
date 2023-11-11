@@ -3,7 +3,7 @@ CommandList.push(
         name = "kill"
         level = 0
 
-        // !kill
+        // !kill (optional player)
         function CC(p, args) {
             local KillPlayer = function(player) {
                 if (player.GetHealth() == 0) { return }
@@ -14,9 +14,9 @@ CommandList.push(
                     "Killed yourself.",
                     "Killed player.",
                     "Killed all players."
-                    "[ERROR] Player not found."
-                    "You are already dead."
-                    "Player is already dead."
+                    "[ERROR] Player not found!"
+                    "You are already dead!"
+                    "Player is already dead!"
                 ]
                 SendChatMessage(KillPlayerText[iTextIndex], player)
             }
@@ -27,7 +27,7 @@ CommandList.push(
             }
             else if (GetAdminLevel(p) >= 2) {
                 try {
-                    args[0] = Strip(args[0])
+                    args[0] = strip(args[0])
 
                     if (args[0] != "all") {
                         local q = FindPlayerByName(args[0])

@@ -17,7 +17,7 @@ CommandList.push(
                 return
             }
 
-            args[0] = Strip(args[0])
+            args[0] = strip(args[0])
             if (args[0] == "all") {
                 for (local ent; ent = Entities.FindByClassname(ent, "player");) {
                     RocketPlayer(ent)
@@ -26,7 +26,7 @@ CommandList.push(
             } else {
                 local q = FindPlayerByName(args[0])
                 if (q == null) {
-                    SendChatMessage("[ERROR] Player not found.", p)
+                    SendChatMessage("[ERROR] Player not found!", p)
                     return
                 } else {
                     RocketPlayer(q)

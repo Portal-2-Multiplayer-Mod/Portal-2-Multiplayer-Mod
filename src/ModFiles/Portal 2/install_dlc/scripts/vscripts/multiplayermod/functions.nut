@@ -1825,7 +1825,3 @@ function StartsWith(str, substr) {
         return false
     }
 }
-
-function Strip(str) {
-    return strip(str)
-}

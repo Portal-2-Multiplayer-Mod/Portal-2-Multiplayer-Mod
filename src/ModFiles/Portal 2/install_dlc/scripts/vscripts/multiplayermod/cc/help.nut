@@ -12,7 +12,6 @@ commandtable["restartlevel"] <- "Reset the current map."
 commandtable["rocket"] <- "Send yourself, others, or \"all\" into the air for them to blow up."
 commandtable["slap"] <- "Slap yourself, others, or \"all\" dealing a tiny amount of damage and jolting."
 commandtable["spchapter"] <- "Changes the level to the specified singleplayer chapter."
-// commandtable["spectate"] <- "Allows you to spectate players and roam around the map."
 commandtable["speed"] <- "Changes your player speed."
 commandtable["teleport"] <- "Teleports a specific player or \"all\" to you or another player."
 commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not."
@@ -22,10 +21,10 @@ CommandList.push(
         name = "help"
         level = 0
 
-        // !help (optionally with command name arg)
+        // !help (optional command name arg)
         function CC(p, args) {
             try {
-                args[0] = Strip(args[0])
+                args[0] = strip(args[0])
                 if (commandtable.rawin(args[0])) {
                     SendChatMessage("[HELP] " + args[0] + ": " + commandtable[args[0]], p)
                 }
@@ -33,6 +32,10 @@ CommandList.push(
                     SendChatMessage("[HELP] Unknown chat command: " + args[0], p)
                 }
             } catch (exception) {
+                SendChatMessage("[HELP] Target group operations:")
+                SendChatMessage("[HELP] \"@a\": Everyone")
+                SendChatMessage("[HELP] \"@b\": Team Atlas")
+                SendChatMessage("[HELP] \"@o\": Team P-Body")
                 SendChatMessage("[HELP] Your available commands:", p)
                 local availablecommands = ""
                 foreach (command in CommandList) {

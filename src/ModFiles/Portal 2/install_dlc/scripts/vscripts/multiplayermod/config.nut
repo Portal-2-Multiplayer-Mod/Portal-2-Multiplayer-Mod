@@ -25,8 +25,6 @@ Config_UseCustomDevModels <- false
 // If you want to change the gamemode on the next map load, set Config_GameMode to...
 // 0 - Standard   : Most stable experience
 // 1 - Speedrun   : For those who like to speedrun Portal 2     (No full implementation yet)
-// 2 - Deathmatch : Fight to the death in a team battle         (No full implementation yet)
-// 3 - Futbol     : Portal 2 beta minigame restored             (No full implementation yet)
 Config_GameMode <- 0
 
 // Set true/false if you want to randomize every Turret's models and colors (for fun lol) (BROKEN)
