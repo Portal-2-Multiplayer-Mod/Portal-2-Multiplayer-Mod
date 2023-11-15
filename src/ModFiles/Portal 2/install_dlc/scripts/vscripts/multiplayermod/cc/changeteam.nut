@@ -10,7 +10,7 @@ CommandList.push(
         name = "changeteam"
         level = 0
 
-        // !changeteam (optional arg: 0, 2, or 3)
+        // !changeteam (optional arg: 0 Singleplayer, 2 P-Body, or 3 Atlas)
         function CC(p, args) {
             try {
                 args[0] = strip(args[0])
@@ -29,8 +29,7 @@ CommandList.push(
                     local iNewTeam = null
                     switch (p.GetTeam()) {
                         case TEAM_SINGLEPLAYER: iNewTeam = TEAM_RED;    break;
-                        // case TEAM_SPECTATOR: iNewTeam = TEAM_RED;    break;
-                        case TEAM_RED:  iNewTeam = TEAM_BLUE;           break;
+                        case TEAM_RED:          iNewTeam = TEAM_BLUE;   break;
                         case TEAM_BLUE: iNewTeam = TEAM_SINGLEPLAYER;   break;
                     }
                     p.SetTeam(iNewTeam)

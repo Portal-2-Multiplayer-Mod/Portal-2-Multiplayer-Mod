@@ -3,7 +3,7 @@ CommandList.push(
         name = "kick"
         level = 6
 
-        // !kick (player)
+        // !kick (target arg: player)
         function CC(p, args) {
             if (args.len() == 0) {
                 SendChatMessage("[ERROR] Input a player name!", p)

@@ -15,7 +15,7 @@ CommandList.push(
         name = "spchapter"
         level = 5
 
-        // !spchapter (chapter integer arg)
+        // !spchapter (chapter integer 1-9)
         function CC(p, args) {
             try{
                 args[0] = args[0].tointeger()

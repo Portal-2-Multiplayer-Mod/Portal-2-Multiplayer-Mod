@@ -230,7 +230,7 @@ CommandList.push(
         name = "vote"
         level = 0
 
-        // !vote (arg1) (arg2)
+        // !vote (vote choice arg: changelevel, kick, or hostgunonly) (arg for changelevel map name or kick player name)
         function CC(p, args) {
             if (!Player2Joined && !IsDedicatedServer()) {
                 // Just loaded into a map

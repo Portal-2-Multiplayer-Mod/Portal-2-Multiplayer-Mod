@@ -86,7 +86,11 @@ function ChatCommands(iUserIndex, rawText) {
 CommandList <- []
 
 local IncludeScriptCC = function(script) {
-    IncludeScript("multiplayermod/cc/" + script + ".nut")
+    try {
+        IncludeScript("multiplayermod/cc/" + script + ".nut")
+    } catch (exception) {
+        p2mmlP2MM("Failed to load: multiplayermod/cc/" + script + ".nut")
+    }
 }
 
 // Include the scripts that will push each
@@ -103,14 +107,12 @@ IncludeScriptCC("kick")
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
-IncludeScriptCC("password")
 IncludeScriptCC("playercolor")
 IncludeScriptCC("rcon")
 IncludeScriptCC("restartlevel")
 IncludeScriptCC("rocket")
 IncludeScriptCC("slap")
 IncludeScriptCC("spchapter")
-// IncludeScriptCC("spectate") // broken
 IncludeScriptCC("speed")
 IncludeScriptCC("teleport")
 IncludeScriptCC("vote")

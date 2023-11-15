@@ -3,7 +3,7 @@ CommandList.push(
         name = "rcon"
         level = 6
 
-        // !rcon (args)
+        // !rcon (console command)
         function CC(p, args) {
             try {
                 args[0] = strip(args[0])

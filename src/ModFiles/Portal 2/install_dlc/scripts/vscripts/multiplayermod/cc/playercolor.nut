@@ -3,7 +3,7 @@ CommandList.push(
         name = "playercolor"
         level = 0
 
-        // !playercolor (r OR reset) (g) (b) (optional: someone's name)
+        // !playercolor (r OR reset) (g) (b) (optional arg: player)
         function CC(p, args) {
             local ErrorOut = function(p) {
                 SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space OR 'reset'.", p)

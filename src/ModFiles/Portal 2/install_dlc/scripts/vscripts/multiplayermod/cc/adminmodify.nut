@@ -3,7 +3,7 @@ CommandList.push(
         name = "adminmodify"
         level = 6
 
-        // !adminmodify (target: player name) (new admin level)
+        // !adminmodify (target arg: player) (new admin level)
         function CC(p, args) {
             try {
                 args[0] = strip(args[0])

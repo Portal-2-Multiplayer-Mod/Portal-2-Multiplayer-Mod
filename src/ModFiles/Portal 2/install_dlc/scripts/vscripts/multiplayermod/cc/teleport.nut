@@ -3,82 +3,117 @@ CommandList.push(
         name = "teleport"
         level = 4
 
-        // !teleport (going to this username) (bring this player or "all")
+        // !teleport (target arg: Specific player, team target. destination player if only this arg.) (destination arg: player)
         function CC(p, args) {
+            local TeleportTargetOperation = function(operation, destination, p) {
+                switch (operation) {
+                    case "@a":
+                        for (local player; player = Entities.FindByClassname(player, "player");) {
+                            player.SetOrigin(destination.GetOrigin())
+                            player.SetAngles(destination.GetAngles().x, destination.GetAngles().y, destination.GetAngles().z)
+                        }
+                        SendChatMessage(destination == p ? "Brought all players." : "Teleported all players.", p)
+                        return
+
+                    case "@b":
+                        for (local player; player = Entities.FindByClassname(player, "player");) {
+                            if (player.GetTeam() == TEAM_BLUE) {
+                                player.SetOrigin(destination.GetOrigin())
+                                player.SetAngles(destination.GetAngles().x, destination.GetAngles().y, destination.GetAngles().z)
+                            } 
+                        }
+                        SendChatMessage(destination == p ? "Brought all Atlas players." : "Teleported all Atlas players.", p)
+                        return
+
+                    case "@o":
+                        for (local player; player = Entities.FindByClassname(player, "player");) {
+                            if (player.GetTeam() == TEAM_RED) {
+                                player.SetOrigin(destination.GetOrigin())
+                                player.SetAngles(destination.GetAngles().x, destination.GetAngles().y, destination.GetAngles().z)
+                            } 
+                        }
+                        SendChatMessage(destination == p ? "Brought all P-Body players." : "Teleported all P-Body players.", p)
+                        return
+                    
+                    case "@s":
+                        for (local player; player = Entities.FindByClassname(player, "player");) {
+                            if (player.GetTeam() == TEAM_SINGLEPLAYER) {
+                                player.SetOrigin(destination.GetOrigin())
+                                player.SetAngles(destination.GetAngles().x, destination.GetAngles().y, destination.GetAngles().z)
+                            } 
+                        }
+                        SendChatMessage(destination == p ? "Brought all Singleplayer team players." : "Teleported all Singleplayer team players.", p)
+
+                    default:
+                        SendChatMessage("[ERROR] Invalid target operation used! \"@a\", \"@b\", \"@o\", and \"@s\" are your options!", p)
+                        return
+                }
+            }
 
             if (args.len() == 0) {
-                SendChatMessage("[ERROR] Input a player name.", p)
+                SendChatMessage("[ERROR] Input a teleport!", p)
                 return
             }
             if (args.len() > 2) {
-                SendChatMessage("[ERROR] Too many arguments given.", p)
+                SendChatMessage("[ERROR] Too many arguments given!", p)
                 return
             }
 
-            // args[0] -> player to teleport to
-            // args[1] if exist -> player to bring
-            args[0] = Strip(args[0])
+            // args[0] -> if exists -> target to teleport, if there is a "@" check for which team target to use
+            args[0] = strip(args[0])
+            local target = FindPlayerByName(args[0])
 
-            local plr = FindPlayerByName(args[0])
+            local targetOperation = false
+            if ((args[0].find("@") != null) && (target == null)) {
+                targetOperation = true
+            }
 
-            if (plr == null) {
-                SendChatMessage("[ERROR] Player not found.", p)
+            if ((target == null) && (!targetOperation)) {
+                SendChatMessage("[ERROR] Player not found!", p)
                 return
             }
 
-            if (args.len() == 1){
-                if (plr == p) {
-                    SendChatMessage("[ERROR] You are already here.", p)
+            if (args.len() == 1) {
+                if (targetOperation) {
+                    TeleportTargetOperation(args[0], p, p)
                     return
                 }
 
-                p.SetOrigin(plr.GetOrigin())
-                p.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
+                if (target == p) {
+                    SendChatMessage("[ERROR] You are already here!", p)
+                    return
+                }
+
+                p.SetOrigin(target.GetOrigin())
+                p.SetAngles(target.GetAngles().x, target.GetAngles().y, target.GetAngles().z)
                 SendChatMessage("Teleported to player.", p)
                 return
             }
 
-            args[1] = Strip(args[1])
-            local plr2 = FindPlayerByName(args[1])
+            // args[1] if exist -> player to teleport the target to
+            args[1] = strip(args[1])
+            local destination = FindPlayerByName(args[1])
 
-            if (args[1] != "all" && plr2 == null){
-                SendChatMessage("[ERROR] Third argument is invalid! Use \"all\" or a player's username.", p)
+            if (destination == null) {
+                SendChatMessage("[ERROR] Player not found!", p)
                 return
             }
-
-            // if second argument was "all"
-            if (args[1] == "all") {
-                local q = null
-                while (q = Entities.FindByClassname(q, "player")) {
-                    // Don't modify the player we are teleporting to
-                    if (q != plr) {
-                        q.SetOrigin(plr.GetOrigin())
-                        q.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-                    }
-                }
-                if (plr == p) {
-                    SendChatMessage("Brought all players.")
-                } else {
-                    SendChatMessage("Teleported all players.")
-                }
-                return
-            }
-
-            if (plr == p && plr == plr2) {
-                SendChatMessage("[ERROR] Can't teleport player to the same player.", p)
+            
+            if (targetOperation) {
+                TeleportTargetOperation(args[0], destination, p)
                 return
             }
 
             // if the second argument is a player
-            plr2.SetOrigin(plr.GetOrigin())
-            plr2.SetAngles(plr.GetAngles().x, plr.GetAngles().y, plr.GetAngles().z)
-            if (plr2 == p) {
+            target.SetOrigin(destination.GetOrigin())
+            target.SetAngles(destination.GetAngles().x, destination.GetAngles().y, destination.GetAngles().z)
+            if (target == p) {
                 SendChatMessage("Teleported to player.", p)
                 return
             } else {
                 // Special case for changing chat color to a mildly dark green
                 SendToChat("\x05(P2:MM): Teleported player.", p.entindex())
-                SendToChat("\x05(P2:MM): Teleported player.", plr2.entindex()) // Notify the other player who got teleported as well
+                SendToChat("\x05(P2:MM): You've been teleported.", target.entindex()) // Notify the other player who got teleported as well
                 return
             }
         }
