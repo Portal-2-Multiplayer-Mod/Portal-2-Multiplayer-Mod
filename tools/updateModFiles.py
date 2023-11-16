@@ -22,7 +22,7 @@ def FindLocalP2MM() -> str:
         CSIDL_PERSONAL = 5       # My Documents
         SHGFP_TYPE_CURRENT = 0   # Get current, not default value
 
-        buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
+        buf = ctypes.create_unicode_buffer(260)
         ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
 
         # Set the modPath to the users documents folder
