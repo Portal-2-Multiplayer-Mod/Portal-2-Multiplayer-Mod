@@ -8,7 +8,7 @@
 
 // Differentiate our debug comments in the console from normal spew
 function printlP2MM(str) {
-    printl("(P2:MM): " + str)
+    printl("(P2:MM VSCRIPT): " + str)
 }
 
 // Bad way to check, but what else can we do?

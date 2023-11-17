@@ -37,7 +37,6 @@ class GlobalSpawnClass {
 //---------------
 // enum is weird in VScript
 const TEAM_SINGLEPLAYER = 0
-const TEAM_SPECTATOR = 1
 const TEAM_RED = 2
 const TEAM_BLUE = 3
 

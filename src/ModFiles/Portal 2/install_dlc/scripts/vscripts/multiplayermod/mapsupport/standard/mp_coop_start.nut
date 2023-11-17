@@ -85,7 +85,7 @@ function coop_startHasPortalGun(args) {
     for (local p; p = Entities.FindByClassname(p, "player");) {
         if (args == "blue") {
             // Check is done this way to compensate for players on other teams
-            if (p.GetTeam() != TEAM_RED && p.GetTeam() != TEAM_SPECTATOR) {
+            if (p.GetTeam() != TEAM_RED) {
                 EntFireByHandle(GamePlayerEquip, "use", "", 0, p, p)
             }
         }
