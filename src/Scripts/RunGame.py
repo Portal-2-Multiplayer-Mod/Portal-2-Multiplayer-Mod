@@ -85,11 +85,11 @@ def SetNewEncryptions() -> None:
         Log("New CVAR:      " + cmdrep[2])
         Log("===========")
 
-def UnEncryptEncryptions() -> None:
-    Log("UnEncrypting Encryptions...")
+def DecryptEncryptions() -> None:
+    Log("Decrypting Encryptions...")
     for cmdrep in CommandReplacements:
         cmdrep[2] = cmdrep[1]
-    Log("Finished UnEncrypting Encryptions")
+    Log("Finished Decrypting Encryptions")
 
 def SetVScriptConfigFile(vsconfigfile: str) -> None:
     Log("====================================================")
@@ -177,7 +177,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     if encrypt:
         SetNewEncryptions()
     else:
-        UnEncryptEncryptions()
+        DecryptEncryptions()
     path = gamepath + os.sep + dlcmountpoint
 
     if encrypt:
