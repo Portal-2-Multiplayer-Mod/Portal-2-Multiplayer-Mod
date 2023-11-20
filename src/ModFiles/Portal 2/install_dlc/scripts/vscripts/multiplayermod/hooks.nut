@@ -19,6 +19,13 @@ MSOnRespawn,        // 7. Runs on player respawn                                
 
 // 1
 function InstantRun() {
+    if (Config_VScriptDebug) {
+        Config_DevMode = true
+    } else {
+        Config_DevMode = false
+        EntFire("p2mm_servercommand", "command", "developer 0")
+    }
+
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
@@ -133,7 +140,7 @@ function Loop() {
 
     //## Update Portal Gun names ##//
     while (p = Entities.FindByClassname(p, "weapon_portalgun")) {
-        // if it doesnt have a name yet
+        // if it doesn't have a name yet
         if (p.GetName() == "") {
             // Set The Name Of The Portalgun (based on PLAYER index)
             p.__KeyValueFromString("targetname", "weapon_portalgun_player" + p.GetRootMoveParent().entindex())
@@ -308,7 +315,7 @@ function Loop() {
 
 
     //## Config developer mode loop ##//
-    if (DevModeConfig) {
+    if (Config_DevMode) {
         // Change Config_DevMode variable based on convar "developer"
         if (!GetDeveloperLevelP2MM()) {
             if (StartDevModeCheck) {
@@ -622,6 +629,37 @@ function PostPlayerSpawn() {
             // Right now, this will enter -score for every player
             EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, ent, ent)
         }
+    }
+
+    if (Config_VScriptDebug) {
+        printlP2MM("[DEBUGGING] Initiating VScript Debugging!")
+        // Developer is needed for debugging to work
+        // Just turning it on will work, but the debugger will act 
+        // strange when the map loaded doesn't start with developer enabled,
+        // so we need to restart the map for it act as expected.
+        if (!GetDeveloperLevel()) {
+            Config_DevMode = true
+            printlP2MM("[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
+            EntFire("p2mm_servercommand", "command", "developer 1")
+            EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName())
+        }
+        vscriptDebugText <- Entities.CreateByClassname("game_text")
+        vscriptDebugText.__KeyValueFromString("targetname", "vscriptDebugText")
+        vscriptDebugText.__KeyValueFromString("x", "-1")
+        vscriptDebugText.__KeyValueFromString("y", "-1")
+        vscriptDebugText.__KeyValueFromString("holdtime", "1")
+        vscriptDebugText.__KeyValueFromString("fadeout", "0.2")
+        vscriptDebugText.__KeyValueFromString("fadein", "0.2")
+        vscriptDebugText.__KeyValueFromString("channel", "1")
+        vscriptDebugText.__KeyValueFromString("spawnflags", "1")
+        vscriptDebugText.__KeyValueFromString("color", "255 255 255")
+        vscriptDebugText.__KeyValueFromString("message", "Waiting for VScript Debugger to Attach...\nGAME WON'T UNFREEZE UNTIL\nDEBUGGER IS ATTACHED!")
+        EntFireByHandle(vscriptDebugText, "Display", "", 0.2, null, null)
+        EntFireByHandle(p2mm_clientcommand, "Command", "script_debug", 1, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
+        EntFire("p2mm_servercommand", "command", "script printlP2MM(\"[DEBUGGING] VScript Debugger Attached!\")", 1.1)
+        EntFireByHandle(vscriptDebugText, "settext", "VScript Debugger Attached!", 2, null, null)
+        EntFireByHandle(vscriptDebugText, "Display", "", 2.5, null, null)
+        EntFireByHandle(vscriptDebugText, "Kill", "", 4, null, null)
     }
 }
 

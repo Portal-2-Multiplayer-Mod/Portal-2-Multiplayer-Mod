@@ -50,8 +50,6 @@ g_bCanHook <- false
 g_bCheatsOn <- false
 g_bCoordsAlternate <- false
 
-DevModeConfig <- Config_DevMode
-
 g_bDoneCacheing <- false
 g_bDoneWaiting <- false
 fogs <- false

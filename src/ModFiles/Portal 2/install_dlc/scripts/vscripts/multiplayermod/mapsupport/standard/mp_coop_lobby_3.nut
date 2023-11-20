@@ -8,18 +8,18 @@
 
 // * Functions for Lobby Music Control * \\
 
-// musicMax is just the number of tracks, in other words the length of musicTracks, that there are to play, this shouldn't be zero.
+// musicMax is just the number of tracks, in other words the length of Config_musicTracks, that there are to play, this shouldn't be zero.
 // Don't adjust musicMin as this just determines where "No Music" will be in the track list and could mess up other things.
-// musicSelected is the current music track number, this starts as the musicDefault.
-musicMax <- musicTracks.len()
-musicMin <- 0
-musicSelected <- musicDefault
+// musicSelected is the current music track number, this starts as the Config_musicDefault.
+musicMax <- Config_musicTracks.len()
+musicMin <- -1
+musicSelected <- Config_musicDefault
 
 // Play the track that is currently indicated by musicSelected
 function PlaySelectedTrack() {
-    EntFire("p2mm_lobbymusic_text", "SetText", "Music Track: " + musicSelected + "/" + musicMax, 0.6, null)
+    EntFire("p2mm_lobbymusic_text", "SetText", "Music Track " + (musicSelected + 1) + "/" + musicMax, 0.6, null)
     EntFire("p2mm_lobbymusic_text", "Display", "", 0.65, null)
-    Entities.FindByName(null, "p2mm_lobbymusic_music").__KeyValueFromString("message", musicTracks["musicTrack" + musicSelected])
+    Entities.FindByName(null, "p2mm_lobbymusic_music").__KeyValueFromString("message", Config_musicTracks[musicSelected])
     EntFire("p2mm_lobbymusic_music", "PlaySound", "", 0.7, null)
 }
 
@@ -27,13 +27,13 @@ function PlaySelectedTrack() {
 // A bool is given to tell whether its going to the next or previous track
 function ChangeMusicTrack(nextTrack = true) {
     if (nextTrack) {
-        if (musicSelected == musicMax) {
+        if ((musicSelected + 1) == musicMax) {
             return
         }
 
         musicSelected += 1
 
-        if (musicSelected == musicMax) {
+        if ((musicSelected + 1) == musicMax) {
             EntFire("p2mm_lobbymusic_button1", "unlock", "", 0, null)
             EntFire("p2mm_lobbymusic_button2", "lock", "", 0, null)
             EntFire("prop_button_l", "Skin", "0", 0, null)
@@ -79,6 +79,12 @@ function ChangeMusicTrack(nextTrack = true) {
 // Music Control In The Lobby!
 // Initalize the music
 function MusicInit() {
+    if (musicMax == 0) {
+        printlP2MM("There are no music tracks in Config_musicTracks!")
+        printlP2MM("We won't setup the custom lobby music control!")
+        printlP2MM("Ideally the host should have just set Config_musicEnable to false...")
+        return
+    }
     // Remove all the old music entities and unneeded entities
     Entities.FindByName(null, "case_music").Destroy()
     Entities.FindByName(null, "counter_music").Destroy()
@@ -114,16 +120,18 @@ function MusicInit() {
     EntFireByHandle(p2mm_lobbymusic_button2, "AddOutput", "OnPressed !self:RunScriptCode:ChangeMusicTrack(true):0:-1", 0, null, null)
     EntFireByHandle(p2mm_lobbymusic_button2, "AddOutput", "OnPressed p2mm_lobbymusic_music:StopSound::0:-1", 0, null, null)
     
+    // Make sure that the func_buttons are enabled
+    // Also make sure each button is locked/unlocked according to what the default track is
     EntFireByHandle(p2mm_lobbymusic_button1, "enable", "", 0, null, null)
     EntFireByHandle(p2mm_lobbymusic_button2, "enable", "", 0, null, null)
-    if (musicDefault <= musicMin) {
+    if (Config_musicDefault <= musicMin) {
         Entities.FindByName(null, "prop_button_l").__KeyValueFromString("skin", "1")
         EntFireByHandle(p2mm_lobbymusic_button1, "lock", "", 0, null, null)
     } else {
         Entities.FindByName(null, "prop_button_l").__KeyValueFromString("skin", "0")
         EntFireByHandle(p2mm_lobbymusic_button1, "unlock", "", 0, null, null)
     }
-    if (musicDefault >= musicMax) {
+    if (Config_musicDefault >= musicMax) {
         Entities.FindByName(null, "prop_button_r").__KeyValueFromString("skin", "1")
         EntFireByHandle(p2mm_lobbymusic_button2, "lock", "", 0, null, null)
     } else {
@@ -135,7 +143,7 @@ function MusicInit() {
     // Create the game_text entity to see what track was selected
     p2mm_lobbymusic_text <- Entities.CreateByClassname("game_text")
     p2mm_lobbymusic_text.__KeyValueFromString("targetname", "p2mm_lobbymusic_text")
-    p2mm_lobbymusic_text.__KeyValueFromString("message", "Music Track " + musicDefault + "/" + musicMax)
+    p2mm_lobbymusic_text.__KeyValueFromString("message", "Music Track " + (musicSelected + 1) + "/" + musicMax)
     p2mm_lobbymusic_text.__KeyValueFromString("spawnflags", "1")
     p2mm_lobbymusic_text.__KeyValueFromString("fadein", "0.5")
     p2mm_lobbymusic_text.__KeyValueFromString("fadeout", "0.5")
@@ -148,8 +156,8 @@ function MusicInit() {
     // Create the ambient generic which will play our music tracks, then move it to the lobby area
     p2mm_lobbymusic_music <- Entities.FindByName(null, "@music_lobby_1")
     p2mm_lobbymusic_music.__KeyValueFromString("targetname", "p2mm_lobbymusic_music")
-    if (musicDefault != 0) {
-        p2mm_lobbymusic_music.__KeyValueFromString("message", musicTracks["musicTrack" + musicDefault])
+    if (Config_musicDefault > -1) {
+        p2mm_lobbymusic_music.__KeyValueFromString("message", Config_musicTracks[musicSelected])
     } else {
         p2mm_lobbymusic_music.__KeyValueFromString("message", "")
     }
@@ -157,7 +165,7 @@ function MusicInit() {
     p2mm_lobbymusic_music.SetOrigin(Vector(4930, 3705, -478))
 
     // Precache the music
-    foreach (musicTrack in musicTracks) {
+    foreach (musicTrack in Config_musicTracks) {
         self.PrecacheSoundScript(musicTrack)
     }
 
@@ -235,7 +243,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // INITALIZE AND START THE CUSTOM MUSIC
-        if (musicEnable) {
+        if (Config_musicEnable) {
             MusicInit()
         } else { // Start the boring one track music because the user didn't enable custom lobby music :(
             DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))

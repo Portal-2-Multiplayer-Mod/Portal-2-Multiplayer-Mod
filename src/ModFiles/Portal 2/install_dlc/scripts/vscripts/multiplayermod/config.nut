@@ -12,6 +12,14 @@
 // Set true/false if you want to see the P2:MM debug info in the console
 Config_DevMode <- false
 
+// Set true/false if you want to use a VScript Debugger. This also sets "developer" to 1. Only works for Windows systems!
+// Highly recommended to use the "VScript Debugger" by LionDoge, a extension for Visual Studio Code. https://marketplace.visualstudio.com/items?itemName=LionDoge.vscript-debug
+// How debugging has implemented for P2MM has been done according to LionDoge's extension instructions. 
+// This means that Config_DevMode will be automatically set to true wether or not it's been set to false as developer is needed to be enabled.
+// On every map change you will need to reattach the debugger, that's just unfortunately how Valve programmed it.
+//! ONLY ENABLE THIS IF YOU KNOW WHAT YOU'RE DOING! Game will freeze and won't unfreeze until a debugger is attached!
+Config_VScriptDebug <- false
+
 // Set true/false if you want to see the visual debug lines in-game for ray tracing
 Config_VisualDebug <- false
 
@@ -27,7 +35,7 @@ Config_UseCustomDevModels <- false
 // 1 - Speedrun   : For those who like to speedrun Portal 2     (No full implementation yet)
 Config_GameMode <- 0
 
-// Set true/false if you want to randomize every Turret's models and colors (for fun lol) (BROKEN)
+// Set true/false if you want to randomize every Turret's models and colors (for fun lol) (BROKEN D:)
 Config_RandomTurrets <- false
 
 // Set true/false if you want to randomize the size of all portals every second
@@ -89,14 +97,15 @@ Admins <- [
 // * Custom Lobby Music Control * \\
 // * Configs for the custom music controls in mp_coop_lobby_3 * \\
 
-// musicEnable: Whether to enable custom music control in the lobby.
-musicEnable <- true
+// Config_musicEnable: Whether to enable custom music control in the lobby.
+Config_musicEnable <- true
 
-// musicDefault: What music track is called to start by default in the lobby. 
-// Set this to zero if you don't want any music to start in the lobby.
-musicDefault <- 1
+// Config_musicDefault: Which music track in Config_musicTracks is called to start by default in the lobby. 
+// Set this to -1 if you don't want any music to start in the lobby, but still want to adjust it.
+// Only integers greater or equal to -1 are allowed.
+Config_musicDefault <- 0
 
-// musicTracks: The music track list containing tracks to be played in the lobby. For it to be heard by all 
+// Config_musicTracks: The music track list containing tracks to be played in the lobby. For it to be heard by all 
 // players it must come with Portal 2, or it has to be in the same location on disk as the host and as listed here. 
 // 
 // Recommended to use .wav files, but .mp3 should also work but... It's also recommended that your sound file has 
@@ -106,23 +115,25 @@ musicDefault <- 1
 // isn't possible with .mp3 files. Those marked with "Doesn't loop", are some tracks we thought would be nice to be
 // there by default, but they don't loop.
 //
-// There needs to at least one specified track for things properly to work, this can be a empty string but if you 
-// don't want music just set musicDefault to zero.
-musicTracks <- {
-    musicTrack1 = "music/mp_coop_lobby_2_c1.wav"
-    musicTrack2 = "music/mp_coop_lobby_2_c2.wav"
-    musicTrack3 = "music/mp_coop_lobby_2_c4.wav"
-    musicTrack4 = "music/mp_coop_lobby_2_c5.wav"
-    musicTrack5 = "music/mp_coop_lobby_2_c6.wav"
-    musicTrack6 = "music/mp_coop_lobby_2_c7.wav"
-    musicTrack7 = "music/mp_coop_hallway_c4.wav"
-    musicTrack8 = "music/sp_a1_wakeup_b1.wav"
-    musicTrack9 = "music/sp_a2_bts1_b1.wav"
-    musicTrack10 = "music/sp_a4_tb_catch_b1a.wav"
-    musicTrack11 = "music/sp_a4_finale1_b2p2.wav"
-    musicTrack12 = "music/portal2_want_you_gone.wav"
-    musicTrack13 = "music/portal2_robots_ftw.wav"
-    musicTrack14 = "ambient/music/looping_radio_mix.wav"
-    musicTrack15 = "music/sp_a2_dual_lasers_r1.wav" // Doesn't loop
-    musicTrack16 = "music/sp_a2_laser_vs_turret_r1.wav" // Doesn't loop
-}
+// Example: 
+// Config_musicTracks <- [
+//     "music/mp_coop_lobby_2_c1.wav"
+// ]
+Config_musicTracks <- [
+    "music/mp_coop_lobby_2_c1.wav" //0 index, 1/16
+    "music/mp_coop_lobby_2_c2.wav" //1 index, 2/16
+    "music/mp_coop_lobby_2_c4.wav" //2 index, 3/16
+    "music/mp_coop_lobby_2_c5.wav" //3 index, 4/16
+    "music/mp_coop_lobby_2_c6.wav" //4 index, 5/16
+    "music/mp_coop_lobby_2_c7.wav" //5 index, 6/16
+    "music/mp_coop_hallway_c4.wav" //6 index, 7/16
+    "music/sp_a1_wakeup_b1.wav" //7 index, 8/16
+    "music/sp_a2_bts1_b1.wav" //8 index, 9/16
+    "music/sp_a4_tb_catch_b1a.wav" //9 index, 10/16
+    "music/sp_a4_finale1_b2p2.wav" //10 index, 11/16
+    "music/portal2_want_you_gone.wav" //11 index, 12/16
+    "music/portal2_robots_ftw.wav" //12 index, 13/16
+    "ambient/music/looping_radio_mix.wav" //13 index, 14/16
+    "music/sp_a2_dual_lasers_r1.wav" // Doesn't loop  //14 index, 15/16
+    "music/sp_a2_laser_vs_turret_r1.wav" // Doesn't loop  //15 index, 16/16
+]
