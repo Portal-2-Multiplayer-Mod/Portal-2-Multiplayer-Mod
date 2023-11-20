@@ -20,6 +20,14 @@
   <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
 </h1>
 
+***
+DISCLAIMER!!!
+
+Currently both `main` and `dev` are messed up!
+If you wish to contribute, please use the `finalcleanup` branch instead as that has more cleaned up and more stable code.
+Also please refer to information in that branches README as those are more updated and are also in other languages.
+***
+
 ### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
 ## Mod features
 ```
