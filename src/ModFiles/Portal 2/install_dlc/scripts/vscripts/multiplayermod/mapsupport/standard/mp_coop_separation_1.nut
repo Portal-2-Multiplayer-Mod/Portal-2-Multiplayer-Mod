@@ -18,14 +18,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(1)", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "@glados"), "runscriptcode", "GladosCoopElevatorEntrance(2)", 0, null, null)
 
-        local ent = null
-        while (ent = Entities.FindByName(ent, "split_exit_arms")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "split_exit_arms");) {
             EntFireByHandle(ent, "setanimation", "90up", 0, null, null)
         }
-        while (ent = Entities.FindByName(ent, "split_entrance_arms")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "split_entrance_arms");) {
             EntFireByHandle(ent, "setanimation", "90down", 0, null, null)
         }
-        while (ent = Entities.FindByClassnameWithin(ent, "func_areaportalwindow", OldPlayerPos, 5000)) {
+        for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "func_areaportalwindow", OldPlayerPos, 5000);) {
             EntFireByHandle(ent, "SetFadeEndDistance", "10000", 0, null, null)
         }
     }

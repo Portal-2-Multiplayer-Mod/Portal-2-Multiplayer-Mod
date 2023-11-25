@@ -37,8 +37,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin) {
         // Find all players
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
             EntFireByHandle(p, "setfogcontroller", "@environment_mines_fog", 0, null, null)
         }
@@ -49,8 +48,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(-468, -704, -63), 10)) {
                 SingleplayerOneTimeTrigger1 <- false
                 // Find all players
-                local p = null
-                while(p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     // Teleport them to the elevator
                     p.SetOrigin(Vector(-449, -704, -55))
                     p.SetAngles(0, 0, 0)
@@ -62,11 +60,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (Entities.FindByName(null, "TPUpLaserRelays")) {
-            local p = null
-            while(p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 SKIPLaserRelays <- false
                 local p2 = null
-                while (p2 = Entities.FindByClassnameWithin(p2, "player", Vector(-319.15093994141, -1782.7447509766, -17.6354637146), 380.50416564941)) {
+                for (local ent = null; ent2 = Entities.FindByClassnameWithin(p2, "player", Vector(-319.15093994141, -1782.7447509766, -17.6354637146), 380.50416564941);) {
                     if (p2==p) {
                         SKIPLaserRelays <- true
                     }

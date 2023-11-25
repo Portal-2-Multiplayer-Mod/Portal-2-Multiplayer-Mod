@@ -39,19 +39,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printl()}
+            if (GooHurtTimerPred) { printl()}
         } catch (exception) {
             GooHurtTimerPred <- 0
         }
 
         if (GooHurtTimerPred<=Time()) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                if (p.GetOrigin().z<=-374) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
+                if (p.GetOrigin().z <= -374) {
                     EntFireByHandle(p, "sethealth", "-20", 0, null, null)
                 }
             }
-            GooHurtTimerPred = Time()+1
+            GooHurtTimerPred = Time() + 1
         }
 
         // if nu moved tube cap
@@ -81,9 +80,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // if two coob go brr delete oder coobe
-        local ent = null
         local cubeamount = 0
-        while (ent = Entities.FindByClassname(ent, "prop_weighted_cube")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "prop_weighted_cube");) {
             cubeamount = cubeamount + 1
             if (cubeamount>=2) {
                 ent.Destroy()
@@ -147,9 +145,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100)) {
-             
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100);) {
             EntFire("p2mm_servercommand", "command", "changelevel sp_a3_transition01")
         }
     }

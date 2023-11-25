@@ -78,11 +78,8 @@ function Loop() {
         EventList.remove(0)
     }
 
-    // Global null variable limited to this scope
-    local p = null
-
     // Get all players and check for changes
-    while (p = Entities.FindByClassname(p, "player")) {
+    for (local p = null; p = Entities.FindByClassname(p, "player");) {
         //## Hook player join ##//
         if (p.ValidateScriptScope()) {
             local script_scope = p.GetScriptScope()
@@ -139,7 +136,7 @@ function Loop() {
     }
 
     //## Update Portal Gun names ##//
-    while (p = Entities.FindByClassname(p, "weapon_portalgun")) {
+    for (local p = null; p = Entities.FindByClassname(p, "weapon_portalgun");) {
         // if it doesn't have a name yet
         if (p.GetName() == "") {
             // Set The Name Of The Portalgun (based on PLAYER index)
@@ -151,7 +148,7 @@ function Loop() {
     if (Config_UseNametags && g_bAllowNametags) {
         if (Time() - PreviousNametagItter > 0.1) {
             PreviousNametagItter = Time()
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (FindPlayerClass(p) != null) {
 
                     // Get number of players in the game
@@ -215,7 +212,7 @@ function Loop() {
             g_bCoordsAlternate = false
         }
     } else {
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             FindPlayerClass(p).eyeangles = Vector(0, 0, 0)
             FindPlayerClass(p).eyeforwardvector = Vector(0, 0, 0)
         }
@@ -305,7 +302,7 @@ function Loop() {
 
     //## GlobalSpawnClass SetSpawn ##//
     if (GlobalSpawnClass.m_bUseSetSpawn) {
-        while (p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.m_cSetSpawn.position, GlobalSpawnClass.m_cSetSpawn.radius)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.m_cSetSpawn.position, GlobalSpawnClass.m_cSetSpawn.radius);) {
             TeleportToSpawnPoint(p, null)
         }
     }
@@ -330,7 +327,7 @@ function Loop() {
 
     // Random turret models & colors
     if (Config_RandomTurrets && g_bHasSpawned) {
-        while (p = Entities.FindByClassname(p, "npc_portal_turret_floor")) {
+        for (local p = null; p = Entities.FindByClassname(p, "npc_portal_turret_floor");) {
             if (p.GetTeam() != 69420) {
                 local modelnumber = RandomInt(0, 2)
                 if (modelnumber == 2) {
@@ -367,7 +364,7 @@ function Loop() {
 
         // Color indicator
         if (Config_UseColorIndicator && g_bAllowColorIndicator && g_bHasSpawned) {
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 DisplayPlayerColor(p)
             }
         }
@@ -386,7 +383,7 @@ function Loop() {
             randomportalsizeh = RandomInt(1, 100 ).tostring()
 
             try {
-                while (p = Entities.FindByClassname(p, "prop_portal")) {
+                for (local p = null; p = Entities.FindByClassname(p, "prop_portal");) {
                     p.__KeyValueFromString("HalfWidth", randomportalsize)
                     p.__KeyValueFromString("HalfHeight", randomportalsizeh)
                 }
@@ -394,7 +391,7 @@ function Loop() {
         }
 
         //## Detect respawn ##//
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             if (p.GetHealth() >= 1) {
                 // Get the players from the dead players array
                 foreach (index, player in CurrentlyDead) {
@@ -762,7 +759,7 @@ function OnPlayerJoin(p, script_scope) {
     //     // Methods to iterate over EVERY entity present:
     //     /* 1.
     //         local entity = Entities.First()
-    //         while (entity = Entities.Next(entity)) {
+    //         for (local entity = null; entity = Entities.Next(entity);) {
     //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
     //         }*/
 
@@ -832,10 +829,9 @@ function OnPlayerJoin(p, script_scope) {
     // Change player prop_portal targetname
     local ent1 = null
     local ent2 = null
-    local ent = null
     local portal1 = null
     local portal2 = null
-    while (ent = Entities.FindByClassname(ent, "prop_portal")) {
+    for (local ent = null; ent = Entities.FindByClassname(ent, "prop_portal");) {
         if (ent.GetName() == "") {
             if (ent1 == null) {
                 ent1 = ent

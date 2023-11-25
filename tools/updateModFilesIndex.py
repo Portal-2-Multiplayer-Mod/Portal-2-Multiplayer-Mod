@@ -47,6 +47,6 @@ def SaveData():
     jsonStr = json.dumps(filesData)
     with open(savePath, "w",encoding="utf-8") as file:
         file.write(jsonStr)
-    print("finished writing to file")
 
 SaveData()
+print("Finished writing to ModIndex.json and identifier file! :D")

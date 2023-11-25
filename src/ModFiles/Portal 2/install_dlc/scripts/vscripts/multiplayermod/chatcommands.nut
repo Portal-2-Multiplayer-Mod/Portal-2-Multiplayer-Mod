@@ -251,8 +251,7 @@ function FindPlayerByName(name) {
     local bestnamelen = 99999
     local bestfullname = ""
 
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
+    for (local p = null; p = Entities.FindByClassname(p, "player");) {
         local username = FindPlayerClass(p).username
         username = username.tolower()
 

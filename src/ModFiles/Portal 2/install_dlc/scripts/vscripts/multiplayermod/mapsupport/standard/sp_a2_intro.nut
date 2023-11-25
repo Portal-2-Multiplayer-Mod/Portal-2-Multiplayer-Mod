@@ -51,15 +51,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (Entities.FindByName(null, "SpA2IntroViewcontrolTele")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(2704, -1260, 92))
             }
         }
 
         if (Entities.FindByName(null, "SpA2IntroViewcontrolDone")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(-3308, 536, -10737))
                 p.SetAngles(0 0 0)
             }
@@ -71,26 +69,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!a2HasPortalGun) {
             // Remove Portal Gun
-            local ent = null
-            while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+            for (local ent = null; ent = Entities.FindByClassname(ent, "weapon_portalgun");) {
                 ent.__KeyValueFromString("CanFirePortal1", "0")
                 ent.__KeyValueFromString("CanFirePortal2", "0")
                 EntFireByHandle(ent, "disabledraw", "", 0, null, null)
             }
-            local ent = null
-            while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+
+            for (local ent = null; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
                 EntFireByHandle(ent, "disabledraw", "", 0, null, null)
             }
         } else {
             // Give Portal Gun
-            local ent = null
-            while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+            for (local ent = null; ent = Entities.FindByClassname(ent, "weapon_portalgun");) {
                 ent.__KeyValueFromString("CanFirePortal1", "1")
                 ent.__KeyValueFromString("CanFirePortal2", "1.")
                 EntFireByHandle(ent, "enabledraw", "", 0, null, null)
             }
-            local ent = null
-            while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+
+            for (local ent = null; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
                 EntFireByHandle(ent, "enabledraw", "", 0, null, null)
             }
         }

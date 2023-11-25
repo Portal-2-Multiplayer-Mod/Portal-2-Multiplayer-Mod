@@ -77,7 +77,7 @@ function ChangeMusicTrack(nextTrack = true) {
 }
 
 // Music Control In The Lobby!
-// Initalize the music
+// Initialize the music
 function MusicInit() {
     if (musicMax == 0) {
         printlP2MM("There are no music tracks in Config_musicTracks!")
@@ -178,7 +178,7 @@ function MusicInit() {
     Entities.FindByName(null, "move_a_screen_buttons").SetAngles(0, 90, 0)
     Entities.FindByName(null, "move_a_screen_buttons").SetOrigin(Vector(4928, 3713, -496))
 
-    // Open up move_b_screen_buttons then seperate it from move_a_screen_buttons
+    // Open up move_b_screen_buttons then separate it from move_a_screen_buttons
     DoEntFire("move_b_screen_buttons", "open", "", 0.1, null, null)
     DoEntFire("move_b_screen_buttons", "clearparent", "", 0.4, null, null)
     DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"move_b_screen_buttons\").SetOrigin(Vector(4930, 3720.5, -496))", 0.5, null, null)
@@ -255,8 +255,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Enable retrigger for all logic_relay entities except for those defined otherwise
         // in the bsp to prevent desync on clients and remove errors from the console
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "logic_relay")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "logic_relay");) {
             ent.__KeyValueFromString("spawnflags", "2")
         }
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit"))
@@ -324,26 +323,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@snd_light_outside").Destroy()
 
         // Remove orange exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit");) {
             ent.Destroy()
         }
 
         Entities.FindByName(null, "track5-orangeescape_elevator_clip").Destroy()
 
         // Remove blue exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit");) {
             ent.Destroy()
         }
 
         Entities.FindByName(null, "track5-escape_elevator_clip").Destroy()
 
         // Remove the bottom of droppers in Course 5
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local ent = null
-            while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500)) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
+            for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500);) {
                 if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
                     EntFireByHandle(ent, "SetAnimation", "open_idle", 0.0, null, null)
                 }
@@ -357,20 +352,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop) {
-        local PLent = null
-        while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
-            local APLent = null
-            while(APLent = Entities.FindByClassname(APLent, "player")) {
+        for (local PLent = null; PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30);) {
+            for (local APLent = null; APLent = Entities.FindByClassname(APLent, "player");) {
                 APLent.SetOrigin(Vector(2495, -7451, 410))
             }
         }
 
         // Art therapy left chute enabler
         local vectorEEL = Vector(5727, 3336, -441)
-        local EELent = null
-        while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) {
-            local LCatEn = null
-            while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
+        for (local EELent = null; EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12);) {
+            for (local LCatEn = null; LCatEn = Entities.FindByName(LCatEn, "left-enable_cats");) {
                 DoEntFire("!self", "Enable", "", 0.0, null, LCatEn)
                 DoEntFire("!self", "Trigger", "", 0.0, null, LCatEn)
             }
@@ -381,10 +372,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Art therapy right chute enabler
         local vectorEER = Vector(5727, 3192, -441)
-        local EERent = null
-        while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) {
-            local RCatEn = null
-            while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
+        for (local EERent = null; EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12);) {
+            for (local RCatEn = null; RCatEn = Entities.FindByName(RCatEn, "right-enable_cats");) {
                 DoEntFire("!self", "Enable", "", 0.0, null, RCatEn)
                 DoEntFire("!self", "Trigger", "", 0.0, null, RCatEn)
             }
@@ -394,16 +383,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         TeleportPlayerWithinDistance(Vector(5727, 3180, 1005), 30, Vector(3191, -1228, 1682))
 
         // Disable art therapy chutes
-        local vectorE = Vector(3201, -1152, 1272)
-        local Aent = null
-        while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) {
-            local LCatDis = null
-            while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
+        local vectorE = Vector(3201, -1152, 1272) 
+        for (local Aent = null; Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150);) {     
+            for (local LCatDis = null; LCatDis = Entities.FindByName(LCatDis, "left-disable_cats");) {
                 DoEntFire("!self", "Enable", "", 0.0, null, LCatDis)
                 DoEntFire("!self", "Trigger", "", 0.0, null, LCatDis)
             }
-            local RCatDis = null
-            while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
+            
+            for (local RCatDis = null; RCatDis = Entities.FindByName(RCatDis, "right-disable_cats");) {
                 DoEntFire("!self", "Enable", "", 0.0, null, RCatDis)
                 DoEntFire("!self", "Trigger", "", 0.0, null, RCatDis)
             }

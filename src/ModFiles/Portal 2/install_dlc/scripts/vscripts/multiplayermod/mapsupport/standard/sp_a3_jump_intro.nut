@@ -32,16 +32,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Box check
         if (ElevatorFinishMoving <= Time()) {
-            local boxp = null
-            while (boxp = Entities.FindByClassnameWithin(boxp, "player", Vector(-704, -9152, -335.97), 64)) {
+            for (local boxp = null; boxp = Entities.FindByClassnameWithin(boxp, "player", Vector(-704, -9152, -335.97), 64);) {
                 boxp.SetOrigin(Vector(-8880, 2096, -57.97))
             }
         }
 
         // Goo Damage Code
         if (GooHurtTimerPred + 0.8 <= Time()) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-667, 977, 1100), 6000)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-667, 977, 1100), 6000);) {
                 if (p.GetOrigin().z <= -350) {
                     EntFireByHandle(p, "sethealth", "-100", 0, null, null)
                 }
@@ -51,15 +49,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
         if (OnlyOnceSp_A3_Jump_Intro) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(-8880, 2096, -458))
             }
         }
 
         // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-668, 2080, 2314), 100)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-668, 2080, 2314), 100);) {
             EntFire("p2mm_servercommand", "command", "changelevel sp_a3_bomb_flings")
         }
     }

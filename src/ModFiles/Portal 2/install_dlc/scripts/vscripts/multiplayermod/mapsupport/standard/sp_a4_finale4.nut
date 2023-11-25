@@ -170,8 +170,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         OneTimeRenableViewControl <- false
 
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_detector");) {
             ent.__KeyValueFromString("CheckAllIDs", "1")
             //printl("Found func_portal_detector")
             EntFireByHandle(ent, "AddOutput", "OnStartTouchPortal ReEnableViewControl:kill::3", 0, null, null)
@@ -201,19 +200,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A4_Finale4ElevatorTopTeleport <- true
         parentthingerdinger <- true
         NewSpawnPoint <- false
-        local ent = null
-        while (ent = Entities.FindByName(ent, "breaker_hatch_door")) {
+
+        for (local ent = null; ent = Entities.FindByName(ent, "breaker_hatch_door");) {
             ent.__KeyValueFromInt("forceclosed", 1)
         }
     }
 
-    if (MSPostPlayerSpawn) {
-
-    }
-
     if (MSOnPlayerJoin) {
         // Find all players
-        for (local p; p = Entities.FindByClassname(p, "player");) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             //EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 0.1", 0, p, p)
             //EntFireByHandle(p, "setfogcontroller", "@environment_mines_fog", 0, null, null)
             EntFire("Sp_A2_CoreViewcontrol", "disable")
@@ -222,24 +217,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSLoop) {
 
-        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-11271, -22, 63), 1020);) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-11271, -22, 63), 1020);) {
             p.SetVelocity(Vector(0, 0, -300))
         }
 
         // Teleport all players in elevator out
-        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-11266, 320, 80), 80);) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-11266, 320, 80), 80);) {
             p.SetOrigin(Vector(-11264, 576, 128))
         }
 
         // CUTSCENE
         if (Entities.FindByName(null, "ending_vehicle")) {
-
             if (!Entities.FindByName(null, "rollcameracontrol")) {
                 if (Entities.FindByName(null, "ReEnableViewControl")) {
-                    local player = null
-                    while (player = Entities.FindByClassname(player, "player")) {
-                        player.SetOrigin(Vector(529, 73, -1))
-                        player.SetAngles(-83.8, 191.2, 0)
+                    for (local p = null; p = Entities.FindByClassname(p, "player");) {
+                        p.SetOrigin(Vector(529, 73, -1))
+                        p.SetAngles(-83.8, 191.2, 0)
                     }
                 }
             }
@@ -252,7 +245,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     OneTimeRenableViewControl <- true
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "chell", 55.15, null, null)
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 55.25, null, null)
-                    for (local p; p = Entities.FindByClassname(p, "player");) {
+                    for (local p = null; p = Entities.FindByClassname(p, "player");) {
                         p.SetOrigin(Vector(1106, -142, 64))
                         EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 0.1", 0, p, p)
                     }
@@ -268,10 +261,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (parentthingerdinger) {
                 parentthingerdinger <- false
                 // make players invisible
-                for (local player; player = Entities.FindByClassname(player, "player");) {
-                    player.__KeyValueFromInt("renderamt", 0)
-                    player.__KeyValueFromInt("renderfx", 0)
-                    EntFireByHandle(player, "disabledraw", "", 0, null, null)
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
+                    p.__KeyValueFromInt("renderamt", 0)
+                    p.__KeyValueFromInt("renderfx", 0)
+                    EntFireByHandle(p, "disabledraw", "", 0, null, null)
                 }
                 EntFire("rollcameracontrol", "kill", "", 16.1, null)
                 UTIL_Team.Pinging(false, "all", 1)
@@ -280,7 +273,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "Disable", "", 0.3, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "ending_vehicle", 0.1, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 0.2, null, null)
-                for (local p; p = Entities.FindByClassname(p, "player");) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(1106, -142, 64))
                 }
             }
@@ -313,7 +306,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             FoundPlayerNextToPortalspa4finale4 <- false
             GlobalDistanceScorespa4finale4 <- 999999
             playerpointerfinale4 <- null
-            for (local p; p = Entities.FindByClassname(p, "player");) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (Entities.FindByClassnameNearest("prop_portal", p.GetOrigin(), 100)) {
                     FoundPlayerNextToPortalspa4finale4 <- true
                     local entcoords = Entities.FindByName(null, "wheatley_bottom_swivel").GetOrigin()
@@ -333,7 +326,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
 
             if (Entities.FindByName(null, "wheatley_shadow_brush")) {
-                for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(763., 256, 42), 150);) {
+                for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(763., 256, 42), 150);) {
                     playerpointerfinale4 <- p.GetName()
                 }
             }
@@ -395,7 +388,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
                 //script Entities.FindByClassname(null, "player").SetOrigin(Vector(-191.816742 -0.485268 64.031250))
 
-                for (local p; p = Entities.FindByClassname(p, "player");) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-2, -221, -1335))
                 }
                 Sp_A4_Finale4ElevatorTeleport <- false
@@ -405,7 +398,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (!Entities.FindByName(null, "topofelevator")) {
             //printl("topofelevator")
             if (Sp_A4_Finale4ElevatorTopTeleport) {
-                for (local p; p = Entities.FindByClassname(p, "player");) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(1, -77, 200))
                 }
                 Sp_A4_Finale4ElevatorTopTeleport <- false
@@ -414,7 +407,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (NewSpawnPoint) {
-            for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-1691, -635, -2619), 500);) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1691, -635, -2619), 500);) {
                 p.SetOrigin(Vector(1, -77, 200))
             }
         }

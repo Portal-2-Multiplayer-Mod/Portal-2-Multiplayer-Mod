@@ -43,4 +43,6 @@ def CopyFiles():
 
     shutil.copytree("src" + os.sep + "ModFiles", FindLocalP2MM(), dirs_exist_ok=True)
 
+print("Copying over files from src/ModFiles to the users p2mm folder...")
 CopyFiles()
+print("Files copied over! :D")

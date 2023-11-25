@@ -44,13 +44,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a3_end:0.3", 0, null)
     }
 
-    local p = null
     if (MSLoop) {
         // Make the elevator teleport the players in
         if (!OnlyOnceSp_A3_Portal_Intro) {
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(256, -992, -1104), 100)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(256, -992, -1104), 100);) {
                 OnlyOnceSp_A3_Portal_Intro <- true
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(256, -992, -1254))
                     p.SetAngles(0, 90, 0)
                     p.SetVelocity(Vector(0, 0, 0))
@@ -61,7 +60,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (!Entities.FindByName(null, "entrance_lift_train")) {
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().z <= -1400) {
                     p.SetOrigin(Vector(406, -561, 224))
                     p.SetAngles(0, 90, 0)
@@ -80,7 +79,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (GooHurtTimerPred <= Time()) {
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().z <= -3500) {
                     EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
                 }

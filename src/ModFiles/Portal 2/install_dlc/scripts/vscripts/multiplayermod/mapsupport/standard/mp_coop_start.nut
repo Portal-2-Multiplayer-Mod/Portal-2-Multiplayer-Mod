@@ -39,8 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("floor_blue", "Enable")
 
                 // Make sure blue players don't get stuck where gun is revealed
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-9816, -3504, 22.03), 128)) {
+                for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-9816, -3504, 22.03), 128);) {
                     if (p.GetOrigin().z < 8) {
                         p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 10))
                     }
@@ -58,8 +57,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("floor_orange", "Enable")
 
                 // Make sure orange players don't get stuck where gun is revealed
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-10200, -3504, 22.03), 128)) {
+                for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-10200, -3504, 22.03), 128);) {
                     if (p.GetOrigin().z < 8) {
                         p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 10))
                     }

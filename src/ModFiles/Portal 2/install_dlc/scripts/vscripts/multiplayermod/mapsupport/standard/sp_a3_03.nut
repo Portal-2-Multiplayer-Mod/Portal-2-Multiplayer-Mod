@@ -31,8 +31,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin) {
         // Find all players
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
             EntFireByHandle(p, "setfogcontroller", "@environment_lake_fog", 0, null, null)
         }
@@ -47,8 +46,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (GooHurtTimerPred<=Time()) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().z<=-5290) {
                     EntFireByHandle(p, "sethealth", "\"-100\"", 0, null, null)
                 }
@@ -62,9 +60,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         } catch (exception) { }
 
         // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3631, 1284, -2100), 100)) {
-             
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-3631, 1284, -2100), 100);) {
             EntFire("p2mm_servercommand", "command", "changelevel sp_a3_jump_intro")
         }
     }

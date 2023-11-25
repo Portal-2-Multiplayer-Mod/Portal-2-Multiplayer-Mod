@@ -167,16 +167,14 @@ function Vote::DoVote(arg1 = null) {
 
                     UTIL_Team.Spawn_PortalGun(false, "all")
                     // Remove Portal Gun
-                    local ent = null
-                    while (ent = Entities.FindByClassname(ent, "weapon_portalgun")) {
+                    for (local ent = null; ent = Entities.FindByClassname(ent, "weapon_portalgun");) {
                         if (FindPlayerClass(ent.GetRootMoveParent()).id != 1) {
                             EntFireByHandle(ent, "AddOutput", "CanFirePortal1 0", 5, null, null)
                             EntFireByHandle(ent, "AddOutput", "CanFirePortal2 0", 5, null, null)
                             EntFireByHandle(ent, "disabledraw", "", 5, null, null)
                         }
                     }
-                    local ent = null
-                    while (ent = Entities.FindByClassname(ent, "predicted_viewmodel")) {
+                    for (local ent = null; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
                         if (FindPlayerClass(ent.GetRootMoveParent()).id != 1) {
                             EntFireByHandle(ent, "disabledraw", "", 5, null, null)
                         }
