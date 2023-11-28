@@ -65,7 +65,7 @@ def init() -> None:
             configPath = os.path.expanduser("~") + os.sep + ".config/p2mm"
     else:
         # Feel sad for the poor people who are running templeOS :(
-        with open(f"{os.path.dirname(executable)}{os.sep}NOSUPPORT-README.txt", "w") as noSupport:
+        with open(f"{os.path.dirname(executable)}{os.sep}NOTSUPPORTEDOS-README.txt", "w") as noSupport:
             noSupport.write("\n")
             noSupport.write("\
                 QRQMQggggEDdEPbPbSX55UPPSIPSI5dZDKSIX55KgEPIS5ZZdSXSqIqEgdq5PPbXZPKqEbbK5KEbEPX5KqgDbSSPDdZPXqZEEbESSPgbK2X551IujJ2uII55qXqXDMZ\n\

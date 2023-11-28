@@ -19,7 +19,7 @@ MSOnRespawn,        // 7. Runs on player respawn                                
 
 // 1
 function InstantRun() {
-    if (Config_VScriptDebug) {
+    if (Config_VScriptDebug || Config_DevMode) {
         Config_DevMode = true
     } else {
         Config_DevMode = false
@@ -697,10 +697,6 @@ function PostMapSpawn() {
 	EntFire("p2mm_servercommand", "command", "alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	EntFire("p2mm_servercommand", "command", "alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	EntFire("p2mm_servercommand", "command", "alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
-
-    // Aliases for Orsell's custom P2:MM maps
-    EntFire("p2mm_servercommand", "command", "alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
-    EntFire("p2mm_servercommand", "command", "alias p2mmlobby changelevel mp_coop_p2mmlobby")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script g_bCanCheckAngle = true", 0.32)

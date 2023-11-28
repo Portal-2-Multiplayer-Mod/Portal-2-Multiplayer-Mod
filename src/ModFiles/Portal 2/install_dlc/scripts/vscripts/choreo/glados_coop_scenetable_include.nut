@@ -37,7 +37,7 @@ if (GetMapName() == "mp_coop_start") {
 		//The portal will open and something will happen that Subject Blue is too smart to need any instructions about in three. Two. One.
 		SceneTable["mp_coop_startBlueInterruptsRelaxationVault05"] <- {vcd=CreateSceneEntity("scenes/npc/glados/COOP_VAULT_INTERRUPTION09.vcd"),postdelay=0.000,next=null,char="glados",fires=[{entity="player_2_relay_open_portals",input="Trigger",parameter="",delay=0.0}]}
 	//coop_boxcalibration
-		//Weighted Cubes callibrated.
+		//Weighted Cubes calibrated.
 		SceneTable["mp_coop_startcoop_boxcalibration00"] <- {vcd=CreateSceneEntity("scenes/npc/glados/mp_coop_calibration03.vcd"),postdelay=0.5,next="mp_coop_startcoop_boxcalibration01",char="glados"}
 		//No variances detected.
 		SceneTable["mp_coop_startcoop_boxcalibration01"] <- {vcd=CreateSceneEntity("scenes/npc/glados/mp_coop_calibration06.vcd"),postdelay=0.00,next="mp_coop_startcoop_boxcalibration02",char="glados"}
