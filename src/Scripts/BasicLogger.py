@@ -31,17 +31,19 @@ def StartLog() -> None:
 
     logsPath = os.path.join(GVars.modPath, "Logs")
 
+    dateFormat = datetime.now().strftime('%Y-%m-%d %H-%M-%S')
+
     Path(logsPath).mkdir(parents=True, exist_ok=True)
 
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    logFile = os.path.join(logsPath, f"Log-({datetime.now().strftime('%Y-%m-%d %H-%M-%S')}).log")
+    logFile = os.path.join(logsPath, f"Log-({dateFormat}).log")
     handler = logging.FileHandler(filename=logFile, mode="w", encoding="utf-8")
     logger.addHandler(handler)
 
-    logBanner = """
-    ____________________NEW LAUNCH LOG {timestamp}___________________
+    logBanner = f"""
+    ____________________NEW LAUNCH LOG {dateFormat}___________________
 
     ██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░░██████╗░
     ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░░╚════██╗
@@ -56,8 +58,8 @@ def StartLog() -> None:
     ░░░░░░██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║░░░░░░
     ░░░░░░██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝░░░░░░
     ░░░░░░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░╚═╝░░░░░╚═╝░╚════╝░╚═════╝░░░░░░░
-    """.format(timestamp=datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
-
+    """
+    
     Log(logBanner)
 
     if GVars.iow:

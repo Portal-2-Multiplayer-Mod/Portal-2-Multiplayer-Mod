@@ -42,8 +42,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (Entities.FindByName(null, "E1912ViewcontrolTele")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(-882 6104 166))
                 p.SetVelocity(Vector(0, 0, 0))
             }
@@ -51,8 +50,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceE1912) {
             if (Entities.FindByName(null, "E1912ViewcontrolDone")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-868.607117, 6147.984375, 0.031250))
                     p.SetAngles(0.033103, -11.502685, 0)
                 }
@@ -65,8 +63,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnce2E1912) {
             if (Entities.FindByName(null, "E1912CrashViewcontrolTele")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-882 6104 154))
                 }
                 stoprenable <- true
@@ -75,8 +72,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (Entities.FindByName(null, "E1912AfterCrashViewcontrolTele")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(-655, -994, -2))
                 p.SetAngles(-1, 108, 0)
             }
@@ -84,8 +80,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnce3E1912) {
             if (Entities.FindByName(null, "E1912AfterCrashViewcontrolDone")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-655.748779, -918.373535, 2))
                     p.SetAngles(2.279724, 108.544930, 0)
                 }
@@ -98,16 +93,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (NewSpawnPoint) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-526, 6108, 64), 1000)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-526, 6108, 64), 1000);) {
                 p.SetOrigin(Vector(-655.748779, -918.373535, 2))
                 p.SetAngles(2.279724, 108.544930, 0)
             }
         }
 
         if (Entities.FindByName(null, "E1912ScareViewcontrolTele")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(-324, -200, 34))
                 p.SetVelocity(Vector(0, 0, 0))
                 p.SetAngles(-2, -65, 0)
@@ -119,7 +112,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         HasStartedE1912 <- true
 
         // Copy all outputs
-        for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+        for (local p; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(Entities.FindByName(null, "speed_mod"), "ModifySpeed", "0.65", 0, ent, ent)
         }
         EntFire("speed_mod", "ModifySpeed", "0.65", 0) // We do this one for everyone
@@ -184,8 +177,7 @@ function E1912AfterCrashViewcontrol() {
     EntFire("E1912AfterCrashViewcontrol", "AddOutput", "targetname E1912AfterCrashViewcontrolTele", 0.25)
     EntFire("E1912AfterCrashViewcontrolTele", "AddOutput", "targetname E1912AfterCrashViewcontrolDone", 17.5)
 
-    local ent = null
-    while (ent = Entities.FindByClassname(ent, "player")) {
+    for (local ent = null; ent = Entities.FindByClassname(ent, "player");) {
         EntFireByHandle(Entities.FindByName(null, "crash-speedmod"), "ModifySpeed", "0.6", 0, ent, ent)
     }
 }

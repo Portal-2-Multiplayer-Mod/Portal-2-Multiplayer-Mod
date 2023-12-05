@@ -5,7 +5,8 @@
 //---------------------------------------------------
 
 // Reset dev level
-if (Config_DevMode) {
+// Developer needs to stay enabled for VScript Debugging to work
+if (Config_DevMode || Config_VScriptDebug) {
     EntFire("p2mm_servercommand", "command", "developer 1")
 }
 else {

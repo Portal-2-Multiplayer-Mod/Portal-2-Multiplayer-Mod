@@ -67,8 +67,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (Entities.FindByName(null, "Sp_A3_01ViewcontrolTele")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(-162, -1966, 0))
                 p.SetVelocity(Vector(0, 0, 0))
                 p.SetAngles(-80, 90, 0)
@@ -77,8 +76,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSp_A3_01) {
             if (Entities.FindByName(null, "Sp_A3_01ViewcontrolDone")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-720, -1852, 14))
                     p.SetAngles(0, 60, 0)
                 }
@@ -92,8 +90,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Elevator changelevel
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(6016, 4496, -448), 100)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(6016, 4496, -448), 100);) {
             EntFire("p2mm_servercommand", "command", "changelevel sp_a3_03")
         }
     }

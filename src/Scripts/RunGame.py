@@ -7,7 +7,6 @@ import threading
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.Configs as CFG
-import subprocess
 import Scripts.BasicFunctions as BF
 import random
 import time
@@ -86,11 +85,11 @@ def SetNewEncryptions() -> None:
         Log("New CVAR:      " + cmdrep[2])
         Log("===========")
 
-def UnEncryptEncryptions() -> None:
-    Log("UnEncrypting Encryptions...")
+def DecryptEncryptions() -> None:
+    Log("Decrypting Encryptions...")
     for cmdrep in CommandReplacements:
         cmdrep[2] = cmdrep[1]
-    Log("Finished UnEncrypting Encryptions")
+    Log("Finished Decrypting Encryptions")
 
 def SetVScriptConfigFile(vsconfigfile: str) -> None:
     Log("====================================================")
@@ -167,7 +166,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     dlcmountpoint = FindAvailableDLC(gamepath)
 
     destination = BF.CopyFolder(modFilesPath + os.sep+".", gamepath + os.sep + dlcmountpoint)
-    Log(f"Successfully copied the ModsFiles to {destination}")
+    Log(f"Successfully copied the ModFiles to {destination}")
 
     nutConfigFile = gamepath + os.sep + dlcmountpoint + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "multiplayermod" + os.sep + "config.nut"
     if os.path.exists(nutConfigFile):
@@ -178,7 +177,7 @@ def MountMod(gamepath: str, encrypt: bool = False) -> bool:
     if encrypt:
         SetNewEncryptions()
     else:
-        UnEncryptEncryptions()
+        DecryptEncryptions()
     path = gamepath + os.sep + dlcmountpoint
 
     if encrypt:
@@ -425,14 +424,12 @@ def findP2MMDLCFolder(gamepath: str) -> str:
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
 
             # find and return where the identifier file is
-            #! REMEMBER TO CHANGE THIS BACK BEFORE 2.2 RELEASE!!!
-            if "p2mm.identifier" in os.listdir(gamepath + os.sep + file):
-            #if "32playermod.identifier" in os.listdir(gamepath + os.sep + file):
-                p2mmdlcfolder = gamepath + os.sep + file
-                Log("Found P2MM's DLC folder: " + p2mmdlcfolder)
-                return p2mmdlcfolder
-    Log("P2MM's DLC folder was not found...")
-    Log("It's most likely not been mounted to Portal 2 yet or the gamepath is incorrect...")
+            if ("p2mm.identifier" in os.listdir(gamepath + os.sep + file)) or ("32playermod.identifier"in os.listdir(gamepath + os.sep + file)):
+                p2mmDLCFolder = gamepath + os.sep + file
+                Log("Found P2MM's DLC folder: " + p2mmDLCFolder)
+                return p2mmDLCFolder
+    Log("P2MM's DLC folder was not found!")
+    Log("It's most likely not been mounted to Portal 2 yet, already been unmounted, or the gamepath is incorrect...")
     return False
 
 # Make sure the dlc folders that come with Portal 2 exist
@@ -443,7 +440,7 @@ def findP2MMDLCFolder(gamepath: str) -> str:
 def CheckForRequiredDLC(gamepath: str) -> bool:
     Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
 
-    if (not os.path.exists(gamepath + os.sep + "portal2_dlc1")) or (not os.path.exists(gamepath + os.sep + "portal2_dlc2")):
+    if (not (os.path.exists(gamepath + os.sep + "portal2_dlc1") or os.path.exists(gamepath + os.sep + "portal2_dlc2"))):
         Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
         Log("P2MM will not be mounted/started!")
         return False
@@ -458,12 +455,12 @@ def DeleteUnusedDLCs(gamepath: str) -> None:
         Log("Portal 2 game path not found!")
         return
 
-    foundp2mmdlcfolder = findP2MMDLCFolder(gamepath)
-    if foundp2mmdlcfolder != False:
-        Log("Found old DLC: " + foundp2mmdlcfolder)
+    foundP2MMDLCFolder = findP2MMDLCFolder(gamepath)
+    if foundP2MMDLCFolder != False:
+        Log("Found old DLC: " + foundP2MMDLCFolder)
         # delete the folder even if it's not empty
-        BF.DeleteFolder(foundp2mmdlcfolder)
-        Log("Deleted old DLC: " + foundp2mmdlcfolder)
+        BF.DeleteFolder(foundP2MMDLCFolder)
+        Log("Deleted old DLC: " + foundP2MMDLCFolder)
 
 # Find what DLC folders exist for Portal 2 and create a incremented folder for P2MM
 def FindAvailableDLC(gamepath: str) -> str:
@@ -502,13 +499,13 @@ def LaunchGame(gamepath: str) -> None:
     Log("=============")
     Log("Running Game...")
 
-    # LAUNCH OPTIONS: -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon (Custom-Launch-Options)
+    # LAUNCH OPTIONS: (-applaunch 620 Linux Only) -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon (Custom-Launch-Options)
     try:
         if (GVars.iow): #launching for windows
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                subprocess.run([gamepath + os.sep + "portal2.exe", "-novid", "-allowspectators", "-nosixense", "+developer 918612", "+clear", "-conclearlog", "-usercon", GVars.configData["Custom-Launch-Options"]["value"]])
+                os.system(f'"{gamepath + os.sep}portal2.exe" -novid -allowspectators -nosixense -conclearlog -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
@@ -518,7 +515,7 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol or GVars.iosd): #launching for linux
             def RunGame():
                 def RunSteam():
-                    os.system("steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon" + GVars.configData["Custom-Launch-Options"]["value"])
+                    os.system(f'steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon {GVars.configData["Custom-Launch-Options"]["value"]}')
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:

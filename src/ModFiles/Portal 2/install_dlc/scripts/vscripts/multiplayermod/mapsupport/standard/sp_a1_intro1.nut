@@ -50,8 +50,7 @@ function p2mmDropCollision() {
     CanJump(false)
     EntFire("p2mm_servercommand", "command", "script CanJump(true)", 3)
 
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
+    for (local p = null; p = Entities.FindByClassname(p, "player");) {
         p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, 0))
     }
 
@@ -475,8 +474,7 @@ function StopStickAndTeleport() {
     ContainerStick = false
     SecondToLastTP = true
     DisableJumpmsp = false
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
+    for (local p = null; p = Entities.FindByClassname(p, "player");) {
         EntFireByHandle(p, "AddOutput", "MoveType 2", 0, null, null)
         p.SetOrigin(Vector(-1710, 4380, 3100))
         p.SetVelocity(Vector(80, 0, 0))
@@ -779,8 +777,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (Entities.FindByName(null, "Sp_A1_Intro1ViewcontrolTele")) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(-8864, 1688, 36))
                 p.SetVelocity(Vector(0, 0, 0))
             }
@@ -788,8 +785,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSp_A1_Intro1) {
             if (Entities.FindByName(null, "Sp_A1_Intro1ViewcontrolDone")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-8709.201172, 1690.068359, 36))
                     p.SetAngles(-4.158184, 64.797371, 0)
                 }
@@ -806,8 +802,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         } catch(exception) { }
 
         if (DisableJumpmsp) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetVelocity().z > 0) {
                     p.SetVelocity(Vector(p.GetVelocity().x, p.GetVelocity().y, -1))
                 }
@@ -816,8 +811,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (HasSleptInContainer1 && !ContainerStick && !SecondToLastTP) {
             // Find everyone within 400 units of the container ( -8656.179688 1768.031250 104.196503 )
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400);) {
                 //p.SetOrigin(Vector(-5700, 1931, 284))
                 // -8622 1768 92
                 // -2956 -163 -180
@@ -827,13 +821,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             //  -5559.827637 1843.053467 282.763519;
             if (bumpout) {
                 // Bump plant
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5556.693848, 1838.821411, 280.240265), 35)) {
+                for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-5556.693848, 1838.821411, 280.240265), 35);) {
                     p.SetOrigin(Vector(-5556.693848, 1838.821411, 270))
                 }
                 // // Bump desk
-                // local p = null
-                // while (p = Entities.FindByClassnameWithin(p, "player", Vector(-5811.007813 1989.968750 282.031250), 35)) {
+                // for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-5811.007813 1989.968750 282.031250), 35);) {
                 //     p.SetOrigin(Vector(-5825.083008, 1979.134399, 270))
                 // }
 
@@ -843,8 +835,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (SecondToLastTP) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400);) {
                 //p.SetOrigin(Vector(-5700, 1931, 284))
                 // -8622 1768 92
                 // -2956 -163 -180
@@ -859,8 +850,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             currentCartPos <- Entities.FindByName(null, "Actor_container_master").GetAttachmentOrigin(1)
             currentCartRot <- Entities.FindByName(null, "Actor_container_master").GetAttachmentAngles(1)
 
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-8656, 1768, 104), 400);) {
                 //p.SetOrigin(Vector(-5700, 1931, 284))
                 // -8622 1768 92
                 // -2956 -163 -180
@@ -870,23 +860,23 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // // If someone is outside the container, move them back in
             // local playersinside = []
             // local p = null
-            // while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x, currentCartPos.y + 150, currentCartPos.z + 75), 300)) {
+            // for (local ent = null; ent = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x, currentCartPos.y + 150, currentCartPos.z + 75), 300)) {
             //     playersinside.push(p)
             // }
 
             // // If someone is stuck in the closet wakka wakka
             // // script p.SetOrigin(Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30))
             // local p = null
-            // while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30), 82)) {
+            // for (local ent = null; ent = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 180, currentCartPos.y + 80, currentCartPos.z + 30), 82)) {
             //     p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
             // }
             // local p = null
-            // while (p = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 172, currentCartPos.y + 80, currentCartPos.z + 30), 90)) {
+            // for (local ent = null; ent = Entities.FindByClassnameWithin(p, "player", Vector(currentCartPos.x - 172, currentCartPos.y + 80, currentCartPos.z + 30), 90)) {
             //     p.SetOrigin(Vector(currentCartPos.x, currentCartPos.y + 200, currentCartPos.z + 75))
             // }
 
             // local p = null
-            // while (p = Entities.FindByClassname(p, "player")) {
+            // for (local ent = null; ent = Entities.FindByClassname(p, "player")) {
             //     local isplayerinindex = false
             //     foreach (player in playersinside) {
             //         if (p == player) {
@@ -904,8 +894,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             rotval <- 2
             cartrotoffset1 <- 100
             rotval1 <- 2
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 EntFireByHandle(p, "AddOutput", "MoveType 4", 0, null, null)
 
                 planepitch <- currentCartRot.x * rotval 
@@ -985,8 +974,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local leftclosetwall = [1, [dressingclosetfrontleft, dressingclosetfrontlefttop, true], [dressingclosetfrontlefttop, dressingclosetbacklefttop, false]]
             ////////////////////////////////////////////////////////////////////////////////////////////
 
-            local ply = null
-            while (ply = Entities.FindByClassname(ply, "player")) {
+            for (local ply = null; ply = Entities.FindByClassname(ply, "player");) {
                 // Get The Origin
                 local player = ply
                 local playerpoint = player.GetOrigin() + Vector(0, 0, 73)

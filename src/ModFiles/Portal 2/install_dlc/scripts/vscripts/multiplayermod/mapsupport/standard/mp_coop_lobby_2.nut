@@ -42,8 +42,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Enable retrigger for all logic_relay entities except for those defined otherwise
         // in the bsp to prevent desync on clients and remove errors from the console
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "logic_relay")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "logic_relay");) {
             ent.__KeyValueFromString("spawnflags", "2")
         }
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit"))
@@ -110,10 +109,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "track5-escape_elevator_clip").Destroy()
 
         // Remove the bottom of droppers in Course 5
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local ent = null
-            while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500)) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
+            for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500);) {
                 if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
                     EntFireByHandle(ent, "SetAnimation", "open_idle", 0.0, null, null)
                 }
@@ -126,10 +123,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop) {
-        local PLent = null
-        while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
-            local APLent = null
-            while(APLent = Entities.FindByClassname(APLent, "player")) {
+        for (local PLent = null; PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30);) {
+            for (local APLent = null; APLent = Entities.FindByClassname(APLent, "player");) {
                 APLent.SetOrigin(Vector(2495, -7451, 410))
             }
         }

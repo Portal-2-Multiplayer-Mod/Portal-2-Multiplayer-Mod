@@ -82,7 +82,7 @@ function Gelocity2RemoveLap() {
 function YeetThePaint() {
     printlP2MM("Yall Playing GELOCITY");
     local ent = null
-    while (ent = Entities.FindByClassname(ent, "paint_sphere")) {
+    for (local ent = null; ent = Entities.FindByClassname(ent, "paint_sphere");) {
         // EntFire(ent.GetName(), "paint", "", 0.8)
         // EntFire(ent.GetName(), "kill", "", 1)
         ent.Destroy()
@@ -101,11 +101,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "clip_start").Destroy()
 
         local ent = null
-        while (ent = Entities.FindByName(null, "door_start_1_1")) {
+        for (local ent = null; ent = Entities.FindByName(null, "door_start_1_1");) {
             ent.__KeyValueFromString("targetname", "door_start_1_1_override")
         }
         local ent = null
-        while (ent = Entities.FindByName(null, "door_start_1_2")) {
+        for (local ent = null; ent = Entities.FindByName(null, "door_start_1_2");) {
             ent.__KeyValueFromString("targetname", "door_start_1_2_override")
         }
 
@@ -114,7 +114,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // printlP2MM("Yall Playing GELOCITY");
         // local ent = null
-        // while (ent = Entities.FindByClassname(ent, "paint_sphere")) {
+        // for (local ent = null; ent = Entities.FindByClassname(ent, "paint_sphere")) {
         //     EntFire(ent.GetName(), "paint", "", 0.8)
         //     EntFire(ent.GetName(), "kill", "", 1)
         // }
@@ -133,7 +133,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("p2mmspawn_override_red", "setasactivespawn", "", 0.05)
         EntFire("p2mmspawn_override_blue", "setasactivespawn", "", 0.05)
         local ent = null
-        while (ent = Entities.FindByClassname(ent, "info_coop_spawn")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "info_coop_spawn");) {
             if (ent.GetName() != "blue_dropper-initial_spawn" && ent.GetName() != "red_dropper-initial_spawn") {
                 ent.Destroy()
             }

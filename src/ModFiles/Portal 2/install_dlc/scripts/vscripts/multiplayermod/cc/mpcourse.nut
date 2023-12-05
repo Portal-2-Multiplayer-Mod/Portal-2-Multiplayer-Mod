@@ -13,7 +13,7 @@ CommandList.push(
         name = "mpcourse"
         level = 5
 
-        // !mpcourse (course integer arg)
+        // !mpcourse (course integer 1-6)
         function CC(p, args) {
             try{
                 args[0] = args[0].tointeger()

@@ -24,15 +24,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop) {
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1259.1446533203, 1557.3728027344, 455.14566040039), 280)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1259.1446533203, 1557.3728027344, 455.14566040039), 280);) {
             Cardio <- false
         }
 
         // Find every player within 600 units of -1953 1570 575
         if (Cardio) {
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-1953, 1570, 575), 600)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1953, 1570, 575), 600);) {
                 local p2 = Entities.FindByClassnameNearest("player", Vector(-1953, 1570, 575), 10620)
                 if (p != p2) {
                     p.SetOrigin(Vector(-2230, 1725, -90))

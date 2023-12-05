@@ -39,8 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("floor_blue", "Enable")
 
                 // Make sure blue players don't get stuck where gun is revealed
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-9816, -3504, 22.03), 128)) {
+                for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-9816, -3504, 22.03), 128);) {
                     if (p.GetOrigin().z < 8) {
                         p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 10))
                     }
@@ -58,8 +57,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("floor_orange", "Enable")
 
                 // Make sure orange players don't get stuck where gun is revealed
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-10200, -3504, 22.03), 128)) {
+                for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-10200, -3504, 22.03), 128);) {
                     if (p.GetOrigin().z < 8) {
                         p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 10))
                     }
@@ -85,7 +83,7 @@ function coop_startHasPortalGun(args) {
     for (local p; p = Entities.FindByClassname(p, "player");) {
         if (args == "blue") {
             // Check is done this way to compensate for players on other teams
-            if (p.GetTeam() != TEAM_RED && p.GetTeam() != TEAM_SPECTATOR) {
+            if (p.GetTeam() != TEAM_RED) {
                 EntFireByHandle(GamePlayerEquip, "use", "", 0, p, p)
             }
         }

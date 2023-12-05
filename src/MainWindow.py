@@ -1074,7 +1074,6 @@ def GetGamePath() -> None:
             GVars.translations["game_path_saved_toast"], 5, (75, 200, 75))
         VerifyGamePath(False)
 
-    # Ui.ChangeMenu(Ui.BlankButton, append=True)
     Ui.GetUserInput(AfterInputGP, GVars.translations["game_path_enter_path"])
 
 
@@ -1097,25 +1096,17 @@ def VerifyGamePath(shouldGetPath: bool = True) -> bool:
 
 def VerifyModFiles() -> bool:
     Log("Searching for ModFiles in: " + GVars.modFilesPath)
-    if GVars.configData["Dev-Mode"]["value"]:
-        Log("modFilesPath and identifier file exist?")
-        print(os.path.exists(GVars.modFilesPath))
-        print(GVars.modFilesPath)
-        print(os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" +
-              os.sep + "install_dlc" + os.sep + "p2mm.identifier"))
-        print(GVars.modFilesPath + os.sep + "Portal 2" +
-              os.sep + "install_dlc" + os.sep + "p2mm.identifier")
 
-    #! MAKE SURE TO CHANGE THIS BACK BEFORE 2.2 RELEASE!!!
-    Log("modFilesPath and identifier file exist?")
-    print(os.path.exists(GVars.modFilesPath))
-    print(GVars.modFilesPath)
-    print(os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" +
-            os.sep + "install_dlc" + os.sep + "p2mm.identifier"))
-    print(GVars.modFilesPath + os.sep + "Portal 2" +
-            os.sep + "install_dlc" + os.sep + "p2mm.identifier")
-    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "p2mm.identifier")):
-    #if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc" + os.sep + "32playermod.identifier")):
+    localIDPath = f"{GVars.modPath}{os.sep}ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}"
+    if GVars.configData["Dev-Mode"]["value"]:
+        print("localIDPath and which identifier file exists?")
+        print(localIDPath)
+        print(localIDPath + "p2mm.identifier: " + os.path.exists(localIDPath + "p2mm.identifier"))
+        print(localIDPath + "32playermod.identifier: " + os.path.exists(localIDPath + "32playermod.identifier"))
+
+    if (os.path.exists(GVars.modFilesPath)) and (
+        (os.path.exists(localIDPath + "p2mm.identifier")) or (
+         os.path.exists(localIDPath + "32playermod.identifier"))):
         Log("ModFiles found!")
         return True
 
@@ -1223,7 +1214,6 @@ def UpdateModClient(data: dict) -> None:
 def RunGameScript() -> None:
     if MountModOnly():
         gamePath = GVars.configData["Portal2-Path"]["value"]
-        # GVars.gameActive = True
         RG.LaunchGame(gamePath)
         Ui.CreateToast(GVars.translations["game_launched"], 5, (75, 255, 75))
     else:
@@ -1354,7 +1344,6 @@ def PostInitialize() -> None:
 
 
 if __name__ == '__main__':
-    cwd = os.getcwd()
     Initialize()
     Ui = Gui(GVars.configData["Dev-Mode"]["value"])
     PostInitialize()

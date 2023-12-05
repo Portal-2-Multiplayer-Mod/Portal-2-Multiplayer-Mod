@@ -1,14 +1,20 @@
-import os 
+import os, json
 from datetime import datetime
-import json
 
+#? Purpose:
+#* This Python script is used to update the ModIndex.json file as well as 
+#* the identifier file found in the ModFiles.
+#* This is used by the launcher to check if the version of the ModFiles
+#* on remote is newer than what is downloaded on the users system, and if
+#* the user has all the files. If not they will be asked to update their
+#* ModFiles.
 
-# to update the files just
-# 1- run this code
-# 2- copy the relative path of the identifier file (ex: src\ModFiles\Portal 2\install_dlc\p2mm.identifier)
-# 3- input it whe the mod asks for it 
-# 4- a file should be created / updated (ModIndex.json) that means everything ran correctly
-# 5- just push the changes to github
+#? User Process:
+#* 1- Run this code.
+#* 2- Copy the relative path of the identifier file. (ex: src\ModFiles\Portal 2\install_dlc\p2mm.identifier)
+#* 3- Input the path when the script asks for it.
+#* 4- A file should be created/updated (ModIndex.json) that means everything ran correctly, the identifier given will also be updated.
+#* 5- Push the changes to GitHub.
 
 
 def GetFiles(path):
@@ -29,7 +35,7 @@ def SaveData():
 
     # loop until the given path is a file (Just copy the identifier's relative path)
     while not os.path.isfile(filesData["Path"]):
-        filesData["Path"] = input("input the relative path for the identifier file ")
+        filesData["Path"] = input("Input the relative path for the identifier file: ")
     
     open(os.getcwd()+os.sep + filesData["Path"], "w", encoding="utf-8").write(filesData["Date"]) # write the date to the identifier file (yes we need it) 
     print(os.getcwd() + os.sep + filesData["Path"])
@@ -41,6 +47,6 @@ def SaveData():
     jsonStr = json.dumps(filesData)
     with open(savePath, "w",encoding="utf-8") as file:
         file.write(jsonStr)
-    print("finished writing to file")
 
 SaveData()
+print("Finished writing to ModIndex.json and identifier file! :D")

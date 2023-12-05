@@ -1,5 +1,5 @@
 {
-    "Date": "2023-07-12",
+    "Date": "2023-10-26",
     "Path": "src/ModFiles/Portal 2/install_dlc",
     "Files": [
         "/p2mm.identifier",
@@ -29,6 +29,7 @@
         "/scripts/vscripts/multiplayermod/cc/kill.nut",
         "/scripts/vscripts/multiplayermod/cc/mpcourse.nut",
         "/scripts/vscripts/multiplayermod/cc/noclip.nut",
+        "/scripts/vscripts/multiplayermod/cc/password.nut",
         "/scripts/vscripts/multiplayermod/cc/playercolor.nut",
         "/scripts/vscripts/multiplayermod/cc/rcon.nut",
         "/scripts/vscripts/multiplayermod/cc/restartlevel.nut",

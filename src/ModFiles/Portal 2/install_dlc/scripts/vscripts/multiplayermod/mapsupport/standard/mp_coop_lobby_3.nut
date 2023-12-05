@@ -5,6 +5,211 @@
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗███████╗╚█████╔╝██████╦╝██████╦╝   ██║   ██████████╗██████╔╝
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚══════╝ ╚════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚═════════╝╚═════╝
 
+
+// * Functions for Lobby Music Control * \\
+
+// musicMax is just the number of tracks, in other words the length of Config_musicTracks, that there are to play, this shouldn't be zero.
+// Don't adjust musicMin as this just determines where "No Music" will be in the track list and could mess up other things.
+// musicSelected is the current music track number, this starts as the Config_musicDefault.
+musicMax <- Config_musicTracks.len()
+musicMin <- -1
+musicSelected <- Config_musicDefault
+
+// Play the track that is currently indicated by musicSelected
+function PlaySelectedTrack() {
+    EntFire("p2mm_lobbymusic_text", "SetText", "Music Track " + (musicSelected + 1) + "/" + musicMax, 0.6, null)
+    EntFire("p2mm_lobbymusic_text", "Display", "", 0.65, null)
+    Entities.FindByName(null, "p2mm_lobbymusic_music").__KeyValueFromString("message", Config_musicTracks[musicSelected])
+    EntFire("p2mm_lobbymusic_music", "PlaySound", "", 0.7, null)
+}
+
+// Called to change the current track playing in the lobby
+// A bool is given to tell whether its going to the next or previous track
+function ChangeMusicTrack(nextTrack = true) {
+    if (nextTrack) {
+        if ((musicSelected + 1) == musicMax) {
+            return
+        }
+
+        musicSelected += 1
+
+        if ((musicSelected + 1) == musicMax) {
+            EntFire("p2mm_lobbymusic_button1", "unlock", "", 0, null)
+            EntFire("p2mm_lobbymusic_button2", "lock", "", 0, null)
+            EntFire("prop_button_l", "Skin", "0", 0, null)
+            EntFire("prop_button_r", "Skin", "1", 0, null)
+            PlaySelectedTrack()
+            return
+        }
+
+        if (musicSelected < musicMax && musicSelected >= musicMin) {
+            EntFire("p2mm_lobbymusic_button1", "unlock", "", 0, null)
+            EntFire("p2mm_lobbymusic_button2", "unlock", "", 0, null)
+            EntFire("prop_button_l", "Skin", "0", 0, null)
+            PlaySelectedTrack()
+            return
+        }
+    } else {
+        if (musicSelected == musicMin) {
+            return
+        }
+
+        musicSelected -= 1
+
+        if (musicSelected == musicMin) {
+            EntFire("p2mm_lobbymusic_text", "settext", "No Music", 0, null)
+            EntFire("p2mm_lobbymusic_text", "display", "", 0.5, null)
+            EntFire("p2mm_lobbymusic_button1", "lock", "", 1, null)
+            EntFire("p2mm_lobbymusic_button2", "unlock", "", 1, null)
+            EntFire("prop_button_r", "Skin", "0", 0, null)
+            EntFire("prop_button_l", "Skin", "1", 0, null)
+            return
+        }
+
+        if (musicSelected > musicMin && musicSelected <= musicMax) {      
+            EntFire("p2mm_lobbymusic_button1", "unlock", "", 0, null)
+            EntFire("p2mm_lobbymusic_button2", "unlock", "", 0, null)
+            EntFire("prop_button_r", "Skin", "0", 0, null)
+            PlaySelectedTrack()
+            return
+        }
+    }
+}
+
+// Music Control In The Lobby!
+// Initialize the music
+function MusicInit() {
+    if (musicMax == 0) {
+        printlP2MM("There are no music tracks in Config_musicTracks!")
+        printlP2MM("We won't setup the custom lobby music control!")
+        printlP2MM("Ideally the host should have just set Config_musicEnable to false...")
+        return
+    }
+    // Remove all the old music entities and unneeded entities
+    Entities.FindByName(null, "case_music").Destroy()
+    Entities.FindByName(null, "counter_music").Destroy()
+
+    for (local i = 2; i < 8;) {
+        Entities.FindByName(null, "@music_lobby_" + i).Destroy()
+        i += 1
+    }
+
+    local armProp = "models/anim_wp/framework/hanging_arm_02.mdl"
+    for (local prop = null; prop = Entities.FindByModel(prop, armProp);) {
+        if (prop.entindex() == 131) {
+            prop.Destroy()
+            break
+        }
+    }
+
+    for (local button = null; button = Entities.FindByClassname(button, "func_button");) {
+        if (button.entindex() == 135) {
+            button.Destroy()
+            break
+        }
+    }
+
+    // Setup the P2MM music entities
+    // First the buttons, button1 goes back a track, button2 goes forward   
+    p2mm_lobbymusic_button1 <- Entities.FindByName(null, "screen_button_l")
+    p2mm_lobbymusic_button1.__KeyValueFromString("targetname", "p2mm_lobbymusic_button1")
+    EntFireByHandle(p2mm_lobbymusic_button1, "AddOutput", "OnPressed !self:RunScriptCode:ChangeMusicTrack(false):0:-1", 0, null, null)
+    EntFireByHandle(p2mm_lobbymusic_button1, "AddOutput", "OnPressed p2mm_lobbymusic_music:StopSound::0:-1", 0, null, null)
+    p2mm_lobbymusic_button2 <- Entities.FindByName(null, "screen_button_r")
+    p2mm_lobbymusic_button2.__KeyValueFromString("targetname", "p2mm_lobbymusic_button2")
+    EntFireByHandle(p2mm_lobbymusic_button2, "AddOutput", "OnPressed !self:RunScriptCode:ChangeMusicTrack(true):0:-1", 0, null, null)
+    EntFireByHandle(p2mm_lobbymusic_button2, "AddOutput", "OnPressed p2mm_lobbymusic_music:StopSound::0:-1", 0, null, null)
+    
+    // Make sure that the func_buttons are enabled
+    // Also make sure each button is locked/unlocked according to what the default track is
+    EntFireByHandle(p2mm_lobbymusic_button1, "enable", "", 0, null, null)
+    EntFireByHandle(p2mm_lobbymusic_button2, "enable", "", 0, null, null)
+    if (Config_musicDefault <= musicMin) {
+        Entities.FindByName(null, "prop_button_l").__KeyValueFromString("skin", "1")
+        EntFireByHandle(p2mm_lobbymusic_button1, "lock", "", 0, null, null)
+    } else {
+        Entities.FindByName(null, "prop_button_l").__KeyValueFromString("skin", "0")
+        EntFireByHandle(p2mm_lobbymusic_button1, "unlock", "", 0, null, null)
+    }
+    if (Config_musicDefault >= musicMax) {
+        Entities.FindByName(null, "prop_button_r").__KeyValueFromString("skin", "1")
+        EntFireByHandle(p2mm_lobbymusic_button2, "lock", "", 0, null, null)
+    } else {
+        Entities.FindByName(null, "prop_button_r").__KeyValueFromString("skin", "0")
+        EntFireByHandle(p2mm_lobbymusic_button2, "unlock", "", 0, null, null)
+    }
+    
+    
+    // Create the game_text entity to see what track was selected
+    p2mm_lobbymusic_text <- Entities.CreateByClassname("game_text")
+    p2mm_lobbymusic_text.__KeyValueFromString("targetname", "p2mm_lobbymusic_text")
+    p2mm_lobbymusic_text.__KeyValueFromString("message", "Music Track " + (musicSelected + 1) + "/" + musicMax)
+    p2mm_lobbymusic_text.__KeyValueFromString("spawnflags", "1")
+    p2mm_lobbymusic_text.__KeyValueFromString("fadein", "0.5")
+    p2mm_lobbymusic_text.__KeyValueFromString("fadeout", "0.5")
+    p2mm_lobbymusic_text.__KeyValueFromString("x", "-1")
+    p2mm_lobbymusic_text.__KeyValueFromString("y", "0.25")
+    p2mm_lobbymusic_text.__KeyValueFromString("channel", "2")
+    p2mm_lobbymusic_text.__KeyValueFromString("holdtime", "1.2")
+    p2mm_lobbymusic_text.__KeyValueFromString("color", "255 255 255")
+    
+    // Create the ambient generic which will play our music tracks, then move it to the lobby area
+    p2mm_lobbymusic_music <- Entities.FindByName(null, "@music_lobby_1")
+    p2mm_lobbymusic_music.__KeyValueFromString("targetname", "p2mm_lobbymusic_music")
+    if (Config_musicDefault > -1) {
+        p2mm_lobbymusic_music.__KeyValueFromString("message", Config_musicTracks[musicSelected])
+    } else {
+        p2mm_lobbymusic_music.__KeyValueFromString("message", "")
+    }
+    p2mm_lobbymusic_music.__KeyValueFromString("spawnflags", "17")
+    p2mm_lobbymusic_music.SetOrigin(Vector(4930, 3705, -478))
+
+    // Precache the music
+    foreach (musicTrack in Config_musicTracks) {
+        self.PrecacheSoundScript(musicTrack)
+    }
+
+    // Position everything in the map
+    // Move the button sound to where the buttons will be
+    Entities.FindByName(null, "snd_screen_button").SetOrigin(Vector(4928, 3713, -496))
+    
+    // Make the buttons func_rotate open make the buttons rotate, then move the whole of move_a_screen_buttons
+    DoEntFire("rot_screen_buttons", "open", "", 0.0, null, null)
+    Entities.FindByName(null, "move_a_screen_buttons").SetAngles(0, 90, 0)
+    Entities.FindByName(null, "move_a_screen_buttons").SetOrigin(Vector(4928, 3713, -496))
+
+    // Open up move_b_screen_buttons then separate it from move_a_screen_buttons
+    DoEntFire("move_b_screen_buttons", "open", "", 0.1, null, null)
+    DoEntFire("move_b_screen_buttons", "clearparent", "", 0.4, null, null)
+    DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"move_b_screen_buttons\").SetOrigin(Vector(4930, 3720.5, -496))", 0.5, null, null)
+    
+    // Move move_a_screen_buttons back to where it originally from
+    DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"move_a_screen_buttons\").SetOrigin(Vector(3713, -1344.01, -496))", 0.6, null, null)
+    DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"move_a_screen_buttons\").SetAngles(0, 0, 0)", 0.6, null, null)
+
+    // Find he prop_dymanic arms move them into position
+    for (local prop = null; prop = Entities.FindByModel(prop, armProp);) {
+        if (prop.entindex() == 119) {
+            prop.__KeyValueFromString("targetname", "prop_arm_l")
+            DoEntFire("prop_arm_l", "clearparent", "", 1, null, null)
+            DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"prop_arm_l\").SetOrigin(Vector(4900, 3698, -523))", 1, null, null)
+            break
+        }
+    }
+
+    for (local prop = null; prop = Entities.FindByModel(prop, armProp);) {
+        if (prop.entindex() == 120) {
+            prop.__KeyValueFromString("targetname", "prop_arm_r")
+            DoEntFire("prop_arm_r", "clearparent", "", 1, null, null)
+            DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"prop_arm_r\").SetOrigin(Vector(4933, 3698, -523))", 1, null, null)
+            break
+        }
+    }
+
+    // START THE MUSIC
+    DoEntFire("p2mm_lobbymusic_music", "playsound", "", 0.0, null, null)
+}
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         Entities.FindByName(null, "robo_rampa_01b").__KeyValueFromString("mincpulevel", "0")
@@ -18,6 +223,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("trigger_run_script", "AddOutput", "OnStartTouchBluePlayer coop_man_enter_hub:SetStateBTrue", 0, null)
         EntFire("trigger_quick_spawn", "AddOutput", "OnStartTouchBluePlayer coop_man_quick_open:SetStateBTrue", 0, null)
         EntFire("trigger_set_course", "AddOutput", "OnStartTouchBluePlayer coop_man_set_course:SetStateBTrue", 0, null)
+        EntFire("track6-prop_door_hall", "Open", "", 0, null)
         enablehub <- false
     }
 
@@ -34,19 +240,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (enablehub) {
             // If any level was completed outside of calibration, enable the hub entirely
             EntFire("case_open_course", "invalue", "7", 0, null)
-
-            // Enable music
-            DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
         }
 
+        // INITALIZE AND START THE CUSTOM MUSIC
+        if (Config_musicEnable) {
+            MusicInit()
+        } else { // Start the boring one track music because the user didn't enable custom lobby music :(
+            DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
+        }
+        
         // Allow the players to drop from spawn tube
         Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
         Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
 
         // Enable retrigger for all logic_relay entities except for those defined otherwise
         // in the bsp to prevent desync on clients and remove errors from the console
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "logic_relay")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "logic_relay");) {
             ent.__KeyValueFromString("spawnflags", "2")
         }
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit"))
@@ -63,6 +272,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit_finished"))
 
         // Remove useless entities so that the entity limit does not crash the game
+
+        // Unneeded entities in the DLC course area
+        Entities.FindByName(null, "transition_script").Destroy()
+        Entities.FindByName(null, "track6-DLCElevatorRoomEntranceTrigger").Destroy()
+        Entities.FindByName(null, "track6-track_door_open_trigger").Destroy()
+        Entities.FindByName(null, "coopman_screen").Destroy()
+
+        // Removing the env_shakes and ambient_generic for the paint course reveal, it's already set to be revealed.   
+        Entities.FindByName(null, "paint_reveal_shake").Destroy()
+        Entities.FindByName(null, "paint_reveal_shake_stop").Destroy()
+        Entities.FindByName(null, "sound_paint_move_move").Destroy()
 
         // Remove func_portal_bumper's from the map
         for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
@@ -103,26 +323,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@snd_light_outside").Destroy()
 
         // Remove orange exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit");) {
             ent.Destroy()
         }
 
         Entities.FindByName(null, "track5-orangeescape_elevator_clip").Destroy()
 
         // Remove blue exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit");) {
             ent.Destroy()
         }
 
         Entities.FindByName(null, "track5-escape_elevator_clip").Destroy()
 
         // Remove the bottom of droppers in Course 5
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local ent = null
-            while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500)) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
+            for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500);) {
                 if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
                     EntFireByHandle(ent, "SetAnimation", "open_idle", 0.0, null, null)
                 }
@@ -132,24 +348,20 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
         }
+        
     }
 
     if (MSLoop) {
-        local PLent = null
-        while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
-            local APLent = null
-            while(APLent = Entities.FindByClassname(APLent, "player")) {
+        for (local PLent = null; PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30);) {
+            for (local APLent = null; APLent = Entities.FindByClassname(APLent, "player");) {
                 APLent.SetOrigin(Vector(2495, -7451, 410))
             }
         }
 
         // Art therapy left chute enabler
-        local vectorEEL
-        vectorEEL = Vector(5727, 3336, -441)
-        local EELent = null
-        while(EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12)) {
-            local LCatEn = null
-            while(LCatEn = Entities.FindByName(LCatEn, "left-enable_cats")) {
+        local vectorEEL = Vector(5727, 3336, -441)
+        for (local EELent = null; EELent = Entities.FindByClassnameWithin(EELent, "player", vectorEEL, 12);) {
+            for (local LCatEn = null; LCatEn = Entities.FindByName(LCatEn, "left-enable_cats");) {
                 DoEntFire("!self", "Enable", "", 0.0, null, LCatEn)
                 DoEntFire("!self", "Trigger", "", 0.0, null, LCatEn)
             }
@@ -159,12 +371,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         TeleportPlayerWithinDistance(Vector(5729, 3336, 1005), 30, Vector(3194, -1069, 1676))
 
         // Art therapy right chute enabler
-        local vectorEER
-        vectorEER = Vector(5727, 3192, -441)
-        local EERent = null
-        while(EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12)) {
-            local RCatEn = null
-            while(RCatEn = Entities.FindByName(RCatEn, "right-enable_cats")) {
+        local vectorEER = Vector(5727, 3192, -441)
+        for (local EERent = null; EERent = Entities.FindByClassnameWithin(EERent, "player", vectorEER, 12);) {
+            for (local RCatEn = null; RCatEn = Entities.FindByName(RCatEn, "right-enable_cats");) {
                 DoEntFire("!self", "Enable", "", 0.0, null, RCatEn)
                 DoEntFire("!self", "Trigger", "", 0.0, null, RCatEn)
             }
@@ -174,17 +383,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         TeleportPlayerWithinDistance(Vector(5727, 3180, 1005), 30, Vector(3191, -1228, 1682))
 
         // Disable art therapy chutes
-        local vectorE
-        vectorE = Vector(3201, -1152, 1272)
-        local Aent = null
-        while(Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150)) {
-            local LCatDis = null
-            while(LCatDis = Entities.FindByName(LCatDis, "left-disable_cats")) {
+        local vectorE = Vector(3201, -1152, 1272) 
+        for (local Aent = null; Aent = Entities.FindByClassnameWithin(Aent, "player", vectorE, 150);) {     
+            for (local LCatDis = null; LCatDis = Entities.FindByName(LCatDis, "left-disable_cats");) {
                 DoEntFire("!self", "Enable", "", 0.0, null, LCatDis)
                 DoEntFire("!self", "Trigger", "", 0.0, null, LCatDis)
             }
-            local RCatDis = null
-            while(RCatDis = Entities.FindByName(RCatDis, "right-disable_cats")) {
+            
+            for (local RCatDis = null; RCatDis = Entities.FindByName(RCatDis, "right-disable_cats");) {
                 DoEntFire("!self", "Enable", "", 0.0, null, RCatDis)
                 DoEntFire("!self", "Trigger", "", 0.0, null, RCatDis)
             }

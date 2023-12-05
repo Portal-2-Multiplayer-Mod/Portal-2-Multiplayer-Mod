@@ -46,7 +46,7 @@ function ChatCommands(iUserIndex, rawText) {
     }
 
     // The real chat command doesn't have the "!". Also split arguments
-    local szTargetCommand = Strip(Replace(Message, "!", ""))
+    local szTargetCommand = strip(Replace(Message, "!", ""))
 
     local Args = SplitBetween(szTargetCommand, " ", true)
     if (Args.len() > 0) {
@@ -66,13 +66,13 @@ function ChatCommands(iUserIndex, rawText) {
 
     // Does the exact command exist?
     if (typeof szTargetCommand != "class") {
-        SendChatMessage("[ERROR] Command not found. Use !help to list some commands.", pPlayer)
+        SendChatMessage("[ERROR] Command not found. Use !help to list some commands!", pPlayer)
         return
     }
 
     // Do we have the correct admin level for this command?
     if (!(szTargetCommand.level <= AdminLevel)) {
-        SendChatMessage("[ERROR] You do not have permission to use this command.", pPlayer)
+        SendChatMessage("[ERROR] You do not have permission to use this command!", pPlayer)
         return
     }
 
@@ -86,7 +86,11 @@ function ChatCommands(iUserIndex, rawText) {
 CommandList <- []
 
 local IncludeScriptCC = function(script) {
-    IncludeScript("multiplayermod/cc/" + script + ".nut")
+    try {
+        IncludeScript("multiplayermod/cc/" + script + ".nut")
+    } catch (exception) {
+        p2mmlP2MM("Failed to load: multiplayermod/cc/" + script + ".nut")
+    }
 }
 
 // Include the scripts that will push each
@@ -103,14 +107,12 @@ IncludeScriptCC("kick")
 IncludeScriptCC("kill")
 IncludeScriptCC("mpcourse")
 IncludeScriptCC("noclip")
-IncludeScriptCC("password")
 IncludeScriptCC("playercolor")
 IncludeScriptCC("rcon")
 IncludeScriptCC("restartlevel")
 IncludeScriptCC("rocket")
 IncludeScriptCC("slap")
 IncludeScriptCC("spchapter")
-// IncludeScriptCC("spectate") // broken
 IncludeScriptCC("speed")
 IncludeScriptCC("teleport")
 IncludeScriptCC("vote")
@@ -249,8 +251,7 @@ function FindPlayerByName(name) {
     local bestnamelen = 99999
     local bestfullname = ""
 
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
+    for (local p = null; p = Entities.FindByClassname(p, "player");) {
         local username = FindPlayerClass(p).username
         username = username.tolower()
 

@@ -14,31 +14,25 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "fade_to_death-proxy").Destroy()
     }
 
-    if (MSPostPlayerSpawn) {
-
-    }
-
     if (MSLoop) {
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printl()}
+            if (GooHurtTimerPred) { printl()}
         } catch (exception) {
             GooHurtTimerPred <- 0
         }
 
         if (GooHurtTimerPred<=Time()) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
-                if (p.GetOrigin().z<=-1481) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
+                if (p.GetOrigin().z < -1481) {
                     EntFireByHandle(p, "sethealth", "-20", 0, null, null)
                 }
             }
-            GooHurtTimerPred = Time()+1
+            GooHurtTimerPred = Time() + 1
         }
+
         // Elevator changelevel
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-256, 1570, 1288), 100)) {
-             
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-256, 1570, 1288), 100);) { 
             EntFire("p2mm_servercommand", "command", "changelevel sp_a3_crazy_box")
         }
     }

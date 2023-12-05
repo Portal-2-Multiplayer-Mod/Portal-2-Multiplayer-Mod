@@ -179,7 +179,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFireByHandle(Entities.FindByName(null, "floor_gate1-floor_panel"), "setparent", "test_chamber1_platform", 0, null, null)
                 Entities.FindByName(null, "floor_gate1-floor_panel").__KeyValueFromString("rendermode", "10")
                 Entities.FindByName(null, "floor_gate1-cover_arm").__KeyValueFromString("rendermode", "10")
-                for (local p; p = Entities.FindByClassname(p, "player");) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(1053, 380, 185))
                     p.SetAngles(0, 0, 0)
                     p.SetVelocity(Vector(0, 0, 0))
@@ -190,11 +190,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Change Spawn
         if (!Entities.FindByClassnameNearest("trigger_once", Vector(1072, 384, 172.01), 20)) {
-            for (local p; p = Entities.FindByClassname(p, "player");) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().x <= 3472.60 && p.GetOrigin().z <= 220) {
                     local canteleport = true
-                    local p2 = null
-                    while (p2 = Entities.FindByClassnameWithin(p2, "player", Vector(1045, 382, 210), 400)) {
+                    for (local ent = null; p2 = Entities.FindByClassnameWithin(p2, "player", Vector(1045, 382, 210), 400);) {
                         if (p2==p) {
                             canteleport = false
                         }
@@ -207,7 +206,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (GooHurtTimerPred<=Time() && killppl) {
-            for (local p; p = Entities.FindByClassname(p, "player");) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().x <= 3472.60 && p.GetOrigin().z <= -150) {
                     EntFireByHandle(p, "sethealth", "-100000", 0, null, null)
                 }
@@ -217,16 +216,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Change ClosedBetaTestingBox Names ;)
         if (!Entities.FindByName(null, "button_1_solved_TURRETNAMECHANGE")) {
-            local ent = null
-            while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800)) {
+            for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800);) {
                 ent.__KeyValueFromString("targetname", "button_1_solved_TURRETNAMECHANGE")
             }
         }
 
         //PermaDestroyCubesSpA4Intro
         if (PermaDestroyCubesSpA4Intro) {
-            local ent = null
-            while (ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800)) {
+            for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_monster_box", Vector(-58.406547546387, -59.558124542236, 187.5777130127), 800);) {
                 ent.Destroy()
             }
         }
@@ -261,8 +258,7 @@ function MoveCubeDropper() {
     CubeBeingSpawned = null
     CanSpawnCubeInit = false
     FullDisableOldDropper = true
-    local ent = null
-    while (ent = Entities.FindByName(null, "cube_dropper_box")) {
+    for (local ent = null; ent = Entities.FindByName(ent, "cube_dropper_box");) {
         ent.Destroy()
     }
     Entities.FindByName(null, "cube_dropper_box_spawner_override_p2mm").__KeyValueFromString("targetname", "cube_dropper_box_spawner")

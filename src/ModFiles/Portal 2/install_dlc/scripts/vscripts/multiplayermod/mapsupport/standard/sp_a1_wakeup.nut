@@ -65,8 +65,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         if (TPP1) {
             if (Entities.FindByName(null, "TPPLAYERS1")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(8548, 1204, 106))
                     p.SetVelocity(Vector(0, 0, 0))
                 }
@@ -78,8 +77,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (TPP2) {
             if (Entities.FindByName(null, "TPPLAYERS2")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(8947, 1062, 400))
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(0, 45, 0)
@@ -92,8 +90,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (TPP3) {
             if (Entities.FindByName(null, "TPPLAYERS3")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(8548, 1204, 106))
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(20, 40, 0)
@@ -107,8 +104,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (TPP4) {
             if (Entities.FindByName(null, "TPPLAYERS4")) {
                 UTIL_Team.Pinging(false)
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(10366, 1215, 486))
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(90, 0, 0)
@@ -125,8 +121,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (SpA1WakeupONCE3) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(8976.9541015625, 1085.8822021484, -435.20544433594), 33.199999332428)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(8976.9541015625, 1085.8822021484, -435.20544433594), 33.199999332428);) {
                 EntFire("@glados", "RunScriptCode", "sp_a1_wakeup_Do_Not_Touch()", 0, null)
                 EntFire("basement_breakers_entrance_door", "Close", "", 0, null)
                 EntFire("basement_breakers_entrance_blocker_trigger", "Enable", "", 0, null)
@@ -142,8 +137,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (SpA1WakeupONCE2) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(9377, 1344, -415), 33.199999332428)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(9377, 1344, -415), 33.199999332428);) {
                 EntFire("basement_breakers_prop_0", "SetAnimation", "breaker_shaft_open_hatch", 0, null)
                 EntFire("light_orange_glados", "TurnOn", "", 0, null)
                 EntFire("basement_breakers_open_wav", "PlaySound", "", 0, null)
@@ -156,8 +150,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (SpA1WakeupPostPlayerSpawn) {
             try {
-            Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
-            Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
+                Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
+                Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
             } catch(exception) { }
 
             Entities.FindByName(null, "@sphere").SetOrigin(Vector(6975, 561, 403))
@@ -165,8 +159,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Find all players within 100 units of 8032 1216 487
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(8032, 1216, 487), 100)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(8032, 1216, 487), 100);) {
             if (SpA1WakeupONCE1) {
                 printlP2MM("Wakeup sequence started")
                 EntFire("@glados", "runscriptcode", "sp_a1_wakeup_gantry_door_open()", 0, null)
@@ -177,7 +170,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Find all players within 100 units of 6977, 493, 572
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(6976, 568, 521), 225)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(6976, 568, 521), 225);) {
             if (p.GetOrigin().z >= 450) {
                 printlP2MM("Player is in the elevator")
                 if (p.GetTeam() == TEAM_RED) {

@@ -41,6 +41,11 @@ def GetSysLang() -> str:
 
     return "English"
 
+# Default config values for the launcher:
+# "value" is the data that is stored in the config option, this is either a string or bool.
+# "menu" is the menu where the config option resides, either in the launcher settings menu or Portal 2 settings menu.
+# "description" is a Label that appears when the config option is hover over with the cursor.
+# "warning" is a special red Label that appears with the "description" to act as a important message.
 DefaultConfig = {
     "Active-Language": {
         "value": GetSysLang(),
@@ -61,9 +66,9 @@ DefaultConfig = {
     "Custom-Launch-Options": {
         "value": "+map mp_coop_lobby_3",
         "menu": "portal2",
-        "description": "Launch options for portal 2. default is '+map mp_coop_lobby_3'",
+        "description": "Launch options for Portal 2. Default is '+map mp_coop_lobby_3'",
         "warning": "Leave this to default if you don't know what it does!",
-        "prompt": "Launch options for portal 2. default is '+map mp_coop_lobby_3'"
+        "prompt": "Launch options for Portal 2.\nDefault is '+map mp_coop_lobby_3'"
     },
 
     "Encrypt-CVars": {
@@ -117,7 +122,7 @@ DefaultConfig = {
     }
 }
 
-ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
+ImmutableKeys = {"value", "menu", "description", "warning", "prompt"}
 
 # verifies the config file by making sure that the processed data has the same keys as the default
 # if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
