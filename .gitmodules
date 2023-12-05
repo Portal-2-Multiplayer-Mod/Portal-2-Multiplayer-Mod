@@ -1,6 +1,0 @@
-[submodule "Optional/portal32playermod_plugin"]
-	path = Optional/portal32playermod_plugin
-	url = https://gitlab.com/KonradCzerw/portal32playermod_plugin
-[submodule "Optional/portal32playermod_plugin_win"]
-	path = Optional/portal32playermod_plugin_win
-	url = https://gitlab.com/KonradCzerw/portal32playermod_plugin_win
