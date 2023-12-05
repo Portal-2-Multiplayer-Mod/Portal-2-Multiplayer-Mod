@@ -14,3 +14,7 @@ curl -L 'https://github.com/cabiste69/appimage-builder/releases/download/1.2.0/a
 
 chmod +x ./appimage-builder.AppImage
 ./appimage-builder.AppImage
+
+mkdir build
+
+cp p2mm-* build/
