@@ -8,11 +8,16 @@
     <img src="https://img.shields.io/github/release-date/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
   </a>
   <br>
-  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/main">
-    <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?label=Last%20Commit&style=for-the-badge" alt="Commit Shield Badge" align="right">
+  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest">
+    <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=LATEST%20RELEASE%20DOWNLOADS" alt="Download Count Shield Badge" align="right">
   </a>
   <br>
-    <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest"><img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge" alt="Download Count Shield Badge" align="right">
+  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/main">
+    <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?label=LAST%20COMMIT%20(MAIN)&style=for-the-badge" alt="Commit Shield Badge" align="right">
+  </a>
+  <br>
+  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/finalcleanup">
+    <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/finalcleanup?style=for-the-badge&label=LAST%20COMMIT%20(DEV)&color=%2334a5eb" align="right">
   </a>
   <br>
   <br>
@@ -45,13 +50,16 @@
 # 安裝及使用
 
 **Steam 教學頁 - 如何建立伺服器以及加入遊戲（英文）：**
-- https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
+
+- <https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280>
 
 **下載最新版：**
-- https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
+
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod>
 
 **加入 Discord 伺服器獲取更多技術上的幫助（確保你已經看完教學了！！！），報告 Bug 或聊天：**
-- https://discord.gg/kW3nG6GKpF
+
+- <https://discord.gg/kW3nG6GKpF>
 
 
 # 編譯
