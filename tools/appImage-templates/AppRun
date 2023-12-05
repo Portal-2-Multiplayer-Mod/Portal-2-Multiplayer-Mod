@@ -1,6 +1,0 @@
-#!/bin/bash
-
-SELF=$(readlink -f "$0")
-HERE=${SELF%/*}
-EXEC="${HERE}/usr/bin/p2mm/p2mm"
-exec "${EXEC}"
