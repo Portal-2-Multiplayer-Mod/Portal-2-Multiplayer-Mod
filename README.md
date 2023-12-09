@@ -23,28 +23,28 @@
 ***
 DISCLAIMER!!!
 
-Currently both `main` and `dev` are messed up!
-If you wish to contribute, please use the `finalcleanup` branch instead as that has more cleaned up and more stable code.
-Also please refer to information in that branches README as those are more updated and are also in other languages.
+Attualmente sia `main` che `dev` sono incasinati!
+Se desideri contribuire, utilizza invece il ramo `finalcleanup` poiché ha un codice più pulito e più stabile.
+Si prega inoltre di fare riferimento alle informazioni contenute nel README dei rami in quanto sono più aggiornati e sono anche in altre lingue.
 ***
 
-### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
-## Mod features
+### Questa mod è completamente lato server. Solo l'operatore del server deve eseguire Portal 2 con la mod installata. Le persone che si uniscono all'host devono eseguire Portal 2 senza alcuna modifica.
+## Funzionalità della modalità
 ```
-  - A maximum player cap of 33
-  - Nametags
-  - Custom Player colors
-  - Chat commands (!help)
-  - In-game Admin system
-  - Full cooperative campaign support
-  - Full singleplayer campaign support (needs minor polishing)
-  - Full Super 8 map support
-  - In-house map support for select workshop maps
-  - Encryption of client commands invoked through the active GameRules class
-  - Support for Linux, Windows 7 and above
-  - Togglable game options and config system exposed through VScript and a custom plugin
-  - Support for SAR (SourceAutoRecord) for speedrunning
-  - Native support for dedicated servers if you manage to get one working :)
+  - Un limite massimo di giocatori di 33
+  - Targhette
+  - Colori del lettore personalizzato
+  - Comandi di chat (!help)
+  - Comandi di amministrazione
+  - Pieno supporto alla campagna cooperativa
+  - Supporto completo per la campagna per giocatore singolo (richiede un piccolo miglioramento)
+  - Pieno supporto per la mappa Super 8 Teaser
+  - Supporto per alcune mappe selezionate di Steam Workshop
+  - Crittografia dei comandi client richiamati tramite la classe GameRules attiva
+  - Supporto per Linux, Windows 7 e versioni successive
+  - Opzioni di gioco attivabili e sistema di configurazione esposti tramite VScript e un plug-in personalizzato
+  - Supporto per SAR (SourceAutoRecord) per lo speedrunning
+  - Supporto nativo per server dedicati se riesci a farne funzionare uno :)
 ```
 
 ## Features to be added
