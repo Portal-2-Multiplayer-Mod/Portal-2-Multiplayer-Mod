@@ -48,9 +48,9 @@ Si prega inoltre di fare riferimento alle informazioni contenute nel README dei 
 ```
 
 ## Features to be added
-- Steam Deck/SteamOS 3.0 support
-- Discord API for easy invites
-- More support for workshop maps
+- Supporto per Steam Deck/SteamOS 3.0
+- API Discord per inviti facili
+- Maggiore supporto per le mappe delle officine
 - FastDL Support
 
 # Installation & use
