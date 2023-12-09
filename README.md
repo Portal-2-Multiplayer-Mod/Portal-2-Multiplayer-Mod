@@ -23,63 +23,63 @@
 ***
 DISCLAIMER!!!
 
-Currently both `main` and `dev` are messed up!
-If you wish to contribute, please use the `finalcleanup` branch instead as that has more cleaned up and more stable code.
-Also please refer to information in that branches README as those are more updated and are also in other languages.
+Attualmente sia `main` che `dev` sono incasinati!
+Se desideri contribuire, utilizza invece il ramo `finalcleanup` poiché ha un codice più pulito e più stabile.
+Si prega inoltre di fare riferimento alle informazioni contenute nel README dei rami in quanto sono più aggiornati e sono anche in altre lingue.
 ***
 
-### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
-## Mod features
+### Questa mod è completamente lato server. Solo l'operatore del server deve eseguire Portal 2 con la mod installata. Le persone che si uniscono all'host devono eseguire Portal 2 senza alcuna modifica.
+## Funzionalità della modalità
 ```
-  - A maximum player cap of 33
-  - Nametags
-  - Custom Player colors
-  - Chat commands (!help)
-  - In-game Admin system
-  - Full cooperative campaign support
-  - Full singleplayer campaign support (needs minor polishing)
-  - Full Super 8 map support
-  - In-house map support for select workshop maps
-  - Encryption of client commands invoked through the active GameRules class
-  - Support for Linux, Windows 7 and above
-  - Togglable game options and config system exposed through VScript and a custom plugin
-  - Support for SAR (SourceAutoRecord) for speedrunning
-  - Native support for dedicated servers if you manage to get one working :)
+  - Un limite massimo di giocatori di 33
+  - Targhette
+  - Colori del lettore personalizzato
+  - Comandi di chat (!help)
+  - Comandi di amministrazione
+  - Pieno supporto alla campagna cooperativa
+  - Supporto completo per la campagna per giocatore singolo (richiede un piccolo miglioramento)
+  - Pieno supporto per la mappa Super 8 Teaser
+  - Supporto per alcune mappe selezionate di Steam Workshop
+  - Crittografia dei comandi client richiamati tramite la classe GameRules attiva
+  - Supporto per Linux, Windows 7 e versioni successive
+  - Opzioni di gioco attivabili e sistema di configurazione esposti tramite VScript e un plug-in personalizzato
+  - Supporto per SAR (SourceAutoRecord) per lo speedrunning
+  - Supporto nativo per server dedicati se riesci a farne funzionare uno :)
 ```
 
-## Features to be added
-- Steam Deck/SteamOS 3.0 support
-- Discord API for easy invites
-- More support for workshop maps
-- FastDL Support
+## Funzionalità da aggiungere
+- Supporto per Steam Deck/SteamOS 3.0
+- API Discord per inviti facili
+- Maggiore supporto per le mappe delle officine
+- Supporto per FastDL
 
-# Installation & use
+# Installazione e utilizzo
 
-**Steam guide on how to host and join a game:**
+**Guida di Steam su come ospitare e partecipare a un gioco:**
 - https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
 
-**Latest version:**
+**Ultima versione:**
 - https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
 
-**Discord Server for technical help (MAKE SURE YOU READ THE FAQ!!!), bug report or to just chat:**
+**Discord Server per supporto tecnico (ASSICURATI DI LEGGERE LE DOMANDE FREQUENTI!!!), segnalazione di bug o semplicemente per chattare:**
 - https://discord.gg/kW3nG6GKpF
 
 
-# Build
+# Costruire
 
-*We use Python 3.10 for the launcher*
+*Usiamo Python 3.10 per il launcher*
 
-**Dependencies**
+**Dipendenzes**
 - pygame
 - pyperclip
 - requests
 - steamid-converter
 
-We also have them in a file for easy install `pip install -r requirements.txt`
+Li abbiamo anche in un file per una facile installazione `pip install -r requirements.txt`
 
-**Compilation**
+**Compilazione**
 
-We use `pyinstaller` to make the executable
+Usiamo `pyinstaller` per rendere l'eseguibile
 - Windows:
 
 ```
@@ -92,17 +92,17 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/assets/images/p2mm64.ico" --nocon
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/languages:languages"
 ```
 
-*Note:*  
-- If you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Updater.py` to your own information
+*Nota:*  
+- Se vuoi creare un fork del progetto ed eseguire le tue versioni, devi modificare le variabili nella parte superiore di `src/Scripts/Updater.py` con le tue informazioni
 
 
-# Contributions
+# Contributi
 
-We are always happy to take whatever additional help we can get for this project. Specifically, we are in need of proficient coders in Squirrel or C++. If you think you can spare a hand, it will go a long way!
+Siamo sempre felici di ricevere tutto l'aiuto aggiuntivo che possiamo ottenere per questo progetto. Nello specifico, abbiamo bisogno di programmatori esperti in Squirrel o C++. Se pensi di poter risparmiare una mano, farà molta strada!
 
-# Credits
+# Crediti
 
-**Developers:**
+**Sviluppatori/Sviluppatrici::**
 - kyleraykbs
 - Bumpy
 - Nanoman2525
@@ -111,7 +111,7 @@ We are always happy to take whatever additional help we can get for this project
 - cabiste
 - zwexit (Orsell) 
 
-**Contributors:**
+**Contributrici/Contributori:**
 - wanderer (free bird)
 - \n
 - Luukex
