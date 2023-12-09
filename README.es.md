@@ -9,7 +9,7 @@
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest">
-    <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=LATEST%20RELEASE%20DOWNLOADS" alt="Download Count Shield Badge" align="right">
+    <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=TOTAL%20DOWNLOAD%20COUNT" alt="Download Count Shield Badge" align="right">
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/main">
@@ -28,9 +28,10 @@
 ### Este mod es completamente del lado del servidor. Solo el operador del servidor necesita ejecutar Portal 2 con el mod instalado. Las personas que se unan al anfitrión deben ejecutar Portal 2 sin modificaciones.
 
 ## Idiomas
+
 [English](README.md) | ***Español*** | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
 
-# Características del mod
+## Características del mod
 ```
   - Límite máximo de jugadores de 33
   - Etiquetas de nombres
@@ -66,7 +67,8 @@
 
 *Utilizamos Python 3.10 para el lanzador*
 
-**Dependencias**
+## Dependencias
+
 - pygame
 - pyperclip
 - requests
@@ -74,7 +76,7 @@
 
 También los tenemos en un archivo para una instalación fácil `pip install -r requirements.txt`
 
-**Compilación**
+## Compilación
 
 Utilizamos `pyinstaller` para crear el ejecutable, `pip install pyinstaller`
 - Windows:
@@ -106,9 +108,9 @@ Siempre estamos felices de recibir cualquier ayuda adicional que podamos obtener
 - vista
 - Wolƒe Strider Shoσter
 - cabiste
+- Orsell
 
 **Contribuyentes:**
-- zwexit\ (Orsell) 
 - wanderer (free bird)
 - \n
 - Luukex

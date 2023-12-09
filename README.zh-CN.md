@@ -9,7 +9,7 @@
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest">
-    <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=LATEST%20RELEASE%20DOWNLOADS" alt="Download Count Shield Badge" align="right">
+    <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=TOTAL%20DOWNLOAD%20COUNT" alt="Download Count Shield Badge" align="right">
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/main">
@@ -105,10 +105,10 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 - Nanoman2525
 - vista
 - Wolƒe Strider Shoσter
-- cabiste 
+- cabiste
+- Orsell
 
 **贡献者：**
-- zwexit\ (Orsell)
 - wanderer (free bird)
 - \n
 - Luukex
