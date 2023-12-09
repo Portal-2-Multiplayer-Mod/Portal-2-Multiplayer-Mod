@@ -25,12 +25,14 @@
   <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
 </h1>
 
-### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
+### This mod is completely server-side. Only the host needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
 
 ## Languages
-***English*** | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+
+**_English_** | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
 
 ## Mod features
+
 ```
   - A maximum player cap of 33
   - Name Tags
@@ -53,45 +55,52 @@
 
 - <https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280>
 
-**Latest version:**
+**Download the latest version:**
 
-- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal2-Multiplayer-Mod/releases/latest>
 
 **Discord Server for technical help (MAKE SURE YOU READ THE FAQ!!!), bug report or to just chat:**
 
 - <https://discord.gg/kW3nG6GKpF>
 
-
 # Build
 
-*We use Python 3.10 for the launcher*
+_We use Python 3.10 for the launcher_
 
-**Dependencies**
+## Dependencies
+
 - pygame
 - pyperclip
 - requests
 - steamid-converter
 
-We also have them in a file for easy install `pip install -r requirements.txt`
+We also have them in a file for easy install; `pip install -r requirements.txt`
 
-**Compilation**
+## Compilation
 
-We use `pyinstaller` to make the executable, `pip install pyinstaller`
-- Windows:
+We use `pyinstaller` and `AppImage` to make the executables!
 
-```
+### Windows:
+
+For windows we only use [pyinstaller](https://pypi.org/project/pyinstaller/) to build the executable (if you know of better options please tell us)
+
+```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
 ```
 
-- Linux:
+### Linux:
 
-```
+For Linux We switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
+
+But if you don't want to use AppImage / docker, you can still use pyinstaller like below:
+
+```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
 ```
 
-*Note:*  
-- If you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Updater.py` to your own information
+### Notes:
 
+- If you want to fork the project and do your own releases you need to change the variables at the top of `src/Scripts/Updater.py` to your own information and update the values in `AppImageBuilder.yml`
 
 # Contributions
 
@@ -100,6 +109,7 @@ We are always happy to take whatever additional help we can get for this project
 # Credits
 
 **Developers:**
+
 - kyleraykbs
 - Bumpy
 - Nanoman2525
@@ -108,7 +118,8 @@ We are always happy to take whatever additional help we can get for this project
 - cabiste
 
 **Contributors:**
-- zwexit\ (Orsell) 
+
+- zwexit\ (Orsell)
 - wanderer (free bird)
 - \n
 - Luukex
