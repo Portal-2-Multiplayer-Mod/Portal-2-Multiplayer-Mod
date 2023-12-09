@@ -29,7 +29,7 @@
 
 ## Lingue
 
-[Englishl](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) **_Italiano_**
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) **_Italiano_**
 
 ## Caratteristiche P2MM
 
