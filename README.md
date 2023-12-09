@@ -25,64 +25,64 @@
   <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
 </h1>
 
-### This mod is completely server-side. Only the host needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
+### Ce mod est uniquement pour le serveur. Seul l'hôte a besoin du mod installé et de le lancer. Les gens qui jouent n'ont pas besoin du mod.
 
-## Languages
+## Langages
 
-**_English_** | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+**_Français_** | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
 
-## Mod features
+## Caractéristiques du mod
 
 ```
-  - A maximum player cap of 33
-  - Name Tags
-  - Custom Player colors
-  - Chat commands (!help)
-  - In-game Admin system
-  - Full cooperative campaign support
-  - Full singleplayer campaign support (needs minor polishing)
-  - Full Super 8 map support
-  - In-house map support for select workshop maps
-  - Encryption of client commands invoked through the active GameRules class
-  - Support for Linux, Windows 7 and above
-  - Togglable game options and config system exposed through VScript and a custom plugin
-  - Support for SAR (SourceAutoRecord) for speedrunning
+  - Un nombre de joueur maximal de 33
+  - Nom des joueurs
+  - Possibilité de changer la couleur du joueur
+  - Commandes dans le chat (!help)
+  - Système d'admnistration en jeu
+  - Campagne cooperative totalement supportée
+  - Campagne solo supportée (needs minor polishing)
+  - Map bonus "Super 8" supportée
+  - Changemment de map (workshop compris) possible
+  - Chiffrement des commandes client même si la classe GameRules est active
+  - Linux, Windows 7 et au-dessus sont supportés 
+  - Options du jeu et configuration du système dans VScript et un plugin custom
+  - SAR (SourceAudioRecord) pour le speedrun supporté
 ```
 
-# Installation & use
+# Installation et utilisation 
 
-**Steam guide on how to host and join a game:**
+**Guide steam sur comment rejoindre et héberger une partie:**
 
 - <https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280>
 
-**Download the latest version:**
+**Télécharger la dernière version:**
 
 - <https://github.com/Portal-2-Multiplayer-Mod/Portal2-Multiplayer-Mod/releases/latest>
 
-**Discord Server for technical help (MAKE SURE YOU READ THE FAQ!!!), bug report or to just chat:**
+**Serveur discord si besoin d'aide (SOYEZ SÛRS D'AVOIR LU LA FAQ!!!):**
 
 - <https://discord.gg/kW3nG6GKpF>
 
 # Build
 
-_We use Python 3.10 for the launcher_
+_On utilise Python 3.10 pour le lanceur_
 
-## Dependencies
+## Dépendances 
 
 - pygame
 - pyperclip
 - requests
 - steamid-converter
 
-We also have them in a file for easy install; `pip install -r requirements.txt`
+On a aussi un fichier pour une simple installaion; `pip install -r requirements.txt`
 
 ## Compilation
 
-We use `pyinstaller` and `AppImage` to make the executables!
+On utilise `pyinstaller` et `AppImage` pour créer les executables!
 
 ### Windows:
 
-For windows we only use [pyinstaller](https://pypi.org/project/pyinstaller/) to build the executable (if you know of better options please tell us)
+Pour Windows on utilise uniquement [pyinstaller](https://pypi.org/project/pyinstaller/) pour créer l'exécuatble (Si vous connaissez de meilleures options, dites-le nous)
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
@@ -90,9 +90,9 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-For Linux We switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
+Pour Linux, on a changé pour utiliser [AppImage](https://appimage.org/) et nous avons fait un outil pour aider, possèdez juste docker installé et exécutez-le `tools/build-docker.sh`.
 
-But if you don't want to use AppImage / docker, you can still use pyinstaller like below:
+Mais si vous ne voulez pas utiliser AppImage / docker, vous pouvez toujours utiliser pyinstaller :
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
@@ -100,15 +100,15 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 ### Notes:
 
-- If you want to fork the project and do your own releases you need to change the variables at the top of `src/Scripts/Updater.py` to your own information and update the values in `AppImageBuilder.yml`
+- Si vous voulez fork le projet et faire vos propres mises à jour, vous devez changer les variables au dessus de `src/Scripts/Updater.py` et y mettre vos informations et mettre à jour les valeurs dans `AppImageBuilder.yml`
 
 # Contributions
 
-We are always happy to take whatever additional help we can get for this project. Specifically, we are in need of proficient coders in Squirrel or C++. If you think you can spare a hand, it will go a long way!
+On est toujours ravis d'avoir quelconque aide sur le projet. Spécifiquement, on a besoin de codeurs compétent en Squirrel et C++. Si vous pensez pouvoir nous aider, n'hésitez surtout pas !
 
-# Credits
+# Crédits
 
-**Developers:**
+**Développeurs:**
 
 - kyleraykbs
 - Bumpy
@@ -118,11 +118,10 @@ We are always happy to take whatever additional help we can get for this project
 - cabiste
 - Orsell
 
-**Contributors:**
+**Contributeurs:**
 - wanderer (free bird)
 - \n
 - Luukex
 - MeblIkea
-- Luukex
 - PieCreeper
 - Areng
