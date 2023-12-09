@@ -51,35 +51,35 @@ Si prega inoltre di fare riferimento alle informazioni contenute nel README dei 
 - Supporto per Steam Deck/SteamOS 3.0
 - API Discord per inviti facili
 - Maggiore supporto per le mappe delle officine
-- FastDL Support
+- Supporto per FastDL
 
-# Installation & use
+# Installazione e utilizzo
 
-**Steam guide on how to host and join a game:**
+**Guida di Steam su come ospitare e partecipare a un gioco:**
 - https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280
 
-**Latest version:**
+**Ultima versione:**
 - https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest
 
-**Discord Server for technical help (MAKE SURE YOU READ THE FAQ!!!), bug report or to just chat:**
+**Discord Server per supporto tecnico (ASSICURATI DI LEGGERE LE DOMANDE FREQUENTI!!!), segnalazione di bug o semplicemente per chattare:**
 - https://discord.gg/kW3nG6GKpF
 
 
-# Build
+# Costruire
 
-*We use Python 3.10 for the launcher*
+*Usiamo Python 3.10 per il launcher*
 
-**Dependencies**
+**Dipendenzes**
 - pygame
 - pyperclip
 - requests
 - steamid-converter
 
-We also have them in a file for easy install `pip install -r requirements.txt`
+Li abbiamo anche in un file per una facile installazione `pip install -r requirements.txt`
 
-**Compilation**
+**Compilazione**
 
-We use `pyinstaller` to make the executable
+Usiamo `pyinstaller` per rendere l'eseguibile
 - Windows:
 
 ```
@@ -92,17 +92,17 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/assets/images/p2mm64.ico" --nocon
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/languages:languages"
 ```
 
-*Note:*  
-- If you want to fork the project and do your own releases you need to changes the variables at the top of `src/Scripts/Updater.py` to your own information
+*Nota:*  
+- Se vuoi creare un fork del progetto ed eseguire le tue versioni, devi modificare le variabili nella parte superiore di `src/Scripts/Updater.py` con le tue informazioni
 
 
-# Contributions
+# Contributi
 
-We are always happy to take whatever additional help we can get for this project. Specifically, we are in need of proficient coders in Squirrel or C++. If you think you can spare a hand, it will go a long way!
+Siamo sempre felici di ricevere tutto l'aiuto aggiuntivo che possiamo ottenere per questo progetto. Nello specifico, abbiamo bisogno di programmatori esperti in Squirrel o C++. Se pensi di poter risparmiare una mano, farà molta strada!
 
-# Credits
+# Crediti
 
-**Developers:**
+**Sviluppatori/Sviluppatrici::**
 - kyleraykbs
 - Bumpy
 - Nanoman2525
@@ -111,7 +111,7 @@ We are always happy to take whatever additional help we can get for this project
 - cabiste
 - zwexit (Orsell) 
 
-**Contributors:**
+**Contributrici/Contributori:**
 - wanderer (free bird)
 - \n
 - Luukex
