@@ -47,7 +47,7 @@ Si prega inoltre di fare riferimento alle informazioni contenute nel README dei 
   - Supporto nativo per server dedicati se riesci a farne funzionare uno :)
 ```
 
-## Features to be added
+## Funzionalità da aggiungere
 - Supporto per Steam Deck/SteamOS 3.0
 - API Discord per inviti facili
 - Maggiore supporto per le mappe delle officine
