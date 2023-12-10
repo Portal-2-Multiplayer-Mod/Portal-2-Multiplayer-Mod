@@ -1,6 +1,6 @@
 {
   "font": "GUI/fonts/pixel.ttf",
-  "welcome": "Benvenuti nel lanciatore di P2:MM!\n\nPremere\n\"Avvio del gioco\" per avviare la mod!\n\nBe sure to check out the Settings Menu to customize\nthe launcher and your play sessions!",
+  "welcome": "Benvenuti nel lanciatore di P2:MM!\n\nPremere\n\"Avvio del gioco\" per avviare la mod!\n\n\n\nAssicuratevi di controllare il menu delle impostazioni per personalizzare\nnil launcher e le vostre sessioni di gioco!",
   "version": "Version: ",
   "play_button": "Avvio del gioco",
   "exit_button": "Uscita",
@@ -39,7 +39,7 @@
   "update_button": "Aggiornamento",
   "update_fetching": "Recuperare l'aggiornamento...",
   "update_available": "Aggiornamento disponibile!",
-  "update_client_text": "Desidera scaricare la \nnuova versione del client?".,
+  "update_client_text": "Desidera scaricare la \nnuova versione del client?",
   "update_modFiles_text": "Volete aggiornare i ModFiles?",
   "updating_client_toast": "Download del nuovo client...",
   "update_complete_toast": "Aggiornamento completato!",
