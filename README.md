@@ -1,18 +1,22 @@
 <h1>
-  <img src="https://cdn.discordapp.com/attachments/1073818580539424882/1073869966543179806/P2MMBannerREADME.png" alt="p2mmbanner_logo" width="500" height="300" align="left">
+  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
   <a href="https://discord.gg/nXRygGNxyK">
     <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
   </a>
   <br>
-  <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest">
-    <img src="https://img.shields.io/github/release-date/kyleraykbs/Portal2-32PlayerMod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
+  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest">
+    <img src="https://img.shields.io/github/release-date/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
   </a>
   <br>
-  <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/commits/main">
-    <img src="https://img.shields.io/github/last-commit/kyleraykbs/Portal2-32PlayerMod?label=Last%20Commit&style=for-the-badge" alt="Commit Shield Badge" align="right">
+    <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=TOTAL%20DOWNLOAD%20COUNT" alt="Download Count Shield Badge" align="right">
   </a>
   <br>
-    <a href="https://github.com/kyleraykbs/Portal2-32PlayerMod/releases/latest"><img src="https://img.shields.io/github/downloads/kyleraykbs/Portal2-32PlayerMod/total?style=for-the-badge" alt="Download Count Shield Badge" align="right">
+  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/main">
+    <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?label=LAST%20COMMIT%20(MAIN)&style=for-the-badge" alt="Commit Shield Badge" align="right">
+  </a>
+  <br>
+  <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/finalcleanup">
+    <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/finalcleanup?style=for-the-badge&label=LAST%20COMMIT%20(FINALCLEANUP)&color=%2334a5eb" align="right">
   </a>
   <br>
   <br>
@@ -21,15 +25,17 @@
 </h1>
 
 ***
-DISCLAIMER!!!
+WARNING!!!
 
 Currently both `main` and `dev` are messed up!
 If you wish to contribute, please use the `finalcleanup` branch instead as that has more cleaned up and more stable code.
 Also please refer to information in that branches README as those are more updated and are also in other languages.
 ***
 
-### This mod is completely server-side. Only the server operator needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
+### This mod is completely server-side. Only the host needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
+
 ## Mod features
+
 ```
   - A maximum player cap of 33
   - Nametags
@@ -48,6 +54,7 @@ Also please refer to information in that branches README as those are more updat
 ```
 
 ## Features to be added
+
 - Steam Deck/SteamOS 3.0 support
 - Discord API for easy invites
 - More support for workshop maps
@@ -103,15 +110,17 @@ We are always happy to take whatever additional help we can get for this project
 # Credits
 
 **Developers:**
+
 - kyleraykbs
 - Bumpy
 - Nanoman2525
 - vista
 - Wolƒe Strider Shoσter
 - cabiste
-- zwexit (Orsell) 
+- Orsell9
 
 **Contributors:**
+
 - wanderer (free bird)
 - \n
 - Luukex
