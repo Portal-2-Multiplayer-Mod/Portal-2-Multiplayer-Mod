@@ -124,6 +124,5 @@ Zawsze jesteśmy zadowoleni z każdej dodatkowej pomocy, którą możemy otrzyma
 - \n
 - Luukex
 - MeblIkea
-- Luukex
 - PieCreeper
 - Areng

@@ -187,7 +187,7 @@ function MusicInit() {
     DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"move_a_screen_buttons\").SetOrigin(Vector(3713, -1344.01, -496))", 0.6, null, null)
     DoEntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"move_a_screen_buttons\").SetAngles(0, 0, 0)", 0.6, null, null)
 
-    // Find he prop_dymanic arms move them into position
+    // Find he prop_dynamic arms move them into position
     for (local prop = null; prop = Entities.FindByModel(prop, armProp);) {
         if (prop.entindex() == 119) {
             prop.__KeyValueFromString("targetname", "prop_arm_l")
@@ -207,7 +207,7 @@ function MusicInit() {
     }
 
     // START THE MUSIC
-    DoEntFire("p2mm_lobbymusic_music", "playsound", "", 0.0, null, null)
+    DoEntFire("p2mm_lobbymusic_music", "playsound", "", 0, null, null)
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
@@ -242,7 +242,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFire("case_open_course", "invalue", "7", 0, null)
         }
 
-        // INITALIZE AND START THE CUSTOM MUSIC
+        // INITIALIZE AND START THE CUSTOM MUSIC
         if (Config_musicEnable) {
             MusicInit()
         } else { // Start the boring one track music because the user didn't enable custom lobby music :(

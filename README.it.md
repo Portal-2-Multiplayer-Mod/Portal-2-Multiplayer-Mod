@@ -122,6 +122,5 @@ Siamo sempre felici di ricevere tutto l'aiuto aggiuntivo che possiamo ottenere p
 - \n
 - Luukex
 - MeblIkea
-- Luukex
 - PieCreeper
 - Areng
