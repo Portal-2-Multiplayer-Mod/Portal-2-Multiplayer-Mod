@@ -38,6 +38,9 @@ def GetSysLang() -> str:
 
         if chineseType in ["hk", "mo", "hant"]:
             return "繁體中文 (Traditional Chinese)"
+    
+    if sysDefaultLocale.split("_")[0].lower() == "it":
+        return "Italiano"
 
     return "English"
 
