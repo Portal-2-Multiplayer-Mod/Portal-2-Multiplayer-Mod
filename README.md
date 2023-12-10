@@ -29,7 +29,7 @@
 
 ## Languages
 
-**_English_** | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+**_English_** | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md)
 
 ## Mod features
 
@@ -119,6 +119,7 @@ We are always happy to take whatever additional help we can get for this project
 - Orsell
 
 **Contributors:**
+
 - wanderer (free bird)
 - \n
 - Luukex

@@ -28,9 +28,11 @@
 ### Ten mod działa w pełni po stronie serwera. Tylko operator serwera musi uruchomić Portal 2 z zainstalowanym modem. Osoby dołączające do hosta powinny uruchomić standardową wersję Portal 2.
 
 ## Języki
-[English](README.md) | [Español](README.es.md) | ***Polish*** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+
+[English](README.md) | [Español](README.es.md) | **_Polish_** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md)
 
 # Funkcje moda
+
 ```
   - Maksymalna liczba graczy wynosząca 33
   - Etykiety z nazwami
@@ -55,7 +57,7 @@
 
 **Najnowsza wersja:**
 
-- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest>
 
 **Serwer Discord dla pomocy technicznej (UPRAWNIJ SIĘ DO CZYTANIA FAQ!!!), zgłaszania błędów lub po prostu rozmów:**
 
@@ -76,20 +78,28 @@ Mamy je również w pliku dla łatwej instalacji `pip install -r requirements.tx
 
 **Kompilacja**
 
-Używamy `pyinstaller` do tworzenia pliku wykonywalnego, `pip install pyinstaller`
-- Windows:
+We use `pyinstaller` and `AppImage` to make the executables!
 
-```
+### Windows:
+
+For windows we only use [pyinstaller](https://pypi.org/project/pyinstaller/) to build the executable (if you know of better options please tell us)
+
+```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
 ```
 
-- Linux:
+### Linux:
 
-```
+For Linux We switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
+
+But if you don't want to use AppImage / docker, you can still use pyinstaller like below:
+
+```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
 ```
 
-*Uwaga:*  
+### Uwaga:
+
 - Jeśli chcesz skopiować projekt i wydawać własne wersje, musisz zmienić zmienne na górze pliku `src/Scripts/Updater.py` na własne informacje
 
 
@@ -100,6 +110,7 @@ Zawsze jesteśmy zadowoleni z każdej dodatkowej pomocy, którą możemy otrzyma
 # Autorzy
 
 **Programiści:**
+
 - kyleraykbs
 - Bumpy
 - Nanoman2525
@@ -109,6 +120,7 @@ Zawsze jesteśmy zadowoleni z każdej dodatkowej pomocy, którą możemy otrzyma
 - Orsell
 
 **Współpracownicy:**
+
 - wanderer (free bird)
 - \n
 - Luukex

@@ -28,9 +28,11 @@
 ### 該模組僅服務端使用。只有伺服器管理員需要安裝該模組至 Portal 2 來執行。其他玩家僅需使用原版即可進入該伺服器。
 
 ## 語言
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | ***繁體中文***
+
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | **_繁體中文_** | [Italiano](README.it.md)
 
 ## 模組功能
+
 ```
   - 最大玩家上限增至 33 人
   - 名稱標籤
@@ -55,7 +57,7 @@
 
 **下載最新版：**
 
-- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest>
 
 **加入 Discord 伺服器獲取更多技術上的幫助（確保你已經看完教學了！！！），報告 Bug 或聊天：**
 
@@ -67,6 +69,29 @@
 *啟動器使用 Python 3.10*
 
 **使用依賴**
+
+- pygame
+- pyperclip
+- requests
+- steamid-converter
+
+我們已將其放入文件中以便安裝：`pip install -r requirements.txt`
+
+**編譯**
+
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest>
+
+**加入 Discord 伺服器獲取更多技術上的幫助（確保你已經看完教學了！！！），報告 Bug 或聊天：**
+
+- <https://discord.gg/kW3nG6GKpF>
+
+
+# 編譯
+
+*啟動器使用 Python 3.10*
+
+**使用依賴**
+
 - pygame
 - pyperclip
 - requests
@@ -81,15 +106,9 @@
 
 ```
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
-```
 
-- Linux:
+### 注意:
 
-```
-pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
-```
-
-*注意：*  
 - 若你想要 Fork 並作為你的項目來發布，你需要更改 `src/Scripts/Updater.py` 頂部中的變數到你的訊息。
 
 
@@ -100,6 +119,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 # 貢獻者
 
 **開發者：**
+
 - kyleraykbs
 - Bumpy
 - Nanoman2525
@@ -109,6 +129,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 - Orsell
 
 **貢獻者：**
+
 - wanderer (free bird)
 - \n
 - Luukex

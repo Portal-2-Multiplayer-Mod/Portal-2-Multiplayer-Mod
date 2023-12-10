@@ -29,9 +29,10 @@
 
 ## Idiomas
 
-[English](README.md) | ***Español*** | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md)
+[English](README.md) | **_Español_** | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md)
 
 ## Características del mod
+
 ```
   - Límite máximo de jugadores de 33
   - Etiquetas de nombres
@@ -56,7 +57,7 @@
 
 **Última versión:**
 
-- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest>
 
 **Servidor de Discord para ayuda técnica (¡ASEGÚRATE DE LEER LAS PREGUNTAS FRECUENTES!), informe de errores o simplemente charlar:**
 
@@ -78,20 +79,28 @@ También los tenemos en un archivo para una instalación fácil `pip install -r 
 
 ## Compilación
 
-Utilizamos `pyinstaller` para crear el ejecutable, `pip install pyinstaller`
-- Windows:
+We use `pyinstaller` and `AppImage` to make the executables!
 
-```
+### Windows:
+
+For windows we only use [pyinstaller](https://pypi.org/project/pyinstaller/) to build the executable (if you know of better options please tell us)
+
+```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
 ```
 
-- Linux:
+### Linux:
 
-```
+For Linux We switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
+
+But if you don't want to use AppImage / docker, you can still use pyinstaller like below:
+
+```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
 ```
 
-*Nota:*  
+### Nota:
+
 - Si deseas bifurcar el proyecto y realizar tus propias versiones, debes cambiar las variables en la parte superior de `src/Scripts/Updater.py` con tu propia información.
 
 
@@ -102,6 +111,7 @@ Siempre estamos felices de recibir cualquier ayuda adicional que podamos obtener
 # Créditos
 
 **Desarrolladores:**
+
 - kyleraykbs
 - Bumpy
 - Nanoman2525
@@ -111,6 +121,7 @@ Siempre estamos felices de recibir cualquier ayuda adicional que podamos obtener
 - Orsell
 
 **Contribuyentes:**
+
 - wanderer (free bird)
 - \n
 - Luukex

@@ -28,9 +28,11 @@
 ### 该模组仅服务端使用。只有服务器管理员需要安装该模组至 Portal 2 来运行。其他玩家仅需使用原版即可进入该服务器。
 
 ## 语言
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | ***简体中文*** | [繁體中文](README.zh-TW.md)
+
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | **_简体中文_** | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md)
 
 ## 模组功能
+
 ```
   - 最大玩家上限增至 33 人
   - 名称标签
@@ -55,7 +57,7 @@
 
 **下载最新版：**
 
-- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest>
 
 **加入 Discord 服务器获取更多技术上的帮助（确保你已经看完教程了！！！），报告 Bug 或聊天：**
 
@@ -67,6 +69,7 @@
 *启动器使用 Python 3.10*
 
 **使用依赖**
+
 - pygame
 - pyperclip
 - requests
@@ -76,20 +79,28 @@
 
 **编译**
 
-我们使用 `pyinstaller` 来编译为可执行文件，`pip install pyinstaller`
-- Windows:
+We use `pyinstaller` and `AppImage` to make the executables!
 
-```
+### Windows:
+
+For windows we only use [pyinstaller](https://pypi.org/project/pyinstaller/) to build the executable (if you know of better options please tell us)
+
+```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
 ```
 
-- Linux:
+### Linux:
 
-```
+For Linux We switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
+
+But if you don't want to use AppImage / docker, you can still use pyinstaller like below:
+
+```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
 ```
 
-*注意：*  
+### 注意:
+
 - 若你想要 Fork 并作为你的项目来发布，你需要更改 `src/Scripts/Updater.py` 顶部中的变量到你的信息。
 
 
@@ -100,6 +111,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 # 贡献者
 
 **开发者：**
+
 - kyleraykbs
 - Bumpy
 - Nanoman2525
@@ -109,6 +121,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 - Orsell
 
 **贡献者：**
+
 - wanderer (free bird)
 - \n
 - Luukex
