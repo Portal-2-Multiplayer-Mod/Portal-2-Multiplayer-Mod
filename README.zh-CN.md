@@ -78,11 +78,11 @@
 
 **编译**
 
-We use `pyinstaller` and `AppImage` to make the executables!
+我们使用 `pyinstaller` 和 `AppImage` 来制作可执行文件！
 
 ### Windows:
 
-For windows we only use [pyinstaller](https://pypi.org/project/pyinstaller/) to build the executable (if you know of better options please tell us)
+对于 Windows，我们仅使用 [pyinstaller](https://pypi.org/project/pyinstaller/) 来构建可执行文件（如果你知道更好的选择，请告诉我们）
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
@@ -90,9 +90,9 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-For Linux We switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
+对于 Linux 我们改用 [AppImage](https://appimage.org/)，然后我们开发了一个工具来帮助解决这个问题，只需安装 docker 并运行 “tools/build-docker.sh” 即可。
 
-But if you don't want to use AppImage / docker, you can still use pyinstaller like below:
+但是，如果你不想使用 AppImage/docker，你仍然可以像下面这样使用 pyinstaller：
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"

@@ -89,9 +89,9 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-For Linux We switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
+For Linux we switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
 
-But if you don't want to use AppImage / docker, you can still use pyinstaller like below:
+But if you don't want to use AppImage/docker, you can still use pyinstaller like below:
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"

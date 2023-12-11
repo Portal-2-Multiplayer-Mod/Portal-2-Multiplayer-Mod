@@ -77,11 +77,11 @@ Mamy je również w pliku dla łatwej instalacji `pip install -r requirements.tx
 
 **Kompilacja**
 
-We use `pyinstaller` and `AppImage` to make the executables!
+Używamy `pyinstaller` i `AppImage` do tworzenia plików wykonywalnych!
 
 ### Windows:
 
-For windows we only use [pyinstaller](https://pypi.org/project/pyinstaller/) to build the executable (if you know of better options please tell us)
+W systemie Windows używamy tylko [pyinstaller] (https://pypi.org/project/pyinstaller/) do zbudowania pliku wykonywalnego (jeśli znasz lepsze opcje, powiedz nam)
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
@@ -89,9 +89,9 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-For Linux We switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
+Dla Linuksa przeszliśmy na używanie [AppImage] (https://appimage.org/) i stworzyliśmy narzędzie, które pomoże w tym, wystarczy zainstalować docker i uruchomić `tools/build-docker.sh`.
 
-But if you don't want to use AppImage / docker, you can still use pyinstaller like below:
+Ale jeśli nie chcesz używać AppImage/docker, nadal możesz używać pyinstaller, jak poniżej:
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
