@@ -261,7 +261,6 @@ class Gui:
             self.CreateToast(
                 GVars.translations["workshop_map_not_found"], 6, (255, 255, 0))
 
-        # self.ChangeMenu(self.BlankButton, append=True)
         self.GetUserInput(AfterInput, GVars.translations["workshop_link"])
 
     #!############################
@@ -794,8 +793,8 @@ class Gui:
                             self.LookingForInput = False
                         elif event.key == pygame.locals.K_TAB:
                             self.CurInput += "    "
-                        # Pasting on Steam Deck, Right Arrow on on-screen keyboard
-                        elif event.key == 4:
+                        # Pasting for systems, first part is for Steam Deck, second part is for all other OSes
+                        elif (event.key == 4) or (CTRL_HELD and event.key == pygame.locals.K_v):
                             try:
                                 pastedString = BF.ClipboardOperation(copy=False)
                                 if pastedString == False:
@@ -807,14 +806,6 @@ class Gui:
                                     Log(f"Pasted: {pastedString}")
                             except Exception as e:
                                 Log(str(e))
-                                pass
-                        elif CTRL_HELD and event.key == pygame.locals.K_v:
-                            try:
-                                pastedString = BF.ClipboardOperation(copy=False)
-                                self.CurInput += pastedString
-                                Log(f"Pasted: {pastedString}")
-                            except Exception as e:
-                                Log(str(e))  # Log a error in case it fails
                                 pass
                         name = pygame.key.name(event.key)
                         if len(name) == 1 and not CTRL_HELD:
