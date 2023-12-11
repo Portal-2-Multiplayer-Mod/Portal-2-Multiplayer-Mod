@@ -91,7 +91,9 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 For Linux we switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have docker installed and run `tools/build-docker.sh`.
 
-But if you don't want to use AppImage/docker, you can still use pyinstaller like below:
+***WARNING! For some reason on some Linux distributions, FUSE is not installed by default which is needed for both compiling and running AppImages. Information for installing FUSE on your distribution can be found here: [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+
+If you don't want to use AppImage/docker, you can still use pyinstaller:
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
@@ -103,7 +105,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 # Contributions
 
-We are always happy to take whatever additional help we can get for this project. Specifically, we are in need of proficient coders in Squirrel or C++. If you think you can spare a hand, it will go a long way!
+As of 2.2.0's release, all that will be accepted for contributions will be bug fixes, issues impacting use with the launcher and/or when running the mod in Portal 2, and translations for the launcher. Any major changes will be rejected as we are trying to make effort toward the 3.0 rewrite instead of continuing work on the 2.0 series. You are welcome though to help us out over on the [3.0 rewrite repository](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement) though! There we are in need of Python and C++ programmers.
 
 # Credits
 

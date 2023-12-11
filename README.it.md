@@ -91,7 +91,9 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 Per Linux Siamo passati all'utilizzo di [AppImage](https://appimage.org/) e abbiamo creato uno strumento per aiutare, basta avere installato Docker ed eseguire `tools/build-docker.sh`.
 
-Ma se non vuoi utilizzare AppImage/docker, puoi comunque utilizzare pyinstaller come di seguito:
+***AVVISO! Per qualche motivo su alcune distribuzioni Linux, FUSE non è installato di default, il che è necessario sia per la compilazione che per l'esecuzione di AppImages. Le informazioni per l'installazione di FUSE sulla tua distribuzione sono disponibili qui: [Wiki di AppImageKit](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+
+Se non vuoi usare AppImage/Docker, puoi comunque usare pyinstaller:
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
@@ -100,9 +102,10 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 ### Appunti:
 
 - Se vuoi creare un fork del progetto ed eseguire le tue versioni, devi modificare le variabili nella parte superiore di `src/Scripts/Updater.py` con le tue informazioni e aggiornare i valori in `AppImageBuilder.yml`
+
 # Contributions
 
-Siamo sempre felici di ricevere tutto l'aiuto aggiuntivo che possiamo ottenere per questo progetto. Nello specifico, abbiamo bisogno di programmatori esperti in Squirrel o C++. Se pensi di poter risparmiare una mano, farà molta strada!
+A partire dalla versione 2.2.0, saranno accettate solo correzioni di bug, problemi che influiscono sull'uso del launcher e/o durante l'esecuzione della mod in Portal 2 e traduzioni per il launcher. Qualsiasi modifica importante verrà rifiutata poiché stiamo cercando di riscrivere la versione 3.0 invece di continuare a lavorare sulla serie 2.0. Tuttavia, siete i benvenuti se ci aiutate con il [3.0 rewrite repository](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement)! Lì abbiamo bisogno di programmatori in Python e C++.
 
 # Crediti
 

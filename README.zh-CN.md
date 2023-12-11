@@ -90,9 +90,11 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-对于 Linux 我们改用 [AppImage](https://appimage.org/)，然后我们开发了一个工具来帮助解决这个问题，只需安装 docker 并运行 “tools/build-docker.sh” 即可。
+对于 Linux 我们改用 [AppImage](https://appimage.org/)，然后我们开发了一个工具来帮助解决这个问题，只需安装 docker 并运行 `tools/build-docker.sh` 即可。
 
-但是，如果你不想使用 AppImage/docker，你仍然可以像下面这样使用 pyinstaller：
+***警告！出于某种原因，在某些 Linux 发行版上，默认情况下未安装 FUSE，这是编译和运行 AppImages 所必需的。可以在此处找到在发行版上安装 FUSE 的信息：[AppImageKit 的维基](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+
+如果你不想使用 AppImage/Docker，你仍然可以使用 pyinstaller：
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
@@ -105,7 +107,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 # 做出贡献
 
-我们欢迎您来为本项目来提供额外帮助。具体来说我们需要精通 Squirrel 或 C++ 的程序员。如果你能帮我们一手，那会有很大的帮助！
+从 2.2.0 版本开始，所有可接受的贡献将是错误修复、影响启动器使用和/或在 Portal 2 中运行模组时出现的问题，以及启动器的翻译。任何重大更改都将被拒绝，因为我们正在努力重写 3.0，而不是继续开发 2.0 系列。但是欢迎你在 [3.0 重写存储库](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement) 上帮助我们！在那里，我们需要 Python 和 C++ 程序员。
 
 # 贡献者
 
