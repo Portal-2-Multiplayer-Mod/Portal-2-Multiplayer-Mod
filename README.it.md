@@ -28,7 +28,7 @@
 
 ## Lingue
 
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | **_Italiano_** | [Français] (README.fr.md)
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | **_Italiano_** | [Français](README.fr.md)
 
 ## Caratteristiche P2MM
 
