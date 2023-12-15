@@ -92,7 +92,7 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 Pour Linux, on a changé pour utiliser [AppImage](https://appimage.org/) et nous avons fait un outil pour aider, ayez juste docker installé et exécutez-le `tools/build-docker.sh`.
 
-***AVERTISSEMENT ! Pour une raison ou une autre, sur certaines version de Linux, FUSE n'est pas installé par défaut, ce qui est nécessaire à la fois pour compiler et exécuter AppImages. Vous trouverez des informations sur l'installation de FUSE sur votre version ici : [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+***AVERTISSEMENT ! Pour une raison ou une autre, sur certaines distributions de Linux, FUSE n'est pas installé par défaut, ce qui est nécessaire à la fois pour compiler et exécuter AppImages. Vous trouverez des informations sur l'installation de FUSE sur votre distribution ici : [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
 
 Si vous ne souhaitez pas utiliser AppImage/Docker, vous pouvez toujours utiliser pyinstaller :
 
