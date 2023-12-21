@@ -40,7 +40,7 @@
   - Commandes dans le chat (!help)
   - Système d'admnistration en jeu
   - Campagne cooperative totalement supportée
-  - Campagne solo supportée (needs minor polishing)
+  - Campagne solo supportée (besoin d'un peu de polissage)
   - Map bonus "Super 8" supportée
   - Changemment de map (workshop compris) possible
   - Chiffrement des commandes client même si la classe GameRules est active
@@ -82,7 +82,7 @@ On utilise `pyinstaller` et `AppImage` pour créer les executables!
 
 ### Windows:
 
-Pour Windows on utilise uniquement [pyinstaller](https://pypi.org/project/pyinstaller/) pour créer l'exécuatble (Si vous connaissez de meilleures options, dites-le nous)
+Pour Windows on utilise uniquement [pyinstaller](https://pypi.org/project/pyinstaller/) pour créer l'exécutable (Si vous connaissez de meilleures options, dites-le nous)
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
