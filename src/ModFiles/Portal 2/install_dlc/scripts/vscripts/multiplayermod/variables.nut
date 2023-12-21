@@ -146,58 +146,7 @@ ExpendableEntities <- [
     "prop_weighted_cube",
     "func_detail"
 ]
-if (GetMapName() == "mp_coop_credits") {
-    MPMCoopCreditNames <- [ // Add names to coop credits map (Max per entry is 128)
-        "###--------------------------",
-        "###--------------------------",
-        "###Portal 2: Multiplayer Mod: Credits",
-        "###--------------------------",
-        "###--------------------------",
-        "###P2:MM Head Creators",
-        "###--------------------------",
-        "VScript, Launcher, Community Manager, Plugin Support | Nanoman2525",
-        "VScript, Launcher, Alpha Stage Cooperative Support | kyleraykbs",
-        "Script Theory | Bumpy",
-        "Reverse Engineering, Plugin Support | Vista/NULLderef",
-        "Alpha Stage Singleplayer Support | Wolƒe Strider Shoσter",
-        "Launcher | cabiste",
-        "###--------------------------",
-        "###P2:MM Team Members",
-        "###--------------------------",
-        "Code Cleanup | Jeffrey",
-        "Plugin Support | wanderer",
-        "Launcher, VScript | Orsell",
-        "###--------------------------",
-        "###P2:MM Contributors",
-        "###--------------------------",
-        "Playtesting | tnp/thewoodster75/\\n",
-        "Speedrun Mode Ideas, Playtesting, French Translation | sear",
-        "French Translation | Meb"
-        "Mod Promotion | PieCreeper",
-        "###--------------------------",
-        "###Special Thanks To:",
-        "###--------------------------",
-        "Speedrun Mode Ideas | Dreadnox",
-        "Python Ideas | Enator18"
-        "Alpha Stage Code Commenting | Blub/Vecc",
-        "Alpha Stage Jumpstarter Code | Darnias",
-        "Helping us obtain keys to port the mod to P2:CE | Mystical Λce",
-        "###--------------------------",
-        "###Honorable Mentions:",
-        "###--------------------------",
-        "SuperSpeed",
-        "ANotSoSpookySkeleton",
-        "Panter",
-        "ThePineapple",
-        "Areng",
-        "SuperSpeed",
-        "Brawler",
-        "X man",
-        "###--------------------------",
-        "###Valve: Credits",
-        "###--------------------------"
-    ]
-}
+
 // NativeCoopMaps <- class {
 //     // MULTIPLAYER MAPS
 //     ch0maps = ["mp_coop_start", "mp_coop_community_hub"]

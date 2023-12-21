@@ -85,11 +85,12 @@ function MusicInit() {
         printlP2MM("Ideally the host should have just set Config_musicEnable to false...")
         return
     }
+
     // Remove all the old music entities and unneeded entities
     Entities.FindByName(null, "case_music").Destroy()
     Entities.FindByName(null, "counter_music").Destroy()
 
-    for (local i = 2; i < 8;) {
+    for (local i = 2; i < 8;) { // Leave one in the map to be reused
         Entities.FindByName(null, "@music_lobby_" + i).Destroy()
         i += 1
     }

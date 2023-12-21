@@ -14,7 +14,7 @@ Config_DevMode <- false
 
 // Set true/false if you want to use a VScript Debugger. This also sets "developer" to 1. Only works for Windows systems!
 // Highly recommended to use the "VScript Debugger" by LionDoge, a extension for Visual Studio Code. https://marketplace.visualstudio.com/items?itemName=LionDoge.vscript-debug
-// How debugging has implemented for P2MM has been done according to LionDoge's extension instructions. 
+// How debugging was implemented for P2MM has been done according to LionDoge's extension instructions. 
 // This means that Config_DevMode will be automatically set to true wether or not it's been set to false as developer is needed to be enabled.
 // On every map change you will need to reattach the debugger, that's just unfortunately how Valve programmed it.
 //! ONLY ENABLE THIS IF YOU KNOW WHAT YOU'RE DOING! Game will freeze and won't unfreeze until a debugger is attached!
@@ -105,17 +105,17 @@ Config_musicEnable <- true
 // Only integers greater or equal to -1 are allowed.
 Config_musicDefault <- 0
 
-// Config_musicTracks: The music track list containing tracks to be played in the lobby. For it to be heard by all 
-// players it must come with Portal 2, or it has to be in the same location on disk as the host and as listed here. 
+// Config_musicTracks: The music track list containing tracks to be played in mp_coop_lobby_3. For it to be heard by all 
+// players it must come with Portal 2, or it has to be in the same location on disk as the host for clients to hear it. 
 // 
-// Recommended to use .wav files, but .mp3 should also work but... It's also recommended that your sound file has 
-// build in looping, the ambient_generic we use can not automatically rerun tracks unless they have build in looping. 
-// You can tell if your music track has built in looping when you run the "snd_show 1" command in the console 
-// and you see "looped(1) to the left of the music tracks file name. Built in looping can be done to .wav files but 
-// isn't possible with .mp3 files. Those marked with "Doesn't loop", are some tracks we thought would be nice to be
-// there by default, but they don't loop.
+// Recommended to use .wav files, .mp3 files also work but... It's also recommended that your sound file has 
+// build in looping, or you have to change to a different track then back again to start it again. The ambient_generic 
+// we use can not automatically rerun tracks unless they have build in looping. You can tell if your music track has 
+// built in looping when you run the "snd_show 1" command in the console and you see "looped(1) to the left of the 
+// music tracks file name. Built in looping can be done to .wav files but isn't possible with .mp3 files. 
+// Those marked with "Doesn't loop", are some tracks we thought would be nice to be there by default, but they don't loop.
 //
-// Example: 
+// Example track list setup: 
 // Config_musicTracks <- [
 //     "music/mp_coop_lobby_2_c1.wav"
 // ]
@@ -134,6 +134,6 @@ Config_musicTracks <- [
     "music/portal2_want_you_gone.wav" //11 index, 12/16
     "music/portal2_robots_ftw.wav" //12 index, 13/16
     "ambient/music/looping_radio_mix.wav" //13 index, 14/16
-    "music/sp_a2_dual_lasers_r1.wav" // Doesn't loop  //14 index, 15/16
-    "music/sp_a2_laser_vs_turret_r1.wav" // Doesn't loop  //15 index, 16/16
+    "music/sp_a2_dual_lasers_r1.wav" //14 index, 15/16 *Doesn't loop*
+    "music/sp_a2_laser_vs_turret_r1.wav" //15 index, 16/16 *Doesn't loop*
 ]
