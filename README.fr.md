@@ -44,7 +44,7 @@
   - Map bonus "Super 8" supportée
   - Changemment de map (workshop compris) possible
   - Chiffrement des commandes client même si la classe GameRules est active
-  - Linux, Windows 7 et au-dessus sont supportés 
+  - Sont supportés : Linux, Windows 7 et supérieur 
   - Options du jeu et configuration du système dans VScript et un plugin custom
   - SAR (SourceAudioRecord) pour le speedrun supporté
 ```
@@ -74,11 +74,11 @@ _On utilise Python 3.10 pour le lanceur_
 - requests
 - steamid-converter
 
-On a aussi un fichier pour une simple installaion; `pip install -r requirements.txt`
+On a aussi un fichier pour une simple installation; `pip install -r requirements.txt`
 
 ## Compilation
 
-On utilise `pyinstaller` et `AppImage` pour créer les executables!
+On utilise `pyinstaller` et `AppImage` pour créer les exécutables !
 
 ### Windows:
 
@@ -90,9 +90,9 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-Pour Linux, on a changé pour utiliser [AppImage](https://appimage.org/) et nous avons fait un outil pour aider, possèdez juste docker installé et exécutez-le `tools/build-docker.sh`.
+Pour Linux, on a changé pour utiliser [AppImage](https://appimage.org/) et nous avons fait un outil pour aider, ayez juste docker installé et exécutez-le `tools/build-docker.sh`.
 
-***AVERTISSEMENT ! Pour une raison ou une autre, sur certaines distributions Linux, FUSE n'est pas installé par défaut, ce qui est nécessaire à la fois pour compiler et exécuter AppImages. Vous trouverez des informations sur l'installation de FUSE sur votre distribution ici : [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+***AVERTISSEMENT ! Pour une raison ou une autre, sur certaines distributions de Linux, FUSE n'est pas installé par défaut, ce qui est nécessaire à la fois pour compiler et exécuter AppImages. Vous trouverez des informations sur l'installation de FUSE sur votre distribution ici : [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
 
 Si vous ne souhaitez pas utiliser AppImage/Docker, vous pouvez toujours utiliser pyinstaller :
 
@@ -102,7 +102,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 ### Notes:
 
-- Si vous voulez fork le projet et faire vos propres mises à jour, vous devez changer les variables au dessus de `src/Scripts/Updater.py` et y mettre vos informations et mettre à jour les valeurs dans `AppImageBuilder.yml`
+- Si vous voulez fork le projet et faire vos propres mises à jour, vous devez changer les variables au dessus de `src/Scripts/Updater.py` et y mettre vos informations puis mettre à jour les valeurs dans `AppImageBuilder.yml`
 
 # Contributions
 
