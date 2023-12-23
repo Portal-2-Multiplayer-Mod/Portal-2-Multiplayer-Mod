@@ -18,7 +18,7 @@ def GetSysLang() -> str:
         translation file name, english if the language is not supported
     """
 
-    sysDefaultLocale = locale.getdefaultlocale()[0]
+    sysDefaultLocale = locale.getlocale()[0]
 
     if sysDefaultLocale.split("_")[0].lower() == "fr":
         return "Fran\u00e7ais"
