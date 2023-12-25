@@ -20,6 +20,10 @@ def GetSysLang() -> str:
 
     sysDefaultLocale = locale.getlocale()[0]
 
+    if sysDefaultLocale == None:
+        Log("Automatic language grabbing failed! Defaulting to English...")
+        return "English"
+
     if sysDefaultLocale.split("_")[0].lower() == "fr":
         return "Fran\u00e7ais"
 
