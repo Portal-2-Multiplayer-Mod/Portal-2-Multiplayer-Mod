@@ -22,7 +22,7 @@
   "unmounted_toast": "已卸载！",
   "mount_nodlc_toast": "无法挂载联机模组！\n无法找到 Portal 2 的 DLC 文件夹！\n本联机模组需要该文件夹来运行/挂载！\n请检查 Portal 2 的文件完整性并重试…",
   "mount_nopath_toast": "无法运行/挂载联机模组！\n未设置 Portal 2 文件夹路径！",
-  "guide_button": "Steam 教程",
+  "wiki_button": "2.0 系列维基",
   "workshop_button": "创意工坊",
   "manual_mounting_button": "手动挂载",
   "get_level_button": "获取关卡命令",

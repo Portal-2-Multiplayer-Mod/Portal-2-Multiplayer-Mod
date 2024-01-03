@@ -22,7 +22,7 @@
   "unmounted_toast": "已移除！",
   "mount_nodlc_toast": "無法掛載連線模組！\n無法找到 Portal 2 的 DLC 資料夾！\n本連線模組需要該資料夾來執行/掛載！\n請檢查 Portal 2 的文件完整性並重試…",
   "mount_nopath_toast": "無法執行/掛載連線模組！\n未設定 Portal 2 資料夾路徑！",
-  "guide_button": "Steam 教學",
+  "wiki_button": "2.0 系列維基",
   "workshop_button": "創意工坊",
   "manual_mounting_button": "手動掛載",
   "get_level_button": "獲取關卡指令",

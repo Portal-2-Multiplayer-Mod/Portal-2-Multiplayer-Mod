@@ -113,14 +113,14 @@ def ManualMountingMenu(ui: Gui) -> None:
 def ResourcesMenu(ui: Gui) -> None:
     Button_GitHub = Button(
         GVars.translations["github_button"], ui.Button_GitHub_func, (255, 255, 255), isAsync=True)
-    Button_Guide = Button(
-        GVars.translations["guide_button"], ui.Button_Guide_func, (35, 35, 50), isAsync=True)
+    Button_Wiki = Button(
+        GVars.translations["wiki_button"], ui.Button_Wiki_func, (115, 50, 145), isAsync=True)
     Button_Discord = Button(
         GVars.translations["discord_server_button"], ui.Button_Discord_func, (75, 75, 150), isAsync=True)
     Button_Back = Button(
         GVars.translations["back_button"], ui.Button_Back_func)
 
-    Buttons = [Button_GitHub, Button_Guide, Button_Discord, Button_Back]
+    Buttons = [Button_GitHub, Button_Wiki, Button_Discord, Button_Back]
 
     return (Buttons, [])
 

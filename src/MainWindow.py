@@ -270,12 +270,12 @@ class Gui:
     def Button_GitHub_func(self) -> None:
         # open the discord invite in the default browser
         webbrowser.open(
-            "https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod#readme")
+            "https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod")
 
-    def Button_Guide_func(self) -> None:
-        # open the steam guide in the default browser
+    def Button_Wiki_func(self) -> None:
+        # open the 2.0 series wiki in the default browser
         webbrowser.open(
-            "https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280")
+            "https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/wiki")
 
     def Button_Discord_func(self) -> None:
         # open the discord invite in the default browser

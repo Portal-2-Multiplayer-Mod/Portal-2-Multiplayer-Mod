@@ -22,7 +22,7 @@
   "unmounted_toast": "Démonté !",
   "mount_nodlc_toast": "Impossible de monter P2MM !\nUn des deux DLC \nn'a pas été trouvé ! Ils sont requis\npour monter P2MM !\nVérifiez l'intégralité\nde Portal 2 et réessayez...",
   "mount_nopath_toast": "Impossible de monter/lancer P2MM !\nLe chemin vers Portal 2\nn'a pas été défini !",
-  "guide_button": "Guide Steam",
+  "wiki_button": "Série 2.0 Wiki",
   "workshop_button": "Atelier",
   "manual_mounting_button": "Montage Manuel",
   "get_level_button": "Obtenir la commande de niveau",

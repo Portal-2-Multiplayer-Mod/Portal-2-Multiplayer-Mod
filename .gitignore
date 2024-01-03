@@ -3,6 +3,7 @@ bin/
 platform/
 portal2_dlc*/
 *.dll
+*.pdb
 .vscode/
 sdk_content/
 Soundtrack/

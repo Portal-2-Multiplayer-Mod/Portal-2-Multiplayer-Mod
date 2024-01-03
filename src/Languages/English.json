@@ -22,7 +22,7 @@
   "unmounted_toast": "Unmounted!",
   "mount_nodlc_toast": "Game's path is missing some DLC folders!! \nPlease verify game integrity on steam.",
   "mount_nopath_toast": "Game's path is invalid!! \nPlease check the settings.",
-  "guide_button": "Steam Guide",
+  "wiki_button": "2.0 Series Wiki",
   "workshop_button": "Workshop",
   "manual_mounting_button": "Manual Mounting",
   "get_level_button": "Get Change Level Command",

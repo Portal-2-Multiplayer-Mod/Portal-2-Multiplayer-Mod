@@ -22,7 +22,7 @@
   "unmounted_toast": "Odłączono!",
   "mount_nodlc_toast": "Nie można zamontować P2MM!\nJedna lub obie foldery DLC Portal 2\nnie zostały znalezione! Są one potrzebne\ndo uruchomienia/zamontowania P2MM!\nSprawdź integralność plików\nPortal 2, a następnie spróbuj ponownie...",
   "mount_nopath_toast": "Nie można zamontować/uruchomić P2MM!\nNie została ustawiona ścieżka do Portal 2!",
-  "guide_button": "Przewodnik Steam",
+  "wiki_button": "Wiki Serii 2.0",
   "workshop_button": "Warsztat",
   "manual_mounting_button": "Ręczne montowanie",
   "get_level_button": "Pobierz polecenie zmiany poziomu",

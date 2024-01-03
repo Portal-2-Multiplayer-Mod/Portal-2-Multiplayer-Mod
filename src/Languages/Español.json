@@ -22,7 +22,7 @@
   "unmounted_toast": "¡Desmontado!",
   "mount_nodlc_toast": "¡No se puede montar el módulo multijugador!\n¡No se encontró la carpeta DLC de Portal 2!\nEste módulo multijugador requiere esa carpeta para ejecutarse/montarse.\n¡Verifica la integridad de los archivos de Portal 2 y vuelve a intentarlo...!",
   "mount_nopath_toast": "¡No se puede ejecutar/montar el módulo multijugador!\n¡No se ha establecido la ruta de la carpeta de Portal 2!",
-  "guide_button": "Guía de Steam",
+  "wiki_button": "Serie 2.0 Wiki",
   "workshop_button": "Workshop",
   "manual_mounting_button": "Montaje manual",
   "get_level_button": "Obtener comando del nivel",
