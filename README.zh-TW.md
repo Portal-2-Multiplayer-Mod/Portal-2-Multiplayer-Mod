@@ -62,13 +62,11 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
+# 建立啟動器
 
-# 編譯
+## 使用依賴
 
-*啟動器使用 Python 3.10*
-
-**使用依賴**
-
+- Python 3.10
 - pygame
 - pyperclip
 - requests
@@ -76,29 +74,7 @@
 
 我們已將其放入文件中以便安裝：`pip install -r requirements.txt`
 
-**編譯**
-
-- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest>
-
-**加入 Discord 伺服器獲取更多技術上的幫助（確保你已經看完教學了！！！），報告 Bug 或聊天：**
-
-- <https://discord.gg/kW3nG6GKpF>
-
-
-# 編譯
-
-*啟動器使用 Python 3.10*
-
-**使用依賴**
-
-- pygame
-- pyperclip
-- requests
-- steamid-converter
-
-我們已將其放入文件中以便安裝：`pip install -r requirements.txt`
-
-**編譯**
+## 編譯
 
 我們使用 `pyinstaller` 和 `AppImage` 來製作可執行文件！
 
@@ -112,7 +88,7 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-對於 Linux，我們切換到使用 [AppImage](https://appimage.org/)，我們製作了一個工具來幫助這個問題，只需安裝 docker 並運行 `tools/build-docker.sh`。
+對於 Linux，我們改用 [AppImage](https://appimage.org/)，並製作了一個工具來協助，只需安裝 `docker` 並在根目錄下執行 `./tools/build-docker.sh`。
 
 ***警告！由於某些原因在某些 Linux 發行版中，默認情況下沒有安裝 FUSE，這是編譯和運行 AppImages 所需的。在您的發行版上安裝 FUSE 的信息可以在這裡找到：[AppImageKit 的維基](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
 
@@ -125,7 +101,6 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 ### 注意:
 
 - 若你想要 Fork 並作為你的項目來發布，你需要更改 `src/Scripts/Updater.py` 頂部中的變數到你的訊息。
-
 
 # 做出貢獻
 

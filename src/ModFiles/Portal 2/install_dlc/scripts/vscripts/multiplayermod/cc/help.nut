@@ -38,7 +38,7 @@ CommandList.push(
                 SendChatMessage("[HELP] \"@b\": Atlas Team", p)
                 SendChatMessage("[HELP] \"@o\": P-Body Team", p)
                 SendChatMessage("[HELP] \"@s\": Singleplayer Team", p)
-                SendChatMessage("[HELP] Your available commands:", p)
+                SendChatMessage("[HELP] Available commands:", p)
                 local availablecommands = ""
                 foreach (command in CommandList) {
                     if (command.level <= GetAdminLevel(p)) {

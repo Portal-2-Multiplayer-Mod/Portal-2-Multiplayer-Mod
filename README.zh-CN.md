@@ -62,13 +62,11 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
+# 构建启动器
 
-# 编译
+## 使用依赖
 
-*启动器使用 Python 3.10*
-
-**使用依赖**
-
+- Python 3.10
 - pygame
 - pyperclip
 - requests
@@ -76,7 +74,7 @@
 
 我们已将其放入文件中以便安装：`pip install -r requirements.txt`
 
-**编译**
+## 编译
 
 我们使用 `pyinstaller` 和 `AppImage` 来制作可执行文件！
 
@@ -90,7 +88,7 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-对于 Linux 我们改用 [AppImage](https://appimage.org/)，然后我们开发了一个工具来帮助解决这个问题，只需安装 docker 并运行 `tools/build-docker.sh` 即可。
+对于 Linux，我们转而使用 [AppImage](https://appimage.org/)，我们制作了一个工具来帮助实现这一点，只需安装 `docker` 并在根目录下运行 `./tools/build-docker.sh`。
 
 ***警告！出于某种原因，在某些 Linux 发行版上，默认情况下未安装 FUSE，这是编译和运行 AppImages 所必需的。可以在此处找到在发行版上安装 FUSE 的信息：[AppImageKit 的维基](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
 
@@ -103,7 +101,6 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 ### 注意:
 
 - 若你想要 Fork 并作为你的项目来发布，你需要更改 `src/Scripts/Updater.py` 顶部中的变量到你的信息。
-
 
 # 做出贡献
 

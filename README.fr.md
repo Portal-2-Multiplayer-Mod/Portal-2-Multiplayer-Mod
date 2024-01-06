@@ -63,12 +63,11 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
-# Build
+# Construction du Lanceur
 
-_On utilise Python 3.10 pour le lanceur_
+## Dépendances
 
-## Dépendances 
-
+- Python 3.10
 - pygame
 - pyperclip
 - requests
@@ -90,7 +89,7 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-Pour Linux, on a changé pour utiliser [AppImage](https://appimage.org/) et nous avons fait un outil pour aider, ayez juste docker installé et exécutez-le `tools/build-docker.sh`.
+Pour Linux, nous avons opté pour l'utilisation de [AppImage](https://appimage.org/) et nous avons créé un outil pour vous aider, il vous suffit d'avoir `docker` installé et d'exécuter `./tools/build-docker.sh` depuis le répertoire racine.
 
 ***AVERTISSEMENT ! Pour une raison ou une autre, sur certaines distributions de Linux, FUSE n'est pas installé par défaut, ce qui est nécessaire à la fois pour compiler et exécuter AppImages. Vous trouverez des informations sur l'installation de FUSE sur votre distribution ici : [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
 

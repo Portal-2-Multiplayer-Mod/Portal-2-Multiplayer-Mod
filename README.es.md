@@ -62,13 +62,11 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
-
-# Compilación
-
-*Utilizamos Python 3.10 para el lanzador*
+# Construyendo el Lanzador
 
 ## Dependencias
 
+- Python 3.10
 - pygame
 - pyperclip
 - requests
@@ -90,7 +88,7 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-Para Linux, pasamos a usar [AppImage] (https://appimage.org/) e hicimos una herramienta para ayudar con eso, simplemente instalamos Docker y ejecutamos `tools/build-docker.sh`.
+Para Linux, cambiamos a utilizar [AppImage](https://appimage.org/) y creamos una herramienta para ayudar con eso, simplemente tenga `docker` instalado y ejecute `./tools/build-docker.sh` estando en el directorio raíz.
 
 ***¡ADVERTENCIA! Por alguna razón, en algunas distribuciones de Linux, FUSE no está instalado de forma predeterminada, lo cual es necesario para compilar y ejecutar AppImages. Puede encontrar información para instalar FUSE en su distribución aquí: [Wiki de AppImageKit](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
 

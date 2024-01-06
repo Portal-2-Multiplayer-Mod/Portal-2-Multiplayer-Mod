@@ -62,12 +62,11 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
+# Budowanie Uruchamiacza
 
-# Kompilacja
+## Zależności
 
-*Używamy Pythona 3.10 do uruchamiania*
-
-**Zależności**
+- Pythona 3.10
 - pygame
 - pyperclip
 - requests
@@ -75,7 +74,7 @@
 
 Mamy je również w pliku dla łatwej instalacji `pip install -r requirements.txt`
 
-**Kompilacja**
+## Kompilacja
 
 Używamy `pyinstaller` i `AppImage` do tworzenia plików wykonywalnych!
 
@@ -89,7 +88,7 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --
 
 ### Linux:
 
-Dla Linuksa przeszliśmy na używanie [AppImage] (https://appimage.org/) i stworzyliśmy narzędzie, które pomoże w tym, wystarczy zainstalować docker i uruchomić `tools/build-docker.sh`.
+Dla systemu Linux przeszliśmy na korzystanie z [AppImage](https://appimage.org/) i stworzyliśmy narzędzie, które pomaga w tym procesie, wystarczy mieć zainstalowane `docker` i uruchomić `./tools/build-docker.sh`, będąc w głównym katalogu.
 
 ***OSTRZEŻENIE! Z jakiegoś powodu w niektórych dystrybucjach Linuksa FUSE nie jest domyślnie instalowany, co jest potrzebne zarówno do kompilacji, jak i uruchamiania AppImages. Informacje dotyczące instalacji FUSE w dystrybucji można znaleźć tutaj: [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
 
@@ -102,7 +101,6 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 ### Uwaga:
 
 - Jeśli chcesz skopiować projekt i wydawać własne wersje, musisz zmienić zmienne na górze pliku `src/Scripts/Updater.py` na własne informacje
-
 
 # Współtwórcy
 
