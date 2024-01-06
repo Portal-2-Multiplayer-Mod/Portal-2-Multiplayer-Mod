@@ -49,27 +49,17 @@ def MainMenu(ui: Gui) -> tuple[list[Button], list[Label]]:
 
 
 def SettingsMenu(ui: Gui) -> None:
-    Button_LauncherSettingsMenu = Button(
-        GVars.translations["launcher_settings_button"], ui.Button_LauncherSettingsMenu_func)
-    Button_Portal2Settings = Button(
-        GVars.translations["portal2_config_button"], ui.Button_Portal2Settings_func)
+    Button_GeneralSettingsMenu = Button(
+        GVars.translations["general_settings_button"], ui.Button_GeneralSettingsMenu_func)
     Button_AdminsMenu = Button(
-        GVars.translations["player_button"], ui.Button_AdminsMenu_func, (0, 255, 255))
+        GVars.translations["admins_button"], ui.Button_AdminsMenu_func, (0, 255, 255))
     Button_LanguageMenu = Button(
         GVars.translations["languages_button"], ui.Button_LanguageMenu_func, (175, 75, 0))
     Button_Back = Button(
         GVars.translations["back_button"], ui.Button_Back_func)
-    Text_SettingsLaunchText = Label(
-        GVars.translations["settings_menu_launcher_toast"], color=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=540)
-    Text_SettingsPortal2Text = Label(
-        GVars.translations["settings_menu_portal2_toast"], color=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=620)
-    Text_SettingsPlayersText = Label(
-        GVars.translations["settings_menu_languages_toast"], color=(255, 234, 0), xPos=40, xStart=40, xEnd=1000, yPos=700)
-
-    Buttons = [Button_LauncherSettingsMenu, Button_Portal2Settings,
-               Button_AdminsMenu, Button_LanguageMenu]
-    Labels = [Text_SettingsLaunchText, Text_SettingsPortal2Text,
-              Text_SettingsPlayersText]
+    
+    Buttons = [Button_GeneralSettingsMenu, Button_AdminsMenu,
+               Button_LanguageMenu]
 
     if ui.DevMode:
         Button_HiddenSettings = Button(
@@ -78,7 +68,7 @@ def SettingsMenu(ui: Gui) -> None:
 
     Buttons.append(Button_Back)
 
-    return (Buttons, Labels)
+    return (Buttons, [])
 
 
 def WorkshopMenu(ui: Gui) -> None:
@@ -187,7 +177,7 @@ def SettingsSubMenu(ui: Gui, menu: str) -> None:
     return (Buttons, [])
 
 
-def PlayersMenu(ui: Gui) -> None:
+def AdminsMenu(ui: Gui) -> None:
     CFG.ValidatePlayerKeys()
 
     PlayerKey: dict[str,
@@ -202,7 +192,7 @@ def PlayersMenu(ui: Gui) -> None:
             Log("Saving player name: " + inp)
             CFG.EditPlayer(ui.CurrentSelectedPlayer, inp.strip())
             ui.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))
-            ui.RefreshPlayersMenu()
+            ui.RefreshAdminsMenu()
 
         ui.GetUserInput(AfterInputPlayerName,
                         GVars.translations["players_enter_username"], PlayerKey["name"])
@@ -233,7 +223,7 @@ def PlayersMenu(ui: Gui) -> None:
 
             CFG.EditPlayer(ui.CurrentSelectedPlayer, steamId=inp)
             ui.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))
-            ui.RefreshPlayersMenu()
+            ui.RefreshAdminsMenu()
 
         # ui.ChangeMenu(ui.BlankButton, append=True)
         ui.GetUserInput(
@@ -260,7 +250,7 @@ def PlayersMenu(ui: Gui) -> None:
             CFG.EditPlayer(ui.CurrentSelectedPlayer, level=str(int(inp)))
             ui.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))
             Log("Saving admin level as " + str(inp))
-            ui.RefreshPlayersMenu()
+            ui.RefreshAdminsMenu()
 
         # ui.ChangeMenu(ui.BlankButton, append=True)
         ui.GetUserInput(
@@ -279,8 +269,8 @@ def PlayersMenu(ui: Gui) -> None:
             Log("No more players")
             ui.CurrentSelectedPlayer = 0
 
-        ui.RefreshPlayersMenu()
-        ui.ChangeView(ui.PlayersMenu, append=False)
+        ui.RefreshAdminsMenu()
+        ui.ChangeView(ui.AdminsMenu, append=False)
 
     nextPlayer = Button(
         GVars.translations["players_next_button"], Button_NextPlayer_func, (255, 255, 120))
@@ -294,7 +284,7 @@ def PlayersMenu(ui: Gui) -> None:
         Log(str(len(GVars.configData["Players"]["value"]) - 1))
         ui.CurrentSelectedPlayer = len(
             GVars.configData["Players"]["value"]) - 1
-        ui.RefreshPlayersMenu()
+        ui.RefreshAdminsMenu()
 
     addPlayer = Button(
         GVars.translations["players_add_player"], Button_AddPlayer_func, (120, 255, 120))
@@ -310,13 +300,17 @@ def PlayersMenu(ui: Gui) -> None:
         Log("Deleting player...")
         CFG.DeletePlayer(ui.CurrentSelectedPlayer)
         ui.CurrentSelectedPlayer -= 1
-        ui.RefreshPlayersMenu()
+        ui.RefreshAdminsMenu()
 
     deletePlayer = Button(
         GVars.translations["players_remove_player"], Button_DeletePlayer_func, (255, 50, 50))
 
     Button_Back = Button(
         GVars.translations["back_button"], ui.Button_Back_func)
+    
+    Text_SettingsAdminsText = Label(
+        GVars.translations["settings_menu_admins_label"], color=(255, 234, 0), 
+        xPos=40, xStart=40, xEnd=1000, yPos=620)
 
     ####################
     Buttons: list[Button] = []
@@ -328,4 +322,7 @@ def PlayersMenu(ui: Gui) -> None:
     Buttons.append(deletePlayer)
     Buttons.append(Button_Back)
 
-    return (Buttons, [])
+    Labels: list[Label] = []
+    Labels.append(Text_SettingsAdminsText)
+
+    return (Buttons, Labels)

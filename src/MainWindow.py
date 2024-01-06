@@ -46,7 +46,7 @@ class Gui:
         self.CurInput: str = ""
         self.ToastList: list = []
         self.InputPrompt: str
-        self.PlayersMenu: list = []
+        self.AdminsMenu: list = []
         self.PopupBox: PopupBox = None
         self.IsUpdating: bool = False
         self.AfterInputFunction = None
@@ -142,8 +142,8 @@ class Gui:
     def Button_Back_func(self) -> None:
         self.BackMenu()
 
-    def RefreshPlayersMenu(self) -> None:
-        self.ChangeView(Views.PlayersMenu, False)
+    def RefreshAdminsMenu(self) -> None:
+        self.ChangeView(Views.AdminsMenu, False)
 
 
     #!############################
@@ -194,17 +194,13 @@ class Gui:
     #! SETTINGS BUTTONS FUNCTIONS
     #!############################
 
-    # Switches to the Launcher Settings
-    def Button_LauncherSettingsMenu_func(self) -> None:
-        self.RefreshSettingsMenu("launcher")
-
-    # Switches to the Portal 2 Settings
-    def Button_Portal2Settings_func(self) -> None:
-        self.RefreshSettingsMenu("portal2")
+    # Switches to the General Settings
+    def Button_GeneralSettingsMenu_func(self) -> None:
+        self.RefreshSettingsMenu("general")
 
     # Switches to the Player menu where you can add admins
     def Button_AdminsMenu_func(self) -> None:
-        self.ChangeView(Views.PlayersMenu)
+        self.ChangeView(Views.AdminsMenu)
 
     # Switches to the Language menu where you can pick a language for the launcher
     def Button_LanguageMenu_func(self) -> None:

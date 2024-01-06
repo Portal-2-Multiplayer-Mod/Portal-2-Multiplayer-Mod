@@ -50,40 +50,32 @@ def GetSysLang() -> str:
 
 # Default config values for the launcher:
 # "value" is the data that is stored in the config option, this is either a string or bool.
-# "menu" is the menu where the config option resides, either in the launcher settings menu or Portal 2 settings menu.
+# "menu" is the menu where the config option resides, as of 2.2.0 this is only "general" settings.
 # "description" is a Label that appears when the config option is hover over with the cursor.
 # "warning" is a special red Label that appears with the "description" to act as a important message.
 DefaultConfig = {
     "Active-Language": {
         "value": GetSysLang(),
         "menu": "",
-        "description": "Launcher's language.",
+        "description": "The launcher's language.",
         "warning": "",
         "prompt": ""
     },
 
     "Auto-Unmount": {
         "value": True,
-        "menu": "launcher",
+        "menu": "general",
         "description": "Automatically unmount the mod when the game closes.",
-        "warning": "It's recommended to leave this on.",
+        "warning": "It's recommended to leave this on!",
         "prompt": ""
     },
 
     "Custom-Launch-Options": {
         "value": "+map mp_coop_lobby_3",
-        "menu": "portal2",
+        "menu": "general",
         "description": "Launch options for Portal 2. Default is '+map mp_coop_lobby_3'",
         "warning": "Leave this to default if you don't know what it does!",
         "prompt": "Launch options for Portal 2.\nDefault is '+map mp_coop_lobby_3'"
-    },
-
-    "Encrypt-CVars": {
-        "value": False,
-        "menu": "portal2",
-        "description": "Encrypts CVars such as \"restart_level\" and \"reset_all_progress\".",
-        "warning": "Only use for public games, this may break some functionality!",
-        "prompt": ""
     },
 
     "Dev-Mode": {
@@ -96,7 +88,7 @@ DefaultConfig = {
 
     "Launcher-Cubes": {
         "value": False,
-        "menu": "launcher",
+        "menu": "general",
         "description": "Makes the cubes rain.",
         "warning": "",
         "prompt": ""
@@ -104,7 +96,7 @@ DefaultConfig = {
 
     "Launcher-SFX": {
         "value": True,
-        "menu": "launcher",
+        "menu": "general",
         "description": "Makes the buttons play sound effects.",
         "warning": "",
         "prompt": ""
@@ -122,7 +114,7 @@ DefaultConfig = {
     
     "Portal2-Path": {
         "value": "undefined",
-        "menu": "launcher",
+        "menu": "general",
         "description": "Path of the Portal 2 Folder.",
         "warning": "",
         "prompt": "Enter the path to the Portal 2 folder."
@@ -178,7 +170,7 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
 
 
 def ValidatePlayerKeys() -> None:
-    Log("validating player keys...")
+    Log("Validating player keys...")
     try:
         index = 0
         errs = 0
@@ -187,7 +179,7 @@ def ValidatePlayerKeys() -> None:
             if player.keys() != DefaultPlayer.keys():
                 errs += 1
                 tempPlayer = DefaultPlayer
-                print(f"local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
+                print(f"Local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
                 for key in tempPlayer.keys():
                     try:
                         tempPlayer[key] = player[key]
@@ -196,14 +188,14 @@ def ValidatePlayerKeys() -> None:
                 GVars.configData["Players"]["value"][index] = tempPlayer
 
             if errs > 0:
-                Log(f"found {str(errs)} key errors in a player property")
+                Log(f"Found {str(errs)} key errors in a player property")
 
             index += 1
 
         if errs > 0:
             WriteConfigFile(GVars.configData)
 
-        Log("validated all keys!")
+        Log("Validated all keys!")
 
     except Exception as e:
         Log("ERROR: " + str(e))
