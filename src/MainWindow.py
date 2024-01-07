@@ -1128,11 +1128,7 @@ def MountModOnly() -> bool:
         return False
 
     if VerifyModFiles():
-        DoEncrypt = GVars.configData["Encrypt-CVars"]["value"]
-        if DoEncrypt:
-            Ui.CreateToast(
-                GVars.translations["Encryption-Is-On"], 10, (255, 255, 0))
-        RG.MountMod(gamePath, DoEncrypt)
+        RG.MountMod(gamePath)
         Ui.CreateToast(GVars.translations["mounted"], 5, (75, 255, 75))
         return True
 
@@ -1213,7 +1209,6 @@ def UnmountScript(shouldGetPath: bool = True) -> None:
     VerifyGamePath(shouldGetPath)
     gamePath = GVars.configData["Portal2-Path"]["value"]
     RG.DeleteUnusedDLCs(gamePath)
-    RG.UnPatchBinaries(gamePath)
     Log("____DONE UNMOUNTING____")
 
 

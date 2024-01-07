@@ -40,11 +40,9 @@ function MakeProgressCheck() {
 
     // We will always need to reset the map since there is no way to preserve a map load without
     // forcing the game to not wait at least one second for a progress check
-    // if ((GetMapName() != ChangeToThisMap) || !PluginLoaded) {
-        // printlP2MM("Resetting map (Destination map is not the same as " + GetMapName() + " OR our plugin was not loaded!")
-        printlP2MM("Forcing map reset.")
-        EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + ChangeToThisMap)
-    // }
+    printlP2MM("Forcing map reset.")
+    EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + ChangeToThisMap)
 }
 
+EntFire("p2mm_servercommand", "command", "p2mm_set_preset \"normal\"", 0.50)
 EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1) // Must be delayed
