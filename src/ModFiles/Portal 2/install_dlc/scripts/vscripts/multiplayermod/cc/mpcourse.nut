@@ -11,7 +11,7 @@ mpcoursenames <- [
 CommandList.push(
     class {
         name = "mpcourse"
-        level = 5
+        level = 4
 
         // !mpcourse (course integer 1-6)
         function CC(p, args) {

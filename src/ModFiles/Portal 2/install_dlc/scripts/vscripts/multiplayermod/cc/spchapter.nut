@@ -13,7 +13,7 @@ spchapternames <- [
 CommandList.push(
     class {
         name = "spchapter"
-        level = 5
+        level = 4
 
         // !spchapter (chapter integer 1-9)
         function CC(p, args) {

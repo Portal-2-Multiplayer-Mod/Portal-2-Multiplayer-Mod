@@ -288,7 +288,7 @@ CommandList.push(
                 if (Vote.bVoteInProgress) {
                     if (bCurrentCCPlayerInitiatedVote) {
                         SendChatMessage("[VOTE] End a vote with: cancel", p)
-                        if (GetAdminLevel(p) >= 6) {
+                        if (IsAdminLevelEnough(p)) {
                             SendChatMessage("[VOTE] Admins can force an outcome with: fail, succeed", p)
                         }
                     } else {
@@ -317,7 +317,7 @@ CommandList.push(
 
             if (Vote.bVoteInProgress) {
                 local IsAdminLevelEnough = function(player) {
-                    if (GetAdminLevel(player) >= 6) {
+                    if (GetAdminLevel(player) >= 3) {
                         return true
                     }
                     return false

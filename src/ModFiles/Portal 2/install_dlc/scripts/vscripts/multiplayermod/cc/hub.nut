@@ -1,7 +1,7 @@
 CommandList.push(
     class {
         name = "hub"
-        level = 5
+        level = 4
 
         // !hub
         function CC(p, args) {

@@ -1,7 +1,7 @@
 CommandList.push(
     class {
         name = "kick"
-        level = 6
+        level = 5
 
         // !kick (target arg: player)
         function CC(p, args) {

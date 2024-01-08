@@ -7,7 +7,7 @@
 // logic_choreographed_scene entity. In the end there are over 500 unneeded entities
 // generated that can cause problems with potential entity limit issues.
 // Simple solution is to only add to the SceneTable table scenes that are in that map.
-// Thankfully the  auto generator included map names, so it was easy to add a check for 
+// Thankfully the auto generator included map names, so it was easy to add a check for 
 // each map. In the manual scenetable files, those manually made files already included checks.
 
 

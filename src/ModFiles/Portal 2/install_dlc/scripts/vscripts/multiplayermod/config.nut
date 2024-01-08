@@ -76,17 +76,18 @@ Config_UseChatCommands <- true
 // * These can be accessed with "!" preceding them
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
-// [0]: "help", "changeteam", "kill", "playercolor", "vote"
+// What each admin level gives you (0 means no admin, default player permissions)
+// [0]: "help", "changeteam", "kill", "playercolor", replying to a "vote"
 // [1]:
-// [2]: "kill (someone)"
-// [3]: "playercolor (for someone else)", "rocket (optionally someone)"
-// [4]: "speed", "noclip", "teleport", "slap (optionally someone)"
-// [5]: "restartlevel", "spchapter", "mpcourse"
-// [6]: "rcon", "adminmodify", "kick", "ban"
+// [2]: "playercolor (for someone else)", "speed", "teleport"x
+// [3]: "kill (someone else)", "noclip", "restartlevel", calling a vote with "vote"
+// [4]: "slap (optionally someone)", "rocket (optionally someone)", "hub", "mpcourse", "spcourse"
+// [5]: "kick"
+// [6]: "rcon", "adminmodify" 
 //
 // Example on how to format the list:
 // Admins <- [
-//     "[AdminLevel]SteamID", // (Username to keep track)
+//     "[AdminLevel]Steam3 ID (only the numbers bit)", // (Username to keep track)
 //     "[3]123456789", // John Doe
 // ]
 

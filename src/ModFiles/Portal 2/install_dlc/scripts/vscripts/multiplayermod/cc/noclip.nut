@@ -1,7 +1,7 @@
 CommandList.push(
     class {
         name = "noclip"
-        level = 4
+        level = 3
 
         // !noclip
         function CC(p, args) {

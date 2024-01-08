@@ -1,7 +1,7 @@
 CommandList.push(
     class {
         name = "speed"
-        level = 4
+        level = 2
 
         // !speed (float arg)
         function CC(p, args) {

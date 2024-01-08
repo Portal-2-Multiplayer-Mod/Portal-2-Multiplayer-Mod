@@ -1,7 +1,7 @@
 CommandList.push(
     class {
         name = "rocket"
-        level = 3
+        level = 4
 
         // !rocket (target arg: Specific player, team target. Self if no arg.)
         function CC(p, args) {
