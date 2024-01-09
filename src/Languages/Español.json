@@ -42,7 +42,7 @@
   "already_updated_toast": "¡Ya tienes la última versión!",
   "update_client_text": "¿Te gustaría descargar \n la nueva versión del Cliente?",
   "no_internet_toast": "¡No se detectó conexión a internet!",
-  "update_nolink_toast": "No se puede obtener el enlace de descarga.\nPor favor, visita el sitio web de GitHub para obtener la actualización...",
+  "update_failed_toast": "¡Error al actualizar el lanzador!\nPor favor, visita nuestro GitHub para actualizar...",
   "update_fetching": "Obteniendo actualización...",
   "update_complete_toast": "¡Actualización completa!",
   "update_available": "¡Actualización disponible!",

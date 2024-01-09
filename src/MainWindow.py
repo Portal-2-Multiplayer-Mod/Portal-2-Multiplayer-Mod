@@ -1185,7 +1185,7 @@ def UpdateModClient(data: dict) -> None:
 
         if not UP.DownloadClient(data["newRepo"]):
             Ui.CreateToast(
-                GVars.translations["update_nolink_toast"])
+                GVars.translations["update_failed_toast"])
             return
 
         Ui.Running = False

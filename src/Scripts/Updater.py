@@ -1,5 +1,6 @@
 import http.client as httplib
 import os
+import platform
 import shutil
 import subprocess
 import urllib.parse
@@ -99,8 +100,32 @@ def DownloadClient(newRepo: bool) -> bool:
     if not HasInternet():
         Log("No Internet Connection!")
         return False
+    
+    # Get the right version of the new client executable
+    Log("Checking systems CPU architecture to get the right executable...")
+    if (GVars.iow):
+        systemArchitecture = platform.architecture()[0].lower()
+        if systemArchitecture == "64bit":
+            packageType = ".EXE"
+        elif systemArchitecture == "32bit":
+            packageType = "X32.EXE"
+        else:
+            Log("Error! Failed to get system architecture! Will ask user to manually download...")
+            Log(f"System Architecture Detected: {systemArchitecture}")
+            return False
+    elif (GVars.iol or GVars.iosd):
+        systemArchitecture = platform.machine().lower()
+        if systemArchitecture in ["amd64", "x86_64"]:
+            packageType = "X86_64.APPIMAGE"
+        elif systemArchitecture in ["arm64", "arch64", "aarch64_be", "aarch64", "armv8b", "armv8l",]:
+            packageType = "ARM.APPIMAGE"
+        else:
+            Log("Error! Failed to get system architecture! Will ask user to manually download...")
+            Log(f"System Architecture Detected: {systemArchitecture}")
+            return False
 
-    Log("Downloading...")
+    Log(f"System CPU Architecture Detected: {systemArchitecture}")
+    Log(f"Getting packageType: {packageType}")
 
     endpoint = "https://api.github.com/repos"
 
@@ -110,12 +135,6 @@ def DownloadClient(newRepo: bool) -> bool:
     else:
         r = requests.get(
             f"{endpoint}/{ownerName}/{newRepoName}/releases/latest").json()
-
-    # so we can easily edit it in the future if we want to
-    if (GVars.iow):
-        packageType = ".EXE"
-    elif (GVars.iol or GVars.iosd):
-        packageType = ".SH"
 
     downloadLink = ""
 
@@ -128,17 +147,15 @@ def DownloadClient(newRepo: bool) -> bool:
 
     # make sure there's a download link
     if downloadLink == "":
+        Log("There is no download link so we can't download!")
         return False
 
     # download the file in the same directory
     # i don't want to bother with folders
+    Log("Downloading...")
     path = os.path.dirname(GVars.executable) + os.sep + "p2mm" + packageType
     urllib.request.urlretrieve(downloadLink, path)
     Log(f"Downloaded new client in: {path}")
-
-    # if (GVars.iow):
-    #     command = [path, "updated", GVars.executable]
-    #     subprocess.Popen(command)
 
     if (GVars.iol or GVars.iosd):
         Log("Linux detected, gotta chmod that bad boy!")

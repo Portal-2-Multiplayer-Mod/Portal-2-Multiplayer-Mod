@@ -46,7 +46,7 @@
   "already_updated_toast": "You are already up to date!",
   "update_inProgress_toast": "The mod is now updating. Please Wait...",
   "no_internet_toast": "No internet connection detected!",
-  "update_nolink_toast": "Couldn't find the download link\nplease visit our github to update...",
+  "update_failed_toast": "The launcher failed to update!\nPlease visit our GitHub to update...",
   "xclip_wl-clipboard_not_found_title": "Attention Linux User!",
   "xclip_not_found_description": "The shell command 'xclip',\nwas not found on your system!\nThis shell command is needed\nto get the Workshop changelevel\ncommand and paste into input prompts!\nPlease install 'xclip' using your\nsystems package manager or similar.\n\nThis is not required\nbut highly recommended!",
   "wl-clipboard_not_found_description": "The shell commands for 'wl-clipboard',\nwere not found on your system!\nThese shell commands are needed to get\nthe Workshop changelevel command\nand paste into input prompts!\nPlease install 'wl-clipboard' using\nyour systems package manager\nor similar.\n\nThis is not required\nbut highly recommended!",

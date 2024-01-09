@@ -46,7 +46,7 @@
   "already_updated_toast": "Você já está atualizado!",
   "update_inProgress_toast": "O mod está sendo atualizado. Por favor, aguarde...",
   "no_internet_toast": "Nenhuma conexão com a internet detectada!",
-  "update_nolink_toast": "Não foi possível encontrar o link de download.\nPor favor, visite nosso GitHub para atualizar...",
+  "update_failed_toast": "A atualização do iniciador falhou!\nPor favor, visite nosso GitHub para atualizar...",
   "xclip_wl-clipboard_not_found_title": "Atenção Usuário Linux!",
   "xclip_not_found_description": "O comando de shell 'xclip',\nnão foi encontrado no seu sistema!\nEste comando de shell é necessário\npara obter o comando de mudança de\nnível da Oficina e colar\nem prompts de entrada! Por favor,\ninstale 'xclip' usando o gerenciador\nde pacotes do seu sistema ou similar.\n\nIsso não é obrigatório,\nmas altamente recomendado!",
   "wl-clipboard_not_found_description": "Os comandos de shell para\n'wl-clipboard', não foram encontrados\nno seu sistema! Esses comandos\nde shell são necessários para obter o\ncomando de mudança de nível da Oficina\ne colar em prompts de entrada!\nPor favor, instale 'wl-clipboard'\nusando o gerenciador de pacotes\ndo seu sistema ou similar.\nIsso não é obrigatório,\nmas altamente recomendado!",

@@ -42,7 +42,7 @@
   "already_updated_toast": "您已更新至最新版本！",
   "update_client_text": "您想下載 \n 客戶端的新版本嗎？",
   "no_internet_toast": "未檢測到網路連線！",
-  "update_nolink_toast": "無法獲取下載連結\n請訪問 GitHub 網站獲取更新...",
+  "update_failed_toast": "啟動器更新失敗！\n請訪問我們的 GitHub 進行更新...",
   "update_fetching": "正在獲取更新...",
   "update_complete_toast": "更新完成！",
   "update_available": "有可用的更新！",
