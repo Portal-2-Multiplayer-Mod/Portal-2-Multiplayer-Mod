@@ -104,15 +104,7 @@ def DownloadClient(newRepo: bool) -> bool:
     # Get the right version of the new client executable
     Log("Checking systems CPU architecture to get the right executable...")
     if (GVars.iow):
-        systemArchitecture = platform.architecture()[0].lower()
-        if systemArchitecture == "64bit":
-            packageType = ".EXE"
-        elif systemArchitecture == "32bit":
-            packageType = "X32.EXE"
-        else:
-            Log("Error! Failed to get system architecture! Will ask user to manually download...")
-            Log(f"System Architecture Detected: {systemArchitecture}")
-            return False
+        packageType = ".EXE"
     elif (GVars.iol or GVars.iosd):
         systemArchitecture = platform.machine().lower()
         if systemArchitecture in ["amd64", "x86_64"]:
