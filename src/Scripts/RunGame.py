@@ -182,14 +182,14 @@ def LaunchGame(gamepath: str) -> None:
     Log("=============")
     Log("Running Game...")
 
-    # LAUNCH OPTIONS: (-applaunch 620 Linux Only) -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon (Custom-Launch-Options)
+    # LAUNCH OPTIONS: (-applaunch 620 Linux Only) -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear (Custom-Launch-Options)
     try:
         if (GVars.iow): #launching for windows
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" -novid -allowspectators -nosixense -conclearlog -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
-                os.system(f'"{gamepath + os.sep}portal2.exe" -novid -allowspectators -nosixense -conclearlog -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
+                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
+                os.system(f'"{gamepath + os.sep}portal2.exe" -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
@@ -199,8 +199,8 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol or GVars.iosd): #launching for linux
             def RunGame():
                 def RunSteam():
-                    Log(f'Starting Portal 2: steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon {GVars.configData["Custom-Launch-Options"]["value"]}')
-                    os.system(f'steam -applaunch 620 -novid -allowspectators -nosixense +developer 918612 +clear -conclearlog -usercon {GVars.configData["Custom-Launch-Options"]["value"]}')
+                    Log(f'Starting Portal 2: steam -applaunch 620 -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
+                    os.system(f'steam -applaunch 620 -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:
