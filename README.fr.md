@@ -81,7 +81,7 @@ On utilise `pyinstaller` et `AppImage` pour créer les exécutables !
 
 ### Windows:
 
-Pour Windows on utilise uniquement [pyinstaller](https://pypi.org/project/pyinstaller/) pour créer l'exécutable (Si vous connaissez de meilleures options, dites-le nous)
+Pour Windows on utilise uniquement [pyinstaller](https://pypi.org/project/pyinstaller/) pour créer l'exécutable (Si vous connaissez de meilleures options, dites-le nous).
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
