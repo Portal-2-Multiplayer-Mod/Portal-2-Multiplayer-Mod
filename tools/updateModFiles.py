@@ -9,7 +9,7 @@ import shutil, os, sys, platform, ctypes
 #* path to the ModFiles then copies the folder over to the p2mm folder.
 
 #? User Process:
-#* 1- Run script.
+#* 1- Run script from the src directory. `python tools\updateModFiles.py`
 #* 3- The old ModFiles folder will be removed and replaced with a the ModFiles folder in the relative path given.
 #* 4- Start the mod from the launcher.
 
@@ -40,7 +40,7 @@ def CopyFiles():
     # Check if the src/ModFiles exists, if not exit, they need to exist for this to work
     if not os.path.isdir("src" + os.sep + "ModFiles"):
         print("ModFiles folder not found in src/ModFiles! Exiting...")
-        exit()
+        exit(1)
 
     # Get the users local p2mm folder depending on their installation
     p2mmModFilesPath: str = FindLocalP2MM()
