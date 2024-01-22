@@ -96,6 +96,7 @@
   "Portal2-Path-prompt": "Digite o caminho para a pasta Portal 2.",
   "Custom-Launch-Options": "Opções de Inicialização Personalizadas",
   "Custom-Launch-Options-description": "Opções de inicialização para o Portal 2. O padrão é '+map mp_coop_lobby_3'.",
+  "Custom-Launch-Options-prompt": "Opções de inicialização para o Portal 2.\nO padrão é '+map mp_coop_lobby_3'.",
   "Custom-Launch-Options-warning": "Deixe isso como padrão se você não souber o que isso faz!",
   "Encrypt-CVars": "Criptografar CVars",
   "Encrypt-CVars-description": "Criptografa CVars como \"restart_level\" e \"reset_all_progress\"!",

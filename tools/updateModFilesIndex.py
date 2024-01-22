@@ -10,7 +10,7 @@ from datetime import datetime
 #* ModFiles.
 
 #? User Process:
-#* 1- Run this code.
+#* 1- Run script from the src directory. `python tools\updateModFilesIndex.py`
 #* 2- Copy the relative path of the identifier file. (ex: src\ModFiles\Portal 2\install_dlc\p2mm.identifier)
 #* 3- Input the path when the script asks for it.
 #* 4- A file should be created/updated (ModIndex.json) that means everything ran correctly, the identifier given will also be updated.

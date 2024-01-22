@@ -693,9 +693,9 @@ class Gui:
         if type(self.SelectedButton) is ConfigButton:
             self.SelectedButton.Hovered(self)
 
-        # Displaying button icons for keyboard or Steam Deck controller input
+        # Displaying button icons for keyboard inputs or Steam Deck controller inputs
         if (not self.LookingForInput):
-            if GVars.iosd:
+            if GVars.iosd and not (GVars.linuxSessionType == "x11"):
                 sdButtons = pygame.image.load(
                     "GUI/images/sdButtons.png").convert_alpha()
                 sdButtons = pygame.transform.scale(sdButtons, (W / 10, W / 10))
@@ -709,7 +709,7 @@ class Gui:
                     keys, ((W / 1.03) - keys.get_width(), H / 1.22))
 
         # For showing the button to press to get up the on-screen keyboard on Steam Deck
-        if (self.LookingForInput and GVars.iosd):
+        if (self.LookingForInput and (GVars.iosd and not (GVars.linuxSessionType == "x11"))):
             keyboardButton = pygame.image.load(
                 "GUI/images/sdKeyboard.png").convert_alpha()
             keyboardButton = pygame.transform.scale(

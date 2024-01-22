@@ -33,6 +33,9 @@ def GetSysLang() -> str:
     if sysDefaultLocale.split("_")[0].lower() == "pl":
         return "Polski"
 
+    if sysDefaultLocale.split("_")[0].lower() == "pt_BR":
+        return "Português (Brasil)"
+
     if sysDefaultLocale.split("_")[0].lower() == "zh":
 
         chineseType = sysDefaultLocale.split("_")[1].lower()
