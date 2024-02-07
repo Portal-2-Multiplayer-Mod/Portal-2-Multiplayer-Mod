@@ -19,8 +19,10 @@ MSOnRespawn,        // 7. Runs on player respawn                                
 
 // 1
 function InstantRun() {
-    if (Config_VScriptDebug || Config_DevMode) {
+    // Make sure that Config_DevMode and `developer` stays enabled when either Config_VScriptDebug is enabled
+    if (Config_VScriptDebug) {
         Config_DevMode = true
+        EntFire("p2mm_servercommand", "command", "developer 1")
     } else {
         Config_DevMode = false
         EntFire("p2mm_servercommand", "command", "developer 0")
@@ -628,18 +630,24 @@ function PostPlayerSpawn() {
         }
     }
 
+    // Code used to handle running VScript debugging on the host
+    // This needs to be called in PostPlayerSpawn, because the game is in a state where `script_debug` will work as intended.
     if (Config_VScriptDebug) {
         printlP2MM("[DEBUGGING] Initiating VScript Debugging!")
-        // Developer is needed for debugging to work
+
+        // Developer is needed for debugging to work.
         // Just turning it on will work, but the debugger will act 
         // strange when the map loaded doesn't start with developer enabled,
         // so we need to restart the map for it act as expected.
+        // For some reason GetDeveloperLevelP2MM() is not working correctly while doing this, 
+        // so we use the normal GetDeveloperLevel() instead although it does the exact same thing.
         if (!GetDeveloperLevel()) {
-            Config_DevMode = true
             printlP2MM("[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
             EntFire("p2mm_servercommand", "command", "developer 1")
             EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName())
         }
+
+        // Make the text to indicate that the game is frozen waiting for the VScript debugger
         vscriptDebugText <- Entities.CreateByClassname("game_text")
         vscriptDebugText.__KeyValueFromString("targetname", "vscriptDebugText")
         vscriptDebugText.__KeyValueFromString("x", "-1")
@@ -652,11 +660,22 @@ function PostPlayerSpawn() {
         vscriptDebugText.__KeyValueFromString("color", "255 255 255")
         vscriptDebugText.__KeyValueFromString("message", "Waiting for VScript Debugger to Attach...\nGAME WON'T UNFREEZE UNTIL\nDEBUGGER IS ATTACHED!")
         EntFireByHandle(vscriptDebugText, "Display", "", 0.2, null, null)
+
+        // Call `script_debug` only on the host, that way other players will not be frozen.
+        // But those same players can disconnect from the server due to time out if the host
+        // does not connect the debugger quick enough unfreezing their game.
         EntFireByHandle(p2mm_clientcommand, "Command", "script_debug", 1, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
+
+        // `script_debug` takes a second to do its thing, so delay the debug message
         EntFire("p2mm_servercommand", "command", "script printlP2MM(\"[DEBUGGING] VScript Debugger Attached!\")", 1.1)
+
+        // Reuse the same `game_text` entity to display a success message
         EntFireByHandle(vscriptDebugText, "settext", "VScript Debugger Attached!", 2, null, null)
         EntFireByHandle(vscriptDebugText, "Display", "", 2.5, null, null)
+
+        // Remove the `game_text` and vscriptDebugText instance as they're not needed anymore
         EntFireByHandle(vscriptDebugText, "Kill", "", 4, null, null)
+        delete vscriptDebugText
     }
 }
 
@@ -686,9 +705,6 @@ function PostMapSpawn() {
         AddBranchLevelName(1, "P2:MM")
     }
     CreatePropsForLevel(true, false, false)
-
-    // Enable fast download (broken)
-    // EntFire("p2mm_servercommand", "command", "sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
 
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
@@ -921,9 +937,8 @@ function OnPlayerJoin(p, script_scope) {
         // Set join message to player name (or index)
         local iCurrentNumPlayers = CalcNumPlayers()
         Entities.FindByName(null, "p2mm_player_joined_text").__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
-        if (PlayerID > 1) {
-            onscreendisplay.__KeyValueFromString("y", "0.075")
-        }
+        onscreendisplay.__KeyValueFromString("y", "0.075")
+        
         //# Say join message on HUD #//
         EntFireByHandle(Entities.FindByName(null, "p2mm_player_joined_text"), "Display", "", 0.0, null, null)
     }

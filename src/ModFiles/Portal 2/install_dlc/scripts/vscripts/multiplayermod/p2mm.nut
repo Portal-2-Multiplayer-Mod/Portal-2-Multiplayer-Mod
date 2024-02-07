@@ -84,9 +84,6 @@ IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
-// Load the data system after everything else has been loaded
-// IncludeScript("multiplayermod/datasystem/datasystem-main.nut") Commented out for now, still need to finish
-
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")

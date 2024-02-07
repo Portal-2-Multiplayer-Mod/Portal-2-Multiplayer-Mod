@@ -107,7 +107,7 @@ def findP2MMDLCFolder(gamepath: str) -> str:
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
 
             # find and return where the identifier file is
-            if ("p2mm.identifier" in os.listdir(gamepath + os.sep + file)) or ("32playermod.identifier"in os.listdir(gamepath + os.sep + file)):
+            if ("p2mm.identifier" in os.listdir(gamepath + os.sep + file)):
                 p2mmDLCFolder = gamepath + os.sep + file
                 Log("Found P2MM's DLC folder: " + p2mmDLCFolder)
                 return p2mmDLCFolder

@@ -1089,11 +1089,8 @@ def VerifyModFiles() -> bool:
         print("localIDPath and which identifier file exists?")
         print(localIDPath)
         print(localIDPath + "p2mm.identifier: " + str(os.path.exists(localIDPath + "p2mm.identifier")))
-        print(localIDPath + "32playermod.identifier: " + str(os.path.exists(localIDPath + "32playermod.identifier")))
 
-    if (os.path.exists(GVars.modFilesPath)) and (
-        (os.path.exists(localIDPath + "p2mm.identifier")) or (
-         os.path.exists(localIDPath + "32playermod.identifier"))):
+    if (os.path.exists(GVars.modFilesPath)) and (os.path.exists(localIDPath + "p2mm.identifier")):
         Log("ModFiles found!")
         return True
 

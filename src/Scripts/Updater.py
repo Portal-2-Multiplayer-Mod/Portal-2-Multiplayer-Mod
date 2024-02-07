@@ -18,6 +18,7 @@ from Scripts.BasicLogger import Log
 currentVersion = "2.2.0" #! Change this before releasing a new version!
 ownerName = "Portal-2-Multiplayer-Mod" # The user or organization that owns the repository
 repoName = "Portal-2-Multiplayer-Mod"  # The repository name, you can't use the id :(
+repoBranch = "finalcleanup" # Change this to the target branch to retrieve ModFiles from
 
 newRepoName = "P2MM-Entanglement" # Repository name for P2MM 3.0, this is checked when it's released
 
@@ -180,9 +181,8 @@ def CheckForNewFiles() -> bool:
         print("localIDPath and which identifier file exists?")
         print(localIDPath)
         print(localIDPath + "p2mm.identifier: " + os.path.exists(localIDPath + "p2mm.identifier"))
-        print(localIDPath + "32playermod.identifier: " + os.path.exists(localIDPath + "32playermod.identifier"))
     
-    if (not (os.path.exists(localIDPath + "p2mm.identifier") or os.path.exists(localIDPath + "32playermod.identifier"))):
+    if not (os.path.exists(localIDPath + "p2mm.identifier")):
         Log("Identifier file doesn't exist so the ModFiles are probably unavailable too...")
         return True
 
@@ -191,18 +191,15 @@ def CheckForNewFiles() -> bool:
     # if there was an error retrieving this file that means most likely that we changed it's name and released a new client
     try:
         r = requests.get(
-            f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json").json()
+            f"https://raw.githubusercontent.com/{ownerName}/{repoName}/{repoBranch}/ModIndex.json").json()
     except Exception as e:
         Log(f"Error getting the index file: {str(e)}")
         return False
 
-    # compare the dates of the local file and the file on the repo
-    try:
-        localDate = datetime.strptime(open(localIDPath + "p2mm.identifier", "r").read(), "%Y-%m-%d")
-    except:
-        localDate = datetime.strptime(open(localIDPath + "32playermod.identifier", "r").read(), "%Y-%m-%d")
-    
+    # compare the dates of the local file and the file on the repo  
+    localDate = datetime.strptime(open(localIDPath + "p2mm.identifier", "r").read(), "%Y-%m-%d")
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
+    
     # if the remote date is less or equal to the local date that means our client is up to date
     if (remoteDate <= localDate):
         Log("ModFiles are up to date!")
@@ -220,14 +217,14 @@ def DownloadNewFiles() -> None:
         return False
 
     r = requests.get(
-        f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/ModIndex.json")
+        f"https://raw.githubusercontent.com/{ownerName}/{repoName}/{repoBranch}/ModIndex.json")
     r = r.json()
     Log(f'Downloading {str(len(r["Files"]))} files...')
 
     # download the files to a temp folder
     tempPath = GVars.modPath + os.sep + ".temp"
     for file in r["Files"]:
-        downloadLink = f"https://raw.githubusercontent.com/{ownerName}/{repoName}/main/"+urllib.parse.quote(
+        downloadLink = f"https://raw.githubusercontent.com/{ownerName}/{repoName}/{repoBranch}/"+urllib.parse.quote(
             r["Path"]+file)
 
         Path(os.path.dirname(
