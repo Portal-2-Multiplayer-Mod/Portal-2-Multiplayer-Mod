@@ -82,7 +82,7 @@ DefaultConfig = {
     },
 
     "Dev-Mode": {
-        "value": False,
+        "value": True,
         "menu": "dev",
         "description": "Enables debugging.",
         "warning": "Only enable this if you know what you're doing!",

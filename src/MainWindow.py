@@ -1219,9 +1219,8 @@ def RestartClient(path: str = sys.executable) -> None:
     Log("Restarting client")
     Ui.Running = False
 
+
 # checks if the client was downloaded by a previous version of itself
-
-
 def IsNew() -> None:
     # Two arguments are passed when the client updates
     # 1- the word "updated"
