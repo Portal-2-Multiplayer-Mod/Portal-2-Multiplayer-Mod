@@ -107,17 +107,18 @@ def DownloadClient(newRepo: bool) -> bool:
     if (GVars.iow):
         packageType = ".EXE"
     elif (GVars.iol or GVars.iosd):
-        systemArchitecture = platform.machine().lower()
-        if systemArchitecture in ["amd64", "x86_64"]:
-            packageType = "X86_64.APPIMAGE"
-        elif systemArchitecture in ["arm64", "arch64", "aarch64_be", "aarch64", "armv8b", "armv8l",]:
-            packageType = "ARM.APPIMAGE"
-        else:
-            Log("Error! Failed to get system architecture! Will ask user to manually download...")
-            Log(f"System Architecture Detected: {systemArchitecture}")
-            return False
+        packageType = ".APPIMAGE"
+        # systemArchitecture = platform.machine().lower()
+        # if systemArchitecture in ["amd64", "x86_64"]:
+        #     packageType = "X86_64.APPIMAGE"
+        # elif systemArchitecture in ["arm64", "arch64", "aarch64_be", "aarch64", "armv8b", "armv8l",]:
+        #     packageType = "ARM.APPIMAGE"
+        # else:
+        #     Log("Error! Failed to get system architecture! Will ask user to manually download...")
+        #     Log(f"System Architecture Detected: {systemArchitecture}")
+        #     return False
 
-    Log(f"System CPU Architecture Detected: {systemArchitecture}")
+    #Log(f"System CPU Architecture Detected: {systemArchitecture}")
     Log(f"Getting packageType: {packageType}")
 
     endpoint = "https://api.github.com/repos"
