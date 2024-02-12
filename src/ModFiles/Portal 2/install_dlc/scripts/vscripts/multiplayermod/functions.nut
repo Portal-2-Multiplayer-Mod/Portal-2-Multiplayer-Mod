@@ -229,7 +229,7 @@ function GetPlayerColor(p, multiply = true) {
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255;  colorname = "Bright White";     break;
+            case 1 : R <- 255; G <- 255; B <- 255;  colorname = "White";            break;
             case 2 : R <- 180, G <- 255, B <- 180;  colorname = "Green";            break;
             case 3 : R <- 120, G <- 140, B <- 255;  colorname = "Blue";             break;
             case 4 : R <- 255, G <- 170, B <- 120;  colorname = "Orange";           break;

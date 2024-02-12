@@ -15,7 +15,7 @@ import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
 # When making your fork, make sure to change these to accommodate your version
-currentVersion = "2.2.0" #! Change this before releasing a new version!
+currentVersion = "2.2.0-beta.1" #! Change this before releasing a new version!
 ownerName = "Portal-2-Multiplayer-Mod" # The user or organization that owns the repository
 repoName = "Portal-2-Multiplayer-Mod"  # The repository name, you can't use the id :(
 repoBranch = "finalcleanup" # Change this to the target branch to retrieve ModFiles from
@@ -66,9 +66,11 @@ def CheckForNewClient() -> dict:
     if "tag_name" in repoData:
         # If the current version of the launcher is a greater or equal to whats currently 
         # released, then we have a newer version compared to whats released. We won't update the client.
-        if ((int(str(currentVersion).replace(".", "")) >= int(str(repoData["tag_name"]).replace(".", ""))) or ("beta" in repoData["tag_name"])):
+        if ((int(str(currentVersion).replace(".", "")) >= int(str(repoData["tag_name"]).replace(".", "")))):
             Log("Found release but it's old, we won't update the client...")
             foundNewVer = False
+        elif "beta" in repoData["tag_name"]:
+            foundNewVer = True
 
     #! search for a new client on the new repo
     try:
