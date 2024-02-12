@@ -957,12 +957,10 @@ class Gui:
                 GVars.translations["update_client_text"], [YesButton, NoButton])
 
     def NewClientNotifyPopup(self) -> None:
-        YesButton = Button(
+        OkButton = Button(
             GVars.translations["ok_toast"], activeColor=(75, 200, 75))
 
-        message = "There's a new client available, if you want to update please check the github repo for more info"
-
-        self.CreatePopupBox(GVars.translations["update_available"], message, [YesButton])
+        self.CreatePopupBox(GVars.translations["update_available"], GVars.translations["update_available_description"], [OkButton])
 
     def ModFilesUpdateBox(self) -> None:
         YesButton = Button(
