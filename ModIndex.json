@@ -1,11 +1,10 @@
 {
-    "Date": "2024-01-22",
+    "Date": "2024-02-12",
     "Path": "src/ModFiles/Portal 2/install_dlc",
     "Files": [
         "/p2mm.identifier",
         "/pak01_dir.vpk",
         "/addons/p2mm.dll",
-        "/addons/p2mm.so",
         "/addons/p2mm.vdf",
         "/cfg/listenserver.cfg",
         "/maps/soundcache/_master.cache",
@@ -29,7 +28,6 @@
         "/scripts/vscripts/multiplayermod/cc/mpcourse.nut",
         "/scripts/vscripts/multiplayermod/cc/noclip.nut",
         "/scripts/vscripts/multiplayermod/cc/playercolor.nut",
-        "/scripts/vscripts/multiplayermod/cc/rcon.nut",
         "/scripts/vscripts/multiplayermod/cc/restartlevel.nut",
         "/scripts/vscripts/multiplayermod/cc/rocket.nut",
         "/scripts/vscripts/multiplayermod/cc/slap.nut",
