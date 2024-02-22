@@ -99,7 +99,7 @@ def MountMod(gamepath: str) -> bool:
     Log("            ___________Mounting Mod End__________")
     return True
 
-# Using the identifier file in P2MM's DLC folder, it can be determined 
+# Using the identifier file in P2MM's DLC folder, it can be determined
 # which DLC that is mounted to Portal 2 is in fact P2MM's DLC folder
 def findP2MMDLCFolder(gamepath: str) -> str:
     for file in os.listdir(gamepath):
@@ -182,14 +182,15 @@ def LaunchGame(gamepath: str) -> None:
     Log("=============")
     Log("Running Game...")
 
-    # LAUNCH OPTIONS: (-applaunch 620 Linux Only) -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear (Custom-Launch-Options)
+    args = f"-novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData['Custom-Launch-Options']['value']}"
+
     try:
         if (GVars.iow): #launching for windows
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
-                os.system(f'"{gamepath + os.sep}portal2.exe" -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
+                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" {args}')
+                os.system(f'"{gamepath + os.sep}portal2.exe" {args}')
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
@@ -199,8 +200,8 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol or GVars.iosd): #launching for linux
             def RunGame():
                 def RunSteam():
-                    Log(f'Starting Portal 2: steam -applaunch 620 -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
-                    os.system(f'steam -applaunch 620 -novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData["Custom-Launch-Options"]["value"]}')
+                    Log(f'Starting Portal 2: steam -applaunch 620 {args}')
+                    os.system(f'steam -applaunch 620 {args}')
                 threading.Thread(target=RunSteam).start()
 
                 def CheckForGame() -> None:
