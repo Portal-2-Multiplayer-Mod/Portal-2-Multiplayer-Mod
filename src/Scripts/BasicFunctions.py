@@ -59,6 +59,21 @@ def CopyFolder(src: str, dst: str) -> str:
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
 
+
+def DeleteFile(path: str) -> None:
+    """Deletes a file using OS specific commands
+
+    Parameters
+    ----------
+    path : str
+        file path
+    """
+
+    if (GVars.iow):
+        os.system("Del \"" + path + "\"")
+    elif (GVars.iol) or (GVars.iosd):
+        os.system("rm \"" + path + "\"")
+
 # Copies a file using the OSes copy command
 def CopyFile(src: str, dst: str) -> str:
     """Copies file using OS specific commands
@@ -106,7 +121,7 @@ def MoveFile(src: str, dst: str) -> str:
 
 def CheckForClipboardCommandsLinux() -> bool:
     """Check if xclip (X11) or wl-clipboard (Wayland) exists on the Linux system.
-    
+
     Returns
     -------
     bool
@@ -131,7 +146,7 @@ def ClipboardOperation(data = None, copy: bool = True) -> str | bool:
     ----------
     data (optional):
         Data to be copied to the systems clipboard. Defaults to None.
-    
+
     copy (optional): bool
         Whether or not to copy to the clipboard, or whether to paste. Defaults to True.
 
