@@ -93,7 +93,9 @@ IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 // Print P2:MM game art in console
 foreach (line in ConsoleAscii) { printl(line) }
 delete ConsoleAscii
-
+// Prints the current map, needed for the checkpoint system
+// \n was here :>
+printl("loaded: " + GetMapName())
 //---------------------------------------------------
 
 // Now, manage everything the player has set in config.nut
