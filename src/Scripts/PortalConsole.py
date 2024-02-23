@@ -5,11 +5,12 @@ import Scripts.GlobalVariables as GVars
 
 def GetLastLog() -> str:
     logsPath = os.path.join(GVars.modPath, "Logs")
-    logs = os.listdir(logsPath).sort(reverse=True)
-    return logs[0]
+    logs = os.listdir(logsPath)
+    logs.sort(reverse=True)
+    return os.path.join (logsPath + "/" + logs[0])
 
 def GetConsoleFile() -> str | None:
-    path = BF.NormalizePath(GVars.configData['Portal2-Path']['value'] + "portal2/console.log")
+    path = BF.NormalizePath(GVars.configData['Portal2-Path']['value'] + "/portal2/console.log")
     if os.path.exists(path) and os.path.isfile(path):
         return path
     return None
