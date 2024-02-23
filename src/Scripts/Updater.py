@@ -18,7 +18,7 @@ from Scripts.BasicLogger import Log
 currentVersion = "2.2.0-beta.1" #! Change this before releasing a new version!
 ownerName = "Portal-2-Multiplayer-Mod" # The user or organization that owns the repository
 repoName = "Portal-2-Multiplayer-Mod"  # The repository name, you can't use the id :(
-repoBranch = "finalcleanup" # Change this to the target branch to retrieve ModFiles from
+repoBranch = "main" # Change this to the target branch to retrieve ModFiles from
 
 newRepoName = "P2MM-Entanglement" # Repository name for P2MM 3.0, this is checked when it's released
 

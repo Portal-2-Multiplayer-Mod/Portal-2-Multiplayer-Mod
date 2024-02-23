@@ -209,11 +209,12 @@ def TryFindPortal2Path() -> str | bool:
         import winreg
         try:
             hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, "SOFTWARE\WOW6432Node\Valve\Steam")
-            print(hkey)
             steamPath = winreg.QueryValueEx(hkey, "InstallPath")
-            print(steamPath)
             manifestPath = steamPath[0] + NormalizePath("/steamapps/libraryfolders.vdf")
-            print(manifestPath)
+            if GVars.configData["Dev-Mode"]["value"]:
+                print(hkey)
+                print(steamPath)
+                print(manifestPath)
 
             if (os.path.isfile(manifestPath)):
                 # read the manifest file
@@ -224,14 +225,14 @@ def TryFindPortal2Path() -> str | bool:
                     line = line.strip()
                     # remove the quotes
                     line = line.replace("\"", "")
-                    print(line)
+                    if GVars.configData["Dev-Mode"]["value"]: print(line)
                     if (line.startswith("path")):
                         line = line.replace("path", "")
                         line = line.strip()
                         paths.append(line)
 
                 for path in paths:
-                    print(path)
+                    if GVars.configData["Dev-Mode"]["value"]: print(path)
                     if (os.path.isdir(path + NormalizePath("/steamapps/common/Portal 2"))):
                         return path + NormalizePath("/steamapps/common/Portal 2")
 

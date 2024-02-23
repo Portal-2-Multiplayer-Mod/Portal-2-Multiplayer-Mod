@@ -8,7 +8,6 @@ commandtable["kill"] <- "Kill yourself, another player, or a target team. \"!kil
 commandtable["mpcourse"] <- "Changes the level to the specified cooperative course. \"!mpcourse (course integer 1-6)\""
 commandtable["noclip"] <- "Toggles your noclip status. \"!noclip\""
 commandtable["playercolor"] <- "Changes your player model's color through valid RGB values. \"!playercolor (red OR reset) (green) (blue) (optional arg: player)\""
-commandtable["rcon"] <- "Execute commands on the server console. \"!rcon (console command)\""
 commandtable["restartlevel"] <- "Reset the current map. \"!restartlevel\""
 commandtable["rocket"] <- "Send yourself, another player, or a target team into the air for them to blow up. \"!rocket (target arg: Specific player, team target. Self if no arg.)\""
 commandtable["slap"] <- "Slap yourself, another player, or a target team dealing a tiny amount of damage and jolting. \"!slap (target arg: Specific player, team target. Self if no arg.)\""
