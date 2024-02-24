@@ -2,6 +2,7 @@ import os
 
 import Scripts.BasicFunctions as BF
 import Scripts.GlobalVariables as GVars
+import Scripts.Configs as CFG
 
 def GetLastLog() -> str:
     logsPath = os.path.join(GVars.modPath, "Logs")
@@ -37,6 +38,7 @@ def WriteConsoleToLog() -> None:
 def FilterConsole(text: list[str]) -> list[str]:
     # removes the lines related to initializing the game
     text = text[1200:]
+    lastMap = None
 
     i = -1
     while True:
@@ -53,5 +55,14 @@ def FilterConsole(text: list[str]) -> list[str]:
         if "IP " in text[i]:
             text[i] += " "
             text[i] = text[i].replace(text[i][text[i].index("IP ")+3: text[i].index(" ", text[i].index("IP ")+3, len(text[i]))], "XXX.XXX.XXX.XXX")
+            continue
+
+        # gets the last loaded map
+        if text[i].startswith("loaded:"):
+            lastMap = text[i][text[i].index(":")+1: len(text[i])]
+            continue
+
+    if lastMap is not None:
+        CFG.EditConfig("Last-Map", lastMap)
 
     return text

@@ -88,6 +88,7 @@
   "Auto-Unmount-description": "Automatically unmount the mod when the game closes.",
   "Auto-Unmount-warning": "It's recommended to leave this on!",
   "Launcher-SFX": "Launcher-SFX",
+  "Start-From-Last-Map": "Start From Last Map",
   "Launcher-SFX-description": "Makes the buttons play sound effects.",
   "Launcher-Cubes": "Launcher-Cubes",
   "Launcher-Cubes-description": "Makes the cubes rain!",

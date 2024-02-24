@@ -105,6 +105,22 @@ DefaultConfig = {
         "prompt": "Enter the path to the Portal 2 folder."
     },
 
+    "Start-From-Last-Map": {
+        "value": True,
+        "menu": "general",
+        "description": "Start the game from the last session's map",
+        "warning": "",
+        "prompt": ""
+    },
+
+    "Last-Map": {
+        "value": "",
+        "menu": "",
+        "description": "the last map played",
+        "warning": "",
+        "prompt": ""
+    },
+
     "Players": {
         "value": [
             DefaultPlayer
@@ -121,7 +137,7 @@ DefaultConfig = {
         "description": "Enables debugging.",
         "warning": "Only enable this if you know what you're doing!",
         "prompt": ""
-    },
+    }
 }
 
 ImmutableKeys = {"value", "menu", "description", "warning", "prompt"}

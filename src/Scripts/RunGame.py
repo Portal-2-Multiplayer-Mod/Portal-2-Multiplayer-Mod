@@ -184,6 +184,9 @@ def LaunchGame(gamepath: str) -> None:
 
     args = f"-novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear {GVars.configData['Custom-Launch-Options']['value']}"
 
+    if GVars.configData["Start-From-Last-Map"]["value"] and len(GVars.configData["Last-Map"]["value"].strip()) > 0:
+        args += "+map " + GVars.configData["Start-From-Last-Map"]["value"]
+
     try:
         if (GVars.iow): #launching for windows
             # start portal 2 with the launch options and dont wait for it to finish
