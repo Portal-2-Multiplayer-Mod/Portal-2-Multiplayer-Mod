@@ -51,7 +51,7 @@ def FilterConsole(text: list[str]) -> list[str]:
 
         # masks the user's ip (ik it's cursed but i ran some benchmarks and it's fast - cabiste)
         if "IP " in text[i]:
-            tex[i] += " "
-            tex[i] = tex[i].replace(tex[i][tex[i].index("IP ")+3: tex[i].index(" ", tex[i].index("IP ")+3, len(tex[i]))], "XXX.XXX.XXX.XXX")
+            text[i] += " "
+            text[i] = text[i].replace(text[i][text[i].index("IP ")+3: text[i].index(" ", text[i].index("IP ")+3, len(text[i]))], "XXX.XXX.XXX.XXX")
 
     return text
