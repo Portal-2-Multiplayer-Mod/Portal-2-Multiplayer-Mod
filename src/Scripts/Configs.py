@@ -45,17 +45,17 @@ def GetSysLang() -> str:
 
         if chineseType in ["hk", "mo", "hant"]:
             return "繁體中文 (Traditional Chinese)"
-    
+
     if sysDefaultLocale.split("_")[0].lower() == "it":
         return "Italiano"
 
     return "English"
 
 # Default config values for the launcher:
-# "value" is the data that is stored in the config option, this is either a string or bool.
-# "menu" is the menu where the config option resides, as of 2.2.0 this is only "general" settings.
-# "description" is a Label that appears when the config option is hover over with the cursor.
-# "warning" is a special red Label that appears with the "description" to act as a important message.
+# "value".
+# "menu": where the config should appear.
+# "description": appears as a label when the config is hovered over.
+# "warning": same as description and appears below it but in red.
 DefaultConfig = {
     "Active-Language": {
         "value": GetSysLang(),
@@ -81,14 +81,6 @@ DefaultConfig = {
         "prompt": "Launch options for Portal 2.\nDefault is '+map mp_coop_lobby_3'"
     },
 
-    "Dev-Mode": {
-        "value": True,
-        "menu": "dev",
-        "description": "Enables debugging.",
-        "warning": "Only enable this if you know what you're doing!",
-        "prompt": ""
-    },
-
     "Launcher-Cubes": {
         "value": False,
         "menu": "general",
@@ -104,7 +96,15 @@ DefaultConfig = {
         "warning": "",
         "prompt": ""
     },
-    
+
+    "Portal2-Path": {
+        "value": "undefined",
+        "menu": "general",
+        "description": "Path of the Portal 2 Folder.",
+        "warning": "",
+        "prompt": "Enter the path to the Portal 2 folder."
+    },
+
     "Players": {
         "value": [
             DefaultPlayer
@@ -114,14 +114,14 @@ DefaultConfig = {
         "warning": "",
         "prompt": ""
     },
-    
-    "Portal2-Path": {
-        "value": "undefined",
-        "menu": "general",
-        "description": "Path of the Portal 2 Folder.",
-        "warning": "",
-        "prompt": "Enter the path to the Portal 2 folder."
-    }
+
+    "Dev-Mode": {
+        "value": True,
+        "menu": "dev",
+        "description": "Enables debugging.",
+        "warning": "Only enable this if you know what you're doing!",
+        "prompt": ""
+    },
 }
 
 ImmutableKeys = {"value", "menu", "description", "warning", "prompt"}
