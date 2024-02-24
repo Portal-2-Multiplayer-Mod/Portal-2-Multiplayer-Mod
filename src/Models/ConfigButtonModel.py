@@ -23,7 +23,12 @@ class ConfigButton:
         if len(self.Text) > maxTextLength:
             self.Text = self.Text[:maxTextLength] + "..."
 
-        self.Text = GVars.translations[key] + ": " + self.Text
+        try:
+            self.Text = GVars.translations[key] + ": " + self.Text
+        except:
+            self.Text = key + ": " + self.Text
+            pass
+
         self.KeyObject = GVars.configData[key]
 
         # * customizations
