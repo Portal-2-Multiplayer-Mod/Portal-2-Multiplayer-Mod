@@ -25,10 +25,10 @@ def WriteConsoleToLog() -> None:
     logFile = GetLastLog()
 
     # just using the logger might be better looking, but i just prefer this monstrosity
-    with open(logFile, "a") as log:
+    with open(logFile, "a", encoding="utf8") as log:
         log.write("# PORTAL 2 CONSOLE LOGS:\n\n")
         log.writelines(
-            FilterConsole(open(consoleFile, "r").readlines())
+            FilterConsole(open(consoleFile, "r", encoding="utf8", errors="ignore").readlines())
         )
         log.write("\n\n# PORTAL 2 CONSOLE LOGS END.\n\n")
 
