@@ -650,6 +650,7 @@ class Gui:
         lastBackspace = 0
         lastWindowWidth = 0
         lastWindowHeight = 0
+        lastToast = False
 
         while self.Running:
             mouse = pygame.mouse.get_pos()
@@ -667,8 +668,9 @@ class Gui:
             if self.CoolDown > 0:
                 self.CoolDown -= 1
 
-            if len(self.ToastList) > 0:
+            if lastToast:
                 self.ShouldUpdateUi = True
+            lastToast = len(self.ToastList) > 0 # fixes UI not updating when toasts are removed
 
             if (lastWindowWidth != self.screen.get_width()) or (lastWindowHeight != self.screen.get_height()):
                 lastWindowWidth = self.screen.get_width()
