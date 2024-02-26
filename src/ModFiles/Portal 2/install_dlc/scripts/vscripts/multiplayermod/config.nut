@@ -83,7 +83,7 @@ Config_UseChatCommands <- true
 // [3]: "kill (someone else)", "noclip", "restartlevel", calling a vote with "vote"
 // [4]: "slap (optionally someone)", "rocket (optionally someone)", "hub", "mpcourse", "spcourse"
 // [5]: "kick"
-// [6]: "rcon", "adminmodify" 
+// [6]: "adminmodify" 
 //
 // Example on how to format the list:
 // Admins <- [

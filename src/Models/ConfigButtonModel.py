@@ -40,7 +40,6 @@ class ConfigButton:
         self.yPos = 2
 
         # A duct tape fix to prevent errors with mouse movement detection
-        # fuck you orsell - \n
         self.X = 16
         self.Y = 2
         self.Width = 28

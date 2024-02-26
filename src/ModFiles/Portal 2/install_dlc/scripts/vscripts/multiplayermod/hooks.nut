@@ -684,6 +684,10 @@ function PostMapSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, false, true, false, false, false)
 
+    // Prints the current map, needed for the checkpoint system
+    // \n was here :>
+    printl("loaded: " + GetMapName())
+
     if (!IsDedicatedServer()) {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
     }
