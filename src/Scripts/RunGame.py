@@ -186,7 +186,7 @@ def LaunchGame(gamepath: str) -> None:
 
     # portal 2 uses the first argument provided, so this will override whatever the user has in the custom launch options
     if GVars.configData["Start-From-Last-Map"]["value"] and len(GVars.configData["Last-Map"]["value"].strip()) > 0:
-        args += " +map " + GVars.configData["Start-From-Last-Map"]["value"]
+        args += " +map " + GVars.configData["Last-Map"]["value"]
 
     args += " " + GVars.configData['Custom-Launch-Options']['value']
 
