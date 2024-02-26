@@ -55,7 +55,6 @@ class Gui:
         self.SelectedPopupButtonIndex: int
         self.LookingForInput: bool = False
         self.CurrentSelectedPlayer: int = 0
-        self.Floaters: list[Floater] = []
         self.Views: list[function] = []
 
         # ##############################################
@@ -73,14 +72,6 @@ class Gui:
             "GUI/images/p2mm64.ico").convert_alpha()
         pygame.display.set_icon(self.P2mmLogo)
 
-        # The cube floaters for the launcher screen
-        self.GreenCube = pygame.image.load(
-            "GUI/images/greenCube.png").convert_alpha()
-        self.RedCube = pygame.image.load(
-            "GUI/images/redCube.png").convert_alpha()
-        self.GoldenCube = pygame.image.load(
-            "GUI/images/yellowCube.png").convert_alpha()
-
         ###############################################################################
 
         self.ChangeView(Views.MainMenu)
@@ -88,10 +79,6 @@ class Gui:
         self.CurrentViewButtons: list[Button]
         self.CurrentViewLabels: list[Label]
         self.SelectedButton: Button = self.CurrentViewButtons[self.CurrentButtonsIndex]
-
-        # Add the cubes onto the launcher screen
-        for _ in range(32):
-            self.AddFloater(50, 50, 75, 75)
 
     def PlaySound(self, sound: pygame.mixer.Sound) -> None:
         """Plays the launcher's sounds when hovering / clicking on a button
@@ -102,26 +89,6 @@ class Gui:
         LauncherSFX = GVars.configData["Launcher-SFX"]["value"]
         if LauncherSFX:
             pygame.mixer.Sound.play(sound)
-
-    def AddFloater(self, width: float, height: float, x: float, y: float) -> None:
-        """creates the falling cubes and adds them to a list of floaters
-
-        Args:
-            width (float): the width of the cube's image
-            height (float): the height of the cube's image
-            rot (float): the rotation of the cube on the z axis when it spawns
-            x (float): the x position where it first spawns
-            y (float): the y position where it first spawns
-        """
-        surf = self.GreenCube
-        surf = pygame.transform.scale(surf, (width, height))
-        surf = pygame.transform.rotate(surf, 0)
-
-        negativeRotation = random.randint(0, 1) == 1
-
-        floater = Floater(surf, x, y, negativeRotation)
-
-        self.Floaters.append(floater)
 
 #######################################################################
 
@@ -248,7 +215,7 @@ class Gui:
                 clipboardOP = BF.ClipboardOperation("changelevel " + map)
                 if clipboardOP == False:
                     self.CreateToast(
-                        GVars.translations["xclip_needed_toast_copy"] if GVars.linuxSessionType == "x11" 
+                        GVars.translations["xclip_needed_toast_copy"] if GVars.linuxSessionType == "x11"
                         else GVars.translations["wl-clipboard_needed_toast_copy"], 3, (255, 0, 255))
                     return
                 self.CreateToast(
@@ -598,49 +565,6 @@ class Gui:
             self.screen.blit(text, (textX, textY))
             buttonIndex += 1
 
-    def DrawFallingCubes(self):
-        W = self.screen.get_width()
-        H = self.screen.get_height()
-
-        for floater in self.Floaters:
-            surf = floater.Surface
-            if (self.SelectedButton.Text == GVars.translations["unmount_button"] or self.SelectedButton.Text == GVars.translations["exit_button"]):
-                surf = self.RedCube
-            if (self.SelectedButton.Text == GVars.translations["back_button"]):
-                surf = self.GoldenCube
-            surf = pygame.transform.scale(surf, (W / 15, W / 15))
-            surf = pygame.transform.rotate(surf, floater.Rotation)
-            center = surf.get_rect().center
-            self.screen.blit(
-                surf, (floater.x - center[0], floater.y - center[1]))
-
-            if floater.NegativeRotation:
-                floater.Rotation -= (1 + random.randint(0, 2))
-            else:
-                floater.Rotation += (1 + random.randint(0, 2))
-
-            if (self.SelectedButton.Text == GVars.translations["back_button"]):
-                floater.x -= W / 60
-                if floater.x < (floater.Surface.get_width() * -2):
-                    floater.y = random.randint(0, H)
-                    floater.x = (floater.Surface.get_width() * 2) + \
-                        (random.randint(W, W * 2)) * 1
-                    floater.NegativeRotation = random.randint(0, 1) == 1
-            elif (self.SelectedButton.Text == GVars.translations["unmount_button"] or self.SelectedButton.Text == GVars.translations["exit_button"]):
-                floater.y -= H / 60
-                if floater.y < (floater.Surface.get_height() * -2):
-                    floater.y = (floater.Surface.get_height() * 2) + \
-                        (random.randint(H, H * 2))
-                    floater.x = random.randint(0, W)
-                    floater.NegativeRotation = random.randint(0, 1) == 1
-            else:
-                floater.y += H / 60
-                if floater.y > (H + floater.Surface.get_height() * 2):
-                    floater.y = (floater.Surface.get_height() * -2) + \
-                        (random.randint(0, H)) * -1
-                    floater.x = random.randint(0, W)
-                    floater.NegativeRotation = random.randint(0, 1) == 1
-
     def DrawToasts(self):
         windowWidth = self.screen.get_width()
         windowHeight = self.screen.get_height()
@@ -678,9 +602,6 @@ class Gui:
         if self.PopupBox is not None:
             self.DrawPopupBox()
             return
-
-        if (GVars.configData["Launcher-Cubes"]["value"]):
-            self.DrawFallingCubes()
 
         if len(self.CurrentViewLabels) > 0:
             self.DrawLabels()
@@ -977,7 +898,7 @@ class Gui:
             GVars.translations["ok_toast"], activeColor=(75, 255, 75))
         self.CreatePopupBox(GVars.translations["launcher_config_reset"],
                     GVars.translations["launcher_had_to_reset"], [OkButton])
-    
+
     def LinuxClipboardCommandsCheck(self):
         if BF.CheckForClipboardCommandsLinux == False:
             Log("Linux systems clipboard shell commands were not detected!")
@@ -986,9 +907,9 @@ class Gui:
                 GVars.translations["ok_toast"], activeColor=(75, 255, 75))
             Ui.CreatePopupBox(
                 GVars.translations["xclip_wl-clipboard_not_found_title"],
-                GVars.translations["xclip_not_found_description"] if GVars.linuxSessionType == "x11" 
+                GVars.translations["xclip_not_found_description"] if GVars.linuxSessionType == "x11"
                 else GVars.translations["wl-clipboard_not_found_description"], [OkButton])
-        
+
     def DownloadModFilesPopup(self):
         def YesInput():
             Log("User agreed to download the ModFiles! Fetching mod...")
@@ -1315,7 +1236,7 @@ def PostInitialize() -> None:
     if (GVars.HadToResetConfig):
         Log("Config has been reset to default settings!")
         Ui.ConfigResetNotice()
-    
+
     # If on a Linux system, check if xcopy (X11) or wl-clipboard (Wayland) are available
     if GVars.iol or GVars.iosd:
         Ui.LinuxClipboardCommandsCheck()

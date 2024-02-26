@@ -81,14 +81,6 @@ DefaultConfig = {
         "prompt": "Launch options for Portal 2.\nDefault is '+map mp_coop_lobby_3'"
     },
 
-    "Launcher-Cubes": {
-        "value": False,
-        "menu": "general",
-        "description": "Makes the cubes rain.",
-        "warning": "",
-        "prompt": ""
-    },
-
     "Launcher-SFX": {
         "value": True,
         "menu": "general",
