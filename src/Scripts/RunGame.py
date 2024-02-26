@@ -188,7 +188,7 @@ def LaunchGame(gamepath: str) -> None:
     if GVars.configData["Start-From-Last-Map"]["value"] and len(GVars.configData["Last-Map"]["value"].strip()) > 0:
         args += " +map " + GVars.configData["Start-From-Last-Map"]["value"]
 
-    args += " " + {GVars.configData['Custom-Launch-Options']['value']}
+    args += " " + GVars.configData['Custom-Launch-Options']['value']
 
     try:
         if (GVars.iow): #launching for windows
