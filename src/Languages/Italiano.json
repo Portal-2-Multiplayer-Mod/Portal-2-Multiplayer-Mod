@@ -98,6 +98,9 @@
   "Custom-Launch-Options-description": "Opzioni di avvio per Portal 2. Il valore predefinito è '+map mp_coop_lobby_3'.",
   "Custom-Launch-Options-prompt": "Opzioni di avvio per Portal 2.\nIl valore predefinito è '+map mp_coop_lobby_3'.",
   "Custom-Launch-Options-warning": "Lascia questo per impostazione predefinita se non sai cosa fa!",
+  "Opt-Into-Beta": "Opta per la Beta",
+  "Opt-Into-Beta-description": "Ricevi aggiornamenti delle versioni pre-release/beta del launcher P2MM.",
+  "Opt-Into-Beta-warning": "Queste versioni potrebbero non essere stabili!",
   "Dev-Mode": "Modalità Sviluppatore",
   "Dev-Mode-description": "Abilita il debug.",
   "Dev-Mode-warning": "Abilita questa solo se sai cosa stai facendo!!"

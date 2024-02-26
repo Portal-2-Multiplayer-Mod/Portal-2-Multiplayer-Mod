@@ -57,30 +57,37 @@ def CheckForNewClient() -> dict:
 
     #! search for a new client on the old repo
     try:
-        repoData = requests.get(
+        latestReleaseData = requests.get(
             f"{endpoint}/{ownerName}/{repoName}/releases/latest").json()
     except Exception as e:
         Log(f"Error retrieving the latest releases: {str(e)}")
         return {"status": False}
 
-    if "tag_name" in repoData:
-        # If the current version of the launcher is a greater or equal to whats currently 
-        # released, then we have a newer version compared to whats released. We won't update the client.
-        if ((int(str(currentVersion).replace(".", "")) >= int(str(repoData["tag_name"]).replace(".", "")))):
-            Log("Found release but it's old, we won't update the client...")
+    if "tag_name" in latestReleaseData:
+        if (currentVersion == latestReleaseData["tag_name"]):
+            Log("Current release is up to date!")
             foundNewVer = False
-        elif "beta" in repoData["tag_name"]:
+        elif (currentVersion != latestReleaseData["tag_name"]) and not ("beta" in latestReleaseData["tag_name"]):
+            Log("Found new release!")
             foundNewVer = True
+        elif (currentVersion != latestReleaseData["tag_name"]) and ("beta" in latestReleaseData["tag_name"]):
+            Log("Found new pre-release/beta release!")
+            if GVars.configData["Opt-Into-Beta"]:
+                Log("User has opted for pre-release/beta content!")
+                foundNewVer = True
+            else:
+                Log("User has opted not to download pre-release/beta content!")
+                foundNewVer = False
 
     #! search for a new client on the new repo
     try:
-        repoData = requests.get(
+        newRepoData = requests.get(
             f"{endpoint}/{ownerName}/{newRepoName}/releases/latest").json()
     except Exception as e:
         Log(f"Error retrieving the latest releases in the new repository: {str(e)}")
         return {"status": False}
 
-    if "tag_name" in repoData:
+    if "tag_name" in newRepoData:
         foundNewRepo = True
 
     if foundNewRepo or foundNewVer:
@@ -110,15 +117,6 @@ def DownloadClient(newRepo: bool) -> bool:
         packageType = ".EXE"
     elif (GVars.iol or GVars.iosd):
         packageType = ".APPIMAGE"
-        # systemArchitecture = platform.machine().lower()
-        # if systemArchitecture in ["amd64", "x86_64"]:
-        #     packageType = "X86_64.APPIMAGE"
-        # elif systemArchitecture in ["arm64", "arch64", "aarch64_be", "aarch64", "armv8b", "armv8l",]:
-        #     packageType = "ARM.APPIMAGE"
-        # else:
-        #     Log("Error! Failed to get system architecture! Will ask user to manually download...")
-        #     Log(f"System Architecture Detected: {systemArchitecture}")
-        #     return False
 
     #Log(f"System CPU Architecture Detected: {systemArchitecture}")
     Log(f"Getting packageType: {packageType}")

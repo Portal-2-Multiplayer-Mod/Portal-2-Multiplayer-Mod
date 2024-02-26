@@ -123,6 +123,14 @@ DefaultConfig = {
         "prompt": ""
     },
 
+    "Opt-Into-Beta": {
+        "value": False,
+        "menu": "general",
+        "description": "Get updates of pre-release/beta versions of P2MM.",
+        "warning": "These versions will possibly not be in a stable state!",
+        "prompt": ""
+    },
+
     "Dev-Mode": {
         "value": True,
         "menu": "dev",
