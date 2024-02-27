@@ -32,7 +32,7 @@
 
 ## Języki
 
-[English](README.md) | [Español](README.es.md) | **_Polish_** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | [Français](README.fr.md)
+[English](README.md) | [Español](README.es.md) | **_Polish_** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt_BR.md)
 
 # Funkcje moda
 
@@ -47,7 +47,7 @@
   - Pełne wsparcie dla mapy Super 8
   - Wewnętrzne wsparcie dla wybranych map warsztatowych
   - Szyfrowanie poleceń klienta wywoływanych przez aktywną klasę GameRules
-  - Wsparcie dla systemów Linux, Windows 7 i nowszych
+  - Wsparcie dla systemów Linux, Windows 10 i nowszych
   - Możliwość włączania/wyłączania opcji gry i konfiguracji poprzez VScript oraz wtyczkę niestandardową
   - Wsparcie dla SAR (SourceAutoRecord) do speedrunów
 ```
@@ -72,7 +72,6 @@
 
 - Pythona 3.10
 - pygame
-- pyperclip
 - requests
 - steamid-converter
 
@@ -108,7 +107,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 # Współtwórcy
 
-Od wydania wersji 2.2.0 wszystko, co zostanie zaakceptowane do wkładów, to poprawki błędów, problemy wpływające na korzystanie z programu uruchamiającego i/lub podczas uruchamiania moda w Portalu 2 oraz tłumaczenia dla programu uruchamiającego. Wszelkie poważne zmiany zostaną odrzucone, ponieważ staramy się podjąć wysiłek w kierunku przepisywania wersji 3.0 zamiast kontynuować prace nad serią 2.0. Zapraszamy jednak do pomocy w [repozytorium 3.0 rewrite](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement)! Tam potrzebujemy programistów Pythona i C++.
+Portal 2: Multiplayer Mod w wersji `2.2.0` będzie naszą ostateczną wersją, więc nie będziemy wprowadzać żadnych znaczących aktualizacji po jej pełnym wydaniu. Zanim to nastąpi, będziemy pracować nad drobnymi aktualizacjami prowadzącymi do pełnej wersji. Zaakceptujemy wszelkie istotne zmiany lub funkcje dla P2:MM w tym okresie. Nie będziemy jednak akceptować żadnych bardziej znaczących zmian po wydaniu pełnej wersji. Jedynym powodem, dla którego moglibyśmy wydać nową wersję, byłoby dostarczenie przez kogoś nowego tłumaczenia, ulepszenia obecnego tłumaczenia, innej drobnej poprawki błędu, której nie wychwyciliśmy, lub pliku wsparcia dla mapy warsztatowej. Kolejną wersję wydamy tylko w takich okolicznościach i nie będziemy już akceptować niczego znaczącego w tym repozytorium. Wciąż jednak możesz je rozwidlić, by wykorzystać naszą pracę! Upewnij się, że podałeś nazwę tego repozytorium!
 
 # Autorzy
 

@@ -32,7 +32,7 @@
 
 ## Langages
 
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | **_Français_**
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | **_Français_** | [Português (Brasil)](README.pt_BR.md)
 
 ## Caractéristiques du mod
 
@@ -47,7 +47,7 @@
   - Map bonus "Super 8" supportée
   - Changemment de map (workshop compris) possible
   - Chiffrement des commandes client même si la classe GameRules est active
-  - Sont supportés : Linux, Windows 7 et supérieur 
+  - Sont supportés : Linux, Windows 10 et supérieur 
   - Options du jeu et configuration du système dans VScript et un plugin custom
   - SAR (SourceAudioRecord) pour le speedrun supporté
 ```
@@ -72,7 +72,6 @@
 
 - Python 3.10
 - pygame
-- pyperclip
 - requests
 - steamid-converter
 
@@ -108,7 +107,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 # Contributions
 
-À compter de la sortie de la version 2.2.0, les contributions seront uniquement acceptées, sous forme de corrections de bugs, de problèmes affectant l'utilisation du lanceur et/ou lors de l'exécution du mod dans Portal 2, et de traductions pour le lanceur. Toute modification majeure sera rejetée car nous essayons de faire des efforts pour réécrire la version 3.0 au lieu de continuer à travailler sur la série 2.0. Mais n'hésitez pas à nous aider sur le [dépôt de réécriture 3.0](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement) ! Là, nous avons besoin de programmeurs Python et C++.
+Portal 2: Multiplayer Mod version `2.2.0` sera notre version définitive, donc nous ne ferons pas de mises à jour significatives après sa sortie complète. Avant cela, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons toute modification ou caractéristique substantielle pour P2:MM au cours de cette période. Toutefois, nous n'accepterons plus de modifications importantes après la publication de la version complète. Les seules raisons pour lesquelles nous ferions une nouvelle version seraient que quelqu'un apporte une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction de bug mineur que nous n'aurions pas détectée, ou un fichier de support de carte pour une carte d'atelier. Nous ne ferons une nouvelle version que dans ces circonstances et n'accepterons plus rien d'important dans ce dépôt. Cependant, vous pouvez toujours le forker pour construire à partir de notre travail ! N'oubliez pas de donner le crédit à ce dépôt !
 
 # Crédits
 

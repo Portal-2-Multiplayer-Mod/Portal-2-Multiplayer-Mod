@@ -32,7 +32,7 @@
 
 ## 语言
 
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | **_简体中文_** | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | [Français](README.fr.md)
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | **_简体中文_** | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt_BR.md)
 
 ## 模组功能
 
@@ -47,7 +47,7 @@
   - 支持 Super 8 地图
   - 内部地图支持选择创意工坊地图
   - 通过活动 GameRules 类调用客户端命令加密
-  - 支持 Linux, Windows 7 及以上系统
+  - 支持 Linux, Windows 10 及以上系统
   - 通过 VScript 和自定义插件提供可切换的游戏选项以及配置系统
   - 为速通提供 SAR（起源自动录制）支持
 ```
@@ -72,7 +72,6 @@
 
 - Python 3.10
 - pygame
-- pyperclip
 - requests
 - steamid-converter
 
@@ -108,7 +107,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 # 做出贡献
 
-从 2.2.0 版本开始，所有可接受的贡献将是错误修复、影响启动器使用和/或在 Portal 2 中运行模组时出现的问题，以及启动器的翻译。任何重大更改都将被拒绝，因为我们正在努力重写 3.0，而不是继续开发 2.0 系列。但是欢迎你在 [3.0 重写存储库](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement) 上帮助我们！在那里，我们需要 Python 和 C++ 程序员。
+Portal 2：多人遊戲模擬器 2.2.0 版」將會是我們的終極版本，因此在正式發行後，我們將不會進行任何重大更新。在此之前，我們會先進行小規模更新，然後再推出正式版本。在此期间，我们将接受 P2:MM 的任何实质性更改或功能。但是，在正式版发布后，我们将不再接受任何重大更改。我们发布新版本的唯一原因是有人提供了新的翻译、对当前翻译的改进、其他一些我们没有发现的小错误修复，或者为工作室地图提供了地图支持文件。我们只会在这些情况下发布新版本，不会再接受任何重要的内容。不过，您仍然可以将其分叉，以利用我们的工作成果！请务必注明本软件源的出处！
 
 # 贡献者
 

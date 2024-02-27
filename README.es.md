@@ -32,7 +32,7 @@
 
 ## Idiomas
 
-[English](README.md) | **_Español_** | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | [Français](README.fr.md)
+[English](README.md) | **_Español_** | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt_BR.md)
 
 ## Características del mod
 
@@ -47,7 +47,7 @@
   - Soporte completo para el mapa Super 8
   - Soporte para mapas internos de selectos talleres
   - Encriptación de comandos de cliente invocados a través de la clase GameRules activa
-  - Soporte para Linux, Windows 7 y versiones superiores
+  - Soporte para Linux, Windows 10 y versiones superiores
   - Opciones de juego conmutables y sistema de configuración expuesto a través de VScript y un complemento personalizado
   - Soporte para SAR (SourceAutoRecord) para speedrunning
 ```
@@ -72,7 +72,6 @@
 
 - Python 3.10
 - pygame
-- pyperclip
 - requests
 - steamid-converter
 
@@ -109,7 +108,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 # Contribuciones
 
-A partir de la versión 2.2.0, solo se aceptarán contribuciones para corregir errores, problemas que afecten al uso del lanzador o al ejecutar el mod en Portal 2 y traducciones para el lanzador. Se rechazarán todos los cambios importantes, ya que estamos intentando reescribir la versión 3.0 en lugar de seguir trabajando en la serie 2.0. Sin embargo, ¡no dudes en ayudarnos en el [repositorio de reescritura 3.0](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement)! Ahí necesitamos programadores de Python y C++.
+Portal 2: Multiplayer Mod versión `2.2.0` será nuestra versión definitiva, por lo que no realizaremos ninguna actualización significativa después de que esté totalmente lanzada. Antes de que esto ocurra, trabajaremos en actualizaciones menores que conduzcan a la versión completa. Aceptaremos cualquier cambio o característica sustancial para P2:MM durante este periodo. Sin embargo, no aceptaremos más cambios significativos después de la versión completa. Las únicas razones por las que haríamos una nueva versión serían que alguien contribuyera con una nueva traducción, una mejora de una traducción actual, alguna corrección de errores menores que no hayamos detectado, o un archivo de soporte de mapas para un mapa del taller. Sólo haremos una nueva versión en esas circunstancias y ya no aceptaremos nada significativo en este repositorio. Sin embargo, ¡puedes hacer un fork para aprovechar nuestro trabajo! Por favor, ¡asegúrate de dar crédito a este repositorio!
 
 # Créditos
 
