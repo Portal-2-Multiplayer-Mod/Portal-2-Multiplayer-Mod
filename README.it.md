@@ -1,34 +1,38 @@
 <h1>
-  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
-  <a href="https://discord.gg/nXRygGNxyK">
-    <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
+  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png?raw=true" alt="P2MMBannerREADME" width="472" height="290" align="left">
+  <a href="https://discord.gg/nXRygGNxyK" target="_blank">
+      <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20"
+              alt="Discord Shield Badge" style="margin-bottom: 10px;" align="right">
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest">
-    <img src="https://img.shields.io/github/release-date/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
+      <img src="https://img.shields.io/github/release-date/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?color=red&label=Latest%20Release&style=for-the-badge"
+              alt="Release Shield Badge" style="margin-bottom: 10px;" align="right">
   </a>
   <br>
-    <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=TOTAL%20DOWNLOAD%20COUNT" alt="Download Count Shield Badge" align="right">
+  <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=TOTAL%20DOWNLOAD%20COUNT"
+          alt="Download Count Shield Badge" style="margin-bottom: 10px;" align="right">
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/main">
-    <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?label=LAST%20COMMIT%20(MAIN)&style=for-the-badge" alt="Commit Shield Badge" align="right">
+      <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?label=LAST%20COMMIT%20(MAIN)&style=for-the-badge"
+              alt="Commit Shield Badge" style="margin-bottom: 10px;" align="right">
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/finalcleanup">
-    <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/finalcleanup?style=for-the-badge&label=LAST%20COMMIT%20(FINALCLEANUP)&color=%2334a5eb" align="right">
+      <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/finalcleanup?style=for-the-badge&label=LAST%20COMMIT%20(FINALCLEANUP)&color=%2334a5eb"
+              alt="GitHub last commit (branch)" align="right">
   </a>
   <br>
-  <br>
-  <br>
-  <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
+  <p align="right">PORTAL 2:</p>
+  <p align="right">MULTIPLAYER MOD</p>
 </h1>
 
 ### Questa mod è completamente lato server. Solo l'host deve eseguire Portal 2 con la mod installata. Le persone che si uniscono all'host devono eseguire Portal 2 senza alcuna modifica.
 
 ## Lingue
 
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | **_Italiano_** | [Français](README.fr.md)
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | **_Italiano_** | [Français](README.fr.md) | [Português (Brasil)](README.pt_BR.md)
 
 ## Caratteristiche P2MM
 
@@ -43,7 +47,7 @@
   - Pieno supporto per la mappa teaser Super 8
   - Supporto per mappe selezionate di Steam Workshop
   - Crittografia dei comandi client richiamati tramite la classe GameRules attiva
-  - Supporto per Linux, Windows 7 e versioni successive
+  - Supporto per Linux, Windows 10 e versioni successive
   - Opzioni di gioco attivabili e sistema di configurazione esposti tramite VScript e un plug-in personalizzato
   - Supporto per SAR (SourceAutoRecord) per lo speedrunning
 ```
@@ -68,7 +72,6 @@
 
 - Python 3.10
 - pygame
-- pyperclip
 - requests
 - steamid-converter
 
@@ -104,7 +107,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 # Contributions
 
-A partire dalla versione 2.2.0, saranno accettate solo correzioni di bug, problemi che influiscono sull'uso del launcher e/o durante l'esecuzione della mod in Portal 2 e traduzioni per il launcher. Qualsiasi modifica importante verrà rifiutata poiché stiamo cercando di riscrivere la versione 3.0 invece di continuare a lavorare sulla serie 2.0. Tuttavia, siete i benvenuti se ci aiutate con il [3.0 rewrite repository](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement)! Lì abbiamo bisogno di programmatori in Python e C++.
+Portal 2: Multiplayer Mod version `2.2.0` sera notre version définitive, donc nous ne ferons pas de mises à jour significatives après sa sortie complète. Avant cela, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons toute modification ou caractéristique substantielle pour P2:MM au cours de cette période. Toutefois, nous n'accepterons plus de modifications importantes après la publication de la version complète. Les seules raisons pour lesquelles nous ferions une nouvelle version seraient que quelqu'un apporte une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction de bug mineur que nous n'aurions pas détectée, ou un fichier de support de carte pour une carte d'atelier. Nous ne ferons une nouvelle version que dans ces circonstances et n'accepterons plus rien d'important dans ce dépôt. Cependant, vous pouvez toujours le forker pour construire à partir de notre travail ! N'oubliez pas de donner le crédit à ce dépôt !
 
 # Crediti
 

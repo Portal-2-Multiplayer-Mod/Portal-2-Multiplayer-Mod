@@ -100,7 +100,7 @@ DefaultConfig = {
     "Start-From-Last-Map": {
         "value": True,
         "menu": "general",
-        "description": "Start the game from the last session's map",
+        "description": "Start the game from the last session's map.",
         "warning": "",
         "prompt": ""
     },
@@ -108,7 +108,7 @@ DefaultConfig = {
     "Last-Map": {
         "value": "",
         "menu": "",
-        "description": "the last map played",
+        "description": "The last map played.",
         "warning": "",
         "prompt": ""
     },
@@ -120,6 +120,14 @@ DefaultConfig = {
         "menu": "players",
         "description": "A list of Admins.",
         "warning": "",
+        "prompt": ""
+    },
+
+    "Opt-Into-Beta": {
+        "value": False,
+        "menu": "general",
+        "description": "Get updates of pre-release/beta versions of P2MM.",
+        "warning": "These versions will possibly not be in a stable state!",
         "prompt": ""
     },
 

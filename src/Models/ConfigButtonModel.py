@@ -40,10 +40,10 @@ class ConfigButton:
         self.yPos = 2
 
         # A duct tape fix to prevent errors with mouse movement detection
-        self.x = 16
-        self.y = 2
-        self.width = 28
-        self.height = 14
+        self.X = 16
+        self.Y = 2
+        self.Width = 28
+        self.Height = 14
 
         self.ClickAnimation = "pop"
         self.CurrentAnimation = ""

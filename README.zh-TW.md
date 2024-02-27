@@ -1,34 +1,38 @@
 <h1>
-  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png" alt="P2MMBannerREADME" width="500" height="300" align="left">
-  <a href="https://discord.gg/nXRygGNxyK">
-    <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20" alt="Discord Shield Badge" align="right">
+  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png?raw=true" alt="P2MMBannerREADME" width="472" height="290" align="left">
+  <a href="https://discord.gg/nXRygGNxyK" target="_blank">
+      <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20"
+              alt="Discord Shield Badge" style="margin-bottom: 10px;" align="right">
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest">
-    <img src="https://img.shields.io/github/release-date/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?color=red&label=Latest%20Release&style=for-the-badge" alt="Release Shield Badge" align="right">
+      <img src="https://img.shields.io/github/release-date/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?color=red&label=Latest%20Release&style=for-the-badge"
+              alt="Release Shield Badge" style="margin-bottom: 10px;" align="right">
   </a>
   <br>
-    <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=TOTAL%20DOWNLOAD%20COUNT" alt="Download Count Shield Badge" align="right">
+  <img src="https://img.shields.io/github/downloads/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/total?style=for-the-badge&label=TOTAL%20DOWNLOAD%20COUNT"
+          alt="Download Count Shield Badge" style="margin-bottom: 10px;" align="right">
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/main">
-    <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?label=LAST%20COMMIT%20(MAIN)&style=for-the-badge" alt="Commit Shield Badge" align="right">
+      <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod?label=LAST%20COMMIT%20(MAIN)&style=for-the-badge"
+              alt="Commit Shield Badge" style="margin-bottom: 10px;" align="right">
   </a>
   <br>
   <a href="https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/commits/finalcleanup">
-    <img alt="GitHub last commit (branch)" src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/finalcleanup?style=for-the-badge&label=LAST%20COMMIT%20(FINALCLEANUP)&color=%2334a5eb" align="right">
+      <img src="https://img.shields.io/github/last-commit/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/finalcleanup?style=for-the-badge&label=LAST%20COMMIT%20(FINALCLEANUP)&color=%2334a5eb"
+              alt="GitHub last commit (branch)" align="right">
   </a>
   <br>
-  <br>
-  <br>
-  <p align="right">PORTAL 2: MULTIPLAYER MOD</p>
+  <p align="right">PORTAL 2:</p>
+  <p align="right">MULTIPLAYER MOD</p>
 </h1>
 
 ### 該模組僅服務端使用。只有伺服器管理員需要安裝該模組至 Portal 2 來執行。其他玩家僅需使用原版即可進入該伺服器。
 
 ## 語言
 
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | **_繁體中文_** | [Italiano](README.it.md) | [Français](README.fr.md)
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | **_繁體中文_** | [Italiano](README.it.md) | [Français](README.fr.md) | [Português (Brasil)](README.pt_BR.md)
 
 ## 模組功能
 
@@ -43,7 +47,7 @@
   - 支援 Super 8 地圖
   - 內部地圖支援選擇創意工坊地圖
   - 透過活動 GameRules 類呼叫用戶端指令加密
-  - 支援 Linux, Windows 7 及以上系統
+  - 支援 Linux, Windows 10 及以上系統
   - 通過 VScript 和自訂外掛程式提供可切換的遊戲選項以及配置系統
   - 為速通提供 SAR（起源自動錄製）支援
 ```
@@ -68,7 +72,6 @@
 
 - Python 3.10
 - pygame
-- pyperclip
 - requests
 - steamid-converter
 
@@ -104,7 +107,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModF
 
 # 做出貢獻
 
-自 2.2.0 發布起，所有將接受貢獻的內容都是錯誤修復，影響啟動器和/或在 Portal 2 中運行模組時的使用問題，以及啟動器的翻譯。任何重大更改都將被拒絕，因為我們嘗試努力進行 3.0 重寫，而不是繼續在 2.0 系列上進行工作。不過，歡迎您幫助我們處理 [3.0 重寫存儲庫](https://github.com/Portal-2-Multiplayer-Mod/P2MM-Entanglement)！在那裡，我們需要 Python 和 C ++ 程序員。
+Portal 2: 多人遊戲 Mod 版本 2.2.0 將是我們的最終版本，因此在完全發布後我們將不再進行重大更新。在此之前，我們將致力於小的更新，逐步迎來完整版本。在此期間，我們將接受 P2:MM 的任何實質性更改或功能。然而，在完全發布後，我們將不再接受任何重大更改。我們會發布新版本的唯一原因是當有人貢獻新的翻譯，改進現有翻譯，修復我們沒有發現的其他小錯誤，或為創意工坊地圖提供地圖支援檔案時。在這些情況下，我們將只發布另一個版本，並不再接受任何重大更改到這個存儲庫。然而，你仍然可以 fork 它以構建基於我們的工作！請確保給予這個存儲庫適當的榮譽！
 
 # 貢獻者
 
