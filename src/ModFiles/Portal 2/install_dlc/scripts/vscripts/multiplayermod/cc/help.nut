@@ -7,7 +7,7 @@ commandtable["kick"] <- "Kicks the player from the server. This will not prevent
 commandtable["kill"] <- "Kill yourself, another player, or a target team. \"!kill (target player/target team/self)\""
 commandtable["mpcourse"] <- "Changes the level to the specified cooperative course. \"!mpcourse (course integer 1-6)\""
 commandtable["noclip"] <- "Toggles your noclip status. \"!noclip\""
-commandtable["playercolor"] <- "Changes your player model's color through valid RGB values. \"!playercolor (red OR reset) (green) (blue) (optional arg: player)\""
+commandtable["playercolor"] <- "Change player color by color name or RGB value (ex. !playercolor 0 255 0). Type reset to revert to white."
 commandtable["restartlevel"] <- "Reset the current map. \"!restartlevel\""
 commandtable["rocket"] <- "Send yourself, another player, or a target team into the air for them to blow up. \"!rocket (target arg: Specific player, team target. Self if no arg.)\""
 commandtable["slap"] <- "Slap yourself, another player, or a target team dealing a tiny amount of damage and jolting. \"!slap (target arg: Specific player, team target. Self if no arg.)\""
