@@ -66,9 +66,6 @@ configs.cfg
 !src/ModFiles/Portal 2/install_dlc/addons/p2mm.so
 !src/ModFiles/Portal 2/install_dlc/p2mm.dll
 !src/ModFiles/Portal 2/install_dlc/p2mm.so
-# fallback folder
-!src/FALLBACK/ModFiles/Portal 2/install_dlc/32pmod.dll
-!src/FALLBACK/ModFiles/Portal 2/install_dlc/32pmod.so
 
 ##################################################################################
 # default list of files to ignore for python
