@@ -219,6 +219,35 @@ function MultiplyRGBValue(iRGBValue) {
     return iRGBValue
 }
 
+function presetcolor(color) {
+    local vColor = color.tolower()
+    switch (vColor) {
+        case "white"  :   R <- 255; G <- 255; B <- 255;           break;
+        case "green"  :   R <- 180, G <- 255, B <- 180;           break;
+        case "blue"   :   R <- 120, G <- 140, B <- 255;           break;
+        case "orange" :   R <- 255, G <- 170, B <- 120;           break;
+        case "red"    :   R <- 255, G <- 100, B <- 100;           break;
+        case "pink"   :   R <- 255, G <- 180, B <- 255;           break;
+        case "yellow" :   R <- 255, G <- 255, B <- 180;           break;
+        case "aqua"   :   R <-  0 , G <- 255, B <- 255;           break;
+        case "crimson":   R <-  60, G <-  15, B <-   0;           break;
+        case "lime"   :   R <- 208, G <- 255, B <-  28;           break;
+        case "purple" :   R <-  99, G <-   0, B <- 161;           break;
+        case "cyan"   :   R <-  56, G <- 191, B <- 188;           break;
+        case "black"  :   R <-  11, G <-  11, B <-  11;           break;
+        case "teal"   :   R <- 103, G <- 233, B <- 197;           break;
+        case "olive"  :   R <-  80, G <-  99, B <-   0;           break;
+        case "violet" :   R <-  40, G <-  40, B <-  80;           break;
+        case "gray"   :   R <-  75, G <-  75, B <-  75;           break;
+        default: return null;
+    }
+    return class {
+    r = R.tostring()
+    g = G.tostring()
+    b = B.tostring()
+    }
+}
+
 function GetPlayerColor(p, multiply = true) {
     local PlayerID
     if (typeof p == "integer") {
@@ -226,7 +255,7 @@ function GetPlayerColor(p, multiply = true) {
     } else {
         PlayerID = p.entindex() + amtoffsetclr
     }
-    local colorname = ""
+    local colorname;
     try {
         switch (PlayerID) {
             case 1 : R <- 255; G <- 255; B <- 255;  colorname = "White";            break;

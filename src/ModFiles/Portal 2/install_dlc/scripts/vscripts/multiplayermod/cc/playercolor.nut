@@ -2,11 +2,18 @@ CommandList.push(
     class {
         name = "playercolor"
         level = 0
+    
 
         // !playercolor (r OR reset) (g) (b) (optional arg: player)
-        function CC(p, args) {
+        function CC(p, argsog) {
             local ErrorOut = function(p) {
                 SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space OR 'reset'.", p)
+            }
+
+            if (argsog.len() == 1) {
+               args <- [argsog[0], 0, 0]    
+            } else {
+                args <- argsog
             }
 
             try {
@@ -48,10 +55,19 @@ CommandList.push(
                 return
             }
 
+            local x = presetcolor(args[0])
+            if(x != null) {
+                args[0] = x.r;
+                args[1] = x.g;
+                args[2] = x.b;
+            }
+
             try {
                 args[1] = strip(args[1])
                 args[2] = strip(args[2])
             } catch (exception) {
+                printl("error on line 69 (nice)")
+                printl(exception)
                 return ErrorOut(p)
             }
 
