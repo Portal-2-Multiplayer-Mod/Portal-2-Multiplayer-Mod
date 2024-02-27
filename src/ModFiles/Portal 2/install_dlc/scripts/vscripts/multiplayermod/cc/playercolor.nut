@@ -7,7 +7,7 @@ CommandList.push(
         // !playercolor (r OR reset) (g) (b) (optional arg: player)
         function CC(p, argsog) {
             local ErrorOut = function(p) {
-                SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space OR 'reset'.", p)
+                SendChatMessage("Change player color by color name or RGB value (ex. 0 255 0). Type reset to revert to white.", p)
             }
 
             if (argsog.len() == 1) {
