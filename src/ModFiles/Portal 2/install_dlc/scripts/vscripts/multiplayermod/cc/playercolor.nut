@@ -56,10 +56,18 @@ CommandList.push(
             }
 
             local x = presetcolor(args[0])
+            local playerextra;
             if(x != null) {
+                if (args.len() == 2) {
+                    playerextra = args[1]
+                    args.append(null);
+                }
                 args[0] = x.r;
                 args[1] = x.g;
                 args[2] = x.b;
+                if (playerextra != null) {
+                    args.append(playerextra)
+                }
             }
 
             try {
