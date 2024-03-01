@@ -86,7 +86,7 @@ Używamy `pyinstaller` i `AppImage` do tworzenia plików wykonywalnych!
 W systemie Windows używamy tylko [pyinstaller] (https://pypi.org/project/pyinstaller/) do zbudowania pliku wykonywalnego (jeśli znasz lepsze opcje, powiedz nam).
 
 ```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
+pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
 ```
 
 ### Linux:
@@ -98,7 +98,7 @@ Dla systemu Linux przeszliśmy na korzystanie z [AppImage](https://appimage.org/
 Jeśli nie chcesz używać AppImage/Docker, nadal możesz używać pyinstaller:
 
 ```shell
-pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
+pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
 ```
 
 ### Uwaga:

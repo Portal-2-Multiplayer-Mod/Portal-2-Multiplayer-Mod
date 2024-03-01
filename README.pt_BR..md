@@ -86,7 +86,7 @@ Usamos o `pyinstaller` e o `AppImage` para criar os executáveis!
 Para o Windows, usamos apenas o [pyinstaller](https://pypi.org/project/pyinstaller/) para compilar o executável (se você souber de opções melhores, informe-nos).
 
 ```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/ModFiles;ModFiles" --add-data "src/Languages;Languages"
+pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
 ```
 
 ### Linux:
@@ -98,7 +98,7 @@ Para o Linux, mudamos para o uso do [AppImage] (https://appimage.org/) e criamos
 Se não quiser usar o AppImage/docker, você ainda pode usar o pyinstaller:
 
 ```shell
-pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/ModFiles:ModFiles" --add-data "src/Languages:Languages"
+pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
 ```
 
 ### Observações:
