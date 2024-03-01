@@ -1,6 +1,5 @@
 import json
 import os
-import random
 import subprocess
 import sys
 import threading
@@ -11,7 +10,6 @@ import __main__
 import pygame
 from pygame.locals import *
 import pygame.locals
-from Models.PopupBoxModel import PopupBox
 
 import Scripts.BasicFunctions as BF
 import Scripts.Configs as CFG
@@ -26,7 +24,7 @@ from Scripts.BasicLogger import Log, StartLog
 
 from Models.LabelModel import Label
 from Models.ButtonModel import Button
-from Models.FloaterModel import Floater
+from Models.PopupBoxModel import PopupBox
 from Models.ConfigButtonModel import ConfigButton
 
 # set current directory to the directory of this file
