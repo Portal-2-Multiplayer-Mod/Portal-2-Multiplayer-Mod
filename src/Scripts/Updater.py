@@ -1,6 +1,5 @@
 import http.client as httplib
 import os
-import platform
 import shutil
 import subprocess
 import urllib.parse
@@ -110,7 +109,7 @@ def DownloadClient(newRepo: bool) -> bool:
     if not HasInternet():
         Log("No Internet Connection!")
         return False
-    
+
     # Get the right version of the new client executable
     Log("Checking systems CPU architecture to get the right executable...")
     if (GVars.iow):
@@ -182,7 +181,7 @@ def CheckForNewFiles() -> bool:
         print("localIDPath and which identifier file exists?")
         print(localIDPath)
         print(localIDPath + "p2mm.identifier: " + os.path.exists(localIDPath + "p2mm.identifier"))
-    
+
     if not (os.path.exists(localIDPath + "p2mm.identifier")):
         Log("Identifier file doesn't exist so the ModFiles are probably unavailable too...")
         return True
@@ -197,10 +196,10 @@ def CheckForNewFiles() -> bool:
         Log(f"Error getting the index file: {str(e)}")
         return False
 
-    # compare the dates of the local file and the file on the repo  
+    # compare the dates of the local file and the file on the repo
     localDate = datetime.strptime(open(localIDPath + "p2mm.identifier", "r").read(), "%Y-%m-%d")
     remoteDate = datetime.strptime(r["Date"], "%Y-%m-%d")
-    
+
     # if the remote date is less or equal to the local date that means our client is up to date
     if (remoteDate <= localDate):
         Log("ModFiles are up to date!")

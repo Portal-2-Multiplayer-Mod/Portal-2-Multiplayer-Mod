@@ -8,7 +8,6 @@ from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.Configs as CFG
 import Scripts.BasicFunctions as BF
-import random
 import time
 
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
