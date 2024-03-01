@@ -219,37 +219,35 @@ function MultiplyRGBValue(iRGBValue) {
     return iRGBValue
 }
 
-function presetcolor(color) {
+function GetColorByName(color) {
     local vColor = color.tolower()
+    local id = 0;
     switch (vColor) {
-        case "white"  :   R <- 255; G <- 255; B <- 255;           break;
-        case "green"  :   R <- 180, G <- 255, B <- 180;           break;
-        case "blue"   :   R <- 120, G <- 140, B <- 255;           break;
-        case "orange" :   R <- 255, G <- 170, B <- 120;           break;
-        case "red"    :   R <- 255, G <- 100, B <- 100;           break;
-        case "pink"   :   R <- 255, G <- 180, B <- 255;           break;
-        case "yellow" :   R <- 255, G <- 255, B <- 180;           break;
-        case "aqua"   :   R <-  0 , G <- 255, B <- 255;           break;
-        case "crimson":   R <-  60, G <-  15, B <-   0;           break;
-        case "lime"   :   R <- 208, G <- 255, B <-  28;           break;
-        case "purple" :   R <-  99, G <-   0, B <- 161;           break;
-        case "cyan"   :   R <-  56, G <- 191, B <- 188;           break;
-        case "black"  :   R <-  11, G <-  11, B <-  11;           break;
-        case "teal"   :   R <- 103, G <- 233, B <- 197;           break;
-        case "olive"  :   R <-  80, G <-  99, B <-   0;           break;
-        case "violet" :   R <-  40, G <-  40, B <-  80;           break;
-        case "gray"   :   R <-  75, G <-  75, B <-  75;           break;
-        default: return null;
+        case "white"  :  id = 1    ; break;
+        case "green"  :  id = 2    ; break;
+        case "blue"   :  id = 3    ; break;
+        case "orange" :  id = 4    ; break;
+        case "red"    :  id = 5    ; break;
+        case "pink"   :  id = 6    ; break;
+        case "yellow" :  id = 7    ; break;
+        case "aqua"   :  id = 8    ; break;
+        case "crimson":  id = 9    ; break;
+        case "lime"   :  id = 22   ; break;
+        case "purple" :  id = 24   ; break;
+        case "cyan"   :  id = 26   ; break;
+        case "black"  :  id = 27   ; break;
+        case "teal"   :  id = 28   ; break;
+        case "olive"  :  id = 11   ; break;
+        case "violet" :  id = 12   ; break;
+        case "gray"   :  id = 13   ; break;
+        case "random" :  id = 69420; break;
+        default: return null;        
     }
-    return class {
-    r = R.tostring()
-    g = G.tostring()
-    b = B.tostring()
-    }
+    return GetPlayerColor(id, false)
 }
 
 function GetPlayerColor(p, multiply = true) {
-    local PlayerID
+    local PlayerID;
     if (typeof p == "integer") {
         PlayerID = p
     } else {

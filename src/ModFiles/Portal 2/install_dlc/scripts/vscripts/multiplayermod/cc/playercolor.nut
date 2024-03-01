@@ -19,6 +19,7 @@ CommandList.push(
             try {
                 args[0] = strip(args[0])
             } catch (exception) {
+                printl(exception)
                 return ErrorOut(p)
             }
 
@@ -55,7 +56,8 @@ CommandList.push(
                 return
             }
 
-            local x = presetcolor(args[0])
+            
+            local x = GetColorByName(args[0])
             local playerextra;
             if(x != null) {
                 if (args.len() == 2) {
@@ -64,17 +66,16 @@ CommandList.push(
                 }
                 args[0] = x.r;
                 args[1] = x.g;
-                args[2] = x.b;
+                args[2] = x.b; // nice
                 if (playerextra != null) {
                     args.append(playerextra)
                 }
             }
 
             try {
-                args[1] = strip(args[1])
-                args[2] = strip(args[2])
+                args[1] = strip(args[1].tostring())
+                args[2] = strip(args[2].tostring())
             } catch (exception) {
-                printl("error on line 69 (nice)")
                 printl(exception)
                 return ErrorOut(p)
             }
@@ -96,6 +97,7 @@ CommandList.push(
             for (local i = 0; i < 3 ; i++) {
                 if (!IsCustomRGBIntegerValid(args[i])) {
                     return ErrorOut(p)
+
                 }
                 args[i] = args[i].tointeger()
             }
@@ -125,7 +127,7 @@ CommandList.push(
             // Doing this so that if someone picks a color that we actually
             // have a preset name for, it will switch the name to it
             local NewColorName = "Custom Color"
-            for (local i = 1; i <= 16; i++) {
+            for (local i = 1; i <= 33; i++) {
                 local color = GetPlayerColor(i, false)
                 if (color.r == args[0] && color.g == args[1] && color.b == args[2]) {
                     NewColorName = color.name
