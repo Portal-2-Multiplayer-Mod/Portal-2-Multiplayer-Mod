@@ -2,16 +2,24 @@ CommandList.push(
     class {
         name = "playercolor"
         level = 0
+    
 
         // !playercolor (r OR reset) (g) (b) (optional arg: player)
-        function CC(p, args) {
+        function CC(p, argsog) {
             local ErrorOut = function(p) {
-                SendChatMessage("Type in three valid RGB integers from 0 to 255 separated by a space OR 'reset'.", p)
+                SendChatMessage("Change player color by color name or RGB value (ex. 0 255 0). Type reset to revert to default color given upon joining.", p)
+            }
+
+            if (argsog.len() == 1) {
+               args <- [argsog[0], 0, 0]    
+            } else {
+                args <- argsog
             }
 
             try {
                 args[0] = strip(args[0])
             } catch (exception) {
+                printl(exception)
                 return ErrorOut(p)
             }
 
@@ -48,10 +56,27 @@ CommandList.push(
                 return
             }
 
+            
+            local x = GetColorByName(args[0])
+            local playerextra;
+            if(x != null) {
+                if (args.len() == 2) {
+                    playerextra = args[1]
+                    args.append(null);
+                }
+                args[0] = x.r;
+                args[1] = x.g;
+                args[2] = x.b; // nice
+                if (playerextra != null) {
+                    args.append(playerextra)
+                }
+            }
+
             try {
-                args[1] = strip(args[1])
-                args[2] = strip(args[2])
+                args[1] = strip(args[1].tostring())
+                args[2] = strip(args[2].tostring())
             } catch (exception) {
+                printl(exception)
                 return ErrorOut(p)
             }
 
@@ -72,6 +97,7 @@ CommandList.push(
             for (local i = 0; i < 3 ; i++) {
                 if (!IsCustomRGBIntegerValid(args[i])) {
                     return ErrorOut(p)
+
                 }
                 args[i] = args[i].tointeger()
             }
@@ -101,7 +127,7 @@ CommandList.push(
             // Doing this so that if someone picks a color that we actually
             // have a preset name for, it will switch the name to it
             local NewColorName = "Custom Color"
-            for (local i = 1; i <= 16; i++) {
+            for (local i = 1; i <= 33; i++) {
                 local color = GetPlayerColor(i, false)
                 if (color.r == args[0] && color.g == args[1] && color.b == args[2]) {
                     NewColorName = color.name

@@ -219,14 +219,41 @@ function MultiplyRGBValue(iRGBValue) {
     return iRGBValue
 }
 
+function GetColorByName(color) {
+    local vColor = color.tolower()
+    local id = 0;
+    switch (vColor) {
+        case "white"  :  id = 1    ; break;
+        case "green"  :  id = 2    ; break;
+        case "blue"   :  id = 3    ; break;
+        case "orange" :  id = 4    ; break;
+        case "red"    :  id = 5    ; break;
+        case "pink"   :  id = 6    ; break;
+        case "yellow" :  id = 7    ; break;
+        case "aqua"   :  id = 8    ; break;
+        case "crimson":  id = 9    ; break;
+        case "lime"   :  id = 22   ; break;
+        case "purple" :  id = 24   ; break;
+        case "cyan"   :  id = 26   ; break;
+        case "black"  :  id = 27   ; break;
+        case "teal"   :  id = 28   ; break;
+        case "olive"  :  id = 11   ; break;
+        case "violet" :  id = 12   ; break;
+        case "gray"   :  id = 13   ; break;
+        case "random" :  id = 69420; break;
+        default: return null;        
+    }
+    return GetPlayerColor(id, false)
+}
+
 function GetPlayerColor(p, multiply = true) {
-    local PlayerID
+    local PlayerID;
     if (typeof p == "integer") {
         PlayerID = p
     } else {
         PlayerID = p.entindex() + amtoffsetclr
     }
-    local colorname = ""
+    local colorname;
     try {
         switch (PlayerID) {
             case 1 : R <- 255; G <- 255; B <- 255;  colorname = "White";            break;
