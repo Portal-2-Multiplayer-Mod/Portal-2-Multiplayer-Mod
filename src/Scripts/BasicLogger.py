@@ -1,68 +1,70 @@
+import os
+import logging
+from datetime import datetime
 from pathlib import Path
-
 import Scripts.GlobalVariables as GVars
 
+
 def Log(message: str) -> None:
+    """Writes a message to the log file and prints it in the console
+
+    Parameters
+    ----------
+    message : str
+        message to be logged
+
+    Raises
+    ------
+    ValueError
+        raises error if log is called with an empty message
+    """
     message = message.strip()
-    # get the path of the mod launcher and make a floder inside it called "Logs"
-    path = GVars.mainFolderPath + "/Logs"
-    Path(path).mkdir(parents=True, exist_ok=True)
 
-    # creates a log file and writes to it
-        # if the file already exists it will append to it
-    with open(path + "/Log-"+GVars.appStartDate+".log", "a", encoding="utf-8") as log:
-        log.write(message + "\n")
+    if not len(message) > 0:
+        raise ValueError("Can't log a message with no content!")
 
-    # Only write to the console if the message is not empty
-    if len(message) > 0:
-        try:
-            print("(P2:MM): " + message)
-        except Exception as e:
-            print(str(e))
-    else:
-        print("")
+    logging.info("(P2:MM): " + message)
+    print("(P2:MM): " + message)
 
-#////////////////////////////////////////#
-#//# Cool text to start the log with  #//#
-#////////////////////////////////////////#
 def StartLog() -> None:
-    Log("")
-    Log("")
-    Log("")
-    Log("")
-    Log("____________________NEW LAUNCH LOG " + GVars.appStartDate + "___________________")
-    Log("")
-    Log("")
-    Log("")
-    Log("██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░░██████╗░")
-    Log("██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░░╚════██╗")
-    Log("██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░░░░███╔═╝")
-    Log("██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░░██╔══╝░░")
-    Log("██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░░███████╗")
-    Log("╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░░╚══════╝")
-    Log("")
-    Log("░░░░░░███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░░░░░░░")
-    Log("░░░░░░████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗░░░░░░")
-    Log("░░░░░░██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║░░░░░░")
-    Log("░░░░░░██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║░░░░░░")
-    Log("░░░░░░██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝░░░░░░")
-    Log("░░░░░░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░╚═╝░░░░░╚═╝░╚════╝░╚═════╝░░░░░░░")
-    Log("")
-    Log("")
+    """Configures the logger and prints the log header"""
 
-    Log("______________________General Info______________________")
-    Log("")
-    if (GVars.isWin):
+    logsPath = os.path.join(GVars.modPath, "Logs")
+
+    dateFormat = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
+    Path(logsPath).mkdir(parents=True, exist_ok=True)
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    logFile = os.path.join(logsPath, f"{dateFormat}.log")
+    handler = logging.FileHandler(filename=logFile, mode="w", encoding="utf-8")
+    logger.addHandler(handler)
+
+    logBanner = f"""
+    ____________________NEW LAUNCH LOG {dateFormat}___________________
+
+    ██████╗░░█████╗░██████╗░████████╗░█████╗░██╗░░░░░░░░░░██████╗░
+    ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██║░░░░░░░░░░╚════██╗
+    ██████╔╝██║░░██║██████╔╝░░░██║░░░███████║██║░░░░░░░░░░░░███╔═╝
+    ██╔═══╝░██║░░██║██╔══██╗░░░██║░░░██╔══██║██║░░░░░░░░░░██╔══╝░░
+    ██║░░░░░╚█████╔╝██║░░██║░░░██║░░░██║░░██║███████╗░░░░░███████╗
+    ╚═╝░░░░░░╚════╝░╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝░░░░░╚══════╝
+
+    ░░░░░░███╗░░░███╗██████╗░░░░░███╗░░░███╗░█████╗░██████╗░░░░░░░
+    ░░░░░░████╗░████║██╔══██╗░░░░████╗░████║██╔══██╗██╔══██╗░░░░░░
+    ░░░░░░██╔████╔██║██████╔╝░░░░██╔████╔██║██║░░██║██║░░██║░░░░░░
+    ░░░░░░██║╚██╔╝██║██╔═══╝░░░░░██║╚██╔╝██║██║░░██║██║░░██║░░░░░░
+    ░░░░░░██║░╚═╝░██║██║░░░░░░░░░██║░╚═╝░██║╚█████╔╝██████╔╝░░░░░░
+    ░░░░░░╚═╝░░░░░╚═╝╚═╝░░░░░░░░░╚═╝░░░░░╚═╝░╚════╝░╚═════╝░░░░░░░
+    """
+
+    Log(logBanner)
+
+    if GVars.iow:
         Log("Windows OS detected!")
-    elif (GVars.isLinux):
+    elif GVars.iol:
         Log("Linux OS: detected!")
-    elif (GVars.isSteamDeck):
-        Log("SteamOS 3.0: detected!")
-
-    Log("")
-    Log("Launcher variables:")
-    Log("App started at " + str(GVars.appStartDate))
-    Log("p2mm folder is: " + str(GVars.mainFolderPath))
-    Log("The mod files are located in: " + str(GVars.modFilesPath))
-    Log("The config file is in: " + str(GVars.configsFilePath))
-    Log("")
+    elif GVars.iosd:
+        Log("Steam Deck/Steam OS 3.0: detected!")

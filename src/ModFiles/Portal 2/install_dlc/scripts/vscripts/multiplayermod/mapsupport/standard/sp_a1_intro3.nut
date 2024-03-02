@@ -69,8 +69,7 @@ function a1HasPortalGun() {
         // Force all players to receive portal gun
         GamePlayerEquip <- Entities.CreateByClassname("game_player_equip")
         GamePlayerEquip.__KeyValueFromString("weapon_portalgun", "1")
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(GamePlayerEquip, "use", "", 0, p, p)
         }
         GamePlayerEquip.Destroy()

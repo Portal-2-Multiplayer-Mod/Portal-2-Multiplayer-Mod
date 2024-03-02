@@ -138,8 +138,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin) {
         // Find all players
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(p2mm_clientcommand, "Command", "r_flashlightbrightness 1", 0, p, p)
             EntFireByHandle(p, "setfogcontroller", "@environment_darkness_fog", 0, null, null)
         }
@@ -183,8 +182,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (TeleportOutInSp_A2_Core) {
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 local DisableTeleport = false
                 foreach (player in CreateTrigger("player", -857.83013916016, -1769.8682861328, 1200.1546630859, 828.51452636719, 904.61602783203,  -11763)) {
                     if (p == player) {
@@ -211,8 +209,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!ONETIMEFOGCHANGESp_A2_Core_2) {
             if (!Entities.FindByName(null, "RedFogKillTriggerMPMOD")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     EntFireByHandle(p, "setfogcontroller", "@environment_red_state", 0, null, null)
                 }
                 ONETIMEFOGCHANGESp_A2_Core_2 <- true
@@ -221,8 +218,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!ONETIMEFOGCHANGESp_A2_Core_2_white) {
             if (!Entities.FindByName(null, "WhiteFogKillTriggerMPMOD")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     EntFireByHandle(p, "setfogcontroller", "@environment_wheatly_state_01", 0, null, null)
                 }
                 RoomLookAtPlayerSp_A2_Core <- true
@@ -232,8 +228,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!ONETIMEFOGCHANGESp_A2_Core_2_evil) {
             if (!Entities.FindByName(null, "EvilFogKillTriggerMPMOD")) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     EntFireByHandle(p, "setfogcontroller", "@environment_wheatly_state_02", 0, null, null)
                 }
                 ONETIMEFOGCHANGESp_A2_Core_2_evil <- true
@@ -261,11 +256,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (OnlyOnceMoveTeleportSp_A2_Core_2) {
             if (Entities.FindByName(null, "OnMoveStartOnlyOnceSp_A2_Core_2")) {
                 // Find all players
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     local InsideArea = false
-                    local p2 = null
-                    while (p2 = Entities.FindByClassnameWithin(p2, "player", Vector(-1836.2550048828, -0.81460344791412, -31.667282104492), 151.99999809265)) {
+                    for (local p2 = null; p2 = Entities.FindByClassnameWithin(p2, "player", Vector(-1836.2550048828, -0.81460344791412, -31.667282104492), 151.99999809265);) {
                         if (p2 == p) {
                             InsideArea = true
                         }
@@ -316,8 +309,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (TPSp_A2_Core) {
             if (!Entities.FindByName(null, "TPSp_A2_CoreForSure")) {
                 EnableMeSp_A2_Core <- false
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(0, 290, -200))
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(80, 270, 0)
@@ -328,8 +320,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (EnableMeSp_A2_Core) {
             // First teleport behind the panels so players can't be seen from the elevator
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 p.SetOrigin(Vector(0, 495, 37))
                 p.SetVelocity(Vector(0, 0, 0))
             }

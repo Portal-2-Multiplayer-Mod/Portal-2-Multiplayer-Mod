@@ -84,9 +84,6 @@ IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
-// Load the data system after everything else has been loaded
-// IncludeScript("multiplayermod/datasystem/datasystem-main.nut") Commented out for now, still need to finish
-
 // Always have global root functions imported for any level
 IncludeScript("multiplayermod/mapsupport/#propcreation.nut")
 IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
@@ -141,13 +138,12 @@ function LoadMapSupportCode(gametype) {
 // Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard mapsupport
 switch (Config_GameMode) {
-case 0:     LoadMapSupportCode("standard");     break
-case 1:     LoadMapSupportCode("speedrun");     break
-case 2:     LoadMapSupportCode("deathmatch");   break
-case 3:     LoadMapSupportCode("futbol");       break
-default:
-    printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
-    LoadMapSupportCode("standard"); break
+    case 0: LoadMapSupportCode("standard"); break
+    case 1: LoadMapSupportCode("speedrun"); break
+    default:
+        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
+        LoadMapSupportCode("standard")
+        break
 }
 
 //---------------------------------------------------

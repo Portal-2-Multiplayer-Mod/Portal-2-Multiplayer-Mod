@@ -1,28 +1,28 @@
 CommandList.push(
     class {
         name = "kick"
-        level = 6
+        level = 5
 
-        // !kick (player)
+        // !kick (target arg: player)
         function CC(p, args) {
             if (args.len() == 0) {
-                SendChatMessage("[ERROR] Input a player name.", p)
+                SendChatMessage("[ERROR] Input a player name!", p)
                 return
             }
 
-            args[0] = Strip(args[0])
+            args[0] = strip(args[0])
 
             if (FindPlayerByName(args[0]) == null) {
-                SendChatMessage("[ERROR] Player not found.", p)
+                SendChatMessage("[ERROR] Player not found!", p)
                 return
             }
             if (FindPlayerByName(args[0]) == p) {
-                SendChatMessage("[ERROR] Cannot kick yourself.", p)
+                SendChatMessage("[ERROR] Cannot kick yourself!", p)
                 return
             }
             if (!IsDedicatedServer()) {
                 if (FindPlayerByName(args[0]) == UTIL_PlayerByIndex(1)) {
-                    SendChatMessage("[ERROR] Cannot kick server operator.", p)
+                    SendChatMessage("[ERROR] Cannot kick server operator!", p)
                     return
                 }
             }

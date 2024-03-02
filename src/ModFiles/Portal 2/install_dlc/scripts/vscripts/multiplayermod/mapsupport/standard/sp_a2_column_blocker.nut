@@ -47,8 +47,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (OnlyOnceSpA2ColumBlocker1) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(-76, -1040, 311.5), 3)) {
                 // Find all players
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-64, -1088, 256))
                     p.SetAngles(0, 90, 0)
                 }
@@ -76,8 +75,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 UTIL_Team.Pinging(false, "all")
                 UTIL_Team.Taunting(false, "all")
 
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-1964, 331, -2479))
                 }
             }

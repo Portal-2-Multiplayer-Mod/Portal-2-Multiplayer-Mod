@@ -42,8 +42,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Enable retrigger for all logic_relay entities except for those defined otherwise
         // in the bsp to prevent desync on clients and remove errors from the console
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "logic_relay")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "logic_relay");) {
             ent.__KeyValueFromString("spawnflags", "2")
         }
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track1-rl_start_exit"))
@@ -65,9 +64,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
             ent.Destroy() // 165 entities removed
         }
+
         // Remove env_sprite's from the map
         for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
             ent.Destroy() // 31 entities removed
+        }
+
+        // Remove trigger_portal_cleaner's from map, two of these are bugged anyway and need to be removed
+        for (local ent = null; ent = Entities.FindByClassname(ent, "trigger_portal_cleanser");) {
+            ent.Destroy() // 5 entities removed
+        }
+
+        // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
+        Entities.FindByClassname(null, "point_viewcontrol").Destroy()
+        for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
+            if (ent.GetName().find("cam_botview") != null) {
+                continue
+            }
+            ent.Destroy() // 2 entities removed
         }
 
         // Fix track 5
@@ -81,26 +95,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@snd_light_outside").Destroy()
 
         // Remove orange exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "track5-orangeiris_door_elevator_pit");) {
             ent.Destroy()
         }
 
         Entities.FindByName(null, "track5-orangeescape_elevator_clip").Destroy()
 
         // Remove blue exit door
-        local ent = null
-        while(ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit")) {
+        for (local ent = null; ent = Entities.FindByName(ent, "track5-iris_door_elevator_pit");) {
             ent.Destroy()
         }
 
         Entities.FindByName(null, "track5-escape_elevator_clip").Destroy()
 
         // Remove the bottom of droppers in Course 5
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
-            local ent = null
-            while (ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500)) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
+            for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", OldPlayerPos, 500);) {
                 if (ent.GetModelName() == "models/props_underground/underground_boxdropper.mdl") {
                     EntFireByHandle(ent, "SetAnimation", "open_idle", 0.0, null, null)
                 }
@@ -113,10 +123,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop) {
-        local PLent = null
-        while(PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30)) {
-            local APLent = null
-            while(APLent = Entities.FindByClassname(APLent, "player")) {
+        for (local PLent = null; PLent = Entities.FindByClassnameWithin(PLent, "player", Vector(2367, -8126, -54), 30);) {
+            for (local APLent = null; APLent = Entities.FindByClassname(APLent, "player");) {
                 APLent.SetOrigin(Vector(2495, -7451, 410))
             }
         }

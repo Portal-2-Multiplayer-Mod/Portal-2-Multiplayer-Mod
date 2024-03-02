@@ -49,8 +49,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Find all players within
         if (!LoopEnablerSP_A2_BTS5) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(2944, 942, 4418), 80)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(2944, 942, 4418), 80);) {
                 LoopEnablerSP_A2_BTS5 <- true
             }
         }
@@ -58,8 +57,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Teleport everyone on the ground to the elevator
         if (LoopEnablerSP_A2_BTS5) {
             // Find all players under the elevator
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().z<=4100) {
                     p.SetOrigin(Vector(2929, 942, 4418))
                     p.SetAngles(0, 180, 0)
@@ -73,8 +71,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(2941.5, 944, 3662), 20)) {
                 printl("Triggered")
                 //Find all players
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(2944, 942, 3700))
                     p.SetAngles(0, 180, 0)
                     p.SetVelocity(Vector(0, 0, 0))
@@ -104,8 +101,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("Sp_A2_Bts5ServerCommand", "command", "echo Changing level...", 2, null)
                 EntFire("Sp_A2_Bts5ServerCommand", "command", "changelevel sp_a2_bts6", 2, null)
 
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-1964, 331, -2479))
                 }
 

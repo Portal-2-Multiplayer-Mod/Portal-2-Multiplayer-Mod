@@ -42,8 +42,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         // Exit Test Trigger
         if (OneTimeRunSp_A2_Bts1) {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-3004.51953125, -1652.0881347656, 58.625823974609), 72.800002098083)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-3004.51953125, -1652.0881347656, 58.625823974609), 72.800002098083);) {
                 EntFire("jailbreak_chamber_unlit-jailbreak_flashlight", "TurnOff", "", 1, null)
                 EntFire("@sphere", "DisableFlashlight", "", 0, null)
                 EntFire("@glados", "RunScriptCode", "JailbreakWheatleyCloseChamber()", 0, null)
@@ -59,8 +58,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Teleport players to spawn
         if (Entities.FindByName(null, "jailbreak_chamber_lit-jailbreak_trigger")) {
-            local p = null
-            while(p = Entities.FindByClassnameWithin(p, "player", Vector(-3792, -1128, 142), 350)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-3792, -1128, 142), 350);) {
                 if (p.GetTeam() == TEAM_RED) {
                     p.SetOrigin(Vector(-10066, -2281, 0))
                 } else {
@@ -68,20 +66,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
         } else {
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-9915.5029296875, -2433.4301757812, -34.047546386719), 369.50420379639)) {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-9915.5029296875, -2433.4301757812, -34.047546386719), 369.50420379639);) {
                 p.SetOrigin(Vector(-3482.0803222656, -2117.7331542969, 20.649803161621))
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-9241.060546875, -2418.1635742188, 104.73459625244), 200)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-9241.060546875, -2418.1635742188, 104.73459625244), 200);) {
                 p.SetOrigin(Vector(-3481.3332519531, -2119.4982910156, 20.3405418396))
             }
         }
 
         // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(1253.4089355469, -1319.4395751953, -320.2317199707), 104.79999542236)) {
-
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(1253.4089355469, -1319.4395751953, -320.2317199707), 104.79999542236);) {
             EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts2")
         }
     }

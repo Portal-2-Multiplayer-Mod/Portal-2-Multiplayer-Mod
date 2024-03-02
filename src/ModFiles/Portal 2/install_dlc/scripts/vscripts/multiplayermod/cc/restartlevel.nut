@@ -1,7 +1,7 @@
 CommandList.push(
     class {
         name = "restartlevel"
-        level = 5
+        level = 3
 
         // !restartlevel
         function CC(p, args) {

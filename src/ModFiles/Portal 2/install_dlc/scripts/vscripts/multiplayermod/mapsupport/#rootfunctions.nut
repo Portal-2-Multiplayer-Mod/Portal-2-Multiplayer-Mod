@@ -91,8 +91,7 @@ function NewApertureStartElevatorFixes() {
         local ClosestCoords = Vector(0, 0, 0)
         local ClosestEnt = null
         local BestScore = 80000
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "env_soundscape")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "env_soundscape");) {
             local xent = UnNegative(ent.GetOrigin().x) - UnNegative(FinalVector.x)
             local yent = UnNegative(ent.GetOrigin().y) - UnNegative(FinalVector.y)
             local zent = UnNegative(ent.GetOrigin().z) - UnNegative(FinalVector.z)

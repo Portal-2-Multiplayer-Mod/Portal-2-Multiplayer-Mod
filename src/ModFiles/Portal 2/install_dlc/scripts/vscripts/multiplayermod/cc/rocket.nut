@@ -1,9 +1,9 @@
 CommandList.push(
     class {
         name = "rocket"
-        level = 3
+        level = 4
 
-        // !rocket (player or "all")
+        // !rocket (target arg: Specific player, team target. Self if no arg.)
         function CC(p, args) {
             local RocketPlayer = function(player) {
                 local currentplayerclass = FindPlayerClass(player)
@@ -17,21 +17,62 @@ CommandList.push(
                 return
             }
 
-            args[0] = Strip(args[0])
-            if (args[0] == "all") {
-                for (local ent; ent = Entities.FindByClassname(ent, "player");) {
-                    RocketPlayer(ent)
+            args[0] = strip(args[0])
+            local target = FindPlayerByName(args[0])
+
+            local targetOperation = false
+            if ((args[0].find("@") != null) && (target == null)) {
+                targetOperation = true
+            }
+
+            if (targetOperation) {
+                switch (args[0]) {
+                    case "@a":
+                        for (local player; player = Entities.FindByClassname(player, "player");) {
+                            RocketPlayer(player) 
+                        }
+                        SendChatMessage("Rocketed all players.", p)
+                        return
+
+                    case "@b":
+                        for (local player; player = Entities.FindByClassname(player, "player");) {
+                            if (player.GetTeam() == TEAM_BLUE) {
+                                RocketPlayer(player)
+                            }
+                        }
+                        SendChatMessage("Rocketed all Atlas players.", p)
+                        return
+
+                    case "@o":
+                        for (local player; player = Entities.FindByClassname(player, "player");) {
+                            if (player.GetTeam() == TEAM_RED) {
+                                RocketPlayer(player)
+                            }
+                        }
+                        SendChatMessage("Rocketed all P-Body players.", p)
+                        return
+                    
+                    case "@s":
+                        for (local player; player = Entities.FindByClassname(player, "player");) {
+                            if (player.GetTeam() == TEAM_SINGLEPLAYER) {
+                                RocketPlayer(player)
+                            }
+                        }
+                        SendChatMessage("Rocketed all Singleplayer team players.", p)
+                        return
+
+                    default:
+                        SendChatMessage("[ERROR] Invalid target operation used! \"@a\", \"@b\", \"@o\", and \"@s\" are your options!", p)
+                        return
                 }
-                SendChatMessage("Rocketed all players.", p)
+            }
+            
+            if (target == null) {
+                SendChatMessage("[ERROR] Player not found!", p)
+                return
             } else {
-                local q = FindPlayerByName(args[0])
-                if (q == null) {
-                    SendChatMessage("[ERROR] Player not found.", p)
-                    return
-                } else {
-                    RocketPlayer(q)
-                    SendChatMessage("Rocketed player.", p)
-                }
+                RocketPlayer(target)
+                SendChatMessage("Rocketed player.", p)
             }
         }
     }

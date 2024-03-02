@@ -1,31 +1,30 @@
 commandtable <- {}
-commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level."
-commandtable["changeteam"] <- "Changes your current team."
-commandtable["help"] <- "List available commands or print a description of a specific one."
-commandtable["kick"] <- "Kicks acts as a temp ban, kicks the player from the play session and won't let them back in until the next session."
-commandtable["kill"] <- "Kill yourself, others, or \"all\"."
-commandtable["mpcourse"] <- "Changes the level to the specified cooperative course."
-commandtable["noclip"] <- "Toggles your noclip status."
-commandtable["playercolor"] <- "Changes your player model's color through valid RGB values."
-commandtable["rcon"] <- "Execute commands on the server console."
-commandtable["restartlevel"] <- "Reset the current map."
-commandtable["rocket"] <- "Send yourself, others, or \"all\" into the air for them to blow up."
-commandtable["slap"] <- "Slap yourself, others, or \"all\" dealing a tiny amount of damage and jolting."
-commandtable["spchapter"] <- "Changes the level to the specified singleplayer chapter."
-// commandtable["spectate"] <- "Allows you to spectate players and roam around the map."
-commandtable["speed"] <- "Changes your player speed."
-commandtable["teleport"] <- "Teleports a specific player or \"all\" to you or another player."
-commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not."
+commandtable["adminmodify"] <- "Prints the admin level of someone or assigns them a new level. \"!adminmodify (target player) (level 1-6)\""
+commandtable["changeteam"] <- "Changes your current team. \"!changeteam (optional team arg: 0 Singleplayer, 2 P-Body, 3 Atlas)\""
+commandtable["help"] <- "List available commands or print a description of a specific one. \"!help (optional sepecific command)\""
+commandtable["hub"] <- "Quick and easy way to return to the cooperative lobby. \"!hub\""
+commandtable["kick"] <- "Kicks the player from the server. This will not prevent them from rejoinning. \"!kick (target player\""
+commandtable["kill"] <- "Kill yourself, another player, or a target team. \"!kill (target player/target team/self)\""
+commandtable["mpcourse"] <- "Changes the level to the specified cooperative course. \"!mpcourse (course integer 1-6)\""
+commandtable["noclip"] <- "Toggles your noclip status. \"!noclip\""
+commandtable["playercolor"] <- "Changes your player model's color through valid RGB values. \"!playercolor (red OR reset) (green) (blue) (optional arg: player)\""
+commandtable["restartlevel"] <- "Reset the current map. \"!restartlevel\""
+commandtable["rocket"] <- "Send yourself, another player, or a target team into the air for them to blow up. \"!rocket (target arg: Specific player, team target. Self if no arg.)\""
+commandtable["slap"] <- "Slap yourself, another player, or a target team dealing a tiny amount of damage and jolting. \"!slap (target arg: Specific player, team target. Self if no arg.)\""
+commandtable["spchapter"] <- "Changes the level to the specified singleplayer chapter. \"!spchapter (chapter integer 1-9)\""
+commandtable["speed"] <- "Changes your player speed. \"!speed (float arg)\""
+commandtable["teleport"] <- "Teleport yourself, another player, or a target team to a destination. \"!teleport (target arg: Specific player, team target. destination player if only this arg.) (destination arg: player)\""
+commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not. \"!vote (vote choice arg: changelevel, kick, or hostgunonly) (arg for changelevel map name or kick player name)\""
 
 CommandList.push(
     class {
         name = "help"
         level = 0
 
-        // !help (optionally with command name arg)
+        // !help (optional arg: command name)
         function CC(p, args) {
             try {
-                args[0] = Strip(args[0])
+                args[0] = strip(args[0])
                 if (commandtable.rawin(args[0])) {
                     SendChatMessage("[HELP] " + args[0] + ": " + commandtable[args[0]], p)
                 }
@@ -33,7 +32,12 @@ CommandList.push(
                     SendChatMessage("[HELP] Unknown chat command: " + args[0], p)
                 }
             } catch (exception) {
-                SendChatMessage("[HELP] Your available commands:", p)
+                SendChatMessage("[HELP] Target team operations:", p)
+                SendChatMessage("[HELP] \"@a\": Everyone", p)
+                SendChatMessage("[HELP] \"@b\": Atlas Team", p)
+                SendChatMessage("[HELP] \"@o\": P-Body Team", p)
+                SendChatMessage("[HELP] \"@s\": Singleplayer Team", p)
+                SendChatMessage("[HELP] Available commands:", p)
                 local availablecommands = ""
                 foreach (command in CommandList) {
                     if (command.level <= GetAdminLevel(p)) {

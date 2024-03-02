@@ -26,8 +26,7 @@ function GetHighest(inpvec) {
 function ForceRespawnAll() {
     // GlobalSpawnClass teleport
     if (GlobalSpawnClass.m_bUseAutoSpawn) {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             TeleportToSpawnPoint(p, null)
         }
     }
@@ -134,8 +133,7 @@ function p2mmfogswitch(fogname) {
         if (fogclass.fogname == fogname) {
             printlP2MM("Found fog: " + fogclass.fogname)
             // go through each player and set their fog to the new fog
-            local p = null
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 EntFireByHandle(p, "setfogcontroller", fogname, fogclass.fogdelay, null, null)
             }
             defaultfog <- fogname
@@ -231,7 +229,7 @@ function GetPlayerColor(p, multiply = true) {
     local colorname = ""
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255;  colorname = "Bright White";     break;
+            case 1 : R <- 255; G <- 255; B <- 255;  colorname = "White";            break;
             case 2 : R <- 180, G <- 255, B <- 180;  colorname = "Green";            break;
             case 3 : R <- 120, G <- 140, B <- 255;  colorname = "Blue";             break;
             case 4 : R <- 255, G <- 170, B <- 120;  colorname = "Orange";           break;
@@ -316,10 +314,9 @@ function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
     }
 
     local plist = []
-    local p = null
     local outputp = null
     if (desent == null) {
-        while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 16384)) {
+        for (local p = null; p = Entities.FindInSphere(p, Vector(0, 0, 0), 16384);) {
             local pos = p.GetOrigin()
             if (pos.x >= x1 && pos.x <= x2){
                 if (pos.y >= y1 && pos.y <= y2){
@@ -330,7 +327,7 @@ function CreateTrigger(desent, x1, y1, z1, x2, y2, z2){
             }
         }
     } else {
-        while (p = Entities.FindByClassname(p, desent)) {
+        for (local p = null; p = Entities.FindByClassname(p, desent);) {
             local pos = p.GetOrigin()
             if (pos.x >= x1 && pos.x <= x2){
                 if (pos.y >= y1 && pos.y <= y2){
@@ -410,16 +407,14 @@ function CreateGenericPlayerClass(p) {
 
 // function GetEntityCount(classname = null) {
 //     if (classname == null) {
-//         local p = null
 //         local indx = 0
-//         while (p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000)) {
+//         for (local p = null; p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000);) {
 //             indx += 1
 //         }
 //         return indx
 //     } else {
-//         local p = null
 //         local indx = 0
-//         while (p = Entities.FindByClassname(p, classname)) {
+//         for (local p = null; p = Entities.FindByClassname(p, classname);) {
 //             indx += 1
 //         }
 //         return indx
@@ -448,56 +443,6 @@ function DeleteAmountOfEntities(classname, amount) {
     }
     printlP2MM("Deleted " + indx + " " + classname + "'s")
     return indx
-}
-
-function PrecacheModel(mdl) {
-    // Add the models/ to the side of the model name if it's not already there
-    if (mdl.slice(0, 7) != "models/") {
-        mdl = "models/" + mdl
-    }
-    // Add the .mdl to the end of the model name if it's not already there
-    if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl") {
-        mdl = mdl + ".mdl"
-    }
-
-    // Remove the models/ from the left side and the .mdl from the right side
-    local MinifyModel = function(mdl) {
-        if (mdl.slice(0, 7) == "models/") {
-            mdl = mdl.slice(7, mdl.len())
-        }
-        if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
-            mdl = mdl.slice(0, mdl.len() - 4)
-        }
-        return mdl
-    }
-    local minimdl = MinifyModel(mdl)
-
-    // Check if the model is already precached
-    local Precached = false
-    foreach (model in PrecachedProps) {
-        if (model == minimdl) {
-            Precached = true
-        }
-    }
-
-    // No existing model in the map and it's not something we know is precached
-    if (!Entities.FindByModel(null, mdl) && !Precached) {
-        // Attempt to precache it
-        EntFire("p2mm_servercommand", "command", "sv_cheats 1; prop_dynamic_create " + minimdl) // FIXME: "prop_dynamic_create" crashes on dedicated servers!!!
-        PrecachedProps.push(minimdl)
-        if (!g_bCheatsOn) {
-            // In case players are now joining
-            EntFire("p2mm_servercommand", "command", "sv_cheats 0")
-        }
-        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("PrecacheModel() - Precached model: " + mdl)
-        }
-    } else {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("PrecacheModel() - Model: " + mdl + " already precached!")
-        }
-    }
 }
 
 function FindPlayerClass(plyr) {
@@ -759,11 +704,10 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
     // Define some locals
     local bestscore = 999999999
     local nearestent = null
-    local ent = null
 
     // Find the nearest entity
     if (specificclass == null) {
-        while (ent = Entities.FindInSphere(ent, origin, radius)) {
+        for (local ent = null; ent = Entities.FindInSphere(ent, origin, radius);) {
             // Check if the entity is in the list of entities to exclude
             local exclude = false
             // We only need to check if 1 ent equals to excluded that's why i added a break
@@ -786,7 +730,7 @@ function FindNearest(origin, radius, entitiestoexclude = [null], specificclass =
             }
         }
     } else {
-        while (ent = Entities.FindByClassnameWithin(ent, specificclass, origin, radius)) {
+        for (local ent = null; ent = Entities.FindByClassnameWithin(ent, specificclass, origin, radius);) {
             // Check if the entity is in the list of entities to exclude
             local exclude = false
             // We only need to check if 1 ent equals to excluded that's why i added a break
@@ -918,6 +862,26 @@ function DisplayPlayerColor(player) {
     EntFireByHandle(p2mm_playercolordisplay, "kill", "", 0.1, player, player)
 }
 
+function ColorDisassemblerAnimation(activator) {
+    if (activator.GetTeam() == TEAM_BLUE) {
+        local blueDisassemblerColor = FindPlayerClass(activator).color.r + " " + FindPlayerClass(activator).color.g + " " + FindPlayerClass(activator).color.b
+        for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", activator.GetOrigin(), 1);) {
+            if (ent.GetName().find("blue-ballbot_assembler") != null) {
+                EntFireByHandle(ent, "Color", blueDisassemblerColor, 0, null, null)
+                break
+            }
+        }
+    } else {
+        local orangeDisassemblerColor = FindPlayerClass(activator).color.r + " " + FindPlayerClass(activator).color.g + " " + FindPlayerClass(activator).color.b
+        for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "prop_dynamic", activator.GetOrigin(), 1);) {
+            if (ent.GetName().find("orange-ballbot_assembler") != null) {
+                EntFireByHandle(ent, "Color", orangeDisassemblerColor, 0, null, null)
+                break
+            }
+        }
+    }
+}
+
 function FindAndReplace(inputstr, findstr, replacestr) {
     local startstrip = inputstr.find(findstr)
     if (startstrip==null) {
@@ -930,8 +894,7 @@ function FindAndReplace(inputstr, findstr, replacestr) {
 }
 
 function RemoveAllClassname(classname, delay = 0) {
-    local p = null
-    while (p = Entities.FindByClassname(p, classname)) {
+    for (local p = null; p = Entities.FindByClassname(p, classname);) {
         if (delay == 0) {
             p.Destroy()
         } else {
@@ -941,8 +904,7 @@ function RemoveAllClassname(classname, delay = 0) {
 }
 
 function RemoveAllClassnameDistance(classname, pos, dist, delay = 0) {
-    local p = null
-    while (p = Entities.FindByClassnameWithin(p, classname, pos, dist)) {
+    for (local p = null; p = Entities.FindByClassnameWithin(p, classname, pos, dist);) {
         EntFireByHandle(p, "kill", "", delay, null, null)
     }
 }
@@ -972,8 +934,7 @@ function UnNegative(num) {
 
 // Teleport players within a distance
 function TeleportPlayerWithinDistance(SearchPos, SearchDis, TeleportDest) {
-    local ent = null
-    while(ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis)) {
+    for (local ent = null; ent = Entities.FindByClassnameWithin(ent, "player", SearchPos, SearchDis);) {
         ent.SetOrigin(TeleportDest)
     }
 }
@@ -1055,8 +1016,7 @@ function CanJump(enable = false, player = "all") {
     if (enable) { set = "1" }
 
     if (player == "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
@@ -1078,8 +1038,7 @@ function CanUse(enable = false, player = "all") {
     if (enable) { set = "1" }
 
     if (player == "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
@@ -1101,8 +1060,7 @@ function CanCrouch(enable = false, player = "all") {
     if (enable) { set = "1" }
 
     if (player == "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
@@ -1124,8 +1082,7 @@ function EnableHud(enable = false, player = "all") {
     if (enable) { set = "1" }
 
     if (player == "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             EntFireByHandle(mainent, "modifyspeed", set, 0, p, p)
         }
     } else {
@@ -1141,8 +1098,7 @@ function EnablePortalGun(enable = false, player = "all") {
     if (enable) { draw = "enabledraw" }
 
     if (player = "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             local ent = Entities.FindByName(null, "weapon_portalgun_player" + p.entindex())
             local entviewmodel = Entities.FindByName(null, "predicted_viewmodel_player" + p.entindex())
             ent.__KeyValueFromString("CanFirePortal1", set)
@@ -1169,8 +1125,7 @@ function EnableSpectator(enable = true, player = "all") {
     if (enable) { fov = "90" }
 
     if (player == "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             CanCrouch(enable, p)
             CanJump(enable, p)
             CanUse(enable, p)
@@ -1194,8 +1149,7 @@ function EnableSpectator(enable = true, player = "all") {
 
 function EnableNoclip(enable, player = "all") {
     if (player == "all") {
-        local p = null
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             local currentplayerclass = FindPlayerClass(p)
             if (enable) {
                 EntFireByHandle(p, "AddOutput", "MoveType 8", 0, null, null)
@@ -1251,8 +1205,7 @@ function BestGuessSpawnpoint() {
             local CurrentBoi = Entities.FindByName(null, PossibleEnt)
             if (CurrentBoi) {
                 // If we have found one yet lets tally up the amount of surronding box ents
-                local ent = null
-                while (ent = Entities.FindInSphere(ent, CurrentBoi.GetOrigin(), 300)) {
+                for (local ent = null; ent = Entities.FindInSphere(ent, CurrentBoi.GetOrigin(), 300);) {
                     foreach (TEnt in BoxEnts) {
                         if (ent.GetName() == TEnt) {
                             PossibleSurroundingEnts = PossibleSurroundingEnts + 1
@@ -1308,8 +1261,7 @@ function BestGuessSpawnpoint() {
                             GlobalSpawnClass.m_cSetSpawn.position <- RealPlayerSpawn.GetOrigin()
                             GlobalSpawnClass.m_cSetSpawn.radius <- 200
                             // Get every info_player_start and kill it
-                            local ent = null
-                            while (ent = Entities.FindByClassname(ent, "info_player_start")) {
+                            for (local ent = null; ent = Entities.FindByClassname(ent, "info_player_start");) {
                                 if (ent != RealPlayerSpawn) {
                                     if (GetDeveloperLevelP2MM()) {
                                         printlP2MM("Found info_player_start entity that is not the real player spawn.")
@@ -1336,7 +1288,6 @@ function BestGuessSpawnpoint() {
         // Setup some variables
         local ourclosest = 99999999
         local spawnmiddle = null
-        local ent = null
         local FinalSpawnRed = Vector(0, 0, 0)
         local FinalRotationRed = Vector(0, 0, 0)
         local FinalSpawnBlue = Vector(0, 0, 0)
@@ -1346,7 +1297,7 @@ function BestGuessSpawnpoint() {
 
         // New Aperture
         if (Entities.FindByModel(null, "models/elevator/elevator_tube_opener.mdl")) {
-            while (ent = Entities.FindByModel(ent, "models/elevator/elevator_tube_opener.mdl")) {
+            for (local ent = null; ent = Entities.FindByModel(ent, "models/elevator/elevator_tube_opener.mdl");) {
                 local elevator = Entities.FindByName(null, "arrival_elevator-elevator_1")
                 // Get the nearest elevator
                 local elevator_pos = elevator.GetOrigin()
@@ -1398,7 +1349,7 @@ function BestGuessSpawnpoint() {
             local elevator = Entities.FindByName(null, "@test_dome_lift_entry_teleport")
             local spawnmiddle = null
             // Find the nearst elevator to the point_teleport
-            while (ent = Entities.FindByModel(ent, "models/props_underground/elevator_a.mdl")) {
+            for (local ent = null; ent = Entities.FindByModel(ent, "models/props_underground/elevator_a.mdl");) {
                 if (elevator == null) {
                     elevator = Entities.FindByClassname(null, "point_teleport")
                 }
@@ -1425,8 +1376,7 @@ function BestGuessSpawnpoint() {
                     printlP2MM("Failed to find spawnmiddle for path_track spawnpoint!")
                 }
             } else {
-                local pathtracks = null
-                while (pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600)) {
+                for (local pathtracks = null; pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600);) {
                     if (GetDeveloperLevelP2MM()) {
                         printlP2MM("pathtracks: " + pathtracks)
                     }
@@ -1804,8 +1754,4 @@ function StartsWith(str, substr) {
     } else {
         return false
     }
-}
-
-function Strip(str) {
-    return strip(str)
 }

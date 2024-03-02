@@ -23,6 +23,16 @@ try {
 }
 
 try {
+    if (typeof(Config_VScriptDebug) != "bool") {
+        Config_VScriptDebug <- false
+        ConfigValueError("Invalid", "Config_VScriptDebug")
+    }
+} catch (exception) {
+    Config_VScriptDebug <- false
+    ConfigValueError("Undefined", "Config_VScriptDebug")
+}
+
+try {
     if (typeof(Config_VisualDebug) != "bool") {
         Config_VisualDebug <- false
         ConfigValueError("Invalid", "Config_VisualDebug")
@@ -155,4 +165,63 @@ try {
 } catch (exception) {
     SetDefaultAdminList()
     ConfigValueError("Undefined", "Admins")
+}
+
+try {
+    if (typeof(Config_musicEnable) != "bool") {
+        Config_musicEnable <- true
+        ConfigValueError("Invalid", "Config_musicEnable")
+    }
+} catch (exception) {
+    Config_musicEnable <- true
+    ConfigValueError("Undefined", "Config_musicEnable")
+}
+
+try {
+    if (typeof(Config_musicDefault) != "integer" || Config_musicDefault < -1) {
+        Config_musicDefault <- 0
+        ConfigValueError("Invalid", "Config_musicDefault")
+    }
+} catch (exception) {
+    Config_musicDefault <- 0
+    ConfigValueError("Undefined", "Config_musicDefault")
+}
+
+local SetDefaultMusicTracksArray = function() {
+    Config_musicTracks <- [
+        "music/mp_coop_lobby_2_c1.wav" //0 index, 1/16
+        "music/mp_coop_lobby_2_c2.wav" //1 index, 2/16
+        "music/mp_coop_lobby_2_c4.wav" //2 index, 3/16
+        "music/mp_coop_lobby_2_c5.wav" //3 index, 4/16
+        "music/mp_coop_lobby_2_c6.wav" //4 index, 5/16
+        "music/mp_coop_lobby_2_c7.wav" //5 index, 6/16
+        "music/mp_coop_hallway_c4.wav" //6 index, 7/16
+        "music/sp_a1_wakeup_b1.wav" //7 index, 8/16
+        "music/sp_a2_bts1_b1.wav" //8 index, 9/16
+        "music/sp_a4_tb_catch_b1a.wav" //9 index, 10/16
+        "music/sp_a4_finale1_b2p2.wav" //10 index, 11/16
+        "music/portal2_want_you_gone.wav" //11 index, 12/16
+        "music/portal2_robots_ftw.wav" //12 index, 13/16
+        "ambient/music/looping_radio_mix.wav" //13 index, 14/16
+        "music/sp_a2_dual_lasers_r1.wav" // Doesn't loop  //14 index, 15/16
+        "music/sp_a2_laser_vs_turret_r1.wav" // Doesn't loop  //15 index, 16/16
+    ]
+}
+
+try {
+    if (typeof(Config_musicTracks) != "array") {
+        SetDefaultMusicTracksArray()
+        ConfigValueError("Invalid", "Config_musicTracks")
+    } else {
+        foreach (track in Config_musicTracks) {
+            if (typeof(track) != "string") {
+                SetDefaultMusicTracksArray()
+                ConfigValueError("Invalid", "Config_musicTracks")
+                return
+            }
+        }
+    }
+} catch (exception) {
+    SetDefaultMusicTracksArray()
+    ConfigValueError("Undefined", "Config_musicTracks")
 }

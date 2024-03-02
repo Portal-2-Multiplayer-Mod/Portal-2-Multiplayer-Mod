@@ -21,8 +21,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-736, 1572, -128), 20).Destroy()
         Entities.FindByClassnameNearest("info_player_start", Vector(1969.073364, -3621.362305, 0.031250), 120).Destroy()
 
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "func_portal_detector")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_detector");) {
             ent.__KeyValueFromString("CheckAllIDs", "1")
         }
 

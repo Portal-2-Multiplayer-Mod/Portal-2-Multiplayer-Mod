@@ -40,8 +40,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Destroy objects
         Entities.FindByClassnameNearest("logic_auto", Vector(144, -4048, 64), 20).Destroy()
-        local ent = null
-        while (ent = Entities.FindByClassname(ent, "trigger_push")) {
+        for (local ent = null; ent = Entities.FindByClassname(ent, "trigger_push");) {
             ent.Destroy()
         }
 

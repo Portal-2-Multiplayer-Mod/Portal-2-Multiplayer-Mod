@@ -5,7 +5,8 @@
 //---------------------------------------------------
 
 // Reset dev level
-if (Config_DevMode) {
+// Developer needs to stay enabled for VScript Debugging to work
+if (Config_DevMode || Config_VScriptDebug) {
     EntFire("p2mm_servercommand", "command", "developer 1")
 }
 else {
@@ -18,32 +19,16 @@ if (!PluginLoaded) {
     Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
     Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_orange_portalgun_spawn")
 
-    EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM): Attempting to load the P2:MM plugin...\")", 0.03)
+    EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM VSCRIPT): Attempting to load the P2:MM plugin...\")", 0.03)
     EntFire("p2mm_servercommand", "command", "plugin_load p2mm", 0.05) // This should never fail the first time through addons... try loading it from root DLC path
 } else {
     printlP2MM("Plugin has already been loaded! Not attempting to load it...")
 }
 
-// Facilitate first load after game launch
-function MakeProgressCheck() {
-    printlP2MM("First map load detected! Checking to see if we need to change/reset maps...")
-
-    local ChangeToThisMap = "mp_coop_start"
-    for (local course = 1; course <= 6; course++) {  // 6 courses is the highest that coop has
-        for (local level = 1; level <= 9; level++) { // 9 levels is the highest that a course has
-            if (IsLevelComplete(course - 1, level - 1)) {
-                ChangeToThisMap = "mp_coop_lobby_3"
-            }
-        }
-    }
-
-    // We will always need to reset the map since there is no way to preserve a map load without
-    // forcing the game to not wait at least one second for a progress check
-    // if ((GetMapName() != ChangeToThisMap) || !PluginLoaded) {
-        // printlP2MM("Resetting map (Destination map is not the same as " + GetMapName() + " OR our plugin was not loaded!")
-        printlP2MM("Forcing map reset.")
-        EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + ChangeToThisMap)
-    // }
+if (Config_GameMode == 1) {
+    EntFire("p2mm_servercommand", "command", "p2mm_set_preset \"speedrun\"", 0.50) // Set the p2mm plugin to use the speedrun preset for the mod
+} else {
+    EntFire("p2mm_servercommand", "command", "p2mm_set_preset \"normal\"", 0.50) // Set the p2mm plugin to use the normal preset for the mod
 }
 
-EntFire("p2mm_servercommand", "command", "script MakeProgressCheck()", 1) // Must be delayed
+EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + GetMapName(), 1) // Must be delayed. We use changelevel to restart the map because restart_level is locked by the plugin by default

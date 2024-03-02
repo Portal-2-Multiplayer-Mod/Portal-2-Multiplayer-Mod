@@ -30,11 +30,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSPostPlayerSpawn) {
-        local ent = null
-        while (ent = Entities.FindByModel(ent, "models/anim_wp/room_transform/arm_exterior.mdl")) {
+        for (local ent = null; ent = Entities.FindByModel(ent, "models/anim_wp/room_transform/arm_exterior.mdl");) {
             //ent.__KeyValueFromString("HoldAnimation", "1")
-            local ent2 = null
-            while (ent2 = Entities.FindByClassnameWithin(ent2, "prop_dynamic", Vector(1490, -4311, 128), 300)) {
+            for (local ent2 = null; ent2 = Entities.FindByClassnameWithin(ent2, "prop_dynamic", Vector(1490, -4311, 128), 300);) {
                 if (ent == ent2) {
                     ent2.Destroy()
                 }
@@ -43,70 +41,67 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSLoop) {
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1689.0235595703, -7900.8461914062, 6707.0034179688), 78.400001525879);) {
             DisableLookDisablerSP_A2_BTS2 <- true
         }
 
         if (!DisableLookDisablerSP_A2_BTS2) {
             // Make a custom trigger to disable player look
             WheatleyPlayerLookSP_A2_BTS2 <- true
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1028.5295410156, -7103.0068359375, 6741.3315429688), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1403.9912109375, -7096.8754882812, 6690.7314453125), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1789.1419677734, -7122.5893554688, 6749.4721679688), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
-            local p = null
-            while (p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824)) {
+
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-1788.701171875, -7474.5654296875, 6731.2202148438), 163.19999694824);) {
                 WheatleyPlayerLookSP_A2_BTS2 <- false
             }
         }
 
         // if a player made it teleport everyone into the elevator
-        local p = null
-        while (p = Entities.FindByClassnameWithin(p, "player", Vector(2207.8967285156, 1452.6505126953, 264.08181762695), 40)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(2207.8967285156, 1452.6505126953, 264.08181762695), 40);) {
             if (OnlyOnceSp_A2_Bts2AgainV2) {
-                local p = null
-                while (p = Entities.FindByClassname(p, "player")) {
+                for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(2202, 1454, 303))
                     p.SetAngles(0, -90, 0)
                     p.SetVelocity(Vector(0, 0, 0))
@@ -178,15 +173,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 150)) {
-             
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 150);) {
             EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts3")
         }
 
         // Fix the player's spawn position
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(825, -3756, 240), 25)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(825, -3756, 240), 25);) {
             p.SetOrigin(Vector(772, -3780, 64))
             p.SetAngles(0, -90, 0)
             p.SetVelocity(Vector(0, -90, 0))

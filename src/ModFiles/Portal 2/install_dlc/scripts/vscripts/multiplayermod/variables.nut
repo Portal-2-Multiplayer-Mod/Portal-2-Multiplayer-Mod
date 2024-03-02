@@ -37,7 +37,6 @@ class GlobalSpawnClass {
 //---------------
 // enum is weird in VScript
 const TEAM_SINGLEPLAYER = 0
-const TEAM_SPECTATOR = 1
 const TEAM_RED = 2
 const TEAM_BLUE = 3
 
@@ -50,8 +49,6 @@ g_bCanCheckAngle <- false
 g_bCanHook <- false
 g_bCheatsOn <- false
 g_bCoordsAlternate <- false
-
-DevModeConfig <- Config_DevMode
 
 g_bDoneCacheing <- false
 g_bDoneWaiting <- false
@@ -149,53 +146,7 @@ ExpendableEntities <- [
     "prop_weighted_cube",
     "func_detail"
 ]
-if (GetMapName() == "mp_coop_credits") {
-    MPMCoopCreditNames <- [ // Add names to coop credits map (Max per entry is 128)
-        "### ",
-        "###Portal 2: Multiplayer Mod ~ Credits",
-        "### ",
-        "###--------------------------",
-        "###P2:MM Head Creators",
-        "###--------------------------",
-        "Nanoman2525 | Main Mod Developer/Maintainer + Major VScript + Community Manager + Hex Edits + Launcher + Mapping",
-        "kyleraykbs | Major VScript + Launcher + Alpha-stage full Cooperative Support + Hex Edits",
-        "Bumpy | Script Theory",
-        "Vista | Reverse Engineering, Plugin Developer",
-        "Wolƒe Strider Shoσter | Alpha-stage full Singleplayer Support",
-        "cabiste | Major Launcher + VScript",
-        "###--------------------------",
-        "###P2:MM Team Members",
-        "###--------------------------",
-        "sear | Speedrun Mode Ideas + Heavy Playtesting",
-        "Jeffrey | Previous Code Cleanup",
-        "wanderer | Dedicated Server Functionality",
-        "tnp (\\n) |thewoodster75 | Heavy Playtesting",
-        "Orsell | Custom Content Functionality + VScript",
-        "###--------------------------",
-        "###P2:MM Contributers",
-        "###--------------------------",
-        "Dreadnox | Speedrun Mode Ideas",
-        "Enator18 | Python Ideas"
-        "Blub/Vecc | Alpha-stage P2:MM Code Commenting",
-        "Darnias | Alpha-stage P2:MM Jumpstarter Code",
-        "PieCreeper | Promotion of the mod",
-        "Mystical Λce | Helping us obtain keys to port the mod to P2:CE",
-        "###--------------------------",
-        "###Special Thanks To:",
-        "###--------------------------",
-        "SuperSpeed",
-        "ANotSoSpookySkeleton",
-        "Panter",
-        "ThePineapple",
-        "Areng",
-        "SuperSpeed",
-        "Brawler",
-        "X man",
-        "###--------------------------",
-        "###Valve: Credits",
-        "###--------------------------"
-    ]
-}
+
 // NativeCoopMaps <- class {
 //     // MULTIPLAYER MAPS
 //     ch0maps = ["mp_coop_start", "mp_coop_community_hub"]

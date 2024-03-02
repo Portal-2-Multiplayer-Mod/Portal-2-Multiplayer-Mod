@@ -19,6 +19,15 @@ MSOnRespawn,        // 7. Runs on player respawn                                
 
 // 1
 function InstantRun() {
+    // Make sure that Config_DevMode and `developer` stays enabled when either Config_VScriptDebug is enabled
+    if (Config_VScriptDebug) {
+        Config_DevMode = true
+        EntFire("p2mm_servercommand", "command", "developer 1")
+    } else {
+        Config_DevMode = false
+        EntFire("p2mm_servercommand", "command", "developer 0")
+    }
+
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
@@ -49,6 +58,15 @@ function InstantRun() {
         }
         Player2Joined = true
     }
+
+    // For adding the a output to the disassembler's trigger_playerteams trigger so the disassembler's disassembly animation is colored the players color
+    if (!g_bIsOnSingleplayerMaps) {
+        for (local disassemblerTrigger = null; disassemblerTrigger = Entities.FindByClassname(disassemblerTrigger, "trigger_playerteam");) {
+            if (disassemblerTrigger.GetName().find("trigger_exit_lift") != null) {
+                EntFireByHandle(disassemblerTrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:ColorDisassemblerAnimation(activator):0:-1", 0, null, null)
+            }
+        }
+    }
 }
 
 // 2
@@ -62,11 +80,8 @@ function Loop() {
         EventList.remove(0)
     }
 
-    // Global null variable limited to this scope
-    local p = null
-
     // Get all players and check for changes
-    while (p = Entities.FindByClassname(p, "player")) {
+    for (local p = null; p = Entities.FindByClassname(p, "player");) {
         //## Hook player join ##//
         if (p.ValidateScriptScope()) {
             local script_scope = p.GetScriptScope()
@@ -123,8 +138,8 @@ function Loop() {
     }
 
     //## Update Portal Gun names ##//
-    while (p = Entities.FindByClassname(p, "weapon_portalgun")) {
-        // if it doesnt have a name yet
+    for (local p = null; p = Entities.FindByClassname(p, "weapon_portalgun");) {
+        // if it doesn't have a name yet
         if (p.GetName() == "") {
             // Set The Name Of The Portalgun (based on PLAYER index)
             p.__KeyValueFromString("targetname", "weapon_portalgun_player" + p.GetRootMoveParent().entindex())
@@ -135,7 +150,7 @@ function Loop() {
     if (Config_UseNametags && g_bAllowNametags) {
         if (Time() - PreviousNametagItter > 0.1) {
             PreviousNametagItter = Time()
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (FindPlayerClass(p) != null) {
 
                     // Get number of players in the game
@@ -199,7 +214,7 @@ function Loop() {
             g_bCoordsAlternate = false
         }
     } else {
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             FindPlayerClass(p).eyeangles = Vector(0, 0, 0)
             FindPlayerClass(p).eyeforwardvector = Vector(0, 0, 0)
         }
@@ -289,7 +304,7 @@ function Loop() {
 
     //## GlobalSpawnClass SetSpawn ##//
     if (GlobalSpawnClass.m_bUseSetSpawn) {
-        while (p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.m_cSetSpawn.position, GlobalSpawnClass.m_cSetSpawn.radius)) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", GlobalSpawnClass.m_cSetSpawn.position, GlobalSpawnClass.m_cSetSpawn.radius);) {
             TeleportToSpawnPoint(p, null)
         }
     }
@@ -299,7 +314,7 @@ function Loop() {
 
 
     //## Config developer mode loop ##//
-    if (DevModeConfig) {
+    if (Config_DevMode) {
         // Change Config_DevMode variable based on convar "developer"
         if (!GetDeveloperLevelP2MM()) {
             if (StartDevModeCheck) {
@@ -314,7 +329,7 @@ function Loop() {
 
     // Random turret models & colors
     if (Config_RandomTurrets && g_bHasSpawned) {
-        while (p = Entities.FindByClassname(p, "npc_portal_turret_floor")) {
+        for (local p = null; p = Entities.FindByClassname(p, "npc_portal_turret_floor");) {
             if (p.GetTeam() != 69420) {
                 local modelnumber = RandomInt(0, 2)
                 if (modelnumber == 2) {
@@ -351,7 +366,7 @@ function Loop() {
 
         // Color indicator
         if (Config_UseColorIndicator && g_bAllowColorIndicator && g_bHasSpawned) {
-            while (p = Entities.FindByClassname(p, "player")) {
+            for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 DisplayPlayerColor(p)
             }
         }
@@ -370,7 +385,7 @@ function Loop() {
             randomportalsizeh = RandomInt(1, 100 ).tostring()
 
             try {
-                while (p = Entities.FindByClassname(p, "prop_portal")) {
+                for (local p = null; p = Entities.FindByClassname(p, "prop_portal");) {
                     p.__KeyValueFromString("HalfWidth", randomportalsize)
                     p.__KeyValueFromString("HalfHeight", randomportalsizeh)
                 }
@@ -378,7 +393,7 @@ function Loop() {
         }
 
         //## Detect respawn ##//
-        while (p = Entities.FindByClassname(p, "player")) {
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
             if (p.GetHealth() >= 1) {
                 // Get the players from the dead players array
                 foreach (index, player in CurrentlyDead) {
@@ -614,12 +629,64 @@ function PostPlayerSpawn() {
             EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, ent, ent)
         }
     }
+
+    // Code used to handle running VScript debugging on the host
+    // This needs to be called in PostPlayerSpawn, because the game is in a state where `script_debug` will work as intended.
+    if (Config_VScriptDebug) {
+        printlP2MM("[DEBUGGING] Initiating VScript Debugging!")
+
+        // Developer is needed for debugging to work.
+        // Just turning it on will work, but the debugger will act 
+        // strange when the map loaded doesn't start with developer enabled,
+        // so we need to restart the map for it act as expected.
+        // For some reason GetDeveloperLevelP2MM() is not working correctly while doing this, 
+        // so we use the normal GetDeveloperLevel() instead although it does the exact same thing.
+        if (!GetDeveloperLevel()) {
+            printlP2MM("[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
+            EntFire("p2mm_servercommand", "command", "developer 1")
+            EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName())
+        }
+
+        // Make the text to indicate that the game is frozen waiting for the VScript debugger
+        vscriptDebugText <- Entities.CreateByClassname("game_text")
+        vscriptDebugText.__KeyValueFromString("targetname", "vscriptDebugText")
+        vscriptDebugText.__KeyValueFromString("x", "-1")
+        vscriptDebugText.__KeyValueFromString("y", "-1")
+        vscriptDebugText.__KeyValueFromString("holdtime", "1")
+        vscriptDebugText.__KeyValueFromString("fadeout", "0.2")
+        vscriptDebugText.__KeyValueFromString("fadein", "0.2")
+        vscriptDebugText.__KeyValueFromString("channel", "1")
+        vscriptDebugText.__KeyValueFromString("spawnflags", "1")
+        vscriptDebugText.__KeyValueFromString("color", "255 255 255")
+        vscriptDebugText.__KeyValueFromString("message", "Waiting for VScript Debugger to Attach...\nGAME WON'T UNFREEZE UNTIL\nDEBUGGER IS ATTACHED!")
+        EntFireByHandle(vscriptDebugText, "Display", "", 0.2, null, null)
+
+        // Call `script_debug` only on the host, that way other players will not be frozen.
+        // But those same players can disconnect from the server due to time out if the host
+        // does not connect the debugger quick enough unfreezing their game.
+        EntFireByHandle(p2mm_clientcommand, "Command", "script_debug", 1, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
+
+        // `script_debug` takes a second to do its thing, so delay the debug message
+        EntFire("p2mm_servercommand", "command", "script printlP2MM(\"[DEBUGGING] VScript Debugger Attached!\")", 1.1)
+
+        // Reuse the same `game_text` entity to display a success message
+        EntFireByHandle(vscriptDebugText, "settext", "VScript Debugger Attached!", 2, null, null)
+        EntFireByHandle(vscriptDebugText, "Display", "", 2.5, null, null)
+
+        // Remove the `game_text` and vscriptDebugText instance as they're not needed anymore
+        EntFireByHandle(vscriptDebugText, "Kill", "", 4, null, null)
+        delete vscriptDebugText
+    }
 }
 
 // 4
 function PostMapSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, false, true, false, false, false)
+
+    // Prints the current map, needed for the checkpoint system
+    // \n was here :>
+    printl("loaded: " + GetMapName())
 
     if (!IsDedicatedServer()) {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
@@ -643,9 +710,6 @@ function PostMapSpawn() {
     }
     CreatePropsForLevel(true, false, false)
 
-    // Enable fast download (broken)
-    // EntFire("p2mm_servercommand", "command", "sv_downloadurl \"https://github.com/kyleraykbs/Portal2-32PlayerMod/raw/main/WebFiles/FastDL/portal2/\"")
-
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
 
@@ -653,10 +717,6 @@ function PostMapSpawn() {
 	EntFire("p2mm_servercommand", "command", "alias gelocity1 changelevel workshop/596984281130013835/mp_coop_gelocity_1_v02")
 	EntFire("p2mm_servercommand", "command", "alias gelocity2 changelevel workshop/594730048530814099/mp_coop_gelocity_2_v01")
 	EntFire("p2mm_servercommand", "command", "alias gelocity3 changelevel workshop/613885499245125173/mp_coop_gelocity_3_v02")
-
-    // Aliases for Orsell's custom P2:MM maps
-    EntFire("p2mm_servercommand", "command", "alias 2v2coopbattle changelevel mp_coop_2v2coopbattle")
-    EntFire("p2mm_servercommand", "command", "alias p2mmlobby changelevel mp_coop_p2mmlobby")
 
     // Set original angles
     EntFire("p2mm_servercommand", "command", "script g_bCanCheckAngle = true", 0.32)
@@ -715,7 +775,7 @@ function OnPlayerJoin(p, script_scope) {
     //     // Methods to iterate over EVERY entity present:
     //     /* 1.
     //         local entity = Entities.First()
-    //         while (entity = Entities.Next(entity)) {
+    //         for (local entity = null; entity = Entities.Next(entity);) {
     //             printl(entity.entindex() + " - " + entity.GetClassname() + " - " + entity.GetName())
     //         }*/
 
@@ -785,10 +845,9 @@ function OnPlayerJoin(p, script_scope) {
     // Change player prop_portal targetname
     local ent1 = null
     local ent2 = null
-    local ent = null
     local portal1 = null
     local portal2 = null
-    while (ent = Entities.FindByClassname(ent, "prop_portal")) {
+    for (local ent = null; ent = Entities.FindByClassname(ent, "prop_portal");) {
         if (ent.GetName() == "") {
             if (ent1 == null) {
                 ent1 = ent
@@ -882,9 +941,8 @@ function OnPlayerJoin(p, script_scope) {
         // Set join message to player name (or index)
         local iCurrentNumPlayers = CalcNumPlayers()
         Entities.FindByName(null, "p2mm_player_joined_text").__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
-        if (PlayerID > 1) {
-            onscreendisplay.__KeyValueFromString("y", "0.075")
-        }
+        onscreendisplay.__KeyValueFromString("y", "0.075")
+        
         //# Say join message on HUD #//
         EntFireByHandle(Entities.FindByName(null, "p2mm_player_joined_text"), "Display", "", 0.0, null, null)
     }
