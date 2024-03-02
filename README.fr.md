@@ -75,7 +75,7 @@
 - requests
 - steamid-converter
 
-On a aussi un fichier pour une simple installation; `pip install -r requirements.txt`
+On a aussi un fichier pour une simple installation: `pip install -r requirements.txt`
 
 ## Compilation
 

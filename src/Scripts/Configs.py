@@ -98,7 +98,7 @@ DefaultConfig = {
     },
 
     "Start-From-Last-Map": {
-        "value": True,
+        "value": False,
         "menu": "general",
         "description": "Start the game from the last session's map.",
         "warning": "",
