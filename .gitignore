@@ -3,6 +3,7 @@ bin/
 platform/
 portal2_dlc*/
 *.dll
+*.pdb
 .vscode/
 sdk_content/
 Soundtrack/
@@ -33,7 +34,6 @@ bee2/
 src/ModFiles/Portal 2/install_dlc/cfg/autoexec.cfg
 vpk_override/
 *.so
-!WebFiles/FastDL/portal2
 kyle.portal2.gdb.E5rc
 kyle.portal2.gdb.x1ij
 .DS_Store
@@ -52,20 +52,20 @@ autosubmit_key_fake.txt
 hammer/
 steam_input/
 sar.pdb
+src/ModFiles.zip
 
 # added by cabiste ;)
 tests/
 Logs/
 configs.cfg
+*.AppImage
+*.AppImage.zsync
 !src/ModFiles/portal2
 # normal folder
 !src/ModFiles/Portal 2/install_dlc/addons/p2mm.dll
 !src/ModFiles/Portal 2/install_dlc/addons/p2mm.so
 !src/ModFiles/Portal 2/install_dlc/p2mm.dll
 !src/ModFiles/Portal 2/install_dlc/p2mm.so
-# fallback folder
-!src/FALLBACK/ModFiles/Portal 2/install_dlc/32pmod.dll
-!src/FALLBACK/ModFiles/Portal 2/install_dlc/32pmod.so
 
 ##################################################################################
 # default list of files to ignore for python
@@ -81,7 +81,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
-develop-eggs/
+develop-eggs/   
 dist/
 downloads/
 eggs/

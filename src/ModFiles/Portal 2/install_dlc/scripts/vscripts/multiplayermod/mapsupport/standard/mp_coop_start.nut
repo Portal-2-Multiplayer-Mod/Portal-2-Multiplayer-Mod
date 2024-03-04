@@ -1,9 +1,9 @@
 // ███╗   ███╗██████╗             █████╗  █████╗  █████╗ ██████╗             ██████╗████████╗ █████╗ ██████╗ ████████╗
 // ████╗ ████║██╔══██╗           ██╔══██╗██╔══██╗██╔══██╗██╔══██╗           ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝
-// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ╚█████╗    ██║   ███████║██████╔╝   ██║   
-// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝             ╚═══██╗   ██║   ██╔══██║██╔══██╗   ██║   
-// ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗██████╔╝   ██║   ██║  ██║██║  ██║   ██║   
-// ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚═════╝    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   
+// ██╔████╔██║██████╔╝           ██║  ╚═╝██║  ██║██║  ██║██████╔╝           ╚█████╗    ██║   ███████║██████╔╝   ██║
+// ██║╚██╔╝██║██╔═══╝            ██║  ██╗██║  ██║██║  ██║██╔═══╝             ╚═══██╗   ██║   ██╔══██║██╔══██╗   ██║
+// ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗██████╔╝   ██║   ██║  ██║██║  ██║   ██║
+// ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚═════╝    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -25,10 +25,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("orange_door_4-airlock_entry_door_close_rl", "Disable", "", 0.5)
         EntFire("orange_door_5-airlock_entry_door_close_rl", "Disable", "", 0.5)
 
-        EntFire("coop_man_close_box2_door", "addoutput" "OnChangeToAnyTrue blue_door_6-airlock_entry_door_close_rl:Disable")
-        EntFire("coop_man_close_box2_door", "addoutput" "OnChangeToAnyTrue orange_door_6-airlock_entry_door_close_rl:Disable")
+        EntFire("coop_man_close_box2_door", "AddOutput" "OnChangeToAnyTrue blue_door_6-airlock_entry_door_close_rl:Disable")
+        EntFire("coop_man_close_box2_door", "AddOutput" "OnChangeToAnyTrue orange_door_6-airlock_entry_door_close_rl:Disable")
+
+        EntFire("coopman_exit_level", "AddOutput", "OnChangeToAllTrue p2mm_servercommand:command:changelevel mp_coop_lobby_3:10")
     }
-    
+
     if (MSLoop) {
         if (!blue_picked_up_gun && !Entities.FindByName(null, "portalgun_blue")) {
             if (Entities.FindByName(null, "p2mm_blue_get_gun_trigger")) {
@@ -37,8 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("floor_blue", "Enable")
 
                 // Make sure blue players don't get stuck where gun is revealed
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-9816, -3504, 22.03), 128)) {
+                for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-9816, -3504, 22.03), 128);) {
                     if (p.GetOrigin().z < 8) {
                         p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 10))
                     }
@@ -56,8 +57,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("floor_orange", "Enable")
 
                 // Make sure orange players don't get stuck where gun is revealed
-                local p = null
-                while (p = Entities.FindByClassnameWithin(p, "player", Vector(-10200, -3504, 22.03), 128)) {
+                for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-10200, -3504, 22.03), 128);) {
                     if (p.GetOrigin().z < 8) {
                         p.SetOrigin(Vector(p.GetOrigin().x, p.GetOrigin().y, 10))
                     }
@@ -66,7 +66,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
             // Someone picked up the orange portal gun
             orange_picked_up_gun <- true
-            coop_startHasPortalGun("orange") 
+            coop_startHasPortalGun("orange")
         }
     }
 
@@ -80,16 +80,15 @@ function coop_startHasPortalGun(args) {
     GamePlayerEquip <- Entities.CreateByClassname("game_player_equip")
     GamePlayerEquip.__KeyValueFromString("weapon_portalgun", "1")
 
-    local p = null
-    while (p = Entities.FindByClassname(p, "player")) {
-        // Check is done this way to compensate for players on singleplayer team
+    for (local p; p = Entities.FindByClassname(p, "player");) {
         if (args == "blue") {
-            if (p.GetTeam() != 2) {
+            // Check is done this way to compensate for players on other teams
+            if (p.GetTeam() != TEAM_RED) {
                 EntFireByHandle(GamePlayerEquip, "use", "", 0, p, p)
             }
         }
         else if (args == "orange") {
-            if (p.GetTeam() == 2) {
+            if (p.GetTeam() == TEAM_RED) {
                 EntFireByHandle(GamePlayerEquip, "use", "", 0, p, p)
             }
         }
@@ -98,5 +97,5 @@ function coop_startHasPortalGun(args) {
     GamePlayerEquip.Destroy()
 
     // Enable secondary fire for all guns
-    EntFire("weapon_portalgun", "addoutput", "CanFirePortal2 1", 0, null)
+    EntFire("weapon_portalgun", "AddOutput", "CanFirePortal2 1", 0, null)
 }

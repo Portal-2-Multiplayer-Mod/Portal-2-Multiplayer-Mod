@@ -1,136 +1,146 @@
 import os
 import json
+import locale
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
-import Scripts.DataSystem as DS
 
 # █▀▀ █▀█ █▄░█ █▀▀ █ █▀▀   █▀▄▀█ ▄▀█ █▄░█ ▄▀█ █▀▀ █▀▀ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▄ █▄█ █░▀█ █▀░ █ █▄█   █░▀░█ █▀█ █░▀█ █▀█ █▄█ ██▄ █░▀░█ ██▄ █░▀█ ░█░
 
-defaultplayerarray = {"name": "New Player", "steamid": "0", "adminlevel": "0"}
+DefaultPlayer = {"name": "New Player", "steamid": "0", "adminLevel": "0"}
 
-DefaultConfigFile = {
-    "Portal2-Path":
-        {
-            "value": "undefined",
-            "menu": "launcher",
-            "description": "Path of the Portal 2 Folder",
-            "warning": "",
-            "prompt": "Enter the path to the Portal 2 folder",
-        },
+def GetSysLang() -> str:
+    """Gets the default system language
 
-    "Auto-Umount":
-        {
-            "value": "true",
-            "menu": "launcher",
-            "description": "Automatically unmounts the mod when the game is closed",
-            "warning": "",
-            "prompt": "",
-        },
+    Returns
+    -------
+    str
+        translation file name, english if the language is not supported
+    """
 
-    "Launcher-SFX":
-        {
-            "value": "true",
-            "menu": "launcher",
-            "description": "Makes the buttons play sound effects",
-            "warning": "",
-            "prompt": "Enable sound effects?",
-        },
+    sysDefaultLocale = locale.getlocale()[0]
 
-    "Launcher-Cubes":
-        {
-            "value": "true",
-            "menu": "launcher",
-            "description": "Makes cubes rain in the background",
-            "warning": "",
-            "prompt": "Enable background cubes?",
-        },
+    if sysDefaultLocale == None:
+        Log("Automatic language grabbing failed! Defaulting to English...")
+        return "English"
 
-    "Server-Password":
-        {
-            "value": "",
-            "menu": "portal2",
-            "description": "Set a password for your P2MM server, this can be changed while the server is up but a level restart is required",
-            "warning": "Its recommended to also set Public Server to false to have your server not on the Steam Servers",
-            "prompt": "Please type the password for your P2MM server",
-        },
-    
-    "Public-Server":
-        {
-            "value": "false",
-            "menu": "portal2",
-            "description": "Have your server display public on steam servers?",
-            "warning": "Those with your IP Address will still be able to join. Set a password if you want a private server.",
-            "prompt": "Have your server display public on steam servers?",
-        },
-    
-    "Custom-Launch-Options":
-        {
-            "value": "+map mp_coop_lobby_3",
-            "menu": "portal2",
-            "description": "Type any custom launch options you want. Example (+map 'mapname').",
-            "warning": "Leave this to default if you don't know what it does!",
-            "prompt": "Custom launch options for debugging or starting the server at a different map",
-        },
+    if sysDefaultLocale.split("_")[0].lower() == "fr":
+        return "Fran\u00e7ais"
 
-    "Encrypt-Cvars":
-        {
-            "value": "false",
-            "menu": "portal2",
-            "description": "Encrypts cvars such as \"restart_level\" and \"reset_all_progress\")",
-            "warning": "(only use for public games) may break some functionality",
-            "prompt": "Encrypt cvars?",
-        },
+    if sysDefaultLocale.split("_")[0].lower() == "es":
+        return "Espa\xf1ol"
 
-    "Safe-Guard":
-        {
-            "value": "false",
-            "menu": "portal2",
-            "description": "Encrypts vscript functions such as \"SendToConsole(\"\")\"",
-            "warning": "(only use for public games) may break some functionality",
-            "prompt": "Encrypt specific vscript functions?",
-        },
+    if sysDefaultLocale.split("_")[0].lower() == "pl":
+        return "Polski"
 
-    "Players":
-        {
-            "value": [
-                defaultplayerarray,
-            ],
-            "menu": "players",
-            "description": "If You See This Something Is Wrong",
-            "warning": "If You See This Something Is Wrong",
-            "prompt": "If you see this something is wrong",
-        },
+    if sysDefaultLocale.split("_")[0].lower() == "pt_BR":
+        return "Português (Brasil)"
 
-    "Dev-Mode":
-        {
-            "value": "false",
-            "menu": "hidden",
-            "description": "Makes the mod's files mount from src/ModFiles",
-            "warning": "only enable this if you know what you're doing!",
-            "prompt": "",
-        },
+    if sysDefaultLocale.split("_")[0].lower() == "zh":
 
-    "Manual-Data-System-Overide":
-        {
-            "value": "true",
-            "menu": "hidden",
-            "description": "Manually overide if the server will operate next play session.",
-            "warning": "Disabling this can cause your next play session to act weird. Leave on if you don't know what it does!",
-            "prompt": "",
-        },
+        chineseType = sysDefaultLocale.split("_")[1].lower()
 
-    "Active-Language":
-        {
-            "value": "English",
-            "menu": "",
-            "description": "the language of the p2mm client and not the game",
-            "warning": "",
-            "prompt": "",
-        }
+        if chineseType in ["cn", "sg", "hans"]:
+            return "简体中文 (Simplified Chinese)"
+
+        if chineseType in ["hk", "mo", "hant"]:
+            return "繁體中文 (Traditional Chinese)"
+
+    if sysDefaultLocale.split("_")[0].lower() == "it":
+        return "Italiano"
+
+    return "English"
+
+# Default config values for the launcher:
+# "value".
+# "menu": where the config should appear.
+# "description": appears as a label when the config is hovered over.
+# "warning": same as description and appears below it but in red.
+DefaultConfig = {
+    "Active-Language": {
+        "value": GetSysLang(),
+        "menu": "",
+        "description": "The launcher's language.",
+        "warning": "",
+        "prompt": ""
+    },
+
+    "Auto-Unmount": {
+        "value": True,
+        "menu": "general",
+        "description": "Automatically unmount the mod when the game closes.",
+        "warning": "It's recommended to leave this on!",
+        "prompt": ""
+    },
+
+    "Custom-Launch-Options": {
+        "value": "+map mp_coop_lobby_3",
+        "menu": "general",
+        "description": "Launch options for Portal 2. Default is '+map mp_coop_lobby_3'",
+        "warning": "Leave this to default if you don't know what it does!",
+        "prompt": "Launch options for Portal 2.\nDefault is '+map mp_coop_lobby_3'"
+    },
+
+    "Launcher-SFX": {
+        "value": True,
+        "menu": "general",
+        "description": "Makes the buttons play sound effects.",
+        "warning": "",
+        "prompt": ""
+    },
+
+    "Portal2-Path": {
+        "value": "undefined",
+        "menu": "general",
+        "description": "Path of the Portal 2 Folder.",
+        "warning": "",
+        "prompt": "Enter the path to the Portal 2 folder."
+    },
+
+    "Start-From-Last-Map": {
+        "value": False,
+        "menu": "general",
+        "description": "Start the game from the last session's map.",
+        "warning": "",
+        "prompt": ""
+    },
+
+    "Last-Map": {
+        "value": "",
+        "menu": "",
+        "description": "The last map played.",
+        "warning": "",
+        "prompt": ""
+    },
+
+    "Players": {
+        "value": [
+            DefaultPlayer
+        ],
+        "menu": "players",
+        "description": "A list of Admins.",
+        "warning": "",
+        "prompt": ""
+    },
+
+    "Opt-Into-Beta": {
+        "value": False,
+        "menu": "general",
+        "description": "Get updates of pre-release/beta versions of P2MM.",
+        "warning": "These versions will possibly not be in a stable state!",
+        "prompt": ""
+    },
+
+    "Dev-Mode": {
+        "value": True,
+        "menu": "dev",
+        "description": "Enables debugging.",
+        "warning": "Only enable this if you know what you're doing!",
+        "prompt": ""
+    }
 }
 
-ImmutableKeys = {"value", "description", "warning", "prompt", "menu"}
+ImmutableKeys = {"value", "menu", "description", "warning", "prompt"}
 
 # verifies the config file by making sure that the processed data has the same keys as the default
 # if it doesn't then we'll transfer the values from the local config file to the default one and write the default one
@@ -142,7 +152,7 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
     errors = 0
     # VALIDATE ALL THE KEYS ARE CORRECT
     for key in copiedConfigKeys:
-        if key not in DefaultConfigFile.keys():
+        if key not in DefaultConfig.keys():
             Log(f"The key [{key}] is invalid, fixing it...")
             config.pop(key)
             errors +=1
@@ -150,24 +160,24 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
         # validate all the immutable values
         for property in config[key]:
             if property not in ImmutableKeys:
-                if config[key][property] != DefaultConfigFile[key][property]:
+                if config[key][property] != DefaultConfig[key][property]:
                     Log(f"The value for [{key}][{property}] is invalid, fixing it...")
-                    config[key][property] = DefaultConfigFile[key][property]
+                    config[key][property] = DefaultConfig[key][property]
                     errors +=1
 
     # VALIDATE ALL THE KEYS EXIST
-    for key in DefaultConfigFile.keys():
+    for key in DefaultConfig.keys():
         if key not in config.keys():
             Log(f"The key [{key}] is missing, fixing it...")
-            config[key] = DefaultConfigFile[key]
+            config[key] = DefaultConfig[key]
             errors +=1
 
     # VALIDATE THAT ALL THE KEYS HAVE ALL THE VALUES
-    for key in DefaultConfigFile:
-        for property in DefaultConfigFile[key]:
+    for key in DefaultConfig:
+        for property in DefaultConfig[key]:
             if property not in config[key]:
                 Log(f"The value for [{key}][{property}] is missing, fixing it...")
-                config[key][property] = DefaultConfigFile[key][property]
+                config[key][property] = DefaultConfig[key][property]
                 errors +=1
     Log("=========================")
 
@@ -179,36 +189,36 @@ def VerifyConfigFileIntegrity(config: dict) -> dict:
 
 
 def ValidatePlayerKeys() -> None:
-    Log("validating player keys...")
+    Log("Validating player keys...")
     try:
-        indx = 0
+        index = 0
         errs = 0
         player: dict
         for player in GVars.configData["Players"]["value"]:
-            if player.keys() != defaultplayerarray.keys():
+            if player.keys() != DefaultPlayer.keys():
                 errs += 1
-                tempPlayer = defaultplayerarray
-                print(f"local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
+                tempPlayer = DefaultPlayer
+                print(f"Local player keys = {player.keys()} \n saved player keys = {tempPlayer.keys()}")
                 for key in tempPlayer.keys():
                     try:
                         tempPlayer[key] = player[key]
                     except Exception as e:
                         Log(str(e))
-                GVars.configData["Players"]["value"][indx] = tempPlayer
+                GVars.configData["Players"]["value"][index] = tempPlayer
 
             if errs > 0:
-                Log(f"found {str(errs)} key errors in a player property")
+                Log(f"Found {str(errs)} key errors in a player property")
 
-            indx += 1
+            index += 1
 
         if errs > 0:
             WriteConfigFile(GVars.configData)
 
-        Log("validated all keys!")
+        Log("Validated all keys!")
 
     except Exception as e:
         Log("ERROR: " + str(e))
-        GVars.configData["Players"]["value"] = [defaultplayerarray]
+        GVars.configData["Players"]["value"] = [DefaultPlayer]
         WriteConfigFile(GVars.configData)
 
 
@@ -243,7 +253,7 @@ def EditPlayer(index: int, name: str = None, steamId: str = None, level: str = N
     if steamId is not None:
         GVars.configData["Players"]["value"][index]["steamid"] = steamId
     if level is not None:
-        GVars.configData["Players"]["value"][index]["adminlevel"] = level
+        GVars.configData["Players"]["value"][index]["adminLevel"] = level
 
     WriteConfigFile(GVars.configData)
 
@@ -251,12 +261,12 @@ def DeletePlayer(index: int):
     GVars.configData["Players"]["value"].pop(index)
     WriteConfigFile(GVars.configData)
 
-# why this is a seperate function that only has 2 lines?
-# well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
+#? why this is a separate function that only has 2 lines?
+#* well it will make it easier to change the path in the future if we wished to, just change the return value and it will work fine
 def FindConfigPath() -> str:
     Log("Finding config path...")
     # default config path should be here
-    return GVars.configPath + GVars.nf + "configs.cfg"
+    return GVars.configPath + os.sep + "configs.cfg"
 
 # to import the config data from the local config file
 def ImportConfig() -> dict:
@@ -264,34 +274,31 @@ def ImportConfig() -> dict:
         Log("            __________Config Data Start__________")
         Log("Importing Config...")
 
-        configpath = FindConfigPath()
+        configPath = FindConfigPath()
 
         # if the file doesn't exist then create it
-        if not os.path.exists(configpath):
-            print("here")
-            WriteConfigFile(DefaultConfigFile)
+        if not os.path.exists(configPath):
+            WriteConfigFile(DefaultConfig)
 
         # read all the lines in the config file
-        config = open(configpath, "r", encoding="utf-8").read().strip()
+        config = open(configPath, "r", encoding="utf-8").read().strip()
 
         # if the file is empty then re-create it
         if len(config) == 0:
-            print("here2")
-            WriteConfigFile(DefaultConfigFile)
+            WriteConfigFile(DefaultConfig)
 
         # process the config file into useable data
         Log("Processing config...")
-        Log("")
 
-        processedconfig = json.loads(config)
+        processedConfig = json.loads(config)
 
-        Log("")
         Log("Configs imported successfully!")
+
         # at last pass the data to the verify function to make sure everything is clean
-        return VerifyConfigFileIntegrity(processedconfig)
+        return VerifyConfigFileIntegrity(processedConfig)
+
     except Exception as e:
         Log(f"Error importing the config file: {str(e)}")
-        WriteConfigFile(DefaultConfigFile)
-        print("here3")
-        GVars.hadtoresetconfig = True
+        WriteConfigFile(DefaultConfig)
+        GVars.HadToResetConfig = True
         return ImportConfig()

@@ -11,7 +11,7 @@ function StartPermaPotato() {
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        GlobalSpawnClass.useautospawn <- true
+        GlobalSpawnClass.m_bUseAutoSpawn <- true
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto2-entrance_lift_train"), "StartForward", "", 0, null, null)
         // Destroy / Edit objects
@@ -21,8 +21,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "pumproom_portal_top").__KeyValueFromString("targetname", "moja2")
         Entities.FindByName(null, "sphere_entrance_lift_movelinear").__KeyValueFromString("blockdamage", "10")
         // Here if we need to ent_fire something
-        EntFireByHandle(Entities.FindByName(null, "pumproom_door_top_button"), "addoutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
-        EntFireByHandle(Entities.FindByName(null, "sphere_entrance_potatos_button"), "addoutput", "OnPressed p2mm_servercommand:command:script StartPermaPotato()", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "pumproom_door_top_button"), "AddOutput", "OnPressed moja1:SetAnimation:open", 1, null, null)
+        EntFireByHandle(Entities.FindByName(null, "sphere_entrance_potatos_button"), "AddOutput", "OnPressed p2mm_servercommand:command:script StartPermaPotato()", 1, null, null)
         EntFireByHandle(Entities.FindByName(null, "moja2"), "Open", "", 1, null, null)
     }
 
@@ -57,7 +57,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Elevator changelevel
         for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-2048, -130, -3750), 100);) {
-            SendToConsoleP2MM("changelevel sp_a3_speed_ramp")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_speed_ramp")
         }
     }
 }

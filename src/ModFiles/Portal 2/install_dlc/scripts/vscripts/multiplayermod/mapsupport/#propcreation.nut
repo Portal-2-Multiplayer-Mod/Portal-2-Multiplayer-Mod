@@ -23,7 +23,7 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
           PrecacheModel("props_factory/factory_panel_metal_chopped_top_128x128.mdl")
 
-          DoneCacheing <- true
+          g_bDoneCacheing = true
     }
 
 
@@ -74,7 +74,7 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
           sp_a3_crazy_box_custom_prop_17.SetAngles(89.999992370605, 90, 180)
           sp_a3_crazy_box_custom_prop_17.__KeyValueFromString("solid", "6")
           sp_a3_crazy_box_custom_prop_17.__KeyValueFromString("targetname", "genericcustomprop")
-          EntFireByHandle(sp_a3_crazy_box_custom_prop_17, "addoutput", "modelscale 0.9", 0, null, null)
+          EntFireByHandle(sp_a3_crazy_box_custom_prop_17, "AddOutput", "modelscale 0.9", 0, null, null)
           EntFireByHandle(sp_a3_crazy_box_custom_prop_17, "color", "0 0 0 255", 0, null, null)
 
     }
@@ -96,7 +96,7 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
           PrecacheModel("props_bts/hanging_walkway_128a.mdl")
 
-          DoneCacheing <- true
+          g_bDoneCacheing = true
     }
 
 
@@ -294,7 +294,7 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
           PrecacheModel("props_bts/vactube_90deg_06.mdl")
 
-          DoneCacheing <- true
+          g_bDoneCacheing = true
     }
 
 
@@ -391,7 +391,7 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
           PrecacheModel("models/props_office/cabinet_small_door.mdl")
 
-          DoneCacheing <- true
+          g_bDoneCacheing = true
     }
 
 
@@ -525,7 +525,7 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
           PrecacheModel("props_factory/factory_panel_metal_chopped_top_128x128.mdl")
 
-          DoneCacheing <- true
+          g_bDoneCacheing = true
     }
 
 
@@ -706,8 +706,7 @@ function CreatePropsForLevel(CacheTime, CreateTime, LoopTime) {
 
 
   if (CacheTime) {
-    PrecacheModel("models/props/metal_box.mdl")
-    DoneCacheing <- true
+    g_bDoneCacheing = true
   }
 
 }

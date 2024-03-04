@@ -1,0 +1,6 @@
+# https://stackoverflow.com/a/987162/12429279
+*
+!src
+!tools
+!requirements.txt
+!AppImageBuilder.yml
