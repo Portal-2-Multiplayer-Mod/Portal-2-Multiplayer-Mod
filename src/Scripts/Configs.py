@@ -98,7 +98,7 @@ DefaultConfig = {
     },
 
     "Start-From-Last-Map": {
-        "value": False,
+        "value": True,
         "menu": "general",
         "description": "Start the game from the last session's map.",
         "warning": "",
@@ -132,7 +132,7 @@ DefaultConfig = {
     },
 
     "Dev-Mode": {
-        "value": True,
+        "value": False,
         "menu": "dev",
         "description": "Enables debugging.",
         "warning": "Only enable this if you know what you're doing!",
