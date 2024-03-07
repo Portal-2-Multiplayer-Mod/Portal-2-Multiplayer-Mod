@@ -1615,8 +1615,15 @@ function CalcNumPlayers() {
 }
 
 // Function name is sensitive to the hex edits!
-function Plyr_Disconnect_Function() {
-    Entities.FindByName(null, "p2mm_player_disconnect_message").__KeyValueFromString("message", "Player disconnected (" + CalcNumPlayers().tostring() + "/" + iMaxPlayers.tostring() + ")")
+function Plyr_Disconnect_Function(displayname = null) {
+    if (displayname == null) {
+        displayname = "Player"
+    }
+        if (displayname == "\\n") {
+        displayname = "\\\\n"
+    }
+
+    Entities.FindByName(null, "p2mm_player_disconnect_message").__KeyValueFromString("message", displayname + " disconnected (" + (CalcNumPlayers() - 1).tostring() + "/" + iMaxPlayers.tostring() + ")")
     EntFire("p2mm_player_disconnect_message", "Display")
 }
 
