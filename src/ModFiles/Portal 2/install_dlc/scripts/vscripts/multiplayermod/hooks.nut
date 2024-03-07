@@ -381,8 +381,8 @@ function Loop() {
 
         // Random portal sizes
         if (Config_RandomPortalSize) {
-            randomportalsize = RandomInt(1, 100 ).tostring()
-            randomportalsizeh = RandomInt(1, 100 ).tostring()
+            randomportalsize = RandomInt(1, 100).tostring()
+            randomportalsizeh = RandomInt(1, 100).tostring()
 
             try {
                 for (local p = null; p = Entities.FindByClassname(p, "prop_portal");) {
