@@ -324,38 +324,40 @@ function Loop() {
             Config_DevMode = true
         }
     }
-
-    ////#### FUN STUFF ####////
-
-    // Random turret models & colors
-    if (Config_RandomTurrets && g_bHasSpawned) {
-        for (local p = null; p = Entities.FindByClassname(p, "npc_portal_turret_floor");) {
-            if (p.GetTeam() != 69420) {
-                local modelnumber = RandomInt(0, 2)
-                if (modelnumber == 2) {
-                    modelnumber = 4
-                }
-                p.__KeyValueFromInt("ModelIndex", modelnumber)
-                local RTurretColor = RandomColor()
-
-                local B = RTurretColor.b
-                local G = RTurretColor.g
-                local R = RTurretColor.r
-
-                local model = RandomInt(0, 2)
-
-                if (model == 1) {
-                    p.SetModel("models/npcs/turret/turret_skeleton.mdl")
-                }
-                if (model == 2) {
-                    p.SetModel("models/npcs/turret/turret_backwards.mdl")
-                }
-
-                EntFireByHandle(p, "Color", (R + " " + G + " " + R), 0, null, null)
-                p.SetTeam(69420)
+    
+    // Random Turret and Frankenturret colors and models, but looped!
+    if (Config_RandomTurretLoop && g_bHasSpawned) {
+        for (local turret = null; turret = Entities.FindByClassname(turret, "npc_portal_turret_floor");) {
+            local modelnumber = RandomInt(0, 2)
+            if (modelnumber == 2) {
+                modelnumber = 4
             }
+            turret.__KeyValueFromInt("ModelIndex", modelnumber)
+            local model = RandomInt(0, 2)
+
+            if (model == 1) {
+                turret.SetModel("models/npcs/turret/turret_skeleton.mdl")
+            } else if (model == 2) {
+                turret.SetModel("models/npcs/turret/turret_backwards.mdl")
+            }
+
+            local randTurretColor = RandomColor()
+            local r = randTurretColor.r
+            local g = randTurretColor.g
+            local b = randTurretColor.b
+
+            EntFireByHandle(turret, "Color", (r + " " + g + " " + b), 0, null, null)
+        }
+        for (local frank = null; frank = Entities.FindByClassname(frank, "prop_monster_box");) {
+            local randFrankColor = RandomColor()
+            local r = randFrankColor.r
+            local g = randFrankColor.g
+            local b = randFrankColor.b
+
+            EntFireByHandle(frank, "Color", (r + " " + g + " " + b), 0, null, null)
         }
     }
+    
 
     //////////////////////////
     // RUNS EVERY 5 SECONDS //
@@ -630,6 +632,39 @@ function PostPlayerSpawn() {
         }
     }
 
+    // Random Turret and Frankenturret colors and models, but once!
+    if (Config_RandomTurret) {
+        for (local turret = null; turret = Entities.FindByClassname(turret, "npc_portal_turret_floor");) {
+            local modelnumber = RandomInt(0, 2)
+            if (modelnumber == 2) {
+                modelnumber = 4
+            }
+            turret.__KeyValueFromInt("ModelIndex", modelnumber)
+            local model = RandomInt(0, 2)
+
+            if (model == 1) {
+                turret.SetModel("models/npcs/turret/turret_skeleton.mdl")
+            } else if (model == 2) {
+                turret.SetModel("models/npcs/turret/turret_backwards.mdl")
+            }
+
+            local randTurretColor = RandomColor()
+            local r = randTurretColor.r
+            local g = randTurretColor.g
+            local b = randTurretColor.b
+
+            EntFireByHandle(turret, "Color", (r + " " + g + " " + b), 0, null, null)
+        }
+        for (local frank = null; frank = Entities.FindByClassname(frank, "prop_monster_box");) {
+            local randFrankColor = RandomColor()
+            local r = randFrankColor.r
+            local g = randFrankColor.g
+            local b = randFrankColor.b
+
+            EntFireByHandle(frank, "Color", (r + " " + g + " " + b), 0, null, null)
+        }
+    }
+
     // Code used to handle running VScript debugging on the host
     // This needs to be called in PostPlayerSpawn, because the game is in a state where `script_debug` will work as intended.
     if (Config_VScriptDebug) {
@@ -725,6 +760,13 @@ function PostMapSpawn() {
 
     EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"blue\").SetHealth(230053963)", 0.9)
     EntFire("p2mm_servercommand", "command", "script g_bCanHook = true", 1)
+
+    // Precache different turret models for when Config_RandomTurret or Config_RandomTurretLoop are true
+    if (Config_RandomTurret || Config_RandomTurretLoop) {
+        PrecacheModel("models/npcs/turret/turret_skeleton.mdl")
+        PrecacheModel("models/npcs/turret/turret_backwards.mdl")
+    }
+
     PostMapSpawnDone = true
 }
 

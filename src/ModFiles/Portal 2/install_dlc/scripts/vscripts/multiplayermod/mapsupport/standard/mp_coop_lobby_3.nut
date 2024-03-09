@@ -272,8 +272,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit"))
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit_finished"))
 
-        // Remove useless entities so that the entity limit does not crash the game
-
         // Unneeded entities in the DLC course area
         Entities.FindByName(null, "transition_script").Destroy()
         Entities.FindByName(null, "track6-DLCElevatorRoomEntranceTrigger").Destroy()
@@ -330,7 +328,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 }
             }
         }
-        
+
+        // Remove useless entities so that the entity limit does not crash the game
+
         // Remove func_portal_bumper's from the map
         for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
             ent.Destroy() // 165 entities removed

@@ -35,8 +35,12 @@ Config_UseCustomDevModels <- false
 // 1 - Speedrun   : For those who like to speedrun Portal 2     (No full implementation yet)
 Config_GameMode <- 0
 
-// Set true/false if you want to randomize every Turret's models and colors (for fun lol) (BROKEN D:)
-Config_RandomTurrets <- false
+// Set true/false if you want to randomize every Turret 's models and colors and the Frankenturret's colors.
+// The second one when true will make the models and colors constantly change instead of once.
+//! Don't turn Config_RandomTurretLoop on while the map is running or the game will crash because the models
+//! were not precached at PostMapSpawn. Change here then reload the map.
+Config_RandomTurret <- true
+Config_RandomTurretLoop <- false
 
 // Set true/false if you want to randomize the size of all portals every second
 Config_RandomPortalSize <- false
