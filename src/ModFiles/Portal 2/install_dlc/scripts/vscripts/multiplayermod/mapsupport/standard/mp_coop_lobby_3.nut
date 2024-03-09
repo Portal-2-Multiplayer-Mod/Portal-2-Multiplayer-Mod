@@ -285,28 +285,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "paint_reveal_shake_stop").Destroy()
         Entities.FindByName(null, "sound_paint_move_move").Destroy()
 
-        // Remove func_portal_bumper's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
-            ent.Destroy() // 165 entities removed
-        }
-
-        // Remove env_sprite's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
-            ent.Destroy() // 31 entities removed
-        }
-
         // Remove trigger_portal_cleaner's from map, two of these are bugged anyway and need to be removed
         for (local ent = null; ent = Entities.FindByClassname(ent, "trigger_portal_cleanser");) {
             ent.Destroy() // 5 entities removed
-        }
-
-        // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
-        Entities.FindByClassname(null, "point_viewcontrol").Destroy()
-        for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
-            if (ent.GetName().find("cam_botview") != null) {
-                continue
-            }
-            ent.Destroy() // 20 entities removed
         }
 
         // Fix art therapy tube glitches
@@ -350,6 +331,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
         
+        // Remove func_portal_bumper's from the map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
+            ent.Destroy() // 165 entities removed
+        }
+
+        // Remove env_sprite's from the map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
+            ent.Destroy() // 31 entities removed
+        }
+
+        // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
+        Entities.FindByClassname(null, "point_viewcontrol").Destroy()
+        for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
+            if (ent.GetName().find("cam_botview") != null) {
+                continue
+            }
+            ent.Destroy() // 20 entities removed
+        }
     }
 
     if (MSLoop) {
