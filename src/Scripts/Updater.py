@@ -14,7 +14,7 @@ import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
 # When making your fork, make sure to change these to accommodate your version
-currentVersion = "2.2.0" #! Change this before releasing a new version!
+currentVersion = "2.2.1" #! Change this before releasing a new version!
 ownerName = "Portal-2-Multiplayer-Mod" # The user or organization that owns the repository
 repoName = "Portal-2-Multiplayer-Mod"  # The repository name, you can't use the id :(
 repoBranch = "main" # Change this to the target branch to retrieve ModFiles from

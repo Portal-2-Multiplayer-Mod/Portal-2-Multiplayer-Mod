@@ -39,7 +39,7 @@ Config_GameMode <- 0
 // The second one when true will make the models and colors constantly change instead of once.
 //! Don't turn Config_RandomTurretLoop on while the map is running or the game will crash because the models
 //! were not precached at PostMapSpawn. Change here then reload the map.
-Config_RandomTurret <- true
+Config_RandomTurret <- false
 Config_RandomTurretLoop <- false
 
 // Set true/false if you want to randomize the size of all portals every second
