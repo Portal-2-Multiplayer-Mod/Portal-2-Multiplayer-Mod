@@ -10,7 +10,7 @@ class Button:
                     activeColor: tuple = (255, 255, 0),
                     # The color that the button will be when the user doesn't hover over it
                     inactiveColor: tuple = (155, 155, 155),
-                    sizeMultiplier: float = 1,
+                    sizeMultiplier: int = 1,
                     clickAnimation: str = "pop",  # The sound that is played when it is hovered over
                     currentAnimation: str = "",
                     isAsync: bool = False,
@@ -30,7 +30,7 @@ class Button:
         self.function = func
         self.ActiveColor = activeColor
         self.InactiveColor = inactiveColor
-        self.sizeMultiplier = sizeMultiplier
+        self.SizeMultiplier = sizeMultiplier
         self.ClickAnimation = clickAnimation
         self.CurrentAnimation = currentAnimation
         self.isAsync = isAsync

@@ -310,18 +310,16 @@ class Gui:
             btn.CurrentAnimation = "pop1"
 
     def RunAnimation(self, button: Button, anim: str) -> None:
-        if anim == "pop":
-            button.CurrentAnimation = "pop1"
         if anim == "pop1":
-            if button.sizeMultiplier < 1.3:
-                button.sizeMultiplier += 0.1
+            if button.SizeMultiplier < 4:
+                button.SizeMultiplier += 1
             else:
                 button.CurrentAnimation = "pop2"
         if anim == "pop2":
-            if button.sizeMultiplier > 1:
-                button.sizeMultiplier -= 0.1
+            if button.SizeMultiplier > 1:
+                button.SizeMultiplier -= 1
             else:
-                button.sizeMultiplier = 1
+                button.SizeMultiplier = 1
                 button.CurrentAnimation = ""
 
     # Displaying the "prompt" and "warning" fields when hovering over settings
@@ -392,6 +390,8 @@ class Gui:
         W = self.screen.get_width()
         H = self.screen.get_height()
 
+        shouldUpdate = False
+
         for button in self.CurrentViewButtons:
             buttonIndex += 1
 
@@ -403,7 +403,7 @@ class Gui:
             self.RunAnimation(button, button.CurrentAnimation)
 
             text = pygame.font.Font(
-                GVars.translations["font"], button.Size).render(button.Text, True, color)
+                GVars.translations["font"], button.Size + button.SizeMultiplier).render(button.Text, True, color)
 
             self.screen.blit(text, (W / button.xPos, (H / button.yPos -
                              (text.get_height() / 2)) * (buttonIndex / 5.6)))
@@ -412,6 +412,11 @@ class Gui:
                         ) * (buttonIndex / 5.6)
             button.Width = text.get_width()
             button.Height = text.get_height()
+
+            if button.CurrentAnimation == "":
+                shouldUpdate = True
+
+        return shouldUpdate
 
     def DrawLabels(self):
         W = self.screen.get_width()
@@ -581,7 +586,7 @@ class Gui:
                 toast[1] -= 1
                 self.SecAgo = time.time()
 
-    def UpdateUi(self) -> None:
+    def UpdateUi(self) -> bool:
         W = self.screen.get_width()
         H = self.screen.get_height()
         fntdiv: int = 32
@@ -592,6 +597,7 @@ class Gui:
         self.gradientRect(self.screen, (0, 2, 10), (2, 2, 10), pygame.Rect(
             0, 0, self.screen.get_width(), self.screen.get_height()))
 
+        shouldUpdate = False
 
         if self.LookingForInput:
             self.DrawInputBox()
@@ -605,7 +611,7 @@ class Gui:
             self.DrawLabels()
 
         if len(self.CurrentViewButtons) > 0:
-            self.DrawButtons()
+            shouldUpdate = self.DrawButtons()
 
         if len(self.ToastList) > 0:
             self.DrawToasts()
@@ -642,6 +648,8 @@ class Gui:
             self.screen.blit(pasteButton, ((W / 1.14) -
                              pasteButton.get_width(), H / 1.22))
 
+        return shouldUpdate
+
     def Main(self) -> None:
         # make the screen a gradient
 
@@ -658,10 +666,8 @@ class Gui:
             self.Clock.tick(self.FPS)
 
             if self.ShouldUpdateUi:
-                self.UpdateUi()
+                self.ShouldUpdateUi = self.UpdateUi()
                 pygame.display.update()
-
-            self.ShouldUpdateUi = False
 
             if self.CoolDown > 0:
                 self.CoolDown -= 1
@@ -822,14 +828,14 @@ class Gui:
                         # On Steam Deck, for some reason the Y button also acts as a enter key,
                         # but for logic sake the A button is going to also be used
                         elif event.key in [K_SPACE] or event.key == 13:
-                            self.SelectAnimation(
-                                self.SelectedButton, self.SelectedButton.ClickAnimation)
                             if self.SelectedButton.function:
                                 if self.SelectedButton.isAsync:
                                     threading.Thread(
                                         target=self.SelectedButton.function).start()
                                 else:
                                     self.SelectedButton.function()
+                            self.SelectAnimation(
+                                self.SelectedButton, self.SelectedButton.ClickAnimation)
                             self.PlaySound(self.SelectedButton.ClickSound)
 
                 # changes the `SelectedButton` and the `CurrentButtonsIndex` to the button the mouse is on

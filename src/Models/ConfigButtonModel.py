@@ -34,7 +34,7 @@ class ConfigButton:
         # * customizations
         self.ActiveColor = (255, 255, 0)
         self.InactiveColor = (155, 155, 155)
-        self.sizeMultiplier = 1
+        self.SizeMultiplier = 1
         self.Size = 38
         self.xPos = 16
         self.yPos = 2
