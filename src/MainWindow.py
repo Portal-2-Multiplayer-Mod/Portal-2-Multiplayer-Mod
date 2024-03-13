@@ -948,7 +948,10 @@ def PreExit() -> None:
     Log("Shutting down Portal 2...")
     # Windows
     if (GVars.iow):
-        os.system("taskkill /f /im portal2.exe")
+        # for hiding the cmd window on windows
+        si = subprocess.STARTUPINFO()
+        si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        subprocess.call("cmd /c taskkill /f /im portal2.exe", startupinfo=si)
 
     # Linux and Steam Deck/Steam OS 3.0
     if (GVars.iol) or (GVars.iosd):

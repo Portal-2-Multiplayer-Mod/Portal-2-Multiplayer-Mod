@@ -4,6 +4,10 @@ import Scripts.GlobalVariables as GVars
 import os
 import subprocess
 
+# for hiding the cmd window on windows
+si = subprocess.STARTUPINFO()
+si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
 def NormalizePath(path: str) -> str:
     """Normalizes the given path
 
@@ -32,7 +36,7 @@ def DeleteFolder(path: str) -> None:
     """
 
     if (GVars.iow):
-        os.system("rmdir /s /q \"" + path + "\"")
+        subprocess.call("cmd /c rmdir /s /q \"" + path + "\"", startupinfo=si)
     elif (GVars.iol) or (GVars.iosd):
         os.system("rm -rf \"" + path + "\"")
 
@@ -54,7 +58,7 @@ def CopyFolder(src: str, dst: str) -> str:
     """
 
     if (GVars.iow):
-        os.system("xcopy /E /H /C /I /Y \"" + src + "\" \"" + dst + "\"")
+        subprocess.call("cmd /c xcopy /E /H /C /I /Y \"" + src + "\" \"" + dst + "\"", startupinfo=si)
     elif (GVars.iol) or (GVars.iosd):
         os.system("cp -r \"" + src + "\" \"" + dst + "\"")
     return dst
@@ -70,7 +74,7 @@ def DeleteFile(path: str) -> None:
     """
 
     if (GVars.iow):
-        os.system("Del \"" + path + "\"")
+        subprocess.call("cmd /c Del \"" + path + "\"", startupinfo=si)
     elif (GVars.iol) or (GVars.iosd):
         os.system("rm \"" + path + "\"")
 
@@ -92,7 +96,7 @@ def CopyFile(src: str, dst: str) -> str:
     """
 
     if (GVars.iow):
-        os.system("copy \"" + src + "\" \"" + dst + "\"")
+        subprocess.call("cmd /c copy \"" + src + "\" \"" + dst + "\"", startupinfo=si)
     elif (GVars.iol) or (GVars.iosd):
         os.system("cp \"" + src + "\" \"" + dst + "\"")
     return dst
@@ -114,7 +118,7 @@ def MoveFile(src: str, dst: str) -> str:
     """
 
     if (GVars.iow):
-        os.system("move \"" + src + "\" \"" + dst + "\"")
+        subprocess.call("cmd /c move \"" + src + "\" \"" + dst + "\"", startupinfo=si)
     elif (GVars.iol) or (GVars.iosd):
         os.system("mv \"" + src + "\" \"" + dst + "\"")
     return dst

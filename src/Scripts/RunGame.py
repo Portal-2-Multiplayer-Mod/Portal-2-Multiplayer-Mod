@@ -3,6 +3,7 @@
 
 import os
 import threading
+import subprocess
 
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
@@ -190,18 +191,23 @@ def LaunchGame(gamepath: str) -> None:
     args += " " + GVars.configData['Custom-Launch-Options']['value']
 
     try:
-        if (GVars.iow): #launching for windows
+        if (GVars.iow):
+            # for hiding the cmd window on windows
+            si = subprocess.STARTUPINFO()
+            si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
                 Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" {args}')
-                os.system(f'"{gamepath + os.sep}portal2.exe" {args}')
+                subprocess.call(f'"{gamepath + os.sep}portal2.exe" {args}', startupinfo=si)
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
             # start the game in a new thread
             thread = threading.Thread(target=RunGame)
             thread.start()
+
         elif (GVars.iol or GVars.iosd): #launching for linux
             def RunGame():
                 def RunSteam():
