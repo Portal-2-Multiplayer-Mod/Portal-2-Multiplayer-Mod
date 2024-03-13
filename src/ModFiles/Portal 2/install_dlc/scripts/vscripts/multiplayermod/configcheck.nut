@@ -63,13 +63,23 @@ try {
 }
 
 try {
-    if (typeof(Config_RandomTurrets) != "bool") {
-        Config_RandomTurrets <- false
-        ConfigValueError("Invalid", "Config_RandomTurrets")
+    if (typeof(Config_RandomTurret) != "bool") {
+        Config_RandomTurret <- false
+        ConfigValueError("Invalid", "Config_RandomTurret")
     }
 } catch (exception) {
-    Config_RandomTurrets <- false
-    ConfigValueError("Undefined", "Config_RandomTurrets")
+    Config_RandomTurret <- false
+    ConfigValueError("Undefined", "Config_RandomTurret")
+}
+
+try {
+    if (typeof(Config_RandomTurretLoop) != "bool") {
+        Config_RandomTurretLoop <- false
+        ConfigValueError("Invalid", "Config_RandomTurretLoop")
+    }
+} catch (exception) {
+    Config_RandomTurretLoop <- false
+    ConfigValueError("Undefined", "Config_RandomTurretLoop")
 }
 
 try {

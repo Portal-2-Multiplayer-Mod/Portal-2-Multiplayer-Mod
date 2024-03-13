@@ -141,7 +141,7 @@ switch (Config_GameMode) {
     case 0: LoadMapSupportCode("standard"); break
     case 1: LoadMapSupportCode("speedrun"); break
     default:
-        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
+        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard mapsupport.")
         LoadMapSupportCode("standard")
         break
 }

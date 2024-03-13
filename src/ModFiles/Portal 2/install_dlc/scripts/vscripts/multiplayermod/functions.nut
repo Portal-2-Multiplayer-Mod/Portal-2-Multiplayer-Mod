@@ -472,6 +472,56 @@ function DeleteAmountOfEntities(classname, amount) {
     return indx
 }
 
+function PrecacheModel(mdl) {
+    // Add the models/ to the side of the model name if it's not already there
+    if (mdl.slice(0, 7) != "models/") {
+        mdl = "models/" + mdl
+    }
+    // Add the .mdl to the end of the model name if it's not already there
+    if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl") {
+        mdl = mdl + ".mdl"
+    }
+
+    // Remove the models/ from the left side and the .mdl from the right side
+    local MinifyModel = function(mdl) {
+        if (mdl.slice(0, 7) == "models/") {
+            mdl = mdl.slice(7, mdl.len())
+        }
+        if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
+            mdl = mdl.slice(0, mdl.len() - 4)
+        }
+        return mdl
+    }
+    local minimdl = MinifyModel(mdl)
+
+    // Check if the model is already precached
+    local Precached = false
+    foreach (model in PrecachedProps) {
+        if (model == minimdl) {
+            Precached = true
+        }
+    }
+
+    // No existing model in the map and it's not something we know is precached
+    if (!Entities.FindByModel(null, mdl) && !Precached) {
+        // Attempt to precache it
+        EntFire("p2mm_servercommand", "command", "sv_cheats 1; prop_dynamic_create " + minimdl) // FIXME: "prop_dynamic_create" crashes on dedicated servers!!!
+        PrecachedProps.push(minimdl)
+        if (!g_bCheatsOn) {
+            // In case players are now joining
+            EntFire("p2mm_servercommand", "command", "sv_cheats 0")
+        }
+        EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
+        if (GetDeveloperLevelP2MM()) {
+            printlP2MM("PrecacheModel() - Precached model: " + mdl)
+        }
+    } else {
+        if (GetDeveloperLevelP2MM()) {
+            printlP2MM("PrecacheModel() - Model: " + mdl + " already precached!")
+        }
+    }
+}
+
 function FindPlayerClass(plyr) {
     // If for whatever reason this function causes errors,
     // then there is a problem with how we hook onto joining players
@@ -1565,8 +1615,15 @@ function CalcNumPlayers() {
 }
 
 // Function name is sensitive to the hex edits!
-function Plyr_Disconnect_Function() {
-    Entities.FindByName(null, "p2mm_player_disconnect_message").__KeyValueFromString("message", "Player disconnected (" + CalcNumPlayers().tostring() + "/" + iMaxPlayers.tostring() + ")")
+function Plyr_Disconnect_Function(displayname = null) {
+    if (displayname == null) {
+        displayname = "Player"
+    }
+        if (displayname == "\\n") {
+        displayname = "\\\\n"
+    }
+
+    Entities.FindByName(null, "p2mm_player_disconnect_message").__KeyValueFromString("message", displayname + " disconnected (" + (CalcNumPlayers() - 1).tostring() + "/" + iMaxPlayers.tostring() + ")")
     EntFire("p2mm_player_disconnect_message", "Display")
 }
 
