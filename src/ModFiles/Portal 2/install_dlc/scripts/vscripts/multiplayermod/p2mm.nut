@@ -74,6 +74,15 @@ if (GetDeveloperLevel() == 918612) {
     return
 }
 
+// try-catch used for loading the last map as given by the launcher. If the VScript file doesn't exist, the system must be off.
+// try {
+//     printlP2MM("Checking for lastmap.nut...\n")
+//     IncludeScript("multiplayermod/lastmap.nut")
+// } catch (exception) {
+//     printlP2MM(exception)
+//     printlP2MM("Lastmap.nut doesn't exist, \"Start Last Map\" must be off. Continuing on current map!")
+// }
+
 //-------------------------------------------------------------------------------------------
 
 // Continue loading the P2:MM fixes, game mode, and features
@@ -141,7 +150,7 @@ switch (Config_GameMode) {
     case 0: LoadMapSupportCode("standard"); break
     case 1: LoadMapSupportCode("speedrun"); break
     default:
-        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-3. Reverting to standard mapsupport.")
+        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard mapsupport.")
         LoadMapSupportCode("standard")
         break
 }

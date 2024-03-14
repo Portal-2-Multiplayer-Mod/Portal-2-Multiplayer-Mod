@@ -1,12 +1,11 @@
 {
-    "Date": "2024-03-05",
+    "Date": "2024-03-13",
     "Path": "src/ModFiles/Portal 2/install_dlc",
     "Files": [
         "/p2mm.identifier",
         "/pak01_dir.vpk",
         "/addons/p2mm.dll",
         "/addons/p2mm.vdf",
-        "/cfg/listenserver.cfg",
         "/maps/soundcache/_master.cache",
         "/scripts/vscripts/choreo/glados_coop_scenetable_include.nut",
         "/scripts/vscripts/multiplayermod/chatcommands.nut",

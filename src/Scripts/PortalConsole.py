@@ -33,12 +33,16 @@ def WriteConsoleToLog() -> None:
         log.write("\n\n# PORTAL 2 CONSOLE LOGS END.\n\n")
 
     # to avoid duplicates
+    print(consoleFile)
     BF.DeleteFile(consoleFile)
 
 def FilterConsole(text: list[str]) -> list[str]:
     # removes the lines related to initializing the game
     text = text[1200:]
     lastMap = None
+
+    if len(text) == 0:
+        return [""]
 
     i = -1
     while True:

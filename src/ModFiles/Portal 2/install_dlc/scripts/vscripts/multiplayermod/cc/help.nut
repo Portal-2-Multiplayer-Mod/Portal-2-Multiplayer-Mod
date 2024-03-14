@@ -33,16 +33,14 @@ CommandList.push(
                 }
             } catch (exception) {
                 SendChatMessage("[HELP] Target team operations:", p)
-                SendChatMessage("[HELP] \"@a\": Everyone", p)
-                SendChatMessage("[HELP] \"@b\": Atlas Team", p)
-                SendChatMessage("[HELP] \"@o\": P-Body Team", p)
-                SendChatMessage("[HELP] \"@s\": Singleplayer Team", p)
+                SendChatMessage("[HELP] \"@a\": Everyone | \"@b\": Atlas Team", p)
+                SendChatMessage("[HELP] \"@o\": P-Body Team | \"@s\": SP Team", p)
                 SendChatMessage("[HELP] Available commands:", p)
                 local availablecommands = ""
                 foreach (command in CommandList) {
                     if (command.level <= GetAdminLevel(p)) {
-                        // 100 characters max allowed in chat box per message
-                        if ((availablecommands + command.name + ", ").len() >= 100) {
+                        // 150 characters max allowed in chat box per message
+                        if ((availablecommands + command.name + ", ").len() >= 150) {
                             // Print it out
                             SendChatMessage("[HELP] " + availablecommands.slice(0, availablecommands.len() - 2), p) // Remove excess comma and space
                             availablecommands = ""
