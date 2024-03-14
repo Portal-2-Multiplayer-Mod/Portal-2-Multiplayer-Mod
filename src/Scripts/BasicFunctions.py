@@ -5,8 +5,9 @@ import os
 import subprocess
 
 # for hiding the cmd window on windows
-si = subprocess.STARTUPINFO()
-si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+if (GVars.iow):
+    si = subprocess.STARTUPINFO()
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
 def NormalizePath(path: str) -> str:
     """Normalizes the given path
