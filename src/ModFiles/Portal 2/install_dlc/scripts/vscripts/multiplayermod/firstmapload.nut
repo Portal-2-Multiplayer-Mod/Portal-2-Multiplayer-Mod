@@ -34,11 +34,4 @@ switch (Config_GameMode) {
         break
 }
 
-// try-catch used for loading the last map as given by the launcher. If the VScript file doesn't exist, the system must be off.
-try {
-    printlP2MM("Checking for lastmap.nut...")
-    IncludeScript("multiplayermod/lastmap.nut")
-} catch (exception) {
-    printlP2MM("Lastmap.nut doesn't exist, \"Start Last Map\" must be off. Continuing on current map!")
-    EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + GetMapName(), 0.70) // Must be delayed. We use changelevel to restart the map because restart_level is locked by the plugin by default
-}
+EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + GetMapName(), 0.70) // Must be delayed. We use changelevel to restart the map because restart_level is locked by the plugin by default

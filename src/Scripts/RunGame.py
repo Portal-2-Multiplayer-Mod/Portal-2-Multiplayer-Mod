@@ -83,7 +83,19 @@ def MountMod(gamepath: str) -> bool:
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
 
-    modFilesPath = GVars.modPath + os.sep + "ModFiles" + os.sep + "Portal 2" + os.sep + "install_dlc"
+    modFilesPath = GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc"
+
+    # # Create the lastmap.nut file if the user wants to start at the last run map
+    # if GVars.configData["Start-From-Last-Map"]["value"]:
+    #     lastmappath = f"{modFilesPath}{os.sep}scripts{os.sep}vscripts{os.sep}multiplayermod{os.sep}lastmap.nut"
+        
+    #     # Remove the lastmap.nut if it for some reason still exists
+    #     if os.path.exists(lastmappath): os.remove(lastmappath)
+    #     with open(lastmappath, "w+", encoding="utf-8") as lastmap:
+    #         lastmap.write("if (GetMapName() != \"" + GVars.configData["Last-Map"]["value"].strip() + "\") {\n")
+    #         lastmap.write("\tEntFire(\"p2mm_servercommand\", \"command\", \"stopvideos; changelevel " + GVars.configData["Last-Map"]["value"].strip() + "\", 0)\n")
+    #         lastmap.write("}")
+    #         lastmap.close()
 
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
@@ -185,9 +197,9 @@ def LaunchGame(gamepath: str) -> None:
     args = f"-novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear"
 
     # portal 2 uses the first argument provided, so this will override whatever the user has in the custom launch options
-    if GVars.configData["Start-From-Last-Map"]["value"] and len(GVars.configData["Last-Map"]["value"].strip()) > 0:
-        args += " +map " + GVars.configData["Last-Map"]["value"]
-
+    # if GVars.configData["Start-From-Last-Map"]["value"] and len(GVars.configData["Last-Map"]["value"].strip()) > 0:
+    #     args += " +map " + GVars.configData["Last-Map"]["value"]
+    
     args += " " + GVars.configData['Custom-Launch-Options']['value']
 
     try:
@@ -199,7 +211,7 @@ def LaunchGame(gamepath: str) -> None:
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" {args}')
+                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" {args}\n')
                 subprocess.call(f'"{gamepath + os.sep}portal2.exe" {args}', startupinfo=si)
                 Log("Game exited successfully.")
                 # Run The AfterFunction
@@ -211,7 +223,7 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol or GVars.iosd): #launching for linux
             def RunGame():
                 def RunSteam():
-                    Log(f'Starting Portal 2: steam -applaunch 620 {args}')
+                    Log(f'Starting Portal 2: steam -applaunch 620 {args}\n')
                     os.system(f'steam -applaunch 620 {args}')
                 threading.Thread(target=RunSteam).start()
 

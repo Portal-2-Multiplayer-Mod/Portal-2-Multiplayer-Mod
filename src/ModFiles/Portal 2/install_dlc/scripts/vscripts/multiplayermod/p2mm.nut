@@ -74,6 +74,15 @@ if (GetDeveloperLevel() == 918612) {
     return
 }
 
+// try-catch used for loading the last map as given by the launcher. If the VScript file doesn't exist, the system must be off.
+// try {
+//     printlP2MM("Checking for lastmap.nut...\n")
+//     IncludeScript("multiplayermod/lastmap.nut")
+// } catch (exception) {
+//     printlP2MM(exception)
+//     printlP2MM("Lastmap.nut doesn't exist, \"Start Last Map\" must be off. Continuing on current map!")
+// }
+
 //-------------------------------------------------------------------------------------------
 
 // Continue loading the P2:MM fixes, game mode, and features

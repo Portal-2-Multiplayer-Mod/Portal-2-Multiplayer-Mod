@@ -18,7 +18,7 @@ import Scripts.RunGame as RG
 import Scripts.Updater as UP
 import Scripts.Workshop as Workshop
 import Scripts.Views as Views
-import Scripts.PortalConsole as PCon
+#import Scripts.PortalConsole as PCon
 from Scripts.BasicLogger import Log, StartLog
 
 
@@ -1040,7 +1040,7 @@ def MountModOnly() -> bool:
 
     Ui.CreateToast(GVars.translations["mounting_mod"], 5, (75, 255, 75))
 
-    # Need to make sure the game path is in fact defined if not P2MM will not be run/mounted
+    # Need to make sure the game path is in fact defined, if not P2MM will not be run/mounted
     gamePath = GVars.configData["Portal2-Path"]["value"]
     if ("undefined" in gamePath):
         Ui.CreateToast(
@@ -1135,6 +1135,7 @@ def UnmountScript(shouldGetPath: bool = True) -> None:
     VerifyGamePath(shouldGetPath)
     gamePath = GVars.configData["Portal2-Path"]["value"]
     RG.DeleteUnusedDLCs(gamePath)
+    #if os.path.exists(f"{GVars.modFilesPath}{os.sep}Portal 2{os.sep}install_dlc{os.sep}scripts{os.sep}vscripts{os.sep}multiplayermod{os.sep}lastmap.nut"): os.remove(f"{GVars.modFilesPath}{os.sep}Portal 2{os.sep}install_dlc{os.sep}scripts{os.sep}vscripts{os.sep}multiplayermod{os.sep}lastmap.nut")
     Log("____DONE UNMOUNTING____")
 
 
@@ -1238,7 +1239,7 @@ def PostInitialize() -> None:
             UnmountScript()
             Ui.CreateToast(
                 GVars.translations["unmounted_toast"], 5, (125, 0, 125))
-        PCon.WriteConsoleToLog()
+        #PCon.WriteConsoleToLog()
 
     GVars.AfterFunction = NewAfterFunction
 
