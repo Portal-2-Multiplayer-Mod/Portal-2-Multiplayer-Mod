@@ -5,6 +5,7 @@ import os
 import subprocess
 
 # for hiding the cmd window on windows
+si = None
 if (GVars.iow):
     si = subprocess.STARTUPINFO()
     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
