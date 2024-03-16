@@ -98,9 +98,6 @@
   "Custom-Launch-Options-description": "Portal 2 的启动选项。默认值是'+map mp_coop_lobby_3'。",
   "Custom-Launch-Options-prompt": "Portal 2的启动选项。\n默认值为'+map mp_coop_lobby_3'。",
   "Custom-Launch-Options-warning": "如果你不知道它是什么，请将其保留为默认值！",
-  "Opt-Into-Beta": "选择进入测试版",
-  "Opt-Into-Beta-description": "获取 P2MM 启动器预发行/测试版的更新。",
-  "Opt-Into-Beta-warning": "这些版本可能不稳定！",
   "Dev-Mode": "开发者模式",
   "Dev-Mode-description": "启用调试。",
   "Dev-Mode-warning": "只有在你知道自己在做什么时才启用这个功能！！"
