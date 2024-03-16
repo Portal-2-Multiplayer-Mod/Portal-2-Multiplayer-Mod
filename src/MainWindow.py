@@ -1115,7 +1115,7 @@ def UpdateModClient(data: dict) -> None:
             return
 
         Ui.Running = False
-        Log("self.running set to false")
+        Log("Ui.Running set to false!")
 
     threading.Thread(target=UpdateThread).start()
 

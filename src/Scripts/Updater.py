@@ -103,13 +103,11 @@ def DownloadClient(newRepo: bool) -> bool:
         return False
 
     # Get the right version of the new client executable
-    Log("Checking systems CPU architecture to get the right executable...")
     if (GVars.iow):
         packageType = ".EXE"
     elif (GVars.iol or GVars.iosd):
         packageType = ".APPIMAGE"
 
-    #Log(f"System CPU Architecture Detected: {systemArchitecture}")
     Log(f"Getting packageType: {packageType}")
 
     endpoint = "https://api.github.com/repos"
