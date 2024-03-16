@@ -52,11 +52,11 @@
   - SAR (SourceAudioRecord) pour le speedrun supporté
 ```
 
-# Installation et utilisation 
+# Installation & Utilisation
 
-**Guide steam sur comment rejoindre et héberger une partie:**
+**Guides du Wiki sur la configuration de P2:MM :**
 
-- <https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/wiki>
 
 **Télécharger la dernière version:**
 

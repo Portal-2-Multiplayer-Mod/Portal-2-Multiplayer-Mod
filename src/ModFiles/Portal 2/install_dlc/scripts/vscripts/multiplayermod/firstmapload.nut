@@ -25,13 +25,4 @@ if (!PluginLoaded) {
     printlP2MM("Plugin has already been loaded! Not attempting to load it...")
 }
 
-switch (Config_GameMode) {
-    case 0: EntFire("p2mm_servercommand", "command", "p2mm_set_preset \"normal\"", 0.50); break; // Set the p2mm plugin to use the normal preset for the mod
-    case 1: EntFire("p2mm_servercommand", "command", "p2mm_set_preset \"speedrun\"", 0.50); break; // Set the p2mm plugin to use the speedrun preset for the mod
-    default:
-        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1! Defaulting to 1/\"normal\" preset.")
-        EntFire("p2mm_servercommand", "command", "p2mm_set_preset \"normal\"", 0.50)
-        break
-}
-
 EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + GetMapName(), 0.70) // Must be delayed. We use changelevel to restart the map because restart_level is locked by the plugin by default
