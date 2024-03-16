@@ -66,9 +66,9 @@ class Gui:
         self.FPS: int = 60
 
         pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
-        self.P2mmLogo = pygame.image.load(
+        self.p2mmLogo = pygame.image.load(
             "GUI/images/p2mm64.ico").convert_alpha()
-        pygame.display.set_icon(self.P2mmLogo)
+        pygame.display.set_icon(self.p2mmLogo)
 
         ###############################################################################
 
@@ -1115,7 +1115,7 @@ def UpdateModClient(data: dict) -> None:
             return
 
         Ui.Running = False
-        Log("self.running set to false")
+        Log("Ui.Running set to false!")
 
     threading.Thread(target=UpdateThread).start()
 

@@ -52,11 +52,11 @@
   - 为速通提供 SAR（起源自动录制）支持
 ```
 
-# 安装及使用
+# 安装与使用
 
-**Steam 教程页 - 如何建立服务器以及加入游戏（英文）：**
+**关于如何设置P2:MM的Wiki指南：**
 
-- <https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/wiki>
 
 **下载最新版：**
 

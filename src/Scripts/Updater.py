@@ -69,14 +69,6 @@ def CheckForNewClient() -> dict:
         elif (currentVersion != latestReleaseData["tag_name"]) and not ("beta" in latestReleaseData["tag_name"]):
             Log("Found new release!")
             foundNewVer = True
-        elif (currentVersion != latestReleaseData["tag_name"]) and ("beta" in latestReleaseData["tag_name"]):
-            Log("Found new pre-release/beta release!")
-            if GVars.configData["Opt-Into-Beta"]:
-                Log("User has opted for pre-release/beta content!")
-                foundNewVer = True
-            else:
-                Log("User has opted not to download pre-release/beta content!")
-                foundNewVer = False
 
     #! search for a new client on the new repo
     try:
@@ -111,13 +103,11 @@ def DownloadClient(newRepo: bool) -> bool:
         return False
 
     # Get the right version of the new client executable
-    Log("Checking systems CPU architecture to get the right executable...")
     if (GVars.iow):
         packageType = ".EXE"
     elif (GVars.iol or GVars.iosd):
         packageType = ".APPIMAGE"
 
-    #Log(f"System CPU Architecture Detected: {systemArchitecture}")
     Log(f"Getting packageType: {packageType}")
 
     endpoint = "https://api.github.com/repos"

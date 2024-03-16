@@ -52,11 +52,11 @@
   - Soporte para SAR (SourceAutoRecord) para speedrunning
 ```
 
-# Instalación y uso
+# Instalación y Uso
 
-**Guía de Steam sobre cómo alojar y unirse a un juego:**
+**Guías en el Wiki sobre cómo configurar P2:MM:**
 
-- <https://steamcommunity.com/sharedfiles/filedetails/?id=2458260280>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/wiki>
 
 **Última versión:**
 
