@@ -60,7 +60,7 @@ def SetVScriptConfigFile(vsconfigfile: str) -> None:
     ################## ADMINS
     # convert the lines to a string with newlines
     lines = ''.join(lines)
-    print(lines)
+    Log(lines) # Made this be logged for debugging and helping solve issues wih users
 
     # find the admins section
     admins = lines.find("Admins <-")
@@ -71,7 +71,7 @@ def SetVScriptConfigFile(vsconfigfile: str) -> None:
         name = player["name"]
         level = player["adminLevel"]
         steamid = player["steamid"]
-        print("Adding " + name + " to admins")
+        Log("Adding " + name + " to admins")
 
         lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + steamid + '", // ' + name + lines[nextObrack + 1:]
 
