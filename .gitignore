@@ -53,6 +53,7 @@ hammer/
 steam_input/
 sar.pdb
 src/ModFiles.zip
+squashfs-root
 
 # added by cabiste ;)
 tests/
