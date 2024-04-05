@@ -6,7 +6,7 @@ AppDir:
     id: com.p2mm.app
     name: p2mm
     icon: p2mm-icon
-    version: 2.2.0-beta.1
+    version: 2.2.2
     exec: usr/bin/python3.10
     exec_args: $APPDIR/usr/bin/MainWindow.py $@
   apt:
@@ -34,6 +34,13 @@ AppDir:
     - usr/share/doc/*/changelog.*
     - usr/share/doc/*/NEWS.*
     - usr/share/doc/*/TODO.*
+    - usr/share/doc/*/copyright
+    - usr/bin/pip
+    - usr/bin/pip-22.0.2.dist-info
+    - usr/bin/setuptools
+    - usr/bin/setuptools-59.6.0.dist-info
+    - usr/bin/pygame/docs
+    - usr/bin/pygame/examples
   # test:
   #   fedora-30:
   #     image: appimagecrafters/tests-env:fedora-30
@@ -51,6 +58,6 @@ AppDir:
   #     image: appimagecrafters/tests-env:ubuntu-xenial
   #     command: ./AppRun
 AppImage:
+  update-information: gh-releases-zsync|Portal-2-Multiplayer-Mod|Portal-2-Multiplayer-Mod|latest|p2mm-*x86_64.AppImage.zsync
   arch: x86_64
   comp: xz
-  update-information: guess
