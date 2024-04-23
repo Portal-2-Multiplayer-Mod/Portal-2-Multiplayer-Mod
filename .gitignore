@@ -54,6 +54,9 @@ steam_input/
 sar.pdb
 src/ModFiles.zip
 squashfs-root
+!src/ModFilesVPK/filesystem_stdio.dll
+!src/ModFilesVPK/tier0.dll
+!src/ModFilesVPK/vstdlib.dll
 
 # added by cabiste ;)
 tests/

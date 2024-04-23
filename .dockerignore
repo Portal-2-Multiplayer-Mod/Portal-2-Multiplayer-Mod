@@ -6,6 +6,7 @@
 !AppImageBuilder.yml
 src/ModFiles
 src/ModFiles.zip
+src/ModFilesVPK
 
 # The below entries were taken from https://github.com/cabiste69/appimage-builder/blob/main/.dockerignore
 

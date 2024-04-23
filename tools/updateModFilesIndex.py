@@ -10,16 +10,18 @@ from datetime import datetime
 #* ModFiles.
 
 #? User Process:
-#* 1- Run script from the src directory. `python tools\updateModFilesIndex.py`
+#* 1- Run script from the root directory. `python tools\updateModFilesIndex.py`
 #* 2- Copy the relative path of the identifier file. (ex: src\ModFiles\Portal 2\install_dlc\p2mm.identifier)
 #* 3- Input the path when the script asks for it.
 #* 4- A file should be created/updated (ModIndex.json) that means everything ran correctly, the identifier given will also be updated.
 #* 5- Push the changes to GitHub.
 
-
+# Goes through all the files in the directory and saves their full name in fileList
 def GetFiles(path):
+    print("Getting current files in ModFiles folder...")
+
     fileList = []
-    # goes through all the files in the directory and saves their full name in fileList
+
     for root, dirs, files in os.walk(path):
         for file in files:
             fileList.append(os.path.join(root, file).replace(path,"").replace(os.sep, "/"))
@@ -32,21 +34,34 @@ def SaveData():
         "Path": "",
         "Files":[]
     }
-
-    # loop until the given path is a file (Just copy the identifier's relative path)
-    while not os.path.isfile(filesData["Path"]):
-        filesData["Path"] = input("Input the relative path for the identifier file: ")
     
-    open(os.getcwd()+os.sep + filesData["Path"], "w", encoding="utf-8").write(filesData["Date"]) # write the date to the identifier file (yes we need it) 
-    print(os.getcwd() + os.sep + filesData["Path"])
-    filesData["Path"] = os.path.dirname(filesData["Path"] ) # we only need the directory 
-    path = os.getcwd()+os.sep + filesData["Path"] # this to get the absolute path of the folder for whoever is running this code
-    filesData["Files"] = GetFiles(path)
-    filesData["Path"] = filesData["Path"].replace(os.sep, "/") # to make it easy when using the path for the url
-    savePath = os.getcwd() + os.sep + "ModIndex.json" 
-    jsonStr = json.dumps(filesData)
-    with open(savePath, "w",encoding="utf-8") as file:
-        file.write(jsonStr)
+    # Define path to identifier file and json index file
+    filesData["Path"] = f"src{os.sep}ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}p2mm.identifier"
+    indexPath = f"{os.getcwd() + os.sep}ModIndex.json"
+
+    # Check if the identifier file exists
+    if not os.path.exists(filesData["Path"]):
+        print("p2mm.identifier file is not found! Exiting...")
+        exit(0)
+    
+    # Write current date to the identifier file so it can be checked for updating
+    print("Writing current date to identifier file...")
+    open(os.getcwd() + os.sep + filesData["Path"], "w", encoding="utf-8").write(filesData["Date"])
+    
+    # Change filesData["Path"] to just the directory and make it a absolute path
+    filesData["Path"] = os.getcwd() + os.sep + os.path.dirname(filesData["Path"]) # this to get the absolute path of the folder for whoever is running this code
+    
+    # Get a list of all the ModFiles directories files
+    filesData["Files"] = GetFiles(filesData["Path"])
+
+    # Make urls work correctly
+    filesData["Path"] = filesData["Path"].replace(os.sep, "/")
+    
+    # Write our collected file data to the json index file
+    print("Writing collected files to index file...")
+    with open(indexPath, "w", encoding="utf-8") as indexFile:
+        json.dump(filesData, indexFile, indent=4)
 
 SaveData()
-print("Finished writing to ModIndex.json and identifier file! :D")
+print("Finished writing to index and identifier file! :D")
+exit(0)
