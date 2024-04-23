@@ -428,8 +428,6 @@ class Gui:
 
             font = pygame.font.Font(GVars.translations["font"], label.Size)
 
-            # 19
-
             # 2D array where each row is a list of words.
             words = [word.split(' ') for word in label.Text.splitlines()]
             space = font.size(' ')[0]  # The width of a space.

@@ -71,7 +71,7 @@ def SetVScriptConfigFile(vsconfigfile: str) -> None:
         name = player["name"]
         level = player["adminLevel"]
         steamid = player["steamid"]
-        Log("Adding " + name + " to admins")
+        Log("Adding " + name + " to Admins")
 
         lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + steamid + '", // ' + name + lines[nextObrack + 1:]
 
@@ -85,18 +85,6 @@ def MountMod(gamepath: str) -> bool:
 
     modFilesPath = GVars.modFilesPath + os.sep + "Portal 2" + os.sep + "install_dlc"
 
-    # # Create the lastmap.nut file if the user wants to start at the last run map
-    # if GVars.configData["Start-From-Last-Map"]["value"]:
-    #     lastmappath = f"{modFilesPath}{os.sep}scripts{os.sep}vscripts{os.sep}multiplayermod{os.sep}lastmap.nut"
-        
-    #     # Remove the lastmap.nut if it for some reason still exists
-    #     if os.path.exists(lastmappath): os.remove(lastmappath)
-    #     with open(lastmappath, "w+", encoding="utf-8") as lastmap:
-    #         lastmap.write("if (GetMapName() != \"" + GVars.configData["Last-Map"]["value"].strip() + "\") {\n")
-    #         lastmap.write("\tEntFire(\"p2mm_servercommand\", \"command\", \"stopvideos; changelevel " + GVars.configData["Last-Map"]["value"].strip() + "\", 0)\n")
-    #         lastmap.write("}")
-    #         lastmap.close()
-
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
 
@@ -107,7 +95,6 @@ def MountMod(gamepath: str) -> bool:
     if os.path.exists(nutConfigFile):
         SetVScriptConfigFile(nutConfigFile)
 
-    Log("            ___________Moving Files End__________")
     Log("            ___________Mounting Mod End__________")
     return True
 
@@ -211,7 +198,8 @@ def LaunchGame(gamepath: str) -> None:
             # start portal 2 with the launch options and dont wait for it to finish
             def RunGame() -> None:
                 # start portal 2 with the launch options and dont wait for it to finish
-                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" {args}\n')
+                Log("")
+                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" {args}')
                 subprocess.call(f'"{gamepath + os.sep}portal2.exe" {args}', startupinfo=si)
                 Log("Game exited successfully.")
                 # Run The AfterFunction
@@ -223,6 +211,7 @@ def LaunchGame(gamepath: str) -> None:
         elif (GVars.iol or GVars.iosd): #launching for linux
             def RunGame():
                 def RunSteam():
+                    Log("")
                     Log(f'Starting Portal 2: steam -applaunch 620 {args}\n')
                     os.system(f'steam -applaunch 620 {args}')
                 threading.Thread(target=RunSteam).start()
