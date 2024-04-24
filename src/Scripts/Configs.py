@@ -97,21 +97,21 @@ DefaultConfig = {
         "prompt": "Enter the path to the Portal 2 folder."
     },
 
-    # "Start-From-Last-Map": {
-    #     "value": True,
-    #     "menu": "general",
-    #     "description": "Start the game from the last session's map.",
-    #     "warning": "",
-    #     "prompt": ""
-    # },
+    "Start-From-Last-Map": {
+        "value": False,
+        "menu": "general",
+        "description": "Start the game from the last session's map.",
+        "warning": "",
+        "prompt": ""
+    },
 
-    # "Last-Map": {
-    #     "value": "",
-    #     "menu": "",
-    #     "description": "The last map played.",
-    #     "warning": "",
-    #     "prompt": ""
-    # },
+    "Last-Map": {
+        "value": "",
+        "menu": "",
+        "description": "The last map played.",
+        "warning": "",
+        "prompt": ""
+    },
 
     "Players": {
         "value": [

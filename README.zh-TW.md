@@ -24,6 +24,7 @@
               alt="GitHub last commit (branch)" align="right">
   </a>
   <br>
+  <br>
   <p align="right">PORTAL 2:</p>
   <p align="right">MULTIPLAYER MOD</p>
 </h1>
@@ -37,81 +38,85 @@
 ## 模組功能
 
 ```
-  - 最大玩家上限增至 33 人
-  - 名稱標籤
-  - 自訂玩家顏色
-  - 聊天框指令 (!help)
-  - 遊戲內管理系統
-  - 支援合作模式
-  - 支援單人模式（但仍需多加打磨） 
-  - 支援 Super 8 地圖
-  - 內部地圖支援選擇創意工坊地圖
-  - 透過活動 GameRules 類呼叫用戶端指令加密
-  - 支援 Linux, Windows 10 及以上系統
-  - 通過 VScript 和自訂外掛程式提供可切換的遊戲選項以及配置系統
-  - 為速通提供 SAR（起源自動錄製）支援
+  - 最多支持 33 名玩家
+  - 名称标签
+  - 自定义玩家颜色
+  - 聊天命令（!help）
+  - 游戏内管理员系统
+  - 完全合作剧情支持
+  - 完全单人剧情支持（需要轻微打磨）
+  - 完全支持 Super 8 地图
+  - 内部地图支持选定的创意工坊地图
+  - 加密客户端通过活动 GameRules 类触发的命令
+  - 支持 Linux、Windows 10 及以上版本
+  - 通过 VScript 和自定义插件暴露的可切换游戏选项和配置系统
+  - 支持 SAR（SourceAutoRecord）用于速通
 ```
 
-# 安裝與使用
+# 安装与使用
 
-**關於如何設置P2:MM的Wiki指南：**
+**有关设置 P2:MM 的维基指南：**
 
-- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/wiki>=
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/wiki>
 
-**下載最新版：**
+**下载最新版本：**
 
-- <https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod/releases/latest>
+- <https://github.com/Portal-2-Multiplayer-Mod/Portal2-Multiplayer-Mod/releases/latest>
 
-**加入 Discord 伺服器獲取更多技術上的幫助（確保你已經看完教學了！！！），報告 Bug 或聊天：**
+**Discord 服务器提供技术帮助（确保您阅读了常见问题解答！）、错误报告或仅聊天：**
 
 - <https://discord.gg/kW3nG6GKpF>
 
-# 建立啟動器
+# 构建启动器
 
-## 使用依賴
+## 依赖项
 
 - Python 3.10
 - pygame
 - requests
 - steamid-converter
 
-我們已將其放入文件中以便安裝：`pip install -r requirements.txt`
+我们还在一个文件中提供了它们以便轻松安装：`pip install -r requirements.txt`
 
 ## 編譯
 
-我們使用 `pyinstaller` 和 `AppImage` 來製作可執行文件！
+我们使用 `pyinstaller` 和 `AppImage` 来制作可执行文件！
 
-### Windows:
+### Windows：
 
-對於窗口，我們僅使用 [pyinstaller](https://pypi.org/project/pyinstaller/) 來構建可執行文件（如果您知道更好的選項，請告訴我們）。
+对于 Windows，我们仅使用 [pyinstaller](https://pypi.org/project/pyinstaller/) 来构建可执行文件（如果您知道更好的选项，请告诉我们）。
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
 ```
 
-### Linux:
+### Linux：
 
-對於 Linux，我們改用 [AppImage](https://appimage.org/)，並製作了一個工具來協助，只需安裝 `docker` 並在根目錄下執行 `./tools/build-docker.sh`。
+对于 Linux，我们转而使用 [AppImage](https://appimage.org/) 并制作了一个工具来帮助，只需安装 `docker` 并在根目录中运行 `./tools/build-docker.sh`。
 
-***警告！由於某些原因在某些 Linux 發行版中，默認情況下沒有安裝 FUSE，這是編譯和運行 AppImages 所需的。在您的發行版上安裝 FUSE 的信息可以在這裡找到：[AppImageKit 的維基](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+***警告！由于某种原因，在某些 Linux 发行版上，默认未安装 FUSE，而这是编译和运行 AppImages 所需的。您可以在此处找到有关在您的发行版上安装 FUSE 的信息：[AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
 
-如果你不想使用 AppImage/Docker，你仍然可以使用 pyinstaller：
+如果您不想使用 AppImage/docker，仍然可以使用 pyinstaller：
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
 ```
 
-### 注意:
+### 注意：
 
-- 若你想要 Fork 並作為你的項目來發布，你需要更改 `src/Scripts/Updater.py` 頂部中的變數到你的訊息。
+- 如果您想分叉该项目并进行自己的发布，您需要更改 `src/Scripts/Updater.py` 顶部的变量以符合您自己的信息，并更新 `AppImageBuilder.yml` 中的值。
 
-# 做出貢獻
+# P2:MM 插件
 
-Portal 2: 多人遊戲 Mod 版本 2.2.0 將是我們的最終版本，因此在完全發布後我們將不再進行重大更新。在此之前，我們將致力於小的更新，逐步迎來完整版本。在此期間，我們將接受 P2:MM 的任何實質性更改或功能。然而，在完全發布後，我們將不再接受任何重大更改。我們會發布新版本的唯一原因是當有人貢獻新的翻譯，改進現有翻譯，修復我們沒有發現的其他小錯誤，或為創意工坊地圖提供地圖支援檔案時。在這些情況下，我們將只發布另一個版本，並不再接受任何重大更改到這個存儲庫。然而，你仍然可以 fork 它以構建基於我們的工作！請確保給予這個存儲庫適當的榮譽！
+Portal 2: Multiplayer Mod 使用了一个独立的 Source Engine 服务器插件，以便连接到 Portal 2 并修补游戏，使某些系统可以运行 VScript 通常无法做到的操作。由于 Source Engine 插件的开发和编译环境的特性，该插件已放置在一个单独的存储库中。您可以在这里找到其源代码：<https://github.com/OrsellGaming/Portal-2-Multiplayer-Mod-Plugin>
 
-# 貢獻者
+# 贡献
 
-**開發者：**
+Portal 2: Multiplayer Mod 版本 `2.3.0` 将是我们的最终版本，因此我们不会在完全发布后进行任何重大更新。在此之前，我们将致力于向完整版本迈进的小更新。在此期间，我们将接受对 P2:MM 的任何实质性变更或功能。然而，在完全发布之后，我们将不再接受任何重大更改。我们将只会在有人贡献新的翻译、改进当前翻译、其他我们未发现的小 bug 修复或创意工坊地图的地图支持文件时才会发布新版本。我们只会在这些情况下发布新版本，并不再接受任何重大更改。但是，您仍然可以分叉它以构建基于我们工作的项目！请确保您给予本存储库适当的信用！
+
+# 鸣谢
+
+**开发人员：**
 
 - kyleraykbs
 - Bumpy
@@ -121,7 +126,7 @@ Portal 2: 多人遊戲 Mod 版本 2.2.0 將是我們的最終版本，因此在�
 - cabiste
 - Orsell
 
-**貢獻者：**
+**贡献者：**
 
 - wanderer (free bird)
 - \n

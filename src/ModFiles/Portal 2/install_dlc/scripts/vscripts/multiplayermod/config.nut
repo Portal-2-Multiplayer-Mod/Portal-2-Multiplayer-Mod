@@ -113,12 +113,12 @@ Config_musicDefault <- 0
 // Config_musicTracks: The music track list containing tracks to be played in mp_coop_lobby_3. For it to be heard by all 
 // players it must come with Portal 2, or it has to be in the same location on disk as the host for clients to hear it. 
 // 
-// Recommended to use .wav files, .mp3 files also work but... It's also recommended that your sound file has 
+// Recommended to use .wav files, .mp3 files also work but, it's also recommended that your sound file has 
 // build in looping, or you have to change to a different track then back again to start it again. The ambient_generic 
-// we use can not automatically rerun tracks unless they have build in looping. You can tell if your music track has 
+// used can not automatically rerun tracks unless they have build in looping. You can tell if your music track has 
 // built in looping when you run the "snd_show 1" command in the console and you see "looped(1) to the left of the 
 // music tracks file name. Built in looping can be done to .wav files but isn't possible with .mp3 files. 
-// Those marked with "Doesn't loop", are some tracks we thought would be nice to be there by default, but they don't loop.
+// Those marked with "Doesn't loop", are some tracks that would be nice to be there by default, but they don't loop.
 //
 // Example track list setup: 
 // Config_musicTracks <- [

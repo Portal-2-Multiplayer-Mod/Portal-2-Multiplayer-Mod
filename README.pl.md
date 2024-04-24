@@ -24,6 +24,7 @@
               alt="GitHub last commit (branch)" align="right">
   </a>
   <br>
+  <br>
   <p align="right">PORTAL 2:</p>
   <p align="right">MULTIPLAYER MOD</p>
 </h1>
@@ -105,9 +106,13 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 - Jeśli chcesz skopiować projekt i wydawać własne wersje, musisz zmienić zmienne na górze pliku `src/Scripts/Updater.py` na własne informacje
 
+# Wtyczka P2:MM
+
+Mod Multiplayer w Portal 2 korzysta z osobnego pluginu serwera Silnika Source Engine, aby podpiąć się pod Portal 2 i wprowadzić patche do gry, umożliwiając działanie pewnych systemów, których normalnie nie może zrobić VScript. Wtyczka została umieszczona w osobnym repozytorium ze względu na specyfikę rozwoju i środowisko kompilacji wtyczek do Silnika Source Engine. Możesz znaleźć kod źródłowy tutaj: <https://github.com/OrsellGaming/Portal-2-Multiplayer-Mod-Plugin>
+
 # Współtwórcy
 
-Portal 2: Multiplayer Mod w wersji `2.2.0` będzie naszą ostateczną wersją, więc nie będziemy wprowadzać żadnych znaczących aktualizacji po jej pełnym wydaniu. Zanim to nastąpi, będziemy pracować nad drobnymi aktualizacjami prowadzącymi do pełnej wersji. Zaakceptujemy wszelkie istotne zmiany lub funkcje dla P2:MM w tym okresie. Nie będziemy jednak akceptować żadnych bardziej znaczących zmian po wydaniu pełnej wersji. Jedynym powodem, dla którego moglibyśmy wydać nową wersję, byłoby dostarczenie przez kogoś nowego tłumaczenia, ulepszenia obecnego tłumaczenia, innej drobnej poprawki błędu, której nie wychwyciliśmy, lub pliku wsparcia dla mapy warsztatowej. Kolejną wersję wydamy tylko w takich okolicznościach i nie będziemy już akceptować niczego znaczącego w tym repozytorium. Wciąż jednak możesz je rozwidlić, by wykorzystać naszą pracę! Upewnij się, że podałeś nazwę tego repozytorium!
+Portal 2: Multiplayer Mod w wersji `2.3.0` będzie naszą ostateczną wersją, więc nie będziemy wprowadzać żadnych znaczących aktualizacji po jej pełnym wydaniu. Zanim to nastąpi, będziemy pracować nad drobnymi aktualizacjami prowadzącymi do pełnej wersji. Zaakceptujemy wszelkie istotne zmiany lub funkcje dla P2:MM w tym okresie. Nie będziemy jednak akceptować żadnych bardziej znaczących zmian po wydaniu pełnej wersji. Jedynym powodem, dla którego moglibyśmy wydać nową wersję, byłoby dostarczenie przez kogoś nowego tłumaczenia, ulepszenia obecnego tłumaczenia, innej drobnej poprawki błędu, której nie wychwyciliśmy, lub pliku wsparcia dla mapy warsztatowej. Kolejną wersję wydamy tylko w takich okolicznościach i nie będziemy już akceptować niczego znaczącego w tym repozytorium. Wciąż jednak możesz je rozwidlić, by wykorzystać naszą pracę! Upewnij się, że podałeś nazwę tego repozytorium!
 
 # Autorzy
 

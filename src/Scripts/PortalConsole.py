@@ -37,8 +37,6 @@ def WriteConsoleToLog() -> None:
     BF.DeleteFile(consoleFile)
 
 def FilterConsole(text: list[str]) -> list[str]:
-    # removes the lines related to initializing the game
-    text = text[1200:]
     lastMap = None
 
     if len(text) == 0:
@@ -67,6 +65,7 @@ def FilterConsole(text: list[str]) -> list[str]:
             continue
 
     if lastMap is not None:
-        CFG.EditConfig("Last-Map", lastMap)
+        CFG.EditConfig("Last-Map", lastMap.replace("\n", "").strip())
+        print(lastMap)
 
     return text

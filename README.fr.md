@@ -24,6 +24,7 @@
                 alt="GitHub last commit (branch)" align="right">
     </a>
     <br>
+    <br>
     <p align="right">PORTAL 2:</p>
     <p align="right">MULTIPLAYER MOD</p>
 </h1>
@@ -105,9 +106,13 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 - Si vous voulez fork le projet et faire vos propres mises à jour, vous devez changer les variables au dessus de `src/Scripts/Updater.py` et y mettre vos informations puis mettre à jour les valeurs dans `AppImageBuilder.yml`
 
+# P2:MM Plugin
+
+Le Mod Multijoueur de Portal 2 utilise un plugin serveur Source Engine séparé afin de se connecter à Portal 2 pour patcher le jeu et permettre à certains systèmes de fonctionner de manière que VScript ne peut normalement pas le faire. Le plugin a été placé dans un dépôt séparé en raison de la nature du développement et de l'environnement de compilation des plugins Source Engine. Vous pouvez trouver son code source ici : <https://github.com/OrsellGaming/Portal-2-Multiplayer-Mod-Plugin>
+
 # Contributions
 
-Portal 2: Multiplayer Mod version `2.2.0` sera notre version définitive, donc nous ne ferons pas de mises à jour significatives après sa sortie complète. Avant cela, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons toute modification ou caractéristique substantielle pour P2:MM au cours de cette période. Toutefois, nous n'accepterons plus de modifications importantes après la publication de la version complète. Les seules raisons pour lesquelles nous ferions une nouvelle version seraient que quelqu'un apporte une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction de bug mineur que nous n'aurions pas détectée, ou un fichier de support de carte pour une carte d'atelier. Nous ne ferons une nouvelle version que dans ces circonstances et n'accepterons plus rien d'important dans ce dépôt. Cependant, vous pouvez toujours le forker pour construire à partir de notre travail ! N'oubliez pas de donner le crédit à ce dépôt !
+Portal 2: Multiplayer Mod version `2.3.0` sera notre version définitive, donc nous ne ferons pas de mises à jour significatives après sa sortie complète. Avant cela, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons toute modification ou caractéristique substantielle pour P2:MM au cours de cette période. Toutefois, nous n'accepterons plus de modifications importantes après la publication de la version complète. Les seules raisons pour lesquelles nous ferions une nouvelle version seraient que quelqu'un apporte une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction de bug mineur que nous n'aurions pas détectée, ou un fichier de support de carte pour une carte d'atelier. Nous ne ferons une nouvelle version que dans ces circonstances et n'accepterons plus rien d'important dans ce dépôt. Cependant, vous pouvez toujours le forker pour construire à partir de notre travail ! N'oubliez pas de donner le crédit à ce dépôt !
 
 # Crédits
 

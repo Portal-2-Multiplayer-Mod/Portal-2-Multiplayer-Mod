@@ -24,6 +24,7 @@
               alt="GitHub last commit (branch)" align="right">
   </a>
   <br>
+  <br>
   <p align="right">PORTAL 2:</p>
   <p align="right">MULTIPLAYER MOD</p>
 </h1>
@@ -105,9 +106,13 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 - Se vuoi creare un fork del progetto ed eseguire le tue versioni, devi modificare le variabili nella parte superiore di `src/Scripts/Updater.py` con le tue informazioni e aggiornare i valori in `AppImageBuilder.yml`
 
+# P2:MM Plugin
+
+Il Mod Multigiocatore di Portal 2 utilizza un plugin separato del server Source Engine per agganciarsi a Portal 2 e patchare il gioco, consentendo a determinati sistemi di funzionare in modi che normalmente VScript non può fare. Il plugin è stato inserito in un repository separato a causa della natura dello sviluppo e dell'ambiente di compilazione dei plugin di Source Engine. Puoi trovare il suo codice sorgente qui: <https://github.com/OrsellGaming/Portal-2-Multiplayer-Mod-Plugin>
+
 # Contributions
 
-Portal 2: Multiplayer Mod version `2.2.0` sera notre version définitive, donc nous ne ferons pas de mises à jour significatives après sa sortie complète. Avant cela, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons toute modification ou caractéristique substantielle pour P2:MM au cours de cette période. Toutefois, nous n'accepterons plus de modifications importantes après la publication de la version complète. Les seules raisons pour lesquelles nous ferions une nouvelle version seraient que quelqu'un apporte une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction de bug mineur que nous n'aurions pas détectée, ou un fichier de support de carte pour une carte d'atelier. Nous ne ferons une nouvelle version que dans ces circonstances et n'accepterons plus rien d'important dans ce dépôt. Cependant, vous pouvez toujours le forker pour construire à partir de notre travail ! N'oubliez pas de donner le crédit à ce dépôt !
+Portal 2: Multiplayer Mod version `2.3.0` sera notre version définitive, donc nous ne ferons pas de mises à jour significatives après sa sortie complète. Avant cela, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons toute modification ou caractéristique substantielle pour P2:MM au cours de cette période. Toutefois, nous n'accepterons plus de modifications importantes après la publication de la version complète. Les seules raisons pour lesquelles nous ferions une nouvelle version seraient que quelqu'un apporte une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction de bug mineur que nous n'aurions pas détectée, ou un fichier de support de carte pour une carte d'atelier. Nous ne ferons une nouvelle version que dans ces circonstances et n'accepterons plus rien d'important dans ce dépôt. Cependant, vous pouvez toujours le forker pour construire à partir de notre travail ! N'oubliez pas de donner le crédit à ce dépôt !
 
 # Crediti
 

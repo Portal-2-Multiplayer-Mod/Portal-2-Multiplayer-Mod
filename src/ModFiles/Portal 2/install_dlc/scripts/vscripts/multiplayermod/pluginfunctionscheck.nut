@@ -39,7 +39,7 @@ try {
 
 //---------------------------------------------------
 
-// Failed the check, declare all as false and check each one manually..
+// Check if all plugin defined VScript functions exist
 
 GetPlayerNameLoaded                 <- false
 GetSteamIDLoaded                    <- false

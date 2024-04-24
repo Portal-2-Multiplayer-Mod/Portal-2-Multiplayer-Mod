@@ -181,14 +181,34 @@ def LaunchGame(gamepath: str) -> None:
     Log("=============")
     Log("Running Game...")
 
-    args = f"-novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear"
-
-    # portal 2 uses the first argument provided, so this will override whatever the user has in the custom launch options
-    # if GVars.configData["Start-From-Last-Map"]["value"] and len(GVars.configData["Last-Map"]["value"].strip()) > 0:
-    #     args += " +map " + GVars.configData["Last-Map"]["value"]
+    args = ["-novid", "-allowspectators", "-nosixense", "-conclearlog", "-condebug", "-usercon", "+clear"]
+    CLO = GVars.configData['Custom-Launch-Options']['value'].split(" ")    
     
-    args += " " + GVars.configData['Custom-Launch-Options']['value']
+    print(args)
+    print(CLO)
 
+    # Check if a map is supplied in Custom-Launch-Options (CLO), it is required for a multiplayer to started first for the mod to properly load.
+    if (("+map mp_coop" not in " ".join(CLO)) and ("+ss_map mp_coop" not in " ".join(CLO))):
+        # If a "sp_" (single player map indicator) is in CLO, "+map (or "+ss_map") mp_coop_community_hub" is added before CLO which has its "+map" (or "+ss_map") replaced with "+p2mm_lastmap"
+        if (("+map sp_" in " ".join(CLO)) or ("+ss_map sp_" in " ".join(CLO))):
+            args.extend(["+map" if "+map" in " ".join(CLO) else "+ss_map", "mp_coop_community_hub"])
+            args.extend((" ".join(CLO).replace("+map", "+p2mm_lastmap").replace("+ss_map", "+p2mm_lastmap").split(" ")))
+        else:
+            args.extend(["+map", "mp_coop_lobby_3"])
+            args.extend(CLO)
+    else:
+        args.extend(CLO)
+
+    # Add the last map played for the Last Map System if enabled, if a last map was recorded, and if the last map already isn't in Custom-Launch-Options (CLO).
+    if ((GVars.configData["Start-From-Last-Map"]["value"]) and (len(GVars.configData["Last-Map"]["value"].strip()) > 0) and (not GVars.configData["Last-Map"]["value"].strip() in " ".join(args))):
+        if ("+p2mm_lastmap sp_" in " ".join(args)):
+            " ".join(args).replace(args[args.index("+p2mm_lastmap") + 1], GVars.configData["Last-Map"]["value"].strip()).split(" ")
+        else:
+            args.extend(["+p2mm_lastmap", GVars.configData["Last-Map"]["value"].strip()])
+    print(args)
+    args = " ".join(args)
+    print(args)
+    
     try:
         if (GVars.iow):
             # for hiding the cmd window on windows

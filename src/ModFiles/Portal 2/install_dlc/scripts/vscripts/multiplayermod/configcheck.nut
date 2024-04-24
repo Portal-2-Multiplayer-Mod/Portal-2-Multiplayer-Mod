@@ -5,8 +5,7 @@
 //           and compensates for each variable.
 //---------------------------------------------------
 
-// Can't create a function to redefine existing
-// variables, so we just do it one by one :D
+// Can't create a function to redefine existing variables, so do it one by one :D
 
 local ConfigValueError = function(invalidorundefined, command) {
     printlP2MM(invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")

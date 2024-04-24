@@ -24,6 +24,7 @@
               alt="GitHub last commit (branch)" align="right">
   </a>
   <br>
+  <br>
   <p align="right">PORTAL 2:</p>
   <p align="right">MULTIPLAYER MOD</p>
 </h1>
@@ -105,9 +106,13 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 - Se você quiser fazer um fork do projeto e fazer suas próprias versões, precisará alterar as variáveis na parte superior de `src/Scripts/Updater.py` para suas próprias informações e atualizar os valores em `AppImageBuilder.yml`
 
+# Plugin P2:MM
+
+O Mod Multijogador de Portal 2 utiliza um plugin de servidor separado do Source Engine para se conectar ao Portal 2 e corrigir o jogo, permitindo que certos sistemas operem de maneira que o VScript normalmente não pode fazer. O plugin foi colocado em um repositório separado devido à natureza do desenvolvimento e ambiente de compilação de plugins do Source Engine. Você pode encontrar seu código fonte aqui: <https://github.com/OrsellGaming/Portal-2-Multiplayer-Mod-Plugin>
+
 # Contribuições
 
-A versão `2.2.0` do Portal 2: Multiplayer Mod será nossa versão definitiva, portanto, não faremos nenhuma atualização significativa depois que ela for totalmente lançada. Antes que isso aconteça, trabalharemos em pequenas atualizações que levarão à versão completa. Aceitaremos quaisquer alterações ou recursos substanciais para o P2:MM durante esse período. No entanto, não aceitaremos mais alterações significativas após o lançamento completo. Os únicos motivos pelos quais faríamos um novo lançamento seriam quando alguém contribuísse com uma nova tradução, um aprimoramento de uma tradução atual, alguma correção de bug menor que não tenhamos detectado ou um arquivo de suporte de mapa para um mapa de oficina. Só faremos outra versão nessas circunstâncias e não aceitaremos mais nada significativo nesse repositório. No entanto, você ainda pode fazer um fork para aproveitar o nosso trabalho! Certifique-se de dar crédito a este repositório!
+A versão `2.3.0` do Portal 2: Multiplayer Mod será nossa versão definitiva, portanto, não faremos nenhuma atualização significativa depois que ela for totalmente lançada. Antes que isso aconteça, trabalharemos em pequenas atualizações que levarão à versão completa. Aceitaremos quaisquer alterações ou recursos substanciais para o P2:MM durante esse período. No entanto, não aceitaremos mais alterações significativas após o lançamento completo. Os únicos motivos pelos quais faríamos um novo lançamento seriam quando alguém contribuísse com uma nova tradução, um aprimoramento de uma tradução atual, alguma correção de bug menor que não tenhamos detectado ou um arquivo de suporte de mapa para um mapa de oficina. Só faremos outra versão nessas circunstâncias e não aceitaremos mais nada significativo nesse repositório. No entanto, você ainda pode fazer um fork para aproveitar o nosso trabalho! Certifique-se de dar crédito a este repositório!
 
 # Créditos
 

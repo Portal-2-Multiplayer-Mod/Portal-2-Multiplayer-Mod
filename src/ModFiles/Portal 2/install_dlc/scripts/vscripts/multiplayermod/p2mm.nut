@@ -27,8 +27,8 @@ if (!("Entities" in this)) { return }
 
 // Make sure that the user is in multiplayer mode before initiating everything
 if (!IsMultiplayer()) {
-    printlP2MM("This is not a multiplayer session! Disconnecting client...")
-    EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
+    printl("Session was not started correctly! Disconnecting host...")
+    EntFire("p2mm_servercommand", "command", "disconnect \"You can not start a single player session from the main menu when running P2:MM. Check the FAQ for more information.\"")
     return
 }
 
@@ -36,9 +36,8 @@ printl("\n---------------------")
 printl("==== calling p2mm.nut")
 printl("---------------------\n")
 
-// We don't call this one directly from the start since
-// we want to continue our logic in this file for now...
-IncludeScript("multiplayermod/pluginfunctionscheck.nut")    // Make sure we know the exact status of our plugin
+// Make sure all the VScript functions from the plugin are available
+IncludeScript("multiplayermod/pluginfunctionscheck.nut")
 
 if (!PluginLoaded) {
     // One-off check for running p2mm on first map load
@@ -66,22 +65,23 @@ if (GetDeveloperLevelP2MM()) {
 IncludeScript("multiplayermod/config.nut")      // Import the user configuration and preferences
 IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
 
-// There's no conceivable way to tell whether or not this is the first map load after launching a server
-// So we do a dirty developer level hack to something that no one sets it to and reset it when we are done
-if (GetDeveloperLevel() == 918612) {
-    // Take care of anything pertaining to progress check and how our plugin did when loading
-    IncludeScript("multiplayermod/firstmapload.nut")
-    return
-}
+// Check if its the first map run so Last Map System stuff can be done
+if (IsFirstRun()) {
+    EntFire("p2mm_servercommand", "command", "p2mm_firstrun 0")
 
-// try-catch used for loading the last map as given by the launcher. If the VScript file doesn't exist, the system must be off.
-// try {
-//     printlP2MM("Checking for lastmap.nut...\n")
-//     IncludeScript("multiplayermod/lastmap.nut")
-// } catch (exception) {
-//     printlP2MM(exception)
-//     printlP2MM("Lastmap.nut doesn't exist, \"Start Last Map\" must be off. Continuing on current map!")
-// }
+    // Reset developer level, developer needs to stay enabled for VScript Debugging to work
+    if (Config_DevMode || Config_VScriptDebug) {
+        EntFire("p2mm_servercommand", "command", "developer 1")
+    }
+    else {
+        EntFire("p2mm_servercommand", "command", "developer 0")
+    }
+    
+    // Check if Last Map System supplied a value and that it's a valid map, then restart on that map
+    if (IsMapValid(GetLastMap())) {
+        EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0.5)
+    }
+}
 
 //-------------------------------------------------------------------------------------------
 
@@ -100,6 +100,15 @@ IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 //---------------------------------------------------
 
 // Print P2:MM game art in console
+ConsoleAscii <- [
+"########...#######...##..##.....##.##.....##",
+"##.....##.##.....##.####.###...###.###...###",
+"##.....##........##..##..####.####.####.####",
+"########...#######.......##.###.##.##.###.##",
+"##........##.........##..##.....##.##.....##",
+"##........##........####.##.....##.##.....##",
+"##........#########..##..##.....##.##.....##"
+]
 foreach (line in ConsoleAscii) { printl(line) }
 delete ConsoleAscii
 

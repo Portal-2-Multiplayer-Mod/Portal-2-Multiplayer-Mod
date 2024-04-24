@@ -22,7 +22,7 @@ if (Config_UseChatCommands) {
 }
 
 // The whole filtering process for the chat commands
-function ChatCommands(iUserIndex, rawText) {
+function ChatCommands(rawText, iUserIndex) {
     local Message = strip(RemoveDangerousChars(rawText))
 
     local pPlayer = UTIL_PlayerByIndex(iUserIndex)
@@ -64,13 +64,13 @@ function ChatCommands(iUserIndex, rawText) {
     
     // Confirmed that it's a command that follows our syntax, now try to run it
 
-    // Does the exact command exist?
+    // Check if the command exists
     if (typeof szTargetCommand != "class") {
         SendChatMessage("[ERROR] Command not found. Use !help to list some commands!", pPlayer)
         return
     }
 
-    // Do we have the correct admin level for this command?
+    // Check if the caller has the right admin level
     if (!(szTargetCommand.level <= AdminLevel)) {
         SendChatMessage("[ERROR] You do not have permission to use this command!", pPlayer)
         return
@@ -285,7 +285,7 @@ function GetAdminLevel(plr) {
                 if (level.tointeger() < 6) {
                     return 6
                 }
-                // In case we add more admin levels, return values defined higher than 6
+                // In case more admin levels are added, return values defined higher than 6
                 return level.tointeger()
             } else {
                 // Use defined value for others
@@ -296,7 +296,7 @@ function GetAdminLevel(plr) {
 
     // For people who were not defined, check if it's the host
     if (!IsDedicatedServer() && (FindPlayerClass(plr).steamid.tostring() == GetSteamID(1).tostring())) {
-        // It is, so we automatically give them max perms on the listen server
+        // Automatically give max perms to the listen server host
         Admins.push("[6]" + FindPlayerClass(plr).steamid)
         if (GetDeveloperLevelP2MM()) {
             SendChatMessage("Added max permissions for " + FindPlayerClass(plr).username + " as server operator.", plr)

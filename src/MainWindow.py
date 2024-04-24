@@ -18,7 +18,7 @@ import Scripts.RunGame as RG
 import Scripts.Updater as UP
 import Scripts.Workshop as Workshop
 import Scripts.Views as Views
-#import Scripts.PortalConsole as PCon
+import Scripts.PortalConsole as PCon
 from Scripts.BasicLogger import Log, StartLog
 
 
@@ -1236,7 +1236,7 @@ def PostInitialize() -> None:
             UnmountScript()
             Ui.CreateToast(
                 GVars.translations["unmounted_toast"], 5, (125, 0, 125))
-        #PCon.WriteConsoleToLog()
+        PCon.WriteConsoleToLog()
 
     GVars.AfterFunction = NewAfterFunction
 

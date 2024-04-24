@@ -24,6 +24,7 @@
               alt="GitHub last commit (branch)" align="right">
   </a>
   <br>
+  <br>
   <p align="right">PORTAL 2:</p>
   <p align="right">MULTIPLAYER MOD</p>
 </h1>
@@ -78,7 +79,7 @@
 
 We also have them in a file for easy install: `pip install -r requirements.txt`
 
-## Compilation
+## Compiling
 
 We use `pyinstaller` and `AppImage` to make the executables!
 
@@ -106,9 +107,13 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 - If you want to fork the project and do your own releases you need to change the variables at the top of `src/Scripts/Updater.py` to your own information and update the values in `AppImageBuilder.yml`
 
+# P2:MM Plugin
+
+The Portal 2: Multiplayer Mod uses a separate Source Engine server plugin in order to hook on to Portal 2 to patch the game and allow certain systems to operate that VScript normally can't do. The plugin has been put into a separate repository due to the nature of the development and compiling environment of Source Engine plugins. You can find its source code here: <https://github.com/OrsellGaming/Portal-2-Multiplayer-Mod-Plugin>
+
 # Contributions
 
-Portal 2: Multiplayer Mod version `2.2.0` will be our definitive version, so we won't make any significant updates after it is fully released. Before this happens, we will work on minor updates leading to the full version. We will accept any substantial changes or features for P2:MM during this period. However, we will not accept any more significant changes after the full release. The only reasons we would make a new release would be when someone contributes a new translation, an improvement of a current translation, some other minor bug fix we didn't catch, or a map support file for a workshop map. We will only make another release under those circumstances and will no longer accept anything significant into this repository. However, you can still fork it to build off our work! Please make sure you give credit to this repository!
+Portal 2: Multiplayer Mod version `2.3.0` will be our definitive version, so we won't make any significant updates after it is fully released. Before this happens, we will work on minor updates leading to the full version. We will accept any substantial changes or features for P2:MM during this period. However, we will not accept any more significant changes after the full release. The only reasons we would make a new release would be when someone contributes a new translation, an improvement of a current translation, some other minor bug fix we didn't catch, or a map support file for a workshop map. We will only make another release under those circumstances and will no longer accept anything significant into this repository. However, you can still fork it to build off our work! Please make sure you give credit to this repository!
 
 # Credits
 
