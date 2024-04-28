@@ -1,4 +1,4 @@
-import os, shutil
+import os, shutil, subprocess
 
 #? Purpose:
 #* If a modification is needed to be made to the pak01_dir vpk
@@ -12,17 +12,19 @@ import os, shutil
 #*    Run it from the root directory. `python tools\updateModFilesIndex.py`
 #* 3- Check if the new VPK works by launching the mod.
 
-# Define paths
+# Get Portal 2 path and define other paths
+p2VPKPath = input("Input your Portal 2 installation path: ").strip()
+p2VPKPath = p2VPKPath + os.sep + "bin" + os.sep + "vpk.exe"
 vpkWorkPath = f"{os.getcwd() + os.sep}src{os.sep}ModFilesVPK"
 modFilesVPKPath = f"src{os.sep}ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}pak01_dir.vpk"
 
 # Remove the old pak01_dir.vpk so a new one can be made
 print("Removing old pak01_dir.vpk...")
-os.remove(f"{vpkWorkPath + os.sep}pak01_dir.vpk")
+if os.path.exists(f"{vpkWorkPath + os.sep}pak01_dir.vpk"):
+    os.remove(f"{vpkWorkPath + os.sep}pak01_dir.vpk")
 
 # Make the new pak01_dir.vpk
-print("Running \"vpk.exe\" to make new pak01_dir.vpk...")
-os.system(f"{vpkWorkPath + os.sep}vpk.exe {vpkWorkPath + os.sep}pak01_dir") 
+subprocess.call(f'"{p2VPKPath}" "{vpkWorkPath + os.sep}pak01_dir"')
 
 # Check if a vpk was even made
 if not os.path.exists(f"{vpkWorkPath + os.sep}pak01_dir.vpk"):
