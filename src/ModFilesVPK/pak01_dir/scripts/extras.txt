@@ -1,0 +1,17 @@
+"Extras"
+{
+    "normal"
+    {
+        "title" "Play Normal"
+        "subtitle"  "Play P2MM without Splitscreen."
+        "command"   "map mp_coop_lobby_3"
+    }
+    "split"
+    {
+        "title" "Play Splitscreen"
+        "subtitle"  "Play P2MM with Splitscreen."
+        "command"   "ss_map mp_coop_lobby_3"
+//      an image can go here aswell...
+//      "pic"   "vgui/chapters/chapter1"
+    }
+}

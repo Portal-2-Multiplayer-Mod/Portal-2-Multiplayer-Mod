@@ -16,22 +16,51 @@
 		"PaintBackgroundType"		"0"
 	}
 
-	"P2MMMainMenu"
+//	"P2MMMainMenu"
+//	{
+//		"ControlName"					"Label"
+//		"fieldName"						"P2MMMainMenu"
+//		"font"							"NewGameChapter"
+//		"fgcolor_override"				"255 255 255 255"
+//		"xpos"							"70"
+//		"ypos"							"200"	[$GAMECONSOLE]  
+//		"ypos"							"178"	[!$GAMECONSOLE] 
+//		"wide"							"400"
+//		"tall"							"150"
+//		"visible"						"1"
+//		"enabled"						"1"
+//		"tabPosition"					"0"
+//		"wrap"							"1"
+//		"labelText"						"Hi! Welcome to the main menu! The Portal 2: Multiplayer Mod can not start via the buttons on the main menu, so they have been removed. Don't worry! You can start up another play session with `+map mp_coop_lobby_3` (or +ss_map mp_coop_lobby_3 for splitscreen) in the Developer Console. You can also just click quit and exit out back to the launcher and start there."
+//		"textAlignment"					"west"
+//	}
+
+
+	"BtnExtras" [!$GAMECONSOLE] //options postiion
 	{
-		"ControlName"					"Label"
-		"fieldName"						"P2MMMainMenu"
-		"font"							"NewGameChapter"
-		"fgcolor_override"				"255 255 255 255"
-		"xpos"							"70"
-		"ypos"							"300"
-		"wide"							"400"
-		"tall"							"50"
-		"visible"						"1"
-		"enabled"						"1"
-		"tabPosition"					"0"
-		"labelText"						"Hi! Welcome to the main menu!\nThe Portal 2: Multiplayer Mod can not start via the buttons on the main menu, so they have been removed.\nDon't worry! You can start up another play session with `+map mp_coop_lobby_3`\n(or +ss_map mp_coop_lobby_3 for splitscreen) in the Developer Console.\nYou can also just click quit and exit out back to the launcher and start there."
-		"textAlignment"					"west"
+		"ControlName"				"BaseModHybridButton"
+		"fieldName"					"BtnExtras"
+		"xpos"						"88"	[$GAMECONSOLE && ($GAMECONSOLEWIDE && !$ANAMORPHIC)]
+		"xpos"						"63"	[$GAMECONSOLE && (!$GAMECONSOLEWIDE || $ANAMORPHIC)]	
+		"xpos"						"88"	[!$GAMECONSOLE && $WIN32WIDE]
+		"xpos"						"63"	[!$GAMECONSOLE && !$WIN32WIDE]	
+		"ypos"						"280"	[$GAMECONSOLE]  
+		"ypos"						"258"	[!$GAMECONSOLE] 
+		"wide"						"280"
+		"tall"						"20"
+		"autoResize"				"1"
+		"pinCorner"					"0"
+		"visible"					"1"
+		"enabled"					"1"
+		"tabPosition"				"0"
+		"navUp"						"BtnEconUI"
+		"navDown"					"BtnOptions"
+		"labelText"					"Play Portal 2: Multiplayer Mod"
+		"style"						"MainMenuButton"
+		"command"					"Extras"
+		"ActivationType"			"1"
 	}
+
 
 	"BtnOptions"
 	{
@@ -41,8 +70,8 @@
 		"xpos"						"63"	[$GAMECONSOLE && (!$GAMECONSOLEWIDE || $ANAMORPHIC)]	
 		"xpos"						"88"	[!$GAMECONSOLE && $WIN32WIDE]
 		"xpos"						"63"	[!$GAMECONSOLE && !$WIN32WIDE]	
-		"ypos"						"370"	[$GAMECONSOLE]  
-		"ypos"						"370"	[!$GAMECONSOLE]   
+		"ypos"						"330"	[$GAMECONSOLE]  
+		"ypos"						"308"	[!$GAMECONSOLE]   
 		"wide"						"220"
 		"tall"						"20"
 		"autoResize"				"1"
@@ -50,7 +79,7 @@
 		"visible"					"1"
 		"enabled"					"1"
 		"tabPosition"				"0"
-		"navUp"						"BtnEconUI"
+		"navUp"						"BtnExtras"
 		"navDown"					"BtnQuit"
 		"labelText"					"#PORTAL2_MainMenu_Options"
 		"style"						"MainMenuButton"
@@ -64,7 +93,8 @@
 		"fieldName"					"BtnQuit"
 		"xpos"						"88"	[$WIN32WIDE]
 		"xpos"						"63"	[!$WIN32WIDE]	
-		"ypos"						"378"
+		"ypos"						"360"	[$GAMECONSOLE]  
+		"ypos"						"338"	[!$GAMECONSOLE]   
 		"wide"						"220"
 		"tall"						"20"
 		"autoResize"				"1"
