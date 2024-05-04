@@ -1,11 +1,11 @@
 UnlitGeneric
 {
-$basetexture "vgui/spinner"
+$basetexture "vgui/p2mm/splitoff"
 $translucent 1
 $vertexcolor 1
 $vertexalpha 1
-$no_fullbright 1
 $ignorez 1
-$nolod 1
+$additive 0
+$no_fullbright 1
 $SHADERSRGBREAD360 1
 }

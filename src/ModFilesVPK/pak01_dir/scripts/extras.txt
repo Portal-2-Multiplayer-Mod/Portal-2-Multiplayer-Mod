@@ -5,13 +5,13 @@
         "title" "Play Normal"
         "subtitle"  "Play P2MM without Splitscreen."
         "command"   "map mp_coop_lobby_3"
-        "pic"   "vgui/chapters/nosplit"
+        "pic"   "vgui/p2mm/splitoff"
     }
     "split"
     {
         "title" "Play Splitscreen"
         "subtitle"  "Play P2MM with Splitscreen."
         "command"   "ss_map mp_coop_lobby_3"
-        "pic"   "vgui/chapters/split"
+        "pic"   "vgui/p2mm/spliton"
     }
 }
