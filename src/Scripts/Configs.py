@@ -74,11 +74,11 @@ DefaultConfig = {
     },
 
     "Custom-Launch-Options": {
-        "value": "+map mp_coop_lobby_3",
+        "value": "",
         "menu": "general",
-        "description": "Add your own launch options for Portal 2. Default is '+map mp_coop_lobby_3'",
-        "warning": "Leave this to default if you don't know what it does!",
-        "prompt": "Launch options for Portal 2.\nDefault is '+map mp_coop_lobby_3'"
+        "description": "Add your own launch options for Portal 2. Example: '+map mp_coop_lobby_3'",
+        "warning": "Leave this alone if you don't know what it does!",
+        "prompt": "Launch options for Portal 2.\nExample: '+map mp_coop_lobby_3'"
     },
 
     "Launcher-SFX": {
@@ -100,7 +100,7 @@ DefaultConfig = {
     "Start-From-Last-Map": {
         "value": False,
         "menu": "general",
-        "description": "Start the game from the last session's map.",
+        "description": "Automatically start Portal 2 from the last played map.",
         "warning": "",
         "prompt": ""
     },

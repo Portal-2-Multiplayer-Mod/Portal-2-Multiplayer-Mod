@@ -181,21 +181,17 @@ def LaunchGame(gamepath: str) -> None:
     Log("=============")
     Log("Running Game...")
 
+    # Working with the launch arguments and Custom-Launch-Options (CLO) as a table helps with making
+    # any needed changes before it is turned into a string then passed on to the Portal 2 executable.
     args = ["-novid", "-allowspectators", "-nosixense", "-conclearlog", "-condebug", "-usercon", "+clear"]
     CLO = GVars.configData['Custom-Launch-Options']['value'].split(" ")    
     
     print(args)
     print(CLO)
 
-    # Check if a map is supplied in Custom-Launch-Options (CLO), it is required for a multiplayer to started first for the mod to properly load.
-    if (("+map mp_coop" not in " ".join(CLO)) and ("+ss_map mp_coop" not in " ".join(CLO))):
-        # If a "sp_" (single player map indicator) is in CLO, "+map (or "+ss_map") mp_coop_community_hub" is added before CLO which has its "+map" (or "+ss_map") replaced with "+p2mm_lastmap"
-        if (("+map sp_" in " ".join(CLO)) or ("+ss_map sp_" in " ".join(CLO))):
-            args.extend(["+map" if "+map" in " ".join(CLO) else "+ss_map", "mp_coop_community_hub"])
-            args.extend((" ".join(CLO).replace("+map", "+p2mm_lastmap").replace("+ss_map", "+p2mm_lastmap").split(" ")))
-        else:
-            args.extend(["+map", "mp_coop_lobby_3"])
-            args.extend(CLO)
+    if (("+map sp_" in " ".join(CLO)) or ("+ss_map sp_" in " ".join(CLO))):
+        args.extend(["+map" if "+map" in " ".join(CLO) else "+ss_map", "mp_coop_community_hub"])
+        args.extend((" ".join(CLO).replace("+map", "+p2mm_lastmap").replace("+ss_map", "+p2mm_lastmap").split(" ")))
     else:
         args.extend(CLO)
 
@@ -205,6 +201,7 @@ def LaunchGame(gamepath: str) -> None:
             " ".join(args).replace(args[args.index("+p2mm_lastmap") + 1], GVars.configData["Last-Map"]["value"].strip()).split(" ")
         else:
             args.extend(["+p2mm_lastmap", GVars.configData["Last-Map"]["value"].strip()])
+    
     print(args)
     args = " ".join(args)
     print(args)
