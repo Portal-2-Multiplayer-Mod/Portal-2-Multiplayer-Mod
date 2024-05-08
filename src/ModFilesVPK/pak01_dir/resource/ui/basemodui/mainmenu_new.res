@@ -16,30 +16,10 @@
 		"PaintBackgroundType"		"0"
 	}
 
-//	"P2MMMainMenu"
-//	{
-//		"ControlName"					"Label"
-//		"fieldName"						"P2MMMainMenu"
-//		"font"							"NewGameChapter"
-//		"fgcolor_override"				"255 255 255 255"
-//		"xpos"							"70"
-//		"ypos"							"200"	[$GAMECONSOLE]  
-//		"ypos"							"178"	[!$GAMECONSOLE] 
-//		"wide"							"400"
-//		"tall"							"150"
-//		"visible"						"1"
-//		"enabled"						"1"
-//		"tabPosition"					"0"
-//		"wrap"							"1"
-//		"labelText"						"Hi! Welcome to the main menu! The Portal 2: Multiplayer Mod can not start via the buttons on the main menu, so they have been removed. Don't worry! You can start up another play session with `+map mp_coop_lobby_3` (or +ss_map mp_coop_lobby_3 for splitscreen) in the Developer Console. You can also just click quit and exit out back to the launcher and start there."
-//		"textAlignment"					"west"
-//	}
-
-
-	"BtnExtras" [!$GAMECONSOLE] //options postiion
+	"P2MMMainMenuButton" [!$GAMECONSOLE]
 	{
 		"ControlName"				"BaseModHybridButton"
-		"fieldName"					"BtnExtras"
+		"fieldName"					"P2MMMainMenuButton"
 		"xpos"						"88"	[$GAMECONSOLE && ($GAMECONSOLEWIDE && !$ANAMORPHIC)]
 		"xpos"						"63"	[$GAMECONSOLE && (!$GAMECONSOLEWIDE || $ANAMORPHIC)]	
 		"xpos"						"88"	[!$GAMECONSOLE && $WIN32WIDE]
@@ -55,12 +35,11 @@
 		"tabPosition"				"0"
 		"navUp"						"BtnEconUI"
 		"navDown"					"BtnOptions"
-		"labelText"					"Play Portal 2: Multiplayer Mod"
+		"labelText"					"#P2MMMainMenuButton"
 		"style"						"MainMenuButton"
 		"command"					"Extras"
 		"ActivationType"			"1"
 	}
-
 
 	"BtnOptions"
 	{
@@ -79,7 +58,7 @@
 		"visible"					"1"
 		"enabled"					"1"
 		"tabPosition"				"0"
-		"navUp"						"BtnExtras"
+		"navUp"						"P2MMMainMenuButton"
 		"navDown"					"BtnQuit"
 		"labelText"					"#PORTAL2_MainMenu_Options"
 		"style"						"MainMenuButton"
@@ -102,7 +81,7 @@
 		"visible"					"1"
 		"enabled"					"1"
 		"tabPosition"				"0"
-		"navUp"						"BtnQuit"
+		"navUp"						"BtnOptions"
 		"navDown"					"BtnEconUI"
 		"labelText"					"#PORTAL2_MainMenu_Quit"
 		"style"						"MainMenuButton"
@@ -125,7 +104,7 @@
 		"enabled"					"1"
 		"tabPosition"				"0"
 		"navUp"						"BtnQuit"
-		"navDown"					"BtnOptions"
+		"navDown"					"P2MMMainMenuButton"
 		"labelText"					"#PORTAL2_MainMenu_Econ"
 		"style"						"BitmapButton"
 		"command"					"EconUI"

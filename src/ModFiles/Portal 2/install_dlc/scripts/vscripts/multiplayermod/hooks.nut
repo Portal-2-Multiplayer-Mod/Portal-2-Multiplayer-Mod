@@ -719,6 +719,7 @@ function PostMapSpawn() {
     // Prints the current map, needed for the Last Map System
     // \n was here :>
     printl("loaded: " + GetMapName())
+    EntFire("p2mm_servercommand", "command", "p2mm_lastmap \"" + GetMapName() + "\"") // For the main menu
 
     if (!IsDedicatedServer()) {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)

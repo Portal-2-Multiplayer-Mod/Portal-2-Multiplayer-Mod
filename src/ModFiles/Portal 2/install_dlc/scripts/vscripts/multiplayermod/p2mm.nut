@@ -25,13 +25,6 @@
 // In case this is the client VM...
 if (!("Entities" in this)) { return }
 
-// Make sure that the user is in multiplayer mode before initiating everything
-if (!IsMultiplayer()) {
-    printl("Session was not started correctly! Disconnecting host...")
-    EntFire("p2mm_servercommand", "command", "disconnect \"You can not start a single player session from the main menu when running P2:MM. Check the FAQ for more information.\"")
-    return
-}
-
 printl("\n---------------------")
 printl("==== calling p2mm.nut")
 printl("---------------------\n")
