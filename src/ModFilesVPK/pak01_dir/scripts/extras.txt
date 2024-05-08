@@ -2,29 +2,29 @@
 {
     "spliton"
     {
-        "title"     "Splitscreen On"
-        "subtitle"  "Enable Splitscreen For P2:MM."
+        "title"     "#P2MM_SplitScreenOn_t"
+        "subtitle"  "#P2MM_SplitScreenOn_d"
         "command"   "p2mm_splitscreen 1; play ui/ui_coop_hud_activate_01"
         "pic"       "vgui/p2mm/spliton"
     }
     "splitoff"
     {
-        "title"     "Splitscreen Off"
-        "subtitle"  "Disable Splitscreen For P2:MM."
+        "title"     "#P2MM_SplitScreenOff_t"
+        "subtitle"  "#P2MM_SplitScreenOff_d"
         "command"   "p2mm_splitscreen 0; play ui/ui_coop_hud_deactivate_01"
         "pic"       "vgui/p2mm/splitoff"
     }
     "normal"
     {
-        "title"     "Play P2:MM"
-        "subtitle"  "Start P2:MM in the lobby!"
+        "title"     "#P2MM_Lobby_t"
+        "subtitle"  "#P2MM_Lobby_d"
         "command"   "p2mm_startsession mp_coop_lobby_3"
         "pic"       "ADD P2MM IMAGE"
     }
     "lastmap"
     {
-        "title"     "Play P2:MM From The Last Map"
-        "subtitle"  "Start P2:MM from the last map played in a previous session."
+        "title"     "#P2MM_LastMap_t"
+        "subtitle"  "#P2MM_LastMap_d"
         "command"   "p2mm_startsession P2MM_LASTMAP"
         "pic"       "ADD P2MM IMAGE"
     }
@@ -35,8 +35,8 @@
 	}
     "singleplayer"
     {
-        "title"     "Singleplayer Campaign:"
-        "subtitle"  "#L4D360UI_GameSettings_Tooltip_Chapter"
+        "title"     "#P2MM_StartSP_t"
+        "subtitle"  "#P2MM_StartSP_d"
         "pic"       "vgui/loading_screens/loadingscreen_a1_1"
     }
     "chapter1"
