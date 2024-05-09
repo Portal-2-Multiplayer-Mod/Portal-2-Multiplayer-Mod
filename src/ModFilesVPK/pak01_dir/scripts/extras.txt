@@ -16,8 +16,8 @@
     }
     "normal"
     {
-        "title"     "#P2MM_Lobby_t"
-        "subtitle"  "#P2MM_Lobby_d"
+        "title"     "#P2MM_Lobby"
+        "subtitle"  "#P2MM_Lobby"
         "command"   "p2mm_startsession mp_coop_lobby_3"
         "pic"       "ADD P2MM IMAGE"
     }
@@ -102,4 +102,29 @@
         "command"   "p2mm_startsession sp_a4_finale1"
         "pic"       "vgui/chapters/chapter9"
     }
+    "empty"
+	{
+		"title"		""
+		"subtitle"	""
+	}
+    "p2mmresources"
+    {
+        "title"     "#P2MM_Resources_t"
+        "subtitle"  "#P2MM_Resources_d"
+        "pic"       "ADD P2MM IMAGE"
+    }
+    "p2mmgithub"
+	{
+		"title"		"#P2MM_GitHub_t"
+		"subtitle"	"#P2MM_GitHub_d"
+		"pic"		"vgui/p2mm/github ADD P2MM IMAGE"
+		"url"		"https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod"
+	}
+    "p2mmdiscord"
+	{
+		"title"		"#P2MM_Discord_t"
+		"subtitle"	"#P2MM_Discord_d"
+		"pic"		"vgui/p2mm/discord ADD P2MM IMAGE"
+		"url"		"https://discord.com/invite/kW3nG6GKpF"
+	}
 }
