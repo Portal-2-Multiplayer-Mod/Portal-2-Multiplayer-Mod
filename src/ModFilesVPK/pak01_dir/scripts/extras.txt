@@ -26,7 +26,7 @@
         "title"     "#P2MM_LastMap_t"
         "subtitle"  "#P2MM_LastMap_d"
         "command"   "p2mm_startsession P2MM_LASTMAP"
-        "pic"       "huh/hud_icon_camera"
+        "pic"       "vgui/p2mm/lastmap"
     }
     "empty"
 	{
