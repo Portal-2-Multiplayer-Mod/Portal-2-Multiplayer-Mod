@@ -111,7 +111,7 @@
     {
         "title"     "#P2MM_Resources_t"
         "subtitle"  "#P2MM_Resources_d"
-        "pic"       "ADD P2MM IMAGE"
+//        "pic"       "ADD P2MM IMAGE"
     }
     "p2mmgithub"
 	{
