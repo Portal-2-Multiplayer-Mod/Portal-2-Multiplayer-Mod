@@ -19,14 +19,14 @@
         "title"     "#P2MM_Lobby"
         "subtitle"  "#P2MM_Lobby"
         "command"   "p2mm_startsession mp_coop_lobby_3"
-        "pic"       "ADD P2MM IMAGE"
+        "pic"       "vgui/p2mm/lobby3"
     }
     "lastmap"
     {
         "title"     "#P2MM_LastMap_t"
         "subtitle"  "#P2MM_LastMap_d"
         "command"   "p2mm_startsession P2MM_LASTMAP"
-        "pic"       "ADD P2MM IMAGE"
+        "pic"       "huh/hud_icon_camera"
     }
     "empty"
 	{
@@ -117,14 +117,14 @@
 	{
 		"title"		"#P2MM_GitHub_t"
 		"subtitle"	"#P2MM_GitHub_d"
-		"pic"		"vgui/p2mm/githubbanner"
+		"pic"		"vgui/p2mm/github"
 		"url"		"https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod"
 	}
     "p2mmdiscord"
 	{
 		"title"		"#P2MM_Discord_t"
 		"subtitle"	"#P2MM_Discord_d"
-		"pic"		"vgui/p2mm/discord ADD P2MM IMAGE"
+		"pic"		"vgui/p2mm/discord"
 		"url"		"https://discord.com/invite/kW3nG6GKpF"
 	}
 }
