@@ -117,7 +117,7 @@
 	{
 		"title"		"#P2MM_GitHub_t"
 		"subtitle"	"#P2MM_GitHub_d"
-		"pic"		"vgui/p2mm/github ADD P2MM IMAGE"
+		"pic"		"vgui/p2mm/githubbanner"
 		"url"		"https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod"
 	}
     "p2mmdiscord"
