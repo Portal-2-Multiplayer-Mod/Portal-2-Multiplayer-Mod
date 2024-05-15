@@ -22,7 +22,7 @@ class Button:
                     y: float = 2,  # A duct tape fix to prevent errors with mouse movement detection
                     width: float = 28,  # A duct tape fix to prevent errors with mouse movement detection
                     height: float = 14,  # A duct tape fix to prevent errors with mouse movement detection
-                    # Size "700" appears to be default size. Increasing over "7500" will start to make the launcher unstable.
+                    # Size "38" is the default size. Increasing over "7500" will start to make the launcher unstable.
                     size: float = 38,
                     ) -> None:
 

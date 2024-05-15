@@ -27,9 +27,9 @@ def MainMenu(ui: Gui) -> tuple[list[Button], list[Label]]:
         GVars.translations["exit_button"], ui.Button_Exit_func, (255, 50, 50), isAsync=True, clickAnimation="none")
 
     Text_MainMenuText = Label(GVars.translations["welcome"], color=(
-        255, 234, 0), xPos=790, xStart=790, xEnd=1850, yPos=20)
+        255, 234, 0), xPos=790, xEnd=1000, yPos=20)
     Text_LauncherVersionText = Label(
-        GVars.translations["version"] + Up.currentVersion, color=(255, 234, 0), xPos=20, xStart=20, xEnd=300, yPos=20)
+        GVars.translations["version"] + Up.currentVersion, color=(255, 234, 0), xPos=20, xEnd=300, yPos=20)
 
     Buttons = [Button_LaunchGame, Button_Settings, Button_Update,
                Button_ManualMode, Button_Workshop, Button_ResourcesMenu]
@@ -38,7 +38,7 @@ def MainMenu(ui: Gui) -> tuple[list[Button], list[Label]]:
     if ui.DevMode:
         Button_Test = Button("Test Button", ui.Button_Test_func)
         Text_DevMode = Label(GVars.translations["dev_mode_enabled"], color=(
-            255, 0, 0), xPos=75, xStart=75, xEnd=750, yPos=725)
+            255, 0, 0), xPos=75, xEnd=750, yPos=725)
 
         Buttons.append(Button_Test)
         Labels.append(Text_DevMode)
@@ -79,7 +79,7 @@ def WorkshopMenu(ui: Gui) -> None:
     Text_WorkshopMenuInfo = Label(
         GVars.translations["workshop_menu_info"],
         color=(255, 234, 0),
-        xPos=75, xStart=75, xEnd=1100, yPos=220)
+        xPos=75, xEnd=1100, yPos=220)
 
     Buttons = [Button_GetWorkShopCommand, Button_Back]
     Labels = [Text_WorkshopMenuInfo]
@@ -128,11 +128,11 @@ def TestingMenu(ui: Gui) -> None:
     Text_TestMenuTextTest2 = Label(
         "DisplayText2: color=(52, 67, 235), yPos=600", color=(52, 67, 235), yPos=600)
     Text_TestMenuTextTest3 = Label(
-        "DisplayText3: color=(214, 30, 17), xPos=600, xStart=600", color=(214, 30, 17), xPos=600, xStart=600)
+        "DisplayText3: color=(214, 30, 17), xPos=600", color=(214, 30, 17), xPos=600)
     Text_TestMenuTextTest4 = Label(
-        "DisplayText4: color=(143, 222, 24), xPos=600, xStart=600, yPos=600", color=(143, 222, 24), xPos=600, xStart=600, yPos=600)
+        "DisplayText4: color=(143, 222, 24), xPos=600, yPos=600", color=(143, 222, 24), xPos=600, yPos=600)
     Text_TestMenuTextTest5 = Label(
-        "DisplayText5: color=(255, 255, 0), xPos=600, xStart=600, xEnd=1900, yPos=300", color=(255, 255, 0), xPos=600, xStart=600, xEnd=1900, yPos=300)
+        "DisplayText5: color=(255, 255, 0), xPos=600, xEnd=1900, yPos=300", color=(255, 255, 0), xPos=600, xEnd=1900, yPos=300)
 
     Labels = [Text_TestMenuTextTest1, Text_TestMenuTextTest2,
               Text_TestMenuTextTest3, Text_TestMenuTextTest4,
@@ -310,7 +310,7 @@ def AdminsMenu(ui: Gui) -> None:
     
     Text_SettingsAdminsText = Label(
         GVars.translations["settings_menu_admins_label"], color=(255, 234, 0), 
-        xPos=40, xStart=40, xEnd=1000, yPos=620)
+        xPos=40, xEnd=1000, yPos=620)
 
     ####################
     Buttons: list[Button] = []
