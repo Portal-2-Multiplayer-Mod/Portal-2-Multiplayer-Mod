@@ -13,7 +13,7 @@ import os, shutil, subprocess
 #* 3- Check if the new VPK works by launching the mod.
 
 # Get Portal 2 path and define other paths
-p2VPKPath = input("Input your Portal 2 installation path: ").strip()
+p2VPKPath = "D:\steam\steamapps\common\Portal 2"
 p2VPKPath = p2VPKPath + os.sep + "bin" + os.sep + "vpk.exe"
 vpkWorkPath = f"{os.getcwd() + os.sep}src{os.sep}ModFilesVPK"
 modFilesVPKPath = f"src{os.sep}ModFiles{os.sep}Portal 2{os.sep}install_dlc{os.sep}pak01_dir.vpk"
