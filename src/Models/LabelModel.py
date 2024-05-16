@@ -1,5 +1,5 @@
 class Label:
-    def __init__(self, text: str, color: tuple = (155, 155, 155), xPos: float = 0, yPos: float = 0, xStart: float = 0, xEnd: float = 100, size: float = 26) -> None:
+    def __init__(self, text: str, color: tuple = (155, 155, 155), xPos: float = 0, yPos: float = 0, xEnd: float = 100, size: float = 26) -> None:
         """ Basic Label model
 
         Parameters
@@ -16,11 +16,8 @@ class Label:
         yPos : float, optional
             position on the Y axis, by default 0
 
-        xStart : float, optional
-            god knows what, by default 0
-
         xEnd : float, optional
-            god knows what, by default 100
+            where on the X axis the text should end and wrap, by default 100
 
         size : float, optional
             size of the text
@@ -29,7 +26,6 @@ class Label:
         self.Text = text
         self.Color = color
         self.xPos = xPos
-        self.xStart = xStart
         self.xEnd = xEnd
         self.yPos = yPos
         self.Size = size

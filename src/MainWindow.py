@@ -419,39 +419,27 @@ class Gui:
         return shouldUpdate
 
     def DrawLabels(self):
-        W = self.screen.get_width()
-        H = self.screen.get_height()
-
         for label in self.CurrentViewLabels:
-            # displayText.width = int(  W / displayText.size)
-            # displayText.height = int( H / displayText.size)
-
-            font = pygame.font.Font(GVars.translations["font"], label.Size)
+            text = pygame.font.Font(GVars.translations["font"], label.Size)
 
             # 2D array where each row is a list of words.
             words = [word.split(' ') for word in label.Text.splitlines()]
-            space = font.size(' ')[0]  # The width of a space.
+            space = text.size(' ')[0]  # The width of a space.
             max_width = label.xEnd
-            max_height = H
             x = label.xPos
             y = label.yPos
             # This code will wrap any text that goes off screen, thanks Stack Overflow for this :)
             for line in words:
                 for word in line:
-                    word_surface = font.render(
-                        word, True, label.Color)
+                    word_surface = text.render(word, True, label.Color)
                     word_width, word_height = word_surface.get_size()
-                    if x + label.xStart >= max_width:
-                        x = label.xStart  # Reset the x.
+                    if x >= max_width:
+                        x = label.xPos  # Reset the x.
                         y += word_height  # Start on new row.
                     self.screen.blit(word_surface, (x, y))
                     x += word_width + space
-                x = label.xStart  # Reset the x.
+                x = label.xPos  # Reset the x.
                 y += word_height  # Start on a new row.
-
-            # text = font.render(BF.StringToParagraph(label.Text, 19), True, label.Color)
-            # self.screen.blit(text, (label.xStart, label.yPos))
-
 
     def DrawInputBox(self):
 
