@@ -161,7 +161,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Find all players within 100 units of 8032 1216 487
         for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(8032, 1216, 487), 100);) {
             if (SpA1WakeupONCE1) {
-                printlP2MM("Wakeup sequence started")
+                printlP2MM(0, true, "Wakeup sequence started")
                 EntFire("@glados", "runscriptcode", "sp_a1_wakeup_gantry_door_open()", 0, null)
                 Entities.FindByName(null, "training_door").__KeyValueFromString("targetname", "training_door_open_dis")
                 EntFire("training_door_open_dis", "Open", "", 0.1, null)
@@ -172,7 +172,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Find all players within 100 units of 6977, 493, 572
         for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(6976, 568, 521), 225);) {
             if (p.GetOrigin().z >= 450) {
-                printlP2MM("Player is in the elevator")
+                printlP2MM(0, true, "Player is in the elevator")
                 if (p.GetTeam() == TEAM_RED) {
                     p.SetOrigin(Vector(6926, 398, 410))
                 } else {

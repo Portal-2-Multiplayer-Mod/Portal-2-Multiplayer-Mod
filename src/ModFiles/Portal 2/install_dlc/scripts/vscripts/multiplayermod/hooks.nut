@@ -275,9 +275,7 @@ function Loop() {
                     } catch(exception) {
                         OldPlayerPos = Vector(0, 0, 0)
                         OldPlayerAngles = Vector(0, 0, 0)
-                        if (GetDeveloperLevelP2MM()) {
-                            printlP2MM("Error: Could not cache player position. This is catastrophic!")
-                        }
+                        printlP2MM(1, true, "Error: Could not cache player position. This is catastrophic!")
                         cacheoriginalplayerposition = 1
                     }
                 }
@@ -474,14 +472,10 @@ function PostPlayerSpawn() {
 
     if (!fogs) {
         usefogcontroller = false
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("No fog controller found. Disabling fog controller...")
-        }
+        printlP2MM(1, true, "No fog controller found. Disabling fog controller...")
     } else {
         usefogcontroller = true
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Fog controller found. Enabling fog controller...")
-        }
+        printlP2MM(0, true, "Fog controller found. Enabling fog controller...")
     }
 
     if (usefogcontroller) {
@@ -542,9 +536,7 @@ function PostPlayerSpawn() {
         }
     } catch (exception) {}
     if (OrangeOldPlayerPos == null) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
-        }
+        printlP2MM(1, true, "OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
         OrangeOldPlayerPos = OldPlayerPos
         OrangeCacheFailed = true
     }
@@ -565,9 +557,7 @@ function PostPlayerSpawn() {
                 }
             }
         } catch (exception) {
-            if (GetDeveloperLevelP2MM()) {
-                printlP2MM(OverrideName + " dropper not found! Cannot force open dropper.")
-            }
+            printlP2MM(1, true, OverrideName + " dropper not found! Cannot force open dropper.")
         }
     }
 
@@ -667,14 +657,14 @@ function PostPlayerSpawn() {
     // Code used to handle running VScript debugging on the host
     // This needs to be called in PostPlayerSpawn, because the game is in a state where `script_debug` will work as intended.
     if (Config_VScriptDebug) {
-        printlP2MM("[DEBUGGING] Initiating VScript Debugging!")
+        printlP2MM(0, false, "[DEBUGGING] Initiating VScript Debugging!")
 
         // Developer is needed for debugging to work.
         // Just turning it on will work, but the debugger will act 
         // strange when the map loaded doesn't start with developer enabled,
         // so the map needs to be restarted for it act as expected.
         if (!GetDeveloperLevel()) {
-            printlP2MM("[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
+            printlP2MM(1, false, "[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
             EntFire("p2mm_servercommand", "command", "developer 1")
             EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName())
         }
@@ -696,7 +686,7 @@ function PostPlayerSpawn() {
         // Call `script_debug` only on the host, that way other players will not be frozen.
         // But those same players can disconnect from the server due to time out if the host
         // does not connect the debugger quick enough unfreezing their game.
-        EntFireByHandle(p2mm_clientcommand, "Command", "script_debug", 1, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
+        EntFireByHandle(p2mm_clientcommand, "command", "script_debug", 1, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
 
         // `script_debug` takes a second to do its thing, so delay the debug message
         EntFire("p2mm_servercommand", "command", "script printlP2MM(\"[DEBUGGING] VScript Debugger Attached!\")", 1.1)
@@ -709,6 +699,11 @@ function PostPlayerSpawn() {
         EntFireByHandle(vscriptDebugText, "Kill", "", 4, null, null)
         delete vscriptDebugText
     }
+
+    // Display First Run Prompt
+    if (Config_FirstRunPrompt) {
+        EntFire("p2mm_servercommand", "command", "script CallFirstRunPrompt()", 1)
+    } 
 }
 
 // 4
@@ -914,9 +909,7 @@ function OnPlayerJoin(p, script_scope) {
         FindEntityClass(portal1).linkedprop <- null
         FindEntityClass(portal2).linkedprop <- null
     } catch (exception) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Failed to rename portals" + exception)
-        }
+        printlP2MM(1, true, "Failed to rename portals" + exception)
     }
 
     //# Set viewmodel targetnames so they can be told apart #//
@@ -1018,9 +1011,7 @@ function OnDeath(player) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, player, false)
 
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
-    }
+    printlP2MM(0, true, FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
 }
 
 // 7
@@ -1028,9 +1019,7 @@ function OnRespawn(player) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, false, player)
 
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
-    }
+    printlP2MM(0, true, FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
 
     // GlobalSpawnClass teleport
     if (GlobalSpawnClass.m_bUseAutoSpawn) {

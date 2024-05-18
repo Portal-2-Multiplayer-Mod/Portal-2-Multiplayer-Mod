@@ -80,9 +80,9 @@ function ChangeMusicTrack(nextTrack = true) {
 // Initialize the music
 function MusicInit() {
     if (musicMax == 0) {
-        printlP2MM("There are no music tracks in Config_musicTracks!")
-        printlP2MM("We won't setup the custom lobby music control!")
-        printlP2MM("Ideally the host should have just set Config_musicEnable to false...")
+        printlP2MM(1, false, "There are no music tracks in Config_musicTracks!")
+        printlP2MM(1, false, "We won't setup the custom lobby music control!")
+        printlP2MM(1, false, "Ideally the host should have just set Config_musicEnable to false...")
         return
     }
 
@@ -331,16 +331,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Remove useless entities so that the entity limit does not crash the game
 
-        // Remove func_portal_bumper's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
-            ent.Destroy() // 165 entities removed
-        }
-
-        // Remove env_sprite's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
-            ent.Destroy() // 31 entities removed
-        }
-
         // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
         Entities.FindByClassname(null, "point_viewcontrol").Destroy()
         for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
@@ -348,6 +338,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 continue
             }
             ent.Destroy() // 20 entities removed
+        }
+
+        // Remove env_sprite's from the map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
+            ent.Destroy() // 31 entities removed
+        }
+
+        // Remove func_portal_bumper's from the map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
+            ent.Destroy() // 165 entities removed
         }
     }
 

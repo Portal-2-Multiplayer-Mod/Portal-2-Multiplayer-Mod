@@ -31,7 +31,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         UTIL_Team.Pinging(false, "all", 1)
         UTIL_Team.Taunting(false, "all", 1)
 
-        printl(Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
+        printlP2MM(0, true, Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
         Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
         Entities.FindByName(null, "@environment_bottomless_pit_falling_fog").__KeyValueFromString("farz", "0")
         // Entities.FindByName(null, "potatos_prop").__KeyValueFromString("solid", "0")

@@ -55,16 +55,12 @@ function StartGelocityTeleport() {
 // TODO: remove these functions and call the lap increment/decrement in the output itself
 function AddLap() {
     iGelocityRounds++
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(iGelocityRounds)
-    }
+    printlP2MM(0, true, iGelocityRounds)
 }
 
 function SubtractLap() {
     iGelocityRounds--
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(iGelocityRounds)
-    }
+    printlP2MM(0, true, iGelocityRounds)
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
@@ -155,9 +151,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         }
                         pclass.nCurrentLap = pclass.nCurrentLap + 1
                         pclass.GelocityCheckPointType = LAP_CHECKPOINT1
-                        if (GetDeveloperLevelP2MM()) {
-                            printlP2MM(pclass.username + "is now on lap " + pclass.nCurrentLap)
-                        }
+                        printlP2MM(0, true, pclass.username + "is now on lap " + pclass.nCurrentLap)
 
                         // Set Message Text and display it
                         if (!bGameDoneGelocity) {
@@ -175,9 +169,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 local pclass = FindPlayerClass(p)
                 if (pclass.GelocityCheckPointType == LAP_CHECKPOINT1) {
                     pclass.GelocityCheckPointType = LAP_FINISHLINE
-                    if (GetDeveloperLevelP2MM()) {
-                        printlP2MM("Set the \"GelocityCheckPointType\" status to \"LAP_FINISHLINE\" for " + pclass.username)
-                    }
+                    printlP2MM(0, true, "Set the \"GelocityCheckPointType\" status to \"LAP_FINISHLINE\" for " + pclass.username)
                 }
             }
         }

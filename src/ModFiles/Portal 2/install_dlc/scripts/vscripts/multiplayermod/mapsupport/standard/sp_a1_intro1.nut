@@ -7,9 +7,7 @@
 
 HasSleptInContainer1 <- false
 function p2mmDestroyedSequence() {
-    if (GetDeveloperLevelP2MM()) {
-        printl("(P2:MM): p2mmDestroyedSequence() has ran!")
-    }
+    printlP2MM(0, true, "p2mmDestroyedSequence() has ran!")
     HasSleptInContainer1 = true
 }
 
@@ -40,9 +38,7 @@ function p2mmSecondDrop() {
 }
 
 function p2mmDropCollision() {
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM("Dropping container collision via p2mmDropCollision().")
-    }
+    printlP2MM(0, true, "Dropping container collision via p2mmDropCollision().")
 
     local dropamount = 45
     local ceiltime = 2.6
@@ -755,9 +751,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSOnPlayerJoin != false) {
         if (stoprenable) {
-            if (GetDeveloperLevelP2MM()) {
-                printlP2MM("Player joined (Resetting viewcontrol)")
-            }
+            printlP2MM(0, true, "Player joined (Resetting viewcontrol)")
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A1_Intro1Viewcontrol", "Disable", "", 0.6, null)
         }

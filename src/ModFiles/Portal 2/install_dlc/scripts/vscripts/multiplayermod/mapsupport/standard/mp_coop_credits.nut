@@ -132,11 +132,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             MPMCredits <- MPMCredits + 1
 
             local tmpname = MPMCoopCreditNames[MPMCredits]
-            if (Config_DevMode) {printlP2MM(MPMCredits + " " + tmpname)}
+            printlP2MM(0, true, MPMCredits + " " + tmpname)
 
             if (tmpname.find("|") == null) {
                 CreditsRemovePod()
-                if (Config_DevMode) {printl("NO POD/ROBOT!!!!!! \"" + tmpname + "\"")}
+                printlP2MM(0, true, "NO POD/ROBOT!!!!!! \"" + tmpname + "\"")
                 EntFireByHandle(Entities.FindByNameNearest("female*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
                 EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
             } else {
@@ -179,11 +179,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             MPMCredits <- MPMCredits + 1
 
             local tmpname = MPMCoopCreditNames[MPMCredits]
-            if (Config_DevMode) {printlP2MM(MPMCredits + " " + tmpname)}
+            printlP2MM(0, true, MPMCredits + " " + tmpname)
 
             if (tmpname.find("|") == null) {
                 CreditsRemovePod()
-                if (Config_DevMode) {printl("NO POD/ROBOT!!!!!! \"" + tmpname + "\"")}
+                printlP2MM(0, true, "NO POD/ROBOT!!!!!! \"" + tmpname + "\"")
                 EntFireByHandle(Entities.FindByNameNearest("male*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
                 EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
             } else {
@@ -246,14 +246,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Print out the whole updated credits list and other info
-        if (GetDeveloperLevelP2MM()) {
-            foreach (name in creditScriptEntScope.CreditsList) {
-                printlP2MM(name)
-            }
-            printlP2MM(creditScriptEntScope.CreditsList.len())
-            printlP2MM(creditScriptEntScope.m_nTotalNameCount)
-            printlP2MM(creditScriptEntScope.MPModCreditNumber)
+        foreach (name in creditScriptEntScope.CreditsList) {
+            printlP2MM(0, true, name)
         }
+        printlP2MM(0, true, creditScriptEntScope.CreditsList.len())
+        printlP2MM(0, true, creditScriptEntScope.m_nTotalNameCount)
+        printlP2MM(0, true, creditScriptEntScope.MPModCreditNumber)
     }
 
     if (MSLoop) {

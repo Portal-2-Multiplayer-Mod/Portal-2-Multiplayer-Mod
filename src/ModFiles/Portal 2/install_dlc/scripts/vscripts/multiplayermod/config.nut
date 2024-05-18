@@ -35,6 +35,9 @@ Config_UseCustomDevModels <- false
 // 1 - Speedrun   : For those who like to speedrun Portal 2     (No full implementation yet)
 Config_GameMode <- 0
 
+// Set false if you want to disable the prompt that appears once at the start at every play session.
+Config_FirstRunPrompt <- true
+
 // Set true/false if you want to randomize every Turret 's models and colors and the Frankenturret's colors.
 // The second one when true will make the models and colors constantly change instead of once.
 //! Don't turn Config_RandomTurretLoop on while the map is running or the game will crash because the models
@@ -110,8 +113,8 @@ Config_musicEnable <- true
 // Only integers greater or equal to -1 are allowed.
 Config_musicDefault <- 0
 
-// Config_musicTracks: The music track list containing tracks to be played in mp_coop_lobby_3. For it to be heard by all 
-// players it must come with Portal 2, or it has to be in the same location on disk as the host for clients to hear it. 
+// Config_musicTracks: The music track list containing tracks to be played in mp_coop_lobby_3. For it to be heard by all players
+// it must come with Portal 2, or it has to be in the same location on disk for both the host and clients for clients to hear it. 
 // 
 // Recommended to use .wav files, .mp3 files also work but, it's also recommended that your sound file has 
 // build in looping, or you have to change to a different track then back again to start it again. The ambient_generic 

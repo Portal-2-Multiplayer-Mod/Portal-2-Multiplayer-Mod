@@ -8,7 +8,7 @@
 // Can't create a function to redefine existing variables, so do it one by one :D
 
 local ConfigValueError = function(invalidorundefined, command) {
-    printlP2MM(invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")
+    printlP2MM(1, false, invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")
 }
 
 try {
@@ -59,6 +59,16 @@ try {
 } catch (exception) {
     Config_GameMode <- 0
     ConfigValueError("Undefined", "Config_GameMode")
+}
+
+try {
+    if (typeof(Config_FirstRunPrompt) != "bool") {
+        Config_FirstRunPrompt <- true
+        ConfigValueError("Invalid", "Config_RandomTurret")
+    }
+} catch (exception) {
+    Config_FirstRunPrompt <- true
+    ConfigValueError("Undefined", "Config_RandomTurret")
 }
 
 try {

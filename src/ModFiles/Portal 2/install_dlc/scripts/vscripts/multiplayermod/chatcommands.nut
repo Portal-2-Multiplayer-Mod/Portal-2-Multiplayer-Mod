@@ -11,13 +11,11 @@
 if (Config_UseChatCommands) {
     // This can only be enabled when the plugin is loaded fully
     if (!PluginLoaded) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Can't add chat commands since no plugin is loaded!")
-        }
+        printlP2MM(1, true, "Can't add chat commands since no plugin is loaded!")
         return
     }
 } else {
-    printlP2MM("Config_UseChatCommands is false. Not adding chat callback for chat commands!")
+    printlP2MM(1, true, "Config_UseChatCommands is false. Not adding chat callback for chat commands!")
     return
 }
 
@@ -156,9 +154,7 @@ function SendChatMessage(message, pActivatorAndCaller = null) {
 }
 
 function RunChatCommand(cmd, args, plr) {
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM("Running chat command \"" + cmd.name + "\" from player \"" + FindPlayerClass(plr).username + "\"")
-    }
+    printlP2MM(0, true, "Running chat command \"" + cmd.name + "\" from player \"" + FindPlayerClass(plr).username + "\"")
     cmd.CC(plr, args)
 }
 

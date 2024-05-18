@@ -28,7 +28,7 @@ function TeleportPlayersBehindEndingElevator() {
 }
 
 function MoveSoundScape() {
-    printl("JELLO")
+    printlP2MM(0, true, "JELLO! For some reason...")
     // EntFire("end_soundscape", "disable")
     // Entities.FindByName(null, "end_soundscape").SetOrigin(Vector(-11264, 576, 128))
     // EntFire("end_soundscape", "Disable", "", 0.1)
@@ -355,7 +355,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // }
 
             if (!Entities.FindByName(null, "DummyObjectWheatlyLookOn")) {
-                printl("DummyObjectWheatlyLookOn not found running objective")
+                printlP2MM(0, true, "DummyObjectWheatlyLookOn not found running objective")
                 Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "DummyObjectWheatlyLookOn")
                 WatchPlayerWheatley <- true
             }

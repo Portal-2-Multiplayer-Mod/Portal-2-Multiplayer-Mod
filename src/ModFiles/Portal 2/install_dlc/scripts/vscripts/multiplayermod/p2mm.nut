@@ -48,12 +48,11 @@ if (!PluginLoaded) {
 
 iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1) // Determine what the "maxplayers" cap is
 
-if (GetDeveloperLevelP2MM()) {
-    printlP2MM("Session info...")
-    printlP2MM("- Current map: " + GetMapName())
-    printlP2MM("- Max players allowed on the server: " + iMaxPlayers)
-    printlP2MM("- Dedicated server: " + IsDedicatedServer())
-}
+printlP2MM(0, true, "Session info...")
+printlP2MM(0, true, "- Current map: " + GetMapName())
+printlP2MM(0, true, "- Max players allowed on the server: " + iMaxPlayers)
+printlP2MM(0, true, "- Dedicated server: " + IsDedicatedServer())
+printlP2MM(0, true, "\n")
 
 IncludeScript("multiplayermod/config.nut")      // Import the user configuration and preferences
 IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
@@ -113,15 +112,15 @@ delete ConsoleAscii
 // Import map support code
 // Map name will be wonky if the client VM attempts to get the map name
 function LoadMapSupportCode(gametype) {
-    printl( "\n=============================================================")
-    printlP2MM("Attempting to load " + gametype + " mapsupport code!")
-    printl("=============================================================\n")
+    printlP2MM(0, false, "=============================================================")
+    printlP2MM(0, false, "Attempting to load " + gametype + " mapsupport code!")
+    printlP2MM(0, false, "=============================================================\n")
 
     if (gametype != "standard") {
         if (gametype == "speedrun") {
             // Quick check for the speedrun mod plugin
             if (!("smsm" in this)) {
-                printlP2MM("Failed to load the VScript registers in the Speedrun Mod plugin! Reverting to standard mapsupport...")
+                printlP2MM(1, false, "Failed to load the VScript registers in the Speedrun Mod plugin! Reverting to standard mapsupport...")
                 return LoadMapSupportCode("standard")
             }
         }
@@ -129,7 +128,7 @@ function LoadMapSupportCode(gametype) {
             // Import the core functions before the actual mapsupport
             IncludeScript("multiplayermod/mapsupport/" + gametype + "/#" + gametype + "functions.nut")
         } catch (exception) {
-            printlP2MM("Failed to load the " + gametype + " core functions file!")
+            printlP2MM(1, false, "Failed to load the " + gametype + " core functions file!")
         }
     }
 
@@ -137,10 +136,10 @@ function LoadMapSupportCode(gametype) {
         IncludeScript("multiplayermod/mapsupport/" + gametype + "/" + GetMapName() + ".nut")
     } catch (exception) {
         if (gametype == "standard") {
-            printlP2MM("Failed to load standard mapsupport for " + GetMapName() + "\n")
+            printlP2MM(1, false, "Failed to load standard mapsupport for " + GetMapName() + "\n")
         }
         else {
-            printlP2MM("Failed to load " + gametype + " mapsupport code! Reverting to standard mapsupport...")
+            printlP2MM(1, false, "Failed to load " + gametype + " mapsupport code! Reverting to standard mapsupport...")
             return LoadMapSupportCode("standard")
         }
     }
@@ -152,7 +151,7 @@ switch (Config_GameMode) {
     case 0: LoadMapSupportCode("standard"); break
     case 1: LoadMapSupportCode("speedrun"); break
     default:
-        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard mapsupport.")
+        printlP2MM(1, false, "\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard mapsupport.")
         LoadMapSupportCode("standard")
         break
 }

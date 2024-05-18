@@ -127,10 +127,10 @@ function TeleportPlayerToClass(player, curclass) {
 }
 
 function p2mmfogswitch(fogname) {
-    printlP2MM("Switching to fog: " + fogname)
+    printlP2MM(0, true, "Switching to fog: " + fogname)
     foreach (fogclass in fogs) {
         if (fogclass.fogname == fogname) {
-            printlP2MM("Found fog: " + fogclass.fogname)
+            printlP2MM(0, true, "Found fog: " + fogclass.fogname)
             // go through each player and set their fog to the new fog
             for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 EntFireByHandle(p, "setfogcontroller", fogname, fogclass.fogdelay, null, null)
@@ -459,7 +459,7 @@ function DeleteAmountOfEntities(classname, amount) {
 
         if (checkClassname == "player" || checkClassname == "worldspawn" || checkClassname == "" || checkClassname == "prop_portal") {
             delthis = false
-            printlP2MM("Not deleting class " + classname + " (ROOTMOVEPARENT: " + checkClassname + "). By deleting the class, the RootMoveParent will also get deleted, causing crashes.")
+            printlP2MM(1, false, "Not deleting class " + classname + " (ROOTMOVEPARENT: " + checkClassname + "). By deleting the class, the RootMoveParent will also get deleted, causing crashes.")
         }
 
         if (delthis) {
@@ -467,7 +467,7 @@ function DeleteAmountOfEntities(classname, amount) {
             indx++
         }
     }
-    printlP2MM("Deleted " + indx + " " + classname + "'s")
+    printlP2MM(0, false, "Deleted " + indx + " " + classname + "'s")
     return indx
 }
 
@@ -511,13 +511,9 @@ function PrecacheModel(mdl) {
             EntFire("p2mm_servercommand", "command", "sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("PrecacheModel() - Precached model: " + mdl)
-        }
+        printlP2MM(0, true, "PrecacheModel() - Precached model: " + mdl)
     } else {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("PrecacheModel() - Model: " + mdl + " already precached!")
-        }
+        printlP2MM(1, true, "PrecacheModel() - Model: " + mdl + " already precached!")
     }
 }
 
@@ -536,12 +532,12 @@ function FindEntityClass(ent, createclassifnone = true) {
             return curclass
         }
     }
-    printlP2MM("Could not find entity class for entity: " + ent)
+    printlP2MM(1, false, "Could not find entity class for entity: " + ent)
     if (createclassifnone) {
         CreateEntityClass(ent)
         foreach (curclass in entityclasses) {
             if (curclass.entity == ent) {
-                printlP2MM("Created entity class for entity: " + ent)
+                printlP2MM(0, false, "Created entity class for entity: " + ent)
                 return curclass
             }
         }
@@ -683,9 +679,8 @@ function AddVectors(vec1, vec2) {
 }
 
 function CreateEntityClass(ent) {
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM("Creating new entity class for entity: " + ent)
-    }
+    printlP2MM(0, true, "Creating new entity class for entity: " + ent)
+    
     local newclass = class {
         entity = ent
         // TODO: What should be the default for this?
@@ -726,7 +721,7 @@ function MoveEntityOnTrack(entity, PointList, Speed = "undefined", Distance = "u
     if (GetDistanceScore(entity.GetOrigin(), PointList[entclass.followingpointlistindex]) < Distance) {
         cindx = entclass.followingpointlistindex
         entclass.followingpointlistindex <- entclass.followingpointlistindex + 1
-        printlP2MM("Moving to next track point: " + entclass.followingpointlistindex)
+        printlP2MM(0, true, "Moving to next track point: " + entclass.followingpointlistindex)
     }
 
     if (entclass.followingpointlistindex >= PointList.len()) {
@@ -1266,11 +1261,11 @@ function BestGuessSpawnpoint() {
             "@transition_from_map",
         ]
 
-        if (GetDeveloperLevelP2MM()) {
-            printl("===========================")
-            printlP2MM("Box ents")
-            printl("===========================")
-        }
+        
+        printlP2MM(0, true, "===========================")
+        printlP2MM(0, true, "Box ents")
+        printlP2MM(0, true, "===========================")
+        
 
         local BestSurrondingBoxEnt = -1
         local CurrentBestStartingEnt = null
@@ -1297,40 +1292,27 @@ function BestGuessSpawnpoint() {
 
         local RealPlayerSpawn = null
         if (StartingBoxEnt == null) {
-            if (GetDeveloperLevelP2MM()) {
-                printlP2MM("No starting box ent found.")
-            }
+            printlP2MM(1, true, "No starting box ent found.")
         } else {
             if (BestSurrondingBoxEnt > 0) {
-                if (GetDeveloperLevelP2MM()) {
-                    printlP2MM("Starting box ent found!")
-                }
+                printlP2MM(0, true, "Starting box ent found!")
+                
                 // If a solid starting box ent is found, find the closest one to it
                 RealPlayerSpawn = Entities.FindByClassnameNearest("info_player_start", StartingBoxEnt.GetOrigin(), 650)
                 if (RealPlayerSpawn == null) {
-                    if (GetDeveloperLevelP2MM()) {
-                        printlP2MM("No real player spawn found.")
-                    }
+                    printlP2MM(1, true, "No real player spawn found.")
                 } else {
-                    if (GetDeveloperLevelP2MM()) {
-                        printlP2MM("Real player spawn found!")
-                    }
+                    printlP2MM(0, true, "Real player spawn found!")
                     local LandmarkCheck = Entities.FindByClassnameNearest("info_landmark_entry", RealPlayerSpawn.GetOrigin(), 128)
                     // If a landmark is found, the location is correct as its in the box
                     if (LandmarkCheck == null) {
-                        if (GetDeveloperLevelP2MM()) {
-                            printlP2MM("No landmark found")
-                        }
+                        printlP2MM(1, true, "No landmark found")
                     } else {
-                        if (GetDeveloperLevelP2MM()) {
-                            printlP2MM("Landmark found!")
-                            printlP2MM("Found info_player_start entity!: " + RealPlayerSpawn.GetOrigin())
-                        }
+                        printlP2MM(0, true, "Landmark found!")
+                        printlP2MM(0, true, "Found info_player_start entity!: " + RealPlayerSpawn.GetOrigin())
                         // If EVERY Condition is met, lets set the player spawn
                         if (GlobalSpawnClass.m_bUseAutoSpawn) {
-                            if (GetDeveloperLevelP2MM()) {
-                                printlP2MM("m_bUseAutoSpawn = True: Setting player spawn")
-                            }
+                            printlP2MM(0, true, "m_bUseAutoSpawn = True: Setting player spawn")
                             GlobalSpawnClass.m_bUseAutoSpawn <- false
                             GlobalSpawnClass.m_bUseSetSpawn <- true
                             GlobalSpawnClass.m_cSetSpawn.position <- RealPlayerSpawn.GetOrigin()
@@ -1338,23 +1320,17 @@ function BestGuessSpawnpoint() {
                             // Get every info_player_start and kill it
                             for (local ent = null; ent = Entities.FindByClassname(ent, "info_player_start");) {
                                 if (ent != RealPlayerSpawn) {
-                                    if (GetDeveloperLevelP2MM()) {
-                                        printlP2MM("Found info_player_start entity that is not the real player spawn.")
-                                    }
+                                    printlP2MM(1, true, "Found info_player_start entity that is not the real player spawn.")
                                     ent.Destroy()
                                 }
                             }
                         } else {
-                            if (GetDeveloperLevelP2MM()) {
-                                printlP2MM("m_bUseAutoSpawn = false: Not setting player spawn.")
-                            }
+                            printlP2MM(0, true, "m_bUseAutoSpawn = false: Not setting player spawn.")
                         }
                     }
                 }
             } else {
-                if (GetDeveloperLevelP2MM()) {
-                    printlP2MM("Starting box ent found, but there aren't enough surrounding box ents.")
-                }
+                printlP2MM(0, true, "Starting box ent found, but there aren't enough surrounding box ents.")
             }
         }
     }
@@ -1380,9 +1356,7 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                if (GetDeveloperLevelP2MM()) {
-                    printlP2MM(currentscore)
-                }
+                printlP2MM(0, true, currentscore)
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1397,20 +1371,16 @@ function BestGuessSpawnpoint() {
 
             spawnmiddle_ang_vec = spawnmiddle_ang_vec * 126.5
 
-            if (GetDeveloperLevelP2MM()) {
-                printlP2MM(spawnmiddle_ang_vec)
-            }
+            printlP2MM(0, true, spawnmiddle_ang_vec)
 
             // Now get the back front left and right spawnpoints
             local spawnfront = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x, spawnmiddle_ang_vec.y, height)
             local spawnback = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x/-1, spawnmiddle_ang_vec.y/-1, height)
             local spawnright = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y, spawnmiddle_ang_vec.x/-1, height)
             local spawnleft = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.y/-1, spawnmiddle_ang_vec.x, height)
-            if (GetDeveloperLevelP2MM()) {
-                printlP2MM("spawnMiddle: " + spawnmiddle)
-                printlP2MM("spawnOrigin: " + spawnmiddle.GetOrigin())
-                printlP2MM("ourClosest: " + ourclosest)
-            }
+            printlP2MM(0, true, "spawnMiddle: " + spawnmiddle)
+            printlP2MM(0, true, "spawnOrigin: " + spawnmiddle.GetOrigin())
+            printlP2MM(0, true, "ourClosest: " + ourclosest)
 
             // Output the spawnpoints
             FinalRotationBlue = spawnmiddle_ang + Vector(0, 0, 0)
@@ -1434,9 +1404,7 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                if (GetDeveloperLevelP2MM()) {
-                    printlP2MM(currentscore)
-                }
+                printlP2MM(0, true, currentscore)
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1447,14 +1415,10 @@ function BestGuessSpawnpoint() {
             // Find the highest path_track next to the spawnpoint
             local tallestpathtrack = null
             if (spawnmiddle == null) {
-                if (GetDeveloperLevelP2MM()) {
-                    printlP2MM("Failed to find spawnmiddle for path_track spawnpoint!")
-                }
+                printlP2MM(1, true, "Failed to find spawnmiddle for path_track spawnpoint!")
             } else {
                 for (local pathtracks = null; pathtracks = Entities.FindByClassnameWithin(pathtracks, "path_track", spawnmiddle.GetOrigin(), 600);) {
-                    if (GetDeveloperLevelP2MM()) {
-                        printlP2MM("pathtracks: " + pathtracks)
-                    }
+                    printlP2MM(0, true, "pathtracks: " + pathtracks)
                     if (tallestpathtrack == null) {
                         tallestpathtrack = pathtracks
                     } else {
