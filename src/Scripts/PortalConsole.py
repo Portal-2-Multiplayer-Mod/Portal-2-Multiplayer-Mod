@@ -32,9 +32,9 @@ def WriteConsoleToLog() -> None:
         )
         log.write("\n\n# PORTAL 2 CONSOLE LOGS END.\n\n")
 
-    # to avoid duplicates
-    print(consoleFile)
-    BF.DeleteFile(consoleFile)
+        if (GVars.configData["Dev-Mode"]["value"]):
+            for line in open(consoleFile, "r", encoding="utf8", errors="ignore").readlines():
+                print(line)
 
 def FilterConsole(text: list[str]) -> list[str]:
     lastMap = None

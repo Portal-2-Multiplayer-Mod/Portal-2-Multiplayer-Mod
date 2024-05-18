@@ -58,8 +58,8 @@ IncludeScript("multiplayermod/config.nut")      // Import the user configuration
 IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
 
 // Check if its the first map run so Last Map System stuff can be done
-if (IsFirstRun()) {
-    EntFire("p2mm_servercommand", "command", "p2mm_firstrun 0")
+if (FirstRunState(-1)) {
+    FirstRunState(0)
 
     // Reset developer level, developer needs to stay enabled for VScript Debugging to work
     if (Config_DevMode || Config_VScriptDebug) {
@@ -70,8 +70,10 @@ if (IsFirstRun()) {
     }
     
     // Check if Last Map System supplied a value and that it's a valid map, then restart on that map
-    if (IsMapValid(GetLastMap())) {
+    if (IsMapValid(GetLastMap()) && (GetLastMap() != GetMapName())) {
+        FirstRunState(1)
         EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0.5)
+        return
     }
 }
 

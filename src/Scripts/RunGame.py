@@ -184,26 +184,27 @@ def LaunchGame(gamepath: str) -> None:
     # Working with the launch arguments and Custom-Launch-Options (CLO) as a table helps with making
     # any needed changes before it is turned into a string then passed on to the Portal 2 executable.
     args = ["-novid", "-allowspectators", "-nosixense", "-conclearlog", "-condebug", "-usercon", "+clear"]
-    CLO = GVars.configData['Custom-Launch-Options']['value'].split(" ")    
+    CLO = GVars.configData['Custom-Launch-Options']['value'].split(" ")
     
     print(args)
     print(CLO)
 
-    if (("+map sp_" in " ".join(CLO)) or ("+ss_map sp_" in " ".join(CLO))):
-        args.extend(["+map" if "+map" in " ".join(CLO) else "+ss_map", "mp_coop_community_hub"])
-        args.extend((" ".join(CLO).replace("+map", "+p2mm_lastmap").replace("+ss_map", "+p2mm_lastmap").split(" ")))
-    else:
-        args.extend(CLO)
+    # If "+ss_map" is in the CLO, set the plugin's splitscreen ConVar to true for "p2mm_startsession" to read,
+    # then replace any "+map" and "+ss_map" with "+p2mm_startsession" for the mod to properly start.
+    args.extend(["+p2mm_splitscreen 1" if "+ss_map" in " ".join(CLO) else "+p2mm_splitscreen 0"])
+    args.extend((" ".join(CLO).replace("+map", "+p2mm_startsession").replace("+ss_map", "+p2mm_startsession").split(" ")))
 
     # Add the last map played for the Last Map System if enabled, if a last map was recorded, and if the last map already isn't in Custom-Launch-Options (CLO).
     if ((GVars.configData["Start-From-Last-Map"]["value"]) and (len(GVars.configData["Last-Map"]["value"].strip()) > 0) and (not GVars.configData["Last-Map"]["value"].strip() in " ".join(args))):
-        if ("+p2mm_lastmap sp_" in " ".join(args)):
-            " ".join(args).replace(args[args.index("+p2mm_lastmap") + 1], GVars.configData["Last-Map"]["value"].strip()).split(" ")
+        print(GVars.configData["Last-Map"]["value"].strip())
+        # Make sure that if last map is enabled the last map is set for starting the session.
+        if ("+p2mm_startsession" in " ".join(args)):
+            args = list(map(lambda x: x.replace(args[args.index("+p2mm_startsession") + 1], GVars.configData["Last-Map"]["value"].strip()), args))
         else:
-            args.extend(["+p2mm_lastmap", GVars.configData["Last-Map"]["value"].strip()])
+            args.extend(["+p2mm_startsession", GVars.configData["Last-Map"]["value"].strip()])
     
     print(args)
-    args = " ".join(args)
+    args = " ".join(args).strip()
     print(args)
     
     try:

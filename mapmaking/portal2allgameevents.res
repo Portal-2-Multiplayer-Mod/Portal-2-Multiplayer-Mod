@@ -33,11 +33,13 @@
 
 "ModEvents"
 {
+	//? Interface to VScript By P2:MM | GEPlayerLanded(userid)
 	"portal_player_touchedground"	// player landed
 	{
 		"userid"	"short"		// user ID on server
 	}
 
+	//? Interface to VScript By P2:MM | GEPlayerPing(userid, ping_x, ping_y, ping_z)
 	"portal_player_ping"	// player pinged
 	{
 		"userid"	"short"		// user ID on server
@@ -46,17 +48,23 @@
 		"ping_z"	"float"
 	}
 	
+	//? Interface to VScript By P2:MM | GEPlayerPortaled(portal2)
 	"portal_player_portaled"		// player traveled through a portal
 	{
 		"userid"	"short"		// user ID on server
 		"portal2"	"bool"		// false for portal1 (blue)
 	}
+
+	//? Interface to VScript By P2:MM | GETurretHitTurret()
 	"turret_hit_turret"
 	{
 	}
+	
+	//? Interface to VScript By P2:MM | GECamDetach()
 	"security_camera_detached"
 	{
 	}
+
 	"challenge_map_complete"
 	{
 		"numbronze"	"short"

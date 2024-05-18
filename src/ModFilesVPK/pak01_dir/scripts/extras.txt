@@ -4,14 +4,14 @@
     {
         "title"     "Splitscreen On"
         "subtitle"  "Enable Splitscreen For P2:MM."
-        "command"   "p2mm_splitscreen 1; play ui/ui_coop_hud_activate_01"
+        "command"   "p2mm_splitscreen 1; play ui/p2_editor_buttons_explo_01"
         "pic"       "vgui/p2mm/spliton"
     }
     "splitoff"
     {
         "title"     "Splitscreen Off"
         "subtitle"  "Disable Splitscreen For P2:MM."
-        "command"   "p2mm_splitscreen 0; play ui/ui_coop_hud_deactivate_01"
+        "command"   "p2mm_splitscreen 0; play ui/p2_editor_buttons_collapse_01"
         "pic"       "vgui/p2mm/splitoff"
     }
     "normal"

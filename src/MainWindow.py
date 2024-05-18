@@ -1025,6 +1025,11 @@ def MountModOnly() -> bool:
 
     Ui.CreateToast(GVars.translations["mounting_mod"], 5, (75, 255, 75))
 
+    # Remove current console.log
+    path = BF.NormalizePath(GVars.configData['Portal2-Path']['value'] + "/portal2/console.log")
+    if os.path.exists(path) and os.path.isfile(path):
+        BF.DeleteFile(path)
+
     # Need to make sure the game path is in fact defined, if not P2MM will not be run/mounted
     gamePath = GVars.configData["Portal2-Path"]["value"]
     if ("undefined" in gamePath):
