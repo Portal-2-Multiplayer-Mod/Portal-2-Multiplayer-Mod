@@ -35,7 +35,7 @@
 		"tabPosition"				"0"
 		"navUp"						"BtnEconUI"
 		"navDown"					"BtnOptions"
-		"labelText"					"#P2MMMainMenuButton"
+		"labelText"					"#L4D360UI_MainMenu_Extras"
 		"style"						"MainMenuButton"
 		"command"					"Extras"
 		"ActivationType"			"1"
