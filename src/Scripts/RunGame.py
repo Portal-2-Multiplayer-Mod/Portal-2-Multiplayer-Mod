@@ -192,7 +192,7 @@ def LaunchGame(gamepath: str) -> None:
     # If "+ss_map" is in the CLO, set the plugin's splitscreen ConVar to true for "p2mm_startsession" to read,
     # then replace any "+map" and "+ss_map" with "+p2mm_startsession" for the mod to properly start.
     args.extend(["+p2mm_splitscreen 1" if "+ss_map" in " ".join(CLO) else "+p2mm_splitscreen 0"])
-    args.extend((" ".join(CLO).replace("+map", "+p2mm_startsession").replace("+ss_map", "+p2mm_startsession").split(" ")))
+    args.extend((" ".join(CLO).replace("+map", "+p2mm_startsession").replace("+ss_map", "+p2mm_startsession").split(" "))
 
     # Add the last map played for the Last Map System if enabled, if a last map was recorded, and if the last map already isn't in Custom-Launch-Options (CLO).
     if ((GVars.configData["Start-From-Last-Map"]["value"]) and (len(GVars.configData["Last-Map"]["value"].strip()) > 0) and (not GVars.configData["Last-Map"]["value"].strip() in " ".join(args))):

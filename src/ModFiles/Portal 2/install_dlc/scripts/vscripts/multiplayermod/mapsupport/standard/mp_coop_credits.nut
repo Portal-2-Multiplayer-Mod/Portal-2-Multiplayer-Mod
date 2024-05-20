@@ -247,7 +247,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Print out the whole updated credits list and other info
         foreach (name in creditScriptEntScope.CreditsList) {
-            printlP2MM(0, true, name)
+            printlP2MM(0, true, "" + name)
         }
         printlP2MM(0, true, creditScriptEntScope.CreditsList.len())
         printlP2MM(0, true, creditScriptEntScope.m_nTotalNameCount)
