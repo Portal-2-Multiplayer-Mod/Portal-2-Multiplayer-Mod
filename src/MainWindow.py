@@ -1111,8 +1111,13 @@ def UpdateModClient(data: dict) -> None:
 def RunGameScript() -> None:
     if MountModOnly():
         gamePath = GVars.configData["Portal2-Path"]["value"]
-        RG.LaunchGame(gamePath)
-        Ui.CreateToast(GVars.translations["game_launched"], 5, (75, 255, 75))
+        args = RG.AssembleArgs()
+        if not args:
+            Ui.CreateToast(GVars.translations["args-error"], 5)
+            RG.LaunchGame(gamePath, "-novid -allowspectators -nosixense -conclearlog -condebug -usercon +clear")
+        else:
+            RG.LaunchGame(gamePath, args)
+            Ui.CreateToast(GVars.translations["game_launched"], 5, (75, 255, 75))
     else:
         Ui.CreateToast(GVars.translations["game_path_undefined_fetch"], 5)
         GetGamePath()

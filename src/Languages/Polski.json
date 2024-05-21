@@ -19,6 +19,7 @@
   "mounting_mod": "Montaż modułu!",
   "unmount_button": "Odłącz",
   "unmounted_toast": "Odmontowany!",
+  "args-error": "Nie udało się przeanalizować argumentów uruchomienia!\nUżywane są tylko domyślne argumenty uruchomienia!\nSprawdź dziennik, aby uzyskać więcej informacji!",
   "mount_nodlc_toast": "Ścieżka gry nie zawiera kilku folderów DLC!! \nProszę zweryfikuj integralność gry w aplikacji Steam.",
   "mount_nopath_toast": "Ścieżka gry jest nieprawidłowa!!\nSprawdź ustawienia.",
   "wiki_button": "GitHub Wiki",

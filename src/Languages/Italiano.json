@@ -19,6 +19,7 @@
   "mounting_mod": "Montaggio mod!",
   "unmount_button": "Smontare",
   "unmounted_toast": "Smontato!",
+  "args-error": "Analisi degli argomenti di avvio non riuscita!\nUtilizzo solo degli argomenti di avvio predefiniti!\nControllare il registro per ulteriori informazioni!",
   "mount_nodlc_toast": "Il percorso del gioco manca di alcune cartelle DLC!!\nVerifica l'integrità del gioco su Steam.",
   "mount_nopath_toast": "Il percorso del gioco non è valido!!\nSi prega di controllare le impostazioni.",
   "wiki_button": "Wiki di GitHub",

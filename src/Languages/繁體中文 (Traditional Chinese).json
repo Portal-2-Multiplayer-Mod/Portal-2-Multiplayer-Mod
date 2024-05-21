@@ -19,6 +19,7 @@
   "mounting_mod": "安裝模組！",
   "unmount_button": "卸載",
   "unmounted_toast": "卸載！",
+  "args-error": "啟動參數解析失敗！\n僅使用默認啟動參數！\n請查看日誌獲取更多信息！",
   "mount_nodlc_toast": "遊戲路徑遺失一些 DLC 資料夾！\n請在 Steam 上驗證遊戲完整性。",
   "mount_nopath_toast": "遊戲路徑無效！！\n請檢查設置。",
   "wiki_button": "GitHub Wiki",

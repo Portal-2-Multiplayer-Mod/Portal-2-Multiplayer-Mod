@@ -19,6 +19,7 @@
   "mounting_mod": "安装模块！",
   "unmount_button": "卸载",
   "unmounted_toast": "未装载!",
+  "args-error": "启动参数解析失败！\n仅使用默认启动参数！\n请查看日志获取更多信息！",
   "mount_nodlc_toast": "游戏路径缺少一些DLC文件夹！请在steam上验证游戏完整性。",
   "mount_nopath_toast": "游戏路径无效！！\n请检查设置。  ",
   "wiki_button": "GitHub 维基",

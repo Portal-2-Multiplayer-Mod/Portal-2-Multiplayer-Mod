@@ -19,6 +19,7 @@
   "mounting_mod": "Mod de montage!",
   "unmount_button": "Démonter",
   "unmounted_toast": "Démonté!",
+  "args-error": "Échec d'analyse des arguments de lancement !\nUtilisation uniquement des arguments de lancement par défaut !\nConsultez le journal pour plus d'informations !",
   "mount_nodlc_toast": "Le chemin du jeu manque de certains dossiers DLC !!\nVeuillez vérifier l'intégrité du jeu sur Steam.",
   "mount_nopath_toast": "Le chemin du jeu est invalide !! Veuillez vérifier les paramètres.",
   "wiki_button": "Wiki GitHub",
