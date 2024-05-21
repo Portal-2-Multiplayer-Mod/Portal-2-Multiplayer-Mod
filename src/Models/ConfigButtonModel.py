@@ -88,5 +88,5 @@ class ConfigButton:
 
     def SetConfig(self, inp: str) -> None:
         CFG.EditConfig(self.Key, inp.strip())
-        Log(f"Saved '{inp.strip()}' to as value to: {self.Key}")
+        Log(f"Saved '{inp.strip()}' as value to: {self.Key}")
         self.OuterSelf.CreateToast(GVars.translations["saved_toast"], 5, (75, 200, 75))

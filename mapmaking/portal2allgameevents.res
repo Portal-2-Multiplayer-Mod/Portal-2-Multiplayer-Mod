@@ -4,6 +4,14 @@
 //? Those marked with "Interface to VScript By P2:MM" followed by the VScript function called are ones interfaced by the P2:MM plugin.
 //? Plugin code can be found at https://github.com/OrsellGaming/Portal-2-Multiplayer-Mod-Plugin
 
+//? `GEClientCommand` is the only exception of not being a game event being the plugin's ClientCommand function being interfaced to VScript.
+//*	"GEClientCommand" // Runs when a user runs a command in the console
+//*	{
+//*		"userid"	"short"		// user ID on server
+//*		"entindex"	"int"		// user index on server
+//*		"pcmd"		"string"	// console command called
+//*		"fargs"		"string"	// console command args
+//*	}
 //=========== (C) Copyright 1999 Valve, L.L.C. All rights reserved. ===========
 //
 // The copyright to the contents herein is the property of Valve, L.L.C.

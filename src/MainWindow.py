@@ -1125,7 +1125,6 @@ def UnmountScript(shouldGetPath: bool = True) -> None:
     VerifyGamePath(shouldGetPath)
     gamePath = GVars.configData["Portal2-Path"]["value"]
     RG.DeleteUnusedDLCs(gamePath)
-    #if os.path.exists(f"{GVars.modFilesPath}{os.sep}Portal 2{os.sep}install_dlc{os.sep}scripts{os.sep}vscripts{os.sep}multiplayermod{os.sep}lastmap.nut"): os.remove(f"{GVars.modFilesPath}{os.sep}Portal 2{os.sep}install_dlc{os.sep}scripts{os.sep}vscripts{os.sep}multiplayermod{os.sep}lastmap.nut")
     Log("____DONE UNMOUNTING____")
 
 
@@ -1136,7 +1135,7 @@ def RestartClient(path: str = sys.executable) -> None:
 
     command = path
     subprocess.Popen(command, shell=True)
-    Log("Restarting client")
+    Log("Restarting client!")
     Ui.Running = False
 
 
@@ -1153,7 +1152,7 @@ def IsNew() -> None:
     if (sys.argv[1] != "updated") or (not os.path.exists(sys.argv[2])):
         return
 
-    Log("This is first launch after a successful update")
+    Log("This is first launch after a successful update...")
 
     Log("Deleting old client...")
     os.remove(sys.argv[2])
@@ -1206,7 +1205,7 @@ def Initialize() -> None:
 
     # checks if this is a dev or release build
     if sys.argv[0].endswith(".py"):
-        Log("Running through Python! Not checking for updates.")
+        Log("Running through Python! Not checking for updates!")
         return
 
     IsNew()  # Check for first time setup after update

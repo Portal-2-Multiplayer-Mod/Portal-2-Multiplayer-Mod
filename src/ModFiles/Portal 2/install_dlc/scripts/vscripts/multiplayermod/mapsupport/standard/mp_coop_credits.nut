@@ -239,7 +239,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         
         // Thanks to Hugo/hugobdesigner for helping figuring out how to get variables in different scopes
         // Directly add our credit list MPMCoopCreditNames to Valve's CreditsList
-        // Doing this prevents the last 40ish entries of the Valve credits from getting cut off
+        // Doing this prevents the last 40ish entries of the Valve credits from getting cut off, because
+        // the script that controls the credits counts the list of credits to determine when to end before
+        // the P2:MM credits are added. Thus it ends before going through the whole list of credits.
         for (local i = MPMCoopCreditNames.len() - 1; i >= 0; i--) {
             local p2mmCredit = MPMCoopCreditNames[i];
             creditScriptEntScope.CreditsList.insert(0, p2mmCredit);
@@ -247,7 +249,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Print out the whole updated credits list and other info
         foreach (name in creditScriptEntScope.CreditsList) {
-            printlP2MM(0, true, "" + name)
+            printlP2MM(0, true, name.tostring())
         }
         printlP2MM(0, true, creditScriptEntScope.CreditsList.len())
         printlP2MM(0, true, creditScriptEntScope.m_nTotalNameCount)

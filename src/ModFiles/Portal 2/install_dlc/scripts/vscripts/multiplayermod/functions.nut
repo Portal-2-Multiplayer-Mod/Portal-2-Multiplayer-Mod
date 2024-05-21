@@ -1356,7 +1356,7 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                printlP2MM(0, true, "" + currentscore)
+                printlP2MM(0, true, currentscore.tostring())
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
@@ -1370,8 +1370,7 @@ function BestGuessSpawnpoint() {
             local height = 180
 
             spawnmiddle_ang_vec = spawnmiddle_ang_vec * 126.5
-
-            printlP2MM(0, true, "" + spawnmiddle_ang_vec)
+            printlP2MM(0, true, spawnmiddle_ang_vec.tostring())
 
             // Now get the back front left and right spawnpoints
             local spawnfront = spawnmiddle.GetOrigin() + Vector(spawnmiddle_ang_vec.x, spawnmiddle_ang_vec.y, height)
@@ -1404,7 +1403,7 @@ function BestGuessSpawnpoint() {
 
                 local currentscore = elevator_pos - ent_pos
                 currentscore = UnNegative(currentscore)
-                printlP2MM(0, true, "" + currentscore)
+                printlP2MM(0, true, currentscore.tostring())
                 currentscore = currentscore.x + currentscore.y + currentscore.z
                 if (currentscore < ourclosest) {
                     ourclosest = currentscore
