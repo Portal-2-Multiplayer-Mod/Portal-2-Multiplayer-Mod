@@ -270,7 +270,7 @@ def AdminsMenu(ui: Gui) -> None:
             ui.CurrentSelectedPlayer = 0
 
         ui.RefreshAdminsMenu()
-        ui.ChangeView(ui.AdminsMenu, append=False)
+        ui.ChangeView(ui.AdminsMenu, False)
 
     nextPlayer = Button(
         GVars.translations["players_next_button"], Button_NextPlayer_func, (255, 255, 120))

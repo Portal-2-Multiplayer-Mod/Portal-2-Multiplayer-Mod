@@ -62,7 +62,7 @@ class Gui:
         self.Clock = pygame.time.Clock()
         self.DevMode: bool = devMode
         self.Running: bool = True
-        self.ShouldUpdateUi = True
+        self.ShouldUpdateUi: bool = True
         self.FPS: int = 60
 
         pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
@@ -101,8 +101,8 @@ class Gui:
         window.blit(color_rect, targetRectangle)
 
     def BackMenu(self) -> None:
-        if len(self.Views) > 0:
-            self.ChangeView(None)
+        if len(self.Views) > 1:
+            self.ChangeView(None, False)
 
     # the button to go to the previous menu
     def Button_Back_func(self) -> None:
@@ -255,15 +255,13 @@ class Gui:
 #! END OF BUTTON FUNCTIONS
 
     def ChangeView(self, menu, append: bool = True):
-
-        if menu is None:
+        if menu is None and len(self.Views) > 1:
             self.Views.pop()
         elif append:
             self.Views.append(menu)
 
-        if len(self.Views) <= 0:
+        if len(self.Views) < 1:
             print("no views :(")
-
         else:
             elements = self.Views[-1](self)
 
