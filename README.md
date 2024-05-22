@@ -117,7 +117,7 @@ Portal 2: Multiplayer Mod version `2.2.0` will be our definitive version, so we 
 - kyleraykbs
 - Bumpy
 - Nanoman2525
-- vista
+- vista (NULLderef)
 - Wolƒe Strider Shoσter
 - cabiste
 - Orsell
