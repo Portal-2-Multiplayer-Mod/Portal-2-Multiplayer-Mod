@@ -1127,7 +1127,7 @@ def UnmountScript(shouldGetPath: bool = True) -> None:
     Log("___Unmounting Mod___")
     VerifyGamePath(shouldGetPath)
     gamePath = GVars.configData["Portal2-Path"]["value"]
-    RG.DeleteUnusedDLCs(gamePath)
+    RG.DeleteP2MMDLC(gamePath)
     Log("____DONE UNMOUNTING____")
 
 
@@ -1223,7 +1223,8 @@ def PostInitialize() -> None:
     if not sys.argv[0].endswith(".py"):
         CheckForUpdates()
 
-    VerifyGamePath()
+    if VerifyGamePath():
+        RG.DeleteP2MMDLC(GVars.configData["Portal2-Path"]["value"])
 
     def NewAfterFunction() -> None:
         Ui.CreateToast(GVars.translations["game_exited"], 5, (125, 0, 125))
