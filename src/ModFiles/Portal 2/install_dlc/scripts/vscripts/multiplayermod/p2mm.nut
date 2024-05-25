@@ -54,8 +54,7 @@ printlP2MM(0, true, "- Max players allowed on the server: " + iMaxPlayers)
 printlP2MM(0, true, "- Dedicated server: " + IsDedicatedServer())
 printlP2MM(0, true, "\n")
 
-IncludeScript("multiplayermod/config.nut")      // Import the user configuration and preferences
-IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
+IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences and make sure nothing was invalid and compensate
 
 // Check if its the first map run so Last Map System stuff can be done
 if (FirstRunState(-1)) {
@@ -81,9 +80,8 @@ if (FirstRunState(-1)) {
 
 // Continue loading the P2:MM fixes, game mode, and features
 
-IncludeScript("multiplayermod/variables.nut")
+IncludeScript("multiplayermod/vars&funcs.nut")
 IncludeScript("multiplayermod/safeguard.nut")
-IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
