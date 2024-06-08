@@ -188,7 +188,7 @@ def AssembleArgs() -> str | bool:
 
     # Working with the launch arguments and Custom-Launch-Options (CLO) as a table helps with making
     # any needed changes before it is turned into a string then passed on to the Portal 2 executable.
-    args = ["-novid", "-allowspectators", "-nosixense", "-conclearlog", "-condebug", "-usercon", "+clear"]
+    args = ["-novid", "-allowspectators", "-nosixense", "-conclearlog", "-condebug", "-usercon"]
     preCLO = GVars.configData['Custom-Launch-Options']['value'].strip().split(" ")
     CLO = []
     [CLO.append(x) for x in preCLO if not x in CLO] # Remove duplicate launch arguments

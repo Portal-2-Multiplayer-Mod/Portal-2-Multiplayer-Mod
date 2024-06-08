@@ -580,6 +580,29 @@ class Gui:
 
         shouldUpdate = False
 
+        # Displaying button icons for keyboard inputs or Steam Deck controller inputs
+        if (not self.LookingForInput):
+            if GVars.iosd:
+                sdButtons = pygame.image.load("GUI/images/sdButtons.png").convert_alpha()
+                sdButtons = pygame.transform.scale(sdButtons, (W / 10, W / 10))
+                self.screen.blit(
+                    sdButtons, ((W / 1.03) - sdButtons.get_width(), H / 1.22))
+            else:
+                # Puts assets/images/keys.png on the bottom right corner of the screen
+                keys = pygame.image.load("GUI/images/keys.png").convert_alpha()
+                keys = pygame.transform.scale(keys, (W / 10, W / 10))
+                self.screen.blit(
+                    keys, ((W / 1.03) - keys.get_width(), H / 1.22))
+
+        # For showing the button to press to get up the on-screen keyboard on Steam Deck
+        if (self.LookingForInput and GVars.iosd):
+            keyboardButton = pygame.image.load("GUI/images/sdKeyboard.png").convert_alpha()
+            keyboardButton = pygame.transform.scale(keyboardButton, (W / 10, W / 10))
+            self.screen.blit(keyboardButton, ((W / 1.01) - keyboardButton.get_width(), H / 1.22))
+            pasteButton = pygame.image.load("GUI/images/sdClipboard.png").convert_alpha()
+            pasteButton = pygame.transform.scale(pasteButton, (W / 12, W / 17))
+            self.screen.blit(pasteButton, ((W / 1.11) - pasteButton.get_width(), H / 1.15))
+
         if self.LookingForInput:
             self.DrawInputBox()
             return
@@ -599,35 +622,6 @@ class Gui:
 
         if type(self.SelectedButton) is ConfigButton:
             self.SelectedButton.Hovered(self)
-
-        # Displaying button icons for keyboard inputs or Steam Deck controller inputs
-        if (not self.LookingForInput):
-            if not GVars.iosd:
-                sdButtons = pygame.image.load(
-                    "GUI/images/sdButtons.png").convert_alpha()
-                sdButtons = pygame.transform.scale(sdButtons, (W / 10, W / 10))
-                self.screen.blit(
-                    sdButtons, ((W / 1.03) - sdButtons.get_width(), H / 1.22))
-            else:
-                # Puts assets/images/keys.png on the bottom right corner of the screen
-                keys = pygame.image.load("GUI/images/keys.png").convert_alpha()
-                keys = pygame.transform.scale(keys, (W / 10, W / 10))
-                self.screen.blit(
-                    keys, ((W / 1.03) - keys.get_width(), H / 1.22))
-
-        # For showing the button to press to get up the on-screen keyboard on Steam Deck
-        if (self.LookingForInput and (GVars.iosd and not (GVars.linuxSessionType == "x11"))):
-            keyboardButton = pygame.image.load(
-                "GUI/images/sdKeyboard.png").convert_alpha()
-            keyboardButton = pygame.transform.scale(
-                keyboardButton, (W / 10, W / 10))
-            self.screen.blit(keyboardButton, ((W / 1.03) -
-                             keyboardButton.get_width(), H / 1.22))
-            pasteButton = pygame.image.load(
-                "GUI/images/sdClipboard.png").convert_alpha()
-            pasteButton = pygame.transform.scale(pasteButton, (W / 12, W / 17))
-            self.screen.blit(pasteButton, ((W / 1.14) -
-                             pasteButton.get_width(), H / 1.22))
 
         return shouldUpdate
 
@@ -1206,16 +1200,16 @@ def Initialize() -> None:
     # load the client's GVars.translations
     LoadTranslations()
 
+    # remove old temp files
+    if (os.path.exists(GVars.modPath + os.sep + ".temp")):
+        BF.DeleteFolder(GVars.modPath + os.sep + ".temp")
+
     # checks if this is a dev or release build
     if sys.argv[0].endswith(".py"):
         Log("Running through Python! Not checking for updates!")
         return
 
     IsNew()  # Check for first time setup after update
-
-    # remove old temp files
-    if (os.path.exists(GVars.modPath + os.sep + ".temp")):
-        BF.DeleteFolder(GVars.modPath + os.sep + ".temp")
 
 
 def PostInitialize() -> None:
