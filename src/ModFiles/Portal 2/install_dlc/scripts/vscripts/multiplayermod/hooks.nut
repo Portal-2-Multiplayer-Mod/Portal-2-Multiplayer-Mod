@@ -74,12 +74,6 @@ function P2MMLoop() {
     // Trigger map-specific code
     MapSupport(false, true, false, false, false, false, false)
 
-    //## Event List ##//
-    if (EventList.len() > 0) {
-        EntFire("p2mm_servercommand", "command", "script " + EventList[0])
-        EventList.remove(0)
-    }
-
     // Get all players and check for changes
     for (local p = null; p = Entities.FindByClassname(p, "player");) {
         //## Hook player join ##//

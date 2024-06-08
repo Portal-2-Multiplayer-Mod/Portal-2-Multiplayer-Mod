@@ -26,7 +26,7 @@ CommandList.push(
                 SendChatMessage(KillPlayerText[iTextIndex], player)
             }
 
-            // Check if the user has permissions, or its just that they want to target themself
+            // Check if the user has permissions, or its just that they want to target thyself
             if (GetAdminLevel(p) < 3 || args.len() == 0) {
                 if (p.GetHealth() == 0) {
                     KillPlayerMessage(7, p)

@@ -116,7 +116,6 @@ TickSpeed <- 0.00
 //---------------
 CurrentlyDead <- []
 entityclasses <- []
-EventList <- []
 ExpendableEntities <- [
     "logic_auto",
     "logic_autosave",

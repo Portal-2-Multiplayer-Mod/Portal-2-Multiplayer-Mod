@@ -1,7 +1,7 @@
 CommandList.push(
     class {
         name = "rocket"
-        level = 4
+        level = 0
 
         // !rocket (target arg: Specific player, team target. Self if no arg.)
         function CC(p, args) {
@@ -11,7 +11,7 @@ CommandList.push(
                 currentplayerclass.rocket <- true
             }
 
-            if (args.len() == 0) {
+            if (args.len() == 0 || GetAdminLevel(p) < 4) {
                 RocketPlayer(p)
                 SendChatMessage("Rocketed yourself.", p)
                 return

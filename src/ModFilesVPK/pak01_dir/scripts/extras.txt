@@ -107,11 +107,22 @@
 		"title"		""
 		"subtitle"	""
 	}
+    	"e1912"
+	{
+		"title"		"#PORTAL2_Extras_E1912Title"
+		"subtitle"	"#PORTAL2_Extras_E1912Subtitle"
+		"pic"		"vgui/extras/e1912"
+		"command"   "p2mm_startsession e1912"
+	}
+    "empty"
+	{
+		"title"		""
+		"subtitle"	""
+	}
     "p2mmresources"
     {
         "title"     "#P2MM_Resources_t"
         "subtitle"  "#P2MM_Resources_d"
-//        "pic"       "ADD P2MM IMAGE"
     }
     "p2mmgithub"
 	{
