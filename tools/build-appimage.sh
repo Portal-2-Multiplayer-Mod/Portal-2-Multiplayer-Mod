@@ -3,8 +3,8 @@
 # prepare folder
 mkdir -p ./AppDir/usr/bin ./AppDir/usr/share/icons
 cp -a ./src/. ./AppDir/usr/bin/.
-cp ./src/GUI/images/p2mm-icon.png ./AppDir/usr/share/icons/.
-rm ./src/GUI/images/p2mm-icon.png
+cp ./src/GUI/images/p2mm-icon.ico ./AppDir/usr/share/icons/.
+rm ./src/GUI/images/p2mm-icon.ico
 
 # install all the requirements next to the source code
 python3 -m venv env
