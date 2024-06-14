@@ -27,6 +27,7 @@ creditScriptEntScope <- Entities.FindByName(null, "script_credits").GetScriptSco
 
 MPMCoopCreditNames <- [
     "",
+    "",
     "--------------------------------",
     "[___________ Credits __________]",
     "[_ Portal 2: Multiplayer Mod: _]",
@@ -74,7 +75,6 @@ MPMCoopCreditNames <- [
     "-------------------------------",
     "[____ Honorable Mentions: ____]",
     "-------------------------------",
-    "Areng | X man",
     "Panter | SuperSpeed",
     "Brawler | ThePineapple",
     "SuperSpeed | ANotSoSpookySkeleton",

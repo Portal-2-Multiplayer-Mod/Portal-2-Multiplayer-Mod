@@ -65,10 +65,9 @@ class Gui:
         self.ShouldUpdateUi: bool = True
         self.FPS: int = 60
 
-        pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
-        self.p2mmLogo = pygame.image.load(
-            "GUI/images/p2mm64.ico").convert_alpha()
-        pygame.display.set_icon(self.p2mmLogo)
+        # Set the launchers title and icon
+        pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher') 
+        pygame.display.set_icon(pygame.image.load("GUI/images/p2mm-icon.ico").convert_alpha())  
 
         ###############################################################################
 
@@ -1200,7 +1199,7 @@ def Initialize() -> None:
     # load the client's GVars.translations
     LoadTranslations()
 
-    # remove old temp files
+    # remove old download temp files
     if (os.path.exists(GVars.modPath + os.sep + ".temp")):
         BF.DeleteFolder(GVars.modPath + os.sep + ".temp")
 
