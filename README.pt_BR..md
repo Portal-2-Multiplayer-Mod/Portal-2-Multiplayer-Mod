@@ -79,23 +79,35 @@ Também as colocamos em um arquivo para facilitar a instalação: `pip install -
 
 ## Compilação
 
-Usamos o `pyinstaller` e o `AppImage` para criar os executáveis!
+Usamos [`nuitka`](https://nuitka.net/), [`pyinstaller`](https://pypi.org/project/pyinstaller/), e [`AppImage`](https://appimage.org/) para criar os executáveis.
 
 ### Windows:
 
-Para o Windows, usamos apenas o [pyinstaller](https://pypi.org/project/pyinstaller/) para compilar o executável (se você souber de opções melhores, informe-nos).
+Para Windows, usamos `nuitka` para criar nossos arquivos `.exe`. Embora seja mais lento para compilar do que `pyinstaller`, que era usado em versões anteriores, ele fornece um tamanho de executável menor e não ativa o Windows Defender. `pyinstaller` deve ser usado apenas como backup se `nuitka` não funcionar por algum motivo. Ambos podem ser instalados usando `pip install`.
+
+Abaixo está o comando completo do terminal que usamos para compilar o lançador, e abaixo dele uma versão simplificada sem informações de versão e outros detalhes:
 
 ```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
+python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" --product-name="Portal 2: Multiplayer Mod Launcher" --file-description="The launcher for P2:MM." --product-version="INSERT VERSION HERE" --file-version="INSERT VERSION HERE" --copyright='© 2024 Portal 2: Multiplayer Mod Team' "src/MainWindow.py"
+```
+
+```shell
+python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
+```
+
+Abaixo está o comando de terminal para compilar usando `pyinstaller`:
+
+```shell
+pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
 ```
 
 ### Linux:
 
-Para o Linux, mudamos para o uso do [AppImage] (https://appimage.org/) e criamos uma ferramenta para ajudar com isso, basta ter o `docker` instalado e executar `./tools/build-docker.sh` no diretório raiz.
+Para o Linux, mudamos para o uso do `AppImage` e criamos uma ferramenta para ajudar nisso, basta ter o `docker` instalado e executar `./tools/build-docker.sh` estando no diretório raiz.
 
-***AVISO! Por alguma razão, em algumas distribuições Linux, o FUSE não é instalado por padrão, o que é necessário para compilar e executar AppImages. As informações sobre a instalação do FUSE em sua distribuição podem ser encontradas aqui: [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+_**ATENÇÃO! Por algum motivo, em algumas distribuições Linux, o FUSE não está instalado por padrão, o que é necessário tanto para compilar quanto para executar AppImages. As informações para instalar o FUSE na sua distribuição podem ser encontradas aqui: [Wiki do AppImageKit](https://github.com/AppImage/AppImageKit/wiki/FUSE)**_
 
-Se não quiser usar o AppImage/docker, você ainda pode usar o pyinstaller:
+Se você não quiser usar `AppImage/docker`, ainda pode usar `pyinstaller`:
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
@@ -103,11 +115,11 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 ### Observações:
 
-- Se você quiser fazer um fork do projeto e fazer suas próprias versões, precisará alterar as variáveis na parte superior de `src/Scripts/Updater.py` para suas próprias informações e atualizar os valores em `AppImageBuilder.yml`
+- Se você quiser fazer um fork do projeto e fazer seus próprios lançamentos, você precisa alterar as variáveis no topo de `src/Scripts/Updater.py` para suas próprias informações e atualizar os valores em `AppImageBuilder.yml`, bem como as informações nos comandos de compilação respectivos, como com `nuitka`.
 
 # Contribuições
 
-A versão `2.2.0` do Portal 2: Multiplayer Mod será nossa versão definitiva, portanto, não faremos nenhuma atualização significativa depois que ela for totalmente lançada. Antes que isso aconteça, trabalharemos em pequenas atualizações que levarão à versão completa. Aceitaremos quaisquer alterações ou recursos substanciais para o P2:MM durante esse período. No entanto, não aceitaremos mais alterações significativas após o lançamento completo. Os únicos motivos pelos quais faríamos um novo lançamento seriam quando alguém contribuísse com uma nova tradução, um aprimoramento de uma tradução atual, alguma correção de bug menor que não tenhamos detectado ou um arquivo de suporte de mapa para um mapa de oficina. Só faremos outra versão nessas circunstâncias e não aceitaremos mais nada significativo nesse repositório. No entanto, você ainda pode fazer um fork para aproveitar o nosso trabalho! Certifique-se de dar crédito a este repositório!
+Portal 2: Multiplayer Mod versão `2.3.0` será a nossa versão definitiva, então não faremos nenhuma atualização significativa após seu lançamento completo. Antes que isso aconteça, trabalharemos em atualizações menores que levarão à versão completa. Aceitaremos quaisquer mudanças substanciais ou funcionalidades para P2:MM durante este período. No entanto, não faremos muito trabalho após o lançamento nem faremos novos lançamentos em geral. As únicas razões para fazermos um novo lançamento seriam quando alguém contribuir com uma nova tradução, uma melhoria de uma tradução atual, alguma outra correção de bug menor que não percebemos, ou um arquivo de suporte de mapa para um mapa de workshop. Mesmo após este lançamento final, você ainda pode fazer um fork para construir sobre nosso trabalho! Por favor, certifique-se de dar crédito a este repositório!
 
 # Créditos
 
@@ -128,4 +140,3 @@ A versão `2.2.0` do Portal 2: Multiplayer Mod será nossa versão definitiva, p
 - Luukex
 - MeblIkea
 - PieCreeper
-- Areng

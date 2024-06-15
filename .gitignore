@@ -205,3 +205,10 @@ dmypy.json
 # Source Hammer portal files and vmx files
 *.prt
 *.vmx
+
+# Files genenerated by Nuitka
+MainWindow.cmd
+MainWindow.exe
+MainWindow.build
+MainWindow.dist
+MainWindow.onefile-build
