@@ -159,25 +159,26 @@ function Vote::DoVote(arg1 = null) {
                 SendChatMessage("[VOTE] Kicking player in 5 seconds.")
                 EntFire("p2mm_servercommand", "command", "kick " + FindPlayerClass(FindPlayerByName(VoteInstanceArray[0].Arg2)).username, 5)
                 break
-            case "hostgunonly":
+            case "duogunonly":
                 // TODO: This doesn't account for gamemodes apart from "standard"
                 // How do we deal with other weapon classes?
                 if (!IsDedicatedServer()) {
                     SendChatMessage("[VOTE] Stripping all player guns except host in 5 seconds.")
-
                     UTIL_Team.Spawn_PortalGun(false, "all")
                     // Remove Portal Gun
                     for (local ent = null; ent = Entities.FindByClassname(ent, "weapon_portalgun");) {
-                        if (FindPlayerClass(ent.GetRootMoveParent()).id != 1) {
-                            EntFireByHandle(ent, "AddOutput", "CanFirePortal1 0", 5, null, null)
-                            EntFireByHandle(ent, "AddOutput", "CanFirePortal2 0", 5, null, null)
-                            EntFireByHandle(ent, "disabledraw", "", 5, null, null)
+                        if (FindPlayerClass(ent.GetRootMoveParent()).id == 1 || FindPlayerClass(ent.GetRootMoveParent()).id == 2) {
+                            continue
                         }
+                        EntFireByHandle(ent, "AddOutput", "CanFirePortal1 0", 5, null, null)
+                        EntFireByHandle(ent, "AddOutput", "CanFirePortal2 0", 5, null, null)
+                        EntFireByHandle(ent, "disabledraw", "", 5, null, null)
                     }
                     for (local ent = null; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
-                        if (FindPlayerClass(ent.GetRootMoveParent()).id != 1) {
-                            EntFireByHandle(ent, "disabledraw", "", 5, null, null)
+                        if (FindPlayerClass(ent.GetRootMoveParent()).id == 1 || FindPlayerClass(ent.GetRootMoveParent()).id == 2) {
+                            continue
                         }
+                        EntFireByHandle(ent, "disabledraw", "", 5, null, null)
                     }
                     break
                 }
@@ -228,7 +229,7 @@ CommandList.push(
         name = "vote"
         level = 0
 
-        // !vote (vote choice arg: changelevel, kick, or hostgunonly) (arg for changelevel map name or kick player name)
+        // !vote (vote choice arg: changelevel, kick, or duogunonly) (arg for changelevel map name or kick player name)
         function CC(p, args) {
             if (!Player2Joined && !IsDedicatedServer()) {
                 // Just loaded into a map
@@ -302,7 +303,7 @@ CommandList.push(
                     if (IsDedicatedServer()) {
                         SendChatMessage("[VOTE] Start a vote with: changelevel, kick", p)
                     } else {
-                        SendChatMessage("[VOTE] Start a vote with: changelevel, kick, hostgunonly", p)
+                        SendChatMessage("[VOTE] Start a vote with: changelevel, kick, duogunonly", p)
                     }
                     VoteInstanceArray.clear()
                 }
@@ -343,7 +344,7 @@ CommandList.push(
                     }
                     return SendChatMessage("[VOTE] Cannot cancel the vote if you did not start it.", p)
                 }
-                else if (args[0] == "changelevel" || args[0] == "kick" || args[0] == "hostgunonly" && !IsDedicatedServer()) {
+                else if (args[0] == "changelevel" || args[0] == "kick" || args[0] == "duogunonly" && !IsDedicatedServer()) {
                     // Don't start new votes
                     SendChatMessage("[ERROR] Cannot start another vote if one is in progress!", p)
                 }
@@ -404,7 +405,7 @@ CommandList.push(
                 }
                 Vote.BeginVote(args[0], args[1], p)
             }
-            else if (args[0] == "hostgunonly" && !IsDedicatedServer()) {
+            else if (args[0] == "duogunonly" && !IsDedicatedServer()) {
                 // Start a new vote
                 Vote.BeginVote(args[0], null, p)
             }
@@ -417,7 +418,7 @@ CommandList.push(
                 if (IsDedicatedServer()) {
                     SendChatMessage("[ERROR] Voting options are: changelevel, kick!", p)
                 } else {
-                    SendChatMessage("[ERROR] Voting options are: changelevel, kick, hostgunonly!", p)
+                    SendChatMessage("[ERROR] Voting options are: changelevel, kick, duogunonly!", p)
                 }
                 VoteInstanceArray.clear()
             }

@@ -597,7 +597,6 @@ function CreateGenericPlayerClass(p) {
 
     // Chat commands
     if (Config_UseChatCommands && PluginLoaded) {
-        currentplayerclass.rocket <- false  // Rocket player status
         currentplayerclass.startedvote <- false  // Did this player initiate a vote?
         currentplayerclass.hasvotedyes <- false  // Did this player vote yes?
         currentplayerclass.hasvotedno <- false  // Did this player vote no?
