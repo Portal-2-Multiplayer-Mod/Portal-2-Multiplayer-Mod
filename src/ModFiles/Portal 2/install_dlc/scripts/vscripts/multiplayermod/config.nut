@@ -81,7 +81,7 @@ Config_UseChatCommands <- true
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
 // What each admin level gives you (0 means no admin, default player permissions)
-// [0]: "help", "changeteam", "kill", "playercolor", replying to a "vote"
+// [0]: "help", "changeteam", "kill", "slap", "rocket", "playercolor", replying to a "vote"
 // [1]:
 // [2]: "playercolor (for someone else)", "speed", "teleport"
 // [3]: "kill (someone else)", "noclip", "restartlevel", calling a vote with "vote"
@@ -90,7 +90,7 @@ Config_UseChatCommands <- true
 // [6]: "adminmodify" 
 //
 // Example on how to format the list:
-// Admins <- [
+// admins <- [
 //     "[AdminLevel]Steam3 ID (only the numbers bit)", // (Username to keep track)
 //     "[3]123456789", // John Doe
 // ]
