@@ -39,7 +39,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A3_01Viewcontrol.SetAngles(0, 270, 0)
         EntFire("Sp_A3_01Viewcontrol", "setparent", "knockout-viewcontroller", 0, null)
         EntFire("Sp_A3_01Viewcontrol", "setparentattachment", "knockout-viewcontroller", 0, null)
-        EntFire("Sp_A3_01Viewcontrol", "Disable", "", 0, null)
+        EntFire("Sp_A3_01Viewcontrol", "Enable", "", 0, null)
         EntFire("Sp_A3_01ViewcontrolTele", "disable", "", 13, null)
         EntFire("Sp_A3_01Viewcontrol", "AddOutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
         EntFire("Sp_A3_01ViewcontrolTele", "AddOutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)

@@ -69,7 +69,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 SpA2ColumBlockerViewcontrol.SetOrigin(Vector(-1475, 256, -90))
                 EntFire("SpA2ColumBlockerViewcontrol", "setparent", "departure_elevator-elevator_1", 0, null)
                 SpA2ColumBlockerViewcontrol.SetAngles(0, 0, 0)
-                EntFire("SpA2ColumBlockerViewcontrol", "Disable", "", 0, null)
+                EntFire("SpA2ColumBlockerViewcontrol", "Enable", "", 0, null)
                 EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", "SpA2ColumBlockerViewcontrol", 0, null, null)
 
                 UTIL_Team.Pinging(false, "all")

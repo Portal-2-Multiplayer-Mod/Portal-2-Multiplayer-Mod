@@ -238,7 +238,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
 
             if (!Entities.FindByName(null, "ReEnableViewControl")) {
-                EntFireByHandle(Sp_A2_CoreViewcontrol, "Disable", "", 0, null, null)
+                EntFireByHandle(Sp_A2_CoreViewcontrol, "Enable", "", 0, null, null)
                 if (!OneTimeRenableViewControl) {
                     UTIL_Team.Pinging(false, "all", 1)
                     UTIL_Team.Taunting(false, "all", 1)
@@ -270,7 +270,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 UTIL_Team.Pinging(false, "all", 1)
                 UTIL_Team.Taunting(false, "all", 1)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "disable", "", 16, null, null)
-                EntFireByHandle(Sp_A2_CoreViewcontrol, "Disable", "", 0.3, null, null)
+                EntFireByHandle(Sp_A2_CoreViewcontrol, "Enable", "", 0.3, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "ending_vehicle", 0.1, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 0.2, null, null)
                 for (local p = null; p = Entities.FindByClassname(p, "player");) {
@@ -377,7 +377,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!Entities.FindByName(null, "notinelevator")) {
             if (Sp_A4_Finale4ElevatorTeleport) {
-                EntFireByHandle(Sp_A2_Finale4Viewcontrol, "Disable", "", 0, null, null)
+                EntFireByHandle(Sp_A2_Finale4Viewcontrol, "Enable", "", 0, null, null)
                 PermaPotato = false
                 UTIL_Team.Pinging(false, "all", 1)
                 UTIL_Team.Taunting(false, "all", 1)
