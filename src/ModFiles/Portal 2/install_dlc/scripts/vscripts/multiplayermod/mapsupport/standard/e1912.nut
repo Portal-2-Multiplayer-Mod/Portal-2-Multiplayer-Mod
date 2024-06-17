@@ -112,8 +112,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         HasStartedE1912 <- true
 
         // Copy all outputs
-        for (local p; p = Entities.FindByClassname(p, "player");) {
-            EntFireByHandle(Entities.FindByName(null, "speed_mod"), "ModifySpeed", "0.65", 0, ent, ent)
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
+            EntFireByHandle(Entities.FindByName(null, "speed_mod"), "ModifySpeed", "0.65", 0, p, p)
         }
         EntFire("speed_mod", "ModifySpeed", "0.65", 0) // We do this one for everyone
         EntFire("fade_start", "Fade", "", 0)
