@@ -32,7 +32,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         SpA2IntroViewcontrol.SetOrigin(Entities.FindByName(null, "ghostAnim").GetOrigin())
         EntFire("SpA2IntroViewcontrol", "setparent", "ghostAnim", 0, null)
         EntFire("SpA2IntroViewcontrol", "setparentattachment", "attach_1", 0, null)
-        EntFire("SpA2IntroViewcontrol", "Disable", "", 0, null)
+        EntFire("SpA2IntroViewcontrol", "Enable", "", 0, null)
         EntFire("SpA2IntroViewcontrolTele", "disable", "", 20.75, null)
         EntFire("SpA2IntroViewcontrol", "AddOutput", "targetname SpA2IntroViewcontrolTele", 0.25, null)
         EntFire("SpA2IntroViewcontrolTele", "AddOutput", "targetname SpA2IntroViewcontrolDone", 20.80, null)

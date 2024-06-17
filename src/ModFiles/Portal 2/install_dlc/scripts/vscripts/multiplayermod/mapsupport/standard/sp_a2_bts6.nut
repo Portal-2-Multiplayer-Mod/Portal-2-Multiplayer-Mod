@@ -78,7 +78,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A2_Bts6Viewcontrol.SetAngles(270, 0, 0)
         EntFire("Sp_A2_Bts6Viewcontrol", "setparent", "tube_ride_chell_proxy", 0, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "setparentattachment", "chell_bts6_attach", 0, null)
-        EntFire("Sp_A2_Bts6Viewcontrol", "Disable", "", 0, null)
+        EntFire("Sp_A2_Bts6Viewcontrol", "Enable", "", 0, null)
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 51, null)
 
         // Disable taunting & pinging

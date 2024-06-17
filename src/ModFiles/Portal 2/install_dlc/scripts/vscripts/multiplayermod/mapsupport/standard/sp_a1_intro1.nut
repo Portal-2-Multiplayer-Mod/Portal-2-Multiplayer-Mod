@@ -561,7 +561,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Sp_A1_Intro1Viewcontrol.SetAngles(0, 0, 0)
         EntFire("Sp_A1_Intro1Viewcontrol", "setparent", "camera_intro", 0, null)
         EntFire("Sp_A1_Intro1Viewcontrol", "setparentattachment", "camera_intro", 0, null)
-        EntFire("Sp_A1_Intro1Viewcontrol", "Disable", "", 0, null)
+        EntFire("Sp_A1_Intro1Viewcontrol", "Enable", "", 0, null)
         EntFire("Sp_A1_Intro1ViewcontrolTele", "disable", "", 12, null)
         EntFire("Sp_A1_Intro1Viewcontrol", "AddOutput", "targetname Sp_A1_Intro1ViewcontrolTele", 0.25, null)
         EntFire("Sp_A1_Intro1ViewcontrolTele", "AddOutput", "targetname Sp_A1_Intro1ViewcontrolDone", 12, null)
@@ -759,7 +759,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 printlP2MM("Player joined (Resetting viewcontrol)")
             }
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
-            EntFire("Sp_A1_Intro1Viewcontrol", "Disable", "", 0.6, null)
+            EntFire("Sp_A1_Intro1Viewcontrol", "Enable", "", 0.6, null)
         }
     }
 

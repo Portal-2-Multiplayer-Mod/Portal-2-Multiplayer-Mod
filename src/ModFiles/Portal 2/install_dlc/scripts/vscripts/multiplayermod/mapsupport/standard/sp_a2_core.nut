@@ -285,7 +285,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 Sp_A2_CoreViewcontrol.SetOrigin(Vector(0, 324, 0))
                 EntFire("Sp_A2_CoreViewcontrol", "setparent", "exit_elevator_train", 0, null)
                 Sp_A2_CoreViewcontrol.SetAngles(0, 270, 0)
-                EntFire("Sp_A2_CoreViewcontrol", "Disable", "", 0, null)
+                EntFire("Sp_A2_CoreViewcontrol", "Enable", "", 0, null)
                 EntFire("Sp_A2_CoreViewcontrol", "disable", "", 144.8, null)
                 EntFire("TPSp_A2_CoreForSure", "kill", "", 144.8, null)
 
