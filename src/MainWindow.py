@@ -1214,10 +1214,6 @@ def Initialize() -> None:
 
     IsNew()  # Check for first time setup after update
 
-    # remove old temp files
-    if (os.path.exists(GVars.modPath + os.sep + ".temp")):
-        BF.DeleteFolder(GVars.modPath + os.sep + ".temp")
-
 
 def PostInitialize() -> None:
     # remove old download temp files
