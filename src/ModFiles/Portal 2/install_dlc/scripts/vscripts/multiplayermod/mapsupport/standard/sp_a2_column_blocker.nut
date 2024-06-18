@@ -59,9 +59,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (OnlyOnceSpA2ColumBlocker2) {
             if (!Entities.FindByClassnameNearest("trigger_once", Vector(-1486, 256, -139.75), 10)) {
                 OnlyOnceSpA2ColumBlocker2 <- false
-                if (GetDeveloperLevelP2MM()) {
-                    printlP2MM("Elevator viewcontrol activated!")
-                }
+                printlP2MM(0, true, "Elevator viewcontrol activated!")
                 SpA2ColumBlockerViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
                 SpA2ColumBlockerViewcontrol.__KeyValueFromString("target_team", "-1")
                 SpA2ColumBlockerViewcontrol.__KeyValueFromString("fov", "100")
@@ -69,7 +67,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 SpA2ColumBlockerViewcontrol.SetOrigin(Vector(-1475, 256, -90))
                 EntFire("SpA2ColumBlockerViewcontrol", "setparent", "departure_elevator-elevator_1", 0, null)
                 SpA2ColumBlockerViewcontrol.SetAngles(0, 0, 0)
-                EntFire("SpA2ColumBlockerViewcontrol", "Disable", "", 0, null)
+                EntFire("SpA2ColumBlockerViewcontrol", "Enable", "", 0, null)
                 EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", "SpA2ColumBlockerViewcontrol", 0, null, null)
 
                 UTIL_Team.Pinging(false, "all")

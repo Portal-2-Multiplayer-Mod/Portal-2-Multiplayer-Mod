@@ -3,7 +3,7 @@
 # prepare folder
 mkdir -p ./AppDir/usr/bin ./AppDir/usr/share/icons
 cp -a ./src/. ./AppDir/usr/bin/.
-cp ./src/GUI/images/p2mm-icon.png ./AppDir/usr/share/icons/.
+cp ./src/GUI/images/p2mm-icon.ico ./AppDir/usr/share/icons/p2mm-icon.png # ICON MUST BE A PNG HENCE THE WEIRD COPY
 
 # install all the requirements next to the source code
 python3 -m venv env
@@ -15,6 +15,6 @@ curl -L 'https://github.com/cabiste69/appimage-builder/releases/download/1.2.0/a
 chmod +x ./appimage-builder.AppImage
 ./appimage-builder.AppImage
 
-mkdir build
+mkdir dist
 
-cp p2mm-* build/
+cp p2mm-* dist/

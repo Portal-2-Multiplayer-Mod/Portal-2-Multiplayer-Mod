@@ -62,13 +62,12 @@ class Gui:
         self.Clock = pygame.time.Clock()
         self.DevMode: bool = devMode
         self.Running: bool = True
-        self.ShouldUpdateUi = True
+        self.ShouldUpdateUi: bool = True
         self.FPS: int = 60
 
-        pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher')
-        self.p2mmLogo = pygame.image.load(
-            "GUI/images/p2mm64.ico").convert_alpha()
-        pygame.display.set_icon(self.p2mmLogo)
+        # Set the launchers title and icon
+        pygame.display.set_caption('Portal 2: Multiplayer Mod Launcher') 
+        pygame.display.set_icon(pygame.image.load("GUI/images/p2mm-icon.ico").convert_alpha())  
 
         ###############################################################################
 
@@ -101,8 +100,8 @@ class Gui:
         window.blit(color_rect, targetRectangle)
 
     def BackMenu(self) -> None:
-        if len(self.Views) > 0:
-            self.ChangeView(None)
+        if len(self.Views) > 1:
+            self.ChangeView(None, False)
 
     # the button to go to the previous menu
     def Button_Back_func(self) -> None:
@@ -210,7 +209,7 @@ class Gui:
             map = Workshop.MapFromSteamID(input)
 
             if map is not None:
-                clipboardOP = BF.ClipboardOperation("changelevel " + map)
+                clipboardOP = BF.ClipboardOperation("changelevel " + map, True)
                 if clipboardOP == False:
                     self.CreateToast(
                         GVars.translations["xclip_needed_toast_copy"] if GVars.linuxSessionType == "x11"
@@ -255,15 +254,13 @@ class Gui:
 #! END OF BUTTON FUNCTIONS
 
     def ChangeView(self, menu, append: bool = True):
-
-        if menu is None:
+        if menu is None and len(self.Views) > 1:
             self.Views.pop()
         elif append:
             self.Views.append(menu)
 
-        if len(self.Views) <= 0:
+        if len(self.Views) < 1:
             print("no views :(")
-
         else:
             elements = self.Views[-1](self)
 
@@ -333,7 +330,7 @@ class Gui:
         if (len(text) > 0):
             text = pygame.font.Font(GVars.translations["font"], int(int(
                 int((int(self.screen.get_width() / 15) + int(self.screen.get_height() / 25)) / (len(text) * 0.1))))).render(text, True, color)
-            if not (self.LookingForInput):
+            if not self.LookingForInput:
                 self.screen.blit(text, (x, y))
 
     def GetUserInput(self, action=None, prompt: str = "", preInput: str = "") -> None:
@@ -428,8 +425,6 @@ class Gui:
 
             font = pygame.font.Font(GVars.translations["font"], label.Size)
 
-            # 19
-
             # 2D array where each row is a list of words.
             words = [word.split(' ') for word in label.Text.splitlines()]
             space = font.size(' ')[0]  # The width of a space.
@@ -468,7 +463,7 @@ class Gui:
         horizontalRule = pygame.Surface((windowWidth / 1.5, windowWidth / 100))
         horizontalRule.fill((255, 255, 255))
         # tuple[X position, Y position]
-        hrPosition = ((windowWidth - horizontalRule.get_width()) / 2, (windowHeight / 5)*3)
+        hrPosition = ((windowWidth - horizontalRule.get_width()) / 2, (windowHeight / 2))
         self.screen.blit(horizontalRule, hrPosition)
 
         #! renders the label under the ruler
@@ -589,9 +584,6 @@ class Gui:
     def UpdateUi(self) -> bool:
         W = self.screen.get_width()
         H = self.screen.get_height()
-        fntdiv: int = 32
-        # fontSize = int(W / fntdiv)
-        # mindiv = int(fntdiv / 1.25)
 
         self.screen.fill((0, 0, 0))
         self.gradientRect(self.screen, (0, 2, 10), (2, 2, 10), pygame.Rect(
@@ -621,7 +613,7 @@ class Gui:
 
         # Displaying button icons for keyboard inputs or Steam Deck controller inputs
         if (not self.LookingForInput):
-            if GVars.iosd and not (GVars.linuxSessionType == "x11"):
+            if not GVars.iosd:
                 sdButtons = pygame.image.load(
                     "GUI/images/sdButtons.png").convert_alpha()
                 sdButtons = pygame.transform.scale(sdButtons, (W / 10, W / 10))
@@ -717,7 +709,7 @@ class Gui:
                             self.LookingForInput = False
                         elif event.key == pygame.locals.K_TAB:
                             self.CurInput += "    "
-                        # Pasting for systems, first part is for Steam Deck, second part is for all other OSes
+                        # Pasting for systems, first part is for the Steam Deck's dpad, second part is for all other OSes
                         elif (event.key == 4) or (CTRL_HELD and event.key == pygame.locals.K_v):
                             try:
                                 pastedString = BF.ClipboardOperation(copy=False)
@@ -906,12 +898,14 @@ class Gui:
                     GVars.translations["launcher_had_to_reset"], [OkButton])
 
     def LinuxClipboardCommandsCheck(self):
-        if BF.CheckForClipboardCommandsLinux == False:
+        if BF.CheckForClipboardCommandsLinux() == False:
             Log("Linux systems clipboard shell commands were not detected!")
             Log("xclip for X11 and wl-clipboard for Wayland!")
+
             OkButton = Button(
                 GVars.translations["ok_toast"], activeColor=(75, 255, 75))
-            Ui.CreatePopupBox(
+            
+            self.CreatePopupBox(
                 GVars.translations["xclip_wl-clipboard_not_found_title"],
                 GVars.translations["xclip_not_found_description"] if GVars.linuxSessionType == "x11"
                 else GVars.translations["wl-clipboard_not_found_description"], [OkButton])
@@ -1134,8 +1128,7 @@ def UnmountScript(shouldGetPath: bool = True) -> None:
     Log("___Unmounting Mod___")
     VerifyGamePath(shouldGetPath)
     gamePath = GVars.configData["Portal2-Path"]["value"]
-    RG.DeleteUnusedDLCs(gamePath)
-    #if os.path.exists(f"{GVars.modFilesPath}{os.sep}Portal 2{os.sep}install_dlc{os.sep}scripts{os.sep}vscripts{os.sep}multiplayermod{os.sep}lastmap.nut"): os.remove(f"{GVars.modFilesPath}{os.sep}Portal 2{os.sep}install_dlc{os.sep}scripts{os.sep}vscripts{os.sep}multiplayermod{os.sep}lastmap.nut")
+    RG.DeleteP2MMDLC(gamePath)
     Log("____DONE UNMOUNTING____")
 
 
@@ -1221,17 +1214,18 @@ def Initialize() -> None:
 
     IsNew()  # Check for first time setup after update
 
-    # remove old temp files
-    if (os.path.exists(GVars.modPath + os.sep + ".temp")):
-        BF.DeleteFolder(GVars.modPath + os.sep + ".temp")
-
 
 def PostInitialize() -> None:
+    # remove old download temp files
+    if (os.path.exists(GVars.modPath + os.sep + ".temp")):
+        BF.DeleteFolder(GVars.modPath + os.sep + ".temp")
+    
     # only check for updates if the user is not running from source
     if not sys.argv[0].endswith(".py"):
         CheckForUpdates()
 
-    VerifyGamePath()
+    if VerifyGamePath():
+        RG.DeleteP2MMDLC(GVars.configData["Portal2-Path"]["value"])
 
     def NewAfterFunction() -> None:
         Ui.CreateToast(GVars.translations["game_exited"], 5, (125, 0, 125))
@@ -1248,7 +1242,7 @@ def PostInitialize() -> None:
         Ui.ConfigResetNotice()
 
     # If on a Linux system, check if xcopy (X11) or wl-clipboard (Wayland) are available
-    if GVars.iol or GVars.iosd:
+    if (GVars.iol or GVars.iosd):
         Ui.LinuxClipboardCommandsCheck()
 
 

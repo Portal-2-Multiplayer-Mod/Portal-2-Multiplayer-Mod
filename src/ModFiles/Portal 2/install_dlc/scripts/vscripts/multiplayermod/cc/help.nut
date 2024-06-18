@@ -14,7 +14,7 @@ commandtable["slap"] <- "Slap yourself, another player, or a target team dealing
 commandtable["spchapter"] <- "Changes the level to the specified singleplayer chapter. \"!spchapter (chapter integer 1-9)\""
 commandtable["speed"] <- "Changes your player speed. \"!speed (float arg)\""
 commandtable["teleport"] <- "Teleport yourself, another player, or a target team to a destination. \"!teleport (target arg: Specific player, team target. destination player if only this arg.) (destination arg: player)\""
-commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not. \"!vote (vote choice arg: changelevel, kick, or hostgunonly) (arg for changelevel map name or kick player name)\""
+commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not. \"!vote (vote choice arg: changelevel, kick, or duogunonly) (arg for changelevel map name or kick player name)\""
 
 CommandList.push(
     class {
@@ -49,7 +49,6 @@ CommandList.push(
                     }
                 }
                 SendChatMessage("[HELP] " + availablecommands.slice(0, availablecommands.len() - 2), p) // Remove excess comma and space
-                // SendChatMessage("[HELP] This command can also print a description for another if supplied with it.", p) // bloated the chat
             }
         }
     }

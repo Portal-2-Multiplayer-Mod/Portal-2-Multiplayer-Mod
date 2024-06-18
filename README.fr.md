@@ -79,23 +79,35 @@ On a aussi un fichier pour une simple installation: `pip install -r requirements
 
 ## Compilation
 
-On utilise `pyinstaller` et `AppImage` pour créer les exécutables !
+Nous utilisons [`nuitka`](https://nuitka.net/), [`pyinstaller`](https://pypi.org/project/pyinstaller/), et [`AppImage`](https://appimage.org/) pour créer les exécutables.
 
 ### Windows:
 
-Pour Windows on utilise uniquement [pyinstaller](https://pypi.org/project/pyinstaller/) pour créer l'exécutable (Si vous connaissez de meilleures options, dites-le nous).
+Pour Windows, nous utilisons `nuitka` pour créer nos fichiers `.exe`. Bien qu'il soit plus lent à compiler que `pyinstaller` qui était utilisé dans les versions précédentes, il offre une taille d'exécutable plus petite et n'alerte pas Windows Defender. `pyinstaller` ne doit être utilisé qu'en cas de secours si `nuitka` ne fonctionne pas pour vous pour une raison quelconque. Les deux peuvent être installés en utilisant `pip install`.
+
+Ci-dessous se trouve la commande terminal complète que nous utilisons pour compiler le lanceur, et en dessous une version simplifiée sans informations de version et autres détails :
 
 ```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
+python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" --product-name="Portal 2: Multiplayer Mod Launcher" --file-description="The launcher for P2:MM." --product-version="INSERT VERSION HERE" --file-version="INSERT VERSION HERE" --copyright='© 2024 Portal 2: Multiplayer Mod Team' "src/MainWindow.py"
+```
+
+```shell
+python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
+```
+
+Voici la commande terminal pour compiler en utilisant `pyinstaller` :
+
+```shell
+pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
 ```
 
 ### Linux:
 
-Pour Linux, nous avons opté pour l'utilisation de [AppImage](https://appimage.org/) et nous avons créé un outil pour vous aider, il vous suffit d'avoir `docker` installé et d'exécuter `./tools/build-docker.sh` depuis le répertoire racine.
+Pour Linux, nous avons basculé vers l'utilisation de `AppImage` et nous avons créé un outil pour aider à cela, il suffit d'avoir `docker` installé et d'exécuter `./tools/build-docker.sh` tout en étant dans le répertoire racine.
 
-***AVERTISSEMENT ! Pour une raison ou une autre, sur certaines distributions de Linux, FUSE n'est pas installé par défaut, ce qui est nécessaire à la fois pour compiler et exécuter AppImages. Vous trouverez des informations sur l'installation de FUSE sur votre distribution ici : [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+_**ATTENTION ! Pour une raison quelconque, sur certaines distributions Linux, FUSE n'est pas installé par défaut, ce qui est nécessaire à la fois pour la compilation et l'exécution des AppImages. Les informations pour installer FUSE sur votre distribution peuvent être trouvées ici : [Wiki de AppImageKit](https://github.com/AppImage/AppImageKit/wiki/FUSE)**_
 
-Si vous ne souhaitez pas utiliser AppImage/Docker, vous pouvez toujours utiliser pyinstaller :
+Si vous ne souhaitez pas utiliser `AppImage/docker`, vous pouvez toujours utiliser `pyinstaller` :
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
@@ -103,11 +115,11 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 ### Notes:
 
-- Si vous voulez fork le projet et faire vos propres mises à jour, vous devez changer les variables au dessus de `src/Scripts/Updater.py` et y mettre vos informations puis mettre à jour les valeurs dans `AppImageBuilder.yml`
+- Si vous voulez forker le projet et faire vos propres versions, vous devez changer les variables en haut de `src/Scripts/Updater.py` avec vos propres informations et mettre à jour les valeurs dans `AppImageBuilder.yml` ainsi que les informations dans les commandes de compilation respectives, comme avec `nuitka`.
 
 # Contributions
 
-Portal 2: Multiplayer Mod version `2.2.0` sera notre version définitive, donc nous ne ferons pas de mises à jour significatives après sa sortie complète. Avant cela, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons toute modification ou caractéristique substantielle pour P2:MM au cours de cette période. Toutefois, nous n'accepterons plus de modifications importantes après la publication de la version complète. Les seules raisons pour lesquelles nous ferions une nouvelle version seraient que quelqu'un apporte une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction de bug mineur que nous n'aurions pas détectée, ou un fichier de support de carte pour une carte d'atelier. Nous ne ferons une nouvelle version que dans ces circonstances et n'accepterons plus rien d'important dans ce dépôt. Cependant, vous pouvez toujours le forker pour construire à partir de notre travail ! N'oubliez pas de donner le crédit à ce dépôt !
+Portal 2: Multiplayer Mod version `2.3.0` sera notre version définitive, donc nous ne ferons plus de mises à jour significatives après sa sortie complète. Avant que cela ne se produise, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons tout changement ou fonctionnalité substantielle pour P2:MM pendant cette période. Cependant, nous ne ferons pas beaucoup de travail après la sortie ou de nouvelles sorties en général. Les seules raisons pour lesquelles nous ferions une nouvelle sortie seraient lorsqu'une personne contribue une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction mineure de bogue que nous n'avons pas détectée, ou un fichier de support de carte pour une carte d'atelier. Même après cette sortie finale, vous pouvez toujours le forker pour développer notre travail ! Assurez-vous de donner crédit à ce dépôt !
 
 # Crédits
 
@@ -128,4 +140,3 @@ Portal 2: Multiplayer Mod version `2.2.0` sera notre version définitive, donc n
 - Luukex
 - MeblIkea
 - PieCreeper
-- Areng

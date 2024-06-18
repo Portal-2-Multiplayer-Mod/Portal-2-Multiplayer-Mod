@@ -48,11 +48,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSOnPlayerJoin) {
         if (Entities.FindByName(null, "TPPLAYERS1")) {
             EntFire("SpA1WakeupViewcontrol", "disable", "", 0.5, null)
-            EntFire("SpA1WakeupViewcontrol", "Disable", "", 0.6, null)
+            EntFire("SpA1WakeupViewcontrol", "Enable", "", 0.6, null)
         }
         if (Entities.FindByName(null, "TPPLAYERS3")) {
             EntFire("SpA1WakeupViewcontrol2", "disable", "", 0.5, null)
-            EntFire("SpA1WakeupViewcontrol2", "Disable", "", 0.6, null)
+            EntFire("SpA1WakeupViewcontrol2", "Enable", "", 0.6, null)
         }
     }
 
@@ -152,9 +152,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             try {
                 Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerPickup","disablewheatleyplayerpickup")
                 Entities.FindByName(null, "@sphere").ConnectOutput("OnPlayerDrop","enablewheatleyplayerpickup")
-            } catch(exception) { }
+            } catch (exception) {}
 
-            Entities.FindByName(null, "@sphere").SetOrigin(Vector(6975, 561, 403))
+            Entities.FindByName(null, "@sphere").SetOrigin(Vector(6975, 703, 403)) // Important that we set him out of reach to prevent weirdness on player spawns
             EntFire("@sphere", "DisableMotion", "", 0, null)
         }
 
@@ -203,7 +203,7 @@ function elevatorrecreationsp_a1_wakeup() {
     SpA1WakeupViewcontrol.SetOrigin(Vector(8976, 1119, -412))
     SpA1WakeupViewcontrol.SetAngles(27, -90, 0)
     EntFire("SpA1WakeupViewcontrol", "setparent", "core_receptacle_socket", 0, null)
-    EntFire("SpA1WakeupViewcontrol", "Disable", "", 0.8, null)
+    EntFire("SpA1WakeupViewcontrol", "Enable", "", 0.8, null)
     EntFire("SpA1WakeupViewcontrol", "disable", "", 28, null)
     EntFire("TPPLAYERS1", "AddOutput", "targetname TPPLAYERS2", 28.1, null)
 
@@ -212,7 +212,7 @@ function elevatorrecreationsp_a1_wakeup() {
     SpA1WakeupViewcontrol2.__KeyValueFromString("target_team", "-1")
     SpA1WakeupViewcontrol2.SetOrigin(Entities.FindByName(null, "camera_ghostAnim_2").GetOrigin())
     EntFire("SpA1WakeupViewcontrol2", "setparent", "camera_ghostAnim_2", 0.50, null)
-    EntFire("SpA1WakeupViewcontrol2", "Disable", "", 74, null)
+    EntFire("SpA1WakeupViewcontrol2", "Enable", "", 74, null)
     EntFire("SpA1WakeupViewcontrol2", "disable", "", 108, null)
     EntFire("TPPLAYERS2", "AddOutput", "targetname TPPLAYERS3", 74, null)
     EntFire("TPPLAYERS3", "AddOutput", "targetname TPPLAYERS4", 108, null)

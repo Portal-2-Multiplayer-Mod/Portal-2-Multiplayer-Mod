@@ -134,27 +134,30 @@ def CheckForClipboardCommandsLinux() -> bool:
         Whether or not the systems clipboard commands are available.
     """
 
+    # Simply call the clipboard command associated with the systems windowing system to see if it exists
     if GVars.linuxSessionType == "x11":
-        xclipCheck = subprocess.run("xclip", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if xclipCheck.returncode != 0:
+        try:
+            subprocess.call(["xclip", ""])
+        except:
             return False
     else:
-        wlcopyCheck = subprocess.run("wl-copy", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        wlpasteCheck = subprocess.run("wl-paste", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if (wlcopyCheck.returncode or wlpasteCheck.returncode) != 0:
+        try:
+            subprocess.call(["wl-copy", ""])
+            subprocess.call(["wl-paste", ""])
+        except:
             return False
     return True
 
-def ClipboardOperation(data = None, copy: bool = True) -> str | bool:
+def ClipboardOperation(data: str | None = None, copy: bool = True) -> str | bool:
     """Perform copy or pasting operations with the systems clipboard.
 
     Parameters
     ----------
-    data (optional):
-        Data to be copied to the systems clipboard. Defaults to None.
+    data (optional): str | None
+        Data to be copied to the systems clipboard. Defaults to None when clipboard data is to be pasted instead.
 
     copy (optional): bool
-        Whether or not to copy to the clipboard, or whether to paste. Defaults to True.
+        Whether to copy to the clipboard, or whether to paste. Defaults to True.
 
     Returns
     -------
@@ -162,37 +165,39 @@ def ClipboardOperation(data = None, copy: bool = True) -> str | bool:
         Data that was taken from the clipboard
         in order to be pasted into the Input Prompt.
 
-        Will return False bool for Linux if the shell
-        commands for pasting and copying aren't available.
+        Will return False if pasting or copying fails.
     """
 
-    if (GVars.iol or GVars.iosd):
-        if not CheckForClipboardCommandsLinux():
-            return False
+    if (GVars.iol or GVars.iosd) and (not CheckForClipboardCommandsLinux()):
+        return False
 
-    # Remove any \r and \n characters from the received data
+    # Remove any \r and \n characters and trailing spaces from the received data
     if data is not None: data = data.replace("\r", "").replace("\n", "").strip()
 
     if (GVars.iol or GVars.iosd):
-        # Linux and SteamOS clipboard operations
-        copyCMD = ["xclip", "-selection", "c"] if GVars.linuxSessionType == "x11" else ["wl-copy"]
-        pasteCMD = ["xclip", "-selection", "clipboard", "-o"] if GVars.linuxSessionType == "x11" else ["wl-paste"]
-
         if copy:
+            # Copying operations
+            copyCMD = ["xclip", "-selection", "c"] if GVars.linuxSessionType == "x11" else ["wl-copy", "-n", "-p"]
+            
             # Copy text to the clipboard
-            subprocess.run(copyCMD, input=data, text=True, check=True)
+            subprocess.Popen(copyCMD, stdin=subprocess.PIPE, stdout=None, text=True, shell=False).communicate(input=data)
+            return True
         else:
+            # Pasting operations
+            pasteCMD = ["xclip", "-selection", "clipboard", "-o"] if GVars.linuxSessionType == "x11" else ["wl-paste", "-n", "-p"]
+            
             # Paste text from the clipboard
-            pasteProcess = subprocess.Popen(pasteCMD, stdout=subprocess.PIPE)
+            pasteProcess = subprocess.Popen(pasteCMD, stdin=None, stdout=subprocess.PIPE, shell=False)
             return str(pasteProcess.stdout.read().decode().replace("\r", "").replace("\n", "").strip())
     else:
         # Windows clipboard operations
         if copy:
             # Copy text to the clipboard
-            subprocess.run(["clip"], input=data, text=True, check=True)
+            subprocess.Popen(["clip"], stdin=subprocess.PIPE, stdout=None, text=True, shell=False).communicate(input=data)
+            return True
         else:
             # Paste text from the clipboard
-            pasteProcess = subprocess.Popen(["powershell", "get-clipboard"], stdout=subprocess.PIPE)
+            pasteProcess = subprocess.Popen(["powershell", "get-clipboard"], stdin=None, stdout=subprocess.PIPE, shell=False)
             return str(pasteProcess.stdout.read().decode().replace("\r", "").replace("\n", "").strip())
 
 def TryFindPortal2Path() -> str | bool:

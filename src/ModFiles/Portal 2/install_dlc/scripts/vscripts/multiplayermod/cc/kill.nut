@@ -13,12 +13,12 @@ CommandList.push(
             local KillPlayerMessage = function(iTextIndex, player) {
                 // Array of kill messages to call apon
                 KillPlayerText <- [
-                    "Killed yourself.", //0
-                    "Killed player.", //1
-                    "Killed all players.", //2
-                    "Killed all Atlas Players.", //3
-                    "Killed all P-Body Players.", //4
-                    "Killed all Singleplayer Team Players." //5
+                    "Killed Yourself.", //0
+                    "Killed Player.", //1
+                    "Killed All Players.", //2
+                    "Killed All Atlas Players.", //3
+                    "Killed All P-Body Players.", //4
+                    "Killed All Singleplayer Team Players." //5
                     "[ERROR] Player not found!", //6
                     "You are already dead!", //7
                     "Player is already dead!" //8
@@ -26,7 +26,7 @@ CommandList.push(
                 SendChatMessage(KillPlayerText[iTextIndex], player)
             }
 
-            // Check if the user has permissions, or its just that they want to target themself
+            // Check if the user has permissions, or its just that they want to target themselves
             if (GetAdminLevel(p) < 3 || args.len() == 0) {
                 if (p.GetHealth() == 0) {
                     KillPlayerMessage(7, p)

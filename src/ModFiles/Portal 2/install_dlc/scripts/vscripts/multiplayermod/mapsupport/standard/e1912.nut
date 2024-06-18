@@ -112,8 +112,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         HasStartedE1912 <- true
 
         // Copy all outputs
-        for (local p; p = Entities.FindByClassname(p, "player");) {
-            EntFireByHandle(Entities.FindByName(null, "speed_mod"), "ModifySpeed", "0.65", 0, ent, ent)
+        for (local p = null; p = Entities.FindByClassname(p, "player");) {
+            EntFireByHandle(Entities.FindByName(null, "speed_mod"), "ModifySpeed", "0.65", 0, p, p)
         }
         EntFire("speed_mod", "ModifySpeed", "0.65", 0) // We do this one for everyone
         EntFire("fade_start", "Fade", "", 0)
@@ -130,7 +130,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         E1912Viewcontrol.SetAngles(0, 0, 0)
         EntFire("E1912Viewcontrol", "setparent", "vehicle_intro")
         EntFire("E1912Viewcontrol", "setparentattachment", "vehicle_driver_eyes")
-        EntFire("E1912Viewcontrol", "Disable")
+        EntFire("E1912Viewcontrol", "Enable")
         EntFire("E1912ViewcontrolTele", "disable", "", 9)
         EntFire("E1912Viewcontrol", "AddOutput", "targetname E1912ViewcontrolTele", 0.25)
         EntFire("E1912ViewcontrolTele", "AddOutput", "targetname E1912ViewcontrolDone", 9)
@@ -156,7 +156,7 @@ function E1912CrashViewcontrol() {
     E1912CrashViewcontrol.SetAngles(0, 0, 0)
     EntFire("E1912CrashViewcontrol", "setparent", "vehicle_crash")
     EntFire("E1912CrashViewcontrol", "setparentattachment", "vehicle_driver_eyes")
-    EntFire("E1912CrashViewcontrol", "Disable")
+    EntFire("E1912CrashViewcontrol", "Enable")
     EntFire("E1912CrashViewcontrolTele", "disable")
     EntFire("E1912CrashViewcontrol", "AddOutput", "targetname E1912CrashViewcontrolTele", 0.1)
     EntFire("E1912CrashViewcontrolTele", "AddOutput", "targetname E1912CrashViewcontrolDone", 4)
@@ -172,7 +172,7 @@ function E1912AfterCrashViewcontrol() {
     E1912AfterCrashViewcontrol.SetAngles(0, 0, 0)
     EntFire("E1912AfterCrashViewcontrol", "setparent", "crash-vehicle_intro")
     EntFire("E1912AfterCrashViewcontrol", "setparentattachment", "vehicle_driver_eyes")
-    EntFire("E1912AfterCrashViewcontrol", "Disable", "")
+    EntFire("E1912AfterCrashViewcontrol", "Enable", "")
     EntFire("E1912AfterCrashViewcontrolTele", "disable", "", 17.5)
     EntFire("E1912AfterCrashViewcontrol", "AddOutput", "targetname E1912AfterCrashViewcontrolTele", 0.25)
     EntFire("E1912AfterCrashViewcontrolTele", "AddOutput", "targetname E1912AfterCrashViewcontrolDone", 17.5)
@@ -190,7 +190,7 @@ function E1912ScareViewcontrol() {
     E1912ScareViewcontrol.SetAngles(0, 0, 0)
     EntFire("E1912ScareViewcontrol", "setparent", "p2mmcrashvehicleoutrooverride")
     EntFire("E1912ScareViewcontrol", "setparentattachment", "vehicle_driver_eyes")
-    EntFire("E1912ScareViewcontrol", "Disable", "")
+    EntFire("E1912ScareViewcontrol", "Enable", "")
     EntFire("E1912ScareViewcontrolTele", "disable", "", 10)
     EntFire("E1912ScareViewcontrol", "AddOutput", "targetname E1912ScareViewcontrolTele", 0.1)
     EntFire("E1912ScareViewcontrolTele", "AddOutput", "targetname E1912ScareViewcontrolDone", 10)

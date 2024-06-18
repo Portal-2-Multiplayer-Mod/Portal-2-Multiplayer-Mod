@@ -7,6 +7,6 @@ docker run --name p2mm-build --device /dev/fuse --cap-add SYS_ADMIN --security-o
 
 echo "--------------------- done"
 
-mkdir -p build
+mkdir -p dist
 
-docker cp p2mm-build:/app/build/. build/.
+docker cp p2mm-build:/app/dist/. dist/.

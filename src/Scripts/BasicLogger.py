@@ -18,10 +18,8 @@ def Log(message: str) -> None:
     ValueError
         raises error if log is called with an empty message
     """
+    
     message = message.strip()
-
-    if not len(message) > 0:
-        raise ValueError("Can't log a message with no content!")
 
     logging.info("(P2:MM): " + message)
     print("(P2:MM): " + message)

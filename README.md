@@ -28,7 +28,6 @@
   <p align="right">MULTIPLAYER MOD</p>
 </h1>
 
-
 ### This mod is completely server-side. Only the host needs to run Portal 2 with the mod installed. People who join the host should run stock Portal 2.
 
 ## Languages
@@ -80,23 +79,35 @@ We also have them in a file for easy install: `pip install -r requirements.txt`
 
 ## Compilation
 
-We use `pyinstaller` and `AppImage` to make the executables!
+We use [`nuitka`](https://nuitka.net/), [`pyinstaller`](https://pypi.org/project/pyinstaller/), and [`AppImage`](https://appimage.org/) to make the executables.
 
 ### Windows:
 
-For windows we only use [pyinstaller](https://pypi.org/project/pyinstaller/) to build the executable (if you know of better options please tell us).
+For Windows we use `nuitka` to create our `.exe` files. While slower to compile than `pyinstaller` which was used in older builds, it provides a smaller executable size and doesn't tick off Windows Defender. `pyinstaller` should only be used as a backup if `nuitka` doesn't work for you for some reason. Both are able to be installed using `pip install`.
+
+Below is the full terminal command we use to compile the launcher, and below that is a stripped down version without version information and such:
 
 ```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm64.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
+python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" --product-name="Portal 2: Multiplayer Mod Launcher" --file-description="The launcher for P2:MM." --product-version="INSERT VERSION HERE" --file-version="INSERT VERSION HERE" --copyright='© 2024 Portal 2: Multiplayer Mod Team' "src/MainWindow.py"
+```
+
+```shell
+python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
+```
+
+Below is the terminal command to compile using `pyinstaller`:
+
+```shell
+pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
 ```
 
 ### Linux:
 
-For Linux we switched to using [AppImage](https://appimage.org/) and we made a tool to help with that, simply have `docker` installed and run `./tools/build-docker.sh` while in the root directory.
+For Linux we switched to using `AppImage` and we made a tool to help with that, simply have `docker` installed and run `./tools/build-docker.sh` while in the root directory.
 
-***WARNING! For some reason on some Linux distributions, FUSE is not installed by default which is needed for both compiling and running AppImages. Information for installing FUSE on your distribution can be found here: [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)***
+_**WARNING! For some reason on some Linux distributions, FUSE is not installed by default which is needed for both compiling and running AppImages. Information for installing FUSE on your distribution can be found here: [AppImageKit's Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)**_
 
-If you don't want to use AppImage/docker, you can still use pyinstaller:
+If you don't want to use `AppImage/docker`, you can still use `pyinstaller`:
 
 ```shell
 pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
@@ -104,11 +115,11 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 ### Notes:
 
-- If you want to fork the project and do your own releases you need to change the variables at the top of `src/Scripts/Updater.py` to your own information and update the values in `AppImageBuilder.yml`
+- If you want to fork the project and do your own releases you need to change the variables at the top of `src/Scripts/Updater.py` to your own information and update the values in `AppImageBuilder.yml` as well as information in respective compiling commands like with `nuitka`.
 
 # Contributions
 
-Portal 2: Multiplayer Mod version `2.2.0` will be our definitive version, so we won't make any significant updates after it is fully released. Before this happens, we will work on minor updates leading to the full version. We will accept any substantial changes or features for P2:MM during this period. However, we will not accept any more significant changes after the full release. The only reasons we would make a new release would be when someone contributes a new translation, an improvement of a current translation, some other minor bug fix we didn't catch, or a map support file for a workshop map. We will only make another release under those circumstances and will no longer accept anything significant into this repository. However, you can still fork it to build off our work! Please make sure you give credit to this repository!
+Portal 2: Multiplayer Mod version `2.3.0` will be our definitive version, so we won't make any significant updates after it is fully released. Before this happens, we will work on minor updates leading to the full version. We will accept any substantial changes or features for P2:MM during this period. However, we will not be doing much work at all after release or make any new releases in general. The only reasons we would make a new release would be when someone contributes a new translation, an improvement of a current translation, some other minor bug fix we didn't catch, or a map support file for a workshop map. Even after this final release, you can still fork it to build off our work! Please make sure you give credit to this repository!
 
 # Credits
 
@@ -117,7 +128,7 @@ Portal 2: Multiplayer Mod version `2.2.0` will be our definitive version, so we 
 - kyleraykbs
 - Bumpy
 - Nanoman2525
-- vista
+- vista (NULLderef)
 - Wolƒe Strider Shoσter
 - cabiste
 - Orsell
@@ -129,4 +140,3 @@ Portal 2: Multiplayer Mod version `2.2.0` will be our definitive version, so we 
 - Luukex
 - MeblIkea
 - PieCreeper
-- Areng

@@ -125,16 +125,6 @@ function Loop() {
                 OnDeath(p)
             }
         }
-
-        //## Rocket ##//
-        if (Config_UseChatCommands && PluginLoaded) {
-            if (FindPlayerClass(p).rocket) {
-                if (p.GetVelocity().z <= 1) {
-                    EntFireByHandle(p, "sethealth", "-100", 0, p, p)
-                    FindPlayerClass(p).rocket = false
-                }
-            }
-        }
     }
 
     //## Update Portal Gun names ##//

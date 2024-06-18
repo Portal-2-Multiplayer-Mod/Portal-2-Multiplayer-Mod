@@ -6,9 +6,8 @@ CommandList.push(
         // !rocket (target arg: Specific player, team target. Self if no arg.)
         function CC(p, args) {
             local RocketPlayer = function(player) {
-                local currentplayerclass = FindPlayerClass(player)
                 player.SetVelocity(Vector(player.GetVelocity().x, player.GetVelocity().y, 500))
-                currentplayerclass.rocket <- true
+                EntFireByHandle(player, "sethealth", "-99999999999", 0.75, null, null)
             }
 
             if (args.len() == 0) {

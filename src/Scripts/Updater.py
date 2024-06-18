@@ -14,7 +14,7 @@ import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
 # When making your fork, make sure to change these to accommodate your version
-currentVersion = "2.2.1" #! Change this before releasing a new version!
+currentVersion = "2.2.2" #! Change this before releasing a new version!
 ownerName = "Portal-2-Multiplayer-Mod" # The user or organization that owns the repository
 repoName = "Portal-2-Multiplayer-Mod"  # The repository name, you can't use the id :(
 repoBranch = "main" # Change this to the target branch to retrieve ModFiles from
@@ -29,7 +29,7 @@ def HasInternet() -> bool:
     Returns
     -------
     bool
-        has internet or no
+        has internet or not
     """
 
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=5)
@@ -43,6 +43,11 @@ def HasInternet() -> bool:
 
 
 def CheckForNewClient() -> dict:
+    """Checks for any new released clients on the repository
+
+    Returns:
+        dict: Whether a new client exists or not
+    """
 
     if not HasInternet():
         Log("No internet Connection")
@@ -97,6 +102,14 @@ def CheckForNewClient() -> dict:
 
 
 def DownloadClient(newRepo: bool) -> bool:
+    """Downloads the new client
+
+    Args:
+        newRepo (bool): If this new client is from the 3.0 repository
+
+    Returns:
+        bool: Whether the download succeeded or not
+    """
 
     if not HasInternet():
         Log("No Internet Connection!")
@@ -151,6 +164,11 @@ def DownloadClient(newRepo: bool) -> bool:
 
 
 def CheckForNewFiles() -> bool:
+    """Checking for new ModFiles
+
+    Returns:
+        bool: Whether it found new ModFiles or not
+    """
 
     if not HasInternet():
         Log("No Internet Connection!")
@@ -200,7 +218,12 @@ def CheckForNewFiles() -> bool:
     return True
 
 
-def DownloadNewFiles() -> None:
+def DownloadNewFiles() -> bool:
+    """Downloading new ModFiles
+
+    Returns:
+        bool: Whether the download succeeded or not
+    """
 
     if not HasInternet():
         Log("No Internet Connection!")

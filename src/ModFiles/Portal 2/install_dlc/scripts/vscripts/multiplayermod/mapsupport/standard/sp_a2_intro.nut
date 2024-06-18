@@ -16,6 +16,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "incinerator_portal").__KeyValueFromString("targetname", "incinerator_portal_custom")
         EntFire("@enable_arms", "Trigger", "", 0, null)
         Entities.FindByName(null, "InstanceAuto13-dangle_ceiling-disable_arms").Destroy()
+        Entities.FindByClassnameNearest("info_player_start", Vector(2704, -1260, 112), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(2704, -1260, 112), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-2250.5, 605.5, 6668), 1024).Destroy()
         a2HasPortalGun <- false
@@ -32,7 +33,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         SpA2IntroViewcontrol.SetOrigin(Entities.FindByName(null, "ghostAnim").GetOrigin())
         EntFire("SpA2IntroViewcontrol", "setparent", "ghostAnim", 0, null)
         EntFire("SpA2IntroViewcontrol", "setparentattachment", "attach_1", 0, null)
-        EntFire("SpA2IntroViewcontrol", "Disable", "", 0, null)
+        EntFire("SpA2IntroViewcontrol", "Enable", "", 0, null)
         EntFire("SpA2IntroViewcontrolTele", "disable", "", 20.75, null)
         EntFire("SpA2IntroViewcontrol", "AddOutput", "targetname SpA2IntroViewcontrolTele", 0.25, null)
         EntFire("SpA2IntroViewcontrolTele", "AddOutput", "targetname SpA2IntroViewcontrolDone", 20.80, null)
