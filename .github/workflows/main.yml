@@ -1,0 +1,54 @@
+on: push
+env:
+  VERSION: "2.3.0"
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Build Executable
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          nuitka-version: main
+          script-name: src/MainWindow.py
+          onefile: true
+          noinclude-data-files: "pygame/freesansbold.ttf"
+          include-data-dir: |
+              src/Languages=Languages
+              src/GUI=GUI
+          windows-icon-from-ico: "src/GUI/images/p2mm-icon.ico"
+          linux-icon: "src/GUI/images/p2mm-icon.ico"
+          product-name: "Portal 2: Multiplayer Mod Launcher"
+          file-description: "The launcher for P2:MM."
+          copyright: "© 2024 Portal 2: Multiplayer Mod Team"
+          product-version: "${{ env.VERSION }}"
+          file-version: "${{ env.VERSION }}"
+          windows-console-mode: disable
+          deployment: true
+          output-file: "p2mm-${{ env.VERSION }}"
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            build/p2mm-${{ env.VERSION }}*
