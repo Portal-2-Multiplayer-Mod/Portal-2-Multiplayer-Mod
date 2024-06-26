@@ -167,7 +167,7 @@ function MusicInit() {
 
     // Precache the music
     foreach (musicTrack in Config_musicTracks) {
-        self.PrecacheSoundScript(musicTrack)
+        p2mm_lobbymusic_music.PrecacheSoundScript(musicTrack)
     }
 
     // Position everything in the map
@@ -245,9 +245,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // INITIALIZE AND START THE CUSTOM MUSIC
         if (Config_musicEnable) {
+            printlP2MM(0, true, "Initializing custom lobby music control.")
             MusicInit()
         } else { // Start the boring one track music because the user didn't enable custom lobby music :(
-            DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
+            printlP2MM(0, true, "Custom lobby music control is disabled, playing random lobby track.")
+            DoEntFire("!self", "invalue", (RandomInt(1, 7)).tostring(), 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
         }
         
         // Allow the players to drop from spawn tube
