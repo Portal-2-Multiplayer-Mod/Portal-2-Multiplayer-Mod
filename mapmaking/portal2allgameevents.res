@@ -1,17 +1,33 @@
 //? This file is a combined file of all the documented game events from all of Portal 2's game event files.
 //? This exists to act as reference and documentation on what events output what data and the data's type.
-//? Not all game events are interfaced to VScript by the plugin.
+//? Not all game events are interfaced to VScript by the plugin and some aren't able to be interfaced due to how the engine works.
 //? Those marked with "Interface to VScript By P2:MM" followed by the VScript function called are ones interfaced by the P2:MM plugin.
 //? Plugin code can be found at https://github.com/OrsellGaming/Portal-2-Multiplayer-Mod-Plugin
 
-//? `GEClientCommand` is the only exception of not being a game event being the plugin's ClientCommand function being interfaced to VScript.
-//*	"GEClientCommand" // Runs when a user runs a command in the console
+//? Below are plugin callback functions passed to VScript but keep the same name naming format:
+
+//? `GEClientCommand` is the plugin's ClientCommand callback function.
+//*	"GEClientCommand" // Called when a client inputs a console command.
 //*	{
 //*		"userid"	"short"		// user ID on server
 //*		"entindex"	"int"		// user index on server
 //*		"pcmd"		"string"	// console command called
 //*		"fargs"		"string"	// console command args
 //*	}
+
+//? `GEClientActive` is the plugin's ClientActive callback function.
+//*	"GEClientActive" // Called when a player is "activated" in the server, meaning fully loaded, not fully connect which happens before that.
+//*	{
+//*		"userid"	"short"		// user ID on server
+//*		"entindex"	"int"		// user index on server
+//*	}
+
+//? `GEGameFrame` is the plugin's GameFrame callback function.
+//*	"GEGameFrame" // Called every server frame, used for the VScript loop. Warning: Don't do too intensive tasks with this!
+//*	{
+//*		"simulating" "bool"	
+//*	}
+
 //=========== (C) Copyright 1999 Valve, L.L.C. All rights reserved. ===========
 //
 // The copyright to the contents herein is the property of Valve, L.L.C.
@@ -41,8 +57,7 @@
 
 "ModEvents"
 {
-	//? Interface to VScript By P2:MM | GEPlayerLanded(userid)
-	"portal_player_touchedground"	// player landed
+	"portal_player_touchedground"	// player landed || Doesn't work, "player_landed" does instead.
 	{
 		"userid"	"short"		// user ID on server
 	}
@@ -205,10 +220,13 @@
 		"userid"	"short"
 		"bouncecount"	"short"
 	}
+
+	//? Interface to VScript By P2:MM | GEPlayerLanded(userid)
 	"player_landed"
 	{
 		"userid"	"short"
 	}
+
 	"player_suppressed_bounce"
 	{
 		"userid"	"short"
@@ -785,22 +803,30 @@
 		"by"		"string"	// removed by...
 	}
 	
+	//? Interface to VScript By P2:MM | GEPlayerConnect(name, index, userid, xuid, networkid, address, bot)
+	//! WARNING: The player entity has yet to exist at this stage, so manipulating the entity could crash the game.
+	//! Do so at "player_spawn" or "player_activate", both are called after the player entity exists.
+	//! "player_activate" is more recommended to be used as "player_spawn" gets called twice when the host loads in.
 	"player_connect"			// a new client connected
 	{
 		"name"		"string"	// player name		
 		"index"		"byte"		// player slot (entity index-1)
-		"userid"	"short"		// user ID on server (unique on server)
-		"networkid" "string" // player network (i.e steam) id
+		"userid"	"short"		// user ID on server (unique on server) "STEAM_1:...", will be "BOT" if player is bot
+		"xuid"		"uint64"	// XUID/Steam ID (converted to const char*)
+		"networkid" "string" 	// player network (i.e steam) id
 		"address"	"string"	// ip:port
+		"bot"		"bool"		// true if player is a AI bot
 	}
 	
-	"player_info"				// a player changed his name
+	//? Interface to VScript By P2:MM | GEPlayerInfo(name, index, userid, networkid, address)
+	"player_info"				// a player changed their name
 	{
-		"name"			"string"	// player name		
-		"index"			"byte"		// player slot (entity index-1)
-		"userid"		"short"		// user ID on server (unique on server)
-		"networkid"		"string"	// player network (i.e steam) id
-		"bot"			"bool"		// true if player is a AI bot
+		"name"		"string"	// player name		
+		"index"		"byte"		// player slot (entity index-1)
+		"userid"	"short"		// user ID on server (unique on server) "STEAM_1:...", will be "BOT" if player is bot
+		"friendsid" "short"		// friends identification number
+		"networkid"	"string"	// player network (i.e steam) id
+		"bot"		"bool"		// true if player is a AI bot
 	}
 	
 	"player_disconnect"			// a client was disconnected
@@ -811,6 +837,9 @@
 		"networkid"	"string"	// player network (i.e steam) id
 	}
 
+	//? Interface to VScript By P2:MM | GEClientActive(userid, entindex)
+	//? Technically not called by the game event itself but the "ClientActive"
+	//? plugin call back because they both are called at the same time.
 	"player_activate"
 	{
 		"userid"	"short"		// user ID on server
