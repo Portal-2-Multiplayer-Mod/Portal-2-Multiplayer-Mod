@@ -179,7 +179,7 @@ def FindAvailableDLC(gamepath: str) -> str:
 
 # Parse the launch arguments with whats in the Custom-Launch-Options (CLO).
 def AssembleArgs() -> str | bool:
-    #* ConVars/Console Command created by plugin and their inputs:
+    #* ConVars/Console Command used here created by plugin:
     #? "+p2mm_developer 0/1": When on, developer log messages for the plugin and VScript will appear in the console.
     #? "+p2mm_lastmap (map)": Used by Portal 2 for the main menu and for starting up singleplayer maps.
     #? "+p2mm_splitscreen 0/1": A ConVar for the launcher to pass and for the main menu to set to start sessions with splitscreen.

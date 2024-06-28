@@ -177,21 +177,21 @@ function P2MMLoop() {
                 LastCoordGetPlayer = Entities.FindByClassname(null, "player")
             }
             if (LastCoordGetPlayer != null) {
-                EntFireByHandle(measuremovement, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
+                EntFireByHandle(measuremovement_eyeposition, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
                 // Alternate so our timings space out correctly
                 g_bCoordsAlternate = true
             }
         } else {
-            if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
+            if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement_eyeposition")) {
                 local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
                 if (currentplayerclass != null) {
                     if (OriginalAngle == null && g_bCanCheckAngle) {
-                        OriginalAngle = measuremovement.GetAngles()
+                        OriginalAngle = measuremovement_eyeposition.GetAngles()
                         Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
                     }
 
-                    currentplayerclass.eyeangles = measuremovement.GetAngles()
-                    currentplayerclass.eyeforwardvector = measuremovement.GetForwardVector()
+                    currentplayerclass.eyeangles = measuremovement_eyeposition.GetAngles()
+                    currentplayerclass.eyeforwardvector = measuremovement_eyeposition.GetForwardVector()
                 }
             }
             // Alternate so our timings space out correctly
@@ -598,13 +598,14 @@ function PostPlayerSpawn() {
     EntFire("p2mm_servercommand", "command", "script CreatePropsForLevel(false, true, false)")
 
     // Remove scoreboard
-    if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub /*&& !Player2Joined*/) {
-        for (local ent; ent = Entities.FindByClassname(ent, "player");) {
-            // TODO: Is there a better way to trigger this for the host player on a listen server?
-            // Right now, this will enter -score for every player
-            EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, ent, ent)
-        }
-    }
+    //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
+    // if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub /*&& !Player2Joined*/) {
+    //     for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+    //         // TODO: Is there a better way to trigger this for the host player on a listen server?
+    //         // Right now, this will enter -score for every player
+    //         EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, ent, ent)
+    //     }
+    // }
 
     // Random Turret and Frankenturret colors and models, but once!
     if (Config_RandomTurret) {
@@ -671,7 +672,7 @@ function PostPlayerSpawn() {
         // Call `script_debug` only on the host, that way other players will not be frozen.
         // But those same players can disconnect from the server due to time out if the host
         // does not connect the debugger quick enough unfreezing their game.
-        EntFireByHandle(p2mm_clientcommand, "command", "script_debug", 1, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
+        EntFire("p2mm_servercommand", "command", "script_debug", 1, Entities.FindByName(null, "blue"))
 
         // `script_debug` takes a second to do its thing, so delay the debug message
         EntFire("p2mm_servercommand", "command", "script printlP2MM(\"[DEBUGGING] VScript Debugger Attached!\")", 1.1)
@@ -934,7 +935,8 @@ function OnPlayerJoin(p, script_scope) {
     EntFire("p2mm_servercommand", "command", "con_filter_enable 1; con_filter_text_out \"EntryMatchList\"") // Blocks repeated sound errors at around 13 players
 
     // Motion blur is very intense for some reason
-    EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos; r_portal_fastpath 0; r_portal_use_pvs_optimization 0; mat_motion_blur_forward_enabled 0", 0, p, p)
+    //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
+    //EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos; r_portal_fastpath 0; r_portal_use_pvs_optimization 0; mat_motion_blur_forward_enabled 0", 0, p, p)
 
     // SETUP THE CLASS /////////////////
     local currentplayerclass = CreateGenericPlayerClass(p)
@@ -946,12 +948,13 @@ function OnPlayerJoin(p, script_scope) {
     /////////////////////////////////////
 
     // Show scoreboard
-    if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub && !Player2Joined) {
-        local p = Entities.FindByClassname(null, "player")
-        if (FindPlayerClass(p).id == 1) {
-            EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
-        }
-    }
+    //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
+    // if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub && !Player2Joined) {
+    //     local p = Entities.FindByClassname(null, "player")
+    //     if (FindPlayerClass(p).id == 1) {
+    //         EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
+    //     }
+    // }
 
     // Don't show the join text for the listen server host
     // TODO: Possibly need to rework "y" offset for dedicated?

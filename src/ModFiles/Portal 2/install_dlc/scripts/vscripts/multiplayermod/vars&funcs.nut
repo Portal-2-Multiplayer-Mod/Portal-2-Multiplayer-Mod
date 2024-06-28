@@ -1679,16 +1679,16 @@ function CreateOurEntities() {
 
     if (Config_UseNametags/* && g_bAllowNametags*/) {
         // Create an entity to measure player eye angles
-        measuremovement <- Entities.CreateByClassname("logic_measure_movement")
-        measuremovement.__KeyValueFromString( "measuretype", "1")
-        measuremovement.__KeyValueFromString( "measurereference", "" )
-        measuremovement.__KeyValueFromString( "measureretarget", "" )
-        measuremovement.__KeyValueFromString( "targetscale", "1.0" )
-        measuremovement.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement" )
-        measuremovement.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement" )
-        measuremovement.__KeyValueFromString( "target", "p2mm_logic_measure_movement" )
-        EntFireByHandle(measuremovement, "SetMeasureReference", "p2mm_logic_measure_movement", 0.0, null, null)
-        EntFireByHandle(measuremovement, "Disable", "", 0.0, null, null)
+        measuremovement_eyeposition <- Entities.CreateByClassname("logic_measure_movement")
+        measuremovement_eyeposition.__KeyValueFromString( "measuretype", "1")
+        measuremovement_eyeposition.__KeyValueFromString( "measurereference", "" )
+        measuremovement_eyeposition.__KeyValueFromString( "measureretarget", "" )
+        measuremovement_eyeposition.__KeyValueFromString( "targetscale", "1.0" )
+        measuremovement_eyeposition.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement_eyeposition" )
+        measuremovement_eyeposition.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement_eyeposition" )
+        measuremovement_eyeposition.__KeyValueFromString( "target", "p2mm_logic_measure_movement_eyeposition" )
+        EntFireByHandle(measuremovement_eyeposition, "SetMeasureReference", "p2mm_logic_measure_movement_eyeposition", 0.0, null, null)
+        EntFireByHandle(measuremovement_eyeposition, "Disable", "", 0.0, null, null)
 
         // Create an entity to display player nametags when aiming at them
         nametagdisplay <- Entities.CreateByClassname("game_text")
