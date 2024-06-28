@@ -31,17 +31,8 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to loop the Loop() function every 0.1 second
-    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
-    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
-        if (timer.GetName() == "p2mm_timer") {
-            EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-            EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
-            EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
-            EntFireByHandle(timer, "Enable", "", looptime, null, null)
-            break
-        }
-    }
+    // Tell the plugin that P2MMLoop can now be called
+    EntFire("p2mm_servercommand", "command", "p2mm_loop 1", 0.01)
 
     // Delay the creation of our map-specific entities before so
     // that we don't get an engine error from the entity limit
@@ -709,10 +700,6 @@ function PostPlayerSpawn() {
 function PostMapSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, false, true, false, false, false)
-
-    // Prints the current map, needed for the checkpoint system
-    // \n was here :>
-    printl("loaded: " + GetMapName())
 
     if (!IsDedicatedServer()) {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
