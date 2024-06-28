@@ -5,6 +5,10 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝██████╔╝
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚═════╝
 
+a1HasDestroyedTargetPortalGun <- false
+a1AlreadyGavePortalGun <- false
+startwheatleycheck <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Remove Portal Gun
@@ -25,9 +29,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "backtrack_brush").Destroy()
         Entities.FindByName(null, "portal_orange_mtg").Destroy()
         Entities.FindByName(null, "emitter_orange_mtg").Destroy()
-        a1HasDestroyedTargetPortalGun <- false
-        a1AlreadyGavePortalGun <- false
-        startwheatleycheck <- false
         
         // Make changing levels work
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro4:0.3", 0, null)

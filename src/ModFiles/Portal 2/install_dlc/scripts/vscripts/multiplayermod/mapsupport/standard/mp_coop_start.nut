@@ -5,11 +5,13 @@
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗██████╔╝   ██║   ██║  ██║██║  ██║   ██║
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚═════╝    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝
 
+// Coop guns are automatically stripped
+blue_picked_up_gun <- false
+orange_picked_up_gun <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Coop guns are automatically stripped
-        blue_picked_up_gun <- false
-        orange_picked_up_gun <- false
+
 
         Entities.FindByClassnameNearest("trigger_once", Vector(-9901.26, -3504, 306.26), 10).__KeyValueFromString("targetname", "p2mm_blue_get_gun_trigger")
         Entities.FindByClassnameNearest("trigger_once", Vector(-10118.1, -3504, 302.92), 10).__KeyValueFromString("targetname", "p2mm_orange_get_gun_trigger")
