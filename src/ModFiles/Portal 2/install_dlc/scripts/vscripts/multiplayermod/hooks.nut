@@ -31,18 +31,8 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to loop the P2MMLoop() function every 0.1 second
-    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
-    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
-        if (timer.GetName() == "p2mm_timer") {
-            EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-            EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
-            EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:P2MMLoop():0:-1", 0, null, null)
-            EntFireByHandle(timer, "Enable", "", looptime, null, null)
-            break
-        }
-    }
-    // EntFire("p2mm_servercommand", "command", "p2mm_loop 1", 0.01)
+    // Tell the plugin that P2MMLoop can now be called
+    EntFire("p2mm_servercommand", "command", "p2mm_loop 1", 0.01)
 
     // Delay the creation of our map-specific entities before so an engine error from the entity limit doesn't occur
     EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
@@ -696,11 +686,6 @@ function PostPlayerSpawn() {
 function PostMapSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, false, true, false, false, false)
-
-    // Prints the current map, needed for the Last Map System
-    // \n was here :>
-    printl("loaded: " + GetMapName())
-    EntFire("p2mm_servercommand", "command", "p2mm_lastmap \"" + GetMapName() + "\"") // For the main menu
 
     if (!IsDedicatedServer()) {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
