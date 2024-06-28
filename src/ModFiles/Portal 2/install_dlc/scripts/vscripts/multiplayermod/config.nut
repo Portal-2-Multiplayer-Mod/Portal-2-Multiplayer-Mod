@@ -32,7 +32,7 @@ Config_UseCustomDevModels <- false
 //-----------------------------------
 // If you want to change the gamemode on the next map load, set Config_GameMode to...
 // 0 - Standard   : Most stable experience
-// 1 - Speedrun   : For those who like to speedrun Portal 2     (No full implementation yet)
+// 1 - Speedrun   : For those who like to speedrun Portal 2     (No full implementation)
 Config_GameMode <- 0
 
 // Set true/false if you want to randomize every Turret 's models and colors and the Frankenturret's colors.
