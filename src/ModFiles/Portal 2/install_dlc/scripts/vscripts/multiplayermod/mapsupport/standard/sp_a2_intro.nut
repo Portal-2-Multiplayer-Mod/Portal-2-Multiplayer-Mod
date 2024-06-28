@@ -37,7 +37,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("SpA2IntroViewcontrolTele", "disable", "", 20.75, null)
         EntFire("SpA2IntroViewcontrol", "AddOutput", "targetname SpA2IntroViewcontrolTele", 0.25, null)
         EntFire("SpA2IntroViewcontrolTele", "AddOutput", "targetname SpA2IntroViewcontrolDone", 20.80, null)
-        self.PrecacheSoundScript("ScriptedSequence.IncineratorFall")
+        SpA2IntroViewcontrol.PrecacheSoundScript("ScriptedSequence.IncineratorFall")
         local TempEnt = Entities.CreateByClassname("prop_dynamic")
         TempEnt.__KeyValueFromString("targetname", "TempEnt")
         EntFire("TempEnt", "AddOutput", "targetname PlayFallSound", 0, null)

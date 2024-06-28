@@ -5,6 +5,13 @@
 // ███████╗███████╗ █████╔╝███████╗███████╗
 // ╚══════╝╚══════╝ ╚════╝ ╚══════╝╚══════╝
 
+HasStartedE1912 <- false
+OnlyOnceE1912 <- true
+OnlyOnce2E1912 <- true
+OnlyOnce3E1912 <- true
+NewSpawnPoint <- false
+DisableJumpmsp <- true
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(false)
@@ -27,13 +34,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("@relay_Intro_setup_view2", "AddOutput", "OnTrigger p2mm_servercommand:command:script E1912AfterCrashViewcontrol()")
         EntFire("crash-trigger_scare", "AddOutput", "OnTrigger p2mm_servercommand:command:script E1912ScareViewcontrol():1.9")
         EntFire("crash-trigger_scare", "AddOutput", "OnTrigger p2mm_servercommand:command:script E1912PostScare():23")
-
-        HasStartedE1912 <- false
-        OnlyOnceE1912 <- true
-        OnlyOnce2E1912 <- true
-        OnlyOnce3E1912 <- true
-        NewSpawnPoint <- false
-        DisableJumpmsp <- true
     }
 
     if (MSLoop) {

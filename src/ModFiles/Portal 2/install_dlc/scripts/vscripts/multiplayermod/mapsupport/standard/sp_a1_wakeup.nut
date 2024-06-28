@@ -5,6 +5,17 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗  ╚██╔╝ ╚██╔╝ ██║  ██║██║ ╚██╗███████╗╚██████╔╝██║
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝   ╚═╝   ╚═╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝
 
+SpA1WakeupONCE1 <- true
+SpA1WakeupONCE2 <- true
+SpA1WakeupONCE3 <- true
+NOLLFIX <- true
+TPP1 <- true
+TPP2 <- true
+TPP3 <- true
+TPP4 <- true
+
+SpA1WakeupPostPlayerSpawn <- true
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Make changing levels work
@@ -27,17 +38,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "basement_breaker_room_entry_trigger").Destroy()
 
         Entities.FindByName(null, "basement_breakers_socket_trigger").Destroy()
-
-        SpA1WakeupONCE1 <- true
-        SpA1WakeupONCE2 <- true
-        SpA1WakeupONCE3 <- true
-        NOLLFIX <- true
-        TPP1 <- true
-        TPP2 <- true
-        TPP3 <- true
-        TPP4 <- true
-
-        SpA1WakeupPostPlayerSpawn <- true
 
         Entities.FindByName(null, "@basement_entry_portal_black").Destroy()
         Entities.FindByClassnameNearest("func_areaportalwindow", Vector(10364, 1080, -216), 100).__KeyValueFromString("FadeStartDist", "1750")

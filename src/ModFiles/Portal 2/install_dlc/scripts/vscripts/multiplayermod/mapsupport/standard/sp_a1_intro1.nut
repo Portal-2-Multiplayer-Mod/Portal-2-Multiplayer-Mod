@@ -481,6 +481,9 @@ function StopStickAndTeleport() {
     }
 }
 
+HasStartedSp_A1_Intro1 <- false
+OnlyOnceSp_A1_Intro1 <- true
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Make changing levels work
@@ -496,9 +499,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Disable pinging and taunting
         UTIL_Team.Pinging(false)
-        UTIL_Team.Taunting(false)
-
-        HasStartedSp_A1_Intro1 <- false
+        UTIL_Team.Taunting(false)  
 
         Entities.FindByName(null, "Actor_container_master").__KeyValueFromString("HoldAnimation", "1")
         Entities.FindByName(null, "Actor_container_01").__KeyValueFromString("HoldAnimation", "1")
@@ -543,7 +544,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //Entities.FindByName(null, "container_entry_door_push").SetOrigin(Vector(Entities.FindByName(null, "container_entry_door_push").GetOrigin().x, Entities.FindByName(null, "container_entry_door_push").GetOrigin().y + 512, Entities.FindByName(null, "container_entry_door_push").GetOrigin().z))
         Entities.FindByName(null, "door_1-door_close_relay").Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-5675, 1459, 305), 16).Destroy()
-        OnlyOnceSp_A1_Intro1 <- true
     }
 
     if (MSPostPlayerSpawn) {
