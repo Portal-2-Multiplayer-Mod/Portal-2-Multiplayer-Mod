@@ -819,7 +819,7 @@
 	}
 	
 	//? Interface to VScript By P2:MM | GEPlayerInfo(name, index, userid, networkid, address)
-	"player_info"				// a player changed their name
+	"player_info"				// a player changed their name, called when a map starts also
 	{
 		"name"		"string"	// player name		
 		"index"		"byte"		// player slot (entity index-1)
@@ -829,11 +829,14 @@
 		"bot"		"bool"		// true if player is a AI bot
 	}
 	
+	//? Interface to VScript By P2:MM | GEPlayerInfo(name, userid, reason, xuid, networkid)
+
 	"player_disconnect"			// a client was disconnected
 	{
+		"name"		"string"	// player name
 		"userid"	"short"		// user ID on server
 		"reason"	"string"	// "self", "kick", "ban", "cheat", "error"
-		"name"		"string"	// player name
+		"xuid"		"uint64"	// XUID/Steam ID (converted to const char*)
 		"networkid"	"string"	// player network (i.e steam) id
 	}
 
