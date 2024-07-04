@@ -15,4 +15,3 @@ ADD . /app
 WORKDIR "/app"
 
 RUN chmod +x tools/build-appimage.sh
-# RUN tools/build-appimage.sh
