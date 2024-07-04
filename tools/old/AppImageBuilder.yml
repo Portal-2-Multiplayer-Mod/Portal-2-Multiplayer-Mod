@@ -6,7 +6,7 @@ AppDir:
     id: com.p2mm.app
     name: p2mm
     icon: p2mm-icon
-    version: 2.2.2
+    version: 2.3.0
     exec: usr/bin/python3.10
     exec_args: $APPDIR/usr/bin/MainWindow.py $@
   apt:
