@@ -829,8 +829,7 @@
 		"bot"		"bool"		// true if player is a AI bot
 	}
 	
-	//? Interface to VScript By P2:MM | GEPlayerInfo(name, userid, reason, xuid, networkid)
-
+	//// Interface to VScript By P2:MM | GEPlayerInfo(name, userid, reason, xuid, networkid)
 	"player_disconnect"			// a client was disconnected
 	{
 		"name"		"string"	// player name

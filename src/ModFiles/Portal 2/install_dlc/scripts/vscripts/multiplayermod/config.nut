@@ -91,7 +91,7 @@ Config_UseChatCommands <- true
 //
 // Example on how to format the list:
 // admins <- [
-//     "[AdminLevel]Steam3 ID (only the numbers bit)", // (Username to keep track)
+//     "[AdminLevel]Steam3 ID (only the numbers bit after the second ':')", // (Username to keep track)
 //     "[3]123456789", // John Doe
 // ]
 

@@ -56,11 +56,41 @@ if (!PluginLoaded) {
 
 iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1) // Determine what the "maxplayers" cap is
 
-if (GetDeveloperLevelP2MM()) {
-    printlP2MM("Session info...")
-    printlP2MM("- Current map: " + GetMapName())
-    printlP2MM("- Max players allowed on the server: " + iMaxPlayers)
-    printlP2MM("- Dedicated server: " + IsDedicatedServer())
+printlP2MM(0, true, "Session info...")
+printlP2MM(0, true, "- Current map: " + GetMapName())
+printlP2MM(0, true, "- Max players allowed on the server: " + iMaxPlayers)
+printlP2MM(0, true, "- Dedicated server: " + IsDedicatedServer())
+printlP2MM(0, true, "\n")
+
+IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences and make sure nothing was invalid and compensate
+
+printlP2MM(0, true, FirstRunState(-1).tostring())
+printlP2MM(0, true, GetLastMap())
+printlP2MM(0, true, GetMapName())
+
+// Check if its the first map run so Last Map System stuff can be done
+if (FirstRunState(-1)) {
+    FirstRunState(0)
+
+    // Reset developer level, developer needs to stay enabled for VScript Debugging to work
+    if (Config_DevMode || Config_VScriptDebug) {
+        EntFire("p2mm_servercommand", "command", "developer 1")
+    }
+    else {
+        EntFire("p2mm_servercommand", "command", "developer 0")
+    }
+    
+    // Check if Last Map System supplied a value and that it's a valid map, then restart on that map
+    if (IsMapValid(GetLastMap()) && (GetLastMap() != GetMapName())) {
+        FirstRunState(1)
+
+        printlP2MM(0, true, FirstRunState(-1).tostring())
+        printlP2MM(0, true, GetLastMap())
+        printlP2MM(0, true, GetMapName())
+
+        EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0)
+        return
+    }
 }
 
 IncludeScript("multiplayermod/config.nut")      // Import the user configuration and preferences
