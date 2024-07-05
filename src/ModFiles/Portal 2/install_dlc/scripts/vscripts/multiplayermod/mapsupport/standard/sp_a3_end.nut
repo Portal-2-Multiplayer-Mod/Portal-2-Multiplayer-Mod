@@ -5,6 +5,9 @@
 // ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗███████╗██║ ╚███║██████╔╝
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚══════╝╚═╝  ╚══╝╚═════╝
 
+OnlyOnceSp_A3_End <- false
+OnlyOnceSp_A3_End_1 <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         PermaPotato = true
@@ -34,8 +37,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "achievement_all_gels_entity").__KeyValueFromString("targetname", "look_moxxie_a_thing")
         // Destroy objects
         Entities.FindByName(null, "fade_to_death").Destroy()
-        OnlyOnceSp_A3_End <- false
-        OnlyOnceSp_A3_End_1 <- false
 
         // Make changing levels work
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_intro:0.3", 0, null)
@@ -97,7 +98,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Goo Damage Code
         try {
-        if (GooHurtTimerPred) { printl()}
+            if (GooHurtTimerPred) { printl() }
         } catch (exception) {
             GooHurtTimerPred <- 0
         }

@@ -5,6 +5,8 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
+a2HasPortalGun <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         Entities.FindByName(null, "incinerator_death_fade").Destroy()
@@ -19,14 +21,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("info_player_start", Vector(2704, -1260, 112), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(2704, -1260, 112), 1024).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-2250.5, 605.5, 6668), 1024).Destroy()
-        a2HasPortalGun <- false
 
         // Make changing levels work
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_laser_intro:0.3", 0, null)
     }
 
     if (MSPostPlayerSpawn) {
-        printl("Ran")
+        printlP2MM(0, true, "MSPostPlayerSpawn Ran")
         SpA2IntroViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         SpA2IntroViewcontrol.__KeyValueFromString("targetname", "SpA2IntroViewcontrol")
         SpA2IntroViewcontrol.__KeyValueFromString("target_team", "-1")
@@ -37,7 +38,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("SpA2IntroViewcontrolTele", "disable", "", 20.75, null)
         EntFire("SpA2IntroViewcontrol", "AddOutput", "targetname SpA2IntroViewcontrolTele", 0.25, null)
         EntFire("SpA2IntroViewcontrolTele", "AddOutput", "targetname SpA2IntroViewcontrolDone", 20.80, null)
-        self.PrecacheSoundScript("ScriptedSequence.IncineratorFall")
+        SpA2IntroViewcontrol.PrecacheSoundScript("ScriptedSequence.IncineratorFall")
         local TempEnt = Entities.CreateByClassname("prop_dynamic")
         TempEnt.__KeyValueFromString("targetname", "TempEnt")
         EntFire("TempEnt", "AddOutput", "targetname PlayFallSound", 0, null)

@@ -80,9 +80,9 @@ function ChangeMusicTrack(nextTrack = true) {
 // Initialize the music
 function MusicInit() {
     if (musicMax == 0) {
-        printlP2MM("There are no music tracks in Config_musicTracks!")
-        printlP2MM("We won't setup the custom lobby music control!")
-        printlP2MM("Ideally the host should have just set Config_musicEnable to false...")
+        printlP2MM(1, false, "There are no music tracks in Config_musicTracks!")
+        printlP2MM(1, false, "We won't setup the custom lobby music control!")
+        printlP2MM(1, false, "Ideally the host should have just set Config_musicEnable to false...")
         return
     }
 
@@ -167,7 +167,7 @@ function MusicInit() {
 
     // Precache the music
     foreach (musicTrack in Config_musicTracks) {
-        self.PrecacheSoundScript(musicTrack)
+        p2mm_lobbymusic_music.PrecacheSoundScript(musicTrack)
     }
 
     // Position everything in the map
@@ -245,9 +245,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // INITIALIZE AND START THE CUSTOM MUSIC
         if (Config_musicEnable) {
+            printlP2MM(0, true, "Initializing custom lobby music control.")
             MusicInit()
         } else { // Start the boring one track music because the user didn't enable custom lobby music :(
-            DoEntFire("!self", "invalue", "7", 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
+            printlP2MM(0, true, "Custom lobby music control is disabled, playing random lobby track.")
+            for (local i = 1; i < 7;) { // Disable all the lobby music ambient_generics
+                EntFireByHandle(Entities.FindByName(null, "@music_lobby_" + i), "stopsound", "", 0, null, null)
+                i += 1
+            }
+            DoEntFire("!self", "invalue", (RandomInt(1, 7)).tostring(), 0.0, null, Entities.FindByName(null, "case_music"))
         }
         
         // Allow the players to drop from spawn tube
@@ -331,16 +337,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Remove useless entities so that the entity limit does not crash the game
 
-        // Remove func_portal_bumper's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
-            ent.Destroy() // 165 entities removed
-        }
-
-        // Remove env_sprite's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
-            ent.Destroy() // 31 entities removed
-        }
-
         // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
         Entities.FindByClassname(null, "point_viewcontrol").Destroy()
         for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
@@ -348,6 +344,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 continue
             }
             ent.Destroy() // 20 entities removed
+        }
+
+        // Remove env_sprite's from the map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
+            ent.Destroy() // 31 entities removed
+        }
+
+        // Remove func_portal_bumper's from the map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
+            ent.Destroy() // 165 entities removed
         }
     }
 

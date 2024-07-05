@@ -5,6 +5,21 @@
 // ██████╔╝██║    ██████████╗██║  ██║███████╗██████████╗╚█████╔╝╚█████╔╝██║  ██║███████╗
 // ╚═════╝ ╚═╝    ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝ ╚════╝  ╚════╝ ╚═╝  ╚═╝╚══════╝
 
+OnlyOnceSp_A2_Core_2 <- true
+OnlyOnceSp_A2_Core <- true
+TPSp_A2_Core <- true
+EnableMeSp_A2_Core <- false
+OnlyOnceMoveTeleportSp_A2_Core_2 <- true
+TeleportOutInSp_A2_Core <- false
+ONETIMEFOGCHANGESp_A2_Core_2 <- false
+ONETIMEFOGCHANGESp_A2_Core_2_white <- false
+ONETIMEFOGCHANGESp_A2_Core_2_evil <- false
+StalemateRoomExitSp_A2_Core_2 <- false
+StalemateButtonSp_A2_Core_2 <- false
+RoomLookAtPlayerSp_A2_Core <- true
+TempGrabControllerToggled <- false
+StartFadeDone <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // We need to control the viewmodel/real simulated grab controllers for inserting Wheatley
@@ -116,21 +131,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "stalemate_room_close").Destroy()
         Entities.FindByName(null, "close_stalemate_room_doors_relay").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(0, 304, -10438), 20).Destroy()
-
-        OnlyOnceSp_A2_Core_2 <- true
-        OnlyOnceSp_A2_Core <- true
-        TPSp_A2_Core <- true
-        EnableMeSp_A2_Core <- false
-        OnlyOnceMoveTeleportSp_A2_Core_2 <- true
-        TeleportOutInSp_A2_Core <- false
-        ONETIMEFOGCHANGESp_A2_Core_2 <- false
-        ONETIMEFOGCHANGESp_A2_Core_2_white <- false
-        ONETIMEFOGCHANGESp_A2_Core_2_evil <- false
-        StalemateRoomExitSp_A2_Core_2 <- false
-        StalemateButtonSp_A2_Core_2 <- false
-        RoomLookAtPlayerSp_A2_Core <- true
-        TempGrabControllerToggled <- false
-        StartFadeDone <- false
 
         UTIL_Team.Pinging(true, "all", 1)
         UTIL_Team.Taunting(true, "all", 1)
@@ -277,7 +277,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSp_A2_Core) {
             if (!Entities.FindByName(null, "exit_elevator_departure_trigger")) {
-                printl("(P2:MM): Elevator viewcontrol activated!")
+                printlP2MM(0, true, "Elevator viewcontrol activated!")
                 // Elevator viewcontrol
                 Sp_A2_CoreViewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
                 Sp_A2_CoreViewcontrol.__KeyValueFromString("target_team", "-1")

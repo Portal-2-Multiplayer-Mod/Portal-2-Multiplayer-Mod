@@ -11,18 +11,16 @@
 if (Config_UseChatCommands) {
     // This can only be enabled when the plugin is loaded fully
     if (!PluginLoaded) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Can't add chat commands since no plugin is loaded!")
-        }
+        printlP2MM(1, true, "Can't add chat commands since no plugin is loaded!")
         return
     }
 } else {
-    printlP2MM("Config_UseChatCommands is false. Not adding chat callback for chat commands!")
+    printlP2MM(1, true, "Config_UseChatCommands is false. Not adding chat callback for chat commands!")
     return
 }
 
 // The whole filtering process for the chat commands
-function ChatCommands(iUserIndex, rawText) {
+function ChatCommands(rawText, iUserIndex) {
     local Message = strip(RemoveDangerousChars(rawText))
 
     local pPlayer = UTIL_PlayerByIndex(iUserIndex)
@@ -64,13 +62,13 @@ function ChatCommands(iUserIndex, rawText) {
     
     // Confirmed that it's a command that follows our syntax, now try to run it
 
-    // Does the exact command exist?
+    // Check if the command exists
     if (typeof szTargetCommand != "class") {
         SendChatMessage("[ERROR] Command not found. Use !help to list some commands!", pPlayer)
         return
     }
 
-    // Do we have the correct admin level for this command?
+    // Check if the caller has the right admin level
     if (!(szTargetCommand.level <= AdminLevel)) {
         SendChatMessage("[ERROR] You do not have permission to use this command!", pPlayer)
         return
@@ -124,155 +122,6 @@ IncludeScriptCC("vote")
 // if the player chooses not to use CC
 //--------------------------------------
 
-function SendChatMessage(message, pActivatorAndCaller = null) {
-    if (SendToChatLoaded) {
-        local color = "\x03" // light green; default, private message
-        if (pActivatorAndCaller == null) {
-            pActivatorAndCaller = 0 // 0 means sending to everyone via plugin logic
-            color = "\x04" // Bright green; public message
-        } else {
-            pActivatorAndCaller = pActivatorAndCaller.entindex()
-        }
-
-        if (color == "\x03") {
-            printl("(P2:MM): " + message) // Always log private messages to server console
-        }
-        else if (color == "\x04" && IsDedicatedServer()) {
-            printl("(P2:MM): " + message) // public messages dont print to console on dedicated, since we are not a player here
-        }
-
-        SendToChat(color + "(P2:MM): " + message, pActivatorAndCaller)
-    } else {
-        // Try to use server command in the case of dedicated servers
-        local pEntity = Entities.FindByName(null, "p2mm_servercommand")
-        if (pActivatorAndCaller != null) {
-            // Send messages from a specific client
-            pEntity = p2mm_clientcommand
-        }
-        EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
-    }
-    // Note that "\x05" is used for private messages with more than one person
-    // You will need to create a special case to use it (see cc/teleport.nut for an example)
-}
-
-function RunChatCommand(cmd, args, plr) {
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM("Running chat command \"" + cmd.name + "\" from player \"" + FindPlayerClass(plr).username + "\"")
-    }
-    cmd.CC(plr, args)
-}
-
-function UTIL_PlayerByIndex(index) {
-    for (local player; player = Entities.FindByClassname(player, "player");) {
-        if (player.entindex() == index) {
-            return player
-        }
-    }
-    return null
-}
-
-function RemoveDangerousChars(str) {
-    str = Replace(str, "%n", "") // Can cause crashes!
-    if (StartsWith(str, "^")) { // ?
-        return ""
-    }
-    return str
-}
-
-function StrToList(str) {
-    local list = []
-    local i = 0
-    while (i < Len(str)) {
-        list.push( Slice(str, i, i + 1) )
-        i = i + 1
-    }
-    return list
-}
-
-// preserve = true : means that the symbol at the beginning of the string will be included in the first part
-function SplitBetween(str, keysymbols, preserve = false) {
-    local keys = StrToList(keysymbols)
-    local lst = StrToList(str)
-
-    local contin = false
-    foreach (key in keys) {
-        if (Contains(str, key)) {
-            contin = true
-            break
-        }
-    }
-
-    if (!contin) {
-        return []
-    }
-
-
-    // FOUND SOMETHING
-
-    local split = []
-    local curslice = ""
-
-    foreach (indx, letter in lst) {
-        local contains = false
-        foreach (key in keys) {
-            if (letter == key) {
-                contains = key
-                if (indx == 0 && preserve) {
-                    curslice = curslice + letter
-                }
-            }
-        }
-
-        if (contains != false) {
-            if (Len(curslice) > 0 && indx > 0) {
-                split.push(curslice)
-                if (preserve) {
-                    curslice = contains
-                } else {
-                    curslice = ""
-                }
-            }
-        } else {
-            curslice = curslice + letter
-        }
-    }
-
-    if (Len(curslice) > 0) {
-        split.push(curslice)
-    }
-
-    return split
-}
-
-function FindPlayerByName(name) {
-    name = name.tolower()
-    local best = null
-    local bestnamelen = 99999
-    local bestfullname = ""
-
-    for (local p = null; p = Entities.FindByClassname(p, "player");) {
-        local username = FindPlayerClass(p).username
-        username = username.tolower()
-
-        if (username == name) {
-            return p
-        }
-
-        if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) < bestnamelen) {
-            best = p
-            bestnamelen = Len(Replace(username, name, ""))
-            bestfullname = username
-        } else if (Len(Replace(username, name, "")) < Len(username) && Len(Replace(username, name, "")) == bestnamelen) {
-            if (Find(username, name) < Find(bestfullname, name)) {
-                best = p
-                bestnamelen = Len(Replace(username, name, ""))
-                bestfullname = username
-            }
-        }
-    }
-    return best
-}
-
 function GetAdminLevel(plr) {
     foreach (admin in Admins) {
         // Separate the SteamID and the admin level
@@ -285,7 +134,7 @@ function GetAdminLevel(plr) {
                 if (level.tointeger() < 6) {
                     return 6
                 }
-                // In case we add more admin levels, return values defined higher than 6
+                // In case more admin levels are added, return values defined higher than 6
                 return level.tointeger()
             } else {
                 // Use defined value for others
@@ -296,7 +145,7 @@ function GetAdminLevel(plr) {
 
     // For people who were not defined, check if it's the host
     if (!IsDedicatedServer() && (FindPlayerClass(plr).steamid.tostring() == GetSteamID(1).tostring())) {
-        // It is, so we automatically give them max perms on the listen server
+        // Automatically give max perms to the listen server host
         Admins.push("[6]" + FindPlayerClass(plr).steamid)
         if (GetDeveloperLevelP2MM()) {
             SendChatMessage("Added max permissions for " + FindPlayerClass(plr).username + " as server operator.", plr)

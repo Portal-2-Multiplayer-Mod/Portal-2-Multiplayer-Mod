@@ -5,13 +5,11 @@
 // ██║ ╚═╝ ██║██║     ██████████╗╚█████╔╝╚█████╔╝╚█████╔╝██║     ██████████╗██║  ██║██║  ██║   ██║   ██████████╗██║ ╚═╝ ██║██║  ██║███████╗███████╗
 // ╚═╝     ╚═╝╚═╝     ╚═════════╝ ╚════╝  ╚════╝  ╚════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═════════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝
 
-function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
-    if (MSInstantRun) {
-        GameStarted <- false
-        HasTauntedBlue <- false
-        HasTauntedOrange <- false
-    }
+GameStarted <- false
+HasTauntedBlue <- false
+HasTauntedOrange <- false
 
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSPostPlayerSpawn) {
         GameStarted <- true
     }

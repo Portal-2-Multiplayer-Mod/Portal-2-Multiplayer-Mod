@@ -5,7 +5,7 @@
 // happens right before mapsupport code is called.
 //---------------------------------------------------
 
-// This function is how we communicate with all mapsupport files.
+// This function is how communication is made with all mapsupport files.
 // In case no mapsupport file exists, it will fall back to this (nothing) instead of an error
 function MapSupport(
 MSInstantRun,       // 1. Runs 0.02 after host client loads in the current map      (Returns true)
@@ -31,20 +31,10 @@ function InstantRun() {
     // Trigger map-specific code
     MapSupport(true, false, false, false, false, false, false)
 
-    // Create an entity to loop the Loop() function every 0.1 second
-    Entities.CreateByClassname("logic_timer").__KeyValueFromString("targetname", "p2mm_timer")
-    for (local timer; timer = Entities.FindByClassname(timer, "logic_timer");) {
-        if (timer.GetName() == "p2mm_timer") {
-            EntFireByHandle(timer, "AddOutput", "RefireTime " + TickSpeed, 0, null, null)
-            EntFireByHandle(timer, "AddOutput", "classname move_rope", 0, null, null)
-            EntFireByHandle(timer, "AddOutput", "OnTimer worldspawn:RunScriptCode:Loop():0:-1", 0, null, null)
-            EntFireByHandle(timer, "Enable", "", looptime, null, null)
-            break
-        }
-    }
+    // Tell the plugin that P2MMLoop can now be called
+    EntFire("p2mm_servercommand", "command", "p2mm_loop 1", 0.01)
 
-    // Delay the creation of our map-specific entities before so
-    // that we don't get an engine error from the entity limit
+    // Delay the creation of our map-specific entities before so an engine error from the entity limit doesn't occur
     EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
 
     if (g_bIsCommunityCoopHub) {
@@ -70,15 +60,9 @@ function InstantRun() {
 }
 
 // 2
-function Loop() {
+function P2MMLoop() {
     // Trigger map-specific code
     MapSupport(false, true, false, false, false, false, false)
-
-    //## Event List ##//
-    if (EventList.len() > 0) {
-        EntFire("p2mm_servercommand", "command", "script " + EventList[0])
-        EventList.remove(0)
-    }
 
     // Get all players and check for changes
     for (local p = null; p = Entities.FindByClassname(p, "player");) {
@@ -111,7 +95,7 @@ function Loop() {
             }
         }
 
-        //## Detect death ##//
+        //## Detect death ##// //! REPLACE IN PLUGIN
         if (p.GetHealth() == 0) { // If player is dead
             local progress = true
             // Put dead players in the dead players array
@@ -183,21 +167,21 @@ function Loop() {
                 LastCoordGetPlayer = Entities.FindByClassname(null, "player")
             }
             if (LastCoordGetPlayer != null) {
-                EntFireByHandle(measuremovement, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
+                EntFireByHandle(measuremovement_eyeposition, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
                 // Alternate so our timings space out correctly
                 g_bCoordsAlternate = true
             }
         } else {
-            if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement")) {
+            if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement_eyeposition")) {
                 local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
                 if (currentplayerclass != null) {
                     if (OriginalAngle == null && g_bCanCheckAngle) {
-                        OriginalAngle = measuremovement.GetAngles()
+                        OriginalAngle = measuremovement_eyeposition.GetAngles()
                         Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
                     }
 
-                    currentplayerclass.eyeangles = measuremovement.GetAngles()
-                    currentplayerclass.eyeforwardvector = measuremovement.GetForwardVector()
+                    currentplayerclass.eyeangles = measuremovement_eyeposition.GetAngles()
+                    currentplayerclass.eyeforwardvector = measuremovement_eyeposition.GetForwardVector()
                 }
             }
             // Alternate so our timings space out correctly
@@ -266,9 +250,7 @@ function Loop() {
                     } catch(exception) {
                         OldPlayerPos = Vector(0, 0, 0)
                         OldPlayerAngles = Vector(0, 0, 0)
-                        if (GetDeveloperLevelP2MM()) {
-                            printlP2MM("Error: Could not cache player position. This is catastrophic!")
-                        }
+                        printlP2MM(1, true, "Error: Could not cache player position. This is catastrophic!")
                         cacheoriginalplayerposition = 1
                     }
                 }
@@ -300,7 +282,7 @@ function Loop() {
     }
 
     //## Run all custom generated props / prop related Garry's Mod code ##//
-    CreatePropsForLevel(false, false, true)
+    CreatePropsForLevel(false, false)
 
 
     //## Config developer mode loop ##//
@@ -441,7 +423,7 @@ function Loop() {
                         Vote.DoVote("fail")
                     }
                     else if (Vote.iVotedYes == Vote.iVotedNo) {
-                        // We already have a message set for this
+                        // A message is already set for this
                         // SendChatMessage("[VOTE] Even number of voters on each side.", Vote.pVoteInitiator)
                         Vote.DoVote("fail")
                     } else {
@@ -465,14 +447,10 @@ function PostPlayerSpawn() {
 
     if (!fogs) {
         usefogcontroller = false
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("No fog controller found. Disabling fog controller...")
-        }
+        printlP2MM(1, true, "No fog controller found. Disabling fog controller...")
     } else {
         usefogcontroller = true
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Fog controller found. Enabling fog controller...")
-        }
+        printlP2MM(0, true, "Fog controller found. Enabling fog controller...")
     }
 
     if (usefogcontroller) {
@@ -533,9 +511,7 @@ function PostPlayerSpawn() {
         }
     } catch (exception) {}
     if (OrangeOldPlayerPos == null) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
-        }
+        printlP2MM(1, true, "OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
         OrangeOldPlayerPos = OldPlayerPos
         OrangeCacheFailed = true
     }
@@ -556,9 +532,7 @@ function PostPlayerSpawn() {
                 }
             }
         } catch (exception) {
-            if (GetDeveloperLevelP2MM()) {
-                printlP2MM(OverrideName + " dropper not found! Cannot force open dropper.")
-            }
+            printlP2MM(1, true, OverrideName + " dropper not found! Cannot force open dropper.")
         }
     }
 
@@ -611,16 +585,17 @@ function PostPlayerSpawn() {
     }
 
     // Create props after cache
-    EntFire("p2mm_servercommand", "command", "script CreatePropsForLevel(false, true, false)")
+    EntFire("p2mm_servercommand", "command", "script CreatePropsForLevel(false, true)")
 
     // Remove scoreboard
-    if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub /*&& !Player2Joined*/) {
-        for (local ent; ent = Entities.FindByClassname(ent, "player");) {
-            // TODO: Is there a better way to trigger this for the host player on a listen server?
-            // Right now, this will enter -score for every player
-            EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, ent, ent)
-        }
-    }
+    //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
+    // if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub /*&& !Player2Joined*/) {
+    //     for (local ent; ent = Entities.FindByClassname(ent, "player");) {
+    //         // TODO: Is there a better way to trigger this for the host player on a listen server?
+    //         // Right now, this will enter -score for every player
+    //         EntFireByHandle(p2mm_clientcommand, "Command", "-score", 0, ent, ent)
+    //     }
+    // }
 
     // Random Turret and Frankenturret colors and models, but once!
     if (Config_RandomTurret) {
@@ -658,16 +633,14 @@ function PostPlayerSpawn() {
     // Code used to handle running VScript debugging on the host
     // This needs to be called in PostPlayerSpawn, because the game is in a state where `script_debug` will work as intended.
     if (Config_VScriptDebug) {
-        printlP2MM("[DEBUGGING] Initiating VScript Debugging!")
+        printlP2MM(0, false, "[DEBUGGING] Initiating VScript Debugging!")
 
         // Developer is needed for debugging to work.
         // Just turning it on will work, but the debugger will act 
         // strange when the map loaded doesn't start with developer enabled,
-        // so we need to restart the map for it act as expected.
-        // For some reason GetDeveloperLevelP2MM() is not working correctly while doing this, 
-        // so we use the normal GetDeveloperLevel() instead although it does the exact same thing.
+        // so the map needs to be restarted for it act as expected.
         if (!GetDeveloperLevel()) {
-            printlP2MM("[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
+            printlP2MM(1, false, "[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
             EntFire("p2mm_servercommand", "command", "developer 1")
             EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName())
         }
@@ -689,7 +662,7 @@ function PostPlayerSpawn() {
         // Call `script_debug` only on the host, that way other players will not be frozen.
         // But those same players can disconnect from the server due to time out if the host
         // does not connect the debugger quick enough unfreezing their game.
-        EntFireByHandle(p2mm_clientcommand, "Command", "script_debug", 1, Entities.FindByName(null, "blue"), Entities.FindByName(null, "blue"))
+        EntFire("p2mm_servercommand", "command", "script_debug", 1, Entities.FindByName(null, "blue"))
 
         // `script_debug` takes a second to do its thing, so delay the debug message
         EntFire("p2mm_servercommand", "command", "script printlP2MM(\"[DEBUGGING] VScript Debugger Attached!\")", 1.1)
@@ -709,16 +682,11 @@ function PostMapSpawn() {
     // Trigger map-specific code
     MapSupport(false, false, false, true, false, false, false)
 
-    // Prints the current map, needed for the checkpoint system
-    // \n was here :>
-    printl("loaded: " + GetMapName())
-
     if (!IsDedicatedServer()) {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
     }
 
-    //## Cheat detection ##//erver
-    EntFire("p2mm_servercommand", "command", "prop_dynamic_create cheatdetectionp2mm")
+    //## Cheat detection ##//
     EntFire("p2mm_servercommand", "command", "script SetCheats()")
 
     // Edit cvars & set server name
@@ -733,7 +701,7 @@ function PostMapSpawn() {
     if (!g_bIsCommunityCoopHub) {
         AddBranchLevelName(1, "P2:MM")
     }
-    CreatePropsForLevel(true, false, false)
+    CreatePropsForLevel(true, false)
 
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)
@@ -860,7 +828,7 @@ function OnPlayerJoin(p, script_scope) {
     //     }
     // }
 
-    // Are we teleporting this player based on our predictions/calculations
+    // Is this player being teleported based on the predictions/calculations
     // of the locations of entities in the map?
     if (GlobalSpawnClass.m_bUseAutoSpawn) {
         TeleportToSpawnPoint(p, null)
@@ -906,12 +874,10 @@ function OnPlayerJoin(p, script_scope) {
         FindEntityClass(portal1).linkedprop <- null
         FindEntityClass(portal2).linkedprop <- null
     } catch (exception) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Failed to rename portals" + exception)
-        }
+        printlP2MM(1, true, "Failed to rename portals" + exception)
     }
 
-    //# Set viewmodel targetnames so we can tell them apart #//
+    //# Set viewmodel targetnames so they can be told apart #//
     for (local ent; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
         EntFireByHandle(ent, "AddOutput", "targetname predicted_viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
     }
@@ -948,7 +914,8 @@ function OnPlayerJoin(p, script_scope) {
     EntFire("p2mm_servercommand", "command", "con_filter_enable 1; con_filter_text_out \"EntryMatchList\"") // Blocks repeated sound errors at around 13 players
 
     // Motion blur is very intense for some reason
-    EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos; r_portal_fastpath 0; r_portal_use_pvs_optimization 0; mat_motion_blur_forward_enabled 0", 0, p, p)
+    //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
+    //EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos; r_portal_fastpath 0; r_portal_use_pvs_optimization 0; mat_motion_blur_forward_enabled 0", 0, p, p)
 
     // SETUP THE CLASS /////////////////
     local currentplayerclass = CreateGenericPlayerClass(p)
@@ -960,14 +927,15 @@ function OnPlayerJoin(p, script_scope) {
     /////////////////////////////////////
 
     // Show scoreboard
-    if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub && !Player2Joined) {
-        local p = Entities.FindByClassname(null, "player")
-        if (FindPlayerClass(p).id == 1) {
-            EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
-        }
-    }
+    //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
+    // if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub && !Player2Joined) {
+    //     local p = Entities.FindByClassname(null, "player")
+    //     if (FindPlayerClass(p).id == 1) {
+    //         EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
+    //     }
+    // }
 
-    // We don't want it to show as a host client on a listen server
+    // Don't show the join text for the listen server host
     // TODO: Possibly need to rework "y" offset for dedicated?
     if (Config_UseJoinIndicator && PlayerID > 1) {
         // Set join message to player name (or index)
@@ -986,7 +954,7 @@ function OnPlayerJoin(p, script_scope) {
 
     // Set dev cosmetics
     if (Config_UseCustomDevModels && PluginLoaded) {
-        // Currently doesn't work on dedicated... We need a new way to precache models for everyone
+        // Currently doesn't work on dedicated... need a new way to precache models for everyone
         if (!IsDedicatedServer()) {
             switch (FindPlayerClass(p).steamid) {
                 case 290760494: SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl");       break; // Nanoman2525
@@ -1010,9 +978,7 @@ function OnDeath(player) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, player, false)
 
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
-    }
+    printlP2MM(0, true, FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
 }
 
 // 7
@@ -1020,9 +986,7 @@ function OnRespawn(player) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, false, player)
 
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
-    }
+    printlP2MM(0, true, FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
 
     // GlobalSpawnClass teleport
     if (GlobalSpawnClass.m_bUseAutoSpawn) {

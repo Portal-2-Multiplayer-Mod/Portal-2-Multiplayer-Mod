@@ -5,6 +5,9 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗╚█████╔╝╚█████╔╝███████╗╚██████╔╝██║ ╚═╝ ██║██║ ╚███║██████████╗██████╦╝███████╗╚█████╔╝╚█████╔╝██║ ╚██╗███████╗██║  ██║
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝ ╚════╝  ╚════╝ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚══╝╚═════════╝╚═════╝ ╚══════╝ ╚════╝  ╚════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
 
+OnlyOnceSpA2ColumBlocker1 <- true
+OnlyOnceSpA2ColumBlocker2 <- true
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
@@ -23,8 +26,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "officedoor_1").__KeyValueFromString("targetname", "MPModOfficeDoorOverride")
 
         EntFire("surprise_room_door_relay", "AddOutput", "OnTrigger MPModOfficeDoorOverride:SetAnimation:Open", 0, null)
-        OnlyOnceSpA2ColumBlocker1 <- true
-        OnlyOnceSpA2ColumBlocker2 <- true
 
         // Make changing levels work
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_laser_chaining:0.3", 0, null)

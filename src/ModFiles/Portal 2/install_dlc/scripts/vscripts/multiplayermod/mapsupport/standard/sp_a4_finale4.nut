@@ -5,6 +5,11 @@
 // ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║     ██║██║ ╚███║██║  ██║███████╗███████╗╚════██║
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝     ╚═╝
 
+Sp_A4_Finale4ElevatorTeleport <- true
+Sp_A4_Finale4ElevatorTopTeleport <- true
+parentthingerdinger <- true
+NewSpawnPoint <- false
+
 fogs <- [
     {name = "environment_vista", fogname = "environment_vista_fog", fogdelay = 0}
     {name = "environment_darkness_1", fogname = "@environment_darkness_1_fog", fogdelay = 0}
@@ -28,7 +33,7 @@ function TeleportPlayersBehindEndingElevator() {
 }
 
 function MoveSoundScape() {
-    printl("JELLO")
+    printlP2MM(0, true, "JELLO! For some reason...")
     // EntFire("end_soundscape", "disable")
     // Entities.FindByName(null, "end_soundscape").SetOrigin(Vector(-11264, 576, 128))
     // EntFire("end_soundscape", "Disable", "", 0.1)
@@ -196,10 +201,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("wheatley_lookat_player_relay", "AddOutput", "OnTrigger DummyObjectWheatlyLookOn:kill", 0, null)
 
         Entities.FindByClassnameNearest("trigger_once", Vector(0, -384, 96), 350).__KeyValueFromString("targetname", "topofelevator")
-        Sp_A4_Finale4ElevatorTeleport <- true
-        Sp_A4_Finale4ElevatorTopTeleport <- true
-        parentthingerdinger <- true
-        NewSpawnPoint <- false
 
         for (local ent = null; ent = Entities.FindByName(ent, "breaker_hatch_door");) {
             ent.__KeyValueFromInt("forceclosed", 1)
@@ -355,7 +356,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // }
 
             if (!Entities.FindByName(null, "DummyObjectWheatlyLookOn")) {
-                printl("DummyObjectWheatlyLookOn not found running objective")
+                printlP2MM(0, true, "DummyObjectWheatlyLookOn not found running objective")
                 Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "DummyObjectWheatlyLookOn")
                 WatchPlayerWheatley <- true
             }

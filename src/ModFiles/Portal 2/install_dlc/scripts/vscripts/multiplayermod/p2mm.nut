@@ -25,20 +25,12 @@
 // In case this is the client VM...
 if (!("Entities" in this)) { return }
 
-// Make sure that the user is in multiplayer mode before initiating everything
-if (!IsMultiplayer()) {
-    printlP2MM("This is not a multiplayer session! Disconnecting client...")
-    EntFire("p2mm_servercommand", "command", "disconnect \"You cannot play the singleplayer mode when Portal 2 is launched from the Multiplayer Mod launcher. Please unmount and launch normally to play singleplayer.\"")
-    return
-}
-
 printl("\n---------------------")
 printl("==== calling p2mm.nut")
 printl("---------------------\n")
 
-// We don't call this one directly from the start since
-// we want to continue our logic in this file for now...
-IncludeScript("multiplayermod/pluginfunctionscheck.nut")    // Make sure we know the exact status of our plugin
+// Make sure all the VScript functions from the plugin are available
+IncludeScript("multiplayermod/pluginfunctionscheck.nut")
 
 if (!PluginLoaded) {
     // One-off check for running p2mm on first map load
@@ -56,40 +48,49 @@ if (!PluginLoaded) {
 
 iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1) // Determine what the "maxplayers" cap is
 
-if (GetDeveloperLevelP2MM()) {
-    printlP2MM("Session info...")
-    printlP2MM("- Current map: " + GetMapName())
-    printlP2MM("- Max players allowed on the server: " + iMaxPlayers)
-    printlP2MM("- Dedicated server: " + IsDedicatedServer())
+printlP2MM(0, true, "Session info...")
+printlP2MM(0, true, "- Current map: " + GetMapName())
+printlP2MM(0, true, "- Max players allowed on the server: " + iMaxPlayers)
+printlP2MM(0, true, "- Dedicated server: " + IsDedicatedServer())
+printlP2MM(0, true, "\n")
+
+IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences and make sure nothing was invalid and compensate
+
+printlP2MM(0, true, FirstRunState(-1).tostring())
+printlP2MM(0, true, GetLastMap())
+printlP2MM(0, true, GetMapName())
+
+// Check if its the first map run so Last Map System stuff can be done
+if (FirstRunState(-1)) {
+    FirstRunState(0)
+
+    // Reset developer level, developer needs to stay enabled for VScript Debugging to work
+    if (Config_DevMode || Config_VScriptDebug) {
+        EntFire("p2mm_servercommand", "command", "developer 1")
+    }
+    else {
+        EntFire("p2mm_servercommand", "command", "developer 0")
+    }
+    
+    // Check if Last Map System supplied a value and that it's a valid map, then restart on that map
+    if (IsMapValid(GetLastMap()) && (GetLastMap() != GetMapName())) {
+        FirstRunState(1)
+
+        printlP2MM(0, true, FirstRunState(-1).tostring())
+        printlP2MM(0, true, GetLastMap())
+        printlP2MM(0, true, GetMapName())
+
+        EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0)
+        return
+    }
 }
-
-IncludeScript("multiplayermod/config.nut")      // Import the user configuration and preferences
-IncludeScript("multiplayermod/configcheck.nut") // Make sure nothing was invalid and compensate
-
-// There's no conceivable way to tell whether or not this is the first map load after launching a server
-// So we do a dirty developer level hack to something that no one sets it to and reset it when we are done
-if (GetDeveloperLevel() == 918612) {
-    // Take care of anything pertaining to progress check and how our plugin did when loading
-    IncludeScript("multiplayermod/firstmapload.nut")
-    return
-}
-
-// try-catch used for loading the last map as given by the launcher. If the VScript file doesn't exist, the system must be off.
-// try {
-//     printlP2MM("Checking for lastmap.nut...\n")
-//     IncludeScript("multiplayermod/lastmap.nut")
-// } catch (exception) {
-//     printlP2MM(exception)
-//     printlP2MM("Lastmap.nut doesn't exist, \"Start Last Map\" must be off. Continuing on current map!")
-// }
 
 //-------------------------------------------------------------------------------------------
 
 // Continue loading the P2:MM fixes, game mode, and features
 
-IncludeScript("multiplayermod/variables.nut")
+IncludeScript("multiplayermod/vars&funcs.nut")
 IncludeScript("multiplayermod/safeguard.nut")
-IncludeScript("multiplayermod/functions.nut")
 IncludeScript("multiplayermod/hooks.nut")
 IncludeScript("multiplayermod/chatcommands.nut")
 
@@ -100,6 +101,15 @@ IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 //---------------------------------------------------
 
 // Print P2:MM game art in console
+ConsoleAscii <- [
+"########...#######...##..##.....##.##.....##",
+"##.....##.##.....##.####.###...###.###...###",
+"##.....##........##..##..####.####.####.####",
+"########...#######.......##.###.##.##.###.##",
+"##........##.........##..##.....##.##.....##",
+"##........##........####.##.....##.##.....##",
+"##........#########..##..##.....##.##.....##"
+]
 foreach (line in ConsoleAscii) { printl(line) }
 delete ConsoleAscii
 
@@ -111,15 +121,15 @@ delete ConsoleAscii
 // Import map support code
 // Map name will be wonky if the client VM attempts to get the map name
 function LoadMapSupportCode(gametype) {
-    printl( "\n=============================================================")
-    printlP2MM("Attempting to load " + gametype + " mapsupport code!")
-    printl("=============================================================\n")
+    printlP2MM(0, false, "=============================================================")
+    printlP2MM(0, false, "Attempting to load " + gametype + " mapsupport code!")
+    printlP2MM(0, false, "=============================================================\n")
 
     if (gametype != "standard") {
         if (gametype == "speedrun") {
             // Quick check for the speedrun mod plugin
             if (!("smsm" in this)) {
-                printlP2MM("Failed to load the VScript registers in the Speedrun Mod plugin! Reverting to standard mapsupport...")
+                printlP2MM(1, false, "Failed to load the VScript registers in the Speedrun Mod plugin! Reverting to standard mapsupport...")
                 return LoadMapSupportCode("standard")
             }
         }
@@ -127,7 +137,7 @@ function LoadMapSupportCode(gametype) {
             // Import the core functions before the actual mapsupport
             IncludeScript("multiplayermod/mapsupport/" + gametype + "/#" + gametype + "functions.nut")
         } catch (exception) {
-            printlP2MM("Failed to load the " + gametype + " core functions file!")
+            printlP2MM(1, false, "Failed to load the " + gametype + " core functions file!")
         }
     }
 
@@ -135,10 +145,10 @@ function LoadMapSupportCode(gametype) {
         IncludeScript("multiplayermod/mapsupport/" + gametype + "/" + GetMapName() + ".nut")
     } catch (exception) {
         if (gametype == "standard") {
-            printlP2MM("Failed to load standard mapsupport for " + GetMapName() + "\n")
+            printlP2MM(1, false, "Failed to load standard mapsupport for " + GetMapName() + "\n")
         }
         else {
-            printlP2MM("Failed to load " + gametype + " mapsupport code! Reverting to standard mapsupport...")
+            printlP2MM(1, false, "Failed to load " + gametype + " mapsupport code! Reverting to standard mapsupport...")
             return LoadMapSupportCode("standard")
         }
     }
@@ -150,7 +160,7 @@ switch (Config_GameMode) {
     case 0: LoadMapSupportCode("standard"); break
     case 1: LoadMapSupportCode("speedrun"); break
     default:
-        printlP2MM("\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard mapsupport.")
+        printlP2MM(1, false, "\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard mapsupport.")
         LoadMapSupportCode("standard")
         break
 }

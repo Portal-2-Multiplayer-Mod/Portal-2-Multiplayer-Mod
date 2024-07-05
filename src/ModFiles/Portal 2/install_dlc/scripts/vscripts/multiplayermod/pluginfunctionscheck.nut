@@ -6,15 +6,10 @@
 //              function individually.
 //---------------------------------------------------
 
-// Differentiate our debug comments in the console from normal spew
-function printlP2MM(str) {
-    printl("(P2:MM VSCRIPT): " + str)
-}
-
 // Bad way to check, but what else can we do?
 if (Entities.FindByName(null, "p2mm_servercommand")){
     // Primary check in case the script attempts to execute midgame and it already has
-    printlP2MM("pluginfunctionscheck.nut has already ran and is attempting to run again! Suppressing...")
+    printlP2MM(1, false, "pluginfunctionscheck.nut has already ran and is attempting to run again! Suppressing...")
     return
 } else {
     // Create a global point_servercommand entity for us to pass through commands
@@ -25,33 +20,70 @@ if (Entities.FindByName(null, "p2mm_servercommand")){
 
 // HANDLED THROUGH THE PLUGIN
 try {
-    if (GetPlayerNameLoaded && GetSteamIDLoaded && SetPhysTypeConvarLoaded && SetMaxPortalSeparationConvarLoaded && IsDedicatedServerLoaded && IsMapValidLoaded && GetDeveloperLevelP2MMLoaded && SendToChatLoaded) {
+    if (   printlP2MMLoaded
+        && GetPlayerNameLoaded
+        && GetSteamIDLoaded
+        && GetPlayerIndexLoaded
+        && IsMapValidLoaded
+        && GetDeveloperLevelP2MMLoaded
+        && SetPhysTypeConvarLoaded
+        && SetMaxPortalSeparationConvarLoaded
+        && IsDedicatedServerLoaded
+        && InitializeEntityLoaded
+        && SendToChatLoaded
+        && GetGameDirectoryLoaded
+        && GetLastMapLoaded
+        && FirstRunStateLoaded
+        && CallFirstRunPromptLoaded
+        ) {
         // Everything loaded properly, no need to even go through the checks
         PluginLoaded <- true
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("- Plugin and its VScript functions detected successfully!\n")
-        }
+        printlP2MM(0, true, "Plugin and its VScript functions detected successfully!\n")
         return
     }
 } catch (exception) {
-    printlP2MM("- VScript functions were not all detected!\n")
+    printl("(P2:MM VSCRIPT): VScript functions were not all detected!")
+    printl("Problem function: " + exception + "\n")
 }
 
 //---------------------------------------------------
 
-// Failed the check, declare all as false and check each one manually..
+// Check if all plugin defined VScript functions exist
 
+printlP2MMLoaded                    <- false
 GetPlayerNameLoaded                 <- false
 GetSteamIDLoaded                    <- false
+GetPlayerIndexLoaded                <- false
+IsMapValidLoaded                    <- false
+GetDeveloperLevelP2MMLoaded         <- false
 SetPhysTypeConvarLoaded             <- false
 SetMaxPortalSeparationConvarLoaded  <- false
 IsDedicatedServerLoaded             <- false
-IsMapValidLoaded                    <- false
-GetDeveloperLevelP2MMLoaded         <- false
+InitializeEntityLoaded              <- false
 SendToChatLoaded                    <- false
+GetGameDirectoryLoaded              <- false
+GetLastMapLoaded                    <- false
+FirstRunStateLoaded                 <- false
+CallFirstRunPromptLoaded            <- false
 
 function RedefinedMessage(functionname) {
-    printlP2MM("- " + functionname + "() failed to load and has been redefined!")
+    printlP2MM(1, false, "- " + functionname + "() failed to load and has been redefined!\n")
+}
+
+local ReplaceprintlP2MM = function() {
+    // Does the function exist?
+    if ("printlP2MM" in this) {
+        printlP2MMLoaded <- true
+        return
+    }
+    // Redefine
+    function printlP2MM(level, dev, msg) {
+        if (dev && !GetDeveloperLevelP2MM()) {
+            return
+        }
+        printl("(P2:MM VSCRIPT): " + msg)
+    }
+    RedefinedMessage("printlP2MM")
 }
 
 local ReplaceGetPlayerName = function() {
@@ -78,37 +110,15 @@ local ReplaceGetSteamID = function() {
     RedefinedMessage("GetSteamID")
 }
 
-local ReplaceSetPhysTypeConvar = function() {
-    if ("SetPhysTypeConvar" in this) {
-        SetPhysTypeConvarLoaded <- true
+local ReplaceGetPlayerIndex = function() {
+    if ("GetPlayerIndex" in this) {
+        GetPlayerIndexLoaded <- true
         return
     }
-    function SetPhysTypeConvar(string) {
-        printlP2MM("Plugin not loaded. Unable to change game grab controllers!")
+    function GetPlayerIndex(int) {
+        printlP2MM(1, false, "Plugin not loaded. Unable to grab a players index with their userid!")
     }
-    RedefinedMessage("SetPhysTypeConvar")
-}
-
-local ReplaceSetMaxPortalSeparationConvar = function() {
-    if ("SetMaxPortalSeparationConvar" in this) {
-        SetMaxPortalSeparationConvarLoaded <- true
-        return
-    }
-    function SetMaxPortalSeparationConvar(string) {
-        printlP2MM("Plugin not loaded. Unable to change player collision amounts!")
-    }
-    RedefinedMessage("SetMaxPortalSeparationConvar")
-}
-
-local ReplaceIsDedicatedServer = function() {
-    if ("IsDedicatedServer" in this) {
-        IsDedicatedServerLoaded <- true
-        return
-    }
-    function IsDedicatedServer() {
-        return false // We've been cornered, so we assume the most likely value :(
-    }
-    RedefinedMessage("IsDedicatedServer")
+    RedefinedMessage("GetPlayerIndex")
 }
 
 local ReplaceIsMapValid = function() {
@@ -133,6 +143,50 @@ local ReplaceGetDeveloperLevelP2MM = function() {
     RedefinedMessage("GetDeveloperLevelP2MM")
 }
 
+local ReplaceSetPhysTypeConvar = function() {
+    if ("SetPhysTypeConvar" in this) {
+        SetPhysTypeConvarLoaded <- true
+        return
+    }
+    function SetPhysTypeConvar(string) {
+        printlP2MM(1, false, "Plugin not loaded. Unable to change game grab controllers!")
+    }
+    RedefinedMessage("SetPhysTypeConvar")
+}
+
+local ReplaceSetMaxPortalSeparationConvar = function() {
+    if ("SetMaxPortalSeparationConvar" in this) {
+        SetMaxPortalSeparationConvarLoaded <- true
+        return
+    }
+    function SetMaxPortalSeparationConvar(string) {
+        printlP2MM(1, false, "Plugin not loaded. Unable to change player collision amounts!")
+    }
+    RedefinedMessage("SetMaxPortalSeparationConvar")
+}
+
+local ReplaceIsDedicatedServer = function() {
+    if ("IsDedicatedServer" in this) {
+        IsDedicatedServerLoaded <- true
+        return
+    }
+    function IsDedicatedServer() {
+        return false // We've been cornered, so we assume the most likely value :(
+    }
+    RedefinedMessage("IsDedicatedServer")
+}
+
+local ReplaceInitializeEntity = function() {
+    if ("InitializeEntity" in this) {
+        InitializeEntityLoaded <- true
+        return
+    }
+    function InitializeEntity() {
+        return null // This function isnt really used, so this might just not work.
+    }
+    RedefinedMessage("InitializeEntity")
+}
+
 local ReplaceSendToChat = function() {
     if ("SendToChat" in this) {
         SendToChatLoaded <- true
@@ -150,27 +204,93 @@ local ReplaceSendToChat = function() {
     RedefinedMessage("SendToChat")
 }
 
+local ReplaceGetGameDirectory = function() {
+    if ("GetGameDirectory" in this) {
+        GetGameDirectoryLoaded <- true
+        return
+    }
+    function GetGameDirectory() {
+        return "portal2"
+    }
+    RedefinedMessage("GetGameDirectory")
+}
+
+local ReplaceGetLastMap = function() {
+    if ("GetLastMap" in this) {
+        GetLastMapLoaded <- true
+        return
+    }
+    function GetLastMap() {
+        return GetMapName() // Hands are tied, we can only get the current map.
+    }
+    RedefinedMessage("GetLastMap")
+}
+
+local ReplaceFirstRunState = function() {
+    if ("FirstRunState" in this) {
+        FirstRunStateLoaded <- true
+        return
+    }
+    function FirstRunState(state = null) {
+        return false // Once again hands are tied, will screw up stuff.
+    }
+    RedefinedMessage("FirstRunState")
+}
+
+local ReplaceCallFirstRunPrompt = function() {
+    if ("CallFirstRunPrompt" in this) {
+        CallFirstRunPromptLoaded <- true
+        return
+    }
+    function CallFirstRunPrompt() {
+        return
+    }
+    RedefinedMessage("CallFirstRunPrompt")
+}
+
 //---------------------------------------------------
 
 // Test all VScript functions
+ReplaceprintlP2MM()
 ReplaceGetPlayerName()
 ReplaceGetSteamID()
+ReplaceGetPlayerIndex()
+ReplaceIsMapValid()
+ReplaceGetDeveloperLevelP2MM()
 ReplaceSetPhysTypeConvar()
 ReplaceSetMaxPortalSeparationConvar()
 ReplaceIsDedicatedServer()
-ReplaceIsMapValid()
-ReplaceGetDeveloperLevelP2MM()
+ReplaceInitializeEntity()
 ReplaceSendToChat()
+ReplaceGetGameDirectory()
+ReplaceGetLastMap()
+ReplaceFirstRunState()
+ReplaceCallFirstRunPrompt()
 
-if (IsDedicatedServer() && GetDeveloperLevelP2MM()) {
+if (IsDedicatedServer()) {
     // Handled in the plugin. This doesn't work with ds
-    printlP2MM("- Running a dedicated server. Cannot set max separation force for players!")
+    printlP2MM(1, true, "- Running a dedicated server. Cannot set max separation force for players!")
 }
 
 //---------------------------------------------------
 
 // The final say
-if (!GetPlayerNameLoaded && !GetSteamIDLoaded && !SetPhysTypeConvarLoaded && !SetMaxPortalSeparationConvarLoaded && !IsDedicatedServerLoaded && !IsMapValidLoaded && !GetDeveloperLevelP2MMLoaded && !SendToChatLoaded) {
+if (   !printlP2MMLoaded
+    && !GetPlayerNameLoaded
+    && !GetSteamIDLoaded
+    && !GetPlayerIndexLoaded
+    && !IsMapValidLoaded
+    && !GetDeveloperLevelP2MMLoaded
+    && !SetPhysTypeConvarLoaded
+    && !SetMaxPortalSeparationConvarLoaded
+    && !IsDedicatedServerLoaded
+    && !InitializeEntityLoaded
+    && !SendToChatLoaded
+    && !GetGameDirectoryLoaded
+    && !GetLastMapLoaded
+    && !FirstRunStateLoaded
+    && !CallFirstRunPromptLoaded
+    ) {
     // Nothing loaded
     PluginLoaded <- false
 } else {

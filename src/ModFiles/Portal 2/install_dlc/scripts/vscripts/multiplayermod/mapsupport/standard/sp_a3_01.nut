@@ -5,6 +5,9 @@
 //██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝███████╗
 //╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚══════╝
 
+HasStartedSp_A3_01 <- false
+OnlyOnceSp_A3_01 <- true
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         stoprenable <- false
@@ -12,18 +15,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         UTIL_Team.Pinging(false, "all", 1)
         UTIL_Team.Taunting(false, "all", 1)
 
-        HasStartedSp_A3_01 <- false
-
         Entities.FindByName(null, "AutoInstance1-circuit_breaker_lever").__KeyValueFromString("solid", "0")
-        // Here if we need to ent_fire something
-        //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
+
         // Destroy objects
         Entities.FindByName(null, "transition_trigger").Destroy()
         Entities.FindByName(null, "knockout-teleport").Destroy()
         Entities.FindByName(null, "knockout-teleport-destination").Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-10304, 2544, 112), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_multiple", Vector(-640, -1520, 456), 20).Destroy()
-        OnlyOnceSp_A3_01 <- true
+        
     }
 
     if (MSPostPlayerSpawn) {
@@ -31,7 +31,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByName(null, "global_ents-proxy"), "OnProxyRelay8", "", 0, null, null)
         EntFireByHandle(Entities.FindByName(null, "knockout_start"), "Trigger", "", 1, null, null)
 
-        printl("Ran")
+        printlP2MM(0, true, "MSPostPlayerSpawn Ran")
         Sp_A3_01Viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         Sp_A3_01Viewcontrol.__KeyValueFromString("targetname", "Sp_A3_01Viewcontrol")
         Sp_A3_01Viewcontrol.__KeyValueFromString("target_team", "-1")
@@ -45,9 +45,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A3_01ViewcontrolTele", "AddOutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)
     }
 
-    if (MSOnPlayerJoin != false) {
+    if (MSOnPlayerJoin) {
         if (stoprenable) {
-            printl("Player Joined (Reseting Viewcontrols)")
+            printlP2MM(0, true, "Player Joined (Reseting Viewcontrols)")
             EntFire("Sp_A3_01Viewcontrol", "disable", "", 0.5, null)
             EntFire("Sp_A3_01Viewcontrol", "Disable", "", 0.6, null)
         }

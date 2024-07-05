@@ -5,11 +5,12 @@
 // ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗██║     ╚█████╔╝██║  ██║   ██║   ██║  ██║███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝╚═╝      ╚════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
+OnlyOnceSp_A3_Portal_Intro <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
         PermaPotato = true
-        OnlyOnceSp_A3_Portal_Intro <- false
 
         Entities.FindByName(null, "1970s_door1door_lower").__KeyValueFromString("targetname", "moja1")
         Entities.FindByName(null, "1970s_door1door_upper").__KeyValueFromString("targetname", "moja2")
@@ -71,9 +72,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Goo Damage Code
         try {
-            if (GooHurtTimerPred) {
-                printl()
-            }
+            if (GooHurtTimerPred) { printl() }
         } catch (exception) {
             GooHurtTimerPred <- 0
         }

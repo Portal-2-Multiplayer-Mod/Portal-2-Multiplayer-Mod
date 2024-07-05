@@ -177,11 +177,76 @@ def FindAvailableDLC(gamepath: str) -> str:
 # █ █▄░█ █ ▀█▀
 # █ █░▀█ █ ░█░
 
+# Parse the launch arguments with whats in the Custom-Launch-Options (CLO).
+def AssembleArgs() -> str | bool:
+    #* ConVars/Console Command used here created by plugin:
+    #? "+p2mm_developer 0/1": When on, developer log messages for the plugin and VScript will appear in the console.
+    #? "+p2mm_lastmap (map)": Used by Portal 2 for the main menu and for starting up singleplayer maps.
+    #? "+p2mm_splitscreen 0/1": A ConVar for the launcher to pass and for the main menu to set to start sessions with splitscreen.
+    #? "+p2mm_startsession (map)": A console command used to start and setup P2:MM sessions.
+    #?   Sets up ConVars, variables, and flags, as well as handling starting a session on a singleplayer map.
+
+    # Working with the launch arguments and Custom-Launch-Options (CLO) as a table helps with making
+    # any needed changes before it is turned into a string then passed on to the Portal 2 executable.
+    args = ["-novid", "-allowspectators", "-nosixense", "-conclearlog", "-condebug", "-usercon"]
+    preCLO = GVars.configData['Custom-Launch-Options']['value'].strip().split(" ")
+    CLO = []
+    [CLO.append(x) for x in preCLO if not x in CLO] # Remove duplicate launch arguments
+
+    print("Default launch args: " + str(args))
+    print("preCLO: " + str(preCLO))
+    print("CLO: " + str(CLO))
+
+    try:
+        # If "+ss_map" is in the CLO, set the plugin's splitscreen ConVar to true for "p2mm_startsession" to read,
+        # then replace any "+map" and "+ss_map" with "+p2mm_startsession" for the mod to properly start.
+        # The user can also manually specify "+p2mm_splitscreen", check for and if its not there add it in.
+        if not ("+p2mm_splitscreen" in " ".join(CLO)):
+            args.extend(("+p2mm_splitscreen 1" if "+ss_map" in " ".join(CLO) else "+p2mm_splitscreen 0").split(" "))
+        args.extend(" ".join(CLO).replace("+map", "+p2mm_startsession").replace("+ss_map", "+p2mm_startsession").split(" "))
+
+        # Add the last map played for the Last Map System if enabled, if a last map was recorded, and if the last map already isn't in Custom-Launch-Options (CLO).
+        if ((GVars.configData["Start-From-Last-Map"]["value"]) and (len(GVars.configData["Last-Map"]["value"].strip()) > 0) and (not GVars.configData["Last-Map"]["value"].strip() in " ".join(args))):
+            print("Last Map System on and has value: " + GVars.configData["Last-Map"]["value"].strip())
+            # Make sure that if last map is enabled, the last map is set for starting the session.
+            if ("+p2mm_startsession" in " ".join(args)):
+                args = list(map(lambda x: x.replace(args[args.index("+p2mm_startsession") + 1], GVars.configData["Last-Map"]["value"].strip()), args))
+            else:
+                args.extend(["+p2mm_startsession", GVars.configData["Last-Map"]["value"].strip()])
+
+        # While the Last Map System can be disabled, the user can still pass "+p2mm_lastmap"
+        # to start at a certain map, while really they should just use "+p2mm_startsession".
+        # To reduce the number of map changes and reduce load time, replace the map specified with
+        # "+p2mm_startsession" with the one with "+p2mm_lastmap", then remove "+p2mm_lastmap" and its value.
+        if ("+p2mm_lastmap" in " ".join(args)):
+            print("Forced +p2mm_lastmap in args.")
+            if ("+p2mm_startsession" in " ".join(args)):
+                args = list(map(lambda x: x.replace(args[args.index("+p2mm_startsession") + 1], args[args.index("+p2mm_lastmap") + 1]), args))
+                args.remove(args[args.index("+p2mm_lastmap") + 1])
+                args.remove("+p2mm_lastmap")
+            else:
+                args.extend(["+p2mm_startsession", args[args.index("+p2mm_lastmap") + 1]])
+                args.remove(args[args.index("+p2mm_lastmap") + 1])
+                args.remove("+p2mm_lastmap")
+        
+        print(args)
+        args = " ".join(args).strip()
+    except Exception as e:
+        Log(e)
+        Log("Launch arguments weren't able to be parsed correctly!")
+        Log("This is most likely due to incorrectly inputting launch arguments into the Custom-Launch-Options. Please check and made sure they are inputted correctly.")
+        Log("Game will launch without Custom-Launch-Options and start with default launch arguments (-novid -allowspectators -nosixense -conclearlog -condebug -usercon +clear)...")
+        return False
+
+    print(args)
+    return args
+
+# START THE GAME!!!
 def LaunchGame(gamepath: str) -> None:
     Log("=============")
     Log("Running Game...")
 
-    args = f"-novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear"
+    args = f"-novid -allowspectators -nosixense -conclearlog -condebug -usercon"
 
     # portal 2 uses the first argument provided, so this will override whatever the user has in the custom launch options
     # if GVars.configData["Start-From-Last-Map"]["value"] and len(GVars.configData["Last-Map"]["value"].strip()) > 0:

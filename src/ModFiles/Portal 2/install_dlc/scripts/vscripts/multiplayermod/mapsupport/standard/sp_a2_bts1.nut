@@ -5,6 +5,8 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝███████╗
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚══════╝
 
+OneTimeRunSp_A2_Bts1 <- true
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
@@ -31,8 +33,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("@pre_solved_chamber_start_rl", "AddOutput", "OnTrigger MPModBridgeOverride:Enable::2.5", 0, null)
 
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(864, -1488, -16), 16), "AddOutput", "OnTrigger MPModBridgeOverride:Disable", 0, null, null)
-
-        OneTimeRunSp_A2_Bts1 <- true
     }
 
     if (MSPostPlayerSpawn) {

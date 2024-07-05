@@ -79,13 +79,13 @@ Mamy je również w pliku dla łatwej instalacji: `pip install -r requirements.t
 
 ## Kompilacja
 
-Używamy [`nuitka`](https://nuitka.net/), [`pyinstaller`](https://pypi.org/project/pyinstaller/), i [`AppImage`](https://appimage.org/) do tworzenia plików wykonywalnych.
+Używamy [`nuitka`](https://nuitka.net/) do kompilowania Launchera Portal 2: Multiplayer Mod. Oprócz tego używamy GitHub Actions do naszych plików wykonywalnych wersji. [`pyinstaller`](https://pypi.org/project/pyinstaller/) i [`AppImage`](https://appimage.org/) były pierwotnie używane, ale zostały wycofane na rzecz `nuitka`.
 
 ### Windows:
 
 Dla systemu Windows używamy `nuitka` do tworzenia naszych plików `.exe`. Chociaż kompilacja jest wolniejsza niż w przypadku `pyinstaller`, który był używany we wcześniejszych kompilacjach, zapewnia mniejszy rozmiar pliku wykonywalnego i nie uruchamia Windows Defender. `pyinstaller` powinien być używany tylko jako zapas, jeśli `nuitka` nie działa z jakiegoś powodu. Oba można zainstalować za pomocą `pip install`.
 
-Poniżej znajduje się pełne polecenie terminala, którego używamy do kompilacji launchera, a poniżej znajduje się uproszczona wersja bez informacji o wersji i innych szczegółów:
+Poniżej znajduje się pełne polecenie terminala, którego używamy w plikach wykonywalnych wersji, jest ono nieco inne niż to, które używa GitHub Actions, a poniżej znajduje się uproszczona wersja bez informacji o wersji i podobnych:
 
 ```shell
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" --product-name="Portal 2: Multiplayer Mod Launcher" --file-description="The launcher for P2:MM." --product-version="INSERT VERSION HERE" --file-version="INSERT VERSION HERE" --copyright='© 2024 Portal 2: Multiplayer Mod Team' "src/MainWindow.py"
@@ -95,7 +95,7 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-Poniżej znajduje się polecenie terminala do kompilacji przy użyciu `pyinstaller`:
+Poniżej znajduje się polecenie terminala do kompilacji przy użyciu `pyinstaller` jako zapasowego rozwiązania, jeśli `nuitka` nie działa:
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
@@ -103,14 +103,12 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole
 
 ### Linux:
 
-Dla systemu Linux przeszliśmy na używanie `AppImage` i stworzyliśmy narzędzie do pomocy w tym, wystarczy mieć zainstalowany `docker` i uruchomić `./tools/build-docker.sh` będąc w głównym katalogu.
+Tak jak w systemie Windows, do kompilowania plików wykonywalnych Linuxa używamy `nuitka`. Początkowo używano `pyinstallera`, później `Appimage`, ale ostatecznie zdecydowano się na `nuitka` ze względu na mały rozmiar pliku wykonywalnego.
 
-_**UWAGA! Z jakiegoś powodu na niektórych dystrybucjach Linuxa, FUSE nie jest zainstalowany domyślnie, co jest potrzebne zarówno do kompilacji, jak i uruchamiania plików AppImage. Informacje o instalacji FUSE na twojej dystrybucji można znaleźć tutaj: [Wiki AppImageKit](https://github.com/AppImage/AppImageKit/wiki/FUSE)**_
-
-Jeśli nie chcesz używać `AppImage/docker`, nadal możesz używać `pyinstaller`:
+Poniżej znajduje się polecenie terminala do kompilacji dla Linuxa przy użyciu `nuitka`:
 
 ```shell
-pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
 ```
 
 ### Uwaga:
@@ -119,7 +117,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 # Współtwórcy
 
-Portal 2: Multiplayer Mod wersja `2.3.0` będzie naszą ostateczną wersją, więc nie będziemy wprowadzać żadnych znaczących aktualizacji po jej pełnym wydaniu. Zanim to nastąpi, będziemy pracować nad drobnymi aktualizacjami prowadzącymi do pełnej wersji. Przyjmiemy wszelkie istotne zmiany lub funkcje dla P2:MM w tym okresie. Jednak po wydaniu nie będziemy wykonywać dużo pracy ani wprowadzać nowych wydań ogólnie. Jedynymi powodami, dla których moglibyśmy wydać nowe wydanie, byłyby, gdyby ktoś przyczynił się nowym tłumaczeniem, ulepszeniem obecnego tłumaczenia, jakąś inną drobną poprawką, której nie zauważyliśmy, lub plikiem wsparcia mapy dla mapy warsztatowej. Nawet po tym ostatecznym wydaniu, nadal możesz forkać, aby rozwijać naszą pracę! Upewnij się, że podajesz kredyt dla tego repozytorium!
+Portal 2: Multiplayer Mod wersja `2.3.0` będzie naszą wersją ostateczną, więc nie będziemy robić żadnych znaczących aktualizacji po jej pełnym wydaniu. Zanim to nastąpi, będziemy pracować nad commitami w gałęzi `dev` przed doprowadzeniem do pełnej wersji. Będziemy akceptować wszelkie istotne zmiany lub funkcje dla P2:MM w tym okresie. Jednak po wydaniu nie będziemy robić wiele pracy ani wydawać żadnych nowych wersji ogólnie. Jedynymi powodami, dla których moglibyśmy wydać nową wersję, będą nowe tłumaczenia, ulepszenie obecnego tłumaczenia, inne drobne poprawki błędów, których nie zauważyliśmy, lub plik wsparcia mapy dla mapy warsztatowej. Nawet po tym ostatecznym wydaniu, nadal możesz zrobić fork, aby budować na podstawie naszej pracy! Upewnij się, że przyznajesz kredyt temu repozytorium!
 
 # Autorzy
 

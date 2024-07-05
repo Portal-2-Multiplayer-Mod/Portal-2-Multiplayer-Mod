@@ -5,6 +5,10 @@
 // ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝╚██████╔╝██║ ╚═╝ ██║██║     ██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝  ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
+OnlyOnceSp_A3_Jump_Intro <- true
+ElevatorFinishMoving <- null
+GooHurtTimerPred <- 0
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Here if we need to ent_fire something
@@ -14,9 +18,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-8880, 2096, -412), 20).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-676, 896, 448), 20).Destroy()
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "tick")
-        OnlyOnceSp_A3_Jump_Intro <- true
-        ElevatorFinishMoving <- null
-        GooHurtTimerPred <- 0
     }
 
     if (MSPostPlayerSpawn) {

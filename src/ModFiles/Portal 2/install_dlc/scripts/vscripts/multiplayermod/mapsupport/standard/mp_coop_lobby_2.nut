@@ -36,6 +36,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             EntFire("case_open_course", "invalue", "7", 0, null)
         }
 
+        for (local i = 1; i < 7;) { // Disable all the lobby music ambient_generics
+            EntFireByHandle(Entities.FindByName(null, "@music_lobby_" + i), "stopsound", "", 0, null, null)
+            i += 1
+        }
+        DoEntFire("!self", "invalue", (RandomInt(1, 7)).tostring(), 0.0, null, Entities.FindByName(null, "case_music"))
+
         // Allow the players to drop from spawn tube
         Entities.FindByName(null, "brush_spawn_blocker_red").Destroy()
         Entities.FindByName(null, "brush_spawn_blocker_blue").Destroy()
@@ -57,32 +63,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track5-rl_start_exit_finished"))
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit"))
         DoEntFire("!self", "AddOutput", "spawnflags 3", 0.0, null, Entities.FindByName(null, "track6-rl_start_exit_finished"))
-
-        // Remove useless entities so that the entity limit does not crash the game
-
-        // Remove func_portal_bumper's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
-            ent.Destroy() // 165 entities removed
-        }
-
-        // Remove env_sprite's from the map
-        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
-            ent.Destroy() // 31 entities removed
-        }
-
-        // Remove trigger_portal_cleaner's from map, two of these are bugged anyway and need to be removed
-        for (local ent = null; ent = Entities.FindByClassname(ent, "trigger_portal_cleanser");) {
-            ent.Destroy() // 5 entities removed
-        }
-
-        // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
-        Entities.FindByClassname(null, "point_viewcontrol").Destroy()
-        for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
-            if (ent.GetName().find("cam_botview") != null) {
-                continue
-            }
-            ent.Destroy() // 2 entities removed
-        }
 
         // Fix track 5
         // Entry door fix
@@ -119,6 +99,32 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFireByHandle(ent, "SetAnimation", "item_dropper_idle", 0.0, null, null)
                 }
             }
+        }
+        
+        // Remove useless entities so that the entity limit does not crash the game
+
+        // Remove unused point_viewcontrol and point_viewcontrol_multiplayer's from map, the one point_viewcontrol is for commentary mode
+        Entities.FindByClassname(null, "point_viewcontrol").Destroy()
+        for (local ent = null; ent = Entities.FindByClassname(ent, "point_viewcontrol_multiplayer");) {
+            if (ent.GetName().find("cam_botview") != null) {
+                continue
+            }
+            ent.Destroy() // 2 entities removed
+        }
+
+        // Remove trigger_portal_cleaner's from map, two of these are bugged anyway and need to be removed
+        for (local ent = null; ent = Entities.FindByClassname(ent, "trigger_portal_cleanser");) {
+            ent.Destroy() // 5 entities removed
+        }
+
+        // Remove env_sprite's from the map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "env_sprite");) {
+            ent.Destroy() // 31 entities removed
+        }
+
+        // Remove func_portal_bumper's from the map
+        for (local ent = null; ent = Entities.FindByClassname(ent, "func_portal_bumper");) {
+            ent.Destroy() // 165 entities removed
         }
     }
 

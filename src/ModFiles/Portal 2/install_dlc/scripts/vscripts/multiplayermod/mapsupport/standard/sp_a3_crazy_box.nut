@@ -5,6 +5,9 @@
 // ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝██║  ██║██║  ██║███████╗   ██║   ██████████╗██████╦╝╚█████╔╝██╔╝╚██╗
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════════╝╚═════╝  ╚════╝ ╚═╝  ╚═╝
 
+WaitDontFizzleTime <- 0
+WaitDontFizzle <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // 2231.027100 187.758835 -386.163635;
@@ -32,14 +35,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "AutoInstance1-door_prop").__KeyValueFromString("targetname", "DisableDoorMpMod")
         EntFire("DisableDoorMpMod", "setanimation", "Open", 1, null)
         //EntFire("room_1_door_open_trigger", "AddOutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
-        WaitDontFizzleTime <- 0
-        WaitDontFizzle <- false
     }
 
     if (MSLoop) {
         // Goo Damage Code
         try {
-            if (GooHurtTimerPred) { printl()}
+            if (GooHurtTimerPred) { printl() }
         } catch (exception) {
             GooHurtTimerPred <- 0
         }
@@ -94,7 +95,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (p.GetClassname()=="prop_weighted_cube") {
                 if (!isopen) {
                     isopen = true
-                    printl("OPENED")
+                    printlP2MM(0, true, "cube dropper, OPENED")
                     EntFire("genericcustomprop_maindropper", "setanimation", "Open", 0.4, null)
                 }
                 stayopen = true
@@ -102,7 +103,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         if (!stayopen && isopen) {
-            printl("CLOSED")
+            printlP2MM(0, true, "cube dropper, CLOSED")
             EntFire("genericcustomprop_maindropper", "setanimation", "close", 2.5, null)
             isopen = false
         }

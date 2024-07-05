@@ -35,7 +35,7 @@ function Gelocity2AddLap() {
         }
     }
 
-    printlP2MM("Gelocity2LapCount: " + Gelocity2LapCount)
+    printlP2MM(0, true, "Gelocity2LapCount: " + Gelocity2LapCount)
     Entities.FindByName(null, "change_rounds_text_override").__KeyValueFromString("message", Gelocity2LapCount + " Laps")
     EntFire("change_rounds_text_override", "Display")
     EntFire("button_1_override", "Skin", "0")
@@ -70,7 +70,7 @@ function Gelocity2RemoveLap() {
             }
         }
     }
-    printlP2MM("Gelocity2LapCount: " + Gelocity2LapCount)
+    printlP2MM(0, true, "Gelocity2LapCount: " + Gelocity2LapCount)
     Entities.FindByName(null, "change_rounds_text_override").__KeyValueFromString("message", Gelocity2LapCount + " Laps")
     EntFire("change_rounds_text_override", "Display")
     if (Gelocity2LapCount <= 2) {
@@ -80,7 +80,7 @@ function Gelocity2RemoveLap() {
 }
 
 function YeetThePaint() {
-    printlP2MM("Yall Playing GELOCITY");
+    printlP2MM(0, false, "Yall Playing GELOCITY!");
     local ent = null
     for (local ent = null; ent = Entities.FindByClassname(ent, "paint_sphere");) {
         // EntFire(ent.GetName(), "paint", "", 0.8)
@@ -346,10 +346,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     local pcolor = GetPlayerColor(p, true)
                     Entities.FindByName(null, "p2mm_laps_text").__KeyValueFromString("color", pcolor.r.tostring() + " " + pcolor.g.tostring() + " " + pcolor.b.tostring())
                     if (!WinCondition) {
-                        printlP2MM(PlayerUsername + " Completed Lap " + CurrentPlayerClass.nCurrentLap)
+                        printlP2MM(0, false, PlayerUsername + " Completed Lap " + CurrentPlayerClass.nCurrentLap)
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Completed Lap " + CurrentPlayerClass.nCurrentLap, 0.1)
                     } else {
-                        printlP2MM(PlayerUsername + " Won The Race!")
+                        printlP2MM(0, false, PlayerUsername + " Won The Race!")
                         SendToConsoleP2MM("say " + PlayerUsername + " Won The Race!")
                         EntFire("p2mm_laps_text", "SetText", PlayerUsername + " Won The Race!", 0.1)
                         //ent_fire first_blue addoutput "rendercolor 255 0 0"
@@ -373,7 +373,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local PlayerUsername = CurrentPlayerClass.username
             if (!CurrentPlayerClass.Gelocity2Checkpoint) {
                 CurrentPlayerClass.Gelocity2Checkpoint <- true
-                printlP2MM(PlayerUsername + " Completed Checkpoint")
+                printlP2MM(0, false, PlayerUsername + " Completed Checkpoint")
             }
         }
     }

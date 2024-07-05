@@ -5,6 +5,9 @@
 // ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
+OnlyOnceSpA4Intro <- true
+OnlyOnceSp_A4_Intro_1 <- true
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
@@ -57,8 +60,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "catwalk_gate2_door_right").Destroy()
         Entities.FindByName(null, "catwalk_gate2_door_left").Destroy()
         Entities.FindByName(null, "catwalk_lift_clip").Destroy()
-        OnlyOnceSpA4Intro <- true
-        OnlyOnceSp_A4_Intro_1 <- true
+
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "button_1_solved_TURRETNAMECHANGE")
         EntFire("button_1_solved", "AddOutput", "OnTrigger button_1_solved_TURRETNAMECHANGE:kill::17", 0.25, null)
 
@@ -125,7 +127,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     try {
                         output = MoveEntityOnTrack(CubeBeingSpawned, TrackPoints, movespeed)
                     } catch (e) {
-                        printl("ERROR: " + e + " : SPAWNING BACKUP")
+                        printlP2MM(1, true, "ERROR: " + e + " : SPAWNING BACKUP")
                         SpawnCube = false
                         SpawnBackupCube()
                     }
@@ -142,7 +144,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     CubeBeingSpawned.SetAngles(0, CubeBeingSpawned.GetAngles().y+RandomInt(3, 8), CubeBeingSpawned.GetAngles().z+RandomInt(3, 8))
 
                     if (output == true) {
-                        printl("Cube spawned! Output: " + output)
+                        printlP2MM(0, true, "Cube spawned! Output: " + output)
                         SpawnCube = false
                         EntFireByHandle(CubeBeingSpawned, "wake", "", 0, null, null)
                         EntFireByHandle(CubeBeingSpawned, "BecomeMonster", "", 3, null, null)
@@ -153,7 +155,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         EntFire("cube_dropper_drop", "Trigger")
                     }
                 } else {
-                    printl("ERROR: CubeBeingSpawned is null")
+                    printlP2MM(1, true, "ERROR: CubeBeingSpawned is null")
                     SpawnCube = false
                     SpawnBackupCube()
                 }
@@ -230,7 +232,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (OnlyOnceSpA4Intro) {
             if (!Entities.FindByName(null, "room2_wall_open_trigger")) {
-                printl("(P2:MM): Elevator viewcontrol activated!")
+                printlP2MM(0, true, "(P2:MM): Elevator viewcontrol activated!")
                 // Elevator viewcontrol
                 Entities.FindByName(null, "@exit_door2-close_door_rl").__KeyValueFromString("targetname", "moja5")
 
@@ -250,7 +252,7 @@ function SpawnBackupCube() {
     EntFire("p2mm_servercommand", "command", "script CubeBeingSpawned = Entities.FindByName(null, \"cube_dropper_box\")", 0.1, null)
     EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"cube_dropper_box\").__KeyValueFromString(\"targetname\", \"p2mm_box_yes\")", 0.1, null)
     EntFire("p2mm_servercommand", "command", "script CubeBeingSpawned.SetOrigin(Vector(-394, -270, 1350))", 0.1, null)
-    EntFire("p2mm_servercommand", "command", "script printl(CubeBeingSpawned)", 0.13, null)
+    EntFire("p2mm_servercommand", "command", "script printP2MM(0, true, CubeBeingSpawned)", 0.13, null)
 }
 
 function MoveCubeDropper() {

@@ -5,6 +5,14 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝███████╗
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚══════╝
 
+OnlyOnceSp_A2_Bts2 <- true
+PreviousTimeSp_A2_Bts2 <- 0
+PreviousTimeSp_A2_Bts2Again <- 0
+NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- true
+OnlyOnceSp_A2_Bts2AgainV2 <- true
+WheatleyPlayerLookSP_A2_BTS2 <- true
+DisableLookDisablerSP_A2_BTS2 <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Here if we need to ent_fire something
@@ -20,13 +28,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
         Entities.FindByName(null, "catwalk_fx_E_1").__KeyValueFromString("targetname", "my mom")
         Entities.FindByName(null, "container_1_catwalk_hurt_2_floor").__KeyValueFromString("targetname", "my dad")
-        OnlyOnceSp_A2_Bts2 <- true
-        PreviousTimeSp_A2_Bts2 <- 0
-        PreviousTimeSp_A2_Bts2Again <- 0
-        NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- true
-        OnlyOnceSp_A2_Bts2AgainV2 <- true
-        WheatleyPlayerLookSP_A2_BTS2 <- true
-        DisableLookDisablerSP_A2_BTS2 <- false
     }
 
     if (MSPostPlayerSpawn) {
@@ -119,7 +120,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (PreviousTimeSP_A2_BTS2 + 31 <= Time()) {
                 if (Entities.FindByName(null, "EndDeathEventMPMod")) {
                     if (NoPlayerMadeItOnlyOnceSp_A2_Bts2) {
-                        printl("No Player Made It")
+                        printlP2MM(0, false, "No Player Made It")
                         PreviousTimeSP_A2_BTS2Again <- Time()
                         // Create an on screen text message entity
                         onscreendisplay69.__KeyValueFromString("targetname", "p2mm_wait_for_players_textbts2")
@@ -142,9 +143,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         envfade.__KeyValueFromString("targetname", "FadeyBoi")
                         DoEntFire("p2mm_wait_for_players_textbts2", "Display", "", 0.1, null, null)
                         DoEntFire("FadeyBoi", "fade", "", 0.1, null, null)
-                        if (GetDeveloperLevelP2MM()) {
-                            printlP2MM("stuff=====================thing")
-                        }
                         NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- false
                         PreviousTimeSp_A2_Bts2Again <- Time()
                         Entities.FindByName(null, "EndDeathEventMPMod").__KeyValueFromString("targetname", "EndDeathEventMPModDisMain")
@@ -155,11 +153,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         if (!NoPlayerMadeItOnlyOnceSp_A2_Bts2) {
             if (PreviousTimeSp_A2_Bts2Again + 6.75 <= Time()) {
-                 
                 EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts2")
-                if (GetDeveloperLevelP2MM()) {
-                    printlP2MM("stuff=====================")
-                }
             }
         }
 
