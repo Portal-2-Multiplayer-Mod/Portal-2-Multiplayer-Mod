@@ -16,10 +16,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
     }
 
-    if (MSPostPlayerSpawn) {
-
-    }
-
     if (MSLoop) {
         // Goo Damage Code
         try {

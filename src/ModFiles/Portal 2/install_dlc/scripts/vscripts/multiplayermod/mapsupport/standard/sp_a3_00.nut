@@ -7,6 +7,10 @@
 
 // should fix fog sometime
 
+StartFadeDone <- false
+
+EndingTriggered <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         p2mm_startfade <- Entities.CreateByClassname("env_fade")
@@ -15,9 +19,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         p2mm_startfade.__KeyValueFromString("rendercolor", "0 0 0")
         p2mm_startfade.__KeyValueFromString("renderamt", "255")
         p2mm_startfade.__KeyValueFromString("spawnflags", "8")
-        StartFadeDone <- false
-
-        EndingTriggered <- false
 
         // Disable nametags this load
         g_bAllowNametags = false
@@ -30,8 +31,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         UTIL_Team.Pinging(false, "all", 1)
         UTIL_Team.Taunting(false, "all", 1)
+        UTIL_Team.Spawn_PortalGun(false)
 
-        printlP2MM(0, true, Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
+        printlP2MM(0, true, "" + Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))
         Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogend", "1")
         Entities.FindByName(null, "@environment_bottomless_pit_falling_fog").__KeyValueFromString("farz", "0")
         // Entities.FindByName(null, "potatos_prop").__KeyValueFromString("solid", "0")

@@ -5,6 +5,8 @@
 // ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║     ██║██║ ╚███║██║  ██║███████╗███████╗███████╗
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚══╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
 
+Sp_A4_Finale1_One_Time_Beam <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
@@ -35,8 +37,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("catapult_3", "AddOutput", "OnCatapulted tbeam_crusher_delivery:enable::0.2", 1, null)
 
         EntFire("hurt_crushers", "AddOutput", "OnHurtPlayer hurt_crushers:kill::0.2", 1, null)
-
-        Sp_A4_Finale1_One_Time_Beam <- false
 
         // Make changing levels work
         Entities.FindByClassnameNearest("trigger_once", Vector(-12832, -3040, -112), 20).__KeyValueFromString("targetname", "transition_trigger")

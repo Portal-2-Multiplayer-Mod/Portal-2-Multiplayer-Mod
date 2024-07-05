@@ -5,6 +5,14 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝╚════██║
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝      ╚═╝
 
+TriggerOnceSP_A2_BTS4_1 <- true
+DisableLookDisablerSP_A2_BTS4 <- false
+
+TestingHackStart <- function() {
+    printlP2MM(0, true, "DOOR HACK START")
+    WheatleyPlayerLookSP_A2_BTS4 <- false
+}
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         Entities.FindByClassnameNearest("info_player_start", Vector(2715.680664, -4926.100586, 6720.031250), 320).Destroy()
@@ -33,13 +41,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Fix dummy room door closing
         local ent = Entities.FindByName(null, "dummy_shoot_entry_door").__KeyValueFromString("targetname", "moja")
         EntFire("moja", "setanimation", "Open", 2, null)
-        TriggerOnceSP_A2_BTS4_1 <- true
-        DisableLookDisablerSP_A2_BTS4 <- false
-
-        TestingHackStart <- function() {
-            printlP2MM(0, true, "DOOR HACK START")
-            WheatleyPlayerLookSP_A2_BTS4 <- false
-        }
     }
 
     if (MSPostPlayerSpawn) {
