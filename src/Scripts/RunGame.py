@@ -242,7 +242,7 @@ def AssembleArgs() -> str | bool:
     return args
 
 # START THE GAME!!!
-def LaunchGame(gamepath: str, args: str) -> None:
+def LaunchGame(gamepath: str) -> None:
     Log("=============")
     Log("Running Game...")
 
