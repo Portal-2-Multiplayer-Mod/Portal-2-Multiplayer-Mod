@@ -1,5 +1,5 @@
 {
-  "Date": "2024-06-17",
+  "Date": "2024-07-04",
   "Path": "src/ModFiles/Portal 2/install_dlc",
   "Files": [
     "/p2mm.identifier",
@@ -41,12 +41,10 @@
     "/scripts/vscripts/multiplayermod/mapsupport/speedrun/mp_coop_race_2.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/e1912.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_credits.nut",
-    "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_doors.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_fan.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_lobby_2.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_lobby_3.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_paint_conversion.nut",
-    "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_race_2.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_rat_maze.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_separation_1.nut",
     "/scripts/vscripts/multiplayermod/mapsupport/standard/mp_coop_start.nut",
