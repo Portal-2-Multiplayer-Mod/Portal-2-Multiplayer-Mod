@@ -45,6 +45,7 @@ jobs:
           windows-console-mode: disable
           deployment: true
           output-file: "p2mm-${{ env.VERSION }}"
+          output-filename: ".sh"
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
