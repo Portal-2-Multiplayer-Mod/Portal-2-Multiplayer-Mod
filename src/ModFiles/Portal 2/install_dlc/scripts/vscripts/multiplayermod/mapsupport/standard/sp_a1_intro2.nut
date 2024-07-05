@@ -30,15 +30,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Make changing levels work
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro3:0.3", 0, null)
+
+        while (Entities.FindByName(null, "block_boxes")) {
+            Entities.FindByName(null, "block_boxes").Destroy()
+        }
     }
 
     if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
-    }
-
-    if (MSLoop) {
-        try {
-            Entities.FindByName(null, "block_boxes").Destroy()
-        } catch (exception) {}
     }
 }

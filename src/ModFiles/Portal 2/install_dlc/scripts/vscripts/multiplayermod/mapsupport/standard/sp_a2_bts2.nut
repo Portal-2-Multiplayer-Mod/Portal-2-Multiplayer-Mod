@@ -5,6 +5,14 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██████╦╝   ██║   ██████╔╝███████╗
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═════╝    ╚═╝   ╚═════╝ ╚══════╝
 
+OnlyOnceSp_A2_Bts2 <- true
+PreviousTimeSp_A2_Bts2 <- 0
+PreviousTimeSp_A2_Bts2Again <- 0
+NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- true
+OnlyOnceSp_A2_Bts2AgainV2 <- true
+WheatleyPlayerLookSP_A2_BTS2 <- true
+DisableLookDisablerSP_A2_BTS2 <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Here if we need to ent_fire something
@@ -20,13 +28,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
         Entities.FindByName(null, "catwalk_fx_E_1").__KeyValueFromString("targetname", "my mom")
         Entities.FindByName(null, "container_1_catwalk_hurt_2_floor").__KeyValueFromString("targetname", "my dad")
-        OnlyOnceSp_A2_Bts2 <- true
-        PreviousTimeSp_A2_Bts2 <- 0
-        PreviousTimeSp_A2_Bts2Again <- 0
-        NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- true
-        OnlyOnceSp_A2_Bts2AgainV2 <- true
-        WheatleyPlayerLookSP_A2_BTS2 <- true
-        DisableLookDisablerSP_A2_BTS2 <- false
     }
 
     if (MSPostPlayerSpawn) {

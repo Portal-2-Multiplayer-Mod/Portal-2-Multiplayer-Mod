@@ -5,6 +5,9 @@
 // ██████╔╝██║     ██████████╗██║  ██║██████╔╝██████████╗╚█████╔╝██║  ██║██║  ██║███████╗   ██║   ██████████╗██████╦╝╚█████╔╝██╔╝╚██╗
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚═════╝ ╚═════════╝ ╚════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═════════╝╚═════╝  ╚════╝ ╚═╝  ╚═╝
 
+WaitDontFizzleTime <- 0
+WaitDontFizzle <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // 2231.027100 187.758835 -386.163635;
@@ -32,8 +35,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "AutoInstance1-door_prop").__KeyValueFromString("targetname", "DisableDoorMpMod")
         EntFire("DisableDoorMpMod", "setanimation", "Open", 1, null)
         //EntFire("room_1_door_open_trigger", "AddOutput", "OnTrigger room_1_door_open_trigger:disable", 1, null)
-        WaitDontFizzleTime <- 0
-        WaitDontFizzle <- false
     }
 
     if (MSLoop) {

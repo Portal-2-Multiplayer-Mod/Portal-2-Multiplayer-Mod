@@ -249,7 +249,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             MusicInit()
         } else { // Start the boring one track music because the user didn't enable custom lobby music :(
             printlP2MM(0, true, "Custom lobby music control is disabled, playing random lobby track.")
-            DoEntFire("!self", "invalue", (RandomInt(1, 7)).tostring(), 0.0, null, Entities.FindByName(null, "@music_lobby_7"))
+            for (local i = 1; i < 7;) { // Disable all the lobby music ambient_generics
+                EntFireByHandle(Entities.FindByName(null, "@music_lobby_" + i), "stopsound", "", 0, null, null)
+                i += 1
+            }
+            DoEntFire("!self", "invalue", (RandomInt(1, 7)).tostring(), 0.0, null, Entities.FindByName(null, "case_music"))
         }
         
         // Allow the players to drop from spawn tube

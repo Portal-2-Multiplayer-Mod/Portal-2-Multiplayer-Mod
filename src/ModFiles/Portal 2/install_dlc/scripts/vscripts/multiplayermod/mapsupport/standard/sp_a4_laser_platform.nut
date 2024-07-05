@@ -5,6 +5,8 @@
 // ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗███████╗██║  ██║██████╔╝███████╗██║  ██║██████████╗██║     ███████╗██║  ██║   ██║   ██║     ╚█████╔╝██║  ██║██║ ╚═╝ ██║
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚═════════╝╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝      ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
 
+Sp_A4_Laser_Platform_1 <- false
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
@@ -18,7 +20,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(2267, -603, -142), 200).__KeyValueFromString("targetname", "mpmoddrop")
         Entities.FindByClassnameNearest("trigger_multiple", Vector(2656, -696, -1984), 200).__KeyValueFromString("targetname", "doortriggeroverride")
         EntFire("doortriggeroverride", "AddOutput", "OnStartTouch doortriggeroverride:kill::0.01", 1, null)
-        Sp_A4_Laser_Platform_1 <- false
 
         // Make changing levels work
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_speed_tb_catch:0.45", 0, null)

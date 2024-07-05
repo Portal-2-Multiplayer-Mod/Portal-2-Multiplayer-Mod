@@ -99,6 +99,24 @@ MPMCoopCreditNames <- [
     "--------------------------------",
 ]
 
+// Set the amount of P-body animations
+CRAnimationTypesPB <- -1
+// foreach (value in AnimationsPB) {
+//     CRAnimationTypesPB <- CRAnimationTypesPB + 1
+// }
+
+// Set the amount of Atlas animations
+CRAnimationTypesAL <- -1
+// foreach (value in AnimationsAL) {
+//     CRAnimationTypesAL <- CRAnimationTypesAL + 1
+// }
+
+// Set the amount of credits
+MPModCreditNumber <- -1
+// foreach (value in MPMCoopCreditNames) {
+//     MPModCreditNumber <- MPModCreditNumber + 1
+// }
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Remove selected pods
@@ -117,6 +135,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Disable and destroy useless cameras
             EntFireByHandle(Entities.FindByName(null, "camera_SP"), "disable", "", 0, null, null)
             EntFireByHandle(Entities.FindByName(null, "camera_O"), "disable", "", 0, null, null)
+            EntFireByHandle(Entities.FindByName(null, "camera_SP"), "kill", "", 0.1, null, null)
+            EntFireByHandle(Entities.FindByName(null, "camera_O"), "kill", "", 0.1, null, null)
 
             // Reload main camera with new params
             Entities.FindByName(null, "camera").__KeyValueFromString("target_team", "-1")
@@ -136,8 +156,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
             if (tmpname.find("|") == null) {
                 CreditsRemovePod()
-                if (Config_DevMode) {printl("NO POD/ROBOT!!!!!! \"" + tmpname + "\"")}
-                EntFireByHandle(Entities.FindByNameNearest("female*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
+                printlP2MM(0, true, "NO POD/ROBOT!!!!!! \"" + tmpname + "\"")
+                EntFireByHandle(Entities.FindByNameNearest("female*", Vector(-64, 217, 72), 300), "disabledraw", "", 0, null, null)
                 EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
             } else {
                 EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
@@ -183,8 +203,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
             if (tmpname.find("|") == null) {
                 CreditsRemovePod()
-                if (Config_DevMode) {printl("NO POD/ROBOT!!!!!! \"" + tmpname + "\"")}
-                EntFireByHandle(Entities.FindByNameNearest("male*", Vector(-64, 217, 72), 180), "disabledraw", "", 0, null, null)
+                printlP2MM(0, true, "NO POD/ROBOT!!!!!! \"" + tmpname + "\"")
+                EntFireByHandle(Entities.FindByNameNearest("male*", Vector(-64, 217, 72), 300), "disabledraw", "", 0, null, null)
                 EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
             } else {
                 EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
@@ -220,19 +240,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         }
 
         // Set the amount of P-body animations
-        CRAnimationTypesPB <- -1
         foreach (value in AnimationsPB) {
             CRAnimationTypesPB <- CRAnimationTypesPB + 1
         }
 
         // Set the amount of Atlas animations
-        CRAnimationTypesAL <- -1
         foreach (value in AnimationsAL) {
             CRAnimationTypesAL <- CRAnimationTypesAL + 1
         }
 
         // Set the amount of credits
-        MPModCreditNumber <- -1
         foreach (value in MPMCoopCreditNames) {
             MPModCreditNumber <- MPModCreditNumber + 1
         }
@@ -254,6 +271,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             printlP2MM(creditScriptEntScope.m_nTotalNameCount)
             printlP2MM(creditScriptEntScope.MPModCreditNumber)
         }
+        printlP2MM(0, true, "creditScriptEntScope.CreditsList.len(): " + creditScriptEntScope.CreditsList.len())
+        printlP2MM(0, true, "creditScriptEntScope.m_nTotalNameCount: " + creditScriptEntScope.m_nTotalNameCount)
+        printlP2MM(0, true, "creditScriptEntScope.MPModCreditNumber:" + creditScriptEntScope.MPModCreditNumber)
     }
 
     if (MSLoop) {

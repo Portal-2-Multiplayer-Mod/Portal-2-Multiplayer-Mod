@@ -5,6 +5,9 @@
 // ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
+OnlyOnceSpA4Intro <- true
+OnlyOnceSp_A4_Intro_1 <- true
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
@@ -57,8 +60,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "catwalk_gate2_door_right").Destroy()
         Entities.FindByName(null, "catwalk_gate2_door_left").Destroy()
         Entities.FindByName(null, "catwalk_lift_clip").Destroy()
-        OnlyOnceSpA4Intro <- true
-        OnlyOnceSp_A4_Intro_1 <- true
+
         Entities.CreateByClassname("prop_dynamic").__KeyValueFromString("targetname", "button_1_solved_TURRETNAMECHANGE")
         EntFire("button_1_solved", "AddOutput", "OnTrigger button_1_solved_TURRETNAMECHANGE:kill::17", 0.25, null)
 
