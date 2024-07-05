@@ -79,13 +79,13 @@ On a aussi un fichier pour une simple installation: `pip install -r requirements
 
 ## Compilation
 
-Nous utilisons [`nuitka`](https://nuitka.net/), [`pyinstaller`](https://pypi.org/project/pyinstaller/), et [`AppImage`](https://appimage.org/) pour créer les exécutables.
+Nous utilisons [`nuitka`](https://nuitka.net/) pour compiler le lanceur de Portal 2: Multiplayer Mod. En parallèle, nous utilisons GitHub Actions pour nos exécutables de sortie. [`pyinstaller`](https://pypi.org/project/pyinstaller/) et [`AppImage`](https://appimage.org/) étaient à l'origine utilisés mais ont été abandonnés au profit de `nuitka`.
 
 ### Windows:
 
 Pour Windows, nous utilisons `nuitka` pour créer nos fichiers `.exe`. Bien qu'il soit plus lent à compiler que `pyinstaller` qui était utilisé dans les versions précédentes, il offre une taille d'exécutable plus petite et n'alerte pas Windows Defender. `pyinstaller` ne doit être utilisé qu'en cas de secours si `nuitka` ne fonctionne pas pour vous pour une raison quelconque. Les deux peuvent être installés en utilisant `pip install`.
 
-Ci-dessous se trouve la commande terminal complète que nous utilisons pour compiler le lanceur, et en dessous une version simplifiée sans informations de version et autres détails :
+Ci-dessous se trouve la commande de terminal complète que nous utilisons dans les exécutables de sortie, elle est légèrement différente de celle utilisée par GitHub Actions, et en dessous se trouve une version simplifiée sans les informations de version et autres :
 
 ```shell
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" --product-name="Portal 2: Multiplayer Mod Launcher" --file-description="The launcher for P2:MM." --product-version="INSERT VERSION HERE" --file-version="INSERT VERSION HERE" --copyright='© 2024 Portal 2: Multiplayer Mod Team' "src/MainWindow.py"
@@ -95,7 +95,7 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-Voici la commande terminal pour compiler en utilisant `pyinstaller` :
+Voici la commande de terminal pour compiler en utilisant `pyinstaller` comme solution de secours si `nuitka` ne fonctionne pas :
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
@@ -103,14 +103,12 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole
 
 ### Linux:
 
-Pour Linux, nous avons basculé vers l'utilisation de `AppImage` et nous avons créé un outil pour aider à cela, il suffit d'avoir `docker` installé et d'exécuter `./tools/build-docker.sh` tout en étant dans le répertoire racine.
+Tout comme sous Windows, `nuitka` est utilisé pour compiler les exécutables Linux. À l'origine, `pyinstaller` était utilisé, puis `Appimage`, mais nous avons opté pour `nuitka` en raison de la petite taille de l'exécutable.
 
-_**ATTENTION ! Pour une raison quelconque, sur certaines distributions Linux, FUSE n'est pas installé par défaut, ce qui est nécessaire à la fois pour la compilation et l'exécution des AppImages. Les informations pour installer FUSE sur votre distribution peuvent être trouvées ici : [Wiki de AppImageKit](https://github.com/AppImage/AppImageKit/wiki/FUSE)**_
-
-Si vous ne souhaitez pas utiliser `AppImage/docker`, vous pouvez toujours utiliser `pyinstaller` :
+Voici la commande de terminal pour compiler pour Linux en utilisant `nuitka` :
 
 ```shell
-pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
 ```
 
 ### Notes:
@@ -119,7 +117,7 @@ pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Lang
 
 # Contributions
 
-Portal 2: Multiplayer Mod version `2.3.0` sera notre version définitive, donc nous ne ferons plus de mises à jour significatives après sa sortie complète. Avant que cela ne se produise, nous travaillerons sur des mises à jour mineures menant à la version complète. Nous accepterons tout changement ou fonctionnalité substantielle pour P2:MM pendant cette période. Cependant, nous ne ferons pas beaucoup de travail après la sortie ou de nouvelles sorties en général. Les seules raisons pour lesquelles nous ferions une nouvelle sortie seraient lorsqu'une personne contribue une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction mineure de bogue que nous n'avons pas détectée, ou un fichier de support de carte pour une carte d'atelier. Même après cette sortie finale, vous pouvez toujours le forker pour développer notre travail ! Assurez-vous de donner crédit à ce dépôt !
+Portal 2: Multiplayer Mod version `2.3.0` sera notre version définitive, donc nous ne ferons pas de mises à jour significatives après sa sortie complète. Avant que cela n'arrive, nous travaillerons sur des commits dans la branche `dev` avant de mener à la version complète. Nous accepterons tout changement ou toute fonctionnalité substantielle pour P2:MM pendant cette période. Cependant, nous ne ferons pas beaucoup de travail après la sortie ni ne ferons de nouvelles versions en général. Les seules raisons pour lesquelles nous ferions une nouvelle version seraient lorsque quelqu'un contribue une nouvelle traduction, une amélioration d'une traduction actuelle, une autre correction de bug mineur que nous n'avons pas détectée, ou un fichier de support de carte pour une carte de l'atelier. Même après cette version finale, vous pouvez toujours faire un fork pour construire à partir de notre travail ! Veuillez vous assurer de donner crédit à ce dépôt !
 
 # Crédits
 
