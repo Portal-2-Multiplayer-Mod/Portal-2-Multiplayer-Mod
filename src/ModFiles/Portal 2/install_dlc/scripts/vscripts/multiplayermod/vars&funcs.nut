@@ -210,12 +210,12 @@ function ForceRespawnAll() {
 }
 
 function SetCheats() {
-    g_bCheatsOn = Entities.FindByModel(null, "models/cheatdetectionp2mm.mdl")
+    g_bCheatsOn = GetConVarInt("sv_cheats") == 1
+    printlP2MM(1, true, "Cheats On?: " + g_bCheatsOn)
     if (g_bCheatsOn == null || !g_bCheatsOn) {
         g_bCheatsOn = false
     } else {
         g_bCheatsOn = true
-        Entities.FindByModel(null, "models/cheatdetectionp2mm.mdl").Destroy()
     }
 }
 

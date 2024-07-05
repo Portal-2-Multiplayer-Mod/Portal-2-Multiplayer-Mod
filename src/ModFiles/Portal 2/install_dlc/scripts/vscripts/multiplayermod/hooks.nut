@@ -95,7 +95,7 @@ function P2MMLoop() {
             }
         }
 
-        //## Detect death ##//
+        //## Detect death ##// //! REPLACE IN PLUGIN
         if (p.GetHealth() == 0) { // If player is dead
             local progress = true
             // Put dead players in the dead players array
@@ -282,7 +282,7 @@ function P2MMLoop() {
     }
 
     //## Run all custom generated props / prop related Garry's Mod code ##//
-    CreatePropsForLevel(false, false, true)
+    CreatePropsForLevel(false, false)
 
 
     //## Config developer mode loop ##//
@@ -585,7 +585,7 @@ function PostPlayerSpawn() {
     }
 
     // Create props after cache
-    EntFire("p2mm_servercommand", "command", "script CreatePropsForLevel(false, true, false)")
+    EntFire("p2mm_servercommand", "command", "script CreatePropsForLevel(false, true)")
 
     // Remove scoreboard
     //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
@@ -691,8 +691,7 @@ function PostMapSpawn() {
         SetMaxPortalSeparationConvar(Config_SetPlayerElasticity)
     }
 
-    //## Cheat detection ##//erver
-    EntFire("p2mm_servercommand", "command", "prop_dynamic_create cheatdetectionp2mm")
+    //## Cheat detection ##//
     EntFire("p2mm_servercommand", "command", "script SetCheats()")
 
     // Edit cvars & set server name
@@ -707,7 +706,7 @@ function PostMapSpawn() {
     if (!g_bIsCommunityCoopHub) {
         AddBranchLevelName(1, "P2:MM")
     }
-    CreatePropsForLevel(true, false, false)
+    CreatePropsForLevel(true, false)
 
 	// Elastic Player Collision
 	EntFire("p2mm_servercommand", "command", "portal_use_player_avoidance 1", 1)

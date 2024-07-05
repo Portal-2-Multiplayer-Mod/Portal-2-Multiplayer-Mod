@@ -56,6 +56,10 @@ printlP2MM(0, true, "\n")
 
 IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences and make sure nothing was invalid and compensate
 
+printlP2MM(0, true, FirstRunState(-1).tostring())
+printlP2MM(0, true, GetLastMap())
+printlP2MM(0, true, GetMapName())
+
 // Check if its the first map run so Last Map System stuff can be done
 if (FirstRunState(-1)) {
     FirstRunState(0)
@@ -71,7 +75,12 @@ if (FirstRunState(-1)) {
     // Check if Last Map System supplied a value and that it's a valid map, then restart on that map
     if (IsMapValid(GetLastMap()) && (GetLastMap() != GetMapName())) {
         FirstRunState(1)
-        EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0.5)
+
+        printlP2MM(0, true, FirstRunState(-1).tostring())
+        printlP2MM(0, true, GetLastMap())
+        printlP2MM(0, true, GetMapName())
+
+        EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0)
         return
     }
 }

@@ -60,8 +60,9 @@ def FilterConsole(text: list[str]) -> list[str]:
             continue
 
         # gets the last loaded map
-        if text[i].startswith("loaded:"):
-            lastMap = text[i][text[i].index(":")+1: len(text[i])]
+        if text[i].startswith("(P2:MM PLUGIN): MAP LOADED:"):
+            parts = text[i].split(":")
+            lastMap = ":".join(parts[3:]).strip()
             continue
 
     if lastMap is not None:
