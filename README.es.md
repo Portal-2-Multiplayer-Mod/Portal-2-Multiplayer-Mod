@@ -80,13 +80,13 @@ También los tenemos en un archivo para una instalación fácil: `pip install -r
 
 ## Compilación
 
-Usamos [`nuitka`](https://nuitka.net/), [`pyinstaller`](https://pypi.org/project/pyinstaller/), y [`AppImage`](https://appimage.org/) para crear los ejecutables.
+Usamos [`nuitka`](https://nuitka.net/) para compilar el lanzador de Portal 2: Multiplayer Mod. Junto con ello, usamos GitHub Actions para nuestros ejecutables de lanzamiento. [`pyinstaller`](https://pypi.org/project/pyinstaller/) y [`AppImage`](https://appimage.org/) se usaron originalmente, pero se han dejado de usar en favor de `nuitka`.
 
 ### Windows:
 
 Para Windows usamos `nuitka` para crear nuestros archivos `.exe`. Aunque es más lento de compilar que `pyinstaller` que se usaba en compilaciones anteriores, proporciona un tamaño de ejecutable más pequeño y no activa Windows Defender. `pyinstaller` solo debe usarse como respaldo si `nuitka` no funciona por alguna razón. Ambos se pueden instalar usando `pip install`.
 
-A continuación se muestra el comando completo de la terminal que usamos para compilar el lanzador, y debajo de este una versión simplificada sin información de versión y otros detalles:
+A continuación se muestra el comando completo de terminal que usamos en los ejecutables de lanzamiento, es ligeramente diferente de lo que usa GitHub Actions, y debajo de eso hay una versión simplificada sin información de versión y demás:
 
 ```shell
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" --product-name="Portal 2: Multiplayer Mod Launcher" --file-description="El lanzador para P2:MM." --product-version="INSERT VERSION HERE" --file-version="INSERT VERSION HERE" --copyright='© 2024 Portal 2: Multiplayer Mod Team' "src/MainWindow.py"
@@ -96,7 +96,7 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-A continuación se muestra el comando de terminal para compilar usando `pyinstaller`:
+A continuación se muestra el comando de terminal para compilar usando `pyinstaller` como respaldo si `nuitka` no funciona:
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
@@ -104,14 +104,12 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole
 
 ### Linux:
 
-Para Linux cambiamos a usar `AppImage` y creamos una herramienta para ayudar con eso, simplemente ten `docker` instalado y ejecuta `./tools/build-docker.sh` estando en el directorio raíz.
+Al igual que en Windows, se utiliza `nuitka` para compilar los ejecutables de Linux. Originalmente se usaba `pyinstaller`, luego `Appimage`, pero se optó por `nuitka` por el tamaño reducido del ejecutable.
 
-_**¡ADVERTENCIA! Por alguna razón, en algunas distribuciones de Linux, FUSE no está instalado por defecto, lo cual es necesario tanto para compilar como para ejecutar AppImages. La información para instalar FUSE en tu distribución se puede encontrar aquí: [Wiki de AppImageKit](https://github.com/AppImage/AppImageKit/wiki/FUSE)**_
-
-Si no deseas usar `AppImage/docker`, aún puedes usar `pyinstaller`:
+A continuación se muestra el comando de terminal para compilar para Linux usando `nuitka`:
 
 ```shell
-pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
 ```
 
 ### Nota:
@@ -124,7 +122,7 @@ El Mod Multijugador de Portal 2 utiliza un complemento separado del servidor de 
 
 # Contribuciones
 
-Portal 2: Multiplayer Mod versión `2.3.0` será nuestra versión definitiva, por lo que no haremos actualizaciones significativas después de su lanzamiento completo. Antes de que esto suceda, trabajaremos en actualizaciones menores que llevarán a la versión completa. Aceptaremos cualquier cambio sustancial o características para P2:MM durante este período. Sin embargo, no haremos mucho trabajo después del lanzamiento ni realizaremos nuevos lanzamientos en general. Las únicas razones por las que haríamos un nuevo lanzamiento serían cuando alguien contribuya una nueva traducción, una mejora de una traducción actual, alguna otra corrección menor de errores que no detectamos, o un archivo de soporte de mapa para un mapa de taller. ¡Incluso después de este lanzamiento final, aún puedes bifurcarlo para construir a partir de nuestro trabajo! ¡Por favor, asegúrate de dar crédito a este repositorio!
+Portal 2: Multiplayer Mod versión `2.3.0` será nuestra versión definitiva, por lo que no haremos actualizaciones significativas después de su lanzamiento completo. Antes de que esto ocurra, trabajaremos en los commits en la rama `dev` antes de llegar a la versión completa. Aceptaremos cualquier cambio o característica sustancial para P2:MM durante este período. Sin embargo, no haremos mucho trabajo después del lanzamiento ni realizaremos nuevas versiones en general. Las únicas razones por las que haríamos una nueva versión serían cuando alguien contribuya con una nueva traducción, una mejora de una traducción actual, alguna otra corrección de errores menores que no detectamos, o un archivo de soporte de mapa para un mapa de taller. ¡Incluso después de este lanzamiento final, todavía puedes hacer un fork para construir a partir de nuestro trabajo! ¡Por favor, asegúrate de dar crédito a este repositorio!
 
 # Créditos
 

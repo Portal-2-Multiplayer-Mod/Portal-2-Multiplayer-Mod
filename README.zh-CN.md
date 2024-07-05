@@ -78,13 +78,13 @@
 
 ## 编译
 
-我们使用[`nuitka`](https://nuitka.net/), [`pyinstaller`](https://pypi.org/project/pyinstaller/), 和 [`AppImage`](https://appimage.org/) 来制作可执行文件。
+我们使用 [`nuitka`](https://nuitka.net/) 来编译 Portal 2：Multiplayer Mod 启动器。我们还使用 GitHub Actions 来发布我们的可执行文件。[`pyinstaller`](https://pypi.org/project/pyinstaller/) 和 [`AppImage`](https://appimage.org/) 最初被使用，但现在已经被弃用，改用 `nuitka`。
 
 ### Windows:
 
 对于 Windows，我们使用 `nuitka` 来创建我们的 `.exe` 文件。虽然编译速度比以前使用的 `pyinstaller` 慢，但它提供了更小的可执行文件大小，并且不会触发 Windows Defender。`pyinstaller` 仅应在 `nuitka` 无法正常工作时作为备份使用。两者都可以使用 `pip install` 进行安装。
 
-下面是我们用来编译启动器的完整终端命令，下面是没有版本信息等的简化版本：
+下面是我们在发布可执行文件中使用的完整终端命令，它与 GitHub Actions 使用的略有不同，下面是一个简化版本，没有版本信息等：
 
 ```shell
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" --product-name="Portal 2: Multiplayer Mod Launcher" --file-description="The launcher for P2:MM." --product-version="INSERT VERSION HERE" --file-version="INSERT VERSION HERE" --copyright='© 2024 Portal 2: Multiplayer Mod Team' "src/MainWindow.py"
@@ -94,7 +94,7 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-以下是使用 `pyinstaller` 编译的终端命令：
+以下是使用 `pyinstaller` 编译的终端命令，如果 `nuitka` 无法工作作为备份：
 
 ```shell
 pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
@@ -102,14 +102,12 @@ pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole
 
 ### Linux:
 
-对于 Linux，我们转而使用 `AppImage` 并创建了一个工具来帮助这个过程，只需安装 `docker` 并在根目录下运行 `./tools/build-docker.sh` 即可。
+和 Windows 一样，`nuitka` 用于编译 Linux 可执行文件。最初使用的是 `pyinstaller`，然后是 `Appimage`，但由于可执行文件体积小，最终选择了 `nuitka`。
 
-_**警告！由于某种原因，在某些 Linux 发行版上，默认情况下未安装 FUSE，这对于编译和运行 AppImages 都是必需的。有关在您的发行版上安装 FUSE 的信息，请参阅这里：[AppImageKit 的 Wiki](https://github.com/AppImage/AppImageKit/wiki/FUSE)**_
-
-如果您不想使用 `AppImage/docker`，仍然可以使用 `pyinstaller`：
+以下是使用 `nuitka` 编译 Linux 的终端命令：
 
 ```shell
-pyinstaller "src/MainWindow.py" -F --add-data "src/GUI:GUI" --add-data "src/Languages:Languages"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
 ```
 
 ### 注意:
@@ -122,7 +120,7 @@ Portal 2: Multiplayer Mod 使用了一个独立的 Source Engine 服务器插件
 
 # 贡献
 
-Portal 2: Multiplayer Mod 版本 `2.3.0` 将是我们的最终版本，因此在它完全发布后我们不会再进行任何重大更新。在此之前，我们将致力于一些小的更新，直到完整版本发布。在此期间，我们会接受任何重大更改或功能添加到 P2:MM。然而，发布后我们不会进行太多工作，也不会有新的版本发布。我们唯一会发布新版本的原因是有人贡献了新的翻译、改进了现有翻译、修复了一些我们没发现的小错误，或者为工作坊地图提供了支持文件。即使在这个最终版本之后，你仍然可以基于我们的工作进行分叉！请确保你给这个仓库注明出处！
+Portal 2：多人模组版本 `2.3.0` 将是我们的最终版本，所以在完全发布后我们不会进行任何重大更新。在这之前，我们将在 `dev` 分支上进行提交，然后再发布完整版本。在此期间，我们将接受对 P2:MM 的任何重大更改或功能。然而，在发布之后我们不会进行太多工作，也不会进行新的发布。我们进行新发布的唯一原因是有人贡献了新的翻译，改进了当前的翻译，或者是我们没有发现的一些其他小错误修复，或是一个工坊地图的支持文件。即使在这个最终版本发布后，您仍然可以分叉它来基于我们的工作进行构建！请确保您给这个仓库以信用！
 
 # 鸣谢
 
