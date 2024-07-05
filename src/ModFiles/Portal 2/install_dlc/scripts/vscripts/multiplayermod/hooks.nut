@@ -5,7 +5,7 @@
 // happens right before mapsupport code is called.
 //---------------------------------------------------
 
-// This function is how we communicate with all mapsupport files.
+// This function is how communication is made with all mapsupport files.
 // In case no mapsupport file exists, it will fall back to this (nothing) instead of an error
 function MapSupport(
 MSInstantRun,       // 1. Runs 0.02 after host client loads in the current map      (Returns true)
@@ -34,8 +34,7 @@ function InstantRun() {
     // Tell the plugin that P2MMLoop can now be called
     EntFire("p2mm_servercommand", "command", "p2mm_loop 1", 0.01)
 
-    // Delay the creation of our map-specific entities before so
-    // that we don't get an engine error from the entity limit
+    // Delay the creation of our map-specific entities before so an engine error from the entity limit doesn't occur
     EntFire("p2mm_servercommand", "command", "script CreateOurEntities()", 0.05)
 
     if (g_bIsCommunityCoopHub) {
@@ -61,15 +60,9 @@ function InstantRun() {
 }
 
 // 2
-function Loop() {
+function P2MMLoop() {
     // Trigger map-specific code
     MapSupport(false, true, false, false, false, false, false)
-
-    //## Event List ##//
-    if (EventList.len() > 0) {
-        EntFire("p2mm_servercommand", "command", "script " + EventList[0])
-        EventList.remove(0)
-    }
 
     // Get all players and check for changes
     for (local p = null; p = Entities.FindByClassname(p, "player");) {
@@ -257,9 +250,7 @@ function Loop() {
                     } catch(exception) {
                         OldPlayerPos = Vector(0, 0, 0)
                         OldPlayerAngles = Vector(0, 0, 0)
-                        if (GetDeveloperLevelP2MM()) {
-                            printlP2MM("Error: Could not cache player position. This is catastrophic!")
-                        }
+                        printlP2MM(1, true, "Error: Could not cache player position. This is catastrophic!")
                         cacheoriginalplayerposition = 1
                     }
                 }
@@ -432,7 +423,7 @@ function Loop() {
                         Vote.DoVote("fail")
                     }
                     else if (Vote.iVotedYes == Vote.iVotedNo) {
-                        // We already have a message set for this
+                        // A message is already set for this
                         // SendChatMessage("[VOTE] Even number of voters on each side.", Vote.pVoteInitiator)
                         Vote.DoVote("fail")
                     } else {
@@ -456,14 +447,10 @@ function PostPlayerSpawn() {
 
     if (!fogs) {
         usefogcontroller = false
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("No fog controller found. Disabling fog controller...")
-        }
+        printlP2MM(1, true, "No fog controller found. Disabling fog controller...")
     } else {
         usefogcontroller = true
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Fog controller found. Enabling fog controller...")
-        }
+        printlP2MM(0, true, "Fog controller found. Enabling fog controller...")
     }
 
     if (usefogcontroller) {
@@ -524,9 +511,7 @@ function PostPlayerSpawn() {
         }
     } catch (exception) {}
     if (OrangeOldPlayerPos == null) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
-        }
+        printlP2MM(1, true, "OrangeOldPlayerPos not set (Blue probably moved before Orange could load in) Setting OrangeOldPlayerPos to BlueOldPlayerPos")
         OrangeOldPlayerPos = OldPlayerPos
         OrangeCacheFailed = true
     }
@@ -547,9 +532,7 @@ function PostPlayerSpawn() {
                 }
             }
         } catch (exception) {
-            if (GetDeveloperLevelP2MM()) {
-                printlP2MM(OverrideName + " dropper not found! Cannot force open dropper.")
-            }
+            printlP2MM(1, true, OverrideName + " dropper not found! Cannot force open dropper.")
         }
     }
 
@@ -650,16 +633,14 @@ function PostPlayerSpawn() {
     // Code used to handle running VScript debugging on the host
     // This needs to be called in PostPlayerSpawn, because the game is in a state where `script_debug` will work as intended.
     if (Config_VScriptDebug) {
-        printlP2MM("[DEBUGGING] Initiating VScript Debugging!")
+        printlP2MM(0, false, "[DEBUGGING] Initiating VScript Debugging!")
 
         // Developer is needed for debugging to work.
         // Just turning it on will work, but the debugger will act 
         // strange when the map loaded doesn't start with developer enabled,
-        // so we need to restart the map for it act as expected.
-        // For some reason GetDeveloperLevelP2MM() is not working correctly while doing this, 
-        // so we use the normal GetDeveloperLevel() instead although it does the exact same thing.
+        // so the map needs to be restarted for it act as expected.
         if (!GetDeveloperLevel()) {
-            printlP2MM("[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
+            printlP2MM(1, false, "[DEBUGGING] \"developer\" isn't set to 1! Setting to 1 and restarting the map!")
             EntFire("p2mm_servercommand", "command", "developer 1")
             EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName())
         }
@@ -847,7 +828,7 @@ function OnPlayerJoin(p, script_scope) {
     //     }
     // }
 
-    // Are we teleporting this player based on our predictions/calculations
+    // Is this player being teleported based on the predictions/calculations
     // of the locations of entities in the map?
     if (GlobalSpawnClass.m_bUseAutoSpawn) {
         TeleportToSpawnPoint(p, null)
@@ -893,12 +874,10 @@ function OnPlayerJoin(p, script_scope) {
         FindEntityClass(portal1).linkedprop <- null
         FindEntityClass(portal2).linkedprop <- null
     } catch (exception) {
-        if (GetDeveloperLevelP2MM()) {
-            printlP2MM("Failed to rename portals" + exception)
-        }
+        printlP2MM(1, true, "Failed to rename portals" + exception)
     }
 
-    //# Set viewmodel targetnames so we can tell them apart #//
+    //# Set viewmodel targetnames so they can be told apart #//
     for (local ent; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
         EntFireByHandle(ent, "AddOutput", "targetname predicted_viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
     }
@@ -956,7 +935,7 @@ function OnPlayerJoin(p, script_scope) {
     //     }
     // }
 
-    // We don't want it to show as a host client on a listen server
+    // Don't show the join text for the listen server host
     // TODO: Possibly need to rework "y" offset for dedicated?
     if (Config_UseJoinIndicator && PlayerID > 1) {
         // Set join message to player name (or index)
@@ -975,7 +954,7 @@ function OnPlayerJoin(p, script_scope) {
 
     // Set dev cosmetics
     if (Config_UseCustomDevModels && PluginLoaded) {
-        // Currently doesn't work on dedicated... We need a new way to precache models for everyone
+        // Currently doesn't work on dedicated... need a new way to precache models for everyone
         if (!IsDedicatedServer()) {
             switch (FindPlayerClass(p).steamid) {
                 case 290760494: SetPlayerModel(p, "models/props_foliage/mall_tree_medium01.mdl");       break; // Nanoman2525
@@ -999,9 +978,7 @@ function OnDeath(player) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, player, false)
 
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
-    }
+    printlP2MM(0, true, FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
 }
 
 // 7
@@ -1009,9 +986,7 @@ function OnRespawn(player) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, false, player)
 
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
-    }
+    printlP2MM(0, true, FindPlayerClass(player).username + " respawned! OnRespawn() has been triggered.")
 
     // GlobalSpawnClass teleport
     if (GlobalSpawnClass.m_bUseAutoSpawn) {

@@ -30,16 +30,12 @@ function StartGelocityTeleport() {
 // TODO: remove these functions and call the lap increment/decrement in the output itself
 function AddLap() {
     GelocityRounds++
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(GelocityRounds)
-    }
+    printlP2MM(0, true, GelocityRounds)
 }
 
 function SubtractLap() {
     GelocityRounds--
-    if (GetDeveloperLevelP2MM()) {
-        printlP2MM(GelocityRounds)
-    }
+    printlP2MM(0, true, GelocityRounds)
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {

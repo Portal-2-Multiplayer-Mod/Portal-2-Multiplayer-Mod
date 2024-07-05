@@ -70,7 +70,7 @@ MPMCoopCreditNames <- [
     "Python Ideas | Enator18"
     "Code Commenting | Blub/Vecc",
     "Alpha Stage Jumpstarter Code | Darnias",
-    "Keys for P2:CE when we eventually port the mod. | Mystical Ace",
+    "Keys for P2:CE if we ever port the mod. | Mystical Ace",
     "",
     "-------------------------------",
     "[____ Honorable Mentions: ____]",
@@ -152,7 +152,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             MPMCredits <- MPMCredits + 1
 
             local tmpname = MPMCoopCreditNames[MPMCredits]
-            if (Config_DevMode) {printlP2MM(MPMCredits + " " + tmpname)}
+            printlP2MM(0, true, MPMCredits + " " + tmpname)
 
             if (tmpname.find("|") == null) {
                 CreditsRemovePod()
@@ -169,8 +169,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Remove pod if needed
             HasRemovedPod <- false
             foreach (anim in NOTubeAnimsPB) {
-                // this operation gonna work once only that's why i added a break
-                // for more optimizations we can also remove the variable 'HasRemovedPod' since it's not doing anything
+                // This operation works only once hence the added break
+                // For more optimizations the variable 'HasRemovedPod' is removed since it's not doing anything
                 if (AnimationsPB[RandomAnimation] == anim && !HasRemovedPod) {
                     HasRemovedPod <- true
                     CreditsRemovePod()
@@ -199,7 +199,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             MPMCredits <- MPMCredits + 1
 
             local tmpname = MPMCoopCreditNames[MPMCredits]
-            if (Config_DevMode) {printlP2MM(MPMCredits + " " + tmpname)}
+            printlP2MM(0, true, MPMCredits + " " + tmpname)
 
             if (tmpname.find("|") == null) {
                 CreditsRemovePod()
@@ -228,8 +228,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Remove pod if needed
             HasRemovedPod <- false
             foreach (anim in NOTubeAnimsAL) {
-                // this operation gonna work once only that's why i added a break
-                // for more optimizations we can also remove the variable 'HasRemovedPod' since it's not doing anything
+                // This operation works only once hence the added break
+                // For more optimizations the variable 'HasRemovedPod' is removed since it's not doing anything
                 if (AnimationsAL[RandomAnimation] == anim && !HasRemovedPod) {
                     HasRemovedPod <- true
                     CreditsRemovePod()
@@ -254,22 +254,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             MPModCreditNumber <- MPModCreditNumber + 1
         }
         
-        // Thanks to Hugo/hugobdesigner for helping me figuring out how to get variables in different scopes
+        // Thanks to Hugo/hugobdesigner for helping figuring out how to get variables in different scopes
         // Directly add our credit list MPMCoopCreditNames to Valve's CreditsList
-        // Doing this prevents the last 30ish entries of the Valve credits from getting cut off
+        // Doing this prevents the last 40ish entries of the Valve credits from getting cut off, because
+        // the script that controls the credits counts the list of credits to determine when to end before
+        // the P2:MM credits are added. Thus it ends before going through the whole list of credits.
         for (local i = MPMCoopCreditNames.len() - 1; i >= 0; i--) {
             local p2mmCredit = MPMCoopCreditNames[i];
             creditScriptEntScope.CreditsList.insert(0, p2mmCredit);
         }
 
-        // Print out the whole updated credits list and other info if Config_DevMode
-        if (Config_DevMode) {
-            foreach (name in creditScriptEntScope.CreditsList) {
-                printlP2MM(name)
-            }
-            printlP2MM(creditScriptEntScope.CreditsList.len())
-            printlP2MM(creditScriptEntScope.m_nTotalNameCount)
-            printlP2MM(creditScriptEntScope.MPModCreditNumber)
+        // Print out the whole updated credits list and other info
+        foreach (name in creditScriptEntScope.CreditsList) {
+            printlP2MM(0, true, name.tostring())
         }
         printlP2MM(0, true, "creditScriptEntScope.CreditsList.len(): " + creditScriptEntScope.CreditsList.len())
         printlP2MM(0, true, "creditScriptEntScope.m_nTotalNameCount: " + creditScriptEntScope.m_nTotalNameCount)
@@ -309,6 +306,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         } else {
             EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
         }
+
         // RAINBOW P-BODY!!!
         Entities.FindByName(null, "prop_orange_peek").__KeyValueFromString("rendercolor", (RandomInt(0, 255) + " " + RandomInt(0, 255) + " " + RandomInt(0, 255)))
     }

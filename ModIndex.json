@@ -1,5 +1,5 @@
 {
-  "Date": "2024-07-04",
+  "Date": "2024-07-05",
   "Path": "src/ModFiles/Portal 2/install_dlc",
   "Files": [
     "/p2mm.identifier",
@@ -12,12 +12,11 @@
     "/scripts/vscripts/multiplayermod/config.nut",
     "/scripts/vscripts/multiplayermod/configcheck.nut",
     "/scripts/vscripts/multiplayermod/firstmapload.nut",
-    "/scripts/vscripts/multiplayermod/functions.nut",
     "/scripts/vscripts/multiplayermod/hooks.nut",
     "/scripts/vscripts/multiplayermod/p2mm.nut",
     "/scripts/vscripts/multiplayermod/pluginfunctionscheck.nut",
     "/scripts/vscripts/multiplayermod/safeguard.nut",
-    "/scripts/vscripts/multiplayermod/variables.nut",
+    "/scripts/vscripts/multiplayermod/vars&funcs.nut",
     "/scripts/vscripts/multiplayermod/cc/adminmodify.nut",
     "/scripts/vscripts/multiplayermod/cc/changeteam.nut",
     "/scripts/vscripts/multiplayermod/cc/help.nut",

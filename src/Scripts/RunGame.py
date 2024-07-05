@@ -246,7 +246,7 @@ def LaunchGame(gamepath: str) -> None:
     Log("=============")
     Log("Running Game...")
 
-    args = f"-novid -allowspectators -nosixense -conclearlog -condebug -usercon +developer 918612 +clear"
+    args = f"-novid -allowspectators -nosixense -conclearlog -condebug -usercon"
 
     # portal 2 uses the first argument provided, so this will override whatever the user has in the custom launch options
     # if GVars.configData["Start-From-Last-Map"]["value"] and len(GVars.configData["Last-Map"]["value"].strip()) > 0:
