@@ -215,3 +215,4 @@ MainWindow.exe
 MainWindow.build
 MainWindow.dist
 MainWindow.onefile-build
+MainWindow.bin

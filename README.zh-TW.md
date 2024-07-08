@@ -82,9 +82,9 @@
 
 我們使用 [`nuitka`](https://nuitka.net/) 來編譯 Portal 2：Multiplayer Mod 啟動器。我們還使用 GitHub Actions 來發布我們的可執行文件。[`pyinstaller`](https://pypi.org/project/pyinstaller/) 和 [`AppImage`](https://appimage.org/) 最初被使用，但現在已經被棄用，改用 `nuitka`。
 
-### Windows:
+### Windows
 
-對於 Windows，我們使用 `nuitka` 來創建我們的 `.exe` 文件。雖然編譯速度比以前使用的 `pyinstaller` 慢，但它提供了更小的可執行文件大小，並且不會觸發 Windows Defender。`pyinstaller` 僅應在 `nuitka` 無法正常工作時作為備份使用。兩者都可以使用 `pip install` 進行安裝。
+對於 Windows，我們使用 `nuitka` 來創建我們的 `.exe` 文件。雖然編譯速度比舊版本中使用的 `pyinstaller` 慢，但它提供了更小的可執行文件大小。`nuitka` 可以通過 `pip` 安裝。
 
 下面是我們在發佈可執行文件中使用的完整終端命令，它與 GitHub Actions 使用的略有不同，下面是簡化版本，沒有版本信息等：
 
@@ -96,23 +96,17 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-以下是使用 `pyinstaller` 編譯的終端命令，如果 `nuitka` 無法工作作為備份：
-
-```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
-```
-
-### Linux：
+### Linux
 
 就像在 Windows 一样，`nuitka` 用于编译 Linux 可执行文件。最初使用的是 `pyinstaller`，后来是 `Appimage`，但由于可执行文件体积小，最终选择了 `nuitka`。
 
 以下是使用 `nuitka` 编译 Linux 的终端命令：
 
 ```shell
-python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages" --linux-icon="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-### 注意：
+### 注意
 
 - 如果你想分叉這個項目並進行你自己的發佈，你需要將 `src/Scripts/Updater.py` 頂部的變量更改為你自己的信息，並更新 `AppImageBuilder.yml` 中的值，以及在相應編譯命令中的信息，如 `nuitka`。
 
