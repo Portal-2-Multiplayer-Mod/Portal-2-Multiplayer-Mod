@@ -81,9 +81,9 @@ Também as colocamos em um arquivo para facilitar a instalação: `pip install -
 
 Usamos [`nuitka`](https://nuitka.net/) para compilar o Launcher do Portal 2: Multiplayer Mod. Junto com isso, usamos GitHub Actions para nossos executáveis de lançamento. [`pyinstaller`](https://pypi.org/project/pyinstaller/) e [`AppImage`](https://appimage.org/) foram originalmente usados, mas foram descontinuados em favor do `nuitka`.
 
-### Windows:
+### Windows
 
-Para Windows, usamos `nuitka` para criar nossos arquivos `.exe`. Embora seja mais lento para compilar do que `pyinstaller`, que era usado em versões anteriores, ele fornece um tamanho de executável menor e não ativa o Windows Defender. `pyinstaller` deve ser usado apenas como backup se `nuitka` não funcionar por algum motivo. Ambos podem ser instalados usando `pip install`.
+Para Windows, usamos `nuitka` para criar nossos arquivos `.exe`. Embora seja mais lento para compilar do que o `pyinstaller`, que era usado em versões anteriores, ele fornece um tamanho de executável menor. `nuitka` pode ser instalado usando `pip`.
 
 Abaixo está o comando completo do terminal que usamos nos executáveis de lançamento, é ligeiramente diferente do que o GitHub Actions usa, e abaixo disso está uma versão simplificada sem informações de versão e afins:
 
@@ -95,23 +95,17 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-Abaixo está o comando de terminal para compilar usando `pyinstaller` como backup se `nuitka` não funcionar:
-
-```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
-```
-
-### Linux:
+### Linux
 
 Assim como no Windows, `nuitka` é usado para compilar os executáveis do Linux. Originalmente, era usado `pyinstaller`, depois `Appimage`, mas acabou-se optando por `nuitka` pelo tamanho pequeno do executável.
 
 Abaixo está o comando de terminal para compilar para Linux usando `nuitka`:
 
 ```shell
-python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages" --linux-icon="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-### Observações:
+### Observações
 
 - Se você quiser fazer um fork do projeto e fazer seus próprios lançamentos, você precisa alterar as variáveis no topo de `src/Scripts/Updater.py` para suas próprias informações e atualizar os valores em `AppImageBuilder.yml`, bem como as informações nos comandos de compilação respectivos, como com `nuitka`.
 

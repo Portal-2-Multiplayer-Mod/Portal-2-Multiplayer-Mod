@@ -81,9 +81,9 @@
 
 我們使用 [`nuitka`](https://nuitka.net/) 來編譯 Portal 2：Multiplayer Mod 啟動器。我們還使用 GitHub Actions 來發布我們的可執行文件。[`pyinstaller`](https://pypi.org/project/pyinstaller/) 和 [`AppImage`](https://appimage.org/) 最初被使用，但現在已經被棄用，改用 `nuitka`。
 
-### Windows:
+### Windows
 
-對於 Windows，我們使用 `nuitka` 來創建我們的 `.exe` 文件。雖然編譯速度比以前使用的 `pyinstaller` 慢，但它提供了更小的可執行文件大小，並且不會觸發 Windows Defender。`pyinstaller` 僅應在 `nuitka` 無法正常工作時作為備份使用。兩者都可以使用 `pip install` 進行安裝。
+對於 Windows，我們使用 `nuitka` 來創建我們的 `.exe` 文件。雖然編譯速度比舊版本中使用的 `pyinstaller` 慢，但它提供了更小的可執行文件大小。`nuitka` 可以通過 `pip` 安裝。
 
 下面是我們在發佈可執行文件中使用的完整終端命令，它與 GitHub Actions 使用的略有不同，下面是簡化版本，沒有版本信息等：
 
@@ -95,33 +95,21 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-以下是使用 `pyinstaller` 編譯的終端命令，如果 `nuitka` 無法工作作為備份：
-
-```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
-```
-
-### Linux:
+### Linux
 
 就像在 Windows 一样，`nuitka` 用于编译 Linux 可执行文件。最初使用的是 `pyinstaller`，后来是 `Appimage`，但由于可执行文件体积小，最终选择了 `nuitka`。
 
 以下是使用 `nuitka` 编译 Linux 的终端命令：
 
 ```shell
-python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages" --linux-icon="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-### 注意:
+### 注意
 
 - 如果你想分叉這個項目並進行你自己的發佈，你需要將 `src/Scripts/Updater.py` 頂部的變量更改為你自己的信息，並更新 `AppImageBuilder.yml` 中的值，以及在相應編譯命令中的信息，如 `nuitka`。
 
 # 做出貢獻
-
-Portal 2: 多人遊戲 Mod 版本 2.2.0 將是我們的最終版本，因此在完全發布後我們將不再進行重大更新。在此之前，我們將致力於小的更新，逐步迎來完整版本。在此期間，我們將接受 P2:MM 的任何實質性更改或功能。然而，在完全發布後，我們將不再接受任何重大更改。我們會發布新版本的唯一原因是當有人貢獻新的翻譯，改進現有翻譯，修復我們沒有發現的其他小錯誤，或為創意工坊地圖提供地圖支援檔案時。在這些情況下，我們將只發布另一個版本，並不再接受任何重大更改到這個存儲庫。然而，你仍然可以 fork 它以構建基於我們的工作！請確保給予這個存儲庫適當的榮譽！
-
-# 貢獻者
-
-Portal 2：多人模組版本 `2.3.0` 將是我們的最終版本，所以在完全發布後我們不會進行任何重大更新。在這之前，我們將在 `dev` 分支上進行提交，然後再發布完整版本。在此期間，我們將接受對 P2:MM 的任何重大更改或功能。然而，在發布之後我們不會進行太多工作，也不會進行新的發布。我們進行新發布的唯一原因是有人貢獻了新的翻譯，改進了當前的翻譯，或者是我們沒有發現的一些其他小錯誤修復，或是一個工坊地圖的支持文件。即使在這個最終版本發布後，您仍然可以分叉它來基於我們的工作進行構建！請確保您給這個倉庫以信用！
 
 # 鸣谢
 

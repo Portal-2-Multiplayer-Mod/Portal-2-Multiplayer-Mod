@@ -81,9 +81,9 @@ On a aussi un fichier pour une simple installation: `pip install -r requirements
 
 Nous utilisons [`nuitka`](https://nuitka.net/) pour compiler le lanceur de Portal 2: Multiplayer Mod. En parallèle, nous utilisons GitHub Actions pour nos exécutables de sortie. [`pyinstaller`](https://pypi.org/project/pyinstaller/) et [`AppImage`](https://appimage.org/) étaient à l'origine utilisés mais ont été abandonnés au profit de `nuitka`.
 
-### Windows:
+### Windows
 
-Pour Windows, nous utilisons `nuitka` pour créer nos fichiers `.exe`. Bien qu'il soit plus lent à compiler que `pyinstaller` qui était utilisé dans les versions précédentes, il offre une taille d'exécutable plus petite et n'alerte pas Windows Defender. `pyinstaller` ne doit être utilisé qu'en cas de secours si `nuitka` ne fonctionne pas pour vous pour une raison quelconque. Les deux peuvent être installés en utilisant `pip install`.
+Pour Windows, nous utilisons `nuitka` pour créer nos fichiers `.exe`. Bien que plus lent à compiler que `pyinstaller` qui était utilisé dans les versions précédentes, il fournit une taille d'exécutable plus petite. `nuitka` peut être installé en utilisant `pip`.
 
 Ci-dessous se trouve la commande de terminal complète que nous utilisons dans les exécutables de sortie, elle est légèrement différente de celle utilisée par GitHub Actions, et en dessous se trouve une version simplifiée sans les informations de version et autres :
 
@@ -95,23 +95,17 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-Voici la commande de terminal pour compiler en utilisant `pyinstaller` comme solution de secours si `nuitka` ne fonctionne pas :
-
-```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
-```
-
-### Linux:
+### Linux
 
 Tout comme sous Windows, `nuitka` est utilisé pour compiler les exécutables Linux. À l'origine, `pyinstaller` était utilisé, puis `Appimage`, mais nous avons opté pour `nuitka` en raison de la petite taille de l'exécutable.
 
 Voici la commande de terminal pour compiler pour Linux en utilisant `nuitka` :
 
 ```shell
-python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages" --linux-icon="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-### Notes:
+### Notes
 
 - Si vous voulez forker le projet et faire vos propres versions, vous devez changer les variables en haut de `src/Scripts/Updater.py` avec vos propres informations et mettre à jour les valeurs dans `AppImageBuilder.yml` ainsi que les informations dans les commandes de compilation respectives, comme avec `nuitka`.
 

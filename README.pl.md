@@ -81,9 +81,9 @@ Mamy je również w pliku dla łatwej instalacji: `pip install -r requirements.t
 
 Używamy [`nuitka`](https://nuitka.net/) do kompilowania Launchera Portal 2: Multiplayer Mod. Oprócz tego używamy GitHub Actions do naszych plików wykonywalnych wersji. [`pyinstaller`](https://pypi.org/project/pyinstaller/) i [`AppImage`](https://appimage.org/) były pierwotnie używane, ale zostały wycofane na rzecz `nuitka`.
 
-### Windows:
+### Windows
 
-Dla systemu Windows używamy `nuitka` do tworzenia naszych plików `.exe`. Chociaż kompilacja jest wolniejsza niż w przypadku `pyinstaller`, który był używany we wcześniejszych kompilacjach, zapewnia mniejszy rozmiar pliku wykonywalnego i nie uruchamia Windows Defender. `pyinstaller` powinien być używany tylko jako zapas, jeśli `nuitka` nie działa z jakiegoś powodu. Oba można zainstalować za pomocą `pip install`.
+Dla Windows używamy `nuitka` do tworzenia naszych plików `.exe`. Chociaż kompiluje się wolniej niż `pyinstaller`, który był używany we wcześniejszych wersjach, zapewnia mniejszy rozmiar pliku wykonywalnego. `nuitka` można zainstalować za pomocą `pip`.
 
 Poniżej znajduje się pełne polecenie terminala, którego używamy w plikach wykonywalnych wersji, jest ono nieco inne niż to, które używa GitHub Actions, a poniżej znajduje się uproszczona wersja bez informacji o wersji i podobnych:
 
@@ -95,23 +95,17 @@ python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files
 python -m nuitka --onefile --windows-console-mode=disable --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages"  --windows-icon-from-ico="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-Poniżej znajduje się polecenie terminala do kompilacji przy użyciu `pyinstaller` jako zapasowego rozwiązania, jeśli `nuitka` nie działa:
-
-```shell
-pyinstaller "src/MainWindow.py" -F -i "src/GUI/images/p2mm-icon.ico" --noconsole --add-data "src/GUI;GUI" --add-data "src/Languages;Languages"
-```
-
-### Linux:
+### Linux
 
 Tak jak w systemie Windows, do kompilowania plików wykonywalnych Linuxa używamy `nuitka`. Początkowo używano `pyinstallera`, później `Appimage`, ale ostatecznie zdecydowano się na `nuitka` ze względu na mały rozmiar pliku wykonywalnego.
 
 Poniżej znajduje się polecenie terminala do kompilacji dla Linuxa przy użyciu `nuitka`:
 
 ```shell
-python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages --linux-icon="src/GUI/images/p2mm-icon.ico"
+python -m nuitka --onefile --noinclude-data-files="pygame/freesansbold.ttf" --include-data-dir="src/GUI"="GUI" --include-data-dir="src/Languages"="Languages" --linux-icon="src/GUI/images/p2mm-icon.ico" "src/MainWindow.py"
 ```
 
-### Uwaga:
+### Uwaga
 
 - Jeśli chcesz sklonować projekt i tworzyć własne wydania, musisz zmienić zmienne na początku pliku `src/Scripts/Updater.py` na swoje własne informacje oraz zaktualizować wartości w `AppImageBuilder.yml`, a także informacje w odpowiednich poleceniach kompilacji, takich jak `nuitka`.
 
