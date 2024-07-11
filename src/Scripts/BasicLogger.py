@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -26,6 +27,8 @@ def Log(message: str) -> None:
 
 def StartLog() -> None:
     """Configures the logger and prints the log header"""
+
+    sys.stdout.reconfigure(encoding='utf-8') # To prevent crashes when running launcher through Steam
 
     logsPath = os.path.join(GVars.modPath, "Logs")
 

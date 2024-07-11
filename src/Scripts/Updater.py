@@ -50,7 +50,7 @@ def CheckForNewClient() -> dict:
     """
 
     if not HasInternet():
-        Log("No internet Connection")
+        Log("No Internet Connection!")
         return {"status": False}
 
     Log("Searching for a new client...")
