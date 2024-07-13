@@ -62,7 +62,7 @@
 		"userid"	"short"		// user ID on server
 	}
 
-	//? Interface to VScript By P2:MM | GEPlayerPing(userid, ping_x, ping_y, ping_z)
+	//? Interface to VScript By P2:MM | GEPlayerPing(userid, ping_x, ping_y, ping_z, entindex)
 	"portal_player_ping"	// player pinged
 	{
 		"userid"	"short"		// user ID on server
@@ -71,7 +71,7 @@
 		"ping_z"	"float"
 	}
 	
-	//? Interface to VScript By P2:MM | GEPlayerPortaled(portal2)
+	//? Interface to VScript By P2:MM | GEPlayerPortaled(userid, portal2, entindex)
 	"portal_player_portaled"		// player traveled through a portal
 	{
 		"userid"	"short"		// user ID on server
@@ -221,7 +221,7 @@
 		"bouncecount"	"short"
 	}
 
-	//? Interface to VScript By P2:MM | GEPlayerLanded(userid)
+	//? Interface to VScript By P2:MM | GEPlayerLanded(userid, entindex)
 	"player_landed"
 	{
 		"userid"	"short"
@@ -417,6 +417,7 @@
 		"class"		"string"	// new player class / model
 	}
 	
+	//? Interface to VScript By P2:MM | GEPlayerDeath(userid, attacker, entindex)
 	"player_death"				// a game event, name may be 32 charaters long
 	{
 		"userid"	"short"   	// user ID who died				
@@ -803,7 +804,7 @@
 		"by"		"string"	// removed by...
 	}
 	
-	//? Interface to VScript By P2:MM | GEPlayerConnect(name, index, userid, xuid, networkid, address, bot)
+	//? Interface to VScript By P2:MM | GEPlayerConnect(name, index, userid, xuid, networkid, address, bot, entindex)
 	//! WARNING: The player entity has yet to exist at this stage, so manipulating the entity could crash the game.
 	//! Do so at "player_spawn" or "player_activate", both are called after the player entity exists.
 	//! "player_activate" is more recommended to be used as "player_spawn" gets called twice when the host loads in.
@@ -818,7 +819,7 @@
 		"bot"		"bool"		// true if player is a AI bot
 	}
 	
-	//? Interface to VScript By P2:MM | GEPlayerInfo(name, index, userid, networkid, address)
+	//? Interface to VScript By P2:MM | GEPlayerInfo(name, index, userid, friendsid, networkid, bot, entindex)
 	"player_info"				// a player changed their name, called when a map starts also
 	{
 		"name"		"string"	// player name		

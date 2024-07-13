@@ -59,15 +59,15 @@ MPMCoopCreditNames <- [
     "---------------------------------",
     "Playtesting | tnp/thewoodster75/\\n",
     "Speedrun Mode Ideas, Playtesting, French Translation | sear",
-    "French Translation | Meb"
+    "French Translation | Meb",
     "Mod Promotion | PieCreeper",
-    "Italian Translation | thatwardrobeguy"
+    "Italian Translation | thatwardrobeguy",
     "",
     "--------------------------------",
     "[_____ Special Thanks To: _____]",
     "--------------------------------",
     "Speedrun Mode Ideas | Dreadnox",
-    "Python Ideas | Enator18"
+    "Python Ideas | Enator18",
     "Code Commenting | Blub/Vecc",
     "Alpha Stage Jumpstarter Code | Darnias",
     "Keys for P2:CE if we ever port the mod. | Mystical Ace",
@@ -157,7 +157,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (tmpname.find("|") == null) {
                 CreditsRemovePod()
                 printlP2MM(0, true, "NO POD/ROBOT!!!!!! \"" + tmpname + "\"")
-                EntFireByHandle(Entities.FindByNameNearest("female*", Vector(-64, 217, 72), 300), "disabledraw", "", 0, null, null)
+                EntFireByHandle(Entities.FindByNameNearest("female*", Vector(-64, 217, 72), 300), "disabledraw", "", 0, null, null) //! Somehow Valve broke this
                 EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
             } else {
                 EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")
@@ -204,7 +204,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (tmpname.find("|") == null) {
                 CreditsRemovePod()
                 printlP2MM(0, true, "NO POD/ROBOT!!!!!! \"" + tmpname + "\"")
-                EntFireByHandle(Entities.FindByNameNearest("male*", Vector(-64, 217, 72), 300), "disabledraw", "", 0, null, null)
+                EntFireByHandle(Entities.FindByNameNearest("male*", Vector(-64, 217, 72), 300), "disabledraw", "", 0, null, null) //! Somehow Valve broke this
                 EntFire("stock_scanner_model", "AddOutput", "targetname disabled_stock_scanner_model", 0.5)
             } else {
                 EntFire("disabled_stock_scanner_model", "AddOutput", "targetname stock_scanner_model")

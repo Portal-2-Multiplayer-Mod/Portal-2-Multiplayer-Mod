@@ -66,16 +66,6 @@ function P2MMLoop() {
 
     // Get all players and check for changes
     for (local p = null; p = Entities.FindByClassname(p, "player");) {
-        //## Hook player join ##//
-        if (p.ValidateScriptScope()) {
-            local script_scope = p.GetScriptScope()
-            // If player hasn't joined yet / hasn't been spawned / colored yet
-            if (!("Colored" in script_scope)) {
-                // Run player join code
-                OnPlayerJoin(p, script_scope)
-            }
-        }
-
         // Update everyone's class if PermaPotato is on
         FindPlayerClass(p).potatogun = PermaPotato
 
@@ -97,17 +87,7 @@ function P2MMLoop() {
 
         //## Detect death ##// //! REPLACE IN PLUGIN
         if (p.GetHealth() == 0) { // If player is dead
-            local progress = true
-            // Put dead players in the dead players array
-            foreach (player in CurrentlyDead) {
-                if (player == p) {
-                    progress = false
-                }
-            }
-            if (progress) {
-                CurrentlyDead.push(p)
-                OnDeath(p)
-            }
+           
         }
     }
 
@@ -734,7 +714,7 @@ function PostMapSpawn() {
 }
 
 // 5
-function OnPlayerJoin(p, script_scope) {
+function OnPlayerJoin(p) {
 
     // // Update this value. We don't want to run this several times
     // // at once if players are joining all at once (i.e. map change)
@@ -820,6 +800,9 @@ function OnPlayerJoin(p, script_scope) {
 
     //-------------------------------------------------------------
     // Update P2:MM code
+
+    p.ValidateScriptScope()
+    local script_scope = p.GetScriptScope()
 
     // Trigger map-specific code
     MapSupport(false, false, false, false, true, false, false)
@@ -979,11 +962,20 @@ function OnPlayerJoin(p, script_scope) {
 }
 
 // 6
-function OnDeath(player) {
-    // Trigger map-specific code
-    MapSupport(false, false, false, false, false, player, false)
+function OnDeath(p) {
 
-    printlP2MM(0, true, FindPlayerClass(player).username + " died! OnDeath() has been triggered.")
+    // Put dead players in the dead players array
+    foreach (player in CurrentlyDead) {
+        if (player == p) {
+            return
+        }
+    }
+    CurrentlyDead.push(p)
+
+    // Trigger map-specific code
+    MapSupport(false, false, false, false, false, p, false)
+
+    printlP2MM(0, true, FindPlayerClass(p).username + " died! OnDeath() has been triggered.")
 }
 
 // 7
