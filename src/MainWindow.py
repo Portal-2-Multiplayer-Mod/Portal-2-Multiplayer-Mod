@@ -681,9 +681,9 @@ class Gui:
                         if event.key == pygame.locals.K_SPACE:
                             self.CurInput += " "
                         # In order to delete characters for input prompts on Steam Deck
-                        # elif name == "backspace" and GVars.iosd:
-                        #     if (len(self.CurInput) > 0):
-                        #         self.CurInput = self.CurInput[:-1]
+                        elif (event.key == 8) and GVars.iosd:
+                            if (len(self.CurInput) > 0):
+                                self.CurInput = self.CurInput[:-1]
                         elif event.key in [pygame.locals.K_RETURN, pygame.locals.K_KP_ENTER]:
                             self.LookingForInput = False
                             self.AfterInputFunction(self.CurInput)
@@ -691,8 +691,8 @@ class Gui:
                             self.LookingForInput = False
                         elif event.key == pygame.locals.K_TAB:
                             self.CurInput += "    "
-                        # Pasting for systems, first part is for the Steam Deck's dpad, second part is for all other OSes
-                        elif (event.key == 4) or (CTRL_HELD and event.key == pygame.locals.K_v):
+                        # Pasting for systems, first part is for pasting on Steam Deck using the right arrow button on the on-screen keyboard, second part is for keyboards
+                        elif (event.key == 4 or 1073741903) or (CTRL_HELD and event.key == pygame.locals.K_v):
                             try:
                                 pastedString = BF.ClipboardOperation(copy=False)
                                 if pastedString == False:

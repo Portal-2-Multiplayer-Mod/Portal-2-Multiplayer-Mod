@@ -102,12 +102,7 @@
         "command"   "p2mm_startsession sp_a4_finale1"
         "pic"       "vgui/chapters/chapter9"
     }
-    "empty"
-	{
-		"title"		""
-		"subtitle"	""
-	}
-    	"e1912"
+    "e1912"
 	{
 		"title"		"#PORTAL2_Extras_E1912Title"
 		"subtitle"	"#PORTAL2_Extras_E1912Subtitle"
