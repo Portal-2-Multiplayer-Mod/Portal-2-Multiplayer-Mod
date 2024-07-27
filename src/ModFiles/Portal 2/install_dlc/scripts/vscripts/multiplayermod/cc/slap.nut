@@ -1,18 +1,17 @@
 CommandList.push(
     class {
         name = "slap"
-        level = 0
+        level = 4
 
         // !slap (target arg: Specific player, team target. Self if no arg.)
         function CC(p, args) {
             local SlapPlayer = function(player) {
                 EntFireByHandle(player, "sethealth", "-50", 0, player, player)
-                player.SetVelocity(Vector(RandomInt(300, 900), RandomInt(300, 900), RandomInt(300, 900)))
+                player.SetVelocity(Vector(RandomInt(-900, 900), RandomInt(300, 900), RandomInt(-900, 900)))
             }
 
             if (args.len() == 0 || GetAdminLevel(p) < 4) {
-                EntFireByHandle(p, "sethealth", "-50", 0, p, p)
-                p.SetVelocity(Vector(RandomInt(300, 900), RandomInt(300, 900), RandomInt(300, 900)))
+                SlapPlayer(p)
                 return SendChatMessage("Slapped yourself.", p)
             }
             

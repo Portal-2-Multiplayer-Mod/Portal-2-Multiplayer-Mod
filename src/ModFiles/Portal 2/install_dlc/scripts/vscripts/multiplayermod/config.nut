@@ -84,11 +84,11 @@ Config_UseChatCommands <- true
 // * Use "!help (commandname)" to print a description of each command in the chat box
 //
 // What each admin level gives you (0 means no admin, default player permissions)
-// [0]: "help", "changeteam", "kill", "slap", "rocket", "playercolor", replying to a "vote"
+// [0]: "help", "changeteam", "kill", "rocket", "playercolor", replying to a "vote"
 // [1]:
 // [2]: "playercolor (for someone else)", "speed", "teleport"
 // [3]: "kill (someone else)", "noclip", "restartlevel", calling a vote with "vote"
-// [4]: "slap (optionally someone)", "rocket (optionally someone)", "hub", "mpcourse", "spcourse"
+// [4]: "slap", "rocket (optionally someone)", "hub", "mpcourse", "spcourse"
 // [5]: "kick"
 // [6]: "adminmodify" 
 //
