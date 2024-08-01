@@ -692,7 +692,7 @@ class Gui:
                         elif event.key == pygame.locals.K_TAB:
                             self.CurInput += "    "
                         # Pasting for systems, first part is for pasting on Steam Deck using the right arrow button on the on-screen keyboard, second part is for keyboards
-                        elif (event.key == 4 or 1073741903) or (CTRL_HELD and event.key == pygame.locals.K_v):
+                        elif ((event.key == 4 or 1073741903) and GVars.iosd) or ((CTRL_HELD and event.key == pygame.locals.K_v) and not GVars.iosd):
                             try:
                                 pastedString = BF.ClipboardOperation(copy=False)
                                 if pastedString == False:
@@ -703,6 +703,7 @@ class Gui:
                                     self.CurInput += pastedString
                                     Log(f"Pasted: {pastedString}")
                             except Exception as e:
+                                self.CurInput += "Error pasting, check log..."
                                 Log(str(e))
                                 pass
                         name = pygame.key.name(event.key)
