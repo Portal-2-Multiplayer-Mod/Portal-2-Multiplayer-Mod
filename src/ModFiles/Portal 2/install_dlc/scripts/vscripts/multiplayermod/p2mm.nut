@@ -112,6 +112,7 @@ ConsoleAscii <- [
 ]
 foreach (line in ConsoleAscii) { printl(line) }
 delete ConsoleAscii
+printl("")
 
 //---------------------------------------------------
 

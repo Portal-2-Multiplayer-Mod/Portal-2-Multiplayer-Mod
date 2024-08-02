@@ -57,6 +57,12 @@ Config_UseJoinIndicator <- true
 // Set true/false if you want to see the player's name when you aim at them (affects all players)
 Config_UseNametags <- true
 
+// Set true/false if you want players to be able to emote for all maps
+Config_EnableEmoting <- true
+
+// Set true/false if you want players to be able to use the ping tool for all maps
+Config_EnablePinging <- true
+
 //-----------------------------------
 // Server variables
 //-----------------------------------

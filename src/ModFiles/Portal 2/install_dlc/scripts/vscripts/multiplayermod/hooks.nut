@@ -57,6 +57,15 @@ function InstantRun() {
             }
         }
     }
+
+    if (!Config_EnablePinging) {
+        EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnon", "", delay, null, null)
+        EntFireByHandle(Entities.FindByName(null, "p2mm_env_global02"), "turnon", "", delay, null, null)
+    }
+    if (!Config_EnableEmoting) {    
+        EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnon", "", delay, null, null)
+        EntFireByHandle(Entities.FindByName(null, "p2mm_env_global04"), "turnon", "", delay, null, null)
+    }
 }
 
 // 2

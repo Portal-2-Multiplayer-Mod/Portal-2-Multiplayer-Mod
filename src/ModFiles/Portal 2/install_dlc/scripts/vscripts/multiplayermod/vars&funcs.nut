@@ -1829,6 +1829,7 @@ function UTIL_Team::Spawn_PortalGun(bEnableOrDisable, charBlueOrRed = "all") {
 }
 
 function UTIL_Team::Pinging(bEnableOrDisable, charBlueOrRed = "all", delay = 0) {
+    if (!Config_EnablePinging) {return}
     if (bEnableOrDisable) {
         if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && !UTIL_Team.bPingingEnabled_Blue*/) {
             EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnoff", "", delay, null, null)
@@ -1851,6 +1852,7 @@ function UTIL_Team::Pinging(bEnableOrDisable, charBlueOrRed = "all", delay = 0) 
 }
 
 function UTIL_Team::Taunting(bEnableOrDisable, charBlueOrRed = "all", delay = 0) {
+    if (!Config_EnableEmoting) {return}
     if (bEnableOrDisable) {
         if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && !UTIL_Team.bTauntingEnabled_Blue*/) {
             EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnoff", "", delay, null, null)
