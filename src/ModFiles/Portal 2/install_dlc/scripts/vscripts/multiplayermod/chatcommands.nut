@@ -111,7 +111,7 @@ IncludeScriptCC("rocket")
 IncludeScriptCC("slap")
 IncludeScriptCC("spchapter")
 IncludeScriptCC("speed")
-IncludeScriptCC("teleport")
+IncludeScriptCC("tp")
 IncludeScriptCC("vote")
 
 //--------------------------------------

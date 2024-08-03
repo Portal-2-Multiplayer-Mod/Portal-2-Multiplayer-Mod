@@ -1,9 +1,9 @@
 CommandList.push(
     class {
-        name = "teleport"
+        name = "tp"
         level = 2
 
-        // !teleport (target arg: Specific player, team target. destination player if only this arg.) (destination arg: player)
+        // !tp (target arg: Specific player, team target. destination player if only this arg.) (destination arg: player)
         function CC(p, args) {
             local TeleportTargetOperation = function(operation, destination, p) {
                 switch (operation) {

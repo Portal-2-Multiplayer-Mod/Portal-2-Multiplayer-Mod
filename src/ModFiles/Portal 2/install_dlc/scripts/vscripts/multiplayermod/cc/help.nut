@@ -13,7 +13,7 @@ commandtable["rocket"] <- "Send yourself, another player, or a target team into 
 commandtable["slap"] <- "Slap yourself, another player, or a target team dealing a tiny amount of damage and jolting. \"!slap (target arg: Specific player, team target. Self if no arg.)\""
 commandtable["spchapter"] <- "Changes the level to the specified singleplayer chapter. \"!spchapter (chapter integer 1-9)\""
 commandtable["speed"] <- "Changes your player speed. \"!speed (float arg)\""
-commandtable["teleport"] <- "Teleport yourself, another player, or a target team to a destination. \"!teleport (target arg: Specific player, team target. destination player if only this arg.) (destination arg: player)\""
+commandtable["tp"] <- "Teleport yourself, another player, or a target team to a destination. \"!tp (target arg: Specific player, team target. destination player if only this arg.) (destination arg: player)\""
 commandtable["vote"] <- "Invoke this to get a headcount on whether something should happen or not. \"!vote (vote choice arg: changelevel, kick, or duogunonly) (arg for changelevel map name or kick player name)\""
 
 CommandList.push(
