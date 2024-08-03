@@ -1803,6 +1803,7 @@ class UTIL_Team {
 
 function UTIL_Team::Spawn_PortalGun(bEnableOrDisable, charBlueOrRed = "all") {
     if (bEnableOrDisable) {
+        printlP2MM(0, true, "Enabling spawning with Portal Gun.")
         local DestroyAllTargets = function(team) {
             for (local target; target = Entities.FindByName(target, team);) {
                 target.Destroy()
@@ -1818,6 +1819,7 @@ function UTIL_Team::Spawn_PortalGun(bEnableOrDisable, charBlueOrRed = "all") {
         }
         return
     }
+    printlP2MM(0, true, "Disabling spawning with Portal Gun.")
     if ((charBlueOrRed == "blue" || charBlueOrRed == "all") && UTIL_Team.bPortalgunEnabled_Blue) {
         Entities.CreateByClassname("info_target").__KeyValueFromString("targetname", "supress_blue_portalgun_spawn")
         UTIL_Team.bPortalgunEnabled_Blue = false
@@ -1831,6 +1833,7 @@ function UTIL_Team::Spawn_PortalGun(bEnableOrDisable, charBlueOrRed = "all") {
 function UTIL_Team::Pinging(bEnableOrDisable, charBlueOrRed = "all", delay = 0) {
     if (!Config_EnablePinging) {return}
     if (bEnableOrDisable) {
+        printlP2MM(0, true, "Enabling using the ping tool.")
         if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && !UTIL_Team.bPingingEnabled_Blue*/) {
             EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnoff", "", delay, null, null)
             // UTIL_Team.bPingingEnabled_Blue = true
@@ -1839,21 +1842,23 @@ function UTIL_Team::Pinging(bEnableOrDisable, charBlueOrRed = "all", delay = 0) 
             EntFireByHandle(Entities.FindByName(null, "p2mm_env_global02"), "turnoff", "", delay, null, null)
             // UTIL_Team.bPingingEnabled_Red = true
         }
-    } else {
-        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && UTIL_Team.bPingingEnabled_Blue*/) {
-            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnon", "", delay, null, null)
-            // UTIL_Team.bPingingEnabled_Blue = false
-        }
-        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && UTIL_Team.bPingingEnabled_Red*/) {
-            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global02"), "turnon", "", delay, null, null)
-            // UTIL_Team.bPingingEnabled_Red = false
-        }
+        return
+    }
+    printlP2MM(0, true, "Disabling using the ping tool.")
+    if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && UTIL_Team.bPingingEnabled_Blue*/) {
+        EntFireByHandle(Entities.FindByName(null, "p2mm_env_global01"), "turnon", "", delay, null, null)
+        // UTIL_Team.bPingingEnabled_Blue = false
+    }
+    if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && UTIL_Team.bPingingEnabled_Red*/) {
+        EntFireByHandle(Entities.FindByName(null, "p2mm_env_global02"), "turnon", "", delay, null, null)
+        // UTIL_Team.bPingingEnabled_Red = false
     }
 }
 
 function UTIL_Team::Taunting(bEnableOrDisable, charBlueOrRed = "all", delay = 0) {
     if (!Config_EnableEmoting) {return}
     if (bEnableOrDisable) {
+        printlP2MM(0, true, "Enabling emoting.")
         if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && !UTIL_Team.bTauntingEnabled_Blue*/) {
             EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnoff", "", delay, null, null)
             // UTIL_Team.bTauntingEnabled_Blue = true
@@ -1862,15 +1867,16 @@ function UTIL_Team::Taunting(bEnableOrDisable, charBlueOrRed = "all", delay = 0)
             EntFireByHandle(Entities.FindByName(null, "p2mm_env_global04"), "turnoff", "", delay, null, null)
             // UTIL_Team.bTauntingEnabled_Red = true
         }
-    } else {
-        if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && UTIL_Team.bTauntingEnabled_Blue*/) {
-            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnon", "", delay, null, null)
-            // UTIL_Team.bTauntingEnabled_Blue = false
-        }
-        if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && UTIL_Team.bTauntingEnabled_Red*/) {
-            EntFireByHandle(Entities.FindByName(null, "p2mm_env_global04"), "turnon", "", delay, null, null)
-            // UTIL_Team.bTauntingEnabled_Red = false
-        }
+        return
+    }
+    printlP2MM(0, true, "Disabling emoting.")
+    if ((charBlueOrRed == "blue" || charBlueOrRed == "all")/* && UTIL_Team.bTauntingEnabled_Blue*/) {
+        EntFireByHandle(Entities.FindByName(null, "p2mm_env_global03"), "turnon", "", delay, null, null)
+        // UTIL_Team.bTauntingEnabled_Blue = false
+    }
+    if ((charBlueOrRed == "red" || charBlueOrRed == "all")/* && UTIL_Team.bTauntingEnabled_Red*/) {
+        EntFireByHandle(Entities.FindByName(null, "p2mm_env_global04"), "turnon", "", delay, null, null)
+        // UTIL_Team.bTauntingEnabled_Red = false
     }
 }
 
@@ -2008,7 +2014,7 @@ function SendChatMessage(message, pActivatorAndCaller = null) {
         EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
     }
     // Note that "\x05" is used for private messages with more than one person
-    // You will need to create a special case to use it (see cc/teleport.nut for an example)
+    // You will need to create a special case to use it (see cc/tp.nut for an example)
 }
 
 function RunChatCommand(cmd, args, plr) {
