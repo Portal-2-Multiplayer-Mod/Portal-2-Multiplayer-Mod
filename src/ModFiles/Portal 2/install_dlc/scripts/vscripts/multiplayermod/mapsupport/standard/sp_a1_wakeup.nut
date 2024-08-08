@@ -21,7 +21,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make changing levels work
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_intro:0.29", 0, null)
 
-        UTIL_Team.Pinging(false, "all", 1)
+        // Enable pinging and taunting
+        UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(true)
 
         EntFire("@sphere", "EnableMotion", "", 0, null)
         EntFire("@sphere", "DisableMotion", "", 0.1, null)
@@ -69,8 +71,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetOrigin(Vector(8548, 1204, 106))
                     p.SetVelocity(Vector(0, 0, 0))
                 }
-                UTIL_Team.Pinging(false, "all", 1)
-                UTIL_Team.Taunting(false, "all", 1)
+                UTIL_Team.Pinging(false)
+                UTIL_Team.Taunting(false)
                 TPP1 <- false
             }
         }
@@ -82,8 +84,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(0, 45, 0)
                 }
-                UTIL_Team.Pinging(false, "all", 1)
-                    UTIL_Team.Taunting(false, "all", 1)
+                UTIL_Team.Pinging(false)
+                UTIL_Team.Taunting(false)
                 TPP2 <- false
             }
         }
@@ -95,8 +97,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetVelocity(Vector(0, 0, 0))
                     p.SetAngles(20, 40, 0)
                 }
-                UTIL_Team.Pinging(false, "all", 1)
-                UTIL_Team.Taunting(false, "all", 1)
+                UTIL_Team.Pinging(false)
+                UTIL_Team.Taunting(false)
                 TPP3 <- false
             }
         }
@@ -185,7 +187,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 }
 
 function elevatorrecreationsp_a1_wakeup() {
-    // printlP2MM("Calling elevatorrecreationsp_a1_wakeup()...")
+    printlP2MM(0, true, "Calling elevatorrecreationsp_a1_wakeup()...")
     Entities.FindByName(null, "@sphere").SetOrigin(Vector(11357, -819, 161))
     // Sphere attach bs
     EntFire("@sphere", "EnableMotion", "", 0.7, null)

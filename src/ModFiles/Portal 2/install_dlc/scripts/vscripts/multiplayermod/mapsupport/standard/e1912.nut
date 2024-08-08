@@ -54,8 +54,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetOrigin(Vector(-868.607117, 6147.984375, 0.031250))
                     p.SetAngles(0.033103, -11.502685, 0)
                 }
-                UTIL_Team.Pinging(false, "all", 1)
-                UTIL_Team.Taunting(false, "all", 1)
+                UTIL_Team.Pinging(false)
+                UTIL_Team.Taunting(false)
                 stoprenable <- true
                 OnlyOnceE1912 <- false
             }
@@ -84,8 +84,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     p.SetOrigin(Vector(-655.748779, -918.373535, 2))
                     p.SetAngles(2.279724, 108.544930, 0)
                 }
-                UTIL_Team.Pinging(false, "all", 1)
-                UTIL_Team.Taunting(false, "all", 1)
+                UTIL_Team.Pinging(false)
+                UTIL_Team.Taunting(false)
                 stoprenable <- true
                 NewSpawnPoint <- true
                 OnlyOnce3E1912 <- false
@@ -199,6 +199,6 @@ function E1912ScareViewcontrol() {
 }
 
 function E1912PostScare() {
-    UTIL_Team.Pinging(false, "all", 1)
-    UTIL_Team.Taunting(false, "all", 1)
+    UTIL_Team.Pinging(false)
+    UTIL_Team.Taunting(false)
 }

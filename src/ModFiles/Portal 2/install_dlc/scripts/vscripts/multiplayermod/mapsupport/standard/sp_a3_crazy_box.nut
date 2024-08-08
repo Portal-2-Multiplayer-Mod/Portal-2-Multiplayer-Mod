@@ -7,6 +7,9 @@
 
 WaitDontFizzleTime <- 0
 WaitDontFizzle <- false
+isopen <- false
+rollang <- 0
+movecube <- false
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -15,9 +18,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // GlobalSpawnClass.m_bUseSetSpawn <- true
         // GlobalSpawnClass.m_cSetSpawn.position <- Vector(2231.027100, 187.758835, -386.163635)
         // GlobalSpawnClass.m_cSetSpawn.radius <- 200
-        isopen <- false
-        rollang <- 0
-        movecube <- false
+
         // Make elevator start moving on level load
         EntFireByHandle(Entities.FindByName(null, "InstanceAuto17-entrance_lift_train"), "StartForward", "", 0, null, null)
         // Destroy objects
@@ -147,7 +148,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Elevator changelevel
         for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(640, 174, 2740), 100);) {
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_transition01")
+            EntFire("exit_fade", "fade")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_transition01", 2)
         }
     }
 }

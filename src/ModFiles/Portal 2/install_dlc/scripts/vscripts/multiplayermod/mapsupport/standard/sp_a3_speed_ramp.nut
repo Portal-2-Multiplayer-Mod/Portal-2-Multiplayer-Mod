@@ -33,8 +33,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             GooHurtTimerPred = Time()+1
         }
         // Elevator changelevel
-        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 962), 100);) {
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_speed_flings")
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(1232, -642, 1200), 100);) {
+            EntFire("exit_fade", "fade")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_speed_flings", 4)
         }
     }
 }

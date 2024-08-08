@@ -49,7 +49,7 @@ function InstantRun() {
         Player2Joined = true
     }
 
-    // For adding the a output to the disassembler's trigger_playerteams trigger so the disassembler's disassembly animation is colored the players color
+    // For adding a output to the disassembler's trigger_playerteams trigger so the disassembler's disassembly animation is colored the players color
     if (!g_bIsOnSingleplayerMaps) {
         for (local disassemblerTrigger = null; disassemblerTrigger = Entities.FindByClassname(disassemblerTrigger, "trigger_playerteam");) {
             if (disassemblerTrigger.GetName().find("trigger_exit_lift") != null) {
@@ -92,11 +92,6 @@ function P2MMLoop() {
                     EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + FindPlayerClass(p).playermodel + "\")", 1)
                 }
             }
-        }
-
-        //## Detect death ##// //! REPLACE IN PLUGIN
-        if (p.GetHealth() == 0) { // If player is dead
-           
         }
     }
 
@@ -938,7 +933,7 @@ function OnPlayerJoin(p) {
         // Set join message to player name (or index)
         local iCurrentNumPlayers = CalcNumPlayers()
         Entities.FindByName(null, "p2mm_player_joined_text").__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + iMaxPlayers.tostring() + ")")
-        onscreendisplay.__KeyValueFromString("y", "0.075")
+        waitingtext.__KeyValueFromString("y", "0.075")
         
         //# Say join message on HUD #//
         EntFireByHandle(Entities.FindByName(null, "p2mm_player_joined_text"), "Display", "", 0.0, null, null)

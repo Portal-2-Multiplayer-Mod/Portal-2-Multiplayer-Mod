@@ -15,10 +15,8 @@ DisableLookDisablerSP_A2_BTS2 <- false
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Here if we need to ent_fire something
-        //EntFireByHandle(Entities.FindByName(null, "NAME"), "ACTION", "VALUE", DELAYiny, ACTIVATOR, CALLER)
         // Destroy objects
-        onscreendisplay69 <- Entities.CreateByClassname("game_text")
+        textnobodywin <- Entities.CreateByClassname("game_text")
         Entities.FindByName(null, "player_clip").Destroy()
         Entities.FindByName(null, "player_died_relay").Destroy()
         Entities.FindByName(null, "transition_trigger").Destroy()
@@ -26,8 +24,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(2208, 1468, 304), 100).__KeyValueFromString("targetname", "EndDeathEventMPMod")
         Entities.FindByName(null, "pillar_fx_D_start_rl").Destroy()
         Entities.FindByName(null, "container_1_catwalk_hurt_1_rl").Destroy()
-        Entities.FindByName(null, "catwalk_fx_E_1").__KeyValueFromString("targetname", "my mom")
-        Entities.FindByName(null, "container_1_catwalk_hurt_2_floor").__KeyValueFromString("targetname", "my dad")
     }
 
     if (MSPostPlayerSpawn) {
@@ -123,26 +119,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         printlP2MM(0, false, "No Player Made It")
                         PreviousTimeSP_A2_BTS2Again <- Time()
                         // Create an on screen text message entity
-                        onscreendisplay69.__KeyValueFromString("targetname", "p2mm_wait_for_players_textbts2")
-                        onscreendisplay69.__KeyValueFromString("message", "Nobody Escaped...")
-                        onscreendisplay69.__KeyValueFromString("holdtime", "3")
-                        onscreendisplay69.__KeyValueFromString("fadeout", "2")
-                        onscreendisplay69.__KeyValueFromString("fadein", "1.25")
-                        onscreendisplay69.__KeyValueFromString("spawnflags", "1")
-                        onscreendisplay69.__KeyValueFromString("color", "230 30 30")
-                        onscreendisplay69.__KeyValueFromString("channel", "1")
-                        onscreendisplay69.__KeyValueFromString("x", "0.425")
-                        onscreendisplay69.__KeyValueFromString("y", "-0.2")
+                        textnobodywin.__KeyValueFromString("targetname", "p2mm_failescapetext")
+                        textnobodywin.__KeyValueFromString("message", "Nobody Escaped...")
+                        textnobodywin.__KeyValueFromString("holdtime", "3")
+                        textnobodywin.__KeyValueFromString("fadeout", "2")
+                        textnobodywin.__KeyValueFromString("fadein", "0.75")
+                        textnobodywin.__KeyValueFromString("spawnflags", "1")
+                        textnobodywin.__KeyValueFromString("color", "230 30 30")
+                        textnobodywin.__KeyValueFromString("channel", "1")
+                        textnobodywin.__KeyValueFromString("x", "0.425")
+                        textnobodywin.__KeyValueFromString("y", "-0.2")
 
-                        local envfade = Entities.CreateByClassname("env_fade")
-                        envfade.__KeyValueFromString("duration", "5")
-                        envfade.__KeyValueFromString("holdtime", "10")
-                        envfade.__KeyValueFromString("ReverseFadeDuration", "0")
-                        envfade.__KeyValueFromString("rendercolor", "0 0 0")
-                        envfade.__KeyValueFromString("renderamt", "255")
-                        envfade.__KeyValueFromString("targetname", "FadeyBoi")
-                        DoEntFire("p2mm_wait_for_players_textbts2", "Display", "", 0.1, null, null)
-                        DoEntFire("FadeyBoi", "fade", "", 0.1, null, null)
+                        DoEntFire("p2mm_failescapetext", "Display", "", 0.1, null, null)
+                        DoEntFire("exit_fade", "fade", "", 0.1, null, null)
                         NoPlayerMadeItOnlyOnceSp_A2_Bts2 <- false
                         PreviousTimeSp_A2_Bts2Again <- Time()
                         Entities.FindByName(null, "EndDeathEventMPMod").__KeyValueFromString("targetname", "EndDeathEventMPModDisMain")
@@ -157,7 +146,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
 
-
         // Make Wheatley look at nearest player
         if (WheatleyPlayerLookSP_A2_BTS2) {
             try {
@@ -168,7 +156,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Make our own changelevel trigger
         for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(2207, 1983, 689), 150);) {
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts3")
+            EntFire("exit_fade", "fade")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts3", 2)
         }
 
         // Fix the player's spawn position

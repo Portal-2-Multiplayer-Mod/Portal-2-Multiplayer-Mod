@@ -7,13 +7,13 @@
 
 HasStartedSp_A3_01 <- false
 OnlyOnceSp_A3_01 <- true
+stoprenable <- false
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        stoprenable <- false
-
-        UTIL_Team.Pinging(false, "all", 1)
-        UTIL_Team.Taunting(false, "all", 1)
+        // Disable pinging and taunting
+        UTIL_Team.Pinging(false)
+        UTIL_Team.Taunting(false)
 
         Entities.FindByName(null, "AutoInstance1-circuit_breaker_lever").__KeyValueFromString("solid", "0")
 
@@ -43,6 +43,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Sp_A3_01ViewcontrolTele", "disable", "", 13, null)
         EntFire("Sp_A3_01Viewcontrol", "AddOutput", "targetname Sp_A3_01ViewcontrolTele", 0.25, null)
         EntFire("Sp_A3_01ViewcontrolTele", "AddOutput", "targetname Sp_A3_01ViewcontrolDone", 13, null)
+        EntFire("basement_elevator_complete_rl", "AddOutput", "OnTrigger p2mm_servercommand:command:script UTIL_Team.Pinging(true, 0.5)")
+        EntFire("basement_elevator_complete_rl", "AddOutput", "OnTrigger p2mm_servercommand:command:script UTIL_Team.Taunting(true, 0.5)")
     }
 
     if (MSOnPlayerJoin) {
@@ -91,7 +93,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Elevator changelevel
         for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(6016, 4496, -448), 100);) {
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_03")
+            EntFire("instanceauto1-exit_fade", "fade")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_03", 2)
         }
     }
 }

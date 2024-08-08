@@ -11,6 +11,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
+    
+        // Enable pinging and taunting
+        UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(true)
 
         GlobalSpawnClass.m_bUseAutoSpawn <- true
         Entities.FindByName(null, "door_0-door_close_relay").Destroy()
@@ -44,17 +48,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Make Wheatley look at nearest player
             local ClosestPlayerMain = Entities.FindByClassnameNearest("player", Entities.FindByName(null, "spherebot_1_bottom_swivel_1").GetOrigin(), 10000)
             EntFireByHandle(Entities.FindByName(null, "spherebot_1_bottom_swivel_1"), "SetTargetEntity", ClosestPlayerMain.GetName(), 0, null, null)
-
-            try {
-                EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-            } catch (exception) {}
         }
     }
 }
 
 function a1HasPortalGun() {
-    Entities.FindByName(null, "supress_blue_portalgun_spawn").Destroy()
-    Entities.FindByName(null, "supress_orange_portalgun_spawn").Destroy()
+    UTIL_Team.Spawn_PortalGun(true)
     a1HasDestroyedTargetPortalGun <- true
 
     // Force all players to receive portal gun

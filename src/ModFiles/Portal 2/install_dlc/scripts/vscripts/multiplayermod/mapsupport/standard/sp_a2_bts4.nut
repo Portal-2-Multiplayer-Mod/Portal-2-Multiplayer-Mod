@@ -109,7 +109,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // On trigger hit, smash the door 18 seconds later
         if (TriggerOnceSP_A2_BTS4_1) {
             if (!Entities.FindByName(null, "wheatley_scanner_intro_vcd_trigger")) {
-                printlP2MM(0, true "Wheatley Sequance Started")
+                printlP2MM(0, true "Wheatley Sequence Started")
                 EntFire("wheatley_start_smash_window_relay", "Trigger", "", 18, null)
                 EntFire("@glados", "RunScriptCode", "FactoryControlRoomHackSuccess()", 18, null)
                 TriggerOnceSP_A2_BTS4_1 <- false
@@ -126,7 +126,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Make our own changelevel trigger
         for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Vector(-4080, -7232, 6328), 64);) {
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts5")
+            EntFire("instanceauto17-exit_fade", "fade")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a2_bts5", 2)
         }
     }
 }

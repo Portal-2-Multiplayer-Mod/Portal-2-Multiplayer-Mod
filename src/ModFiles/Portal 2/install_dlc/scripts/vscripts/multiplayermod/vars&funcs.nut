@@ -1702,15 +1702,15 @@ function CreateOurEntities() {
     }
 
     // Create an display entity for the host to wait for another player to load in
-    onscreendisplay <- Entities.CreateByClassname("game_text")
-    onscreendisplay.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
-    onscreendisplay.__KeyValueFromString("message", "Waiting for players...")
-    onscreendisplay.__KeyValueFromString("holdtime", "0.2")
-    onscreendisplay.__KeyValueFromString("fadeout", "0")
-    onscreendisplay.__KeyValueFromString("fadein", "0")
-    onscreendisplay.__KeyValueFromString("spawnflags", "1")
-    onscreendisplay.__KeyValueFromString("color", "50 190 50")
-    onscreendisplay.__KeyValueFromString("channel", "1")
+    waitingtext <- Entities.CreateByClassname("game_text")
+    waitingtext.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
+    waitingtext.__KeyValueFromString("message", "Waiting for players...")
+    waitingtext.__KeyValueFromString("holdtime", "0.2")
+    waitingtext.__KeyValueFromString("fadeout", "0")
+    waitingtext.__KeyValueFromString("fadein", "0")
+    waitingtext.__KeyValueFromString("spawnflags", "1")
+    waitingtext.__KeyValueFromString("color", "50 190 50")
+    waitingtext.__KeyValueFromString("channel", "1")
 
     // Create a player disconnect message entity
     local disconnectmessagedisplay = Entities.CreateByClassname("game_text")

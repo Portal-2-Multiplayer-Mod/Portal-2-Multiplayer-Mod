@@ -524,6 +524,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("@debug_start_perf_test", "AddOutput", "OnTrigger p2mm_servercommand:command:script p2mmParentAndStartMath():10")
         EntFire("@rl_container_ride_third_section", "AddOutput", "OnTrigger p2mm_servercommand:command:script StopStickAndTeleport()")
         EntFire("enter_chamber_trigger", "AddOutput", "OnTrigger p2mmportalrelay:Trigger::34")
+
         //@rl_container_ride
         EntFire("relay_start_map", "AddOutput", "OnTrigger p2mmclockflashrelay:Trigger")
         EntFire("p2mmclockflashrelay", "AddOutput", "OnTrigger p2mmclockflashrelay:Trigger::1")
@@ -532,6 +533,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@rl_container_ride_second_section").Destroy()
         Entities.FindByName(null, "@knockout_teleport_1").Destroy()
         bumpout <- true
+        
         //door_hud_hint_trigger
         Entities.FindByName(null, "door_hud_hint_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().x, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().y + 512, Entities.FindByName(null, "door_hud_hint_trigger").GetOrigin().z))
         Entities.FindByName(null, "door_open_trigger").SetOrigin(Vector(Entities.FindByName(null, "door_open_trigger").GetOrigin().x, Entities.FindByName(null, "door_open_trigger").GetOrigin().y + 512, Entities.FindByName(null, "door_open_trigger").GetOrigin().z))
@@ -540,6 +542,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         //Entities.FindByName(null, "container_entry_door_push").SetOrigin(Vector(Entities.FindByName(null, "container_entry_door_push").GetOrigin().x, Entities.FindByName(null, "container_entry_door_push").GetOrigin().y + 512, Entities.FindByName(null, "container_entry_door_push").GetOrigin().z))
         Entities.FindByName(null, "door_1-door_close_relay").Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-5675, 1459, 305), 16).Destroy()
+
+        //Reenable emoting and pinging
+        Entities.FindByClassnameNearest("trigger_once", Vector(-1440, 4384, 3089), 5).__KeyValueFromString("targetname", "survivedcontainer")
+        EntFire("survivedcontainer", "AddOutput", "OnTrigger p2mm_servercommand:command:script UTIL_Team.Pinging(true)")
+        EntFire("survivedcontainer", "AddOutput", "OnTrigger p2mm_servercommand:command:script UTIL_Team.Taunting(true)")
     }
 
     if (MSPostPlayerSpawn) {
@@ -749,7 +756,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // EntFire("ContainerChairBrush", "SetParentAttachmentMaintainOffset", "vstAttachment", 0)
     }
 
-    if (MSOnPlayerJoin != false) {
+    if (MSOnPlayerJoin) {
         if (stoprenable) {
             printlP2MM(0, true, "Player joined (Resetting viewcontrol)")
             EntFire("Sp_A1_Intro1Viewcontrol", "disable", "", 0.5, null)
@@ -905,12 +912,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
             currentCartCache <- currentCartPos
 
-
-
-
-
-
-
             dummyent.SetAngles(currentCartRot.x, currentCartRot.y, currentCartRot.z)
 
             local forwardvec = dummyent.GetForwardVector()
@@ -921,13 +922,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             local downvec = MultiplyVector(upvec, -1)
             local zoffset = -25 //currentCartPos.z - (Entities.FindByName(null, "blue").GetOrigin().z + 73)
             local z2offset = 135
-
-
-
-
-
-
-
 
             // BOTTOM POINTS
             local frontleft = MoveVectorCheck(currentCartPos, forwardvec, 200, leftvec, 90, upvec, zoffset)
@@ -1131,4 +1125,3 @@ function MoveVectorCheck(objectmiddle, vector1, mult1, vector2, mult2, vector3, 
     cur = AddVectors(objectmiddle, cur) // change the vector from local space to world space
     return cur
 }
-amogmanpeen <- false

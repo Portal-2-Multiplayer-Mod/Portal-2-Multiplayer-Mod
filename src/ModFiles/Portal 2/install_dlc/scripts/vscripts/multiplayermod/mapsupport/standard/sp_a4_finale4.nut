@@ -241,8 +241,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (!Entities.FindByName(null, "ReEnableViewControl")) {
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "Enable", "", 0, null, null)
                 if (!OneTimeRenableViewControl) {
-                    UTIL_Team.Pinging(false, "all", 1)
-                    UTIL_Team.Taunting(false, "all", 1)
+                    UTIL_Team.Pinging(false)
+                    UTIL_Team.Taunting(false)
                     OneTimeRenableViewControl <- true
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "chell", 55.15, null, null)
                     EntFireByHandle(Sp_A2_CoreViewcontrol, "setparentattachment", "vehicle_driver_eyes", 55.25, null, null)
@@ -268,8 +268,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                     EntFireByHandle(p, "disabledraw", "", 0, null, null)
                 }
                 EntFire("rollcameracontrol", "kill", "", 16.1, null)
-                UTIL_Team.Pinging(false, "all", 1)
-                UTIL_Team.Taunting(false, "all", 1)
+                UTIL_Team.Pinging(false)
+                UTIL_Team.Taunting(false)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "disable", "", 16, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "Enable", "", 0.3, null, null)
                 EntFireByHandle(Sp_A2_CoreViewcontrol, "setparent", "ending_vehicle", 0.1, null, null)
@@ -380,8 +380,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             if (Sp_A4_Finale4ElevatorTeleport) {
                 EntFireByHandle(Sp_A2_Finale4Viewcontrol, "Enable", "", 0, null, null)
                 PermaPotato = false
-                UTIL_Team.Pinging(false, "all", 1)
-                UTIL_Team.Taunting(false, "all", 1)
+                UTIL_Team.Pinging(false)
+                UTIL_Team.Taunting(false)
                 EntFire("environment_darkness_1", "Trigger", "", 5, null)
                 EntFire("light_dynamic_wheatley", "TurnOn", "", 5, null)
                 // EntFireByHandle(Sp_A2_Finale4Viewcontrol, "disable", "", 13, null, null)

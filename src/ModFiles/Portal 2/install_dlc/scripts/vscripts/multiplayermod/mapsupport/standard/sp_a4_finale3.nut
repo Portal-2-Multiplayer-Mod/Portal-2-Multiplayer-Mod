@@ -47,10 +47,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         } catch(exception) {}
 
         // Make our own changelevel trigger
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(-616, 5376, 720), 200)) {
-             
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a4_finale4")
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(-616, 5376, 720), 200);) {
+            EntFire("instanceauto5aaaaa-exit_fade", "fade")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a4_finale4", 2)
         }
     }
 }

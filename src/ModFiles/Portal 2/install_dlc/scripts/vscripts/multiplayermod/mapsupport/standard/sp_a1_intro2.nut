@@ -23,6 +23,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
 
+        // Enable pinging and taunting
+        UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(true)
+        
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByClassnameNearest("trigger_once", Vector(-320, 832, -24), 100).Destroy()
         Entities.FindByName(null, "Fizzle_Trigger").Destroy()

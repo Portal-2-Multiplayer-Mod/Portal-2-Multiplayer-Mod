@@ -12,8 +12,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
 
-        UTIL_Team.Pinging(true, "all", 1)
-        UTIL_Team.Taunting(true, "all", 1)
+        // Enable pinging and taunting
+        UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(true)
 
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         // Destroy objects
@@ -71,8 +72,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 EntFire("SpA2ColumBlockerViewcontrol", "Enable", "", 0, null)
                 EntFireByHandle(Entities.FindByName(null, "departure_elevator-spherebot_1_bottom_swivel_1"), "SetTargetEntity", "SpA2ColumBlockerViewcontrol", 0, null, null)
 
-                UTIL_Team.Pinging(false, "all")
-                UTIL_Team.Taunting(false, "all")
+                UTIL_Team.Pinging(false)
+                UTIL_Team.Taunting(false)
 
                 for (local p = null; p = Entities.FindByClassname(p, "player");) {
                     p.SetOrigin(Vector(-1964, 331, -2479))

@@ -35,7 +35,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Elevator changelevel
         for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(396, 1152, 656), 100);) {
-            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_portal_intro")
+            EntFire("exit_fade", "fade")
+            EntFire("p2mm_servercommand", "command", "changelevel sp_a3_portal_intro", 2)
         }
     }
 }

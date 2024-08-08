@@ -56,13 +56,13 @@ printlP2MM(0, true, "\n")
 
 IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences and make sure nothing was invalid and compensate
 
-printlP2MM(0, true, FirstRunState(-1).tostring())
-printlP2MM(0, true, GetLastMap())
-printlP2MM(0, true, GetMapName())
+printlP2MM(0, true, "FirstRunState(-1): " + FirstRunState(-1).tostring())
+printlP2MM(0, true, "GetLastMap(): " + GetLastMap())
+printlP2MM(0, true, "GetMapName(): " + GetMapName())
 
 // Check if its the first map run so Last Map System stuff can be done
 if (FirstRunState(-1)) {
-    FirstRunState(0)
+    FirstRunState(0) // Set that first run state to false
 
     // Reset developer level, developer needs to stay enabled for VScript Debugging to work
     if (Config_DevMode || Config_VScriptDebug) {
@@ -74,11 +74,12 @@ if (FirstRunState(-1)) {
     
     // Check if Last Map System supplied a value and that it's a valid map, then restart on that map
     if (IsMapValid(GetLastMap()) && (GetLastMap() != GetMapName())) {
-        FirstRunState(1)
+        FirstRunState(1) // Set state back to true because we are using one map as a transition to the map we actually want to be our first map
 
-        printlP2MM(0, true, FirstRunState(-1).tostring())
-        printlP2MM(0, true, GetLastMap())
-        printlP2MM(0, true, GetMapName())
+        printlP2MM(0, true, "Transitioning to Last/Singleplayer Map!")
+        printlP2MM(0, true, "FirstRunState(-1): " + FirstRunState(-1).tostring())
+        printlP2MM(0, true, "GetLastMap(): " + GetLastMap())
+        printlP2MM(0, true, "GetMapName(): " + GetMapName())
 
         EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0)
         return

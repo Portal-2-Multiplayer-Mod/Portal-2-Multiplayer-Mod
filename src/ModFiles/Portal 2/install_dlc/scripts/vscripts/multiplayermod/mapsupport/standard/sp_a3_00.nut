@@ -29,8 +29,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Shake the camera when you fall through the wood
         Entities.FindByName(null, "crash_landing_shake").__KeyValueFromString("spawnflags", "29")
 
-        UTIL_Team.Pinging(false, "all", 1)
-        UTIL_Team.Taunting(false, "all", 1)
+        UTIL_Team.Pinging(false)
+        UTIL_Team.Taunting(false)
         UTIL_Team.Spawn_PortalGun(false)
 
         printlP2MM(0, true, "" + Entities.FindByName(null, "@environment_mines_fog").__KeyValueFromString("fogmaxdensity", "1"))

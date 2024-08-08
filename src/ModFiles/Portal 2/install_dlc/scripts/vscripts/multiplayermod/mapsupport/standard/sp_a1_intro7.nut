@@ -10,6 +10,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         GlobalSpawnClass.m_bUseAutoSpawn <- true
         g_bOverridePluginGrabController = false
 
+        // Enable pinging and taunting
+        UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(true)
+
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         EntFire("@sphere", "AddOutput", "OnPlayerPickup p2mm_servercommand:command:script disablewheatleyplayerpickup()", 0, null)
         EntFire("@sphere", "AddOutput", "OnPlayerDrop p2mm_servercommand:command:script enablewheatleyplayerpickup()", 0, null)

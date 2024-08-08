@@ -8,6 +8,11 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
+
+        // Enable pinging and taunting
+        UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(true)
+        
         EntFireByHandle(Entities.FindByName(null, "arrival_elevator-elevator_1"), "startforward", "", 0, null, null)
         Entities.FindByName(null, "door_0-door_close_relay").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(464, 136, 72), 1024).Destroy()
@@ -32,15 +37,5 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSPostPlayerSpawn) {
         NewApertureStartElevatorFixes()
-    }
-
-    if (MSLoop) {
-        try {
-            EntFireByHandle(Entities.FindByName(null, "arrival_elevator-light_elevator_fill"), "TurnOn", "", 0, null, null)
-        } catch(exception) {}
-        local p = null
-        while(p = Entities.FindByClassnameWithin(p, "player", Vector(806, -528, 64), 50)) {
-            EntFire("projected_texture_03", "TurnOn", "", 0, null)
-        }
     }
 }
