@@ -180,24 +180,24 @@ def ClipboardOperation(data: str | None = None, copy: bool = True) -> str | bool
             copyCMD = ["xclip", "-selection", "c"] if GVars.linuxSessionType == "x11" else ["wl-copy", "-n", "-p"]
             
             # Copy text to the clipboard
-            subprocess.Popen(copyCMD, stdin=subprocess.PIPE, stdout=None, text=True, shell=False).communicate(input=data)
+            subprocess.Popen(copyCMD, stdin=subprocess.PIPE, text=True, shell=False).communicate(input=data)
             return True
         else:
             # Pasting operations
             pasteCMD = ["xclip", "-selection", "clipboard", "-o"] if GVars.linuxSessionType == "x11" else ["wl-paste", "-n", "-p"]
             
             # Paste text from the clipboard
-            pasteProcess = subprocess.Popen(pasteCMD, stdin=None, stdout=subprocess.PIPE, shell=False)
+            pasteProcess = subprocess.Popen(pasteCMD, stdout=subprocess.PIPE, shell=False)
             return str(pasteProcess.stdout.read().decode().replace("\r", "").replace("\n", "").strip())
     else:
         # Windows clipboard operations
         if copy:
             # Copy text to the clipboard
-            subprocess.Popen(["clip"], stdin=subprocess.PIPE, stdout=None, text=True, shell=False).communicate(input=data)
+            subprocess.Popen(["clip"], stdin=subprocess.PIPE, text=True, shell=False, startupinfo=si).communicate(input=data)
             return True
         else:
             # Paste text from the clipboard
-            pasteProcess = subprocess.Popen(["powershell", "get-clipboard"], stdin=None, stdout=subprocess.PIPE, shell=False)
+            pasteProcess = subprocess.Popen(["powershell", "get-clipboard"], stdout=subprocess.PIPE, shell=False, startupinfo=si)
             return str(pasteProcess.stdout.read().decode().replace("\r", "").replace("\n", "").strip())
 
 def TryFindPortal2Path() -> str | bool:
@@ -249,6 +249,7 @@ def TryFindPortal2Path() -> str | bool:
 
         except Exception as e:
             print("ERROR: " + str(e))
+            return False
 
     return False
 
