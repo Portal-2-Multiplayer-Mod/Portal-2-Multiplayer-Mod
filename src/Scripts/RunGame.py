@@ -2,6 +2,7 @@
 # █ █░▀░█ █▀▀ █▄█ █▀▄ ░█░ ▄█   ░▀░   ▀▄▀ █▀█ █▀▄ █ █▄█ █▄▄ ██▄ ▄█
 
 import os
+import time
 import threading
 import subprocess
 
@@ -9,7 +10,7 @@ from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
 import Scripts.Configs as CFG
 import Scripts.BasicFunctions as BF
-import time
+
 
 # █▀▀ █ █░░ █▀▀   █▀▄▀█ █▀█ █░█ █▄░█ ▀█▀ █▀▀ █▀█
 # █▀░ █ █▄▄ ██▄   █░▀░█ █▄█ █▄█ █░▀█ ░█░ ██▄ █▀▄
@@ -65,21 +66,21 @@ def SetVScriptConfigFile(vsconfigfile: str) -> None:
     # find the admins section
     admins = lines.find("Admins <-")
     # find the next [ after the admins section
-    nextObrack = lines.find("[", admins)
+    nextBracket = lines.find("[", admins)
     # add the player line after the admins section
     for player in GVars.configData["Players"]["value"]:
         name = player["name"]
         level = player["adminLevel"]
         steamid = player["steamid"]
-        Log("Adding " + name + " to Admins")
+        Log("Adding " + name + " to Admins...")
 
-        lines = lines[:nextObrack + 1] + '\n"[' + level + "]" + steamid + '", // ' + name + lines[nextObrack + 1:]
+        lines = lines[:nextBracket + 1] + '\n"[' + level + "]" + steamid + '", // ' + name + lines[nextBracket + 1:]
 
     open(vsconfigfile, "w", encoding="utf-8").write(lines)
 
     Log("====================================================")
 
-def MountMod(gamepath: str) -> bool:
+def MountMod(gamepath: str) -> None:
     Log("            __________Mounting Mod Start_________")
     Log("Gathering DLC folder data...")
 
@@ -87,7 +88,7 @@ def MountMod(gamepath: str) -> bool:
 
     # find a place to mount the dlc
     dlcmountpoint = FindAvailableDLC(gamepath)
-
+    
     destination = BF.CopyFolder(modFilesPath + os.sep+".", gamepath + os.sep + dlcmountpoint)
     Log(f"Successfully copied the ModFiles to {destination}")
 
@@ -96,11 +97,10 @@ def MountMod(gamepath: str) -> bool:
         SetVScriptConfigFile(nutConfigFile)
 
     Log("            ___________Mounting Mod End__________")
-    return True
 
 # Using the identifier file in P2MM's DLC folder, it can be determined
 # which DLC that is mounted to Portal 2 is in fact P2MM's DLC folder
-def FindP2MMDLCFolder(gamepath: str) -> str:
+def FindP2MMDLCFolder(gamepath: str) -> str | bool:
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
         if file.startswith("portal2_dlc") and os.path.isdir(gamepath + os.sep + file):
@@ -130,12 +130,12 @@ def CheckForRequiredDLC(gamepath: str) -> bool:
     return True
 
 # Find and delete P2MM's portal2_dlc folder
-def DeleteP2MMDLC(gamepath: str) -> None:
-    Log("           _________Deleting Any P2MM DLC Folders________")
-
+def DeleteP2MMDLC(gamepath: str) -> bool:
     if (not os.path.exists(gamepath)):
-        Log("Portal 2 game path not found!")
-        return
+        Log("Portal 2 game path not found! Can't remove P2MM DLC folders!")
+        return False
+    
+    Log("           _________Deleting Any P2MM DLC Folders________")
 
     foundP2MMDLCFolder = FindP2MMDLCFolder(gamepath)
     if foundP2MMDLCFolder:
@@ -148,7 +148,9 @@ def DeleteP2MMDLC(gamepath: str) -> None:
 def FindAvailableDLC(gamepath: str) -> str:
     Log("Finding the next increment in DLC folders...")
     dlcs = []
+
     DeleteP2MMDLC(gamepath)
+    
     # go through each file in the gamepath
     for file in os.listdir(gamepath):
         # find all the folders that start with "portal2_dlc"
@@ -173,6 +175,15 @@ def FindAvailableDLC(gamepath: str) -> str:
     dlcs.sort(key=int)
     # return the folder where to mount the mod
     return "portal2_dlc" + str(int(dlcs[len(dlcs)-1]) + 1)
+
+def Portal2Running() -> bool:
+    """Check if Portal 2 is running.
+
+    Returns:
+        bool: Whether Portal 2 is running or not
+    """
+
+    return ("portal2.exe" if GVars.iow else "portal2_linux") in subprocess.run(["tasklist"] if GVars.iow else ["ps", "aux"], stdout=subprocess.PIPE, text=True).stdout.lower()
 
 # █ █▄░█ █ ▀█▀
 # █ █░▀█ █ ░█░
@@ -207,7 +218,7 @@ def AssembleArgs() -> str | bool:
 
         # Add the last map played for the Last Map System if enabled, if a last map was recorded, and if the last map already isn't in Custom-Launch-Options (CLO).
         if ((GVars.configData["Start-From-Last-Map"]["value"]) and (len(GVars.configData["Last-Map"]["value"].strip()) > 0) and (not GVars.configData["Last-Map"]["value"].strip() in " ".join(args))):
-            print("Last Map System on and has value: " + GVars.configData["Last-Map"]["value"].strip())
+            Log("Last Map System on and has value: " + GVars.configData["Last-Map"]["value"].strip())
             # Make sure that if last map is enabled, the last map is set for starting the session.
             if ("+p2mm_startsession" in " ".join(args)):
                 args = list(map(lambda x: x.replace(args[args.index("+p2mm_startsession") + 1], GVars.configData["Last-Map"]["value"].strip()), args))
@@ -219,7 +230,7 @@ def AssembleArgs() -> str | bool:
         # To reduce the number of map changes and reduce load time, replace the map specified with
         # "+p2mm_startsession" with the one with "+p2mm_lastmap", then remove "+p2mm_lastmap" and its value.
         if ("+p2mm_lastmap" in " ".join(args)):
-            print("Forced +p2mm_lastmap in args.")
+            Log("Forced +p2mm_lastmap in args.")
             if ("+p2mm_startsession" in " ".join(args)):
                 args = list(map(lambda x: x.replace(args[args.index("+p2mm_startsession") + 1], args[args.index("+p2mm_lastmap") + 1]), args))
                 args.remove(args[args.index("+p2mm_lastmap") + 1])
@@ -232,13 +243,13 @@ def AssembleArgs() -> str | bool:
         print(args)
         args = " ".join(args).strip()
     except Exception as e:
-        Log(e)
+        Log(f"{e}")
         Log("Launch arguments weren't able to be parsed correctly!")
         Log("This is most likely due to incorrectly inputting launch arguments into the Custom-Launch-Options. Please check and made sure they are inputted correctly.")
-        Log("Game will launch without Custom-Launch-Options and start with default launch arguments (-novid -allowspectators -nosixense -conclearlog -condebug -usercon +clear)...")
+        Log("Game will launch without Custom-Launch-Options and start with default launch arguments (-novid -allowspectators -nosixense -conclearlog -condebug -usercon)...")
         return False
 
-    print(args)
+    Log("Final args: " + args)
     return args
 
 # START THE GAME!!!

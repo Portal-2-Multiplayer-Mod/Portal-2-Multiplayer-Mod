@@ -196,8 +196,9 @@ class Gui:
             return
 
         self.CoolDown = int(3 * 60)
-        UnmountScript()
-        Ui.CreateToast(GVars.translations["unmounted_toast"], 5, (125, 0, 125))
+        if UnmountScript():
+            Ui.CreateToast(GVars.translations["unmounted_toast"], 5, (125, 0, 125))
+
 
     #!############################
     #! WORKSHOP BUTTONS FUNCTIONS
@@ -1012,8 +1013,14 @@ def MountModOnly() -> bool:
             GVars.translations["update_inProgress_toast"], 5, (255, 75, 75))
         return False
 
-    if not VerifyGamePath():
-        return False
+    if not VerifyGamePath(False):
+        Ui.CreateToast(GVars.translations["game_path_undefined_fetch"], 5)
+        GetGamePath()
+    
+    if RG.Portal2Running():
+        Log("Can't mount because game is currently running!")
+        Ui.CreateToast(GVars.translations["mount_gamerunning_toast"], 5)
+        return
 
     Ui.CreateToast(GVars.translations["mounting_mod"], 5, (75, 255, 75))
 
@@ -1103,35 +1110,42 @@ def UpdateModClient(data: dict) -> None:
 
 
 def RunGameScript() -> None:
-    if MountModOnly():
+    MMO = MountModOnly()
+    if MMO:
         gamePath = GVars.configData["Portal2-Path"]["value"]
         args = RG.AssembleArgs()
         if not args:
             Ui.CreateToast(GVars.translations["args-error"], 5)
-            RG.LaunchGame(gamePath, "-novid -allowspectators -nosixense -conclearlog -condebug -usercon +clear")
+            RG.LaunchGame(gamePath, "-novid -allowspectators -nosixense -conclearlog -condebug -usercon")
         else:
             RG.LaunchGame(gamePath, args)
             Ui.CreateToast(GVars.translations["game_launched"], 5, (75, 255, 75))
-    else:
+    elif MMO == False:
         Ui.CreateToast(GVars.translations["game_path_undefined_fetch"], 5)
         GetGamePath()
+    else:
+        Ui.CreateToast(GVars.translations["game_already_launched"], 5)
 
 
-def UnmountScript(shouldGetPath: bool = True) -> None:
+def UnmountScript(shouldGetPath: bool = True) -> bool:
+    if RG.Portal2Running():
+        Log("Can't unmount because game is currently running!")
+        Ui.CreateToast(GVars.translations["mount_gamerunning_toast"], 5)
+        return False
+    
     Log("___Unmounting Mod___")
     VerifyGamePath(shouldGetPath)
     gamePath = GVars.configData["Portal2-Path"]["value"]
     RG.DeleteP2MMDLC(gamePath)
     Log("____DONE UNMOUNTING____")
+    return True
 
 
 def RestartClient(path: str = sys.executable) -> None:
     if (GVars.iol) or (GVars.iosd):
-        chmodCommand = "chmod +x " + path
-        os.system(chmodCommand)
+        os.system("chmod +x " + path)
 
-    command = path
-    subprocess.Popen(command, shell=True)
+    subprocess.Popen(path, shell=True)
     Log("Restarting client!")
     Ui.Running = False
 
@@ -1218,7 +1232,10 @@ def PostInitialize() -> None:
         CheckForUpdates()
 
     if VerifyGamePath():
-        RG.DeleteP2MMDLC(GVars.configData["Portal2-Path"]["value"])
+        if RG.Portal2Running():
+            Log("Can't unmount because game is currently running!")
+        else:
+            RG.DeleteP2MMDLC(GVars.configData["Portal2-Path"]["value"])
 
     def NewAfterFunction() -> None:
         Ui.CreateToast(GVars.translations["game_exited"], 5, (125, 0, 125))
