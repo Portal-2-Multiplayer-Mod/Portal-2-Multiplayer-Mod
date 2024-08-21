@@ -57,12 +57,28 @@ def GetSysLang() -> str:
 # "description": appears as a label when the config is hovered over.
 # "warning": same as description and appears below it but in red.
 DefaultConfig = {
+    "Launcher-SFX": {
+        "value": True,
+        "menu": "general",
+        "description": "Makes the buttons play sound effects.",
+        "warning": "",
+        "prompt": ""
+    },
+
     "Active-Language": {
         "value": GetSysLang(),
         "menu": "",
         "description": "The launcher's language.",
         "warning": "",
         "prompt": ""
+    },
+
+    "Portal2-Path": {
+        "value": "undefined",
+        "menu": "general",
+        "description": "Path of the Portal 2 Folder.",
+        "warning": "",
+        "prompt": "Enter the path to the Portal 2 folder."
     },
 
     "Auto-Unmount": {
@@ -81,20 +97,12 @@ DefaultConfig = {
         "prompt": "Launch options for Portal 2.\nExample: '+map mp_coop_lobby_3'"
     },
 
-    "Launcher-SFX": {
-        "value": True,
+    "Portal2-VR-Mod": {
+        "value": False,
         "menu": "general",
-        "description": "Makes the buttons play sound effects.",
-        "warning": "",
+        "description": "Enable this to start P2:MM with the Portal 2 VR Mod.",
+        "warning": "P2VR v0.1.5 needed as latest is unstable. Make sure P2VR works before using it with P2MM!",
         "prompt": ""
-    },
-
-    "Portal2-Path": {
-        "value": "undefined",
-        "menu": "general",
-        "description": "Path of the Portal 2 Folder.",
-        "warning": "",
-        "prompt": "Enter the path to the Portal 2 folder."
     },
 
     "Start-From-Last-Map": {

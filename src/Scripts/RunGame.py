@@ -5,6 +5,7 @@ import os
 import time
 import threading
 import subprocess
+import traceback
 
 from Scripts.BasicLogger import Log
 import Scripts.GlobalVariables as GVars
@@ -196,19 +197,37 @@ def AssembleArgs() -> str | bool:
     #? "+p2mm_splitscreen 0/1": A ConVar for the launcher to pass and for the main menu to set to start sessions with splitscreen.
     #? "+p2mm_startsession (map)": A console command used to start and setup P2:MM sessions.
     #?   Sets up ConVars, variables, and flags, as well as handling starting a session on a singleplayer map.
-
-    # Working with the launch arguments and Custom-Launch-Options (CLO) as a table helps with making
-    # any needed changes before it is turned into a string then passed on to the Portal 2 executable.
-    args = ["-novid", "-allowspectators", "-nosixense", "-conclearlog", "-condebug", "-usercon"]
-    preCLO = GVars.configData['Custom-Launch-Options']['value'].strip().split(" ")
-    CLO = []
-    [CLO.append(x) for x in preCLO if not x in CLO] # Remove duplicate launch arguments
-
-    print("Default launch args: " + str(args))
-    print("preCLO: " + str(preCLO))
-    print("CLO: " + str(CLO))
-
+    
     try:
+        # Working with the launch arguments and Custom-Launch-Options (CLO) as a table helps with making
+        # any needed changes before it is turned into a string then passed on to the Portal 2 executable.
+        args = ["-novid", "-allowspectators", "-nosixense", "-conclearlog", "-condebug", "-usercon"]
+        CLO = []
+
+        if GVars.configData['Portal2-VR-Mod']['value']: # Add launch arguments needed for the VR mod
+            args.extend([
+                "-insecure", # VAC doesn't exist in Portal 2, but VR mod team still recommends having it just in case.
+                "-window",
+                "-width 1280",
+                "-height 720",
+                "+mat_motion_blur_percent_of_screen_max 0",
+                "+mat_queue_mode 0",
+                "+mat_vsync 0",
+                "+mat_antialias 0",
+                "+mat_grain_scale_override 0"
+            ])
+
+        preCLO = GVars.configData['Custom-Launch-Options']['value'].replace('"', "\"").strip().split(" ")
+
+        [CLO.append(arg) for arg in preCLO if not arg in CLO] # Remove duplicate launch arguments
+        if GVars.configData['Portal2-VR-Mod']['value'] and ("-vulkan" in " ".join(CLO)): # Remove the "-vulkan" argument for the host as it doesn't work with the VR mod
+            Log("'-vulkan' found in Custom Launch Options! Doesn't work with VR mod so it will be removed for the host.")
+            args.remove(args[args.index("-vulkan")])
+        
+        Log("Default launch args: " + str(args))
+        Log("preCLO: " + str(preCLO))
+        Log("CLO: " + str(CLO))
+
         # If "+ss_map" is in the CLO, set the plugin's splitscreen ConVar to true for "p2mm_startsession" to read,
         # then replace any "+map" and "+ss_map" with "+p2mm_startsession" for the mod to properly start.
         # The user can also manually specify "+p2mm_splitscreen", check for and if its not there add it in.
@@ -240,10 +259,9 @@ def AssembleArgs() -> str | bool:
                 args.remove(args[args.index("+p2mm_lastmap") + 1])
                 args.remove("+p2mm_lastmap")
         
-        print(args)
         args = " ".join(args).strip()
-    except Exception as e:
-        Log(f"{e}")
+    except Exception:
+        Log(f"{traceback.format_exception()}")
         Log("Launch arguments weren't able to be parsed correctly!")
         Log("This is most likely due to incorrectly inputting launch arguments into the Custom-Launch-Options. Please check and made sure they are inputted correctly.")
         Log("Game will launch without Custom-Launch-Options and start with default launch arguments (-novid -allowspectators -nosixense -conclearlog -condebug -usercon)...")
