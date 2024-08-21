@@ -81,10 +81,14 @@ if (FirstRunState(-1)) {
         printlP2MM(0, true, "GetLastMap(): " + GetLastMap())
         printlP2MM(0, true, "GetMapName(): " + GetMapName())
 
-        EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0)
+        EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 1)
         return
     }
 }
+
+// Prints the current map, needed for the Last Map System
+// \n was here :>
+printlP2MM(0, false, "MAP LOADED: " + GetMapName())
 
 //-------------------------------------------------------------------------------------------
 
