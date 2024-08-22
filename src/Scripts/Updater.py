@@ -1,5 +1,5 @@
 import http.client as httplib
-import os
+import os, sys
 import shutil
 import subprocess
 import urllib.parse
@@ -51,6 +51,10 @@ def CheckForNewClient() -> dict:
 
     if not HasInternet():
         Log("No Internet Connection!")
+        return {"status": False}
+    
+    if sys.argv[0].endswith(".py"):
+        Log("Can't update, running from source!")
         return {"status": False}
 
     Log("Searching for a new client...")
@@ -173,8 +177,13 @@ def CheckForNewFiles() -> bool:
     if not HasInternet():
         Log("No Internet Connection!")
         return False
+    
+    if sys.argv[0].endswith(".py"):
+        Log("Can't update, running from source!")
+        return False
 
     Log("Checking for new files...")
+    
     # plan
     # check if identifier file exists, if not then ModFiles don't exist and need to be downloaded
     # download modIndex.json
