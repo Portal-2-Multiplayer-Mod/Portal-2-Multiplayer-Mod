@@ -297,11 +297,13 @@ def LaunchGame(gamepath: str, args: str) -> None:
 
         elif (GVars.iol or GVars.iosd): #launching for linux
             def RunGame():
-                def RunSteam():
+                def RunGame():
                     Log("")
                     Log(f'Starting Portal 2: steam -applaunch 620 {args}\n')
                     os.system(f'steam -applaunch 620 {args}')
-                threading.Thread(target=RunSteam).start()
+                thread = threading.Thread(target=RunGame)
+                thread.daemon = True
+                thread.start()
 
                 def CheckForGame() -> None:
                     shouldcheck = True

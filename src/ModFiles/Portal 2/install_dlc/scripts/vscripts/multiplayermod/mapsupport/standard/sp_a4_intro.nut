@@ -195,7 +195,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             for (local p = null; p = Entities.FindByClassname(p, "player");) {
                 if (p.GetOrigin().x <= 3472.60 && p.GetOrigin().z <= 220) {
                     local canteleport = true
-                    for (local ent = null; p2 = Entities.FindByClassnameWithin(p2, "player", Vector(1045, 382, 210), 400);) {
+                    for (local p2 = null; p2 = Entities.FindByClassnameWithin(p2, "player", Vector(1045, 382, 210), 400);) {
                         if (p2==p) {
                             canteleport = false
                         }
