@@ -21,7 +21,7 @@
   "unmounted_toast": "마운트 해제되었습니다!",
   "mount_nodlc_toast": "게임 경로에 DLC 폴더가 누락되었습니다! \n스팀에서 게임 무결성을 확인해 주세요.",
   "mount_nopath_toast": "게임의 경로가 일치하지 않습니다!! \n환경설정을 확인해보세요.",
-  "wiki_button": "깃허브 위키",
+  "wiki_button": "Github 위키",
   "workshop_button": "워크샵",
   "manual_mounting_button": "수동 마운트",
   "get_level_button": "changelevel 명령어 가져오기",
