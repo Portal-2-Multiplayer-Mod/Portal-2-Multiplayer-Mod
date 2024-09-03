@@ -62,7 +62,7 @@
   "no_toast": "아니요",
   "ok_toast": "확인",
   "players_admin_level": "어드민 레벨: ",
-  "players_admin-enter-admin-level": "어드민 레벨을 입력하세요,
+  "players_admin-enter-admin-level": "어드민 레벨을 입력하세요",
   "players_admin_toast_not-a-number": "숫자가 아닙니다!",
   "admin_level_toast_out-of-range": "어드민 레벨은 0과 6 사이여야 합니다.",
   "players_admin_toast_too-low": "너무 낮습니다!",
