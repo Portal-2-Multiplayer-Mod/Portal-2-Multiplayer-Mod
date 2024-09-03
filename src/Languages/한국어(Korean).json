@@ -1,5 +1,5 @@
 {
-  "font": "GUI/fonts/pixel.ttf",
+  "font": "GUI/fonts/KoPixel.ttf",
   "welcome": "P2:MM Launcher에 오신걸 환영합니다!\n\n모드를 실행하시려면\n\"새 게임\" 을 누르세요!\n\n런처와 게임 세션을 사용자 정의하려면 환경설정 메뉴를 확인하세요!",
   "version": "버전: ",
   "play_button": "새 게임",
@@ -62,7 +62,7 @@
   "no_toast": "아니요",
   "ok_toast": "확인",
   "players_admin_level": "어드민 레벨: ",
-  "players_admin-enter-admin-level": "어드민 레벨을 입력하세요,
+  "players_admin-enter-admin-level": "어드민 레벨을 입력하세요",
   "players_admin_toast_not-a-number": "숫자가 아닙니다!",
   "admin_level_toast_out-of-range": "어드민 레벨은 0과 6 사이여야 합니다.",
   "players_admin_toast_too-low": "너무 낮습니다!",
