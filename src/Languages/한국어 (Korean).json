@@ -67,7 +67,7 @@
     "admin_level_toast_out-of-range": "어드민 레벨은 0과 6 사이여야 합니다.",
     "players_admin_toast_too-low": "너무 낮습니다!",
     "players_add_player": "플레이어 추가",
-    "players_remove_player": "플레이어 삭제r",
+    "players_remove_player": "플레이어 삭제",
     "players_toast_must_be_at_least_one_player": "플레이어는 최소한 한 명 이상 있어야 합니다!",
     "players_next_button": "다음",
     "players_enter_username": "사용자 이름을 입력하세요",
@@ -100,5 +100,5 @@
     "Custom-Launch-Options-warning": "이 옵션이 무엇인지 모르면 기본값으로 두세요!",
     "Dev-Mode": "개발자 모드",
     "Dev-Mode-description": "디버깅 활성화.",
-    "Dev-Mode-warning": "이 모드를 활성화하려면 무엇을 하는지 알아야 합니다!!"
+    "Dev-Mode-warning": "이 모드를 활성화하려면 어떤 동작을 하는지 알아야 합니다!!"
   }
