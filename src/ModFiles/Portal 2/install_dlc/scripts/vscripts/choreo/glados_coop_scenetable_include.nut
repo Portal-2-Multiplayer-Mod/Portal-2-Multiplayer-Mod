@@ -260,7 +260,12 @@ if (GetMapName() == "mp_coop_race_2") {
 		SceneTable["mp_coop_race_2mp_coop_race_2start02"] <- {vcd=CreateSceneEntity("scenes/npc/glados/mp_coop_race_2start02.vcd"),postdelay=0.00,next=null,char="glados"}
 }
 //mp_coop_laser_2
-if (GetMapName() == "mp_coop_laser_2") {                   
+if (GetMapName() == "mp_coop_laser_2") {      
+	//EndLevel07
+		//It would compromise the test to divulge individual scores. However, I can tell you at least one of you is doing very, very well.
+		SceneTable["mp_coop_race_2EndLevel0701"] <- {vcd=CreateSceneEntity("scenes/npc/glados/COOP_TEST_CHAMBER_BOTH02.vcd"),postdelay=0.4,next="mp_coop_race_2EndLevel0702",char="glados"}
+		//Please continue into the next test chamber.
+		SceneTable["mp_coop_race_2EndLevel0702"] <- {vcd=CreateSceneEntity("scenes/npc/glados/COOP_TEST_CHAMBER_BOTH15.vcd"),postdelay=0.000,next=null,char="glados",fires=[{entity="@relay_enable_exit",input="Trigger",parameter="",delay=0.00}]}             
 	//coop_laser_2end
 		//These tests are potentially lethal when communication, teamwork and mutual respect are not employed at all times. Naturally this will pose an interesting challenge for one of you, given the other�s
 		SceneTable["mp_coop_laser_2coop_laser_2end00"] <- {vcd=CreateSceneEntity("scenes/npc/glados/COOP_TEST_CHAMBER_BOTH01.vcd"),postdelay=0.00,next=null,char="glados"}

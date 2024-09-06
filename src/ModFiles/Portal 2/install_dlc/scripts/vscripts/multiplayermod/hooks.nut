@@ -866,7 +866,7 @@ function OnPlayerJoin(p) {
         FindEntityClass(portal1).linkedprop <- null
         FindEntityClass(portal2).linkedprop <- null
     } catch (exception) {
-        printlP2MM(1, true, "Failed to rename portals" + exception)
+        printlP2MM(1, true, "Failed to rename portals: " + exception)
     }
 
     //# Set viewmodel targetnames so they can be told apart #//
