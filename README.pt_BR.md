@@ -33,7 +33,7 @@
 
 ## Idiomas
 
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | [Français](README.fr.md) | **_Português (Brasil)_**
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | [Français](README.fr.md) | **_Português (Brasil)_** | [한국어 (Korean)](README.ko.md)
 
 ## Recursos de modificação
 
