@@ -76,7 +76,7 @@
   "players_converted_steamid": "Converted SteamID!",
   "players_invalid_steamid": "Invalid SteamID!",
   "game_path_enter_path": "Enter your Portal 2 game path",
-  "game_path-is-invalid": "Game path is invalid!\nCheck Portal2-Path in the settings!",
+  "game_path-is-invalid": "Game path is invalid!\nCheck Portal 2 Path in the settings!",
   "game_path-attempt-to-fetch": "Attempting to fetch game path...",
   "game_path_undefined_fetch": "Game path was undefined,\nautomatically retrieving...",
   "game_path_found_toast": "Found game path!",
