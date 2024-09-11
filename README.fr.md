@@ -32,7 +32,7 @@
 
 ## Langages
 
-[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | **_Français_** | [Português (Brasil)](README.pt_BR.md)
+[English](README.md) | [Español](README.es.md) | [Polish](README.pl.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Italiano](README.it.md) | **_Français_** | [Português (Brasil)](README.pt_BR.md) | [Русский](README.ru.md) 
 
 ## Caractéristiques du mod
 
