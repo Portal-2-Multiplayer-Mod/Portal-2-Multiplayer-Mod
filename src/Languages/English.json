@@ -19,7 +19,7 @@
   "mounting_mod": "Mounting mod!",
   "unmount_button": "Unmount",
   "unmounted_toast": "Unmounted!",
-  "mount_nodlc_toast": "Game's path is missing some DLC folders!! \nPlease verify game integrity on steam.",
+  "mount_nodlc_toast": "Game's path is missing some DLC folders!! \nPlease verify game integrity on Steam.",
   "mount_nopath_toast": "Game's path is invalid!! \nPlease check the settings.",
   "wiki_button": "GitHub Wiki",
   "workshop_button": "Workshop",
