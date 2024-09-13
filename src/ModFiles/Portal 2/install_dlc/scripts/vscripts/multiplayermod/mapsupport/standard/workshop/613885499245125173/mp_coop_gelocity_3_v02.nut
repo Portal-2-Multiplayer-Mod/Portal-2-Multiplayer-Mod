@@ -55,12 +55,12 @@ function StartGelocityTeleport() {
 // TODO: remove these functions and call the lap increment/decrement in the output itself
 function AddLap() {
     iGelocityRounds++
-    printlP2MM(0, true, iGelocityRounds)
+    printlP2MM(0, true, "" + iGelocityRounds)
 }
 
 function SubtractLap() {
     iGelocityRounds--
-    printlP2MM(0, true, iGelocityRounds)
+    printlP2MM(0, true, "" + iGelocityRounds)
 }
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
@@ -151,7 +151,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                         }
                         pclass.nCurrentLap = pclass.nCurrentLap + 1
                         pclass.GelocityCheckPointType = LAP_CHECKPOINT1
-                        printlP2MM(0, true, pclass.username + "is now on lap " + pclass.nCurrentLap)
+                        printlP2MM(0, true, pclass.username + " is now on lap " + pclass.nCurrentLap)
 
                         // Set Message Text and display it
                         if (!bGameDoneGelocity) {
