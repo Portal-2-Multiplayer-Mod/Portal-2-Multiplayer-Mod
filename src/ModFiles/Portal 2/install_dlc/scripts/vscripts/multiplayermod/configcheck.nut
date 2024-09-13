@@ -9,7 +9,7 @@
 // variables, so we just do it one by one :D
 
 local ConfigValueError = function(invalidorundefined, command) {
-    printlP2MM(invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")
+    printlP2MM(0, false, invalidorundefined + " value provided for " + command + "! Treating as default value. Verify valid options for this in config.nut")
 }
 
 try {

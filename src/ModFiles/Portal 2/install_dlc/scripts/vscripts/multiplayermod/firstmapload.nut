@@ -22,7 +22,7 @@ if (!PluginLoaded) {
     EntFire("p2mm_servercommand", "command", "script printl(\"(P2:MM VSCRIPT): FALLBACK! Attempting to load the P2:MM plugin through VScript!\")", 0.03)
     EntFire("p2mm_servercommand", "command", "plugin_load addons/p2mm", 0.05) // This should never fail the first time through addons... try loading it from root DLC path
 } else {
-    printlP2MM("Plugin has already been loaded! Not attempting to load it...")
+    printlP2MM(0, false, "Plugin has already been loaded! Not attempting to load it...")
 }
 
 EntFire("p2mm_servercommand", "command", "stopvideos; changelevel " + GetMapName(), 0.70) // Must be delayed. We use changelevel to restart the map because restart_level is locked by the plugin by default
