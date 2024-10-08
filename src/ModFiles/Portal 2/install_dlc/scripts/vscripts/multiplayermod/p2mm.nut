@@ -132,7 +132,7 @@ function LoadMapSupportCode(gametype) {
     try {
         IncludeScript("multiplayermod/mapsupport/" + gametype + "/" + GetMapName() + ".nut")
     } catch (exception) {
-        if (gametype == "portal2") {
+        if (gametype == "portal2" || gametype == "portal_stories") {
             printlP2MM(1, false, "Failed to load mapsupport for " + GetMapName() + "\n")
         }
         else {
@@ -144,11 +144,11 @@ function LoadMapSupportCode(gametype) {
 
 // Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard Portal 2 mapsupport
-switch (Config_GameMode) {
-    case 0: LoadMapSupportCode("portal2"); break
-    //case 1: LoadMapSupportCode("speedrun"); break
+switch (GetGameDirectory()) {
+    case "portal2": LoadMapSupportCode("portal2"); break
+    case "portal_stories": LoadMapSupportCode("portal_stories"); break
     default:
-        printlP2MM(1, false, "\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard Portal 2 mapsupport.")
+        printlP2MM(1, false, "Invalid value, defaulting to standard Portal 2 mapsupport.")
         LoadMapSupportCode("portal2")
         break
 }

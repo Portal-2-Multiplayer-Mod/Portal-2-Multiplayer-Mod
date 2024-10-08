@@ -27,13 +27,6 @@ Config_VisualDebug <- false
 // Currently does not work on dedicated servers
 Config_UseCustomDevModels <- false
 
-//-----------------------------------
-// Game variables
-//-----------------------------------
-// If you want to change the gamemode on the next map load, set Config_GameMode to...
-// 0 - Standard   : Most stable experience
-Config_GameMode <- 0
-
 // Set false if you want to disable the prompt that appears once at the start at every play session.
 Config_FirstRunPrompt <- true
 
@@ -204,16 +197,6 @@ try {
 } catch (exception) {
     Config_UseCustomDevModels <- false
     ConfigValueError("Undefined", "Config_UseCustomDevModels")
-}
-
-try {
-    if (typeof(Config_GameMode) != "integer") {
-        Config_GameMode <- 0
-        ConfigValueError("Invalid", "Config_GameMode")
-    }
-} catch (exception) {
-    Config_GameMode <- 0
-    ConfigValueError("Undefined", "Config_GameMode")
 }
 
 try {
