@@ -18,8 +18,6 @@
     TODO:
     - Redo the entire system for LoadMapSupportCode
         - Better to merge everything into one nut file per map, even with gamemode differences
-    - Find a proper way to load speedrun mod plugin
-        - We could merge it into p2mm dll (need to check with Krzy first)
 */
 
 // In case this is the client VM...
@@ -122,7 +120,7 @@ printl("")
 //---------------------------------------------------
 
 // Now, manage everything the player has set in config.nut
-// If the gamemode has exceptions of any kind, it will revert to standard mapsupport
+// If the gamemode has exceptions of any kind, it will revert to standard Portal 2 mapsupport
 
 // Import map support code
 // Map name will be wonky if the client VM attempts to get the map name
@@ -131,43 +129,27 @@ function LoadMapSupportCode(gametype) {
     printlP2MM(0, false, "Attempting to load " + gametype + " mapsupport code!")
     printlP2MM(0, false, "=============================================================\n")
 
-    if (gametype != "standard") {
-        if (gametype == "speedrun") {
-            // Quick check for the speedrun mod plugin
-            if (!("smsm" in this)) {
-                printlP2MM(1, false, "Failed to load the VScript registers in the Speedrun Mod plugin! Reverting to standard mapsupport...")
-                return LoadMapSupportCode("standard")
-            }
-        }
-        try {
-            // Import the core functions before the actual mapsupport
-            IncludeScript("multiplayermod/mapsupport/" + gametype + "/#" + gametype + "functions.nut")
-        } catch (exception) {
-            printlP2MM(1, false, "Failed to load the " + gametype + " core functions file!")
-        }
-    }
-
     try {
         IncludeScript("multiplayermod/mapsupport/" + gametype + "/" + GetMapName() + ".nut")
     } catch (exception) {
-        if (gametype == "standard") {
-            printlP2MM(1, false, "Failed to load standard mapsupport for " + GetMapName() + "\n")
+        if (gametype == "portal2") {
+            printlP2MM(1, false, "Failed to load mapsupport for " + GetMapName() + "\n")
         }
         else {
-            printlP2MM(1, false, "Failed to load " + gametype + " mapsupport code! Reverting to standard mapsupport...")
-            return LoadMapSupportCode("standard")
+            printlP2MM(1, false, "Failed to load " + gametype + " mapsupport code! Reverting to standard Portal 2 mapsupport...")
+            return LoadMapSupportCode("portal2")
         }
     }
 }
 
 // Now, manage everything the player has set in config.nut
-// If the gamemode has exceptions of any kind, it will revert to standard mapsupport
+// If the gamemode has exceptions of any kind, it will revert to standard Portal 2 mapsupport
 switch (Config_GameMode) {
-    case 0: LoadMapSupportCode("standard"); break
-    case 1: LoadMapSupportCode("speedrun"); break
+    case 0: LoadMapSupportCode("portal2"); break
+    //case 1: LoadMapSupportCode("speedrun"); break
     default:
-        printlP2MM(1, false, "\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard mapsupport.")
-        LoadMapSupportCode("standard")
+        printlP2MM(1, false, "\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard Portal 2 mapsupport.")
+        LoadMapSupportCode("portal2")
         break
 }
 
