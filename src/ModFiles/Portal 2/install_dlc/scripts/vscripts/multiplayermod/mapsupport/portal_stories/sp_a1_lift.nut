@@ -17,8 +17,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
         // Make changing levels work
-        //* hasnt been done yet
-        // EntFire("logic_branch_listener", "AddOutput", "OnAllTrue p2mm_servercommand:Command:changelevel sp_a1_garden:0.3", 0, null)
+        EntFire("lift_track_9", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a1_garden:3.5", 0, null)
 
         while (Entities.FindByName(null, "block_boxes")) {
             Entities.FindByName(null, "block_boxes").Destroy()
