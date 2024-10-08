@@ -75,6 +75,8 @@ function P2MMLoop() {
 
     // Get all players and check for changes
     for (local p = null; p = Entities.FindByClassname(p, "player");) {
+        if (!p.ValidateScriptScope()) { continue }
+        
         // Update everyone's class if PermaPotato is on
         FindPlayerClass(p).potatogun = PermaPotato
 
