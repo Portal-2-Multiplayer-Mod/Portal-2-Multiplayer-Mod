@@ -132,8 +132,16 @@ function LoadMapSupportCode(gametype) {
     try {
         IncludeScript("multiplayermod/mapsupport/" + gametype + "/" + GetMapName() + ".nut")
     } catch (exception) {
-        if (gametype == "portal2" || gametype == "portal_stories") {
-            printlP2MM(1, false, "Failed to load mapsupport for " + GetMapName() + "\n")
+        if (gametype == "portal2") {
+            printlP2MM(1, false, "Failed to load or no map support to load for " + GetMapName() + "\n")
+        }
+        if (gametype == "portal_stories") {
+            try {
+                IncludeScript("multiplayermod/mapsupport/" + gametype + "/sp" + GetMapName().slice(2) + ".nut")
+            } catch (exception) {
+               printlP2MM(1, false, "Failed to load or no map support to load for " + GetMapName() + "\n")
+               return
+            }
         }
         else {
             printlP2MM(1, false, "Failed to load " + gametype + " mapsupport code! Reverting to standard Portal 2 mapsupport...")
@@ -148,7 +156,7 @@ switch (GetGameDirectory()) {
     case "portal2": LoadMapSupportCode("portal2"); break
     case "portal_stories": LoadMapSupportCode("portal_stories"); break
     default:
-        printlP2MM(1, false, "Invalid value, defaulting to standard Portal 2 mapsupport.")
+        printlP2MM(1, false, "Invalid GetGameDirectory() value, defaulting to standard Portal 2 mapsupport.")
         LoadMapSupportCode("portal2")
         break
 }
