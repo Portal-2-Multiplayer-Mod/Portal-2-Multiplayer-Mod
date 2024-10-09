@@ -19,8 +19,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // delete box spawn
         Entities.FindByClassnameNearest("info_player_start", Vector(1648, 2552, 1828), 999).Destroy()
-        // prevent doors from closing        
-
+        
         // Melgun Cutscene
         melgunC <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         melgunC.__KeyValueFromString("target_team", "-1")
@@ -34,10 +33,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("relay_melgun", "AddOutput", "OnTrigger melgunC:ReturnToEyes::13.33")
         EntFire("relay_melgun", "AddOutput", "OnTrigger !self:RunScriptCode:equipPortalGun()::13.33")
 
+        // prevent doors from closing        
         Entities.FindByName(null, "sleep_lab_real_door").__KeyValueFromString("targetname", "sleep_lab_real_dooroverride")
         Entities.FindByClassnameNearest("trigger_once", Vector(-2952, 5088, 144), 32).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-3520.16, 5104, 120), 32).Destroy()
         EntFire("AutoInstance1-office_door_button1", "AddOutput", "OnPressed sphere_ptex:TurnOn")
+        Entities.FindByName(null, "ap_sleepy_room").__KeyValueFromString("targetname", "ap_sleepy_room_p2mmoverride")
+        Entities.FindByName(null, "cs_virgil_1").__KeyValueFromString("targetname", "cs_virgil_1_p2mmoverride")
+
         // Make changing levels work
         // EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel sp_a2_garden_de:0", 0, null)
 
@@ -47,6 +50,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
     
     if (MSPostPlayerSpawn) {
+        EntFire("cs_virgil_1_p2mmoverride", "Start")
     }
 }
 

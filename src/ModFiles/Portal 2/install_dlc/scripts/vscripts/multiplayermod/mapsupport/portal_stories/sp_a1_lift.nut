@@ -18,7 +18,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         UTIL_Team.Taunting(true)
         
         Entities.FindByClassnameNearest("logic_auto", Vector(244, 1435, 9816), 16).Destroy()
-        
+        Entities.FindByName(null, "cs_cave_10").__KeyValueFromString("targetname", "cs_cave_10_p2mmoverride")
+
 
 
         // Make changing levels work
@@ -34,6 +35,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("playerSpawn", "SetParent", "Lift_Mover", 0, null)
         EntFire("global_ents-proxy", "OnProxyRelay6", null, 0, null)
         EntFire("music", "PlaySound", null, 1.5, null)
+        EntFire("cs_cave_10_p2mmoverride", "Start", null, 9)
         EntFire("Lift_Mover", "StartForward", null, 3.5, null)
     }
     // if (MSOnPlayerJoin) {
