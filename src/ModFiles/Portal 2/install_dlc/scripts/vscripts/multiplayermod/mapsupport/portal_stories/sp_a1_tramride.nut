@@ -25,7 +25,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     
     if (MSPostPlayerSpawn) {
         Entities.FindByClassnameNearest("info_player_start", Vector(-2992, -344, 5), 9999).__KeyValueFromString("targetname", "playerSpawn")
-        Entities.FindByName(null, "playerSpawn").SetOrigin(Vector(-4592, -4460, 146))
+        Entities.FindByName(null, "playerSpawn").SetOrigin(Vector(-4592, -4460, 116))
         EntFire("playerSpawn", "SetParent", "Subway_TankTrain", 0, null)
         for (local ent = null; ent = Entities.FindByClassname(ent, "player"); ) {
             ent.SetOrigin(Vector(-4592, -4460, 110))

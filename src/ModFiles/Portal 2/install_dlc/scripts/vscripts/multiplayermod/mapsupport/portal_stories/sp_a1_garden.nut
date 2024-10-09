@@ -18,6 +18,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(1408, 4308, 96.5), 16).Destroy()
         Entities.FindByClassnameNearest("trigger_look", Vector(3908, 1840, -608), 16).Destroy()
         Entities.FindByName(null, "AutoInstance1-@huge_doors_close_relay").Destroy()
+        Entities.FindByName(null, "sleep_movie").__KeyValueFromString("targetname", "playmovie_p2mm_override")
+        
+        EntFire("sleep_button", "AddOutput", "OnPressed playmovie_p2mm_override:playmovieforallplayers")
 
 
         // Make changing levels work
