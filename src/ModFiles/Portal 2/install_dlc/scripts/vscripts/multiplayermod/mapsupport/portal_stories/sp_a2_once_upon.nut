@@ -22,10 +22,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("button_p2mm", "AddOutput", "OnUnPressed door_prop_p2mmoverride:SetAnimation:close:0.3", 0, null)
         Entities.FindByName(null, "end_command").Destroy()
 
+        // delete box spawn
         Entities.FindByClassnameNearest("info_player_start", Vector(7056, -384, -40), 127).Destroy()
+
         // remove auto elevator start
         Entities.FindByClassnameNearest("logic_auto", Vector(3072, -1016, 1476), 127).Destroy()
         Entities.FindByName(null, "elevator-start_trigger").Destroy()
+        
         // Make changing levels work
         if (GetMapName().find("sp_") != null) {
             EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_past_power:2", 0, null)
