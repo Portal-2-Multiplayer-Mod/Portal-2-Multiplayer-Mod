@@ -24,14 +24,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("logic_auto", Vector(-232, -5864, 137), 32).Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(-552, -5824, -220), 32).Destroy()
         Entities.FindByName(null, "AutoInstance1-start_trigger").Destroy()
+        Entities.FindByName(null, "end_command").Destroy()
         Entities.FindByName(null, "Door_1").__KeyValueFromString("targetname", "door1_p2mm_override")
         Entities.FindByClassnameNearest("prop_under_floor_button", Vector(1856, -256, 136), 32).__KeyValueFromString("targetname", "button_p2mm")
         EntFire("button_p2mm", "AddOutput", "OnPressed door1_p2mm_override:SetAnimation:open:0.3", 0, null)
         EntFire("button_p2mm", "AddOutput", "OnUnPressed door1_p2mm_override:SetAnimation:close:0.3", 0, null)
 
         // Make changing levels work
-        // EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a1_intro7:0.3", 0, null)
-
+        if(GetMapName().find("sp_", 0) == 0) {EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_once_upon:2", 0, null)}
+        else EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a2_once_upon:2", 0, null)
+        
         while (Entities.FindByName(null, "block_boxes")) {
             Entities.FindByName(null, "block_boxes").Destroy()
         }

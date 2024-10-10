@@ -27,9 +27,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         
         EntFire("sleep_button", "AddOutput", "OnPressed playmovie_p2mm_override:playmovieforallplayers")
 
-
         // Make changing levels work
-        EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel sp_a2_garden_de:0", 0, null)
+        if(GetMapName().find("sp_", 0) == 0) {EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel sp_a2_garden_de:0", 0, null)}
+        else EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel st_a2_garden_de:0", 0, null)
+        
 
         while (Entities.FindByName(null, "block_boxes")) {
             Entities.FindByName(null, "block_boxes").Destroy()

@@ -32,6 +32,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("relay_melgun", "AddOutput", "OnTrigger melgunC:Disable::13.33")
         EntFire("relay_melgun", "AddOutput", "OnTrigger melgunC:ReturnToEyes::13.33")
         EntFire("relay_melgun", "AddOutput", "OnTrigger !self:RunScriptCode:equipPortalGun()::13.33")
+        Entities.FindByName(null, "end_command").Destroy()
 
         // prevent doors from closing        
         Entities.FindByName(null, "sleep_lab_real_door").__KeyValueFromString("targetname", "sleep_lab_real_dooroverride")
@@ -42,7 +43,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "cs_virgil_1").__KeyValueFromString("targetname", "cs_virgil_1_p2mmoverride")
 
         // Make changing levels work
-        // EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel sp_a2_garden_de:0", 0, null)
+        if(GetMapName().find("sp_", 0) == 0) {EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_underbounce:2", 0, null)}
+        else EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_underbounce:2", 0, null)
 
         while (Entities.FindByName(null, "block_boxes")) {
             Entities.FindByName(null, "block_boxes").Destroy()

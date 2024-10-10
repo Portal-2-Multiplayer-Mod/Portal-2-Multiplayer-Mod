@@ -137,6 +137,7 @@ function LoadMapSupportCode(gametype) {
         }
         if (gametype == "portal_stories") {
             try {
+                printlP2MM(0, true, "trying to load multiplayermod/mapsupport/" + gametype + "/sp" + GetMapName().slice(2) + ".nut")
                 IncludeScript("multiplayermod/mapsupport/" + gametype + "/sp" + GetMapName().slice(2) + ".nut")
             } catch (exception) {
                printlP2MM(1, false, "Failed to load or no map support to load for " + GetMapName() + "\n")

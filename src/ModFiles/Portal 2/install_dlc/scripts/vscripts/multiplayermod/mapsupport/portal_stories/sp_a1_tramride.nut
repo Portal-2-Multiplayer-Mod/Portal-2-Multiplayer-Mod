@@ -21,7 +21,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("info_player_start", Vector(-4592, -4460, 146), 999).Destroy()
 
         // Make changing levels work
-        EntFire("Player_Subway_Path_63", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a1_mel_intro:6", 0, null)
+        if(GetMapName().find("sp_", 0) == 0) {EntFire("Player_Subway_Path_63", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a1_mel_intro:6", 0, null)}
+        else EntFire("Player_Subway_Path_63", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel st_a1_mel_intro:6", 0, null)
+        
 
         while (Entities.FindByName(null, "block_boxes")) {
             Entities.FindByName(null, "block_boxes").Destroy()
