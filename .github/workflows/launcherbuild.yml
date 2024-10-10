@@ -1,4 +1,10 @@
-on: push
+on: 
+  push:
+    paths:
+      - 'src/**'
+      - '!src/ModFiles/**'
+      - '!src/ModFilesVPK/**'
+
 env:
   VERSION: "2.3.0"
 jobs:
