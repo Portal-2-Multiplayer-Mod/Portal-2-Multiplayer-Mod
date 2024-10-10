@@ -28,9 +28,8 @@
 	}
 	"empty"
 	{
-		"title"		"Story Mode:"
-		"subtitle" 	"Portal Stories: Mel"
-		"command" 		"p2mm_startsession st_a1_tramride"
+		"title"		    "Story Mode:"
+		"subtitle" 	    "Portal Stories: Mel"
 		"pic"       	"vgui/chapters/chapter1"
 	}
 	"portalstories_lvl01"
@@ -71,8 +70,7 @@
 	"empty"
 	{
 		"title"			"Advanced Mode:"
-		"subtitle" 	"The original mod, with harder puzzles"
-		"command" 	"p2mm_startsession sp_a1_tramride"
+		"subtitle" 	    "The original mod, with harder puzzles"
 		"pic"       	"vgui/chapters/chapter1"
 	}
     "portalstories_lvl01"
