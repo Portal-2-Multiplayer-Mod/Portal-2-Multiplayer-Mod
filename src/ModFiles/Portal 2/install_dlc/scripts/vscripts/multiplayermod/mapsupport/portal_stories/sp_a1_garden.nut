@@ -7,9 +7,6 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Offset coop repsawn nodes for elevators (left and right side)
-        GlobalSpawnClass.m_bUseAutoSpawn <- false
-
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
 
@@ -28,13 +25,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("sleep_button", "AddOutput", "OnPressed playmovie_p2mm_override:playmovieforallplayers")
 
         // Make changing levels work
-        if(GetMapName().find("sp_", 0) == 0) {EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel sp_a2_garden_de:0", 0, null)}
-        else EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel st_a2_garden_de:0", 0, null)
-        
-
-        while (Entities.FindByName(null, "block_boxes")) {
-            Entities.FindByName(null, "block_boxes").Destroy()
-        }
+        if (GetMapName().find("sp_") != null) {
+            EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel sp_a2_garden_de:0", 0, null)
+        } else EntFire("logic_playmovie", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel st_a2_garden_de:0", 0, null)
     }
     
     if (MSPostPlayerSpawn) {

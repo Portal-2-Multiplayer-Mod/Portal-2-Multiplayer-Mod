@@ -7,9 +7,6 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Offset coop repsawn nodes for elevators (left and right side)
-        GlobalSpawnClass.m_bUseAutoSpawn <- false
-
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
 
@@ -21,13 +18,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("info_player_start", Vector(-4592, -4460, 146), 999).Destroy()
 
         // Make changing levels work
-        if(GetMapName().find("sp_", 0) == 0) {EntFire("Player_Subway_Path_63", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a1_mel_intro:6", 0, null)}
-        else EntFire("Player_Subway_Path_63", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel st_a1_mel_intro:6", 0, null)
-        
-
-        while (Entities.FindByName(null, "block_boxes")) {
-            Entities.FindByName(null, "block_boxes").Destroy()
-        }
+        if (GetMapName().find("sp_") != null) {
+            EntFire("Player_Subway_Path_63", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a1_mel_intro:6", 0, null)
+        } else EntFire("Player_Subway_Path_63", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel st_a1_mel_intro:6", 0, null)
     }
     
     if (MSPostPlayerSpawn) {
@@ -38,7 +31,4 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             ent.SetOrigin(Vector(-4592, -4460, 110))
         }
     }
-    // if (MSOnPlayerJoin) {
-    //     printlP2MM(1, true, "player joined\n\n\n\n")
-    // }
 }

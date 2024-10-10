@@ -7,9 +7,6 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Offset coop repsawn nodes for elevators (left and right side)
-        GlobalSpawnClass.m_bUseAutoSpawn <- false
-
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
 
@@ -20,16 +17,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("logic_auto", Vector(244, 1435, 9816), 16).Destroy()
         Entities.FindByName(null, "cs_cave_10").__KeyValueFromString("targetname", "cs_cave_10_p2mmoverride")
 
-
-
         // Make changing levels work
-        if(GetMapName().find("sp_", 0) == 0) {EntFire("lift_track_9", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a1_garden:3.5", 0, null)}
-        else EntFire("lift_track_9", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel st_a1_garden:3.5", 0, null)
-        
-
-        while (Entities.FindByName(null, "block_boxes")) {
-            Entities.FindByName(null, "block_boxes").Destroy()
-        }
+        if (GetMapName().find("sp_") != null) {
+            EntFire("lift_track_9", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a1_garden:3.5", 0, null)
+        } else EntFire("lift_track_9", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel st_a1_garden:3.5", 0, null)
     }
     
     if (MSPostPlayerSpawn) {
@@ -40,7 +31,4 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("cs_cave_10_p2mmoverride", "Start", null, 9)
         EntFire("Lift_Mover", "StartForward", null, 3.5, null)
     }
-    // if (MSOnPlayerJoin) {
-    //     printlP2MM(1, true, "player joined\n\n\n\n")
-    // }
 }

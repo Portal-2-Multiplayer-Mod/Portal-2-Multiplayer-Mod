@@ -7,8 +7,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Offset coop repsawn nodes for elevators (left and right side)
-        GlobalSpawnClass.m_bUseAutoSpawn <- false
+        // Spawn With Portal Gun
         UTIL_Team.Spawn_PortalGun(true)
 
         // Enable pinging and taunting
@@ -20,10 +19,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // remove auto elevator start
         Entities.FindByClassnameNearest("logic_auto", Vector(3072, -1016, 1476), 127).Destroy()
         Entities.FindByName(null, "elevator-start_trigger").Destroy()
-
-        while (Entities.FindByName(null, "block_boxes")) {
-            Entities.FindByName(null, "block_boxes").Destroy()
-        }
     }
     
     if (MSPostPlayerSpawn) {

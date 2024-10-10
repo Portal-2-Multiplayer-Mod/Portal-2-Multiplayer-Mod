@@ -7,9 +7,6 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Offset coop repsawn nodes for elevators (left and right side)
-        GlobalSpawnClass.m_bUseAutoSpawn <- false
-
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
 
@@ -43,12 +40,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "cs_virgil_1").__KeyValueFromString("targetname", "cs_virgil_1_p2mmoverride")
 
         // Make changing levels work
-        if(GetMapName().find("sp_", 0) == 0) {EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_underbounce:2", 0, null)}
-        else EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_underbounce:2", 0, null)
-
-        while (Entities.FindByName(null, "block_boxes")) {
-            Entities.FindByName(null, "block_boxes").Destroy()
-        }
+        if (GetMapName().find("sp_") != null) {
+            EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_underbounce:2", 0, null)
+        } else EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a2_underbounce:2", 0, null)
     }
     
     if (MSPostPlayerSpawn) {
