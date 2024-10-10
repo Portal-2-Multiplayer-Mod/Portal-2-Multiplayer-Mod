@@ -433,17 +433,17 @@ function GetPlayerColor(p, multiply = true) {
     local colorname
     try {
         switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255;  colorname = "White";            break;
-            case 2 : R <- 180, G <- 255, B <- 180;  colorname = "Green";            break;
-            case 3 : R <- 120, G <- 140, B <- 255;  colorname = "Blue";             break;
-            case 4 : R <- 255, G <- 170, B <- 120;  colorname = "Orange";           break;
-            case 5 : R <- 255, G <- 100, B <- 100;  colorname = "Red";              break;
-            case 6 : R <- 255, G <- 180, B <- 255;  colorname = "Pink";             break;
-            case 7 : R <- 255, G <- 255, B <- 180;  colorname = "Yellow";           break;
-            case 8 : R <-  0 , G <- 255, B <- 255;  colorname = "Aqua";             break;
-            case 9 : R <-  60, G <-  15, B <-   0;  colorname = "Crimson";          break;
-            case 10: R <-   0, G <- 255, B <- 200;  colorname = "Ocean Green";      break;
-            case 11: R <-  80, G <-  99, B <-   0;  colorname = "Olive";            break;
+            case 1 : // Result same as case 2.
+            case 2 : R <- 255; G <- 255; B <- 255;  colorname = "White";            break;
+            case 3 : R <- 180, G <- 255, B <- 180;  colorname = "Green";            break;
+            case 4 : R <- 120, G <- 140, B <- 255;  colorname = "Blue";             break;
+            case 5 : R <- 255, G <- 170, B <- 120;  colorname = "Orange";           break;
+            case 6 : R <- 255, G <- 100, B <- 100;  colorname = "Red";              break;
+            case 7 : R <- 255, G <- 180, B <- 255;  colorname = "Pink";             break;
+            case 8 : R <- 255, G <- 255, B <- 180;  colorname = "Yellow";           break;
+            case 9 : R <-  0 , G <- 255, B <- 255;  colorname = "Aqua";             break;
+            case 10: R <-  60, G <-  15, B <-   0;  colorname = "Crimson";          break;
+            case 11: R <-   0, G <- 255, B <- 200;  colorname = "Ocean Green";      break;
             case 12: R <-  40, G <-  40, B <-  80;  colorname = "Violet";           break;
             case 13: R <-  75, G <-  75, B <-  75;  colorname = "Gray";             break;
             case 14: R <-  64, G <-   0, B <-   0;  colorname = "Dark Red";         break;

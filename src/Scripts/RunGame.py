@@ -184,7 +184,7 @@ def Portal2Running() -> bool:
         bool: Whether Portal 2 is running or not
     """
 
-    return ("portal2.exe" if GVars.iow else "portal2_linux") in subprocess.run(["tasklist"] if GVars.iow else ["ps", "aux"], stdout=subprocess.PIPE, text=True).stdout.lower()
+    return ("portal2.exe" or "portal2_linux") in subprocess.run(["tasklist"] if GVars.iow else ["ps", "aux"], stdout=subprocess.PIPE, text=True).stdout.lower()
 
 # █ █▄░█ █ ▀█▀
 # █ █░▀█ █ ░█░
