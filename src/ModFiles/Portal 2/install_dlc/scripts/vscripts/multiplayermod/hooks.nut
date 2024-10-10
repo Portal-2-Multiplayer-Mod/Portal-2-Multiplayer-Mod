@@ -665,7 +665,7 @@ function PostPlayerSpawn() {
     // Display First Run Prompt
     if (Config_FirstRunPrompt) {
         EntFire("p2mm_servercommand", "command", "script CallFirstRunPrompt()", 1)
-    } 
+    }
 }
 
 // 4
@@ -832,8 +832,11 @@ function OnPlayerJoin(p) {
     PlayerID = p.GetRootMoveParent().entindex()
 
     // Assign every new targetname to the player after blue and red are used
+    printl(PlayerID)
+    printl((PlayerID >= 3))
     if (PlayerID >= 3) {
         p.__KeyValueFromString("targetname", "player" + PlayerID)
+        printl("done")
     }
 
     // Change player prop_portal targetname
@@ -959,11 +962,27 @@ function OnPlayerJoin(p) {
         }
     }
 
+    if (GetGameDirectory() == "portal_stories") {
+        EntFireByHandle(p, "RunScriptCode", "SetPSMelModel(caller)", 0.1, p, p)
+    }
+
     // Set fog controller
     if (g_bHasSpawned) {
         if (usefogcontroller) {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
         }
+    }
+}
+
+function SetPSMelModel(p) {
+    printlP2MM(0, false, "OnPlayerJoin")
+    printlP2MM(0, false, "Team: " + p.GetTeam())
+    printlP2MM(0, false, "Name: " + p.GetName())
+    printlP2MM(0, false, "PlayerID: " + p.GetRootMoveParent().entindex())
+    if (p.GetTeam() == TEAM_BLUE) {
+        SetPlayerModel(p, "models/portal_stories/player/mel.mdl")
+    } else {
+        SetPlayerModel(p, "models/player/chell/player.mdl")
     }
 }
 

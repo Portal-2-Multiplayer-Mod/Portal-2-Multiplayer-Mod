@@ -432,40 +432,51 @@ function GetPlayerColor(p, multiply = true) {
     }
     local colorname
     try {
-        switch (PlayerID) {
-            case 1 : R <- 255; G <- 255; B <- 255;  colorname = "White";            break;
-            case 2 : R <- 180, G <- 255, B <- 180;  colorname = "Green";            break;
-            case 3 : R <- 120, G <- 140, B <- 255;  colorname = "Blue";             break;
-            case 4 : R <- 255, G <- 170, B <- 120;  colorname = "Orange";           break;
-            case 5 : R <- 255, G <- 100, B <- 100;  colorname = "Red";              break;
-            case 6 : R <- 255, G <- 180, B <- 255;  colorname = "Pink";             break;
-            case 7 : R <- 255, G <- 255, B <- 180;  colorname = "Yellow";           break;
-            case 8 : R <-  0 , G <- 255, B <- 255;  colorname = "Aqua";             break;
-            case 9 : R <-  60, G <-  15, B <-   0;  colorname = "Crimson";          break;
-            case 10: R <-   0, G <- 255, B <- 200;  colorname = "Ocean Green";      break;
-            case 11: R <-  80, G <-  99, B <-   0;  colorname = "Olive";            break;
-            case 12: R <-  40, G <-  40, B <-  80;  colorname = "Violet";           break;
-            case 13: R <-  75, G <-  75, B <-  75;  colorname = "Gray";             break;
-            case 14: R <-  64, G <-   0, B <-   0;  colorname = "Dark Red";         break;
-            case 15: R <-   0, G <-  64, B <-   0;  colorname = "Dark Green";       break;
-            case 16: R <-   0, G <-   0, B <-  64;  colorname = "Dark Blue";        break;
-            case 17: R <- 255, G <-  87, B <-  51;  colorname = "Scarlet";          break;
-            case 18: R <- 165, G <- 208, B <- 255;  colorname = "Bright Blue";      break;
-            case 19: R <- 190, G <- 255, B <- 200;  colorname = "Mint Green";       break;
-            case 20: R <- 205, G <- 207, B <-  62;  colorname = "Gold Yellow";      break;
-            case 21: R <- 255, G <- 194, B <- 194;  colorname = "Bright Red";       break;
-            case 22: R <- 208, G <- 255, B <-  28;  colorname = "Lime";             break;
-            case 23: R <-  91, G <- 129, B <- 184;  colorname = "Dull Blue";        break;
-            case 24: R <-  99, G <-   0, B <- 161;  colorname = "Purple";           break;
-            case 25: R <- 107, G <- 169, B <- 117;  colorname = "Dull Green";       break;
-            case 26: R <-  56, G <- 191, B <- 188;  colorname = "Cyan";             break;
-            case 27: R <-  11, G <-  11, B <-  11;  colorname = "Black";            break;
-            case 28: R <- 103, G <- 233, B <- 197;  colorname = "Teal";             break;
-            case 29: R <- 183, G <- 135, B <- 223;  colorname = "Bright Magenta";   break;
-            case 30: R <- 120, G <- 195, B <- 193;  colorname = "Blue Gray";        break;
-            case 31: R <- 138, G <-  89, B <-   0;  colorname = "Dark Orange";      break;
-            case 32: R <- 236, G <- 167, B <- 167;  colorname = "Light Red";        break;
-            case 33: R <-   0, G <- 100, B <- 150;  colorname = "Navy Blue";        break;
+        // Too not make the Chell model look green for the second player
+        // but look normal until the next player joins.
+        // Maybe the same should be done for Portal 2 also.
+        if (GetGameDirectory() == "portal_stories" && PlayerID == 2) {
+            R <- 255
+            G <- 255
+            B <- 255
+            colorname = "White"
+            
+        } else {
+            switch (PlayerID) {
+                case 1 : R <- 255; G <- 255; B <- 255;  colorname = "White";            break;
+                case 2 : R <- 180, G <- 255, B <- 180;  colorname = "Green";            break;
+                case 3 : R <- 120, G <- 140, B <- 255;  colorname = "Blue";             break;
+                case 4 : R <- 255, G <- 170, B <- 120;  colorname = "Orange";           break;
+                case 5 : R <- 255, G <- 100, B <- 100;  colorname = "Red";              break;
+                case 6 : R <- 255, G <- 180, B <- 255;  colorname = "Pink";             break;
+                case 7 : R <- 255, G <- 255, B <- 180;  colorname = "Yellow";           break;
+                case 8 : R <-  0 , G <- 255, B <- 255;  colorname = "Aqua";             break;
+                case 9 : R <-  60, G <-  15, B <-   0;  colorname = "Crimson";          break;
+                case 10: R <-   0, G <- 255, B <- 200;  colorname = "Ocean Green";      break;
+                case 11: R <-  80, G <-  99, B <-   0;  colorname = "Olive";            break;
+                case 12: R <-  40, G <-  40, B <-  80;  colorname = "Violet";           break;
+                case 13: R <-  75, G <-  75, B <-  75;  colorname = "Gray";             break;
+                case 14: R <-  64, G <-   0, B <-   0;  colorname = "Dark Red";         break;
+                case 15: R <-   0, G <-  64, B <-   0;  colorname = "Dark Green";       break;
+                case 16: R <-   0, G <-   0, B <-  64;  colorname = "Dark Blue";        break;
+                case 17: R <- 255, G <-  87, B <-  51;  colorname = "Scarlet";          break;
+                case 18: R <- 165, G <- 208, B <- 255;  colorname = "Bright Blue";      break;
+                case 19: R <- 190, G <- 255, B <- 200;  colorname = "Mint Green";       break;
+                case 20: R <- 205, G <- 207, B <-  62;  colorname = "Gold Yellow";      break;
+                case 21: R <- 255, G <- 194, B <- 194;  colorname = "Bright Red";       break;
+                case 22: R <- 208, G <- 255, B <-  28;  colorname = "Lime";             break;
+                case 23: R <-  91, G <- 129, B <- 184;  colorname = "Dull Blue";        break;
+                case 24: R <-  99, G <-   0, B <- 161;  colorname = "Purple";           break;
+                case 25: R <- 107, G <- 169, B <- 117;  colorname = "Dull Green";       break;
+                case 26: R <-  56, G <- 191, B <- 188;  colorname = "Cyan";             break;
+                case 27: R <-  11, G <-  11, B <-  11;  colorname = "Black";            break;
+                case 28: R <- 103, G <- 233, B <- 197;  colorname = "Teal";             break;
+                case 29: R <- 183, G <- 135, B <- 223;  colorname = "Bright Magenta";   break;
+                case 30: R <- 120, G <- 195, B <- 193;  colorname = "Blue Gray";        break;
+                case 31: R <- 138, G <-  89, B <-   0;  colorname = "Dark Orange";      break;
+                case 32: R <- 236, G <- 167, B <- 167;  colorname = "Light Red";        break;
+                case 33: R <-   0, G <- 100, B <- 150;  colorname = "Navy Blue";        break;
+            }
         }
     } catch (exception) {}
 
