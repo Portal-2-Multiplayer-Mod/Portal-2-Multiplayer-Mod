@@ -39,6 +39,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "ap_sleepy_room").__KeyValueFromString("targetname", "ap_sleepy_room_p2mmoverride")
         Entities.FindByName(null, "cs_virgil_1").__KeyValueFromString("targetname", "cs_virgil_1_p2mmoverride")
 
+        Entities.FindByName(null, "blackin").__KeyValueFromString("targetname", "blackin_p2mmoverride")
+
+        Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(3800, 1880, -1000))
         // Make changing levels work
         if (GetMapName().find("sp_") != null) {
             EntFire("@transition_from_map", "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel sp_a2_underbounce:2", 0, null)
@@ -47,6 +50,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     
     if (MSPostPlayerSpawn) {
         EntFire("cs_virgil_1_p2mmoverride", "Start")
+        EntFire("blackin_p2mmoverride", "SetAnimation", "exit1")
     }
 }
 

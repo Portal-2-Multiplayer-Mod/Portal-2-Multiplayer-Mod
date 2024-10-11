@@ -19,11 +19,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("info_player_start", Vector(-2296, -336, 373), 999).Destroy()
 
         // Make changing levels work
-        EntFire("Player_Subway_Path_63", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a1_mel_intro:6", 0, null)
+        if (GetMapName().find("sp_") != null) {
+            EntFire("@transition_from_map", "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel sp_a2_firestorm:.3", 0, null)
+        } else EntFire("@transition_from_map", "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel st_a2_firestorm:.3", 0, null)
 
     }
     
     if (MSPostPlayerSpawn) {
+        EntFire("elevator-entrance_lift_train", "StartForward", null, 1)
+        Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(256, 512, -50))
 
         
     }
