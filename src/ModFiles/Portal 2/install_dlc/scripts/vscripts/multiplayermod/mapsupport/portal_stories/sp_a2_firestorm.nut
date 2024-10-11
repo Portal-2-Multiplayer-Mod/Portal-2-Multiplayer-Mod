@@ -77,7 +77,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (!OnlyOnce_a2_firestorm2) {
             if (!Entities.FindByName(null, "doteleport1")) {
                 for (local p = null; p = Entities.FindByClassname(p, "player");) {
-                    p.SetOrigin(Vector(6004, 1795, 2465))
+                    p.SetOrigin(Vector(6004, 1795, 2420))
                     p.SetAngles(0, 0, 0)
                     p.SetVelocity(Vector(0, 0, 0))
                 }
