@@ -13,6 +13,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Enable pinging and taunting
         UTIL_Team.Pinging(true)
         UTIL_Team.Taunting(true)
+
+        // make doors not close
         Entities.FindByName(null, "entry_door-door_prop").__KeyValueFromString("targetname", "entry_door-door_prop_p2mmoverride")
         Entities.FindByClassnameNearest("trigger_once", Vector(3072, -1200, 1900), 32).__KeyValueFromString("targetname", "entrytrigger_p2mm")
         Entities.FindByClassnameNearest("prop_under_floor_button", Vector(3024, -3016, 2168), 32).__KeyValueFromString("targetname", "button_p2mm")
@@ -21,6 +23,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("button_p2mm", "AddOutput", "OnPressed door_prop_p2mmoverride:SetAnimation:open:0.3", 0, null)
         EntFire("button_p2mm", "AddOutput", "OnUnPressed door_prop_p2mmoverride:SetAnimation:close:0.3", 0, null)
         Entities.FindByName(null, "end_command").Destroy()
+        Entities.FindByName(null, "Test_1_Door_nocheat").Destroy()
 
         // delete box spawn
         Entities.FindByClassnameNearest("info_player_start", Vector(7056, -384, -40), 127).Destroy()
