@@ -9,8 +9,6 @@ OnlyOnce_a2_firestorm <- false
 OnlyOnce_a2_firestorm2 <- false
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Offset coop repsawn nodes for elevators (left and right side)
-        GlobalSpawnClass.m_bUseAutoSpawn <- false
         UTIL_Team.Spawn_PortalGun(true)
 
         // Enable pinging and taunting
