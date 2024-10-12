@@ -15,6 +15,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         UTIL_Team.Pinging(true)
         UTIL_Team.Taunting(true)
 
+        // elevator stuff
+        EntFire("InstanceAuto52-elevator_1", "MoveToPathNode", "@elevator_1_bottom_path_1", 0.1, null)
+        EntFire("InstanceAuto52-light_elevator_fill", "TurnOn")
+        EntFire("InstanceAuto52-signs_on", "Trigger")
+        EntFire("InstanceAuto52-light_elevator_dynamic", "TurnOn")
+
         // delete box spawn
         Entities.FindByClassnameNearest("info_player_start", Vector(-2296, -336, 373), 999).Destroy()
 
@@ -26,7 +32,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
     
     if (MSPostPlayerSpawn) {
-        EntFire("elevator-entrance_lift_train", "StartForward", null, 1)
         Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(256, 512, -50))
 
         
