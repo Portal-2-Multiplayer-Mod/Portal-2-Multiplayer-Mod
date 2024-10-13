@@ -30,7 +30,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSOnPlayerJoin) {
         printlP2MM(0, true, "Player Joined (Reseting Viewcontrols)")
         EntFire("Sp_A2_Bts6Viewcontrol", "disable", "", 0.5, null)
-        EntFire("Sp_A2_Bts6Viewcontrol", "Disable", "", 0.6, null)
+        EntFire("Sp_A2_Bts6Viewcontrol", "Enable", "", 0.6, null)
     }
 
     if (MSLoop) {
