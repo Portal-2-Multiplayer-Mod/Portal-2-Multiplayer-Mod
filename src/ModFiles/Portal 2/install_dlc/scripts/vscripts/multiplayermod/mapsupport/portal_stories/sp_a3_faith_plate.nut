@@ -30,6 +30,18 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(1008, 4576, 208), 32).Destroy()
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1264, 4576, 192), 32), "AddOutput", "OnStartTouch Entry_Door_Areaportal_p2mm_override:Open", 0, null, null)
         Entities.FindByClassnameNearest("trigger_once", Vector(3200.5, 4960, 592), 32).Destroy()
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(736, 3760, 464), 32), "AddOutput", "OnTrigger Test_1_Exit_Door:Open::3", 0, null, null)
+
+        // elevator cutscene setup
+        EntFire("AutoInstance2-elevator_1_player_teleport", "AddOutput", "OnStartTouch !self:RunScriptCode:StartScene():1")
+        elevator_viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
+        elevator_viewcontrol.__KeyValueFromString("targetname", "elevator_viewcontrol")
+        elevator_viewcontrol.__KeyValueFromString("fov", "100")
+        elevator_viewcontrol.SetOrigin(Vector(3472, 4128, 436))
+        EntFire("elevator_viewcontrol", "setparent", "AutoInstance2-elevator_1", 0, null)
+        elevator_viewcontrol.SetAngles(0, 90, 0)
+        EntFire("AutoInstance2-elevator_1_path_3", "AddOutput", "OnPass elevator_viewcontrol:Disable::1.9")
+        EntFire("AutoInstance2-elevator_1_player_teleport", "Enable")
 
         // Make "trap" not close up
         Cooridor_1_Floor_Panels_Open_Relay <- Entities.FindByName(null, "Cooridor_1_Floor_Panels_Open_Relay")
@@ -57,9 +69,23 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(1240, 4576, 336), 50).Destroy()
 
         // Make changing levels work
-        Entities.FindByName(null, "InstanceAuto56-command").Destroy()
+        Entities.FindByName(null, "end_command").Destroy()
         if (GetMapName().find("sp_") != null) {
-            EntFire("@transition_from_map", "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel sp_a3_transition:2")
-        } else EntFire("@transition_from_map", "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel st_a3_transition:2")
+            EntFire("AutoInstance2-elevator_1_path_3", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a3_transition:2")
+        } else EntFire("AutoInstance2-elevator_1_path_3", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel st_a3_transition:2")
     }
+}
+function StartScene() {
+    for (local p; p = Entities.FindByClassname(p, "player");) {
+        p.__KeyValueFromString("rendermode", "10")
+        p.SetOrigin(Vector(3184, 4120, -1512))
+    }
+    EntFire("elevator_viewcontrol", "Enable")
+    EntFire("AutoInstance2-floor_clip", "Disable", 0.9)
+    EntFire("AutoInstance2-elevator_1", "RunScriptCode:StartMoving()", 1)
+    EntFire("AutoInstance2-signs_off", "Trigger", 1)
+    EntFire("AutoInstance2-elevator_doorclose_playerclip", "Enable")
+    EntFire("@glados:RunScriptCode", "ExitStarted()")
+    EntFire("AutoInstance2-close", "Trigger")
+    EntFire("AutoInstance2-elevator_1", "StartForward", 1)
 }

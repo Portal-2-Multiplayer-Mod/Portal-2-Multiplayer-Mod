@@ -49,13 +49,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             p.SetOrigin(Vector(-192, 352, -1600))
             p.__KeyValueFromString("rendermode", "10")
         }
-
         EntFire("AutoInstance1-light_elevator_dynamic", "TurnOn")
         EntFire("AutoInstance1-elevator_1", "MoveToPathNode", "AutoInstance1-@elevator_1_bottom_path_1")
         EntFire("AutoInstance1-elevator_1", "StartForward")
         EntFire("AutoInstance1-signs_on", "Trigger")
         EntFire("elevator_viewcontrol", "Enable")
-        EntFire("AutoInstance1-source_elevator_door_open_trigger", "AddOutput", "OnTrigger !self:RunScriptCode:EndScene()", 1)
+        EntFire("AutoInstance1-source_elevator_door_open_trigger", "AddOutput", "OnTrigger !self:RunScriptCode:EndScene()")
     }
 }
 function EndScene() {
@@ -67,8 +66,12 @@ function EndScene() {
     for (local p; p = Entities.FindByClassname(p, "player");) {
         p.__KeyValueFromString("rendermode", "0")
         EntFireByHandle(GamePlayerEquip, "use", "", 0, p, p)
+        p.SetOrigin(Vector(576, 495, 0))
     }
     // Enable secondary fire for all guns
     EntFire("weapon_portalgun", "AddOutput", "CanFirePortal2 1", 0, null)
     GamePlayerEquip.Destroy()
+    EntFire("elevator_viewcontrol", "Disable", null, 1)
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(576, 495, 0)) 
+
 }
