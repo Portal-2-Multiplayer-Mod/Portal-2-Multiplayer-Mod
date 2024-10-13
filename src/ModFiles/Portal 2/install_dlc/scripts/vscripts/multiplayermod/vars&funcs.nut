@@ -425,7 +425,7 @@ function GetColorByName(color) {
 
 function GetPlayerColor(p, multiply = true) {
     local PlayerID
-    if (typeof p == "integer") {
+    if (typeof(p) == "integer") {
         PlayerID = p
     } else {
         PlayerID = p.entindex() + amtoffsetclr
@@ -2015,11 +2015,6 @@ function SendChatMessage(message, pActivatorAndCaller = null) {
     }
     // Note that "\x05" is used for private messages with more than one person
     // You will need to create a special case to use it (see cc/tp.nut for an example)
-}
-
-function RunChatCommand(cmd, args, plr) {
-    printlP2MM(0, true, "Running chat command \"" + cmd.name + "\" from player \"" + FindPlayerClass(plr).username + "\"")
-    cmd.CC(plr, args)
 }
 
 function UTIL_PlayerByIndex(index) {

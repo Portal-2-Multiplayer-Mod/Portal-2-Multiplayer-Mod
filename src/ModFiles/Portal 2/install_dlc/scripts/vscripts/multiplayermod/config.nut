@@ -79,6 +79,10 @@ Config_SetPlayerElasticity <- 0
 // Set true/false if you want to enable chat command functionality
 Config_UseChatCommands <- true
 
+// Set to true if you want chat command functionality, but everyone can't use them except the host.
+// The chat commands !help, !kill, and !vote, can still be used by all players.
+Config_HostOnlyChatCommands <- false
+
 // * If the P2:MM plugin loads and Config_UseChatCommands is true, then this is the list of players that have access to specific chat commands
 // * Admins list should be changed from within the launcher at runtime, but can be changed manually here as well as long as you reset the map after editing
 // * Permissions stack with increased admin level
@@ -314,6 +318,16 @@ try {
 } catch (exception) {
     Config_UseChatCommands <- true
     ConfigValueError("Undefined", "Config_UseChatCommands")
+}
+
+try {
+    if (typeof(Config_HostOnlyChatCommands) != "bool") {
+        Config_HostOnlyChatCommands <- false
+        ConfigValueError("Invalid", "Config_HostOnlyChatCommands")
+    }
+} catch (exception) {
+    Config_UseChatCommands <- false
+    ConfigValueError("Undefined", "Config_HostOnlyChatCommands")
 }
 
 local SetDefaultAdminList = function() {
