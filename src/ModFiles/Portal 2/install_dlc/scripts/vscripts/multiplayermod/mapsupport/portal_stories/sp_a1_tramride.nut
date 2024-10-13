@@ -17,12 +17,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
                 
         // delete tramspawn
         Entities.FindByClassnameNearest("info_player_start", Vector(-4592, -4460, 146), 999).Destroy()
+        
         playerSpawn <- Entities.FindByClassnameNearest("info_player_start", Vector(-2992, -344, 5), 9999)
         playerSpawn.__KeyValueFromString("targetname", "playerSpawn")
-        playerSpawn.SetOrigin(Vector(-4592, -4460, 116))
         playerSpawn.SetAngles(0, 180, 0)
+        playerSpawn.SetOrigin(Vector(-4592, -4460, 116)) //! This needs to be moved after the starting cut scene
         EntFireByHandle(playerSpawn, "SetParent", "Subway_TankTrain", 0, null, null)
-
+        
         // Make intro screen work
         Entities.FindByClassnameNearest("logic_auto", Vector(-6096, -6152, -112), 999).Destroy()
         MelIntro_Relay <- Entities.CreateByClassname("logic_relay")
@@ -37,7 +38,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger intro_Soundscape:Enable::10.5:-1", 0, null, null)
         EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger chapter_subtitle_text:Display::13.5:-1", 0, null, null)
         EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger chapter_title_text:Display::13.5:-1", 0, null, null)
-        EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger @command:Command:script MapStarted <- true:8:-1", 0, null, null) //! Doesn't work
+        EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger !self:RunScriptCode:MapStart():8:-1", 0, null, null)
+        EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger !self:RunScriptCode:MapStarted <- true:8:-1", 0, null, null) //! Doesn't work
         
         MelIntro_Viewcontroller <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         MelIntro_Viewcontroller.__KeyValueFromString("targetname", "MelIntro_Viewcontroller")
@@ -55,7 +57,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         MelIntro_StartFade.__KeyValueFromString("rendercolor", "0 0 0")
         MelIntro_StartFade.__KeyValueFromString("renderamt", "255")
         MelIntro_StartFade.__KeyValueFromString("spawnflags", "8")
-        EntFireByHandle(MelIntro_StartFade, "Fade", "", 1.4, null, null) // Semiworks
+
 
         // Make changing levels work
         if (GetMapName().find("sp_") != null) {
@@ -67,9 +69,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
 
     if (MSPostPlayerSpawn) {
-        for (local ent = null; ent = Entities.FindByClassname(ent, "player"); ) {
-            ent.SetOrigin(Vector(-4592, -4460, 110))
-        }
+        EntFireByHandle(MelIntro_StartFade, "Fade", "", 0, null, null) // Semiworks
         EntFireByHandle(MelIntro_Relay, "Trigger", "", 5, null, null)
     }
 
@@ -78,5 +78,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             // Used to make sure newly joining players can see the intro scene
             //EntFireByHandle(MelIntro_Viewcontroller, "Enable", "", 0, null, null) //! bugged because of above AddOutput that doesn't work
         }
+    }
+}
+
+function MapStart() {
+    for (local ent = null; ent = Entities.FindByClassname(ent, "player"); ) {
+        ent.SetOrigin(Vector(-4592, -4460, 110))
     }
 }

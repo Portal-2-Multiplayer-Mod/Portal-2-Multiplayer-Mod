@@ -30,11 +30,5 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (GetMapName().find("sp_") != null) {
             EntFire("lift_track_3", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel sp_a3_concepts:1", 0, null)
         } else EntFire("lift_track_3", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel st_a3_concepts:1", 0, null)
-
-    }
-    
-    if (MSPostPlayerSpawn) {
-
-        
     }
 }

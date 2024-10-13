@@ -37,10 +37,5 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (GetMapName().find("sp_") != null) {
             EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-512, 2688, 912), 64), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a3_faith_plate:2", 0, null, null)
         } else EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-512, 2688, 912), 64), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a3_faith_plate:2", 0, null, null)
-
-    }
-    if (MSPostPlayerSpawn) {
-
-        
     }
 }
