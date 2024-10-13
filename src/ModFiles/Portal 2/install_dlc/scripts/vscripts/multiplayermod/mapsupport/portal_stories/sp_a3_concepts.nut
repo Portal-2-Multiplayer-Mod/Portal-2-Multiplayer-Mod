@@ -9,6 +9,7 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
+        // Start without Portal Gun for starting elevator cut scene
         UTIL_Team.Spawn_PortalGun(false)
 
         // Enable pinging and taunting
@@ -22,6 +23,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "AutoInstance1-elevator_1_interior_start_trigger").Destroy()
         elevator_viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         elevator_viewcontrol.__KeyValueFromString("targetname", "elevator_viewcontrol")
+        elevator_viewcontrol.__KeyValueFromString("fov", "120")
         elevator_viewcontrol.SetOrigin(Vector(-192, 359, -1566))
         EntFire("elevator_viewcontrol", "setparent", "AutoInstance1-elevator_1", 0, null)
         elevator_viewcontrol.SetAngles(0, 90, 0)
@@ -41,8 +43,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         } else EntFire("exit_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a3_paint_fling", 2, null)
 
     }
-    
-    
 
     if (MSPostPlayerSpawn) {
         for (local p; p = Entities.FindByClassname(p, "player");) {
@@ -59,9 +59,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 }
 function EndScene() {
-    
     // stop the viewcontrol and give the players their gun
     UTIL_Team.Spawn_PortalGun(true)
+    EntFire("elevator_viewcontrol", "Disable", null, 0)
     GamePlayerEquip <- Entities.CreateByClassname("game_player_equip")
     GamePlayerEquip.__KeyValueFromString("weapon_portalgun", "1")
     for (local p; p = Entities.FindByClassname(p, "player");) {
@@ -71,8 +71,4 @@ function EndScene() {
     // Enable secondary fire for all guns
     EntFire("weapon_portalgun", "AddOutput", "CanFirePortal2 1", 0, null)
     GamePlayerEquip.Destroy()
-    
-    EntFire("elevator_viewcontrol", "Disable", null, 1)
-
 }
-    
