@@ -7,13 +7,10 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        // Offset coop repsawn nodes for elevators (left and right side)
-        GlobalSpawnClass.m_bUseAutoSpawn <- false
         UTIL_Team.Spawn_PortalGun(true)
 
         // Enable pinging and taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
 
         // elevator stuff
         EntFire("InstanceAuto52-elevator_1", "MoveToPathNode", "@elevator_1_bottom_path_1", 0.1, null)
