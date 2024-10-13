@@ -30,7 +30,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(1008, 4576, 208), 32).Destroy()
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1264, 4576, 192), 32), "AddOutput", "OnStartTouch Entry_Door_Areaportal_p2mm_override:Open", 0, null, null)
         Entities.FindByClassnameNearest("trigger_once", Vector(3200.5, 4960, 592), 32).Destroy()
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(736, 3760, 464), 32), "AddOutput", "OnTrigger Test_1_Exit_Door:Open::3", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(736, 3760, 464), 32), "AddOutput", "OnTrigger Test_1_Exit_Door:Open::1", 0, null, null)
 
         // elevator cutscene setup
         EntFire("AutoInstance2-elevator_1_player_teleport", "AddOutput", "OnStartTouch !self:RunScriptCode:StartScene():1")
