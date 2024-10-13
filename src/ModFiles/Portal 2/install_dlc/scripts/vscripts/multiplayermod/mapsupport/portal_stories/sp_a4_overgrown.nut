@@ -54,8 +54,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make changing levels work
         Entities.FindByName(null, "end_command").Destroy()
         if (GetMapName().find("sp_") != null) {
-            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2336, 1920, 1016), 32), "AddOutput", "p2mm_servercommand:Command:changelevel sp_a4_tb_over_goo:1.5", 0, null, null)
-        } else EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2336, 1920, 1016), 32), "AddOutput", "p2mm_servercommand:Command:changelevel st_a4_tb_over_goo:1.5", 0, null, null)
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2336, 1920, 1016), 32), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_tb_over_goo:1.5", 0, null, null)
+        } else EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2336, 1920, 1016), 32), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a4_tb_over_goo:1.5", 0, null, null)
 
     }
     
