@@ -23,7 +23,7 @@ function InstantRun() {
     if (Config_VScriptDebug) {
         Config_DevMode = true
         EntFire("p2mm_servercommand", "command", "developer 1")
-    } else {
+    } else if (!Config_VScriptDebug && !Config_DevMode) {
         Config_DevMode = false
         EntFire("p2mm_servercommand", "command", "developer 0")
     }
