@@ -829,11 +829,11 @@ function OnPlayerJoin(p) {
     }
 
     // Get player's index and store it
-    PlayerID = p.GetRootMoveParent().entindex()
+    PlayerID = p.entindex()
 
     // Assign every new targetname to the player after blue and red are used
     if (PlayerID >= 3) {
-        p.__KeyValueFromString("targetname", "player" + PlayerID)
+        EntFireByHandle(p, "AddOutput", "targetname player" + PlayerID, 0, null, null)
     }
 
     // Change player prop_portal targetname
@@ -853,13 +853,13 @@ function OnPlayerJoin(p) {
 
     try {
         if (ent1.entindex() > ent2.entindex()) {
-            ent1.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "2")
-            ent2.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "1")
+            ent1.__KeyValueFromString("targetname", "player" + PlayerID + "_portal" + "2")
+            ent2.__KeyValueFromString("targetname", "player" + PlayerID + "_portal" + "1")
             portal1 = ent2
             portal2 = ent1
         } else {
-            ent1.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "1")
-            ent2.__KeyValueFromString("targetname", "player" + p.entindex() + "_portal" + "2")
+            ent1.__KeyValueFromString("targetname", "player" + PlayerID + "_portal" + "1")
+            ent2.__KeyValueFromString("targetname", "player" + PlayerID + "_portal" + "2")
             portal1 = ent1
             portal2 = ent2
         }
