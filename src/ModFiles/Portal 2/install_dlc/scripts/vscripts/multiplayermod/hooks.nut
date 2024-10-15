@@ -960,7 +960,7 @@ function OnPlayerJoin(p) {
     }
 
     if (GetGameDirectory() == "portal_stories") {
-        EntFireByHandle(p, "RunScriptCode", "SetPSMelModel(caller)", 0.1, p, p)
+        EntFireByHandle(p, "RunScriptCode", "SetPSMelModel(caller)", 0, p, p)
     }
 
     // Set fog controller
@@ -972,10 +972,6 @@ function OnPlayerJoin(p) {
 }
 
 function SetPSMelModel(p) {
-    printlP2MM(0, false, "OnPlayerJoin")
-    printlP2MM(0, false, "Team: " + p.GetTeam())
-    printlP2MM(0, false, "Name: " + p.GetName())
-    printlP2MM(0, false, "PlayerID: " + p.GetRootMoveParent().entindex())
     if (p.GetTeam() == TEAM_BLUE) {
         SetPlayerModel(p, "models/portal_stories/player/mel.mdl")
     } else {

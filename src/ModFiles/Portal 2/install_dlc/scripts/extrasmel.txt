@@ -28,7 +28,7 @@
 	}
 	"empty"
 	{
-		"title"		    "Portal Stories: Mel Story Mode:"
+		"title"		    "Portal Stories: Mel Story Mode"
 		"subtitle" 	    ""
 		"pic"       	"vgui/chapters/chapter1"
 	}
