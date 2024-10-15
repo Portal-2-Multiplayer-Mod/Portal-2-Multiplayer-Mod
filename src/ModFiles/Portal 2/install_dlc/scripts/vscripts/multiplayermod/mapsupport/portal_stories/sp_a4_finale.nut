@@ -29,7 +29,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "intro_water_fire_detector_2").__KeyValueFromString("CheckAllIDs", "1")
 
         // if the map isnt completed, we have to reset and try again
-        EntFire("finale_death_rl", "AddOutput", "OnTrigger !self:RunScriptCode:EverybodyHasFailed():242:-1")
+        
+        if (GetMapName().find("sp_") != null) {
+            EntFire("finale_death_rl", "AddOutput", "OnTrigger !self:RunScriptCode:EverybodyHasFailed():242:-1")
+        } else EntFire("finale_death_rl", "AddOutput", "OnTrigger !self:RunScriptCode:EverybodyHasFailed():360:-1")
         Entities.FindByName(null, "timer_kill").Destroy()
 
         // replaced ending logic
@@ -37,12 +40,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "movie_lift_sunset").__KeyValueFromString("targetname", "movie_lift_sunset_p2mmoverride")
         EntFire("press_e_to_hire_us_valve", "AddOutput", "OnPressed movie_aegis_interior_p2mmoverride:PlayMovieForAllPlayers")
         EntFire("movie_aegis_interior_p2mmoverride", "AddOutput", "OnPlaybackFinished movie_lift_sunset_p2mmoverride:PlayMovieForAllPlayers")
-
-        // Make changing levels work
+        EntFire("movie_lift_sunset_p2mmoverride", "AddOutput", "OnPlaybackFinished p2mm_servercommand:Command:changelevel sp_a5_credits")
         Entities.FindByName(null, "end_command").Destroy()
-        if (GetMapName().find("sp_") != null) {
-            EntFire("end_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_factory:2", 0, null)
-        } else EntFire("end_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a4_factory:2", 0, null)
+
     }
     
     if (MSPostPlayerSpawn) {
