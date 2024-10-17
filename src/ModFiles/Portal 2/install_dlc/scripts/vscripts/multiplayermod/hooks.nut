@@ -810,6 +810,9 @@ function OnPlayerJoin(p) {
     p.ValidateScriptScope()
     local script_scope = p.GetScriptScope()
 
+    // SETUP THE CLASS /////////////////
+    local currentplayerclass = CreateGenericPlayerClass(p)
+
     // Trigger map-specific code
     MapSupport(false, false, false, false, true, false, false)
 
@@ -871,6 +874,9 @@ function OnPlayerJoin(p) {
         printlP2MM(1, true, "Failed to rename portals: " + exception)
     }
 
+    FindPlayerClass(p).portal1 = portal1
+    FindPlayerClass(p).portal2 = portal2
+
     //# Set viewmodel targetnames so they can be told apart #//
     for (local ent; ent = Entities.FindByClassname(ent, "predicted_viewmodel");) {
         EntFireByHandle(ent, "AddOutput", "targetname predicted_viewmodel_player" + ent.GetRootMoveParent().entindex(), 0, null, null)
@@ -910,15 +916,6 @@ function OnPlayerJoin(p) {
     // Motion blur is very intense for some reason
     //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
     //EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos; r_portal_fastpath 0; r_portal_use_pvs_optimization 0; mat_motion_blur_forward_enabled 0", 0, p, p)
-
-    // SETUP THE CLASS /////////////////
-    local currentplayerclass = CreateGenericPlayerClass(p)
-
-    // UPDATE THE CLASS
-    FindPlayerClass(p).portal1 = portal1
-    FindPlayerClass(p).portal2 = portal2
-
-    /////////////////////////////////////
 
     // Show scoreboard
     //! BROKEN BY VALVE! ANY FIXES ARE APPRECIATED!
