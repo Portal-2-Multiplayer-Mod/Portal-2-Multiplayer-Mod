@@ -144,11 +144,12 @@ function LoadMapSupportCode(gametype) {
 
 // Now, manage everything the player has set in config.nut
 // If the gamemode has exceptions of any kind, it will revert to standard Portal 2 mapsupport
-switch (Config_GameMode) {
-    case 0: LoadMapSupportCode("portal2"); break
-    //case 1: LoadMapSupportCode("speedrun"); break
+// printlP2MM(0, true, "GetGameMainDir(): " + GetGameMainDir())
+// printlP2MM(0, true, "GetGameBaseDir(): " + GetGameBaseDir())
+switch (GetGameDirectory()) { //! CHANGE TO GetGameMainDir()!!!
+    case "portal2": LoadMapSupportCode("portal2"); break
     default:
-        printlP2MM(1, false, "\"Config_GameMode\" value in config.nut is invalid! Be sure it is set to an integer from 0-1. Reverting to standard Portal 2 mapsupport.")
+        printlP2MM(1, false, "Invalid game directory has been retrieved! Defaulting to portal2 map supports...")
         LoadMapSupportCode("portal2")
         break
 }
