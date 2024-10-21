@@ -1987,32 +1987,23 @@ function StartsWith(str, substr) {
 }
 
 function SendChatMessage(message, pActivatorAndCaller = null) {
-    if (SendToChatLoaded) {
-        local color = "\x03" // light green; default, private message
-        if (pActivatorAndCaller == null) {
-            pActivatorAndCaller = 0 // 0 means sending to everyone via plugin logic
-            color = "\x04" // Bright green; public message
-        } else {
-            pActivatorAndCaller = pActivatorAndCaller.entindex()
-        }
-
-        if (color == "\x03") {
-            printl("(P2:MM): " + message) // Always log private messages to server console
-        }
-        else if (color == "\x04" && IsDedicatedServer()) {
-            printl("(P2:MM): " + message) // public messages dont print to console on dedicated, since we are not a player here
-        }
-
-        SendToChat(color + "(P2:MM): " + message, pActivatorAndCaller)
+    local color = "\x03" // light green; default, private message
+    if (pActivatorAndCaller == null) {
+        pActivatorAndCaller = 0 // 0 means sending to everyone via plugin logic
+        color = "\x04" // Bright green; public message
     } else {
-        // Try to use server command in the case of dedicated servers
-        local pEntity = Entities.FindByName(null, "p2mm_servercommand")
-        if (pActivatorAndCaller != null) {
-            // Send messages from a specific client
-            pEntity = p2mm_clientcommand
-        }
-        EntFireByHandle(pEntity, "command", "say " + message, 0, pActivatorAndCaller, pActivatorAndCaller)
+        pActivatorAndCaller = pActivatorAndCaller.entindex()
     }
+
+    if (color == "\x03") {
+        printl("(P2:MM): " + message) // Always log private messages to server console
+    }
+    else if (color == "\x04" && IsDedicatedServer()) {
+        printl("(P2:MM): " + message) // public messages dont print to console on dedicated, since we are not a player here
+    }
+
+    SendToChat(color + "(P2:MM): " + message, pActivatorAndCaller)
+
     // Note that "\x05" is used for private messages with more than one person
     // You will need to create a special case to use it (see cc/tp.nut for an example)
 }

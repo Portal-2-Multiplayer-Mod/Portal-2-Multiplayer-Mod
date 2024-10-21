@@ -27,8 +27,15 @@ printl("\n---------------------")
 printl("==== calling p2mm.nut")
 printl("---------------------\n")
 
-// Make sure all the VScript functions from the plugin are available
-IncludeScript("multiplayermod/pluginfunctionscheck.nut")
+// Bad way to check, but what else can we do?
+if (Entities.FindByName(null, "p2mm_servercommand")){
+    // Primary check in case the script attempts to execute midgame and it already has
+    printlP2MM(1, false, "p2mm.nut is attempting to run again! Stopping...")
+    return
+} else {
+    // Create a global point_servercommand entity for us to pass through commands
+    Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
+}
 
 if (!PluginLoaded) {
     // One-off check for running p2mm on first map load
