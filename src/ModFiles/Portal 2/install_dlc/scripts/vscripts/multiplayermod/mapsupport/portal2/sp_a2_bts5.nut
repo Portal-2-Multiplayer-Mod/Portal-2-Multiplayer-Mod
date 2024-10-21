@@ -17,8 +17,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Open the airlock areaportal on mapspawn
         EntFireByHandle(Entities.FindByName(null, "airlock_door_01_areaportal"), "Open", "", 0, null, null)
         // Set sv_allow_mobile_portals to 1 and set up the changelevel command entity
-        // Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "Sp_A2_Bts5ServerCommand")
-        // EntFire("Sp_A2_Bts5ServerCommand", "command", 
         EntFireByHandle(p2mm_servercommand, "command", "sv_allow_mobile_portals 1", 1, null, null)
         // Set the viewcontrol parent first stop to a our pathtrack
         EntFireByHandle(Entities.FindByName(null, "podtrain_player"), "target", "tube_path1", 0, null, null)

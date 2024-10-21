@@ -366,12 +366,10 @@ function P2MMLoop() {
         }
 
         //## Singleplayer check that must be looped in case sv_cheats was changed ##//
-        if (SetPhysTypeConvarLoaded) {
-            if (g_bOverridePluginGrabController && g_bIsOnSingleplayerMaps) {
-                SetPhysTypeConvar(0) // enable real-time physics
-            } else {
-                SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
-            }
+        if (g_bOverridePluginGrabController && g_bIsOnSingleplayerMaps) {
+            SetPhysTypeConvar(0) // enable real-time physics
+        } else {
+            SetPhysTypeConvar(-1) // enable viewmodel physics, in case of changes. MP Gamerules already defaults to this without plugin
         }
 
         //## Vote CC Timer Force End ##//

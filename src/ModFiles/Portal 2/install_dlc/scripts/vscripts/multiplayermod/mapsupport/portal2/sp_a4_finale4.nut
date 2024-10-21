@@ -152,8 +152,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         EntFire("container_path2", "AddOutput", "OnPass after_credits_playmovie_p2mp_loop:playmovieforallplayers::317")
 
-        memecounter <- Entities.CreateByClassname("point_servercommand")
-        memecounter.__KeyValueFromString("targetname", "point_servercommand_credits_counter")
+        point_servercommand_credits_counter <- Entities.CreateByClassname("point_servercommand")
+        point_servercommand_credits_counter.__KeyValueFromString("targetname", "point_servercommand_credits_counter")
         EntFire("container_path2", "AddOutput", "OnPass point_servercommand_credits_counter:command:changelevel mp_coop_lobby_3:320")
 
         EntFire("container_path2", "AddOutput", "OnPass env_global01:turnoff::318")
