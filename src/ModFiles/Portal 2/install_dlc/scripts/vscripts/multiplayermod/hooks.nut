@@ -373,7 +373,7 @@ function P2MMLoop() {
         }
 
         //## Vote CC Timer Force End ##//
-        if (Config_UseChatCommands && PluginLoaded) {
+        if (Config_UseChatCommands) {
             // Display Text Status
             if (ShouldDisplayVoteText) {
                 EntFire("VoteCounter", "Display")
@@ -680,7 +680,7 @@ function PostMapSpawn() {
 
     // Edit cvars & set server name
     EntFire("p2mm_servercommand", "command", "mp_allowspectators 1")
-    if (PluginLoaded && !IsDedicatedServer()) {
+    if (!IsDedicatedServer()) {
         EntFire("p2mm_servercommand", "command", "hostname Portal 2: Multiplayer Mod Server hosted by " + GetPlayerName(1))
     } else {
         EntFire("p2mm_servercommand", "command", "hostname Portal 2: Multiplayer Mod Server")
@@ -942,7 +942,7 @@ function OnPlayerJoin(p) {
     script_scope.Colored <- true
 
     // Set dev cosmetics
-    if (Config_UseCustomDevModels && PluginLoaded) {
+    if (Config_UseCustomDevModels) {
         // Currently doesn't work on dedicated... need a new way to precache models for everyone
         if (!IsDedicatedServer()) {
             switch (FindPlayerClass(p).steamid) {

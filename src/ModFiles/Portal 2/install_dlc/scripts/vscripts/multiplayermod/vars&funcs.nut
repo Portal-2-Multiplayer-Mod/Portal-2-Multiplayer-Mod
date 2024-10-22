@@ -596,7 +596,7 @@ function CreateGenericPlayerClass(p) {
     currentplayerclass.steamid <- GetSteamID(currentplayerclass.id) // Player Steam ID
 
     // Chat commands
-    if (Config_UseChatCommands && PluginLoaded) {
+    if (Config_UseChatCommands) {
         currentplayerclass.startedvote <- false  // Did this player initiate a vote?
         currentplayerclass.hasvotedyes <- false  // Did this player vote yes?
         currentplayerclass.hasvotedno <- false  // Did this player vote no?
