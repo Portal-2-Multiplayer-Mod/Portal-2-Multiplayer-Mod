@@ -9,9 +9,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
 
         // elevator stuff
         EntFire("InstanceAuto52-elevator_1", "MoveToPathNode", "@elevator_1_bottom_path_1", 0.1, null)
@@ -32,10 +32,20 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-512, 2272, 488), 16).Destroy()
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-664, 832.01, 256), 16), "AddOutput", "OnStartTouch Entry_Door_2_p2mmoverride:Open", 0, null, null)
 
+        // checkpoints
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-896, 1103.99, 256), 128), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
+
+        // remove death fade
+        Entities.FindByName(null, "fade_to_death-fade_to_death").Destroy()
+
         // Make changing levels work
         Entities.FindByName(null, "end_command").Destroy()
         if (GetMapName().find("sp_") != null) {
             EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-512, 2688, 912), 64), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a3_faith_plate:2", 0, null, null)
         } else EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-512, 2688, 912), 64), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a3_faith_plate:2", 0, null, null)
     }
+}
+function Checkpoint() {
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-896, 1103.99, 256))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 90, 0)
 }

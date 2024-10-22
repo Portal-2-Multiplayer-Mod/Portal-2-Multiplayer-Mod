@@ -9,9 +9,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
 
         // remove autostart elevator
         Entities.FindByClassnameNearest("logic_auto", Vector(1360, 272, -188), 64).Destroy()
@@ -30,10 +30,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("Blue_gel_exit_button", "AddOutput", "OnPressed ap4_p2mmoverride:open")
         EntFire("door", "AddOutput", "OnPressed model_p2mmoverride:SetAnimation:open")
 
+        // checkpoints
+        EntFire("close_orange_trigger", "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint(1)")
+        EntFire("Blue_gel_exit_button", "AddOutput", "OnPressed !self:RunScriptCode:Checkpoint(2)")
+
         // delete box spawn
         Entities.FindByClassnameNearest("info_player_start", Vector(4864, 1008, 2644), 64).Destroy()
 
         // Make changing levels work
+        Entities.FindByName(null, "InstanceAuto6-elevator_1").__KeyValueFromString("spawnflags", "640")
+        Entities.FindByName(null, "InstanceAuto6-elevator_1").__KeyValueFromString("dmg", "999")
         Entities.FindByName(null, "sphere_transfer").Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(4864, 1008, 2644), 64).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-4064 5232 1524.53), 64).Destroy()
@@ -43,7 +49,19 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSPostPlayerSpawn) {
         EntFire("elevator-entrance_lift_train", "StartForward", null, 1)
         EntFire("room_1_door_0-door_open", "Trigger", null, 6)
-        Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(1360, 272, 224))
+        Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(1240, 272, 224))
 
+    }
+}
+function Checkpoint(point) {
+    switch(point) {
+        case 1:
+            Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-2236, -528, -128))
+            Entities.FindByClassname(null, "info_player_start").SetAngles(0, 180, 0)
+            return
+        case 2:
+            Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-3584, 2848, 485))
+            Entities.FindByClassname(null, "info_player_start").SetAngles(0, 180, 0)
+            return
     }
 }

@@ -10,9 +10,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
 
         // delete box spawn
         Entities.FindByClassnameNearest("info_player_start", Vector(1648, 2552, 1828), 999).Destroy()

@@ -11,9 +11,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         GlobalSpawnClass.m_bUseAutoSpawn <- false
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
 
         // elevator stuff
         EntFire("InstanceAuto40-elevator_1", "MoveToPathNode", "@elevator_1_bottom_path_1", 0.1, null)
@@ -43,7 +43,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "new_room_exit").__KeyValueFromString("targetname", "new_room_exit_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("prop_laser_catcher", Vector(2413, -640, 384), 32), "AddOutput", "OnPowered new_room_exit_p2mmoverride:Open", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("prop_laser_catcher", Vector(2413, -640, 384), 32), "AddOutput", "OnUnpowered new_room_exit_p2mmoverride:Close", 0, null, null)
-        Entities.FindByName(null, "darth_fader").Destroy() // I killed Darth Fader.
+        Entities.FindByName(null, "darth_fader").Destroy() //! I killed Darth Fader.
         Entities.FindByName(null, "bts_bipart_door_2-close").Destroy()
         Entities.FindByName(null, "ap_to_oa").__KeyValueFromString("targetname", "ap_to_oa_p2mmoverride")
         Entities.FindByName(null, "bts_door_03").__KeyValueFromString("targetname", "bts_door_03_p2mmoverride")
@@ -52,11 +52,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "oa_fallingpanel_fall").Destroy()
         Entities.FindByName(null, "oa_entry_finish").Destroy()
         
+        // checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(2152, -944, 509.75), 32), "AddOutput", "OnTrigger !self:RunScriptCode:Checkpoint(1)", 0, null, null)
+        EntFire("oa_lever_button", "AddOutput", "OnPressed !self:RunScriptCode:Checkpoint(2)")
 
         // elevator cutscene
         elevatorvcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         elevatorvcontrol.__KeyValueFromString("target_team", "-1")
         elevatorvcontrol.__KeyValueFromString("targetname", "elevatorvcontrol")
+        elevatorvcontrol.__KeyValueFromString("fov", "120")
         elevatorvcontrol.SetOrigin(Vector(-688, -2445, -140))
         EntFire("elevatorvcontrol", "SetParent", "lift_up")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-688, -2445, -192), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:StartScene()", 0, null, null)
@@ -76,6 +80,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("elevatorvcontrol", "Disable")
         local tp = Entities.FindByName(null, "elevatorvcontrol").GetOrigin()
         Entities.FindByClassname(null, "info_player_start").SetOrigin(tp)
+        Entities.FindByClassname(null, "info_player_start").SetAngles(0, 0, 0)
         for (local p; p = Entities.FindByClassname(p, "player");) {
             p.SetOrigin(tp)
             p.SetAngles(0, 0, 0)
@@ -91,4 +96,15 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
         
 }
-
+function Checkpoint(point) {
+    switch(point) {
+        case 1:
+            Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(2152, -944, 509.75))
+            Entities.FindByClassname(null, "info_player_start").SetAngles(0, 90, 0)
+            return
+        case 2:
+            Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(3875, 580, 216))
+            Entities.FindByClassname(null, "info_player_start").SetAngles(0, 90, 0)
+            return
+    }
+}

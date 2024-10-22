@@ -9,8 +9,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(false)
 
         // elevator stuff
         EntFire("arrival_logic-elevator_1", "MoveToPathNode", "@elevator_1_bottom_path_1", 0.1, null)
@@ -31,6 +32,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(-672, 3464, 704), 32).Destroy()
         Entities.FindByClassnameNearest("trigger_once", Vector(-664, 2416, 448), 32).Destroy()
 
+        // checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-536, 2416, 448), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
+
         // Make changing levels work
         Entities.FindByName(null, "end_command").Destroy()
         EntFire("end_trigger", "Enable")
@@ -44,4 +48,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         
     }
+}
+function Checkpoint() {
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-707, 2367, 448))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 115, 0)
 }

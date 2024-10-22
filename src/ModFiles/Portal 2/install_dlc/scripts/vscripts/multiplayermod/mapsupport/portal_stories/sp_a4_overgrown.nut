@@ -11,9 +11,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         GlobalSpawnClass.m_bUseAutoSpawn <- false
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
 
 
 
@@ -50,6 +50,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(2464, 1184, 299), 32), "AddOutput", "OnPressed exit_door_p2mmoverride:Open", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(2464, 1184, 299), 32), "AddOutput", "OnUnPressed exit_door_p2mmoverride:Close", 0, null, null)
 
+        // remove death fade
+        Entities.FindByName(null, "fall_fade-fade_to_death").Destroy()
+
+        // checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(608, -1424, 38.87), 32), "AddOutput", "OnTrigger !self:RunScriptCode:Checkpoint(1)", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1824, 464, 64), 32), "AddOutput", "OnTrigger !self:RunScriptCode:Checkpoint(2)", 0, null, null)
 
         // Make changing levels work
         Entities.FindByName(null, "end_command").Destroy()
@@ -86,4 +92,16 @@ function EndScene() {
     }
     Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-1198, -3202, -40)) 
 
+}
+function Checkpoint(point) {
+    switch(point) {
+        case 1:
+            Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(704, -919, -136))
+            Entities.FindByClassname(null, "info_player_start").SetAngles(0, 90, 0)
+            return
+        case 2:
+            Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(1824, 464, 64))
+            Entities.FindByClassname(null, "info_player_start").SetAngles(0, 90, 0)
+            return
+    }
 }

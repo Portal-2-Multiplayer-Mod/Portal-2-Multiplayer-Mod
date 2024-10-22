@@ -12,14 +12,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Start without Portal Gun for starting elevator cut scene
         UTIL_Team.Spawn_PortalGun(false)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(false)
 
         // delete box spawn and teleport the elevator spawn to its location (jank asf method because setting the angles on players doesn't work???)
         Entities.FindByClassnameNearest("info_player_start", Vector(472, 2712, -348), 64).Destroy()
         Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(472, 2712, -348))
 
         // taking control of the elevator
+        Entities.FindByName(null, "InstanceAuto6-elevator_1").Destroy()
+        Entities.FindByName(null, "InstanceAuto6-elevator_1").__KeyValueFromString("spawnflags", "27")
         Entities.FindByName(null, "AutoInstance1-elevator_1_interior_start_trigger").Destroy()
         elevator_viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         elevator_viewcontrol.__KeyValueFromString("targetname", "elevator_viewcontrol")
@@ -27,6 +30,12 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         elevator_viewcontrol.SetOrigin(Vector(-192, 359, -1566))
         EntFire("elevator_viewcontrol", "setparent", "AutoInstance1-elevator_1", 0, null)
         elevator_viewcontrol.SetAngles(0, 90, 0)
+
+        // remove death fade
+        Entities.FindByName(null, "death_fade-fade_to_death").Destroy()
+
+        // checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1632, 1104, 64), 128), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
 
         // making doors not close
         Entities.FindByName(null, "@entry_door").__KeyValueFromString("targetname", "entry_door_p2mmoverride")
@@ -71,7 +80,11 @@ function EndScene() {
     // Enable secondary fire for all guns
     EntFire("weapon_portalgun", "AddOutput", "CanFirePortal2 1", 0, null)
     GamePlayerEquip.Destroy()
-    EntFire("elevator_viewcontrol", "Disable", null, 1)
+    EntFire("elevator_viewcontrol", "Disable", "", 1)
     Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(576, 495, 0)) 
 
+}
+function Checkpoint() {
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(1632, 891, 48))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, -90, 0)
 }

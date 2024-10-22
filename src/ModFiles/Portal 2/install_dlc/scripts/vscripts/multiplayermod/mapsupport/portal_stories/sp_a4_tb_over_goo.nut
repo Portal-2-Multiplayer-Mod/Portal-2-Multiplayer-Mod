@@ -9,8 +9,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(false)
 
         // elevator stuff
         EntFire("arrival_elevator-elevator_1", "MoveToPathNode", "@elevator_1_bottom_path_1", 0.1, null)
@@ -29,6 +30,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("exit_door_manager", "AddOutput", "OnChangeToAllTrue r2_exit_door_p2mmoverride:Open")
         EntFire("end_trigger", "Enable")
 
+        // checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(440, -3520, 592), 32), "AddOutput", "OnTrigger !self:RunScriptCode:Checkpoint()", 0, null, null)
+
         // set the player spawn
         Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(0, -1264, 208))
 
@@ -39,4 +43,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         } else EntFire("end_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a4_two_of_a_kind:2")
 
     }
+}
+function Checkpoint() {
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(600, -3592, 592))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, -54, 0)
 }

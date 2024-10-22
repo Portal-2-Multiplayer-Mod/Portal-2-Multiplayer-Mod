@@ -5,12 +5,14 @@
 // ██████╔╝██║     ██████████╗██║  ██║╚════██║██████████╗██║     ██║  ██║╚█████╔╝   ██║   ╚█████╔╝██║  ██║   ██║
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝     ╚═╝╚═════════╝╚═╝     ╚═╝  ╚═╝ ╚════╝    ╚═╝    ╚════╝ ╚═╝  ╚═╝   ╚═╝
 
+EnableLights <- false
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
+        UTIL_Team.Taunting(false)
 
         // elevator stuff
         EntFire("AutoInstance1-arrival_logic-elevator_1", "MoveToPathNode", "@elevator_1_bottom_path_1", 0.1, null)
@@ -20,6 +22,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(3408, -1872, -48))
         Entities.FindByClassname(null, "info_player_start").SetAngles(0, 90, 0)
+
+        // remove death fade
+        Entities.FindByName(null, "AutoInstance1-darth_fader").Destroy()
 
         // make doors not close
         Entities.FindByName(null, "AutoInstance1-inlex_door_entry").__KeyValueFromString("targetname", "AutoInstance1-inlex_door_entry_p2mmoverride")
@@ -38,18 +43,51 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(9312, -2744, 624), 32), "AddOutput", "OnStartTouch AutoInstance1-do_ap_p2mmoverride:Open", 0, null, null)
         Entities.FindByName(null, "AutoInstance1-BTS_4_Door_2_Trigger").__KeyValueFromString("targetname", "AutoInstance1-BTS_4_Door_2_Trigger_p2mmoverride")
 
+        Entities.FindByName(null, "AutoInstance1-virgil").__KeyValueFromString("targetname", "AutoInstance1-virgil_p2mmoverride")
+        EntFire("AutoInstance1-virgil_p2mmoverride", "DisablePickup")
+        Entities.FindByName(null, "AutoInstance1-d_exit_ptex").__KeyValueFromString("targetname", "AutoInstance1-d_exit_ptex_p2mmoverride")
+        EntFire("AutoInstance1-d_exit_ptex_p2mmoverride", "TurnOn")
+        EntFire("cs_virgil_201", "AddOutput", "OnCompletion !self:RunScriptCode:EnableLights=true")
+        Entities.FindByName(null, "cs_virgil_204").Destroy()
+
+        // checkpoints
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(6328, -2304, 624), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint(1):0:1", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(9312, -2744, 624), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint(2):0:1", 0, null, null)
+
         // in order to stop the cubes from despawning, we have to remove the trigger that kills them instead of renaming.
         EntFire("BTS_4_Shadowlight", "TurnOn")
         Entities.FindByClassnameNearest("trigger_once", Vector(5186.18, -104, 208), 32).Destroy()
-
         // Make changing levels work
         if (GetMapName().find("sp_") != null) {
             EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(10560, -1968, 16), 32), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_core_access", 0, null, null)
         } else EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(10560, -1968, 16), 32), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a4_core_access", 0, null, null)
     }
-    
-    if (MSPostPlayerSpawn) {
-
-        
+    if (MSLoop) {
+        // inside elevator room
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(10560, -1968, 624), 184);) {
+            SetFlashlightState(p.entindex(), false)
+        }
+        // outside dark area
+        for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(10560, -1968, 624), 184);) {
+            SetFlashlightState(p.entindex(), false)
+        }
+        // inside dark area
+        if (EnableLights) {
+            for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(9872, -2384, 528), 580);) {
+                SetFlashlightState(p.entindex(), true)
+            }
+        }
+    }
+}
+function Checkpoint(point) {
+    switch(point) {
+        case 1:
+            Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(6328, -2304, 624))
+            Entities.FindByClassname(null, "info_player_start").SetAngles(0, 0, 0)
+            return
+        case 2:
+            Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(9312, -2744, 600))
+            Entities.FindByClassname(null, "info_player_start").SetAngles(0, 0, 0)
+            return
     }
 }

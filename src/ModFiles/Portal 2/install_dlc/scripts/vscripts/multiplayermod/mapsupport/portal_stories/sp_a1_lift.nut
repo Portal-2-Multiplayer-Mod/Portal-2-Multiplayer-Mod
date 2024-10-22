@@ -10,9 +10,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
         
         Entities.FindByClassnameNearest("logic_auto", Vector(244, 1435, 9816), 16).Destroy()
         Entities.FindByName(null, "cs_cave_10").__KeyValueFromString("targetname", "cs_cave_10_p2mmoverride")

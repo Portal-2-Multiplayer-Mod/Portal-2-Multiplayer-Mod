@@ -9,9 +9,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
 
         // Elevator stuff
         EntFire("InstanceAuto53-elevator_1", "MoveToPathNode", "@elevator_1_bottom_path_1", 0.1, null)
@@ -32,11 +32,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(3200.5, 4960, 592), 32).Destroy()
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(736, 3760, 464), 32), "AddOutput", "OnTrigger Test_1_Exit_Door:Open::1", 0, null, null)
 
+        // remove death fade
+        Entities.FindByName(null, "Death_Fade").Destroy()
+
         // elevator cutscene setup
         EntFire("AutoInstance2-elevator_1_player_teleport", "AddOutput", "OnStartTouch !self:RunScriptCode:StartScene():1")
         elevator_viewcontrol <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         elevator_viewcontrol.__KeyValueFromString("targetname", "elevator_viewcontrol")
-        elevator_viewcontrol.__KeyValueFromString("fov", "100")
+        elevator_viewcontrol.__KeyValueFromString("fov", "120")
         elevator_viewcontrol.SetOrigin(Vector(3472, 4128, 436))
         EntFire("elevator_viewcontrol", "setparent", "AutoInstance2-elevator_1", 0, null)
         elevator_viewcontrol.SetAngles(0, 90, 0)
@@ -68,6 +71,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         robo_rampa_04b.SetOrigin(Vector(robo_rampa_04b.GetOrigin().x, robo_rampa_04b.GetOrigin().y, robo_rampa_04b.GetOrigin().z - 5))
         Entities.FindByClassnameNearest("trigger_once", Vector(1240, 4576, 336), 50).Destroy()
 
+        // checkpoint
+        EntFireByHandle(M_ramp_down, "AddOutput", "OnTrigger !self:RunScriptCode:Checkpoint()", 0, null, null)
+
         // Make changing levels work
         Entities.FindByName(null, "end_command").Destroy()
         if (GetMapName().find("sp_") != null) {
@@ -88,4 +94,8 @@ function StartScene() {
     EntFire("@glados:RunScriptCode", "ExitStarted()")
     EntFire("AutoInstance2-close", "Trigger")
     EntFire("AutoInstance2-elevator_1", "StartForward", 1)
+}
+function Checkpoint() {
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(1400, 4575, 300))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 0, 0)
 }

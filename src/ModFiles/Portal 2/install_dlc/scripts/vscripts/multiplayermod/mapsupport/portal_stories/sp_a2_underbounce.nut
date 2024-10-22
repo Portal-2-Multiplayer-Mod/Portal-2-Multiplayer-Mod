@@ -10,9 +10,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Spawn With Portal Gun
         UTIL_Team.Spawn_PortalGun(true)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
 
         // delete box spawn
         Entities.FindByClassnameNearest("info_player_start", Vector(-2296, -336, 373), 999).Destroy()
@@ -26,6 +26,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("button_p2mm", "AddOutput", "OnPressed door1_p2mm_override:SetAnimation:open:0.3", 0, null)
         EntFire("button_p2mm", "AddOutput", "OnUnPressed door1_p2mm_override:SetAnimation:close:0.3", 0, null)
 
+        // checkpoint
+        EntFire("Door_1_ct", "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()")
+
         // Make changing levels work
         if (GetMapName().find("sp_") != null) {
             EntFire("EndLevel_Trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a2_once_upon:2", 0, null)
@@ -35,7 +38,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSPostPlayerSpawn) {
         EntFire("AutoInstance1-entrance_lift_train", "StartForward")
         EntFire("Power_On_Start_Relay", "Trigger")
-        Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-552, -192, 162))
+        Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-450, -192, 162))
     }
 }
-    
+
+function Checkpoint() {
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(1824, 256, 165))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 90, 0)
+}

@@ -11,9 +11,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
 
-        // Enable pinging and taunting
+        // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
-        UTIL_Team.Taunting(true)
+        UTIL_Team.Taunting(false)
                 
         // delete tramspawn
         Entities.FindByClassnameNearest("info_player_start", Vector(-4592, -4460, 146), 999).Destroy()
@@ -21,8 +21,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         playerSpawn <- Entities.FindByClassnameNearest("info_player_start", Vector(-2992, -344, 5), 9999)
         playerSpawn.__KeyValueFromString("targetname", "playerSpawn")
         playerSpawn.SetAngles(0, 180, 0)
-        playerSpawn.SetOrigin(Vector(-4592, -4460, 116)) //! This needs to be moved after the starting cut scene
-        EntFireByHandle(playerSpawn, "SetParent", "Subway_TankTrain", 0, null, null)
+        playerSpawn.SetOrigin(Vector(-2992, -334, 5)) //! This needs to be moved after the starting cut scene
         
         // Make intro screen work
         Entities.FindByClassnameNearest("logic_auto", Vector(-6096, -6152, -112), 999).Destroy()
@@ -39,7 +38,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger chapter_subtitle_text:Display::13.5:-1", 0, null, null)
         EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger chapter_title_text:Display::13.5:-1", 0, null, null)
         EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger !self:RunScriptCode:MapStart():8:-1", 0, null, null)
-        EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger !self:RunScriptCode:MapStarted <- true:8:-1", 0, null, null) //! Doesn't work
+        EntFireByHandle(MelIntro_Relay, "AddOutput", "OnTrigger !self:RunScriptCode:MapStarted=true:8:-1", 0, null, null)
         
         MelIntro_Viewcontroller <- Entities.CreateByClassname("point_viewcontrol_multiplayer")
         MelIntro_Viewcontroller.__KeyValueFromString("targetname", "MelIntro_Viewcontroller")
@@ -76,7 +75,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSOnPlayerJoin) {
         if (!MapStarted) {
             // Used to make sure newly joining players can see the intro scene
-            //EntFireByHandle(MelIntro_Viewcontroller, "Enable", "", 0, null, null) //! bugged because of above AddOutput that doesn't work
+            EntFireByHandle(MelIntro_Viewcontroller, "Enable", "", 0, null, null)
         }
     }
 }
@@ -85,4 +84,6 @@ function MapStart() {
     for (local ent = null; ent = Entities.FindByClassname(ent, "player"); ) {
         ent.SetOrigin(Vector(-4592, -4460, 110))
     }
+    playerSpawn.SetOrigin(Vector(-4592, -4460, 110))
+    EntFireByHandle(playerSpawn, "SetParent", "Subway_TankTrain", 0, null, null)
 }
