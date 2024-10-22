@@ -8,13 +8,7 @@
 // - Fix how we work out arguments for players with spaces in their names
 // - Fix adminmodify pushing players instead of changing existing slot
 
-if (Config_UseChatCommands) {
-    // This can only be enabled when the plugin is loaded fully
-    if (!PluginLoaded) {
-        printlP2MM(1, true, "Can't add chat commands since no plugin is loaded!")
-        return
-    }
-} else {
+if (!Config_UseChatCommands) {
     printlP2MM(1, true, "Config_UseChatCommands is false. Not adding chat callback for chat commands!")
     return
 }

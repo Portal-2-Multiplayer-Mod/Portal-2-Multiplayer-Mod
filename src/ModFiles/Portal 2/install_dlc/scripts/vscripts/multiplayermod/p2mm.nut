@@ -37,20 +37,6 @@ if (Entities.FindByName(null, "p2mm_servercommand")){
     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
 }
 
-if (!PluginLoaded) {
-    // One-off check for running p2mm on first map load
-    try {
-        if (HasStartedP2MM) {
-            return
-        }
-    } catch (exception) {} // Should never have an exception, try catch is here for testing...
-
-    if (!("HasStartedP2MM" in this)) {
-        HasStartedP2MM <- true
-        return
-    }
-}
-
 iMaxPlayers <- (Entities.FindByClassname(null, "team_manager").entindex() - 1) // Determine what the "maxplayers" cap is
 
 printlP2MM(0, true, "Session info...")
