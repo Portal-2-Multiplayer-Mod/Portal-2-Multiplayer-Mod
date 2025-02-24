@@ -175,6 +175,15 @@ class Gui:
     def Button_LanguageMenu_func(self) -> None:
         self.ChangeView(Views.LanguageMenu)
 
+    # Opens the folder where launcher config files are stored (GVars.modPath)
+    def Button_OpenApp_Folder_func(self) -> None:
+        if (sys.platform == "win32"):
+            os.startfile(GVars.modPath)
+        elif (sys.platform.startswith("linux")):
+            subprocess.Popen(["xdg-open", GVars.modPath])
+        else:
+            Log("Your operating system is not supported!")
+
     # Access to the launchers Developer settings
     def Button_DevSettings_func(self) -> None:
         self.RefreshSettingsMenu("dev")
