@@ -33,11 +33,11 @@ def init() -> None:
 
         # Again thanks stackOverflow for this
         # This code allows us to get the document's folder on any windows pc with any language
-        CSIDL_PERSONAL = 5       # My Documents
+        CSIDL_APPDATA = 26       # %APPDATA%
         SHGFP_TYPE_CURRENT = 0   # Get current, not default value
 
         buf = ctypes.create_unicode_buffer(ctypes.wintypes.MAX_PATH)
-        ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
+        ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_APPDATA, None, SHGFP_TYPE_CURRENT, buf)
 
         # Set the modPath to the users documents folder
         modPath = buf.value + os.sep + "p2mm"
