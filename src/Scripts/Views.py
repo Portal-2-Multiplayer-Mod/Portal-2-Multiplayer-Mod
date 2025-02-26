@@ -57,13 +57,13 @@ def SettingsMenu(ui: Gui) -> None:
         GVars.translations["admins_button"], ui.Button_AdminsMenu_func, (0, 255, 255))
     Button_LanguageMenu = Button(
         GVars.translations["languages_button"], ui.Button_LanguageMenu_func, (175, 75, 0))
-    Button_P2mmFolder = Button(
+    Button_P2MMFolder = Button(
         GVars.translations["p2mm_folder"], ui.Button_OpenApp_Folder_func, (120, 255, 120))
     Button_Back = Button(
         GVars.translations["back_button"], ui.Button_Back_func)
     
     Buttons = [Button_GeneralSettingsMenu, Button_AdvancedSettingsMenu,
-               Button_AdminsMenu, Button_LanguageMenu, Button_P2mmFolder]
+               Button_AdminsMenu, Button_LanguageMenu, Button_P2MMFolder]
 
     if ui.DevMode:
         Button_HiddenSettings = Button(
