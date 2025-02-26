@@ -21,11 +21,11 @@ def FindLocalP2MM() -> str:
     if (sys.platform == "win32"): # if using a Windows system
         # Thanks stackOverflow for this
         # This code allows us to get the document's folder on any windows pc with any language
-        CSIDL_PERSONAL = 5       # My Documents
+        CSIDL_APPDATA = 26       # %AppData%
         SHGFP_TYPE_CURRENT = 0   # Get current, not default value
 
         buf = ctypes.create_unicode_buffer(260)
-        ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_PERSONAL, None, SHGFP_TYPE_CURRENT, buf)
+        ctypes.windll.shell32.SHGetFolderPathW(None, CSIDL_APPDATA, None, SHGFP_TYPE_CURRENT, buf)
 
         # Set the modPath to the users documents folder
         destinationFolder = buf.value + os.sep + "p2mm"
