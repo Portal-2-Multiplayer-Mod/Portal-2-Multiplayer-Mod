@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png?raw=true" alt="P2MMBannerREADME" width="472" height="290" align="left">
+  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/main/Banners/P2MMBannerREADME.png?raw=true" alt="P2MMBannerREADME" width="472" height="290" align="left">
   <a href="https://discord.gg/nXRygGNxyK" target="_blank">
       <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20"
               alt="Discord Shield Badge" style="margin-bottom: 10px;" align="right">
@@ -122,18 +122,26 @@ Portal 2: Multiplayer Mod versão `2.3.0` será nossa versão definitiva, então
 
 **Desenvolvedores:**
 
-- kyleraykbs
-- Bumpy
-- Nanoman2525
-- vista
-- Wolƒe Strider Shoσter
-- cabiste
-- Orsell
+- NULLderef | VScript, Engenharia reversa, Source Plugin
+- Orsell | Lançador, VScript, Engenharia reversa, Source Plugin
+- \n | Lançador, VScript, Source Plugin
 
 **Colaboradores:**
 
-- wanderer (free bird)
-- \n
-- Luukex
-- MeblIkea
-- PieCreeper
+- kyleraykbs | Lançador, VScript, Engenharia reversa, Source Plugin, Fundador
+- Wolƒe Strider Shoσter | VScript, Engenharia reversa
+- Bumpy | VScript, Engenharia reversa
+- Nanoman2525 | Engenharia reversa, VScript, Source Plugin
+- wanderer | Engenharia reversa, Source Plugin
+- cabiste | Lançador, VScript
+- j4ceee | Lançador
+- QuantumCoded | VScript
+- AlexAdvDev | VScript
+- DeaneAlistair| VScript
+- PieCreeper | Contribuidor do Mapa
+- Luukex | Tradutor
+- Meb | Tradutor
+- maldron0309 | Tradutor
+- SummonHIM | Tradutor
+- WhatDidYouExpect | Tradutor
+- bentoemanuel | Tradutor

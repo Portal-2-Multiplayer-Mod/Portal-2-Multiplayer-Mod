@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png?raw=true" alt="P2MMBannerREADME" width="472" height="290" align="left">
+  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/main/Banners/P2MMBannerREADME.png?raw=true" alt="P2MMBannerREADME" width="472" height="290" align="left">
   <a href="https://discord.gg/nXRygGNxyK" target="_blank">
       <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20"
               alt="Discord Shield Badge" style="margin-bottom: 10px;" align="right">
@@ -125,18 +125,26 @@ Portal 2: Multiplayer Mod 버전 `2.3.0`이 최종 버전이 될 것이며, 이 
 
 **개발자들:**
 
-- kyleraykbs
-- Bumpy
-- Nanoman2525
-- vista (NULLderef)
-- Wolƒe Strider Shoσter
-- cabiste
-- Orsell
+- NULLderef | VScript, 역엔지니어링, Source Plugin
+- Orsell | 발사통, VScript, 역엔지니어링, Source Plugin
+- \n | 발사통, VScript, Source Plugin
 
 **기여자들:**
 
-- wanderer (free bird)
-- \n
-- Luukex
-- MeblIkea
-- PieCreeper
+- kyleraykbs | 발사통, VScript, 역엔지니어링, Source Plugin, 설립자
+- Wolƒe Strider Shoσter | VScript, 역엔지니어링
+- Bumpy | VScript, 역엔지니어링
+- Nanoman2525 | 역엔지니어링, VScript, Source Plugin
+- wanderer | 역엔지니어링, Source Plugin
+- cabiste | 발사통, VScript
+- j4ceee | 발사통
+- QuantumCoded | VScript
+- AlexAdvDev | VScript
+- DeaneAlistair| VScript
+- PieCreeper | 지도 기여자
+- Luukex | 역자
+- Meb | 역자
+- maldron0309 | 역자
+- SummonHIM | 역자
+- WhatDidYouExpect | 역자
+- bentoemanuel | 역자

@@ -1,5 +1,5 @@
 <h1>
-  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/e56d8c209eb3f143bb0607dc1e59730e517ecca6/Banners/P2MMBannerREADME.png?raw=true" alt="P2MMBannerREADME" width="472" height="290" align="left">
+  <img src="https://github.com/Portal-2-Multiplayer-Mod/P2MM-ART/blob/main/Banners/P2MMBannerREADME.png?raw=true" alt="P2MMBannerREADME" width="472" height="290" align="left">
   <a href="https://discord.gg/nXRygGNxyK" target="_blank">
       <img src="https://img.shields.io/discord/839651379034193920?color=blue&label=Discord%20Users&style=for-the-badge&logo=discord&logoWidth=20"
               alt="Discord Shield Badge" style="margin-bottom: 10px;" align="right">
@@ -120,18 +120,26 @@ Portal 2：多人模组版本 `2.3.0` 将是我们的最终版本，所以在完
 
 **开发人员:**
 
-- kyleraykbs
-- Bumpy
-- Nanoman2525
-- vista
-- Wolƒe Strider Shoσter
-- cabiste
-- Orsell
+- NULLderef | VScript, 逆向工程, Source Plugin
+- Orsell | 启动器, VScript, 逆向工程, Source Plugin
+- \n | 启动器, VScript, Source Plugin
 
 **贡献者:**
 
-- wanderer (free bird)
-- \n
-- Luukex
-- MeblIkea
-- PieCreeper
+- kyleraykbs | 启动器, VScript, 逆向工程, Source Plugin, 创始人
+- Wolƒe Strider Shoσter | VScript, 逆向工程
+- Bumpy | VScript, 逆向工程
+- Nanoman2525 | 逆向工程, VScript, Source Plugin
+- wanderer | 逆向工程, Source Plugin
+- cabiste | 启动器, VScript
+- j4ceee | 启动器
+- QuantumCoded | VScript
+- AlexAdvDev | VScript
+- DeaneAlistair| VScript
+- PieCreeper | 地图贡献者
+- Luukex | 翻译者
+- Meb | 翻译者
+- maldron0309 | 翻译者
+- SummonHIM | 翻译者
+- WhatDidYouExpect | 翻译者
+- bentoemanuel | 翻译者
