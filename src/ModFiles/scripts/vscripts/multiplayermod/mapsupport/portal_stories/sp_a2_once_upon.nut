@@ -8,6 +8,8 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         GlobalSpawnClass.m_bUseAutoSpawn <- true
+        GlobalSpawnClass.m_bUseAutoCountEnd <- true
+        
         // Spawn With Portal Gun
         UTIL_Team.Spawn_PortalGun(true)
 

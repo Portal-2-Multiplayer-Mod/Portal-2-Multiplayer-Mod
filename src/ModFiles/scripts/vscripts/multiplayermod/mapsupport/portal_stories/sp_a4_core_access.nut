@@ -16,6 +16,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("info_player_start", Vector(560, 1072, 1696), 32).Destroy()
         Entities.FindByClassnameNearest("logic_auto", Vector(96, 368, 832), 32).Destroy()
 
+        Entities.FindByName(null, "transition_trigger").__KeyValueFromString("targetname", "transition_trigger_p2mmoverride")
+        hCountdownEnableTrigger = Entities.FindByName(null, "transition_trigger_p2mmoverride")
+        EntFireByHandle(hCountdownEnableTrigger, "AddOutput", "OnTrigger finale2_door:SetAnimation:vert_door_closing", 0, null, null)
+        Entities.FindByClassnameNearest("trigger_once", Vector(0, 2168, 884), 32).Destroy()
+
         // make doors not close
         Entities.FindByName(null, "generator_area_noback_trigger").Destroy()
         Entities.FindByName(null, "security_area_noback_trigger").Destroy()
@@ -28,10 +33,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Make changing levels work
         Entities.FindByName(null, "end_command").Destroy()
-        EntFire("transition_trigger", "Enable")
         if (GetMapName().find("sp_") != null) {
-            EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_finale:2", 0, null)
-        } else EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a4_finale:2", 0, null)
+            EntFire("transition_trigger_p2mmoverride", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a4_finale:2", 0, null)
+        } else EntFire("transition_trigger_p2mmoverride", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a4_finale:2", 0, null)
     }
     
     if (MSPostPlayerSpawn) {
@@ -41,5 +45,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("@finale_lw_open_rl", "Trigger")
         EntFire("cs_virgil_212", "Start")
         EntFire("@display_chapter_titlef", "Trigger", null, 2.5)
+    }
+
+    if (MSLoop) {
+        try {
+            for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Entities.FindByName(null, "transition_trigger_p2mmoverride").GetOrigin(), 128);) {
+                StartCountTransition(p)
+            }
+        } catch (exception) {} // trigger was triggered, so it was deleted and we cant access it anymore
     }
 }

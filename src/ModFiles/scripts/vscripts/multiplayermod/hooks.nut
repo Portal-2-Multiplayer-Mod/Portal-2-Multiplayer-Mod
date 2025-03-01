@@ -85,7 +85,7 @@ function P2MMLoop() {
         if (!p.ValidateScriptScope()) { continue }
         
         // Update everyone's class if PermaPotato is on
-        FindPlayerClass(p).potatogun = PermaPotato
+        // FindPlayerClass(p).potatogun = PermaPotato
 
         //## PotatoIfy loop ##//
         if (PermaPotato) {
@@ -409,13 +409,20 @@ function P2MMLoop() {
                     StartCountTransition(p)
                 }
             }
-            if (GetMapName().find("sp_a3") != null && GlobalSpawnClass.m_bUseAutoCountEnd == true) {
-                try {
-                    local entryTrigger = Entities.FindByClassnameNearest("trigger_once", hCountdownEnableTrigger.GetOrigin(), 256).GetOrigin()
-                    for (local p = null; p = Entities.FindByClassnameWithin(p, "player", entryTrigger, 256);) {
+            if (GlobalSpawnClass.m_bUseAutoCountEnd == true) {
+                if (GetMapName().find("_a2_") && GetGameMainDir() == "portal_stories" || GetMapName().find("sp_a3") != null && GetGameMainDir() == "portal2") {
+                    try {
+                        local entryTrigger = Entities.FindByClassnameNearest("trigger_once", hCountdownEnableTrigger.GetOrigin(), 256).GetOrigin()
+                        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", entryTrigger, 256);) {
+                            StartCountTransition(p)
+                        }                
+                    } catch (exception) {} // Trigger must not exist anymore (the timer has already ended and someone is in the elevator)
+                }
+                if (GetGameMainDir() == "portal_stories" && GetMapName().find("_a3_") != null || GetMapName().find("_a4_") != null) {
+                    for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Entities.FindByClassname(null, "info_teleport_destination").GetOrigin(), 256);) {
                         StartCountTransition(p)
-                    }                
-                } catch (exception) {} // Trigger must not exist anymore (the timer has already ended and someone is in the elevator)
+                    }
+                }
             }
         }
 
@@ -446,7 +453,15 @@ function P2MMLoop() {
                 }
                 
                 if (sInstantTransitionMap == "") {
-                    EntFireByHandle(hCountdownEnableTrigger, "Enable", "", 0, null, null)
+                    switch (hCountdownEnableTrigger.GetClassname()) {
+                        case "trigger_once":
+                        case "trigger_multiple":
+                            EntFireByHandle(hCountdownEnableTrigger, "Enable", "", 0, null, null)
+                        
+                        case "func_button":
+                            EntFireByHandle(hCountdownEnableTrigger, "Unlock", "", 0, null, null)
+                    }
+                    
                 } else {
                     for (local fade = null; fade = Entities.FindByClassname(fade, "env_fade");) {
                         if (fade.GetName().find("exit") != null) {
@@ -669,7 +684,7 @@ function PostPlayerSpawn() {
 
     if (Config_UseCountdown && GlobalSpawnClass.m_bUseAutoCountEnd) {
         // setup if the host has the wait config enabled
-        if (Entities.FindByModel(null, "models/props_underground/elevator_a.mdl") == null) {
+        if (Entities.FindByModel(null, "models/props_underground/elevator_a.mdl") == null && GetGameMainDir() == "portal2") {
             // a1-a2 elevators
             guessedtrigger <- Entities.FindByClassnameNearest("trigger_once", Entities.FindByName(null, "departure_elevator-elevator_1").GetOrigin(), 64)
             if (guessedtrigger == null) {
@@ -704,8 +719,8 @@ function PostPlayerSpawn() {
             }
             printlP2MM(0, true, exittrigger.GetName())
             EntFireByHandle(exittrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:StartCountTransition(activator)", 0, null, null)
-        } else if (GetMapName().find("sp_a3") != null) {
-            // a3 elevators (Old Aperture)
+        } else if (GetMapName().find("_a2_") != null && GetGameMainDir() == "portal_stories" || GetMapName().find("sp_a3") != null && GetGameMainDir() == "portal2") {
+            // Old Aperture elevators (both P2 and Mel)
             local elevator = null
             for (local bestelevator = null; bestelevator = Entities.FindByClassname(bestelevator, "path_track");) {
                 if (bestelevator.GetName().find("exit_lift_train_path_1") != null) {
@@ -715,6 +730,11 @@ function PostPlayerSpawn() {
             }
             hCountdownEnableTrigger = Entities.FindByClassnameNearest("trigger_once", elevator.GetOrigin(), 32)
             EntFireByHandle(hCountdownEnableTrigger, "Disable", "", 0, null, null)
+        } else if (Config_UseCountdown && GetGameMainDir() == "portal_stories") {
+            if (GetMapName().find("_a3_") != null || GetMapName().find("_a4_") != null) {
+                hCountdownEnableTrigger = Entities.FindByClassnameNearest("trigger_multiple", Entities.FindByClassname(null, "info_teleport_destination").GetOrigin(), 64)
+                EntFireByHandle(hCountdownEnableTrigger, "Disable", "", 0, null, null)
+            }
         }
     } else if (Config_UseCountdown && GetMapName().find("workshop/") == null && GetMapName().find("mp_coop_lobby_") == null) {
         // Coop

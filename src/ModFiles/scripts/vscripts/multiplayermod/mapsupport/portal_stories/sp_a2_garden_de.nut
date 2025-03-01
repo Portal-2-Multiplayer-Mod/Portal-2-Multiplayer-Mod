@@ -9,6 +9,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         // Remove Portal Gun
         UTIL_Team.Spawn_PortalGun(false)
+        GlobalSpawnClass.m_bUseAutoCountEnd <- true
 
         // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)

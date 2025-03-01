@@ -84,6 +84,10 @@ if (g_bIsOnSingleplayerMaps) {
     function CoopBotAnimation(int1, int2) {}
 }
 
+if (GetGameMainDir() == "portal_stories") {
+    FIRST_MAP_WITH_POTATO_GUN <- null
+}
+
 // g_iCurGameIndex definition.
 g_iCurGameIndex <- -1
 switch (GetGameMainDir()) {
@@ -1494,7 +1498,7 @@ function BestGuessSpawnpoint() {
                             GlobalSpawnClass.m_bUseAutoSpawn <- false
                             GlobalSpawnClass.m_bUseSetSpawn <- true
                             GlobalSpawnClass.m_cSetSpawn.position <- RealPlayerSpawn.GetOrigin()
-                            GlobalSpawnClass.m_cSetSpawn.radius <- 200
+                            GlobalSpawnClass.m_cSetSpawn.radius <- 128
                             // Get every info_player_start and kill it
                             for (local ent = null; ent = Entities.FindByClassname(ent, "info_player_start");) {
                                 if (ent != RealPlayerSpawn) {
@@ -2137,8 +2141,15 @@ function StartCountTransition(player) {
             return
         }
     
-    } else if (sInstantTransitionMap == "") { // if countdown isnt enabled, transition without it
-        EntFireByHandle(hCountdownEnableTrigger, "Enable", "", 0, null, null)
+    } else if (sInstantTransitionMap == "") {
+        switch (hCountdownEnableTrigger.GetClassname()) {
+            case "trigger_once":
+            case "trigger_multiple":
+                EntFireByHandle(hCountdownEnableTrigger, "Enable", "", 0, null, null)
+            
+            case "func_button":
+                EntFireByHandle(hCountdownEnableTrigger, "Unlock", "", 0, null, null)
+        } 
     } else {
         for (local fade = null; fade = Entities.FindByClassname(fade, "env_fade");) {
             if (fade.GetName().find("exit") != null) {

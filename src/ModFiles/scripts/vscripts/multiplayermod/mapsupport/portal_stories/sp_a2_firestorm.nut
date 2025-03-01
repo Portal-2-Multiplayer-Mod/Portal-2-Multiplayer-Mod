@@ -5,8 +5,6 @@
 // ██████╔╝██║     ██████████╗██║  ██║███████╗██████████╗██║     ██║██║  ██║███████╗██████╔╝   ██║   ╚█████╔╝██║  ██║██║ ╚═╝ ██║
 // ╚═════╝ ╚═╝     ╚═════════╝╚═╝  ╚═╝╚══════╝╚═════════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═════╝    ╚═╝    ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
 
-OnlyOnce_a2_firestorm <- false
-OnlyOnce_a2_firestorm2 <- false
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(true)
@@ -54,6 +52,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Entities.FindByName(null, "Achievement_Fire_Fighter").__KeyValueFromString("targetname", "doteleport")
         // Entities.FindByName(null, "explosion_ambience_sound_1").__KeyValueFromString("targetname", "doteleport1")
 
+        // Disable ending room because P2MM uses its own logic
+        Entities.FindByClassnameNearest("trigger_once", Vector(4976, 2160, 2497.13), 32).Destroy()
+
         //! This line is completely useless, but I couldn't just ignore hoopy like that :)
         Entities.FindByClassnameNearest("prop_dynamic_override", Vector(-876, 1626, 26), 64).__KeyValueFromString("targetname", "Hoopy_The_Hoop")
 
@@ -61,13 +62,22 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "end_command").Destroy()
         if (GetMapName().find("sp_") != null) {
             EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(4976, 2160, 2497.13), 64), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel sp_a3_junkyard:3", 0, null, null)
-        } else EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(4976, 2160, 2497.13), 64), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a3_junkyard:3", 0, null, null)
-
+            sInstantTransitionMap = "sp_a3_junkyard"
+        } else {
+            EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(4976, 2160, 2497.13), 64), "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel st_a3_junkyard:3", 0, null, null)
+            sInstantTransitionMap = "st_a3_junkyard"
+        }
     }
     
     if (MSPostPlayerSpawn) {
         Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(192, -2672, 816))
         
+    }
+
+    if (MSLoop) {
+        for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Entities.FindByName(null, "sp_mel_2_transition").GetOrigin(), 128);) {
+            StartCountTransition(p)
+        }
     }
 }
 function Checkpoint(point) {

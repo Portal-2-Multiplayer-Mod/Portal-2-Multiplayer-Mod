@@ -97,7 +97,7 @@ IncludeScript("multiplayermod/mapsupport/#rootfunctions.nut")
 //---------------------------------------------------
 
 // Print P2:MM game art in console
-ConsoleAscii <- [
+local ConsoleAscii = [
 "########...#######...##..##.....##.##.....##",
 "##.....##.##.....##.####.###...###.###...###",
 "##.....##........##..##..####.####.####.####",
@@ -109,7 +109,6 @@ ConsoleAscii <- [
 ]
 printl("")
 foreach (line in ConsoleAscii) { printl(line) }
-delete ConsoleAscii
 printl("")
 
 //---------------------------------------------------

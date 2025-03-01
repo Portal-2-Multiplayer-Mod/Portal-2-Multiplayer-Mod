@@ -10,6 +10,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSInstantRun) {
         UTIL_Team.Spawn_PortalGun(true)
 
+        // Disable button for countdown system
+        hCountdownEnableTrigger = Entities.FindByName(null, "AutoInstance1-lift_button_down")
+        EntFireByHandle(hCountdownEnableTrigger, "Lock", "", 0, null, null)
+
         // Enable pinging and disable taunting
         UTIL_Team.Pinging(true)
         UTIL_Team.Taunting(false)
@@ -68,6 +72,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // inside elevator room
         for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(10560, -1968, 624), 184);) {
             SetFlashlightState(p.entindex(), false)
+            StartCountTransition(p)
         }
         // outside dark area
         for (local p; p = Entities.FindByClassnameWithin(p, "player", Vector(10560, -1968, 624), 184);) {

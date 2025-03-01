@@ -32,7 +32,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // checkpoint
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-192, 464, 80), 128), "AddOutput", "OnTrigger !self:RunScriptCode:Checkpoint()", 0, null, null)
 
-
         // Make changing levels work
         Entities.FindByName(null, "end_command").Destroy()
         if (GetMapName().find("sp_") != null) {

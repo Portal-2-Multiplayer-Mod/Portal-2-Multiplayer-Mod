@@ -10,6 +10,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         tploop <- -1
         // Offset coop repsawn nodes for elevators (left and right side)
         GlobalSpawnClass.m_bUseAutoSpawn <- false
+        GlobalSpawnClass.m_bUseAutoCountEnd <- true
         UTIL_Team.Spawn_PortalGun(true)
 
         // Enable pinging and disable taunting
