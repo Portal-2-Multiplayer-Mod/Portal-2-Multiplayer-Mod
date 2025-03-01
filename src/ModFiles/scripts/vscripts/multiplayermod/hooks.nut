@@ -447,7 +447,7 @@ function P2MMLoop() {
                     EntFire("orange_trigger_close", "Enable")
                 }
                 for (local t = null; t = Entities.FindByClassname(t, "trigger_playerteam");) {
-                    if (t.GetName().find("trigger_exit_lift") != null) {
+                    if (t.GetName().find("trigger_exit_lift") != null || t.GetName().find("trigger_disable_exit_lift") != null) {
                         EntFireByHandle(t, "Enable", "", 0, null, null)
                     }
                 }
@@ -743,7 +743,7 @@ function PostPlayerSpawn() {
             EntFire("orange_trigger_close", "Disable")
         } else {
             for (local t = null; t = Entities.FindByClassname(t, "trigger_playerteam");) {
-                if (t.GetName().find("trigger_exit_lift") != null) {
+                if (t.GetName().find("trigger_exit_lift") != null || t.GetName().find("trigger_disable_exit_lift") != null) {
                     EntFireByHandle(t, "Disable", "", 0, null, null)
                 }
             }
