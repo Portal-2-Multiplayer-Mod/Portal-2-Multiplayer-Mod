@@ -43,6 +43,9 @@ Config_CountdownPercentage <- 75
 // Set to the amount of time (in seconds) you allow players to get to the end after someone reaches it (if ^ percentage isnt met in time)
 Config_CountdownTimer <- 30
 
+// Set to true if you want the Paintgun.
+Config_UsePaintGun <- true
+
 // Set true/false if you want to randomize the size of all portals every second
 Config_RandomPortalSize <- false
 

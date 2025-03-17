@@ -1686,6 +1686,12 @@ function CombineList(list, startlength, inbetweenchars = " ") {
 
 function CreateOurEntities() {
 
+    // cube <- Entities.CreateByClassname("prop_weighted_cube")
+    // cube.__KeyValueFromString("targetname", "cube")
+    // cube.SetOrigin(Vector(0, 0, 400))
+    // printlP2MM(0, true, cube.GetOrigin().tostring())
+    // printlP2MM(0, true, Entities.FindByName(null, cube.GetName()).GetOrigin().tostring())
+
     if (Config_UseNametags/* && g_bAllowNametags*/) {
         // Create an entity to measure player eye angles
         measuremovement_eyeposition <- Entities.CreateByClassname("logic_measure_movement")
@@ -1709,6 +1715,17 @@ function CreateOurEntities() {
         nametagdisplay.__KeyValueFromString("fadein", "0.2")
         nametagdisplay.__KeyValueFromString("channel", "1")
     }
+
+    // measurepaintgun <- Entities.CreateByClassname("logic_measure_movement")
+    // measurepaintgun.__KeyValueFromString( "measuretype", "1")
+    // measurepaintgun.__KeyValueFromString( "measurereference", "p2mm_logic_measure_paintgun" )
+    // measurepaintgun.__KeyValueFromString( "measureretarget", "blue" )
+    // measurepaintgun.__KeyValueFromString( "targetscale", "1.0" )
+    // measurepaintgun.__KeyValueFromString( "targetname", "p2mm_logic_measure_paintgun" )
+    // measurepaintgun.__KeyValueFromString( "targetreference", "p2mm_logic_measure_paintgun" )
+    // measurepaintgun.__KeyValueFromString( "target", "cube" )
+    // EntFireByHandle(measurepaintgun, "SetMeasureReference", "p2mm_logic_measure_paintgun", 0.0, null, null)
+    // EntFireByHandle(measurepaintgun, "Disable", "", 0.0, null, null)
 
     // Create an display entity for the host to wait for another player to load in
     waitingtext <- Entities.CreateByClassname("game_text")
@@ -2158,5 +2175,101 @@ function StartCountTransition(player) {
             }
         }
         EntFire("p2mm_servercommand", "command", "changelevel " + sInstantTransitionMap, 2)
+    }
+}
+
+if (Config_UsePaintGun) {
+    function StartGel(index, type) {
+        printlP2MM(0, true, "called start")
+        // Entities.FindByName(null, "Painter_" + index.tostring()).__KeyValueFromString("painttype", type.tostring())
+        switch (type) {
+            case 1:
+                EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
+                EntFire("Bounce_Painter_" + index.tostring(), "Start", "")
+                break
+            case 2:
+                EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
+                EntFire("Speed_Painter_" + index.tostring(), "Start", "")
+                break
+        }
+
+        // EntFire("Painter_" + index.tostring(), "ChangePaintType", type.tostring())
+    }
+    function EndGel(index) {
+        printlP2MM(0, true, "called end")
+        EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
+        EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
+    }
+
+    function GelPair(index) {
+        if (!Entities.FindByName(null, "Bounce_Painter_" + index.tostring())) {
+            local player = PlayerByIndex(index)
+            local playername = PlayerByIndex(index).GetName()
+            local playercoord = player.GetOrigin()
+
+            // Setup the listener for when the player hits their +attack bind
+            local gameui = Entities.CreateByClassname("game_ui")
+            EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:StartGel(activator.entindex() 1)", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "PressedAttack2 !activator:RunScriptCode:StartGel(activator.entindex() 2)", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack2 !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
+            gameui.__KeyValueFromString("targetname", "gameui_" + index.tostring())
+            gameui.__KeyValueFromString("spawnflags", "0")
+            gameui.__KeyValueFromString("FieldOfView", "-1.0")
+            InitializeEntity(gameui)
+
+            local speed = Entities.CreateByClassname("info_paint_sprayer")
+            speed.__KeyValueFromString("painttype", "2")
+            InitializeEntity(speed)
+            speed.__KeyValueFromString("targetname", "Speed_Painter_" + index.tostring())
+            speed.__KeyValueFromString("blob_spread_radius", "1")
+            speed.__KeyValueFromString("blob_streak_percentage", "15")
+            speed.__KeyValueFromString("blobs_per_second", "35")
+            speed.__KeyValueFromString("max_speed", "1250")
+            speed.__KeyValueFromString("max_speed", "1250")
+            speed.__KeyValueFromString("max_streak_speed_dampen", "10000")
+            speed.__KeyValueFromString("min_streak_speed_dampen", "10")
+            speed.__KeyValueFromString("max_streak_time", "0.2")
+            speed.__KeyValueFromString("min_streak_time", "0.1")
+            speed.__KeyValueFromString("min_speed", "1100")
+            speed.__KeyValueFromString("RenderMode", "0")
+            // Entities.FindByName(null, "Speed_Painter_" + index.tostring()).SetAngles(player.GetAngles().x, player.GetAngles().y, player.GetAngles().z)
+            Entities.FindByName(null, "Speed_Painter_" + index.tostring()).SetOrigin(Vector(playercoord.x, playercoord.y, playercoord.z + 45))
+            EntFire("Speed_Painter_" + index.tostring(), "SetParent", playername)
+            EntFire("Speed_Painter_" + index.tostring(), "SetParentAttachmentMaintainOffset", "vstAttach_Rhand", 0.1)
+            // Entities.FindByName(null "Speed_Painter_" + index.tostring()).SetAngles(-90, 90, 0)
+            EntFire("p2mm_servercommand", "Command", "script Entities.FindByName(null \"Speed_Painter_" + index.tostring() + "\").SetAngles(-90, 90, 0)", 1)
+            // EntFire("!self", "RunScriptCode", "Entities.FindByName(null \"Speed_Painter_\"" + index.tostring() + ").SetAngles(" + player.GetAngles().x + " " + player.GetAngles().y + " - 90 " +  player.GetAngles().z + ")", 3)
+
+
+            local bounce = Entities.CreateByClassname("info_paint_sprayer")
+            bounce.__KeyValueFromString("painttype", "0")
+            InitializeEntity(bounce)
+            bounce.__KeyValueFromString("targetname", "Bounce_Painter_" + index.tostring())
+            bounce.__KeyValueFromString("blob_spread_radius", "1")
+            bounce.__KeyValueFromString("blob_streak_percentage", "15")
+            bounce.__KeyValueFromString("blobs_per_second", "35")
+            bounce.__KeyValueFromString("max_speed", "1250")
+            bounce.__KeyValueFromString("max_speed", "1250")
+            bounce.__KeyValueFromString("max_streak_speed_dampen", "10000")
+            bounce.__KeyValueFromString("min_streak_speed_dampen", "10")
+            bounce.__KeyValueFromString("max_streak_time", "0.2")
+            bounce.__KeyValueFromString("min_streak_time", "0.1")
+            bounce.__KeyValueFromString("min_speed", "1100")
+            bounce.__KeyValueFromString("RenderMode", "0")
+            Entities.FindByName(null, "Bounce_Painter_" + index.tostring()).SetOrigin(Vector(playercoord.x, playercoord.y, playercoord.z + 45))
+            EntFire("Bounce_Painter_" + index.tostring(), "SetParent", playername)
+            EntFire("Bounce_Painter_" + index.tostring(), "SetParentAttachmentMaintainOffset", "vstAttach_Rhand", 0.1)
+            EntFire("p2mm_servercommand", "Command", "script Entities.FindByName(null \"Bounce_Painter_" + index.tostring() + "\").SetAngles(-90, 90, 0)", 1)
+            
+            // EntFire("!self", "RunScriptCode", "Entities.FindByName(null \"Bounce_Painter_\"" + index.tostring() + ").SetAngles(" + player.GetAngles().x + " " + player.GetAngles().y + "- 90 " +  player.GetAngles().z + ")", 3)
+            // gameui.__KeyValueFromString("spawnflags", "0")
+
+            // a_playerswithgelgun.append(PlayerByIndex(index))
+        }
+        EntFire("gameui_" + index.tostring(), "Activate", "", 0.2, PlayerByIndex(index))
+        // EntFire("gameui_" + index.tostring(), "AddOutput", "PlayerOff !self:Deactivate", 0.2, PlayerByIndex(index))
+        // EntFire("gameui_" + index.tostring(), "AddOutput", "PlayerOff !self:Activate::0.1", 0.2, PlayerByIndex(index))
+        // EntFire("gameui_" + index.tostring(), "AddOutput", "PlayerOff !self:RunScriptCode:EndGel(activator.entindex())", 0.2, PlayerByIndex(index))
     }
 }

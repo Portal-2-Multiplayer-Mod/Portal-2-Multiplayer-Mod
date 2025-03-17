@@ -1104,4 +1104,16 @@ function OnRespawn(p) {
     if (GlobalSpawnClass.m_bUseAutoSpawn) {
         TeleportToSpawnPoint(p, null)
     }
+
+    if (Config_UsePaintGun) {
+        GelPair(p.entindex())
+        for (local gun = null; gun = Entities.FindByClassname(gun, "weapon_portalgun");) {
+            gun.__KeyValueFromString("CanFirePortal1", "0")
+            gun.__KeyValueFromString("CanFirePortal2", "0")
+        }
+        local index = p.entindex()
+        printlP2MM(0, true, p.tostring())
+        // Entities.FindByName(null, "player" + index + "_portal1").Destroy()
+        // Entities.FindByName(null, "player" + index + "_portal2").Destroy()
+    }
 }
