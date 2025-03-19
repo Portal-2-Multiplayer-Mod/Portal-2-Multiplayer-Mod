@@ -632,8 +632,8 @@ function CreateGenericPlayerClass(p) {
 
     // Aperture Tag Gelgun logic
     if (GetGameMainDir() == "aperturetag") {
-        currentplayerclass.BlueIsEnabled <- false
-        currentplayerclass.OrangeIsEnabled <- false
+        currentplayerclass.BlueGelIsEnabled <- false
+        currentplayerclass.OrangeGelIsEnabled <- false
     }
 
     return currentplayerclass
@@ -2167,44 +2167,30 @@ function StartCountTransition(player) {
     }
 }
 
-if (Config_UsePaintGun) {
+if (Config_ManualEnablePaintGun || GetGameMainDir() == "aperturetag") {
     function StartGel(index, type) {
-        printlP2MM(0, true, "called start")
         switch (type) {
             case 1:
-                if (FindPlayerClass(PlayerByIndex(index)).BlueIsEnabled != true) break
+                if (FindPlayerClass(PlayerByIndex(index)).BlueGelIsEnabled != true) break
                 EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
                 EntFire("Bounce_Painter_" + index.tostring(), "Start", "")
                 break
             case 2:
-                if (FindPlayerClass(PlayerByIndex(index)).OrangeIsEnabled != true) break
+                if (FindPlayerClass(PlayerByIndex(index)).OrangeGelIsEnabled != true) break
                 EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
                 EntFire("Speed_Painter_" + index.tostring(), "Start", "")
                 break
         }
     }
     function EndGel(index) {
-        printlP2MM(0, true, "called end")
         EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
         EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
     }
 
     function GelPair(index) {
-        if (Entities.FindByName(null, "Bounce_Painter_" + index.tostring()) != null) return
+        if (Entities.FindByName(null, "Bounce_Painter_" + index.tostring())) return
         
         local player = PlayerByIndex(index)
-        local playername = PlayerByIndex(index).GetName()
-        local playercoord = player.GetOrigin()
-        local playergun = null
-
-        for (local gun = null; gun = Entities.FindByClassname(gun, "weapon_portalgun");) {
-            if (gun.GetRootMoveParent() == player) {
-                playergun = gun
-                break
-            }
-        }
-
-        if (playergun == null) return // should never happen
 
         // Setup the listener for when the player hits their +attack bind
         local gameui = Entities.CreateByClassname("game_ui")
@@ -2248,32 +2234,21 @@ if (Config_UsePaintGun) {
         bounce.__KeyValueFromString("min_streak_time", "0.1")
         bounce.__KeyValueFromString("min_speed", "1100")
         bounce.__KeyValueFromString("RenderMode", "0")
+        EntFire("Bounce_Painter_" + index.tostring(), "SetParent", "Speed_Painter_" + index.tostring())
 
-        measureEye1 <- Entities.CreateByClassname("logic_measure_movement")
-        measureEye2 <- Entities.CreateByClassname("logic_measure_movement")
-        InitializeEntity(measureEye1)
-        InitializeEntity(measureEye2)
+        measureEye <- Entities.CreateByClassname("logic_measure_movement")
+        InitializeEntity(measureEye)
         
-        measureEye1.__KeyValueFromString("targetname", "measureEye1_" + index.tostring())
-        measureEye1.__KeyValueFromString("MeasureType", "1")
+        measureEye.__KeyValueFromString("targetname", "measureEye_" + index.tostring())
+        measureEye.__KeyValueFromString("MeasureType", "1")
 
-        measureEye2.__KeyValueFromString("targetname", "measureEye2_" + index.tostring())
-        measureEye2.__KeyValueFromString("MeasureType", "1")
+        EntFireByHandle(measureEye, "SetTargetReference", "measureEye_" + index.tostring(), 0, null, null)
+        EntFireByHandle(measureEye, "SetMeasureReference", "measureEye_" + index.tostring(), 0, null, null)
+        EntFireByHandle(measureEye, "SetMeasureTarget", player.GetName(), 0, null, null)
+        EntFireByHandle(measureEye, "SetTargetScale", "1", 0, null, null)
+        EntFireByHandle(measureEye, "SetTarget", "Speed_Painter_" + index.tostring(), 0, null, null)
 
-        EntFireByHandle(measureEye1, "SetTargetReference", "measureEye1_" + index.tostring(), 0, null, null)
-        EntFireByHandle(measureEye1, "SetMeasureReference", "measureEye1_" + index.tostring(), 0, null, null)
-        EntFireByHandle(measureEye1, "SetMeasureTarget", player.GetName(), 0, null, null)
-        EntFireByHandle(measureEye1, "SetTargetScale", "1", 0, null, null)
-        EntFireByHandle(measureEye1, "SetTarget", "Speed_Painter_" + index.tostring(), 0, null, null)
-
-        EntFireByHandle(measureEye2, "SetTargetReference", "measureEye1_" + index.tostring(), 0, null, null)
-        EntFireByHandle(measureEye2, "SetMeasureReference", "measureEye1_" + index.tostring(), 0, null, null)
-        EntFireByHandle(measureEye2, "SetMeasureTarget", player.GetName(), 0, null, null)
-        EntFireByHandle(measureEye2, "SetTargetScale", "1", 0, null, null)
-        EntFireByHandle(measureEye2, "SetTarget", "Bounce_Painter_" + index.tostring(), 0, null, null)
-
-        EntFire("gameui_" + index.tostring(), "Activate", "", 0.2, PlayerByIndex(index))
-        EntFire("measureEye1_" + index.tostring(), "Enable", "")
-        EntFire("measureEye2_" + index.tostring(), "Enable", "")
+        EntFire("gameui_" + index.tostring(), "Activate", "", 0.2, player)
+        EntFire("measureEye_" + index.tostring(), "Enable", "")
     }
 }

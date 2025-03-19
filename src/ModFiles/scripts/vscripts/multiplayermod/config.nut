@@ -43,8 +43,9 @@ Config_CountdownPercentage <- 75
 // Set to the amount of time (in seconds) you allow players to get to the end after someone reaches it (if ^ percentage isnt met in time)
 Config_CountdownTimer <- 30
 
-// Set to true if you want the Paint gun instead of the Portal gun.
-Config_UsePaintGun <- true
+// Set to true if you want the Paint gun instead of the Portal gun. (affects all players)
+// Note: Paint will only paint a surface when the map is compiled for it, P2MM cannot change this.
+Config_ManualEnablePaintGun <- false
 
 // Set true/false if you want to randomize the size of all portals every second
 Config_RandomPortalSize <- false
@@ -264,6 +265,16 @@ try {
 } catch (exception) {
     Config_CountdownTimer <- 30
     ConfigValueError("Undefined", "Config_CountdownTimer")
+}
+
+try {
+    if (typeof(Config_ManualEnablePaintGun) != "bool") {
+        Config_ManualEnablePaintGun <- false
+        ConfigValueError("Invalid", "Config_ManualEnablePaintGun")
+    }
+} catch (exception) {
+    Config_ManualEnablePaintGun <- false
+    ConfigValueError("Undefined", "Config_ManualEnablePaintGun")
 }
 
 try {
