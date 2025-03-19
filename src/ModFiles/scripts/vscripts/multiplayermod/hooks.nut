@@ -849,6 +849,37 @@ function PostMapSpawn() {
         PrecacheModel("models/npcs/turret/turret_skeleton.mdl")
         PrecacheModel("models/npcs/turret/turret_backwards.mdl")
     }
+    if (GetGameMainDir() == "aperturetag" && GetMapName().find("gg_") != null && GetMapName() != "gg_intro_wakeup") {
+        // Remove all Gelgun entities to get rid of some edicts and prevent issues
+
+        Entities.FindByName(null, "@DoAllNOTListener").Destroy()
+        Entities.FindByName(null, "@DoBlueListener").Destroy()
+        Entities.FindByName(null, "@DoOrangeListener").Destroy()
+        Entities.FindByName(null, "@DoAllNOT").Destroy()
+        Entities.FindByName(null, "@BlueIsPressed").Destroy()
+        Entities.FindByName(null, "@OrangeIsPressed").Destroy()
+        Entities.FindByName(null, "@BlueWasLastPressed").Destroy()
+        Entities.FindByName(null, "@BlueIsEnabled").Destroy()
+        Entities.FindByName(null, "@OrangeIsEnabled").Destroy()
+        Entities.FindByName(null, "@DoBlue").Destroy()
+        Entities.FindByName(null, "@DoOrange").Destroy()
+        Entities.FindByName(null, "@DoOrangeNOT").Destroy()
+        Entities.FindByName(null, "@DoBlueNOT").Destroy()
+        Entities.FindByName(null, "@OrangeIsEnabledNOT").Destroy()
+        Entities.FindByName(null, "@BlueIsEnabledNOT").Destroy()
+        Entities.FindByName(null, "@BlueWasLastPressedNOT").Destroy()
+        Entities.FindByName(null, "@LBL_*").Destroy()
+        Entities.FindByName(null, "@ini_*").Destroy()
+        Entities.FindByName(null, "@initial_firing_gell_sound_case").Destroy()
+        Entities.FindByName(null, "*-measure_movement").Destroy()
+        Entities.FindByName(null, "*-measure_movement").Destroy()
+        Entities.FindByName(null, "@gel_ui").Destroy()
+        Entities.FindByName(null, "*-reference_target").Destroy()
+        Entities.FindByName(null, "*-reference_target_paint").Destroy()
+        Entities.FindByName(null, "@firing_gell_sound").Destroy()
+        Entities.FindByName(null, "@shake_global_sound").Destroy()
+        Entities.FindByName(null, "@empty_sound").Destroy()
+    }
 
     PostMapSpawnDone = true
 }
@@ -1083,6 +1114,11 @@ function OnPlayerJoin(p) {
             EntFireByHandle(p, "setfogcontroller", defaultfog, 0, null, null)
         }
     }
+
+    if (Config_ManualEnablePaintGun || GetGameMainDir() == "aperturetag") {
+        EntFireByHandle(p2mm_clientcommand, "Command", "paintblob_draw_distance_from_eye 110f", 0, p, p)
+        SetConVarString("paintblob_max_radius_scale", "0.8f")
+    }
 }
 
 // 6
@@ -1103,5 +1139,20 @@ function OnRespawn(p) {
     // GlobalSpawnClass teleport
     if (GlobalSpawnClass.m_bUseAutoSpawn) {
         TeleportToSpawnPoint(p, null)
+    }
+
+    if (Config_ManualEnablePaintGun || GetGameMainDir() == "aperturetag") {
+        GelPair(p.entindex())
+        // Disable the player's portalgun
+        local i = 0
+        for (local gun = null; gun = Entities.FindByClassname(gun, "weapon_portalgun");) {
+            if (gun.GetRootMoveParent() == p) {
+                gun.__KeyValueFromString("CanFirePortal1", "0")
+                gun.__KeyValueFromString("CanFirePortal2", "0")
+                i++
+            }
+            // There are 2 portalgun entities, so we need to do this twice to disable the gun.
+            if (i >= 2) break
+        }
     }
 }

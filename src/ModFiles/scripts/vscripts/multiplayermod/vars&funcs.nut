@@ -630,6 +630,12 @@ function CreateGenericPlayerClass(p) {
     // Note down the registered player for later reference
     playerclasses.push(currentplayerclass)
 
+    // Aperture Tag Gelgun logic
+    if (GetGameMainDir() == "aperturetag") {
+        currentplayerclass.BlueGelIsEnabled <- false
+        currentplayerclass.OrangeGelIsEnabled <- false
+    }
+
     return currentplayerclass
 }
 
@@ -2158,5 +2164,91 @@ function StartCountTransition(player) {
             }
         }
         EntFire("p2mm_servercommand", "command", "changelevel " + sInstantTransitionMap, 2)
+    }
+}
+
+if (Config_ManualEnablePaintGun || GetGameMainDir() == "aperturetag") {
+    function StartGel(index, type) {
+        switch (type) {
+            case 1:
+                if (FindPlayerClass(PlayerByIndex(index)).BlueGelIsEnabled != true) break
+                EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
+                EntFire("Bounce_Painter_" + index.tostring(), "Start", "")
+                break
+            case 2:
+                if (FindPlayerClass(PlayerByIndex(index)).OrangeGelIsEnabled != true) break
+                EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
+                EntFire("Speed_Painter_" + index.tostring(), "Start", "")
+                break
+        }
+    }
+    function EndGel(index) {
+        EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
+        EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
+    }
+
+    function GelPair(index) {
+        if (Entities.FindByName(null, "Bounce_Painter_" + index.tostring())) return
+        
+        local player = PlayerByIndex(index)
+
+        // Setup the listener for when the player hits their +attack bind
+        local gameui = Entities.CreateByClassname("game_ui")
+        EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:StartGel(activator.entindex() 1)", 0, null, null)
+        EntFireByHandle(gameui, "AddOutput", "UnpressedAttack !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
+        EntFireByHandle(gameui, "AddOutput", "PressedAttack2 !activator:RunScriptCode:StartGel(activator.entindex() 2)", 0, null, null)
+        EntFireByHandle(gameui, "AddOutput", "UnpressedAttack2 !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
+        gameui.__KeyValueFromString("targetname", "gameui_" + index.tostring())
+        gameui.__KeyValueFromString("spawnflags", "0")
+        gameui.__KeyValueFromString("FieldOfView", "-1.0")
+        InitializeEntity(gameui)
+
+        // Setup both gels for for the gun. The Paint type must be set BEFORE initialization for the game to render the correct color.
+        local speed = Entities.CreateByClassname("info_paint_sprayer")
+        speed.__KeyValueFromString("painttype", "2")
+        InitializeEntity(speed)
+        speed.__KeyValueFromString("targetname", "Speed_Painter_" + index.tostring())
+        speed.__KeyValueFromString("blob_spread_radius", "1")
+        speed.__KeyValueFromString("blob_streak_percentage", "15")
+        speed.__KeyValueFromString("blobs_per_second", "35")
+        speed.__KeyValueFromString("max_speed", "1250")
+        speed.__KeyValueFromString("max_streak_speed_dampen", "10000")
+        speed.__KeyValueFromString("min_streak_speed_dampen", "10")
+        speed.__KeyValueFromString("max_streak_time", "0.2")
+        speed.__KeyValueFromString("min_streak_time", "0.1")
+        speed.__KeyValueFromString("min_speed", "1100")
+        speed.__KeyValueFromString("RenderMode", "0")
+
+
+        local bounce = Entities.CreateByClassname("info_paint_sprayer")
+        bounce.__KeyValueFromString("painttype", "0")
+        InitializeEntity(bounce)
+        bounce.__KeyValueFromString("targetname", "Bounce_Painter_" + index.tostring())
+        bounce.__KeyValueFromString("blob_spread_radius", "1")
+        bounce.__KeyValueFromString("blob_streak_percentage", "15")
+        bounce.__KeyValueFromString("blobs_per_second", "35")
+        bounce.__KeyValueFromString("max_speed", "1250")
+        bounce.__KeyValueFromString("max_streak_speed_dampen", "10000")
+        bounce.__KeyValueFromString("min_streak_speed_dampen", "10")
+        bounce.__KeyValueFromString("max_streak_time", "0.2")
+        bounce.__KeyValueFromString("min_streak_time", "0.1")
+        bounce.__KeyValueFromString("min_speed", "1100")
+        bounce.__KeyValueFromString("RenderMode", "0")
+        EntFire("Bounce_Painter_" + index.tostring(), "SetParent", "Speed_Painter_" + index.tostring())
+
+        measureEye <- Entities.CreateByClassname("logic_measure_movement")
+        InitializeEntity(measureEye)
+        
+        measureEye.__KeyValueFromString("targetname", "measureEye_" + index.tostring())
+        measureEye.__KeyValueFromString("MeasureType", "1")
+
+        EntFireByHandle(measureEye, "SetTargetReference", "measureEye_" + index.tostring(), 0, null, null)
+        EntFireByHandle(measureEye, "SetMeasureReference", "measureEye_" + index.tostring(), 0, null, null)
+        EntFireByHandle(measureEye, "SetMeasureTarget", player.GetName(), 0, null, null)
+        EntFireByHandle(measureEye, "SetTargetScale", "1", 0, null, null)
+        EntFireByHandle(measureEye, "SetTarget", "Speed_Painter_" + index.tostring(), 0, null, null)
+
+        EntFire("gameui_" + index.tostring(), "Activate", "", 0.2, player)
+        EntFire("measureEye_" + index.tostring(), "Enable", "")
     }
 }
