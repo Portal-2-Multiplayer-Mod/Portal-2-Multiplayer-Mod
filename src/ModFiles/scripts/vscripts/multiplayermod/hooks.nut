@@ -849,6 +849,48 @@ function PostMapSpawn() {
         PrecacheModel("models/npcs/turret/turret_skeleton.mdl")
         PrecacheModel("models/npcs/turret/turret_backwards.mdl")
     }
+    if (GetGameMainDir() == "aperturetag" && GetMapName() != "gg_intro_wakeup") {
+        // Remove all Gelgun entities to get rid of some edicts and prevent issues
+
+        Entities.FindByName(null, "@DoAllNOTListener").Destroy()
+        Entities.FindByName(null, "@DoBlueListener").Destroy()
+        Entities.FindByName(null, "@DoOrangeListener").Destroy()
+        Entities.FindByName(null, "@DoAllNOT").Destroy()
+        Entities.FindByName(null, "@BlueIsPressed").Destroy()
+        Entities.FindByName(null, "@OrangeIsPressed").Destroy()
+        Entities.FindByName(null, "@BlueWasLastPressed").Destroy()
+        Entities.FindByName(null, "@BlueIsEnabled").Destroy()
+        Entities.FindByName(null, "@OrangeIsEnabled").Destroy()
+        Entities.FindByName(null, "@DoBlue").Destroy()
+        Entities.FindByName(null, "@DoOrange").Destroy()
+        Entities.FindByName(null, "@DoOrangeNOT").Destroy()
+        Entities.FindByName(null, "@DoBlueNOT").Destroy()
+        Entities.FindByName(null, "@OrangeIsEnabledNOT").Destroy()
+        Entities.FindByName(null, "@BlueIsEnabledNOT").Destroy()
+        Entities.FindByName(null, "@BlueWasLastPressedNOT").Destroy()
+        Entities.FindByName(null, "@LBL_Nothing").Destroy()
+        Entities.FindByName(null, "@LBL_Orange").Destroy()
+        Entities.FindByName(null, "@LBL_Blue").Destroy()
+        Entities.FindByName(null, "@LBL_AltOrange").Destroy()
+        Entities.FindByName(null, "@LBL_AltBlue").Destroy()
+        Entities.FindByName(null, "@LBL_EmptySoundBlue").Destroy()
+        Entities.FindByName(null, "@LBL_EmptySoundBlue").Destroy()
+        Entities.FindByName(null, "@ini_firing_gell_sound_7").Destroy()
+        Entities.FindByName(null, "@ini_firing_gell_sound_8").Destroy()
+        Entities.FindByName(null, "@ini_firing_gell_sound_5").Destroy()
+        Entities.FindByName(null, "@ini_firing_gell_sound_4").Destroy()
+        Entities.FindByName(null, "@initial_firing_gell_sound_case").Destroy()
+        Entities.FindByName(null, "@ini_firing_gell_sound_2").Destroy()
+        Entities.FindByName(null, "@ini_firing_gell_sound_3").Destroy()
+        Entities.FindByName(null, "InstanceAuto41-measure_movement").Destroy()
+        Entities.FindByName(null, "InstanceAuto41-measure_movement").Destroy()
+        Entities.FindByName(null, "@gel_ui").Destroy()
+        Entities.FindByName(null, "InstanceAuto41-reference_target").Destroy()
+        Entities.FindByName(null, "InstanceAuto41-reference_target_paint").Destroy()
+        Entities.FindByName(null, "@firing_gell_sound").Destroy()
+        Entities.FindByName(null, "@shake_global_sound").Destroy()
+        Entities.FindByName(null, "@empty_sound").Destroy()
+    }
 
     PostMapSpawnDone = true
 }
@@ -1111,6 +1153,8 @@ function OnRespawn(p) {
             gun.__KeyValueFromString("CanFirePortal1", "0")
             gun.__KeyValueFromString("CanFirePortal2", "0")
         }
+        EntFireByHandle(p2mm_clientcommand, "Command", "paintblob_draw_distance_from_eye 110f", 0, p, p)
+        EntFireByHandle(p2mm_clientcommand, "Command", "paintblob_max_radius_scale 0.8f", 0, p, p)
         local index = p.entindex()
         printlP2MM(0, true, p.tostring())
         // Entities.FindByName(null, "player" + index + "_portal1").Destroy()

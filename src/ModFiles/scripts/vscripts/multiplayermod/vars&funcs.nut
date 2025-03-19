@@ -630,6 +630,12 @@ function CreateGenericPlayerClass(p) {
     // Note down the registered player for later reference
     playerclasses.push(currentplayerclass)
 
+    // Aperture Tag Gelgun logic
+    if (GetGameMainDir() == "aperturetag") {
+        currentplayerclass.BlueIsEnabled <- false
+        currentplayerclass.OrangeIsEnabled <- false
+    }
+
     return currentplayerclass
 }
 
@@ -2181,19 +2187,18 @@ function StartCountTransition(player) {
 if (Config_UsePaintGun) {
     function StartGel(index, type) {
         printlP2MM(0, true, "called start")
-        // Entities.FindByName(null, "Painter_" + index.tostring()).__KeyValueFromString("painttype", type.tostring())
         switch (type) {
             case 1:
+                if (FindPlayerClass(PlayerByIndex(index)).BlueIsEnabled != true) break
                 EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
                 EntFire("Bounce_Painter_" + index.tostring(), "Start", "")
                 break
             case 2:
+                if (FindPlayerClass(PlayerByIndex(index)).OrangeIsEnabled != true) break
                 EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
                 EntFire("Speed_Painter_" + index.tostring(), "Start", "")
                 break
         }
-
-        // EntFire("Painter_" + index.tostring(), "ChangePaintType", type.tostring())
     }
     function EndGel(index) {
         printlP2MM(0, true, "called end")
@@ -2202,74 +2207,90 @@ if (Config_UsePaintGun) {
     }
 
     function GelPair(index) {
-        if (!Entities.FindByName(null, "Bounce_Painter_" + index.tostring())) {
-            local player = PlayerByIndex(index)
-            local playername = PlayerByIndex(index).GetName()
-            local playercoord = player.GetOrigin()
+        if (Entities.FindByName(null, "Bounce_Painter_" + index.tostring()) != null) return
+        
+        local player = PlayerByIndex(index)
+        local playername = PlayerByIndex(index).GetName()
+        local playercoord = player.GetOrigin()
+        local playergun = null
 
-            // Setup the listener for when the player hits their +attack bind
-            local gameui = Entities.CreateByClassname("game_ui")
-            EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:StartGel(activator.entindex() 1)", 0, null, null)
-            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
-            EntFireByHandle(gameui, "AddOutput", "PressedAttack2 !activator:RunScriptCode:StartGel(activator.entindex() 2)", 0, null, null)
-            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack2 !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
-            gameui.__KeyValueFromString("targetname", "gameui_" + index.tostring())
-            gameui.__KeyValueFromString("spawnflags", "0")
-            gameui.__KeyValueFromString("FieldOfView", "-1.0")
-            InitializeEntity(gameui)
-
-            local speed = Entities.CreateByClassname("info_paint_sprayer")
-            speed.__KeyValueFromString("painttype", "2")
-            InitializeEntity(speed)
-            speed.__KeyValueFromString("targetname", "Speed_Painter_" + index.tostring())
-            speed.__KeyValueFromString("blob_spread_radius", "1")
-            speed.__KeyValueFromString("blob_streak_percentage", "15")
-            speed.__KeyValueFromString("blobs_per_second", "35")
-            speed.__KeyValueFromString("max_speed", "1250")
-            speed.__KeyValueFromString("max_speed", "1250")
-            speed.__KeyValueFromString("max_streak_speed_dampen", "10000")
-            speed.__KeyValueFromString("min_streak_speed_dampen", "10")
-            speed.__KeyValueFromString("max_streak_time", "0.2")
-            speed.__KeyValueFromString("min_streak_time", "0.1")
-            speed.__KeyValueFromString("min_speed", "1100")
-            speed.__KeyValueFromString("RenderMode", "0")
-            // Entities.FindByName(null, "Speed_Painter_" + index.tostring()).SetAngles(player.GetAngles().x, player.GetAngles().y, player.GetAngles().z)
-            Entities.FindByName(null, "Speed_Painter_" + index.tostring()).SetOrigin(Vector(playercoord.x, playercoord.y, playercoord.z + 45))
-            EntFire("Speed_Painter_" + index.tostring(), "SetParent", playername)
-            EntFire("Speed_Painter_" + index.tostring(), "SetParentAttachmentMaintainOffset", "vstAttach_Rhand", 0.1)
-            // Entities.FindByName(null "Speed_Painter_" + index.tostring()).SetAngles(-90, 90, 0)
-            EntFire("p2mm_servercommand", "Command", "script Entities.FindByName(null \"Speed_Painter_" + index.tostring() + "\").SetAngles(-90, 90, 0)", 1)
-            // EntFire("!self", "RunScriptCode", "Entities.FindByName(null \"Speed_Painter_\"" + index.tostring() + ").SetAngles(" + player.GetAngles().x + " " + player.GetAngles().y + " - 90 " +  player.GetAngles().z + ")", 3)
-
-
-            local bounce = Entities.CreateByClassname("info_paint_sprayer")
-            bounce.__KeyValueFromString("painttype", "0")
-            InitializeEntity(bounce)
-            bounce.__KeyValueFromString("targetname", "Bounce_Painter_" + index.tostring())
-            bounce.__KeyValueFromString("blob_spread_radius", "1")
-            bounce.__KeyValueFromString("blob_streak_percentage", "15")
-            bounce.__KeyValueFromString("blobs_per_second", "35")
-            bounce.__KeyValueFromString("max_speed", "1250")
-            bounce.__KeyValueFromString("max_speed", "1250")
-            bounce.__KeyValueFromString("max_streak_speed_dampen", "10000")
-            bounce.__KeyValueFromString("min_streak_speed_dampen", "10")
-            bounce.__KeyValueFromString("max_streak_time", "0.2")
-            bounce.__KeyValueFromString("min_streak_time", "0.1")
-            bounce.__KeyValueFromString("min_speed", "1100")
-            bounce.__KeyValueFromString("RenderMode", "0")
-            Entities.FindByName(null, "Bounce_Painter_" + index.tostring()).SetOrigin(Vector(playercoord.x, playercoord.y, playercoord.z + 45))
-            EntFire("Bounce_Painter_" + index.tostring(), "SetParent", playername)
-            EntFire("Bounce_Painter_" + index.tostring(), "SetParentAttachmentMaintainOffset", "vstAttach_Rhand", 0.1)
-            EntFire("p2mm_servercommand", "Command", "script Entities.FindByName(null \"Bounce_Painter_" + index.tostring() + "\").SetAngles(-90, 90, 0)", 1)
-            
-            // EntFire("!self", "RunScriptCode", "Entities.FindByName(null \"Bounce_Painter_\"" + index.tostring() + ").SetAngles(" + player.GetAngles().x + " " + player.GetAngles().y + "- 90 " +  player.GetAngles().z + ")", 3)
-            // gameui.__KeyValueFromString("spawnflags", "0")
-
-            // a_playerswithgelgun.append(PlayerByIndex(index))
+        for (local gun = null; gun = Entities.FindByClassname(gun, "weapon_portalgun");) {
+            if (gun.GetRootMoveParent() == player) {
+                playergun = gun
+                break
+            }
         }
+
+        if (playergun == null) return // should never happen
+
+        // Setup the listener for when the player hits their +attack bind
+        local gameui = Entities.CreateByClassname("game_ui")
+        EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:StartGel(activator.entindex() 1)", 0, null, null)
+        EntFireByHandle(gameui, "AddOutput", "UnpressedAttack !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
+        EntFireByHandle(gameui, "AddOutput", "PressedAttack2 !activator:RunScriptCode:StartGel(activator.entindex() 2)", 0, null, null)
+        EntFireByHandle(gameui, "AddOutput", "UnpressedAttack2 !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
+        gameui.__KeyValueFromString("targetname", "gameui_" + index.tostring())
+        gameui.__KeyValueFromString("spawnflags", "0")
+        gameui.__KeyValueFromString("FieldOfView", "-1.0")
+        InitializeEntity(gameui)
+
+        // Setup both gels for for the gun. The Paint type must be set BEFORE initialization for the game to render the correct color.
+        local speed = Entities.CreateByClassname("info_paint_sprayer")
+        speed.__KeyValueFromString("painttype", "2")
+        InitializeEntity(speed)
+        speed.__KeyValueFromString("targetname", "Speed_Painter_" + index.tostring())
+        speed.__KeyValueFromString("blob_spread_radius", "1")
+        speed.__KeyValueFromString("blob_streak_percentage", "15")
+        speed.__KeyValueFromString("blobs_per_second", "35")
+        speed.__KeyValueFromString("max_speed", "1250")
+        speed.__KeyValueFromString("max_streak_speed_dampen", "10000")
+        speed.__KeyValueFromString("min_streak_speed_dampen", "10")
+        speed.__KeyValueFromString("max_streak_time", "0.2")
+        speed.__KeyValueFromString("min_streak_time", "0.1")
+        speed.__KeyValueFromString("min_speed", "1100")
+        speed.__KeyValueFromString("RenderMode", "0")
+
+
+        local bounce = Entities.CreateByClassname("info_paint_sprayer")
+        bounce.__KeyValueFromString("painttype", "0")
+        InitializeEntity(bounce)
+        bounce.__KeyValueFromString("targetname", "Bounce_Painter_" + index.tostring())
+        bounce.__KeyValueFromString("blob_spread_radius", "1")
+        bounce.__KeyValueFromString("blob_streak_percentage", "15")
+        bounce.__KeyValueFromString("blobs_per_second", "35")
+        bounce.__KeyValueFromString("max_speed", "1250")
+        bounce.__KeyValueFromString("max_streak_speed_dampen", "10000")
+        bounce.__KeyValueFromString("min_streak_speed_dampen", "10")
+        bounce.__KeyValueFromString("max_streak_time", "0.2")
+        bounce.__KeyValueFromString("min_streak_time", "0.1")
+        bounce.__KeyValueFromString("min_speed", "1100")
+        bounce.__KeyValueFromString("RenderMode", "0")
+
+        measureEye1 <- Entities.CreateByClassname("logic_measure_movement")
+        measureEye2 <- Entities.CreateByClassname("logic_measure_movement")
+        InitializeEntity(measureEye1)
+        InitializeEntity(measureEye2)
+        
+        measureEye1.__KeyValueFromString("targetname", "measureEye1_" + index.tostring())
+        measureEye1.__KeyValueFromString("MeasureType", "1")
+
+        measureEye2.__KeyValueFromString("targetname", "measureEye2_" + index.tostring())
+        measureEye2.__KeyValueFromString("MeasureType", "1")
+
+        EntFireByHandle(measureEye1, "SetTargetReference", "measureEye1_" + index.tostring(), 0, null, null)
+        EntFireByHandle(measureEye1, "SetMeasureReference", "measureEye1_" + index.tostring(), 0, null, null)
+        EntFireByHandle(measureEye1, "SetMeasureTarget", player.GetName(), 0, null, null)
+        EntFireByHandle(measureEye1, "SetTargetScale", "1", 0, null, null)
+        EntFireByHandle(measureEye1, "SetTarget", "Speed_Painter_" + index.tostring(), 0, null, null)
+
+        EntFireByHandle(measureEye2, "SetTargetReference", "measureEye1_" + index.tostring(), 0, null, null)
+        EntFireByHandle(measureEye2, "SetMeasureReference", "measureEye1_" + index.tostring(), 0, null, null)
+        EntFireByHandle(measureEye2, "SetMeasureTarget", player.GetName(), 0, null, null)
+        EntFireByHandle(measureEye2, "SetTargetScale", "1", 0, null, null)
+        EntFireByHandle(measureEye2, "SetTarget", "Bounce_Painter_" + index.tostring(), 0, null, null)
+
         EntFire("gameui_" + index.tostring(), "Activate", "", 0.2, PlayerByIndex(index))
-        // EntFire("gameui_" + index.tostring(), "AddOutput", "PlayerOff !self:Deactivate", 0.2, PlayerByIndex(index))
-        // EntFire("gameui_" + index.tostring(), "AddOutput", "PlayerOff !self:Activate::0.1", 0.2, PlayerByIndex(index))
-        // EntFire("gameui_" + index.tostring(), "AddOutput", "PlayerOff !self:RunScriptCode:EndGel(activator.entindex())", 0.2, PlayerByIndex(index))
+        EntFire("measureEye1_" + index.tostring(), "Enable", "")
+        EntFire("measureEye2_" + index.tostring(), "Enable", "")
     }
 }
