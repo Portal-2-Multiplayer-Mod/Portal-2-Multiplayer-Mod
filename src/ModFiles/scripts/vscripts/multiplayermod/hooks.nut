@@ -1155,9 +1155,5 @@ function OnRespawn(p) {
         }
         EntFireByHandle(p2mm_clientcommand, "Command", "paintblob_draw_distance_from_eye 110f", 0, p, p)
         EntFireByHandle(p2mm_clientcommand, "Command", "paintblob_max_radius_scale 0.8f", 0, p, p)
-        local index = p.entindex()
-        printlP2MM(0, true, p.tostring())
-        // Entities.FindByName(null, "player" + index + "_portal1").Destroy()
-        // Entities.FindByName(null, "player" + index + "_portal2").Destroy()
     }
 }

@@ -1692,12 +1692,6 @@ function CombineList(list, startlength, inbetweenchars = " ") {
 
 function CreateOurEntities() {
 
-    // cube <- Entities.CreateByClassname("prop_weighted_cube")
-    // cube.__KeyValueFromString("targetname", "cube")
-    // cube.SetOrigin(Vector(0, 0, 400))
-    // printlP2MM(0, true, cube.GetOrigin().tostring())
-    // printlP2MM(0, true, Entities.FindByName(null, cube.GetName()).GetOrigin().tostring())
-
     if (Config_UseNametags/* && g_bAllowNametags*/) {
         // Create an entity to measure player eye angles
         measuremovement_eyeposition <- Entities.CreateByClassname("logic_measure_movement")
@@ -1721,17 +1715,6 @@ function CreateOurEntities() {
         nametagdisplay.__KeyValueFromString("fadein", "0.2")
         nametagdisplay.__KeyValueFromString("channel", "1")
     }
-
-    // measurepaintgun <- Entities.CreateByClassname("logic_measure_movement")
-    // measurepaintgun.__KeyValueFromString( "measuretype", "1")
-    // measurepaintgun.__KeyValueFromString( "measurereference", "p2mm_logic_measure_paintgun" )
-    // measurepaintgun.__KeyValueFromString( "measureretarget", "blue" )
-    // measurepaintgun.__KeyValueFromString( "targetscale", "1.0" )
-    // measurepaintgun.__KeyValueFromString( "targetname", "p2mm_logic_measure_paintgun" )
-    // measurepaintgun.__KeyValueFromString( "targetreference", "p2mm_logic_measure_paintgun" )
-    // measurepaintgun.__KeyValueFromString( "target", "cube" )
-    // EntFireByHandle(measurepaintgun, "SetMeasureReference", "p2mm_logic_measure_paintgun", 0.0, null, null)
-    // EntFireByHandle(measurepaintgun, "Disable", "", 0.0, null, null)
 
     // Create an display entity for the host to wait for another player to load in
     waitingtext <- Entities.CreateByClassname("game_text")
