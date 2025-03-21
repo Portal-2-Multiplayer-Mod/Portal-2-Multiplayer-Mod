@@ -879,6 +879,7 @@ function PostMapSpawn() {
         Entities.FindByName(null, "@firing_gell_sound").Destroy()
         Entities.FindByName(null, "@shake_global_sound").Destroy()
         Entities.FindByName(null, "@empty_sound").Destroy()
+        Entities.FindByName(null, "@shake_global").Destroy()
     }
 
     PostMapSpawnDone = true
