@@ -6,6 +6,10 @@
 //  ╚═════╝  ╚═════╝ ╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚═════════╝   ╚═╝   ╚═╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝     
 
 bIntroDone <- false
+respawnCooldown <- 0
+cubesSpawned <- false
+tubePlayer <- null
+trackCoords <- Vector(0, 0, 0)
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
@@ -53,28 +57,28 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-320, 608, -800), 32), "AddOutput", "OnTrigger hotel_bts_tractorbeam_p2mmoverride:Enable", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-320, 480, -112), 32), "AddOutput", "OnTrigger hotel_bts_tractorbeam_2_p2mmoverride:Enable", 0, null, null)
 
+        // Prevent cube from exiting the test. We have to handle this ourselves because the brush keeping the cubes in also keeps incoming players out.
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1008, 784, 352), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:respawnCooldown=Time()+6", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1008, 784, 352), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:cubesSpawned=true", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1008, 784, 352), 32), "AddOutput", "OnStartTouch laserroom_reflective_1_temp:Kill::1", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1008, 784, 352), 32), "AddOutput", "OnStartTouch laserroom_reflective_2_temp:Kill::1", 0, null, null)
+        Entities.FindByName(null, "cube_clipper_brush").Destroy()
+
         // Not sure why this breaks in MP, I just set the trigger to push everything and that made it push the cube again
         Entities.FindByClassnameNearest("trigger_push", Vector(1496, 128, -1592), 32).__KeyValueFromString("spawnflags", "64")
 
-        // Make the player that reached the vac tube see the cutscene
-        // This is commented out instead of deleted incase i get the tube cutscene working later
-        // local camera = Entities.CreateByClassname("point_viewcontrol")
-        // camera.SetOrigin(Vector(1184, 480, 352))
-        Entities.FindByName(null, "@tube_ride_start_relay").Destroy()
-        // camera.__KeyValueFromString("target", "@podtrain_player")
-        // camera.__KeyValueFromString("moveto", "@tube_path_inst_start")
-        // camera.__KeyValueFromString("speed", "600")
-        // camera.__KeyValueFromString("targetname", "@tube_ride_viewproxy")
-        // camera.__KeyValueFromString("spawnflags", "24")
-        // EntFireByHandle(camera, "SetParent", "@podtrain_player", 0, null, null)
-        // EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1183.99, 480, 352), 32), "AddOutput", "OnTrigger !self:RunScriptCode:endScene=true", 0, null, null)
+        for (local track = null; track = Entities.FindByClassname(track, "path_track");) {
+            if (track.GetName().find("tube_path_") != null) {
+                EntFireByHandle(track, "AddOutput", "OnPass !self:RunScriptCode:correctPosition()", 0, null, null)
+            }
+        }
 
         // Make transitions work
-        // This is commented out instead of deleted incase i get the tube cutscene working later
-        // Entities.FindByName(null, "@transition_script").Destroy()
-        // EntFire("tube_path_27", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel gg_blue_only:0.3", 0, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1183.99 480 352), 32), "AddOutput", "OnTrigger fade_ending_tube:Fade", 0, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1183.99 480 352), 32), "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel gg_blue_only:2", 0, null, null)
+        Entities.FindByName(null, "@transition_script").Destroy()
+        EntFire("tube_path_27", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel gg_blue_only:1")
+
+        // Make vactube ride work
+        EntFire("@tube_ride_start_relay", "AddOutput", "OnTrigger !activator:RunScriptCode:vacTube(activator)")
 
         EntFire("wakeup_relay", "AddOutput", "OnTrigger !self:RunScriptCode:endIntro():1.05")
     }
@@ -90,6 +94,49 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         for (local p; p = Entities.FindByClassname(p, "player");) {
             p.__KeyValueFromString("rendermode", "10")
             SetSpeed(p, 0)
+        }
+    }
+
+    if (MSLoop) {
+        if (respawnCooldown > Time() || !cubesSpawned) return
+        
+        local cubes = CreateTrigger("prop_weighted_cube", 1568, 896, 128, 800, 64, 320)
+        local respawnCube1 = true
+        local respawnCube2 = true
+        try {
+            switch (cubes[0].GetName()) {
+                case "laserroom_reflective_1":
+                    respawnCube1 = false
+                    break
+                case "laserroom_reflective_2":
+                    respawnCube2 = false
+                    break
+            }
+        }
+        catch (exception) {} // Out of playable area, respawn the cube
+
+        try {
+            switch (cubes[1].GetName()) {
+                case "laserroom_reflective_1":
+                    respawnCube1 = false
+                    break
+                case "laserroom_reflective_2":
+                    respawnCube2 = false
+                    break
+            }
+        }
+        catch (exception) {} // Out of playable area, respawn the cube
+
+        if (respawnCube1) {
+            respawnCooldown = Time() + 6
+            EntFire("laserroom_reflective_1", "Dissolve", "")
+            EntFire("p2mm_servercommand", "Command", "script respawnCube(1)", 1)
+            // need a small delay so the entfire can process first and not dissolve our new cube
+        }
+        if (respawnCube2) {
+            respawnCooldown = Time() + 6
+            EntFire("laserroom_reflective_2", "Dissolve", "")
+            EntFire("p2mm_servercommand", "Command", "script respawnCube(2)", 1)
         }
     }
 
@@ -109,4 +156,47 @@ function endIntro() {
     }
     Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-723, -2481, 53))
     Entities.FindByClassname(null, "info_player_start").SetAngles(0, 30, 0)
+}
+
+function vacTube(activator) {
+    Entities.FindByName(null, "pusher").Destroy()
+    Entities.FindByName(null, "fling_tube").Destroy()
+    Entities.FindByClassnameNearest("point_push", Vector(1184, 480, 256), 32).Destroy()
+    
+    SetSpeed(activator, 0)
+    EnableNoclip(true, activator)
+    
+    activator.SetVelocity(Vector(0, 0, 0))
+    EntFireByHandle(activator, "SetParent", "@podtrain_player", 0, null, null)
+    EntFire("@podtrain_player", "SetSpeed", "1")
+    tubePlayer = activator
+}
+
+function respawnCube(cubeNumber) {
+    local cube = Entities.CreateByClassname("prop_weighted_cube")
+    cube.__KeyValueFromString("CubeType", "2")
+    cube.__KeyValueFromString("skin", "3")
+    switch (cubeNumber) {
+        case 1:
+            cube.__KeyValueFromString("targetname", "laserroom_reflective_1")
+            cube.SetOrigin(Vector(1744, -48, 304))
+            break
+        case 2:
+            cube.__KeyValueFromString("targetname", "laserroom_reflective_2")
+            cube.SetOrigin(Vector(1728, 384, 432))
+            break
+    }
+    InitializeEntity(cube)
+}
+
+function correctPosition() {
+    // The vactube ride is very buggy on client for some reason, so we need to correct it constantly
+
+    trackCoords = Entities.FindByName(null, "@podtrain_player").GetOrigin()
+    if (!Entities.FindByClassnameNearest("player", trackCoords, 64)) {
+        EntFireByHandle(tubePlayer, "SetParent", "", 0, null, null)
+        EntFire("p2mm_servercommand", "Command", "script tubePlayer.SetOrigin(Vector(trackCoords.x, trackCoords.y, trackCoords.z - 56))", 0.02)
+        EntFireByHandle(tubePlayer, "SetParent", "@podtrain_player", 0.05, null, null)
+        tubePlayer.SetVelocity(Vector(0, 0, 0))
+    }
 }

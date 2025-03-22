@@ -39,6 +39,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
         // Make transitioning levels work
         Entities.FindByName(null, "@transition_script").Destroy()
-        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel gg_blue_only_2")
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel gg_blue_only_2:2")
     }
 }

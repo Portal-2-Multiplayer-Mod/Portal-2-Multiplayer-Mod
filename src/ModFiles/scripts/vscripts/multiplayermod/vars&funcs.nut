@@ -2245,7 +2245,7 @@ if (Config_ManualEnablePaintGun || GetGameMainDir() == "aperturetag") {
         bounce.__KeyValueFromString("RenderMode", "0")
         EntFire("Bounce_Painter_" + index.tostring(), "SetParent", "Speed_Painter_" + index.tostring())
 
-        measureEye <- Entities.CreateByClassname("logic_measure_movement")
+        local measureEye = Entities.CreateByClassname("logic_measure_movement")
         InitializeEntity(measureEye)
         
         measureEye.__KeyValueFromString("targetname", "measureEye_" + index.tostring())
