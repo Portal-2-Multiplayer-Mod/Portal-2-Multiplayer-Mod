@@ -410,7 +410,7 @@ function P2MMLoop() {
                 }
             }
             if (GlobalSpawnClass.m_bUseAutoCountEnd == true) {
-                if (GetMapName().find("_a2_") && GetGameMainDir() == "portal_stories" || GetMapName().find("sp_a3") != null && GetGameMainDir() == "portal2") {
+                if (GetMapName().find("_a2_") && g_iCurGameIndex == PORTAL_STORIES_MEL || GetMapName().find("sp_a3") != null && g_iCurGameIndex == PORTAL_2) {
                     try {
                         local entryTrigger = Entities.FindByClassnameNearest("trigger_once", hCountdownEnableTrigger.GetOrigin(), 256).GetOrigin()
                         for (local p = null; p = Entities.FindByClassnameWithin(p, "player", entryTrigger, 256);) {
@@ -418,7 +418,7 @@ function P2MMLoop() {
                         }                
                     } catch (exception) {} // Trigger must not exist anymore (the timer has already ended and someone is in the elevator)
                 }
-                if (GetGameMainDir() == "portal_stories" && GetMapName().find("_a3_") != null || GetMapName().find("_a4_") != null) {
+                if (g_iCurGameIndex == PORTAL_STORIES_MEL && GetMapName().find("_a3_") != null || GetMapName().find("_a4_") != null) {
                     for (local p = null; p = Entities.FindByClassnameWithin(p, "player", Entities.FindByClassname(null, "info_teleport_destination").GetOrigin(), 256);) {
                         StartCountTransition(p)
                     }
@@ -684,7 +684,7 @@ function PostPlayerSpawn() {
 
     if (Config_UseCountdown && GlobalSpawnClass.m_bUseAutoCountEnd) {
         // setup if the host has the wait config enabled
-        if (Entities.FindByModel(null, "models/props_underground/elevator_a.mdl") == null && GetGameMainDir() == "portal2") {
+        if (Entities.FindByModel(null, "models/props_underground/elevator_a.mdl") == null && g_iCurGameIndex == PORTAL_2) {
             // a1-a2 elevators
             guessedtrigger <- Entities.FindByClassnameNearest("trigger_once", Entities.FindByName(null, "departure_elevator-elevator_1").GetOrigin(), 64)
             if (guessedtrigger == null) {
@@ -719,7 +719,7 @@ function PostPlayerSpawn() {
             }
             printlP2MM(0, true, exittrigger.GetName())
             EntFireByHandle(exittrigger, "AddOutput", "OnStartTouch !activator:RunScriptCode:StartCountTransition(activator)", 0, null, null)
-        } else if (GetMapName().find("_a2_") != null && GetGameMainDir() == "portal_stories" || GetMapName().find("sp_a3") != null && GetGameMainDir() == "portal2") {
+        } else if (GetMapName().find("_a2_") != null && g_iCurGameIndex == PORTAL_STORIES_MEL || GetMapName().find("sp_a3") != null && g_iCurGameIndex == PORTAL_2) {
             // Old Aperture elevators (both P2 and Mel)
             local elevator = null
             for (local bestelevator = null; bestelevator = Entities.FindByClassname(bestelevator, "path_track");) {
@@ -730,7 +730,7 @@ function PostPlayerSpawn() {
             }
             hCountdownEnableTrigger = Entities.FindByClassnameNearest("trigger_once", elevator.GetOrigin(), 32)
             EntFireByHandle(hCountdownEnableTrigger, "Disable", "", 0, null, null)
-        } else if (Config_UseCountdown && GetGameMainDir() == "portal_stories") {
+        } else if (Config_UseCountdown && g_iCurGameIndex == PORTAL_STORIES_MEL) {
             if (GetMapName().find("_a3_") != null || GetMapName().find("_a4_") != null) {
                 hCountdownEnableTrigger = Entities.FindByClassnameNearest("trigger_multiple", Entities.FindByClassname(null, "info_teleport_destination").GetOrigin(), 64)
                 EntFireByHandle(hCountdownEnableTrigger, "Disable", "", 0, null, null)
@@ -849,7 +849,7 @@ function PostMapSpawn() {
         PrecacheModel("models/npcs/turret/turret_skeleton.mdl")
         PrecacheModel("models/npcs/turret/turret_backwards.mdl")
     }
-    if (GetGameMainDir() == "aperturetag" && GetMapName().find("gg_") != null && GetMapName() != "gg_intro_wakeup") {
+    if (g_iCurGameIndex == APERTURE_TAG && GetMapName().find("gg_") != null && GetMapName() != "gg_intro_wakeup") {
         // Remove all Gelgun entities to get rid of some edicts and prevent issues
 
         Entities.FindByName(null, "@DoAllNOTListener").Destroy()
@@ -1116,7 +1116,7 @@ function OnPlayerJoin(p) {
         }
     }
 
-    if (Config_ManualEnablePaintGun || GetGameMainDir() == "aperturetag") {
+    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
         EntFireByHandle(p2mm_clientcommand, "Command", "paintblob_draw_distance_from_eye 110f", 0, p, p)
         SetConVarString("paintblob_max_radius_scale", "0.8f")
     }
@@ -1142,7 +1142,7 @@ function OnRespawn(p) {
         TeleportToSpawnPoint(p, null)
     }
 
-    if (Config_ManualEnablePaintGun || GetGameMainDir() == "aperturetag") {
+    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
         GelPair(p.entindex())
         // Disable the player's portalgun
         local i = 0

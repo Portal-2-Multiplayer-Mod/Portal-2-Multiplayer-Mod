@@ -84,10 +84,6 @@ if (g_bIsOnSingleplayerMaps) {
     function CoopBotAnimation(int1, int2) {}
 }
 
-if (GetGameMainDir() == "portal_stories") {
-    FIRST_MAP_WITH_POTATO_GUN <- null
-}
-
 // g_iCurGameIndex definition.
 g_iCurGameIndex <- -1
 switch (GetGameMainDir()) {
@@ -96,8 +92,13 @@ switch (GetGameMainDir()) {
     case "aperturetag":     g_iCurGameIndex = APERTURE_TAG;       break;
     case "portalreloaded":  g_iCurGameIndex = PORTAL_RELOADED;    break;
     case "infra":           g_iCurGameIndex = INFRA;              break;
-    case "divinity":        g_iCurGameIndex = DIVINITY;           break;
 }
+// Special case has to be done with SourceMods as their main game dir is a path to the SourceMod.
+if (GetGameMainDir().find("Divinity"))
+    g_iCurGameIndex = DIVINITY
+
+if (g_iCurGameIndex == PORTAL_STORIES_MEL)
+    FIRST_MAP_WITH_POTATO_GUN <- null
 
 MadeSpawnClass <- false
 OrangeCacheFailed <- false
@@ -199,6 +200,7 @@ OriginalPosMain <- null
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 hCountdownEnableTrigger <- null
 sInstantTransitionMap <- ""
+
 //* FUNCTIONS *\\
 
 function GetHighest(inpvec) {
@@ -631,7 +633,7 @@ function CreateGenericPlayerClass(p) {
     playerclasses.push(currentplayerclass)
 
     // Aperture Tag Gelgun logic
-    if (GetGameMainDir() == "aperturetag") {
+    if (g_iCurGameIndex == APERTURE_TAG) {
         currentplayerclass.BlueGelIsEnabled <- false
         currentplayerclass.OrangeGelIsEnabled <- false
     }
@@ -2167,7 +2169,7 @@ function StartCountTransition(player) {
     }
 }
 
-if (Config_ManualEnablePaintGun || GetGameMainDir() == "aperturetag") {
+if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
     function StartGel(index, type) {
         switch (type) {
             case 1:
