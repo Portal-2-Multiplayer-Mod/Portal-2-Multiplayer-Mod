@@ -16,56 +16,56 @@ Extras
 {
         "title" "Intro"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "p2mm_startsession sp_a1_divinity_intro"
+        "command"   "map sp_a1_divinity_intro *mp"
         "pic"   "vgui/chapters/chapter1"
 }
  "Map2"
 {
         "title" "Behind the Scenes"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "p2mm_startsession sp_a1_divinity_bts1"
+        "command"   "map sp_a1_divinity_bts1 *mp"
         "pic"   "vgui/chapters/chapter1"
 }
  "Map3"
 {
         "title" "Field Intro"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "p2mm_startsession sp_a1_divinity_field_intro"
+        "command"   "map sp_a1_divinity_field_intro *mp"
         "pic"   "vgui/chapters/chapter1"
 }
  "Map4"
 {
         "title" "Wall blocks Wall"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "p2mm_startsession sp_a1_divinity_wall_blocks_wall"
+        "command"   "map sp_a1_divinity_wall_blocks_wall *mp"
         "pic"   "vgui/chapters/chapter1"
 }
  "Map5"
 {
         "title" "Traversal"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "p2mm_startsession sp_a1_divinity_traversal"
+        "command"   "map sp_a1_divinity_traversal *mp"
         "pic"   "vgui/chapters/chapter1"
 }
  "Map6"
 {
         "title" "Funnel Tower"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "p2mm_startsession sp_a1_divinity_funnel_tower"
+        "command"   "map sp_a1_divinity_funnel_tower *mp"
         "pic"   "vgui/chapters/chapter1"
 }
  "Map7"
 {
         "title" "Pink Plate"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "p2mm_startsession sp_a1_divinity_pink_plate"
+        "command"   "map sp_a1_divinity_pink_plate *mp"
         "pic"   "vgui/chapters/chapter1"
 }
  "Map8"
 {
         "title" "Core"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "p2mm_startsession sp_a1_divinity_core01"
+        "command"   "map sp_a1_divinity_core01 *mp"
         "pic"   "vgui/chapters/chapter1"
 }
 }
