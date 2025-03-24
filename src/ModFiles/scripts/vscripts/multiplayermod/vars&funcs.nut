@@ -90,8 +90,8 @@ switch (GetGameMainDir()) {
     case "portal2":         g_iCurGameIndex = PORTAL_2;           break;
     case "portal_stories":  g_iCurGameIndex = PORTAL_STORIES_MEL; break;
     case "aperturetag":     g_iCurGameIndex = APERTURE_TAG;       break;
-    case "portalreloaded":  g_iCurGameIndex = PORTAL_RELOADED;    break;
-    case "infra":           g_iCurGameIndex = INFRA;              break;
+    //case "portalreloaded":  g_iCurGameIndex = PORTAL_RELOADED;    break;
+    //case "infra":           g_iCurGameIndex = INFRA;              break;
 }
 // Special case has to be done with SourceMods as their main game dir is a path to the SourceMod.
 if (GetGameMainDir().find("Divinity"))
