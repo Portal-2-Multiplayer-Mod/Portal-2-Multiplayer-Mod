@@ -11,7 +11,7 @@ def GetLastLog() -> str:
     return os.path.join (logsPath + "/" + logs[0])
 
 def GetConsoleFile() -> str | None:
-    path = BF.NormalizePath(GVars.configData['Portal2-Path']['value'] + "/portal2/console.log")
+    path = BF.NormalizePath(GVars.configData['Game-Path']['value'] + "/portal2/console.log")
     if os.path.exists(path) and os.path.isfile(path):
         return path
     return None

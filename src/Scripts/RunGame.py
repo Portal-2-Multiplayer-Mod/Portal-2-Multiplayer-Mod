@@ -115,16 +115,16 @@ def MountMod(gamepath: str) -> None:
 
     Log("            ___________Mounting Mod End__________")
 
-# Using the identifier file in P2MM's (basegamedir)_tempcontent folder, it can be determined
-# which (basegamedir)_tempcontent folder that is mounted to Portal 2 is in fact P2MM's DLC folder
+# Using the identifier file in P2MM's (gamemaindir)_tempcontent folder, it can be determined
+# which (gamemaindir)_tempcontent folder that is mounted to Portal 2 is in fact P2MM's DLC folder
 def FindP2MMFolder(gamepath: str) -> str | bool:
     for file in os.listdir(gamepath):
-        # Find all the folders that start with "(basegamedir)_tempcontent" and check if they have the identifier.
+        # Find all the folders that start with "(gamemaindir)_tempcontent" and check if they have the identifier.
         if file.endswith("_tempcontent") and not file.startswith("p2mm_override_") and os.path.isdir(gamepath + os.sep + file) and ("p2mm.identifier" in os.listdir(gamepath + os.sep + file)):
             p2mmFolder = gamepath + os.sep + file
-            Log("Found P2MM's (basegamedir)_tempcontent folder: " + p2mmFolder)
+            Log("Found P2MM's (gamemaindir)_tempcontent folder: " + p2mmFolder)
             return p2mmFolder
-    Log("P2MM's (basegamedir)_tempcontent folder was not found!")
+    Log("P2MM's (gamemaindir)_tempcontent folder was not found!")
     Log("It's most likely not been mounted to Portal 2 yet, already been unmounted, or the game path is incorrect...")
     return False
 
@@ -143,7 +143,7 @@ def CheckForRequiredP2DLC(gamepath: str) -> bool:
     Log("DLC folders were found...")
     return True
 
-# Find and delete P2MM's (basegamedir)_tempcontent folder
+# Find and delete P2MM's (gamemaindir)_tempcontent folder
 def DeleteModFolder(gamepath: str) -> bool:
     if (not os.path.exists(gamepath)):
         Log("Portal 2 game path not found! Can't remove P2MM temp content folders!")
@@ -158,24 +158,24 @@ def DeleteModFolder(gamepath: str) -> bool:
         BF.DeleteFolder(foundP2MMFolder)
         Log("Deleted old temp content folder: " + foundP2MMFolder)
     
-    # Rename p2mm_override_(basegamedir)_tempcontent folder, if it exists, back to what that it was named before
+    # Rename p2mm_override_(gamemaindir)_tempcontent folder, if it exists, back to what that it was named before
     for file in os.listdir(gamepath):
         if file.startswith("p2mm_override_") and os.path.isdir(gamepath + os.sep + file):
             os.rename(gamepath + os.sep + file, gamepath + os.sep + file[14:])
             break
 
-# Prepare the location for (basegamedir)_tempcontent for P2MM's files. Renaming any preexisting ones so it 
+# Prepare the location for (gamemaindir)_tempcontent for P2MM's files. Renaming any preexisting ones so it 
 def PrepareTempContent(gamepath: str) -> str:
-    Log("Preparing game directory for P2MM's (basegamedir)_tempcontent folder...")
+    Log("Preparing game directory for P2MM's (gamemaindir)_tempcontent folder...")
     
     # Go through each file in the gamepath to find any existing temp content folders
     for file in os.listdir(gamepath):
         # Find all the folders that start with "_tempcontent", there should only be one.
-        # If any folder we find is a (basegamedir)_tempcontent folder without the identifier file inside 
+        # If any folder we find is a (gamemaindir)_tempcontent folder without the identifier file inside 
         if file.endswith("_tempcontent") and os.path.isdir(gamepath + os.sep + file) and not os.path.exists(gamepath + os.sep + file + os.sep + "p2mm.identifier"):
-            Log("Found a different (basegamedir)_tempcontent folder!")
-            Log("Have to rename the folder so we can use our (basegamedir)_tempcontent folder.")
-            # Hopefully nobody already has a p2mm_override_(basegamedir)_tempcontent folder :D
+            Log("Found a different (gamemaindir)_tempcontent folder!")
+            Log("Have to rename the folder so we can use our (gamemaindir)_tempcontent folder.")
+            # Hopefully nobody already has a p2mm_override_(gamemaindir)_tempcontent folder :D
             if (not os.path.exists(gamepath + os.sep + "p2mm_override_" + file)):
                 os.rename(gamepath + os.sep + file, gamepath + os.sep + "p2mm_override_" + file)
     if gamepath.find("Portal Stories Mel") != -1:

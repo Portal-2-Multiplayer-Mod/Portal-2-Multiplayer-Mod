@@ -89,7 +89,7 @@ def MapFromSteamID(workshopLink: str) -> str:
     """
 
     SteamID = SteamIDFromLink(workshopLink)
-    mapsList = GetDownloadedMaps(GVars.configData["Portal2-Path"]["value"] + BF.NormalizePath("/portal2/maps/workshop"))
+    mapsList = GetDownloadedMaps(GVars.configData["Game-Path"]["value"] + BF.NormalizePath("/portal2/maps/workshop"))
 
     for map_info in mapsList:
         if map_info["id"] == SteamID:

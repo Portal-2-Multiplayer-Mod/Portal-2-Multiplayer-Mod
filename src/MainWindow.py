@@ -967,7 +967,7 @@ def GetGamePath() -> None:
     tempPath = BF.TryFindPortal2Path()
 
     if tempPath:
-        CFG.EditConfig("Portal2-Path", tempPath.strip())
+        CFG.EditConfig("Game-Path", tempPath.strip())
         Log("Saved '" + tempPath.strip() + "' as the game path!")
         Ui.CreateToast(
             GVars.translations["game_path_found_toast"], 5, (255, 255, 75))
@@ -975,7 +975,7 @@ def GetGamePath() -> None:
         return
 
     def AfterInputGP(inp) -> None:
-        CFG.EditConfig("Portal2-Path", inp.strip())
+        CFG.EditConfig("Game-Path", inp.strip())
         Log("Saved '" + inp.strip() + "' as the game path!")
         Ui.CreateToast(
             GVars.translations["game_path_saved_toast"], 5, (75, 200, 75))
@@ -986,7 +986,7 @@ def GetGamePath() -> None:
 
 def VerifyGamePath(shouldGetPath: bool = True) -> bool:
     Log("Verifying game path...")
-    gamePath = GVars.configData["Portal2-Path"]["value"]
+    gamePath = GVars.configData["Game-Path"]["value"]
 
     if not os.path.exists(gamePath):
         Ui.CreateToast(GVars.translations["game_path-is-invalid"])
@@ -1038,12 +1038,12 @@ def MountModOnly() -> bool:
     Ui.CreateToast(GVars.translations["mounting_mod"], 5, (75, 255, 75))
 
     # Remove current console.log
-    path = BF.NormalizePath(GVars.configData['Portal2-Path']['value'] + "/portal2/console.log")
+    path = BF.NormalizePath(GVars.configData['Game-Path']['value'] + "/portal2/console.log")
     if os.path.exists(path) and os.path.isfile(path):
         BF.DeleteFile(path)
 
     # Need to make sure the game path is in fact defined, if not P2MM will not be run/mounted
-    gamePath = GVars.configData["Portal2-Path"]["value"]
+    gamePath = GVars.configData["Game-Path"]["value"]
     if ("undefined" in gamePath):
         Ui.CreateToast(
             GVars.translations["mount_nopath_toast"], 5, (255, 21, 0))
@@ -1125,7 +1125,7 @@ def UpdateModClient(data: dict) -> None:
 def RunGameScript() -> None:
     MMO = MountModOnly()
     if MMO:
-        gamePath = GVars.configData["Portal2-Path"]["value"]
+        gamePath = GVars.configData["Game-Path"]["value"]
         args = RG.AssembleArgs(gamePath)
         if not args:
             Ui.CreateToast(GVars.translations["args-error"], 5)
@@ -1153,7 +1153,7 @@ def UnmountScript(shouldGetPath: bool = True) -> bool:
     
     Log("___Unmounting Mod___")
     VerifyGamePath(shouldGetPath)
-    gamePath = GVars.configData["Portal2-Path"]["value"]
+    gamePath = GVars.configData["Game-Path"]["value"]
     RG.DeleteModFolder(gamePath)
     Log("____DONE UNMOUNTING____")
     return True
@@ -1253,7 +1253,7 @@ def PostInitialize() -> None:
         if RG.Portal2Running():
             Log("Can't unmount because game is currently running!")
         else:
-            RG.DeleteModFolder(GVars.configData["Portal2-Path"]["value"])
+            RG.DeleteModFolder(GVars.configData["Game-Path"]["value"])
 
     def NewAfterFunction() -> None:
         Ui.CreateToast(GVars.translations["game_exited"], 5, (125, 0, 125))

@@ -79,12 +79,12 @@ DefaultConfig = {
         "warning": "",
         "prompt": ""
     },
-    "Portal2-Path": {
+    "Game-Path": {
         "value": "undefined",
         "menu": "general",
-        "description": "Path of the Portal 2 Folder.",
+        "description": "Folder path to supported Portal 2 based game.",
         "warning": "",
-        "prompt": "Enter the path to the Portal 2 folder."
+        "prompt": "Enter the folder path to the Portal 2 based game."
     },
     "Auto-Unmount": {
         "value": True,
