@@ -25,8 +25,6 @@ else:
 vpkWorkPath = f"{os.getcwd() + os.sep}src{os.sep}ModFilesVPK"
 modFilesVPKPath = f"src{os.sep}ModFiles{os.sep}pak01_dir_portal2.vpk"
 
-# vpkeditcli.exe  + os.sep + "pak01_dir_portal2" -s -o "C:\Users\Orsell\Desktop\Programming\Portal\Portal-2-Multiplayer-Mod\src\ModFilesVPK\pak01_dir_portal2.vpk"
-
 # Remove the old pak01_dir_portal2.vpk so a new one can be made
 print("Removing old pak01_dir_portal2.vpk...")
 if os.path.exists(f"{vpkWorkPath + os.sep}pak01_dir_portal2.vpk"):
@@ -34,8 +32,7 @@ if os.path.exists(f"{vpkWorkPath + os.sep}pak01_dir_portal2.vpk"):
 
 # Make the new pak01_dir_portal2.vpk
 if (vpkedit):
-    print(f'"{p2VPKPath}" -s -o "{vpkWorkPath + os.sep}pak01_dir_portal2.vpk" "{vpkWorkPath + os.sep}pak01_dir_portal2"')
-    subprocess.call(f'"{p2VPKPath}" -s -o "{vpkWorkPath + os.sep}pak01_dir_portal2.vpk" "{vpkWorkPath + os.sep}pak01_dir_portal2"')
+    subprocess.call(f'"{p2VPKPath}" -v 1 -s -o "{vpkWorkPath + os.sep}pak01_dir_portal2.vpk" "{vpkWorkPath + os.sep}pak01_dir_portal2"')
 else:
     subprocess.call(f'"{p2VPKPath}" "{vpkWorkPath + os.sep}pak01_dir_portal2"')
 

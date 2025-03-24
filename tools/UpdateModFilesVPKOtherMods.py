@@ -32,8 +32,7 @@ if os.path.exists(f"{vpkWorkPath + os.sep}pak01_dir.vpk"):
 
 # Make the new pak01_dir.vpk
 if (vpkedit):
-    print(f'"{p2VPKPath}" -s -o "{vpkWorkPath + os.sep}pak01_dir.vpk" "{vpkWorkPath + os.sep}pak01_dir"')
-    subprocess.call(f'"{p2VPKPath}" -s -o "{vpkWorkPath + os.sep}pak01_dir.vpk" "{vpkWorkPath + os.sep}pak01_dir"')
+    subprocess.call(f'"{p2VPKPath}" -v 1 -s -o "{vpkWorkPath + os.sep}pak01_dir.vpk" "{vpkWorkPath + os.sep}pak01_dir"')
 else:
     subprocess.call(f'"{p2VPKPath}" "{vpkWorkPath + os.sep}pak01_dir"')
 
