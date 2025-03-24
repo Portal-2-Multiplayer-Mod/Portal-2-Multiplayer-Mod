@@ -100,13 +100,18 @@ def MountMod(gamepath: str) -> None:
         os.rename(mountedModFiles + os.sep + "media_portal2", mountedModFiles + os.sep + "media")
         os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_portal2", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
         os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_portal2.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
+        os.remove(mountedModFiles + os.sep + "pak01_dir.vpk")
+        os.rename(mountedModFiles + os.sep + "pak01_dir_portal2.vpk", mountedModFiles + os.sep + "pak01_dir.vpk")
     elif gamepath.find("Portal Stories Mel") != -1:
         os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_portal_stories", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
         os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_portal_stories.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
         os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "transitions_portal_stories", mountedModFiles + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "transitions")
-    # elif gamePath.find("Aperture Tag") != -1:
-    #   os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_aperturetag", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
-    #   os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_aperturetag.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
+    elif gamepath.find("Aperture Tag") != -1:
+      os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_aperturetag", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
+      os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_aperturetag.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
+    elif gamepath.find("Divinity") != -1:
+      os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_divinity", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
+      os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_divinity.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
 
     Log("            ___________Mounting Mod End__________")
 
@@ -175,8 +180,16 @@ def PrepareTempContent(gamepath: str) -> str:
                 os.rename(gamepath + os.sep + file, gamepath + os.sep + "p2mm_override_" + file)
     if gamepath.find("Portal Stories Mel") != -1:
         return "portal_stories_tempcontent"
-    # elif gamepath.find("Aperture Tag") != -1:
-    #     return "aperturetag_tempcontent"
+    elif gamepath.find("Aperture Tag") != -1:
+        return "aperturetag_tempcontent"
+    # elif gamepath.find("Portal Reloaded") != -1:
+    #     return "portalreloaded_tempcontent"
+    elif gamepath.find("Divinity") != -1:
+        return "divinity_tempcontent"
+    # elif gamepath.find("infra") != -1:
+    #     return "infra_tempcontent"
+    # elif gamepath.find("The Stanley Parable") != -1:
+    #     return "thestanleyparable_tempcontent"
     return "portal2_tempcontent"
     
 def Portal2Running() -> bool:
@@ -203,7 +216,7 @@ def AssembleArgs(gamepath: str) -> str | bool:
     try:
         # Working with the launch arguments and Custom-Launch-Options (CLO) as a table helps with making
         # any needed changes before it is turned into a string then passed on to the Portal 2 executable.
-        args = ["-tempcontent", "-novid", "-allowspectators", "-nosixense", "-condebug p2mm.log", "-usercon"]
+        args = ["-tempcontent", "-novid", "-allowspectators", "-nosixense", "-condebug", "-usercon", "-window_name_suffix \"Portal 2: Multiplayer Mod\""]
         CLO = []
 
         if gamepath.find("Portal Stories Mel") != -1:
@@ -241,7 +254,7 @@ def AssembleArgs(gamepath: str) -> str | bool:
         Log("preCLO: " + str(preCLO))
         Log("CLO: " + str(CLO))
 
-        # If "+ss_map" is in the CLO, set the plugin's splitscreen ConVar to true for "p2mm_startsession" to read,
+        # If "+ss_map" is in the CLO, set the plugin's splitscreen ConVar to true for "p2mm_map" to read,
         # then replace any "+map" and "+ss_map" with "+p2mm_map" for the mod to properly start.
         # The user can also manually specify "+p2mm_splitscreen", check for and if its not there add it in.
         if not ("+p2mm_splitscreen" in " ".join(CLO)):
@@ -277,7 +290,7 @@ def AssembleArgs(gamepath: str) -> str | bool:
         Log(f"{traceback.format_exception()}")
         Log("Launch arguments weren't able to be parsed correctly!")
         Log("This is most likely due to incorrectly inputting launch arguments into the Custom-Launch-Options. Please check and made sure they are inputted correctly.")
-        Log("Game will launch without Custom-Launch-Options and start with default launch arguments (-novid -allowspectators -nosixense -conclearlog -condebug -usercon)...")
+        Log("Game will launch without Custom-Launch-Options and start with default launch arguments (-novid -allowspectators -nosixense -conclearlog -condebug -usercon -window_name_suffix Portal 2: Multiplayer Mod)...")
         return False
 
     Log("Final args: " + args)
@@ -294,12 +307,17 @@ def LaunchGame(gamepath: str, args: str) -> None:
             si = subprocess.STARTUPINFO()
             si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
-            # start portal 2 with the launch options and dont wait for it to finish
+            # start Portal 2 branch based game with the launch options and dont wait for it to finish
             def RunGame() -> None:
-                # start portal 2 with the launch options and dont wait for it to finish
+                # start Portal 2 branch based game with the launch options and dont wait for it to finish
+                executable = "portal2.exe"
+                # if gamepath.find("infra") != -1:
+                #     executable = "infra.exe"
+                # elif gamepath.find("The Stanley Parable") != -1:
+                #     executable = "stanley.exe"
                 Log("")
-                Log(f'Starting Portal 2: "{gamepath + os.sep}portal2.exe" {args}')
-                subprocess.call(f'"{gamepath + os.sep}portal2.exe" {args}', startupinfo=si)
+                Log(f'Starting Portal 2: "{gamepath + os.sep + executable}" {args}')
+                subprocess.call(f'"{gamepath + os.sep + executable}" {args}', startupinfo=si)
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
@@ -322,7 +340,12 @@ def LaunchGame(gamepath: str, args: str) -> None:
                     shouldcheck = True
                     latched = False
                     while shouldcheck:
-                        gamerunning = str(os.system("pidof portal2_linux"))
+                        executable = "portal2_linux"
+                        # if gamepath.find("infra") != -1:
+                        #     executable = "infra.exe"
+                        # elif gamepath.find("The Stanley Parable") != -1:
+                        #     executable = "stanley"
+                        gamerunning = str(os.system(f"pidof {executable}"))
                         if gamerunning == "256":
                             if latched == True:
                                 GVars.AfterFunction()
