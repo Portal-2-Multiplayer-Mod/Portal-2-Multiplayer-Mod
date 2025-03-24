@@ -150,42 +150,44 @@ function P2MMLoop() {
         }
     }
 
-    //## Update eye angles ##//
-    if (Config_UseNametags && g_bAllowNametags) {
-        if (!g_bCoordsAlternate) {
-            // Alternate so our timings space out correctly
-            if (LastCoordGetPlayer != null) {
-                LastCoordGetPlayer = Entities.FindByClassname(LastCoordGetPlayer, "player")
-            } else {
-                LastCoordGetPlayer = Entities.FindByClassname(null, "player")
-            }
-            if (LastCoordGetPlayer != null) {
-                EntFireByHandle(measuremovement_eyeposition, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
-                // Alternate so our timings space out correctly
-                g_bCoordsAlternate = true
-            }
-        } else {
-            if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement_eyeposition")) {
-                local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
-                if (currentplayerclass != null) {
-                    if (OriginalAngle == null && g_bCanCheckAngle) {
-                        OriginalAngle = measuremovement_eyeposition.GetAngles()
-                        Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
-                    }
+    // //## Update eye angles ##//
+    // if (Config_UseNametags && g_bAllowNametags) {
+    //     if (!g_bCoordsAlternate) {
+    //         // Alternate so our timings space out correctly
+    //         if (LastCoordGetPlayer != null) {
+    //             LastCoordGetPlayer = Entities.FindByClassname(LastCoordGetPlayer, "player")
+    //         } else {
+    //             LastCoordGetPlayer = Entities.FindByClassname(null, "player")
+    //         }
+    //         if (LastCoordGetPlayer != null) {
+    //             EntFireByHandle(measuremovement_eyeposition, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
+    //             // Alternate so our timings space out correctly
+    //             g_bCoordsAlternate = true
+    //         }
+    //     } else {
+    //         if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement_eyeposition")) {
+    //             local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
+    //             if (currentplayerclass != null) {
+    //                 if (OriginalAngle == null && g_bCanCheckAngle) {
+    //                     OriginalAngle = measuremovement_eyeposition.GetAngles()
+    //                     Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
+    //                 }
 
-                    currentplayerclass.eyeangles = measuremovement_eyeposition.GetAngles()
-                    currentplayerclass.eyeforwardvector = measuremovement_eyeposition.GetForwardVector()
-                }
-            }
-            // Alternate so our timings space out correctly
-            g_bCoordsAlternate = false
-        }
-    } else {
-        for (local p = null; p = Entities.FindByClassname(p, "player");) {
-            FindPlayerClass(p).eyeangles = Vector(0, 0, 0)
-            FindPlayerClass(p).eyeforwardvector = Vector(0, 0, 0)
-        }
-    }
+    //                 currentplayerclass.eyeangles = measuremovement_eyeposition.GetAngles()
+    //                 currentplayerclass.eyeforwardvector = measuremovement_eyeposition.GetForwardVector()
+    //             }
+    //         }
+    //         // Alternate so our timings space out correctly
+    //         g_bCoordsAlternate = false
+    //     }
+    // } else {
+    //     for (local p = null; p = Entities.FindByClassname(p, "player");) {
+    //         FindPlayerClass(p).eyeangles = Vector(0, 0, 0)
+    //         FindPlayerClass(p).eyeforwardvector = Vector(0, 0, 0)
+    //     }
+    // }
+
+    //printl(Entities.FindByName(null, "blue").EyePosition())
 
     // // ENTITY OPTIMIZATION / DELETION ///////////////
     // local cnt = GetEntityCount()
