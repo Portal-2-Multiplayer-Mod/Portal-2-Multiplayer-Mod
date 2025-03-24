@@ -9,7 +9,7 @@ import shutil, os, sys, platform, ctypes
 #* path to the ModFiles then copies the folder over to the p2mm folder.
 
 #? User Process:
-#* 1- Run script from the src directory. `python tools\updateModFiles.py`
+#* 1- Run script from the src directory. `python tools\UpdateModFiles.py`
 #* 3- The old ModFiles folder will be removed and replaced with a the ModFiles folder in the relative path given.
 #* 4- Start the mod from the launcher.
 
