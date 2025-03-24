@@ -105,7 +105,7 @@ local ConsoleAscii = [
 "##........##.........##..##.....##.##.....##",
 "##........##........####.##.....##.##.....##",
 "##........#########..##..##.....##.##.....##",
-"                VERSION 2.3.0               "
+"--------------- VERSION 2.3.0 --------------"
 ]
 printl("")
 foreach (line in ConsoleAscii) { printl(line) }
@@ -122,8 +122,8 @@ function LoadMapSupportCode(gametype) {
         case (PORTAL_2):           printlP2MM(0, false, "Loading Portal 2 map support code..."); break;
         case (PORTAL_STORIES_MEL): printlP2MM(0, false, "Loading Portal Stories: Mel map support code..."); break;
         case (APERTURE_TAG):       printlP2MM(0, false, "Loading Aperture Tag map support code..."); break;
-        case (PORTAL_RELOADED):    printlP2MM(0, false, "Loading Portal Reloaded map support code..."); break;
-        case (INFRA):              printlP2MM(0, false, "Loading Infra map support code..."); break;
+        //case (PORTAL_RELOADED):    printlP2MM(0, false, "Loading Portal Reloaded map support code..."); break;
+        //case (INFRA):              printlP2MM(0, false, "Loading Infra map support code..."); break;
         case (DIVINITY):           printlP2MM(0, false, "Loading Portal: Divinity map support code..."); break;
         default:
             printlP2MM(1, false, "Invalid g_iCurGameIndex value! P2:MM has been loaded with a unsupported game/mod! Nothing will be loaded, issues might occur!")
@@ -136,9 +136,12 @@ function LoadMapSupportCode(gametype) {
             case (PORTAL_2): IncludeScript("multiplayermod/mapsupport/portal2/" + GetMapName() + ".nut"); break;
             case (PORTAL_STORIES_MEL): IncludeScript("multiplayermod/mapsupport/portal_stories/" + GetMapName() + ".nut"); break;
             case (APERTURE_TAG): IncludeScript("multiplayermod/mapsupport/aperturetag/" + GetMapName() + ".nut"); break;
-            case (PORTAL_RELOADED): IncludeScript("multiplayermod/mapsupport/portalreloaded/" + GetMapName() + ".nut"); break;
-            case (INFRA): IncludeScript("multiplayermod/mapsupport/infra/" + GetMapName() + ".nut"); break;
+            //case (PORTAL_RELOADED): IncludeScript("multiplayermod/mapsupport/portalreloaded/" + GetMapName() + ".nut"); break;
+            //case (INFRA): IncludeScript("multiplayermod/mapsupport/infra/" + GetMapName() + ".nut"); break;
+            //case (STANLEY_PARABLE): IncludeScript("multiplayermod/mapsupport/divinity/" + GetMapName() + ".nut"); break;
             case (DIVINITY): IncludeScript("multiplayermod/mapsupport/divinity/" + GetMapName() + ".nut"); break;
+            default:
+                throw "Invalid g_iCurGameIndex"
         }
     } catch (exception) {
         // For mel, there are the advanced (sp_) and story (st_) maps.
@@ -152,7 +155,7 @@ function LoadMapSupportCode(gametype) {
                 return
             } catch (exception) {}
         }
-        printlP2MM(1, false, "Failed to load or no map support to load for \"" + GetMapName() + "\"")
+        printlP2MM(1, false, "Failed to load or no map support (most likely this) to load for \"" + GetMapName() + "\"")
         printlP2MM(1, true, "Exception: " + exception)
         printlP2MM(0, false, "=============================================================\n")
         return
