@@ -11,9 +11,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         trackCoords <- Vector(0, 0, 0)
         respawnCooldown <- 0
 
-        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger song_2:PlaySound::0:1")
-        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger actor_relay_2:Trigger::0:1")
-
         // Make doors/pathways not close
         Entities.FindByClassnameNearest("trigger_once", Vector(-1616, -720.08, 64), 32).Destroy()
         Entities.FindByName(null, "AutoInstance2-door_close").Destroy()

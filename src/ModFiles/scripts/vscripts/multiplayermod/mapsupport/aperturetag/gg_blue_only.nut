@@ -7,8 +7,8 @@
 
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger song_2:PlaySound::0:1")
-        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger actor_relay_2:Trigger::0:1")
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(-912, -1408, 96.01), 32), "AddOutput", "OnTrigger song_2:PlaySound::0:1", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(-912, -1408, 96.01), 32), "AddOutput", "OnTrigger actor_relay_2:Trigger::0:1", 0, null, null)
 
         // Make doors/pathways not close
         Entities.FindByClassnameNearest("trigger_once", Vector(-864, -1408, 56), 32).Destroy()
