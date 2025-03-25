@@ -1157,5 +1157,9 @@ function OnRespawn(p) {
             // There are 2 portalgun entities, so we need to do this twice to disable the gun.
             if (i >= 2) break
         }
+
+        // Disable the gels when a player respawns to prevent cheese
+        FindPlayerClass(p).OrangeGelIsEnabled = false
+        FindPlayerClass(p).BlueGelIsEnabled = false
     }
 }
