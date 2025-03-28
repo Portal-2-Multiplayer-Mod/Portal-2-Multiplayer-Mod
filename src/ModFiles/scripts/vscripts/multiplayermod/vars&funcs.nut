@@ -2189,13 +2189,14 @@ if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
         EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
     }
 
-    function updateGels(player, speed, bounce) {
+    function updateGels(player, speed, bounce, isolateDevMsg = false) {
         FindPlayerClass(player).OrangeGelIsEnabled = speed
         FindPlayerClass(player).BlueGelIsEnabled = bounce
         EntFire("Speed_Painter_" + player.entindex().tostring(), "Stop", "")
         EntFire("Bounce_Painter_" + player.entindex().tostring(), "Stop", "")
         // player.EmitSound("weapon_ambient/wpn_portal_fizzler_shimmy_01.wav")
-        printlP2MM(0, true, "updateGels called with player " + FindPlayerClass(player).username + " with blue gel state " + bounce.tostring() + " and orange gel state " + speed.tostring())
+        if (!isolateDevMsg) // Should be used if calling from MSLoop to avoid console spam
+            printlP2MM(0, true, "updateGels called with player " + FindPlayerClass(player).username + " with blue gel state " + bounce.tostring() + " and orange gel state " + speed.tostring())
     }
 
     function GelPair(index) {
