@@ -170,6 +170,7 @@ function vacTube(activator) {
     EntFireByHandle(activator, "SetParent", "@podtrain_player", 0, null, null)
     EntFire("@podtrain_player", "SetSpeed", "1")
     tubePlayer = activator
+    correctPosition()
 }
 
 function respawnCube(cubeNumber) {

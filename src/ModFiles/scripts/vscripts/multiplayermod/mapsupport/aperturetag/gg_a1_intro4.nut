@@ -63,6 +63,7 @@ function vacTube(activator) {
     activator.SetVelocity(Vector(0, 0, 0))
     EntFire("podtrain_player", "SetSpeed", "1")
     tubePlayer = activator
+    correctPosition()
 }
 
 function correctPosition() {
