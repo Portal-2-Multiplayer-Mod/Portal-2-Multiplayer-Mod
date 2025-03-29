@@ -1,0 +1,35 @@
+//  ██████╗  ██████╗             █████╗ ██╗     ██╗                ██████╗  █████╗ ████████╗ █████╗ ████████╗██╗███╗  ██╗ ██████╗             ██╗       ██╗ █████╗ ██╗     ██╗     
+// ██╔════╝ ██╔════╝            ██╔══██╗██║     ██║                ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗╚══██╔══╝██║████╗ ██║██╔════╝             ██║  ██╗  ██║██╔══██╗██║     ██║     
+// ██║  ██╗ ██║  ██╗            ███████║██║     ██║                ██████╔╝██║  ██║   ██║   ███████║   ██║   ██║██╔██╗██║██║  ██╗             ╚██╗████╗██╔╝███████║██║     ██║     
+// ██║  ╚██╗██║  ╚██╗           ██╔══██║██║     ██║                ██╔══██╗██║  ██║   ██║   ██╔══██║   ██║   ██║██║╚████║██║  ╚██╗             ████╔═████║ ██╔══██║██║     ██║     
+// ╚██████╔╝╚██████╔╝██████████╗██║  ██║███████╗███████╗██████████╗██║  ██║╚█████╔╝   ██║   ██║  ██║   ██║   ██║██║ ╚███║╚██████╔╝██████████╗  ╚██╔╝ ╚██╔╝ ██║  ██║███████╗███████╗
+//  ╚═════╝  ╚═════╝ ╚═════════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═════════╝╚═╝  ╚═╝ ╚════╝    ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚═╝╚═╝  ╚══╝ ╚═════╝ ╚═════════╝   ╚═╝   ╚═╝  ╚═╝  ╚═╝╚══════╝╚══════╝
+
+function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
+    if (MSInstantRun) {
+        // causes cubes to get stuck in vactube eventually crashing server
+        Entities.FindByName(null, "InstanceAuto1-vac_items_case").Destroy()
+
+        // Stop pathways from closing
+        Entities.FindByClassnameNearest("trigger_once", Vector(152, -1848, 448), 32).Destroy()
+        EntFire("bts_door_2", "AddOutput", "OnAnimationBegun bts_door_2:AddOutput:targetname bts_door_2_p2mmoverride")
+        EntFire("door_1", "AddOutput", "OnOpen door_1:AddOutput:targetname door_1_p2mmoverride")
+        EntFire("exit_door", "AddOutput", "OnOpen exit_door:AddOutput:targetname exit_door_p2mmoverride")
+
+        //! this areaportal also just.. doesnt exist????
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(128, -256, 448), 32), "AddOutput", "OnStartTouch bts_door_2_area:Open::2.01", 0, null, null)
+
+        // Make fizzlers work
+        EntFireByHandle(Entities.FindByNameNearest("@fizzler_gun_1_on", Vector(128, -296, 480), 32), "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator false true):0:-1", 0, null, null)
+        EntFireByHandle(Entities.FindByNameNearest("@fizzler_gun_1_on", Vector(-800, 2392, -191.99), 32), "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator false true):0:-1", 0, null, null)
+        EntFireByHandle(Entities.FindByNameNearest("@fizzler_gun_1_on", Vector(-212, 1472, 225.01), 32), "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator true true):0:-1", 0, null, null)
+        EntFireByHandle(Entities.FindByNameNearest("@fizzler_gun_1_on", Vector(1600, 2628, 192.01), 32), "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator true true):0:-1", 0, null, null)
+        EntFire("@fizzler_gun_1_on", "AddOutput", "targetname @fizzler_gun_1_on_p2mmoverride")
+        EntFire("@fizzler_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator false false):0:-1")
+        EntFire("@fizzler_gun_1_off", "AddOutput", "targetname @fizzler_gun_1_off_p2mmoverride")
+
+        // Make transitioning levels work
+        Entities.FindByName(null, "@transition_script").Destroy()
+        EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel gg_all_fizzler:1.5")
+    }
+}
