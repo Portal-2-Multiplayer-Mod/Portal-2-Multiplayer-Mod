@@ -49,5 +49,3 @@ print("Copying over pak01_dir_portal2.vpk from src/ModFilesVPK to the src/ModFil
 shutil.copyfile(f"{vpkWorkPath + os.sep}pak01_dir_portal2.vpk", modFilesVPKPath)
 
 print("New pak01_dir_portal2.vpk created and copied over! :D")
-exit(0)
-

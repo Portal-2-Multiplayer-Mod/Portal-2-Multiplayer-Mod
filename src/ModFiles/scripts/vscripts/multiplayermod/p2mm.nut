@@ -155,7 +155,7 @@ function LoadMapSupportCode(gametype) {
                 return
             } catch (exception) {}
         }
-        printlP2MM(1, false, "Failed to load or no map support (most likely this) to load for \"" + GetMapName() + "\"")
+        printlP2MM(1, false, "Failed to load or no map support (most likely the second) to load for \"" + GetMapName() + "\"")
         printlP2MM(1, true, "Exception: " + exception)
         printlP2MM(0, false, "=============================================================\n")
         return

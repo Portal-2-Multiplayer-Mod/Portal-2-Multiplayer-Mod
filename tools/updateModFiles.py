@@ -62,4 +62,3 @@ def CopyFiles():
 
 CopyFiles()
 print("src/ModFiles copied over to p2mm/ModFiles! :D")
-exit(0)

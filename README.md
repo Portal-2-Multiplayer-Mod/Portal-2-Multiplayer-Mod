@@ -116,7 +116,7 @@ The Portal 2: Multiplayer Mod uses a separate Source Engine server plugin in ord
 
 # Contributions
 
-Portal 2: Multiplayer Mod version `2.3.0` will be our definitive version, so we won't make any significant updates after it is fully released. Before this happens, we will work on commits to the `dev` branch before leading to the full version. We will accept any substantial changes or features for P2:MM during this period. However, we will not be doing much work at all after release or make any new releases in general. The only reasons we would make a new release would be when someone contributes a new translation, an improvement of a current translation, some other minor bug fix we didn't catch, or a map support file for a workshop map. Even after this final release, you can still fork it to build off our work! Please make sure you give credit to this repository!
+Portal 2: Multiplayer Mod version `3.0.0` will be our definitive version, so we won't make any significant updates after it is fully released for a while. Before this happens, we will work on commits to the `dev` branch before leading to the full version. We will accept any substantial changes or features for P2:MM during this period. However, we will not be doing much work at all after the release or making any new releases in general. The only reasons we would make a new release would be when someone contributes a new translation, an improvement of a current translation, some other minor bug fix we didn't catch, or a map support file for a workshop map. You can still fork it to build off our work even after this final release! Please make sure you credit this repository!
 
 # Credits
 
