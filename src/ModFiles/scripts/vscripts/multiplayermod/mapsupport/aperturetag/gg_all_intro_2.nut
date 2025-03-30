@@ -13,7 +13,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_1").__KeyValueFromString("targetname", "door_1_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-272, 768, 640), 32), "AddOutput", "OnTrigger door_1_area:open::1.02", 0, null, null)
         EntFire("ground_enable_use", "AddOutput", "OnTrigger door_1_p2mmoverride:Open::6.5")
-        // Entities.FindByName(null, "ground_enable_use").Destroy()
 
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator true true):0:-1")

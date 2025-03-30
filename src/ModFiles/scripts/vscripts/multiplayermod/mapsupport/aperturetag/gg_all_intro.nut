@@ -12,7 +12,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Stop pathways from closing
         Entities.FindByName(null, "door_1").__KeyValueFromString("targetname", "door_1_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-224, 1216, 352), 32), "AddOutput", "OnTrigger door_1_Area:open::1.02", 0, null, null)
-        // Entities.FindByName(null, "ground_enable_use").Destroy()
 
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator true true):0:-1")

@@ -5,12 +5,12 @@
 // ╚██████╔╝╚██████╔╝██████████╗██████╦╝███████╗╚██████╔╝███████╗██████████╗╚█████╔╝██║ ╚███║███████╗   ██║   ██████████╗███████╗
 //  ╚═════╝  ╚═════╝ ╚═════════╝╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═════════╝ ╚════╝ ╚═╝  ╚══╝╚══════╝   ╚═╝   ╚═════════╝╚══════╝
 
+tubePlayer <- null
+trackCoords <- Vector(0, 0, 0)
+respawnCooldown <- 0
+
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
-        tubePlayer <- null
-        trackCoords <- Vector(0, 0, 0)
-        respawnCooldown <- 0
-
         // Make doors/pathways not close
         Entities.FindByClassnameNearest("trigger_once", Vector(-1616, -720.08, 64), 32).Destroy()
         Entities.FindByName(null, "AutoInstance2-door_close").Destroy()
