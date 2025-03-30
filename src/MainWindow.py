@@ -1129,7 +1129,7 @@ def RunGameScript() -> None:
         args = RG.AssembleArgs(gamePath)
         if not args:
             Ui.CreateToast(GVars.translations["args-error"], 5)
-            defaultArgs = "-novid -allowspectators -nosixense -conclearlog -condebug -usercon -window_name_suffix Portal 2: Multiplayer Mod"
+            defaultArgs = "-allowspectators -nosixense -conclearlog -condebug -usercon -window_name_suffix Portal 2: Multiplayer Mod"
             if gamePath.find("Portal Stories Mel") != -1:
                 defaultArgs = "-game portal_stories " + defaultArgs
             # elif gamePath.find("Aperture Tag") != -1:

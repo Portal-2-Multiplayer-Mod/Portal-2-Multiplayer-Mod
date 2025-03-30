@@ -216,7 +216,7 @@ def AssembleArgs(gamepath: str) -> str | bool:
     try:
         # Working with the launch arguments and Custom-Launch-Options (CLO) as a table helps with making
         # any needed changes before it is turned into a string then passed on to the Portal 2 executable.
-        args = ["-tempcontent", "-novid", "-allowspectators", "-nosixense", "-condebug", "-usercon", "-window_name_suffix \"Portal 2: Multiplayer Mod\""]
+        args = ["-tempcontent", "-allowspectators", "-nosixense", "-condebug", "-usercon", "-window_name_suffix \"Portal 2: Multiplayer Mod\""]
         CLO = []
 
         if gamepath.find("Portal Stories Mel") != -1:
@@ -290,7 +290,7 @@ def AssembleArgs(gamepath: str) -> str | bool:
         Log(f"{traceback.format_exception()}")
         Log("Launch arguments weren't able to be parsed correctly!")
         Log("This is most likely due to incorrectly inputting launch arguments into the Custom-Launch-Options. Please check and made sure they are inputted correctly.")
-        Log("Game will launch without Custom-Launch-Options and start with default launch arguments (-novid -allowspectators -nosixense -conclearlog -condebug -usercon -window_name_suffix Portal 2: Multiplayer Mod)...")
+        Log("Game will launch without Custom-Launch-Options and start with default launch arguments (-allowspectators -nosixense -conclearlog -condebug -usercon -window_name_suffix Portal 2: Multiplayer Mod)...")
         return False
 
     Log("Final args: " + args)
