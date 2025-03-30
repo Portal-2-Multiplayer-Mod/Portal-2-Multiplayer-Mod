@@ -49,5 +49,3 @@ print("Copying over pak01_dir.vpk from src/ModFilesVPK to the src/ModFiles folde
 shutil.copyfile(f"{vpkWorkPath + os.sep}pak01_dir.vpk", modFilesVPKPath)
 
 print("New pak01_dir.vpk created and copied over! :D")
-exit(0)
-
