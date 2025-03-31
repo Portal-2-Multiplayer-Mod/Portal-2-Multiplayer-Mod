@@ -1199,7 +1199,7 @@ def CheckForUpdates() -> bool:
     clientUpdate = UP.CheckForNewClient()
 
     if clientUpdate["status"]:
-        if clientUpdate["newRepo"] and (GVars.iol or GVars.iosd):
+        if (GVars.iol or GVars.iosd):
             NewClientNotifyPopup()
         else:
             ClientUpdateBox(clientUpdate)
