@@ -1049,12 +1049,6 @@ def MountModOnly() -> bool:
             GVars.translations["mount_nopath_toast"], 5, (255, 21, 0))
         return False
 
-    # Check if both of Portal 2's DLC folders exist
-    if not RG.CheckForRequiredP2DLC(gamePath):
-        Ui.CreateToast(
-            GVars.translations["mount_nodlc_toast"], 5, (255, 21, 0))
-        return False
-
     if VerifyModFiles():
         RG.MountMod(gamePath)
         Ui.CreateToast(GVars.translations["mounted"], 5, (75, 255, 75))
@@ -1130,10 +1124,6 @@ def RunGameScript() -> None:
         if not args:
             Ui.CreateToast(GVars.translations["args-error"], 5)
             defaultArgs = "-allowspectators -nosixense -conclearlog -condebug -usercon -window_name_suffix Portal 2: Multiplayer Mod"
-            if gamePath.find("Portal Stories Mel") != -1:
-                defaultArgs = "-game portal_stories " + defaultArgs
-            # elif gamePath.find("Aperture Tag") != -1:
-            #     defaultArgs = "-game aperturetag " + defaultArgs
             RG.LaunchGame(gamePath, defaultArgs)
         else:
             RG.LaunchGame(gamePath, args)

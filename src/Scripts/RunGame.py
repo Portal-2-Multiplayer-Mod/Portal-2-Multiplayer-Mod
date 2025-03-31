@@ -128,21 +128,6 @@ def FindP2MMFolder(gamepath: str) -> str | bool:
     Log("It's most likely not been mounted to Portal 2 yet, already been unmounted, or the game path is incorrect...")
     return False
 
-# Make sure the dlc folders that come with Portal 2 exist.
-# They are required since they include stuff for multiplayer and fixes for other things Portal 2 related.
-# portal2_dlc1 is required for multiplayer to work since it includes mp_coop_lobby_3 (although mp_coop_lobby_2 exists as a backup) and the stuff for the DLC course Art Therapy.
-# portal2_dlc2 is also required, while its mainly for PeTi, it also includes a bunch of other assets and fixes for Portal 2 that Valve had done.
-# If either of these folders are not detected P2MM won't start or be mounted.
-def CheckForRequiredP2DLC(gamepath: str) -> bool:
-    Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
-
-    if (not (os.path.exists(gamepath + os.sep + "portal2_dlc1") or os.path.exists(gamepath + os.sep + "portal2_dlc2"))):
-        Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
-        Log("P2MM will not be mounted/started!")
-        return False
-    Log("DLC folders were found...")
-    return True
-
 # Find and delete P2MM's (gamemaindir)_tempcontent folder
 def DeleteModFolder(gamepath: str) -> bool:
     if (not os.path.exists(gamepath)):

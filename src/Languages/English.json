@@ -22,7 +22,6 @@
   "unmount_button": "Unmount",
   "unmounted_toast": "Unmounted!",
   "args-error": "Launch arguments failed to parse!\nUsing default launch arguments only!\nCheck log for more information!",
-  "mount_nodlc_toast": "Game's path is missing some DLC folders!! \nPlease verify game integrity on steam.",
   "mount_nopath_toast": "Game's path is invalid!! \nPlease check the settings.",
   "mount_gamerunning_toast": "Portal 2 is currently running!\nCan't mount/unmount!",
   "wiki_button": "GitHub Wiki",

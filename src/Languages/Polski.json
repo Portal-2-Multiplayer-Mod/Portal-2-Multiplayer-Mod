@@ -22,7 +22,6 @@
   "unmount_button": "Odłącz",
   "unmounted_toast": "Odmontowany!",
   "args-error": "Nie udało się przeanalizować argumentów uruchomienia!\nUżywane są tylko domyślne argumenty uruchomienia!\nSprawdź dziennik, aby uzyskać więcej informacji!",
-  "mount_nodlc_toast": "Ścieżka gry nie zawiera kilku folderów DLC!! \nProszę zweryfikuj integralność gry w aplikacji Steam.",
   "mount_nopath_toast": "Ścieżka gry jest nieprawidłowa!!\nSprawdź ustawienia.",
   "mount_gamerunning_toast": "Portal 2 jest obecnie uruchomiony!\nNie można montować/odmontować!",
   "wiki_button": "GitHub Wiki",
