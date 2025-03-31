@@ -1030,7 +1030,7 @@ def MountModOnly() -> bool:
         Ui.CreateToast(GVars.translations["game_path_undefined_fetch"], 5)
         GetGamePath()
     
-    if RG.Portal2Running():
+    if RG.GameRunning():
         Log("Can't mount because game is currently running!")
         Ui.CreateToast(GVars.translations["mount_gamerunning_toast"], 5)
         return
@@ -1136,7 +1136,7 @@ def RunGameScript() -> None:
 
 
 def UnmountScript(shouldGetPath: bool = True) -> bool:
-    if RG.Portal2Running():
+    if RG.GameRunning():
         Log("Can't unmount because game is currently running!")
         Ui.CreateToast(GVars.translations["mount_gamerunning_toast"], 5)
         return False
@@ -1240,7 +1240,7 @@ def PostInitialize() -> None:
         CheckForUpdates()
 
     if VerifyGamePath():
-        if RG.Portal2Running():
+        if RG.GameRunning():
             Log("Can't unmount because game is currently running!")
         else:
             RG.DeleteModFolder(GVars.configData["Game-Path"]["value"])
