@@ -8,6 +8,7 @@
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Stop pathways from closing
+        Entities.FindByClassnameNearest("trigger_once", Vector(-2320, 1856, 64), 32).Destroy()
         Entities.FindByName(null, "vert_door_in").__KeyValueFromString("targetname", "vert_door_in_p2mmoverride")
         EntFire("open_vert_door_trigger", "AddOutput", "OnTrigger vert_door_in_p2mmoverride:SetAnimation:vert_door_opening")
         EntFire("open_vert_door_trigger", "AddOutput", "OnTrigger vert_door_in_p2mmoverride:SetAnimation:vert_door_open_idle:2")
