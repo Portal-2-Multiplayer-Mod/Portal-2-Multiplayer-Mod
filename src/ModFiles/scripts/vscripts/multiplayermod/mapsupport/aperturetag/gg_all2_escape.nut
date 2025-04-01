@@ -17,10 +17,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "nuke_hurt").Destroy()
         Entities.FindByName(null, "skip_button").Destroy()
         EntFire("start_escape_math", "AddOutput", "OnChangedFromMin pit_door:Open::0.01")
-        EntFire("switch_1_button", "AddOutput", "OnPressed ele_door_bottom:Open::0.01")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-640, 1316, -352), 32), "AddOutput", "OnStartTouch ele_door_top:Open::0.01", 0, null, null)
-        EntFireByHandle(Entities.FindByNameNearest("switch_1_button", Vector(-136, 1044, -712), 32), "AddOutput", "OnPressed @All_fizzler_on:Trigger::3", 0, null, null)
-        EntFireByHandle(Entities.FindByNameNearest("switch_1_button", Vector(-136, 1044, -712), 32), "AddOutput", "OnPressed !self:PressOut::3", 0, null, null)
+        Entities.FindByNameNearest("switch_1_button", Vector(-136, 1044, -712), 32).Destroy()
         EntFire("start_escape_relay", "AddOutput", "OnTrigger !self:RunScriptCode:StartRace()")
         EntFire("nuke_relay", "AddOutput", "OnTrigger p2mm_servercommand:Command:changelevel gg_all2_escape:3")
         EntFire("exit_gate", "Open", "")
@@ -73,12 +71,20 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     }
 
     if (MSPostPlayerSpawn) {
-        resetButton(true)
+        resetButton(1)
+        resetButton(2)
     }
 
     if (MSLoop) {
-        if (Entities.FindByName(null, "p2mm_cubebutton")) {
-            Entities.FindByName(null, "p2mm_cubebutton").SetOrigin(Vector(-960, -22, -722))
+        local button1 = Entities.FindByName(null, "p2mm_cubebutton1")
+        local button2 = Entities.FindByName(null, "p2mm_cubebutton2")
+        if (button1) {
+            button1.SetOrigin(Vector(-960, -22, -722))
+            button1.SetAngles(0, 0, 0)
+        }
+        if (button2) {
+            button2.SetOrigin(Vector(-136, 1044, -712))
+            button2.SetAngles(0, 0, 0)
         }
     }
 }
@@ -86,6 +92,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 function hostFadeSkipRace(activator) {
     if (GetAdminLevel(activator) < 3) {
         HudPrint(activator.entindex(), "Only Admins that are above level 3\ncan use this button!", Vector(0.3, -0.2, 1), 2, 0.1, Vector(0, 255, 255), 255, Vector(0, 0, 0), 0, Vector(0, 0.3, 3))
+        resetButton(1)
         return
     }
     EntFire("skip_fade", "Fade", "")
@@ -117,17 +124,30 @@ function StartRace() {
     }
 }
 
-function resetButton(isFirstRun) {
-    if (!isFirstRun) {
-        Entities.FindByName(null, "p2mm_cubebutton").Destroy()
-    }
+function resetButton(cube) {
     local skipbutton = Entities.CreateByClassname("prop_weighted_cube")
     InitializeEntity(skipbutton)
-    EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup !activator:RunScriptCode:hostFadeSkipRace(activator)", 0, null, null)
-    EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup skip_1_model:SetAnimation:press", 0, null, null)
-    EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup skip_1_model:SetAnimation:idle:1", 0, null, null)
-    EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup !self:RunScriptCode:resetButton(false)", 0, null, null)
-    EntFireByHandle(skipbutton, "AddOutput", "targetname p2mm_cubebutton", 0, null, null)
-    skipbutton.__KeyValueFromString("rendermode", "10")
-    skipbutton.SetOrigin(Vector(-960, -22, -722))
+    if (cube == 1) {
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup !activator:RunScriptCode:hostFadeSkipRace(activator)", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup skip_1_model:SetAnimation:press", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup skip_1_model:SetAnimation:idle:1", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup !self:Kill", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "targetname p2mm_cubebutton1", 0, null, null)
+        skipbutton.__KeyValueFromString("rendermode", "10")
+        skipbutton.SetOrigin(Vector(-960, -22, -722))
+        skipbutton.SetAngles(0, 0, 0)
+    } else {
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup switch_1_model:SetAnimation:press", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup switch_1_model:SetAnimation:idle:4", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup switch_sound_1:PlaySound", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup @all_fizzler_off:Trigger", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup @All_fizzler_on:Trigger::4", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup p2mm_servercommand:RunScriptCode:resetButton(2):4", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup !self:Kill", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "OnPlayerPickup pit_door:Open", 0, null, null)
+        EntFireByHandle(skipbutton, "AddOutput", "targetname p2mm_cubebutton2", 0, null, null)
+        skipbutton.__KeyValueFromString("rendermode", "10")
+        skipbutton.SetOrigin(Vector(-136, 1044, -712))
+        skipbutton.SetAngles(0, 0, 0)
+    }
 }
