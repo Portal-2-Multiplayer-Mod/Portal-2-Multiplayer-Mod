@@ -571,10 +571,13 @@ function SetPlayerModel(p, mdl) {
     FindPlayerClass(p).playermodel = mdl
 }
 
-function CreateGenericPlayerClass(p) {
+function CreateGenericPlayerClass(p)
+{
     // Make sure there isnt an existing player class
-    foreach (indx, curlclass in playerclasses) {
-        if (curlclass.player == p) {
+    foreach (indx, curlclass in playerclasses)
+    {
+        if (curlclass.player == p)
+        {
             // If there is, remove it (This should never happen)
             playerclasses.remove(indx)
             break
@@ -599,18 +602,7 @@ function CreateGenericPlayerClass(p) {
     if (GetMapName() == "workshop/596984281130013835/mp_coop_gelocity_1_v02" ||
         GetMapName() == "workshop/594730048530814099/mp_coop_gelocity_2_v01" ||
         GetMapName() == "workshop/613885499245125173/mp_coop_gelocity_3_v02") {
-        // Legacy Gelocity Mapsupport Code
-        currentplayerclass.nCurrentLap <- 0
-        currentplayerclass.GelocityCheckPointType <- 0
-        if (GetMapName() == "workshop/594730048530814099/mp_coop_gelocity_2_v01") {
-            currentplayerclass.Gelocity2Checkpoint <- true
-            currentplayerclass.Gelocity2CheckpointMove <- class {
-                pos = Vector(2580, -4399,  267)
-                rot = Vector(0, 90, 0)
-            }
-        }
 
-        // New Gelocity Mapsupport Code
         currentplayerclass.i_CompletedLaps <- 0 // Completed laps by player.
         currentplayerclass.l_PassedCheckpoints <- [] // List of passted checkpoints to keep track of progress in race.
         currentplayerclass.s_LastCheckPoint <- "start" // Last checkpoint player had passed.
@@ -623,7 +615,8 @@ function CreateGenericPlayerClass(p) {
     currentplayerclass.steamid <- GetSteamID(currentplayerclass.id) // Player Steam ID
 
     // Chat commands
-    if (Config_UseChatCommands) {
+    if (Config_UseChatCommands)
+    {
         currentplayerclass.startedvote <- false  // Did this player initiate a vote?
         currentplayerclass.hasvotedyes <- false  // Did this player vote yes?
         currentplayerclass.hasvotedno <- false  // Did this player vote no?
@@ -633,7 +626,8 @@ function CreateGenericPlayerClass(p) {
     playerclasses.push(currentplayerclass)
 
     // Aperture Tag Gelgun logic
-    if (g_iCurGameIndex == APERTURE_TAG) {
+    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
+    {
         currentplayerclass.BlueGelIsEnabled <- false
         currentplayerclass.OrangeGelIsEnabled <- false
     }
@@ -1692,31 +1686,32 @@ function CombineList(list, startlength, inbetweenchars = " ") {
     return strip(newstr)
 }
 
-function CreateOurEntities() {
+function CreateOurEntities()
+{
+    // TODO: Redo nametags!
+    // if (Config_UseNametags/* && g_bAllowNametags*/) {
+    //     // Create an entity to measure player eye angles
+    //     measuremovement_eyeposition <- Entities.CreateByClassname("logic_measure_movement")
+    //     measuremovement_eyeposition.__KeyValueFromString( "measuretype", "1")
+    //     measuremovement_eyeposition.__KeyValueFromString( "measurereference", "" )
+    //     measuremovement_eyeposition.__KeyValueFromString( "measureretarget", "" )
+    //     measuremovement_eyeposition.__KeyValueFromString( "targetscale", "1.0" )
+    //     measuremovement_eyeposition.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement_eyeposition" )
+    //     measuremovement_eyeposition.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement_eyeposition" )
+    //     measuremovement_eyeposition.__KeyValueFromString( "target", "p2mm_logic_measure_movement_eyeposition" )
+    //     EntFireByHandle(measuremovement_eyeposition, "SetMeasureReference", "p2mm_logic_measure_movement_eyeposition", 0.0, null, null)
+    //     EntFireByHandle(measuremovement_eyeposition, "Disable", "", 0.0, null, null)
 
-    if (Config_UseNametags/* && g_bAllowNametags*/) {
-        // Create an entity to measure player eye angles
-        measuremovement_eyeposition <- Entities.CreateByClassname("logic_measure_movement")
-        measuremovement_eyeposition.__KeyValueFromString( "measuretype", "1")
-        measuremovement_eyeposition.__KeyValueFromString( "measurereference", "" )
-        measuremovement_eyeposition.__KeyValueFromString( "measureretarget", "" )
-        measuremovement_eyeposition.__KeyValueFromString( "targetscale", "1.0" )
-        measuremovement_eyeposition.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement_eyeposition" )
-        measuremovement_eyeposition.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement_eyeposition" )
-        measuremovement_eyeposition.__KeyValueFromString( "target", "p2mm_logic_measure_movement_eyeposition" )
-        EntFireByHandle(measuremovement_eyeposition, "SetMeasureReference", "p2mm_logic_measure_movement_eyeposition", 0.0, null, null)
-        EntFireByHandle(measuremovement_eyeposition, "Disable", "", 0.0, null, null)
-
-        // Create an entity to display player nametags when aiming at them
-        nametagdisplay <- Entities.CreateByClassname("game_text")
-        nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
-        nametagdisplay.__KeyValueFromString("x", "-1")
-        nametagdisplay.__KeyValueFromString("y", "0.2")
-        nametagdisplay.__KeyValueFromString("holdtime", "0.1")
-        nametagdisplay.__KeyValueFromString("fadeout", "0.2")
-        nametagdisplay.__KeyValueFromString("fadein", "0.2")
-        nametagdisplay.__KeyValueFromString("channel", "1")
-    }
+    //     // Create an entity to display player nametags when aiming at them
+    //     nametagdisplay <- Entities.CreateByClassname("game_text")
+    //     nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
+    //     nametagdisplay.__KeyValueFromString("x", "-1")
+    //     nametagdisplay.__KeyValueFromString("y", "0.2")
+    //     nametagdisplay.__KeyValueFromString("holdtime", "0.1")
+    //     nametagdisplay.__KeyValueFromString("fadeout", "0.2")
+    //     nametagdisplay.__KeyValueFromString("fadein", "0.2")
+    //     nametagdisplay.__KeyValueFromString("channel", "1")
+    // }
 
     // Create an display entity for the host to wait for another player to load in
     waitingtext <- Entities.CreateByClassname("game_text")
@@ -2169,40 +2164,48 @@ function StartCountTransition(player) {
     }
 }
 
-if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
-    function StartGel(index, type) {
-        switch (type) {
+if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
+{
+    function StartGel(index, type)
+    {
+        switch (type)
+        {
             case 1:
-                if (FindPlayerClass(PlayerByIndex(index)).BlueGelIsEnabled != true) break
+                if (FindPlayerClass(PlayerByIndex(index)).BlueGelIsEnabled != true)
+                    break
                 EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
                 EntFire("Bounce_Painter_" + index.tostring(), "Start", "")
                 break
             case 2:
-                if (FindPlayerClass(PlayerByIndex(index)).OrangeGelIsEnabled != true) break
+                if (FindPlayerClass(PlayerByIndex(index)).OrangeGelIsEnabled != true)
+                    break
                 EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
                 EntFire("Speed_Painter_" + index.tostring(), "Start", "")
                 break
         }
     }
-    function EndGel(index) {
+    function EndGel(index)
+    {
         EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
         EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
     }
 
-    function updateGels(player, speed, bounce, isolateDevMsg = false) {
+    function UpdateGels(player, speed, bounce, isolateDevMsg = false)
+    {
         FindPlayerClass(player).OrangeGelIsEnabled = speed
         FindPlayerClass(player).BlueGelIsEnabled = bounce
         EntFire("Speed_Painter_" + player.entindex().tostring(), "Stop", "")
         EntFire("Bounce_Painter_" + player.entindex().tostring(), "Stop", "")
         // player.EmitSound("weapon_ambient/wpn_portal_fizzler_shimmy_01.wav")
         if (!isolateDevMsg) // Should be used if calling from MSLoop to avoid console spam
-            printlP2MM(0, true, "updateGels called with player " + FindPlayerClass(player).username + " with blue gel state " + bounce.tostring() + " and orange gel state " + speed.tostring())
+            printlP2MM(0, true, "UpdateGels called with player " + FindPlayerClass(player).username + " with blue gel state " + bounce.tostring() + " and orange gel state " + speed.tostring())
     }
 
-    function GelPair(index) {
+    function GelPair(index)
+    {
         local player = PlayerByIndex(index)
-        if (!Entities.FindByName(null, "Bounce_Painter_" + index.tostring())) {
-
+        if (!Entities.FindByName(null, "Bounce_Painter_" + index.tostring()))
+        {
             // Setup the listener for when the player hits their +attack bind
             local gameui = Entities.CreateByClassname("game_ui")
             EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:StartGel(activator.entindex() 1)", 0, null, null)
@@ -2252,7 +2255,7 @@ if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
             
             measureEye.__KeyValueFromString("targetname", "measureEye_" + index.tostring())
             measureEye.__KeyValueFromString("MeasureType", "1")
-
+            printl(player.GetName())
             EntFireByHandle(measureEye, "SetTargetReference", "measureEye_" + index.tostring(), 0, null, null)
             EntFireByHandle(measureEye, "SetMeasureReference", "measureEye_" + index.tostring(), 0, null, null)
             EntFireByHandle(measureEye, "SetMeasureTarget", player.GetName(), 0, null, null)

@@ -847,13 +847,16 @@ function PostMapSpawn() {
     EntFire("p2mm_servercommand", "command", "script g_bCanHook = true", 1)
 
     // Precache different turret models for when Config_RandomTurret or Config_RandomTurretLoop are true
-    if (Config_RandomTurret || Config_RandomTurretLoop) {
+    if (Config_RandomTurret || Config_RandomTurretLoop)
+    {
         PrecacheModel("models/npcs/turret/turret_skeleton.mdl")
         PrecacheModel("models/npcs/turret/turret_backwards.mdl")
     }
-    if (g_iCurGameIndex == APERTURE_TAG && GetMapName().find("gg_") != null && GetMapName() != "gg_intro_wakeup") {
-        // Remove all Gelgun entities to get rid of some edicts and prevent issues
 
+    // Remove Aperture Tag's paint gun entities so P2:MM's can be used.
+    if (g_iCurGameIndex == APERTURE_TAG && GetMapName().find("gg_") != null && GetMapName() != "gg_intro_wakeup")
+    {
+        // Remove all Gelgun entities to get rid of some edicts and prevent issues
         Entities.FindByName(null, "@DoAllNOTListener").Destroy()
         Entities.FindByName(null, "@DoBlueListener").Destroy()
         Entities.FindByName(null, "@DoOrangeListener").Destroy()
@@ -1116,7 +1119,8 @@ function OnPlayerJoin(p) {
         }
     }
 
-    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
+    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
+    {
         EntFireByHandle(p2mm_clientcommand, "Command", "paintblob_draw_distance_from_eye 110f", 0, p, p)
         SetConVarString("paintblob_max_radius_scale", "0.8f")
     }
@@ -1142,18 +1146,22 @@ function OnRespawn(p) {
         TeleportToSpawnPoint(p, null)
     }
 
-    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
+    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
+    {
         GelPair(p.entindex())
         // Disable the player's portalgun
         local i = 0
-        for (local gun = null; gun = Entities.FindByClassname(gun, "weapon_portalgun");) {
-            if (gun.GetRootMoveParent() == p) {
+        for (local gun = null; gun = Entities.FindByClassname(gun, "weapon_portalgun");)
+        {
+            if (gun.GetRootMoveParent() == p)
+            {
                 gun.__KeyValueFromString("CanFirePortal1", "0")
                 gun.__KeyValueFromString("CanFirePortal2", "0")
                 i++
             }
             // There are 2 portalgun entities, so we need to do this twice to disable the gun.
-            if (i >= 2) break
+            if (i >= 2)
+                break
         }
 
         // Disable the gels when a player respawns to prevent cheese
