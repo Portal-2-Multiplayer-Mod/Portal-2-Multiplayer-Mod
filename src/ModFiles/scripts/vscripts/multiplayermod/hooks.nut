@@ -113,42 +113,42 @@ function P2MMLoop() {
         }
     }
 
-    //## Nametags ##//
-    if (Config_UseNametags && g_bAllowNametags) {
-        if (Time() - PreviousNametagItter > 0.1) {
-            PreviousNametagItter = Time()
-            for (local p = null; p = Entities.FindByClassname(p, "player");) {
-                if (FindPlayerClass(p) != null) {
+    // //## Nametags ##//
+    // if (Config_UseNametags && g_bAllowNametags) {
+    //     if (Time() - PreviousNametagItter > 0.1) {
+    //         PreviousNametagItter = Time()
+    //         for (local p = null; p = Entities.FindByClassname(p, "player");) {
+    //             if (FindPlayerClass(p) != null) {
 
-                    // Get number of players in the game
-                    local playernums = CalcNumPlayers()
+    //                 // Get number of players in the game
+    //                 local playernums = CalcNumPlayers()
 
-                    local checkcount = 1
-                    // Optimise search based on player count
-                    if (playernums <= 6) {
-                        checkcount = playernums
-                    } else if (playernums <= 11) {
-                        checkcount = 6
-                    } else if (playernums <= 14) {
-                        checkcount = 4
-                    } else if (playernums <= 17) {
-                        checkcount = 3
-                    } else if (playernums <= 21) {
-                        checkcount = 2
-                    } else if (playernums <= 33) {
-                        checkcount = 1
-                    }
-                    local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), FindPlayerClass(p).eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
-                    if (eyeplayer != null) {
-                        local clr = FindPlayerClass(eyeplayer).color
-                        EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
-                        EntFireByHandle(nametagdisplay, "settext", FindPlayerClass(eyeplayer).username, 0, p, p)
-                        EntFireByHandle(nametagdisplay, "Display", "", 0, p, p)
-                    }
-                }
-            }
-        }
-    }
+    //                 local checkcount = 1
+    //                 // Optimise search based on player count
+    //                 if (playernums <= 6) {
+    //                     checkcount = playernums
+    //                 } else if (playernums <= 11) {
+    //                     checkcount = 6
+    //                 } else if (playernums <= 14) {
+    //                     checkcount = 4
+    //                 } else if (playernums <= 17) {
+    //                     checkcount = 3
+    //                 } else if (playernums <= 21) {
+    //                     checkcount = 2
+    //                 } else if (playernums <= 33) {
+    //                     checkcount = 1
+    //                 }
+    //                 local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), FindPlayerClass(p).eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
+    //                 if (eyeplayer != null) {
+    //                     local clr = FindPlayerClass(eyeplayer).color
+    //                     EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
+    //                     EntFireByHandle(nametagdisplay, "settext", FindPlayerClass(eyeplayer).username, 0, p, p)
+    //                     EntFireByHandle(nametagdisplay, "Display", "", 0, p, p)
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     // //## Update eye angles ##//
     // if (Config_UseNametags && g_bAllowNametags) {
