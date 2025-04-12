@@ -15,9 +15,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "AutoInstance1-door_close").Destroy()
 
         // Make fizzlers work
-        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator false true):0:-1")
+        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
         EntFire("@fizzler_gun_1_on", "AddOutput", "targetname @fizzler_gun_1_on_p2mmoverride")
-        EntFire("@fizzler_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator false false):0:-1")
+        EntFire("@fizzler_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
         EntFire("@fizzler_gun_1_off", "AddOutput", "targetname @fizzler_gun_1_off_p2mmoverride")
 
         // Make transitioning levels work
@@ -36,7 +36,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
     if (MSLoop) {
         // for some cursed reason i cant just tack this onto the ending doors triggermultiple??
         for (local player = null; player = Entities.FindByClassnameWithin(player, "player", Entities.FindByClassnameNearest("trigger_multiple", Vector(-704, 1136, 192), 32).GetOrigin(), 64);) {
-            updateGels(player, false, false, true)
+            UpdateGels(player, false, false, true)
         }
     }
 }

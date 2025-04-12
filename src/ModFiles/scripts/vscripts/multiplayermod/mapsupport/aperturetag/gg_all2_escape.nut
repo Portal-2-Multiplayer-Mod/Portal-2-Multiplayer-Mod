@@ -25,13 +25,13 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByClassnameNearest("trigger_once", Vector(2560, 5312, -1032), 32).Destroy()
 
         // Make fizzlers work
-        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator true true):0:-1")
+        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator true true):0:-1")
         EntFire("@fizzler_gun_1_on", "AddOutput", "targetname @fizzler_gun_1_on_p2mmoverride")
-        EntFire("@fizzler_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator false false):0:-1")
+        EntFire("@fizzler_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
         EntFire("@fizzler_gun_1_off", "AddOutput", "targetname @fizzler_gun_1_off_p2mmoverride")
-        EntFire("@fizzler_B_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator true true):0:-1")
+        EntFire("@fizzler_B_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator true true):0:-1")
         EntFire("@fizzler_B_gun_1_on", "AddOutput", "targetname @fizzler_B_gun_1_on_p2mmoverride")
-        EntFire("@fizzler_B_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:updateGels(activator false false):0:-1")
+        EntFire("@fizzler_B_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
         EntFire("@fizzler_B_gun_1_off", "AddOutput", "targetname @fizzler_B_gun_1_off_p2mmoverride")
         EntFire("@All_fizzler_on", "AddOutput", "OnTrigger @fizzler_B_gun_1_on_p2mmoverride:Enable")
         EntFire("@All_fizzler_on", "AddOutput", "OnTrigger @fizzler_B_gun_1_off_p2mmoverride:Enable")
