@@ -14,6 +14,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-919.97, 960, 64), 32), "AddOutput", "OnTrigger area_1:open::1.51", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-919.97, 960, 64), 32), "AddOutput", "OnTrigger portal_1_exit:open::1.51", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-320, 960, 96), 32), "AddOutput", "OnTrigger area_4:open::1.51", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1684, 288, 576), 32), "AddOutput", "OnTrigger area_2:open::2.01", 0, null, null)
+        Entities.FindByClassnameNearest("trigger_once", Vector(1633, 384, 576), 32).Destroy()
+
 
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1")

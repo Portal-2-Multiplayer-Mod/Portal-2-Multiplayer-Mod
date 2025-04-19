@@ -15,9 +15,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("bts_door_2", "AddOutput", "OnAnimationBegun bts_door_2:AddOutput:targetname bts_door_2_p2mmoverride")
         EntFire("door_1", "AddOutput", "OnOpen door_1:AddOutput:targetname door_1_p2mmoverride")
         EntFire("exit_door", "AddOutput", "OnOpen exit_door:AddOutput:targetname exit_door_p2mmoverride")
-
-        //! this areaportal also just.. doesnt exist????
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(128, -256, 448), 32), "AddOutput", "OnStartTouch bts_door_2_area:Open::2.01", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1600, 2720, 192), 32), "AddOutput", "OnStartTouch exit_door_area:Open::1.01", 0, null, null)
 
         // Make fizzlers work
         EntFireByHandle(Entities.FindByNameNearest("@fizzler_gun_1_on", Vector(128, -296, 480), 32), "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1", 0, null, null)

@@ -5,13 +5,14 @@
 // ╚██████╔╝╚██████╔╝██████████╗██║  ██║███████╗███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝
 //  ╚═════╝  ╚═════╝ ╚═════════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝
 
-//! note: first areaportal just gets deleted for some reason in p2mm. no clue why :'D
-
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Stop pathways from closing
         Entities.FindByName(null, "door_1").__KeyValueFromString("targetname", "door_1_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-224, 1216, 352), 32), "AddOutput", "OnTrigger door_1_Area:open::1.02", 0, null, null)
+        Entities.FindByName(null, "door_2").__KeyValueFromString("targetname", "door_2_p2mmoverride")
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-160, -192, 528), 32), "AddOutput", "OnTrigger door_2_area:open::1.02", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-448, -192, 496), 32), "AddOutput", "OnTrigger door_2_p2mmoverride:open::0.25", 0, null, null)
 
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator true true):0:-1")
