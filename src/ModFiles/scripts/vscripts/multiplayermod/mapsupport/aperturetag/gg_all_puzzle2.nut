@@ -11,9 +11,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_exit").__KeyValueFromString("targetname", "door_exit_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(128, 1536, 265), 32), "AddOutput", "OnPressed door_exit_p2mmoverride:Open", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(128, 1536, 265), 32), "AddOutput", "OnUnPressed door_exit_p2mmoverride:Close", 0, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(384.01, 1952, 320), 32), "AddOutput", "OnTrigger door_exit_area:Open::1.01", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(384, 1952, 320), 32), "AddOutput", "OnTrigger door_exit_area:Open::1.01", 0, null, null)
         Entities.FindByName(null, "door_en").__KeyValueFromString("targetname", "door_en_p2mmoverride")
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(384.01, 1952, 320), 32), "AddOutput", "OnTrigger door_en_area:Open::1.01", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(32, 256, 320), 32), "AddOutput", "OnTrigger door_en_area:Open::1.01", 0, null, null)
         EntFire("ground_enable_use", "AddOutput", "OnStartTouch door_en_p2mmoverride:Open")
 
         // Make fizzlers work

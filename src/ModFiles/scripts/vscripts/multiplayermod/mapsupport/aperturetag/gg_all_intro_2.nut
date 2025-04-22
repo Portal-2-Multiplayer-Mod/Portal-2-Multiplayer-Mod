@@ -5,8 +5,6 @@
 // ╚██████╔╝╚██████╔╝██████████╗██║  ██║███████╗███████╗██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝██████████╗███████╗
 //  ╚═════╝  ╚═════╝ ╚═════════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚═════════╝╚══════╝
 
-//! note: first areaportal just gets deleted for some reason in p2mm. no clue why :'D
-
 function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSOnPlayerJoin, MSOnDeath, MSOnRespawn) {
     if (MSInstantRun) {
         // Stop pathways from closing

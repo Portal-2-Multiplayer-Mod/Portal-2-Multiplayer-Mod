@@ -17,6 +17,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("exit_door", "AddOutput", "OnOpen exit_door:AddOutput:targetname exit_door_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(128, -256, 448), 32), "AddOutput", "OnStartTouch bts_door_2_area:Open::2.01", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1600, 2720, 192), 32), "AddOutput", "OnStartTouch exit_door_area:Open::1.01", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-104, 1472, 224), 32), "AddOutput", "OnStartTouch door_1_Area:Open::1.01", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(128, -256, 448), 32), "AddOutput", "OnStartTouch !self:CancelPending::1", 0, null, null)
 
         // Make fizzlers work
         EntFireByHandle(Entities.FindByNameNearest("@fizzler_gun_1_on", Vector(128, -296, 480), 32), "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1", 0, null, null)

@@ -16,6 +16,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("exit_2_counter", "AddOutput", "OnHitMax door_exit_2_p2mmoverride:Open")
         EntFire("exit_2_counter", "AddOutput", "OnChangedFromMax door_exit_2_p2mmoverride:Close")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(928, -200, 448), 32), "AddOutput", "OnTrigger door_exit_2_area:Open::1.02", 0, null, null)
+        Entities.FindByName(null, "look_ele_en_2_trigger").Destroy()
+        Entities.FindByName(null, "@vac_items_timer").Destroy()
+        Entities.FindByName(null, "door_exit_trigger").Destroy()
+        Entities.FindByName(null, "door_entry_1").__KeyValueFromString("targetname", "door_entry_1_p2mmoverride")
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-640, 1160, 704), 32), "AddOutput", "OnStartTouch door_entry_1_p2mmoverride:Open", 0, null, null)
 
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
