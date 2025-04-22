@@ -16,13 +16,24 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("prop_floor_button", "AddOutput", "OnUnPressed exit_door_p2mmoverride:Open")
 
         // Make fizzlers work
-        EntFireByHandle(Entities.FindByName(null, "@fizzler_A_gun_1_on"), "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1", 0, null, null)
-        EntFireByHandle(Entities.FindByName(null, "@fizzler_gun_1_on"), "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator true false):0:-1", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "@fizzler_A_gun_1_on"), "AddOutput", "OnTrOnStartTouchigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "@fizzler_A_gun_1_on"), "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false true):0:-1", 0, null, null)
         EntFire("@fizzler_A_gun_1_on", "AddOutput", "targetname @fizzler_A_gun_1_on_p2mmoverride")
-        EntFire("@fizzler_A_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+
+        EntFireByHandle(Entities.FindByName(null, "@fizzler_gun_1_on"), "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator true false):0:-1", 0, null, null)
+        EntFireByHandle(Entities.FindByName(null, "@fizzler_gun_1_on"), "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator true false):0:-1", 0, null, null)
+        
+        EntFire("@fizzler_A_gun_1_off", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+        EntFire("@fizzler_A_gun_1_off", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
         EntFire("@fizzler_A_gun_1_off", "AddOutput", "targetname @fizzler_A_gun_1_off_p2mmoverride")
+
         EntFire("@fizzler_gun_1_off", "AddOutput", "targetname @fizzler_gun_1_off_p2mmoverride")
-        EntFire("@fizzler_gun_1_off_p2mmoverride", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+        EntFire("@fizzler_gun_1_off_p2mmoverride", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+        EntFire("@fizzler_gun_1_off_p2mmoverride", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+        
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(768, -432, 320), 32), "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(768, -432, 320), 32), "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1", 0, null, null)
+
         EntFire("@blue_fizzler_on", "AddOutput", "OnTrigger @fizzler_A_gun_1_on_p2mmoverride:Enable")
         EntFire("@blue_fizzler_on", "AddOutput", "OnTrigger @fizzler_A_gun_1_off_p2mmoverride:Enable")
         EntFire("@blue_fizzler_on", "AddOutput", "OnTrigger @fizzler_A_gun_1_on_p2mmoverride:Enable")
@@ -31,7 +42,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("@blue_fizzler_off", "AddOutput", "OnTrigger @fizzler_A_gun_1_on_p2mmoverride:Disable")
         EntFire("@fizzler_A_gun_1_on_p2mmoverride", "Disable", "")
         EntFire("@fizzler_A_gun_1_off_p2mmoverride", "Disable", "")
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(768, -432, 320), 32), "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false):0:-1", 0, null, null)
 
         // Make transitioning levels work
         Entities.FindByName(null, "@transition_script").Destroy()

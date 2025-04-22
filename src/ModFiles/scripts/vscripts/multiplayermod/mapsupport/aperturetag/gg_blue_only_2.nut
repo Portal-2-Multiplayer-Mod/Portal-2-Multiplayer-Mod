@@ -18,13 +18,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-560, -1044.02, 192), 32), "AddOutput", "OnTrigger area_2:Open::1.51", 0, null, null)
 
         // Make fizzlers work
-        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
+        EntFire("@fizzler_gun_1_on", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
+        EntFire("@fizzler_gun_1_on", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
         EntFire("@fizzler_gun_1_on", "AddOutput", "targetname @fizzler_gun_1_on_p2mmoverride")
-        EntFire("@fizzler_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+
+        EntFire("@fizzler_gun_1_off", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+        EntFire("@fizzler_gun_1_off", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
         EntFire("@fizzler_gun_1_off", "AddOutput", "targetname @fizzler_gun_1_off_p2mmoverride")
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_portal_cleanser", Vector(-1345.22, -224, 704), 32), "AddOutput", "OnStartTouch activator.EmitSound(\"weapon_ambient/wpn_portal_fizzler_shimmy_01.wav\")", 0, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_portal_cleanser", Vector(-448, -656, 192), 32), "AddOutput", "OnStartTouch activator.EmitSound(\"weapon_ambient/wpn_portal_fizzler_shimmy_01.wav\")", 0, null, null)
+
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_portal_cleanser", Vector(-448, -656, 192), 32), "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false false)", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_portal_cleanser", Vector(-448, -656, 192), 32), "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false false)", 0, null, null)
 
         for (local track = null; track = Entities.FindByClassname(track, "path_track");) {
             EntFireByHandle(track, "AddOutput", "OnPass !self:RunScriptCode:correctPosition()", 0, null, null)

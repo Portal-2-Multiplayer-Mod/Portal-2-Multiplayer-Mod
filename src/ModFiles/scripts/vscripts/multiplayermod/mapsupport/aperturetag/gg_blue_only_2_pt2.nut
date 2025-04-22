@@ -20,11 +20,16 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(3603.99, -2656, 608), 32), "AddOutput", "OnTrigger area_5:open::2.02", 0, null, null)
 
         // Make fizzlers work
-        EntFire("@fizzler_gun_1_on", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
+        EntFire("@fizzler_gun_1_on", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
+        EntFire("@fizzler_gun_1_on", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
         EntFire("@fizzler_gun_1_on", "AddOutput", "targetname @fizzler_gun_1_on_p2mmoverride")
-        EntFire("@fizzler_gun_1_off", "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+
+        EntFire("@fizzler_gun_1_off", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
+        EntFire("@fizzler_gun_1_off", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
         EntFire("@fizzler_gun_1_off", "AddOutput", "targetname @fizzler_gun_1_off_p2mmoverride")
-        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(3568, -2560, 576.01), 32), "AddOutput", "OnTrigger !activator:RunScriptCode:UpdateGels(activator false false)", 0, null, null)
+
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(3568, -2560, 576.01), 32), "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false false)", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_multiple", Vector(3568, -2560, 576.01), 32), "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false false)", 0, null, null)
 
         // Vac tube cutscene
         EntFire("exit_tube_1_exit_trigger", "AddOutput", "OnStartTouch !activator:RunScriptCode:vacTube(activator)")
