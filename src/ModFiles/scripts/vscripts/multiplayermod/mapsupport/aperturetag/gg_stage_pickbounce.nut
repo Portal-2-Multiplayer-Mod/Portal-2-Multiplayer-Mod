@@ -19,6 +19,17 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("poison", "AddOutput", "targetname poison_p2mmoverride")
         EntFire("poison_p2mmoverride", "Start", "", 2)
 
+        // Prevent cheese that lets players skip the entire level in 1.4216 seconds.
+        Entities.FindByClassnameNearest("prop_floor_button", Vector(-704, -96, 8), 32).Destroy()
+        local cubebutton = Entities.CreateByClassname("prop_floor_cube_button")
+        cubebutton.SetOrigin(Vector(-704, -96, 8))
+        InitializeEntity(cubebutton)
+        EntFireByHandle(cubebutton, "AddOutput", "OnPressed exit_door_p2mmoverride:Open", 0, null, null)
+        EntFireByHandle(cubebutton, "AddOutput", "OnPressed button_1_text_ent:SetTextureIndex:1", 0, null, null)
+        EntFireByHandle(cubebutton, "AddOutput", "OnPressed area_exit:Open", 0, null, null)
+        EntFireByHandle(cubebutton, "AddOutput", "OnUnpressed exit_door_p2mmoverride:Close", 0, null, null)
+        EntFireByHandle(cubebutton, "AddOutput", "OnUnpressed button_1_text_ent:SetTextureIndex:0", 0, null, null)
+
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
