@@ -13,8 +13,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-848, -8, 64), 32), "AddOutput", "OnStartTouch area_entry:open::1.01", 0, null, null)
 
         Entities.FindByName(null, "exit_door").__KeyValueFromString("targetname", "exit_door_p2mmoverride")
-        EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(-704, -96, 8), 32), "AddOutput", "OnPressed exit_door_p2mmoverride:Open", 0, null, null)
-        EntFireByHandle(Entities.FindByClassnameNearest("prop_floor_button", Vector(-704, -96, 8), 32), "AddOutput", "OnUnPressed exit_door_p2mmoverride:Close", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-704, -336, 64), 32), "AddOutput", "OnStartTouch area_exit:open::1.01", 0, null, null)
         EntFire("poison", "AddOutput", "targetname poison_p2mmoverride")
         EntFire("poison_p2mmoverride", "Start", "", 2)

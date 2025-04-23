@@ -5,7 +5,7 @@
 // ╚██████╔╝╚██████╔╝██████████╗██║██║ ╚███║   ██║   ██║  ██║╚█████╔╝██████████╗  ╚██╔╝ ╚██╔╝ ██║  ██║██║ ╚██╗███████╗╚██████╔╝██║     
 //  ╚═════╝  ╚═════╝ ╚═════════╝╚═╝╚═╝  ╚══╝   ╚═╝   ╚═╝  ╚═╝ ╚════╝ ╚═════════╝   ╚═╝   ╚═╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝     
 
-bIntroDone <- false
+bIntroDone <- true
 respawnCooldown <- 0
 cubesSpawned <- false
 tubePlayer <- null
@@ -56,6 +56,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("catwalk_to_destroy", "AddOutput", "targetname catwalk_to_destroy_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-320, 608, -800), 32), "AddOutput", "OnTrigger hotel_bts_tractorbeam_p2mmoverride:Enable", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-320, 480, -112), 32), "AddOutput", "OnTrigger hotel_bts_tractorbeam_2_p2mmoverride:Enable", 0, null, null)
+        EntFire("spawnroom_tele", "AddOutput", "OnStartTouch !self:Kill::2")
+        EntFire("walkhall_relay", "AddOutput", "OnTrigger !self:RunScriptCode:boatRideTeleport():0:1")
 
         // Prevent cube from exiting the test. We have to handle this ourselves because the brush keeping the cubes in also keeps incoming players out.
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1008, 784, 352), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:respawnCooldown=Time()+6", 0, null, null)
@@ -85,6 +87,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
 
     if (MSPostPlayerSpawn) {
         // Start sequence
+        bIntroDone = false
+        EntFire("spawnroom_fade_intro", "Fade", "", 0)
         EntFire("spawnroom_fade_intro", "Fade", "", 0)
         EntFire("@global_memorysoundloop", "PlaySound", "", 0)
         EntFire("fire_particle_entrance", "Start", "", 0)
@@ -144,6 +148,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         if (!bIntroDone) {
             MSOnRespawn.__KeyValueFromString("rendermode", "10")
             SetSpeed(MSOnRespawn, 0)
+            MSOnRespawn.SetOrigin(Vector(-720, -2530, 20))
+            MSOnRespawn.SetAngles(0, 60, 0)
         }
     }
 }
@@ -199,5 +205,12 @@ function correctPosition() {
         EntFire("p2mm_servercommand", "Command", "script tubePlayer.SetOrigin(Vector(trackCoords.x, trackCoords.y, trackCoords.z - 56))", 0.02)
         EntFireByHandle(tubePlayer, "SetParent", "@podtrain_player", 0.05, null, null)
         tubePlayer.SetVelocity(Vector(0, 0, 0))
+    }
+}
+
+function boatRideTeleport() {
+    for (local p; p = Entities.FindByClassname(p, "player");) {
+        p.SetOrigin(Vector(4944, -3072, 116))
+        p.SetAngles(0, 0, 0)
     }
 }
