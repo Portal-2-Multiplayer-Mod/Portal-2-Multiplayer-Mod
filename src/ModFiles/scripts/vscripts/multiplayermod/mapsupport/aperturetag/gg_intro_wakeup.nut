@@ -58,6 +58,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-320, 480, -112), 32), "AddOutput", "OnTrigger hotel_bts_tractorbeam_2_p2mmoverride:Enable", 0, null, null)
         EntFire("spawnroom_tele", "AddOutput", "OnStartTouch !self:Kill::2")
         EntFire("walkhall_relay", "AddOutput", "OnTrigger !self:RunScriptCode:boatRideTeleport():0:1")
+        Entities.FindByName(null, "wakeup_relay").__KeyValueFromString("targetname", "wakeup_relay_p2mmoverride")
 
         // Prevent cube from exiting the test. We have to handle this ourselves because the brush keeping the cubes in also keeps incoming players out.
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1008, 784, 352), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:respawnCooldown=Time()+6", 0, null, null)
@@ -82,7 +83,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Make vactube ride work
         EntFire("@tube_ride_start_relay", "AddOutput", "OnTrigger !activator:RunScriptCode:vacTube(activator)")
 
-        EntFire("wakeup_relay", "AddOutput", "OnTrigger !self:RunScriptCode:endIntro():1.05")
+        EntFire("wakeup_relay_p2mmoverride", "AddOutput", "OnTrigger !self:RunScriptCode:endIntro():1.05")
     }
 
     if (MSPostPlayerSpawn) {
@@ -94,6 +95,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("fire_particle_entrance", "Start", "", 0)
         EntFire("@global_memorysong", "PlaySound", "", 0.1)
         EntFire("spawnroom_tele", "Enable", "", 1)
+        EntFire("wakeup_relay_p2mmoverride", "Trigger", "", 47)
         // Make players invisible and not able to move
         for (local p; p = Entities.FindByClassname(p, "player");) {
             p.__KeyValueFromString("rendermode", "10")
@@ -159,6 +161,12 @@ function endIntro() {
     for (local p; p = Entities.FindByClassname(p, "player");) {
         p.__KeyValueFromString("rendermode", "0")
         SetSpeed(p, 1)
+        EntFire("p2mm_clientcommand", "Command", "mat_motion_blur_falling_intensity 1", 0, p)
+        EntFire("p2mm_clientcommand", "Command", "mat_motion_blur_falling_max 20", 0, p)
+        EntFire("p2mm_clientcommand", "Command", "mat_motion_blur_falling_min 8", 0, p)
+        EntFire("p2mm_clientcommand", "Command", "mat_motion_blur_percent_of_screen_max 4", 0, p)
+        EntFire("p2mm_clientcommand", "Command", "mat_motion_blur_rotation_intensity 1", 0, p)
+        EntFire("p2mm_clientcommand", "Command", "mat_motion_blur_strength 1", 0, p)
     }
     Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-723, -2481, 53))
     Entities.FindByClassname(null, "info_player_start").SetAngles(0, 30, 0)
