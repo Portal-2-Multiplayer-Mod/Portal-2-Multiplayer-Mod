@@ -630,6 +630,9 @@ function CreateGenericPlayerClass(p)
     {
         currentplayerclass.BlueGelIsEnabled <- false
         currentplayerclass.OrangeGelIsEnabled <- false
+        currentplayerclass.Attack1Held <- false
+        currentplayerclass.Attack2Held <- false
+        currentplayerclass.AttackPriority <- 1
     }
 
     return currentplayerclass
@@ -2166,36 +2169,75 @@ function StartCountTransition(player) {
 
 if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
 {
-    function StartGel(index, type)
+    function UpdateSprayer(player)
     {
-        switch (type)
+        local playerclass = FindPlayerClass(player)
+        local index = player.entindex()
+
+        printlP2MM(0, true, "MOUSE DETAILS FOR " + playerclass.username + ":")
+        printlP2MM(0, true, "Attack 1: " + playerclass.Attack1Held.tostring())
+        printlP2MM(0, true, "Attack 2: " + playerclass.Attack2Held.tostring())
+
+        if (playerclass.Attack1Held && !playerclass.Attack2Held)
+        {
+            playerclass.AttackPriority = 1
+            printlP2MM(0, true, "attack priority set to blue")
+        }
+
+        else if (playerclass.Attack2Held && !playerclass.Attack1Held)
+        {
+            playerclass.AttackPriority = 2
+            printlP2MM(0, true, "attack priority set to orange")
+        }
+
+        else if (!playerclass.Attack2Held && !playerclass.Attack1Held)
+        {
+            playerclass.AttackPriority = 0
+            EntFire("Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
+            EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
+            printlP2MM(0, true, "attack priority set to none")
+            return
+        }
+
+        switch (playerclass.AttackPriority)
         {
             case 1:
-                if (FindPlayerClass(PlayerByIndex(index)).BlueGelIsEnabled != true)
-                    break
-                EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
-                EntFire("Bounce_Painter_" + index.tostring(), "Start", "")
+                EntFire("Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
+                if (playerclass.BlueGelIsEnabled)
+                    EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "Start", "")
+                else
+                    EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
                 break
+
             case 2:
-                if (FindPlayerClass(PlayerByIndex(index)).OrangeGelIsEnabled != true)
-                    break
-                EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
-                EntFire("Speed_Painter_" + index.tostring(), "Start", "")
+                EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
+                if (playerclass.OrangeGelIsEnabled)
+                    EntFire("Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), "Start", "")
+                else
+                    EntFire("Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
                 break
         }
     }
-    function EndGel(index)
+
+    function SetButtonState(player, attack, state)
     {
-        EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
-        EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
+        switch (attack)
+        {
+            case 1:
+                FindPlayerClass(player).Attack1Held = state
+                break
+            case 2:
+                FindPlayerClass(player).Attack2Held = state
+                break
+        }
+        UpdateSprayer(player)
     }
 
     function UpdateGels(player, speed, bounce, isolateDevMsg = false)
     {
         FindPlayerClass(player).OrangeGelIsEnabled = speed
         FindPlayerClass(player).BlueGelIsEnabled = bounce
-        EntFire("Speed_Painter_" + player.entindex().tostring(), "Stop", "")
-        EntFire("Bounce_Painter_" + player.entindex().tostring(), "Stop", "")
+        UpdateSprayer(player)
         // player.EmitSound("weapon_ambient/wpn_portal_fizzler_shimmy_01.wav")
         if (!isolateDevMsg) // Should be used if calling from MSLoop to avoid console spam
             printlP2MM(0, true, "UpdateGels called with player " + FindPlayerClass(player).username + " with blue gel state " + bounce.tostring() + " and orange gel state " + speed.tostring())
@@ -2204,14 +2246,14 @@ if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
     function GelPair(index)
     {
         local player = PlayerByIndex(index)
-        if (!Entities.FindByName(null, "Bounce_Painter_" + index.tostring()))
+        if (!Entities.FindByName(null, "Bounce_Painter_" + FindPlayerClass(player).steamid.tostring()))
         {
             // Setup the listener for when the player hits their +attack bind
             local gameui = Entities.CreateByClassname("game_ui")
-            EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:StartGel(activator.entindex() 1)", 0, null, null)
-            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
-            EntFireByHandle(gameui, "AddOutput", "PressedAttack2 !activator:RunScriptCode:StartGel(activator.entindex() 2)", 0, null, null)
-            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack2 !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:SetButtonState(activator 1 true)", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack !activator:RunScriptCode:SetButtonState(activator 1 false)", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "PressedAttack2 !activator:RunScriptCode:SetButtonState(activator 2 true)", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack2 !activator:RunScriptCode:SetButtonState(activator 2 false)", 0, null, null)
             gameui.__KeyValueFromString("targetname", "gameui_" + index.tostring())
             gameui.__KeyValueFromString("spawnflags", "0")
             gameui.__KeyValueFromString("FieldOfView", "-1.0")
@@ -2221,7 +2263,7 @@ if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
             local speed = Entities.CreateByClassname("info_paint_sprayer")
             speed.__KeyValueFromString("painttype", "2")
             InitializeEntity(speed)
-            speed.__KeyValueFromString("targetname", "Speed_Painter_" + index.tostring())
+            speed.__KeyValueFromString("targetname", "Speed_Painter_" + FindPlayerClass(player).steamid.tostring())
             speed.__KeyValueFromString("blob_spread_radius", "1")
             speed.__KeyValueFromString("blob_streak_percentage", "15")
             speed.__KeyValueFromString("blobs_per_second", "35")
@@ -2237,7 +2279,7 @@ if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
             local bounce = Entities.CreateByClassname("info_paint_sprayer")
             bounce.__KeyValueFromString("painttype", "0")
             InitializeEntity(bounce)
-            bounce.__KeyValueFromString("targetname", "Bounce_Painter_" + index.tostring())
+            bounce.__KeyValueFromString("targetname", "Bounce_Painter_" + FindPlayerClass(player).steamid.tostring())
             bounce.__KeyValueFromString("blob_spread_radius", "1")
             bounce.__KeyValueFromString("blob_streak_percentage", "15")
             bounce.__KeyValueFromString("blobs_per_second", "35")
@@ -2248,7 +2290,7 @@ if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
             bounce.__KeyValueFromString("min_streak_time", "0.1")
             bounce.__KeyValueFromString("min_speed", "1100")
             bounce.__KeyValueFromString("RenderMode", "0")
-            EntFire("Bounce_Painter_" + index.tostring(), "SetParent", "Speed_Painter_" + index.tostring())
+            EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "SetParent", "Speed_Painter_" + FindPlayerClass(player).steamid.tostring())
 
             local measureEye = Entities.CreateByClassname("logic_measure_movement")
             InitializeEntity(measureEye)
@@ -2260,7 +2302,7 @@ if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
             EntFireByHandle(measureEye, "SetMeasureReference", "measureEye_" + index.tostring(), 0, null, null)
             EntFireByHandle(measureEye, "SetMeasureTarget", player.GetName(), 0, null, null)
             EntFireByHandle(measureEye, "SetTargetScale", "1", 0, null, null)
-            EntFireByHandle(measureEye, "SetTarget", "Speed_Painter_" + index.tostring(), 0, null, null)
+            EntFireByHandle(measureEye, "SetTarget", "Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), 0, null, null)
         }
         EntFire("gameui_" + index.tostring(), "Activate", "", 0.2, player)
         EntFire("measureEye_" + index.tostring(), "Enable", "")
