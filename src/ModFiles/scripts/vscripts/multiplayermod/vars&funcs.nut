@@ -638,22 +638,6 @@ function CreateGenericPlayerClass(p)
     return currentplayerclass
 }
 
-// function GetEntityCount(classname = null) {
-//     if (classname == null) {
-//         local indx = 0
-//         for (local p = null; p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000);) {
-//             indx += 1
-//         }
-//         return indx
-//     } else {
-//         local indx = 0
-//         for (local p = null; p = Entities.FindByClassname(p, classname);) {
-//             indx += 1
-//         }
-//         return indx
-//     }
-// }
-
 function DeleteAmountOfEntities(classname, amount) {
     local indx = 0
     for (local p; p = Entities.FindByClassname(p, classname);) {
@@ -678,48 +662,54 @@ function DeleteAmountOfEntities(classname, amount) {
     return indx
 }
 
-function PrecacheModel(mdl) {
+function PrecacheModel(mdl)
+{
     // Add the models/ to the side of the model name if it's not already there
-    if (mdl.slice(0, 7) != "models/") {
+    if (mdl.slice(0, 7) != "models/")
         mdl = "models/" + mdl
-    }
+    
     // Add the .mdl to the end of the model name if it's not already there
-    if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl") {
+    if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl")
         mdl = mdl + ".mdl"
-    }
+    
 
     // Remove the models/ from the left side and the .mdl from the right side
-    local MinifyModel = function(mdl) {
-        if (mdl.slice(0, 7) == "models/") {
+    local MinifyModel = function(mdl)
+    {
+        if (mdl.slice(0, 7) == "models/")
             mdl = mdl.slice(7, mdl.len())
-        }
-        if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
+
+        if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl")
             mdl = mdl.slice(0, mdl.len() - 4)
-        }
+
         return mdl
     }
     local minimdl = MinifyModel(mdl)
 
     // Check if the model is already precached
     local Precached = false
-    foreach (model in PrecachedProps) {
-        if (model == minimdl) {
+    foreach (model in PrecachedProps)
+    {
+        if (model == minimdl)
             Precached = true
-        }
     }
 
     // Check if the model is already in the map and if it's already been precached
-    if (!Entities.FindByModel(null, mdl) && !Precached) {
+    if (!Entities.FindByModel(null, mdl) && !Precached)
+    {
         // Attempt to precache it
-        EntFire("p2mm_servercommand", "command", "sv_cheats 1; prop_dynamic_create " + minimdl) // FIXME: "prop_dynamic_create" crashes on dedicated servers!!!
+        EntFire("p2mm_servercommand", "command", "sv_cheats 1; prop_dynamic_create " + minimdl) //! FIXME: "prop_dynamic_create" crashes on dedicated servers!!!
         PrecachedProps.push(minimdl)
-        if (!g_bCheatsOn) {
+        if (!g_bCheatsOn)
+        {
             // In case players are now joining
             EntFire("p2mm_servercommand", "command", "sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
         printlP2MM(0, true, "PrecacheModel() - Precached model: " + mdl)
-    } else {
+    }
+    else
+    {
         printlP2MM(1, true, "PrecacheModel() - Model: " + mdl + " already precached!")
     }
 }

@@ -279,13 +279,16 @@ function P2MMLoop() {
 
 
     //## Config developer mode loop ##//
-    if (Config_DevMode) {
+    if (Config_DevMode)
+    {
         // Change Config_DevMode variable based on convar "developer"
-        if (!GetDeveloperLevelP2MM()) {
-            if (StartDevModeCheck) {
+        if (!GetDeveloperLevelP2MM())
+        {
+            if (StartDevModeCheck)
                 Config_DevMode = false
-            }
-        } else {
+        }
+        else
+        {
             Config_DevMode = true
         }
     }
@@ -754,7 +757,8 @@ function PostPlayerSpawn() {
 
     // Code used to handle running VScript debugging on the host
     // This needs to be called in PostPlayerSpawn, because the game is in a state where `script_debug` will work as intended.
-    if (Config_VScriptDebug) {
+    if (Config_VScriptDebug)
+    {
         printlP2MM(0, false, "[DEBUGGING] Initiating VScript Debugging!")
 
         // Developer is needed for debugging to work.
@@ -799,9 +803,8 @@ function PostPlayerSpawn() {
     }
 
     // Display First Run Prompt
-    if (Config_FirstRunPrompt) {
+    if (Config_FirstRunPrompt)
         EntFire("p2mm_servercommand", "command", "script CallFirstRunPrompt()", 1)
-    }
 }
 
 // 4
