@@ -21,6 +21,7 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_exit_trigger").Destroy()
         Entities.FindByName(null, "door_entry_1").__KeyValueFromString("targetname", "door_entry_1_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-640, 1160, 704), 32), "AddOutput", "OnStartTouch door_entry_1_p2mmoverride:Open", 0, null, null)
+        Entities.FindByName(null, "@vac_items_timer").Destroy()
 
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false true):0:-1")
@@ -30,6 +31,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("@fizzler_gun_1_off", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
         EntFire("@fizzler_gun_1_off", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator false false):0:-1")
         EntFire("@fizzler_gun_1_off", "AddOutput", "targetname @fizzler_gun_1_off_p2mmoverride")
+
+        // Checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(384, 112, 320), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
 
         // Vac tube cutscene
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-4448.13, 8000, 2816), 32), "AddOutput", "OnStartTouch !activator:RunScriptCode:vacTube(activator)", 0, null, null)
@@ -62,6 +66,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             }
         }
     }
+
+    if (MSOnRespawn) {
+        if (Entities.FindByClassnameNearest("info_player_start", Vector(303, -187, 293), 32))
+            FindPlayerClass(MSOnRespawn).BlueGelIsEnabled = true
+    }
 }
 
 function vacTube(activator) {
@@ -84,4 +93,10 @@ function correctPosition() {
         EntFireByHandle(tubePlayer, "SetParent", "podtrain_player", 0.05, null, null)
         tubePlayer.SetVelocity(Vector(0, 0, 0))
     }
+}
+
+function Checkpoint()
+{
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(303, -187, 293))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 0, 0)
 }

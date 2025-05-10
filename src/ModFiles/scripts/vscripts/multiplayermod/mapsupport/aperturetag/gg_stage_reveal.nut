@@ -17,6 +17,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFireByHandle(Entities.FindByClassnameNearest("prop_laser_catcher", Vector(885, 2816, 608), 32), "AddOutput", "OnPowered door_test_exit_p2mmoverride:Open", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("prop_laser_catcher", Vector(885, 2816, 608), 32), "AddOutput", "OnUnpowered door_test_exit_p2mmoverride:Close", 0, null, null)
 
+        // Checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(128, 2240, 264), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
+
         // Make bridge to go over the water
         local bridge1 = Entities.CreateByClassname("prop_wall_projector")
         bridge1.SetOrigin(Vector(-2147, 2581, 203))
@@ -91,4 +94,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             FindPlayerClass(player).OrangeGelIsEnabled = true
         }
     }
+}
+
+function Checkpoint()
+{
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(64, 2239, 309))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 0, 0)
 }

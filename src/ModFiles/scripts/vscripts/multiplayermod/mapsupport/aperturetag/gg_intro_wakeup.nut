@@ -60,6 +60,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("walkhall_relay", "AddOutput", "OnTrigger !self:RunScriptCode:boatRideTeleport():0:1")
         Entities.FindByName(null, "wakeup_relay").__KeyValueFromString("targetname", "wakeup_relay_p2mmoverride")
 
+        // Checkpoints
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(768, 448, -1912), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-288, 512, -1888), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
+
         // Prevent cube from exiting the test. We have to handle this ourselves because the brush keeping the cubes in also keeps incoming players out.
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1008, 784, 352), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:respawnCooldown=Time()+6", 0, null, null)
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(1008, 784, 352), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:cubesSpawned=true", 0, null, null)
@@ -221,4 +225,9 @@ function boatRideTeleport() {
         p.SetOrigin(Vector(4944, -3072, 116))
         p.SetAngles(0, 0, 0)
     }
+}
+
+function Checkpoint() {
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(714, 267, -1883))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 180, 0)
 }
