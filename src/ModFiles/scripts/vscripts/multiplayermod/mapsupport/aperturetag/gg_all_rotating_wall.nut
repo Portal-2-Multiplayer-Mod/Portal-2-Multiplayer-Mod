@@ -10,6 +10,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // causes cubes to get stuck in vactube eventually crashing server
         Entities.FindByName(null, "InstanceAuto1-vac_items_case").Destroy()
 
+        // Checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-640, 1472, 176), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
+
+
         // Stop pathways from closing
         Entities.FindByClassnameNearest("trigger_once", Vector(152, -1848, 448), 32).Destroy()
         EntFire("bts_door_2", "AddOutput", "OnAnimationBegun bts_door_2:AddOutput:targetname bts_door_2_p2mmoverride")
@@ -39,4 +43,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "@transition_script").Destroy()
         EntFire("transition_trigger", "AddOutput", "OnStartTouch p2mm_servercommand:Command:changelevel gg_all_fizzler:1.5")
     }
+}
+
+function Checkpoint()
+{
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-704, 1472, 176))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 0, 0)
 }

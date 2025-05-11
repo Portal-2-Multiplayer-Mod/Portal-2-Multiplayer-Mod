@@ -13,6 +13,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // This led to entity cramming for me once; delete it to be on the safe side
         Entities.FindByName(null, "@vac_items_timer").Destroy()
 
+        // Checkpoint
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(-1464, -2688, -80), 32), "AddOutput", "OnStartTouch !self:RunScriptCode:Checkpoint()", 0, null, null)
+
         // Make fizzlers work
         EntFire("@fizzler_C_gun_1_on", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator true false):0:-1")
         EntFire("@fizzler_C_gun_1_on", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator true false):0:-1")
@@ -43,6 +46,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("tube_path110", "AddOutput", "OnPass p2mm_servercommand:Command:changelevel gg_red_surf:1.5")
         Entities.FindByName(null, "@transition_script").Destroy()
     }
+
+    if (MSOnRespawn) {
+        if (Entities.FindByClassnameNearest("info_player_start", Vector(-1464, -2688, -80), 32))
+            FindPlayerClass(MSOnRespawn).OrangeGelIsEnabled = true
+    }
 }
 
 function vacTube(activator) {
@@ -69,4 +77,10 @@ function correctPosition() {
         EntFireByHandle(tubePlayer, "SetParent", "podtrain_player", 0.05, null, null)
         tubePlayer.SetVelocity(Vector(0, 0, 0))
     }
+}
+
+function Checkpoint()
+{
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-1464, -2688, -80))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, 180, 0)
 }

@@ -1134,6 +1134,13 @@ function OnDeath(p) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, p, false)
 
+    if (g_iCurGameIndex == APERTURE_TAG)
+    {
+        // Disable the gels when a player respawns to prevent cheese
+        FindPlayerClass(p).OrangeGelIsEnabled = false
+        FindPlayerClass(p).BlueGelIsEnabled = false
+    }
+
     printlP2MM(0, true, FindPlayerClass(p).username + " died! OnDeath() has been triggered.")
 }
 
@@ -1166,9 +1173,5 @@ function OnRespawn(p) {
             if (i >= 2)
                 break
         }
-
-        // Disable the gels when a player respawns to prevent cheese
-        FindPlayerClass(p).OrangeGelIsEnabled = false
-        FindPlayerClass(p).BlueGelIsEnabled = false
     }
 }

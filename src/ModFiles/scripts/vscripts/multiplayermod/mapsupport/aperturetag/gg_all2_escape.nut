@@ -95,6 +95,14 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
             button2.SetAngles(0, 0, 0)
         }
     }
+
+    if (MSOnRespawn) {
+        if (Entities.FindByClassnameNearest("info_player_start", Vector(-640, 768, -731), 32))
+        {
+            FindPlayerClass(MSOnRespawn).BlueGelIsEnabled = true
+            FindPlayerClass(MSOnRespawn).OrangeGelIsEnabled = true
+        }
+    }
 }
 
 function hostFadeSkipRace(activator) {
@@ -130,6 +138,8 @@ function StartRace() {
         FindPlayerClass(p).BlueGelIsEnabled = true
         FindPlayerClass(p).OrangeGelIsEnabled = true
     }
+    Entities.FindByClassname(null, "info_player_start").SetOrigin(Vector(-640, 768, -731))
+    Entities.FindByClassname(null, "info_player_start").SetAngles(0, -90, 0)
 }
 
 function resetButton(cube) {
