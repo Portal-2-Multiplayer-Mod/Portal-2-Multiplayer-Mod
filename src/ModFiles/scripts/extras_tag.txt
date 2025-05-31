@@ -1,0 +1,118 @@
+//Due to how the Portal 2 menu works we cannot have a menu with text for single players
+//The Extras is a work around that will allow us to have a chapter select
+"Aperture Tag"
+{
+    "spliton"
+    {
+        "title"         "#P2MM_SplitScreenOn_t"
+        "subtitle"      "#P2MM_SplitScreenOn_d"
+        "command"       "p2mm_splitscreen 1; play ui/p2_store_ui_checkout_01"
+        "pic"           "vgui/p2mm/spliton"
+    }
+
+    "splitoff"
+    {
+        "title"         "#P2MM_SplitScreenOff_t"
+        "subtitle"      "#P2MM_SplitScreenOff_d"
+        "command"       "p2mm_splitscreen 0; play ui/p2_store_ui_add_to_cart_01"
+        "pic"           "vgui/p2mm/splitoff"
+    }
+
+    "lastmap"
+    {
+        "title"         "#P2MM_LastMap_t"
+        "subtitle"      "#P2MM_LastMap_d"
+        "command"       "p2mm_map P2MM_LASTMAP"
+        "pic"           "vgui/p2mm/lastmap"
+    }
+
+    "empty"
+	{
+		"title"		    ""
+		"subtitle"	    ""
+	}
+
+	"gg_intro_wakeup"
+	{
+		"title"		"#at_chapter_1"
+		"subtitle"	"#at_chapter_1_sub"
+		"pic"		"vgui/chapters/at_1"
+		"command"	"p2mm_map gg_intro_wakeup"
+	}
+	
+	"gg_red_only"
+	{
+		"title"		"#at_chapter_2"
+		"subtitle"	"#at_chapter_2_sub"
+		"pic"		"vgui/chapters/at_2"
+		"command"	"p2mm_map gg_red_only"
+	}
+	
+	"gg_a2_column_blocker"
+	{
+		"title"		"#at_chapter_3"
+		"subtitle"	"#at_chapter_3_sub"
+		"pic"		"vgui/chapters/at_3"
+		"command"	"p2mm_map gg_a2_column_blocker"
+	}
+	
+	"gg_stage_reveal"
+	{
+		"title"		"#at_chapter_4"
+		"subtitle"	"#at_chapter_4_sub"
+		"pic"		"vgui/chapters/at_4"
+		"command"	"p2mm_map gg_stage_reveal"
+	}
+
+	"empty"
+	{
+		"title"		"#at_empty"
+		"subtitle"	"#at_empty"
+		"command"	" "
+	}
+
+	"Credits"		[!$GAMECONSOLE]
+	{
+		"title"		"#at_credits"
+		"subtitle"	"#at_credits_sub"
+		"pic"		"vgui/menu/credits"
+		"command"	"map gg_credit_video"
+	}
+
+	"Website"		[!$GAMECONSOLE]
+	{
+		"title"		"#at_website"
+		"subtitle"	"#at_website_sub"
+		"pic"		"vgui/menu/web"
+		"url"		"https://sites.google.com/site/motanumproyect/aperture-tag"
+	}
+
+	"empty"
+	{
+		"title"		"#at_empty"
+		"subtitle"	"#at_empty"
+		"command"	" "
+	}
+
+    "p2mmresources"
+    {
+        "title"     "#P2MM_Resources_t"
+        "subtitle"  "#P2MM_Resources_d"
+    }
+
+    "p2mmgithub"
+	{
+		"title"		"#P2MM_GitHub_t"
+		"subtitle"	"#P2MM_GitHub_d"
+		"pic"		"vgui/p2mm/github"
+		"url"		"https://github.com/Portal-2-Multiplayer-Mod/Portal-2-Multiplayer-Mod"
+	}
+	
+    "p2mmdiscord"
+	{
+		"title"		"#P2MM_Discord_t"
+		"subtitle"	"#P2MM_Discord_d"
+		"pic"		"vgui/p2mm/discord"
+		"url"		"https://discord.com/invite/kW3nG6GKpF"
+	}
+}
