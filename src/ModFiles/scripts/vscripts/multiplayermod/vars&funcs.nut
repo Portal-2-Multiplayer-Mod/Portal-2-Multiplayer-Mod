@@ -11,25 +11,29 @@
 //---------------
 // Classes
 //---------------
-class GlobalSpawnClass {
+class GlobalSpawnClass
+{
     m_bUseAutoSpawn = false // Try To Make All Spawns Global
     m_bUseSetSpawn = false // Use Set Spawnpoint
     m_bUseAutoCountEnd = false // Use Automatic detection for map countdowns.
 
     // Set SpawnPoint
-    m_cSetSpawn = class {
+    m_cSetSpawn = class
+    {
         position = Vector(0, 0, 0)
         radius = 0
     }
 
     // Red's Default Spawn Parameters
-    m_cRedPlayers = class {
+    m_cRedPlayers = class
+    {
         spawnpoint = Vector(0, 0, 0)
         rotation = Vector(0, 0, 0)
         velocity = Vector(0, 0, 0)
     }
     // Blue's Default Spawn Parameters
-    m_cBluePlayers = class {
+    m_cBluePlayers = class
+    {
         spawnpoint = Vector(0, 0, 0)
         rotation = Vector(0, 0, 0)
         velocity = Vector(0, 0, 0)
@@ -45,10 +49,19 @@ const TEAM_SPECTATOR	= 1
 const TEAM_RED          = 2
 const TEAM_BLUE         = 3
 
+// iCurGameIndex constants.
+//? These can't be const because they are used in p2mm.nut and that file calls this file.
+//? However these are still treated as if they were consts so their value shouldn't change.
+PORTAL_2           <- 0
+PORTAL_STORIES_MEL <- 1
+APERTURE_TAG       <- 2
+PORTAL_RELOADED    <- 3
+INFRA              <- 4
+DIVINITY           <- 5
+
 //---------------
 // Booleans
 //---------------
-g_bAllowColorIndicator <- true // By default unless specified in mapsupport
 g_bAllowNametags <- true // By default unless specified in mapsupport
 g_bCanCheckAngle <- false
 g_bCanHook <- false
@@ -62,18 +75,16 @@ g_bOverridePluginGrabController <- true // By default unless specified in mapsup
 g_bHasSpawned <- false
 doCountdown <- false
 // Check entire map string
-if (GetMapName().slice(0, GetMapName().len()) == "mp_coop_community_hub") {
+if (GetMapName().slice(0, GetMapName().len()) == "mp_coop_community_hub")
     g_bIsCommunityCoopHub <- true
-} else {
+else
     g_bIsCommunityCoopHub <- false
-}
 
 // Check part of the map string
-if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) == "mp_coop") {
+if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) == "mp_coop")
     g_bIsOnSingleplayerMaps <- false
-} else {
+else
     g_bIsOnSingleplayerMaps <- true
-}
 
 // Minimize the errors when in singleplayer maps
 // (We don't need these)
@@ -83,22 +94,6 @@ if (g_bIsOnSingleplayerMaps) {
     function CoopPingTool(int1, int2) {}
     function CoopBotAnimation(int1, int2) {}
 }
-
-// g_iCurGameIndex definition.
-g_iCurGameIndex <- -1
-switch (GetGameMainDir()) {
-    case "portal2":         g_iCurGameIndex = PORTAL_2;           break;
-    case "portal_stories":  g_iCurGameIndex = PORTAL_STORIES_MEL; break;
-    case "aperturetag":     g_iCurGameIndex = APERTURE_TAG;       break;
-    //case "portalreloaded":  g_iCurGameIndex = PORTAL_RELOADED;    break;
-    //case "infra":           g_iCurGameIndex = INFRA;              break;
-}
-// Special case has to be done with SourceMods as their main game dir is a path to the SourceMod.
-if (GetGameMainDir().find("Divinity"))
-    g_iCurGameIndex = DIVINITY
-
-if (g_iCurGameIndex == PORTAL_STORIES_MEL)
-    FIRST_MAP_WITH_POTATO_GUN <- null
 
 MadeSpawnClass <- false
 OrangeCacheFailed <- false
@@ -123,12 +118,31 @@ PreviousTime1Sec <- 0
 PreviousTime5Sec <- 0
 Countdown <- 0
 
-if (Config_RandomPortalSize) {
+if (Config_RandomPortalSize)
+{
     randomportalsize <- 34
     randomportalsizeh <- 34
 }
 
 TickSpeed <- 0.00
+
+// g_iCurGameIndex definition.
+g_iCurGameIndex <- -1
+switch (GetGameMainDir())
+{
+    case "portal2":         g_iCurGameIndex = PORTAL_2;           break;
+    case "portal_stories":  g_iCurGameIndex = PORTAL_STORIES_MEL; break;
+    case "aperturetag":     g_iCurGameIndex = APERTURE_TAG;       break;
+    //case "portalreloaded":  g_iCurGameIndex = PORTAL_RELOADED;    break;
+    //case "infra":           g_iCurGameIndex = INFRA;              break;
+}
+// Special case has to be done with SourceMods as their main game dir is a path to the SourceMod.
+if (GetGameMainDir().find("Divinity"))
+    g_iCurGameIndex = DIVINITY
+
+// Warn if no/invalid game was determined with g_iCurGameIndex
+if (g_iCurGameIndex == -1)
+    printlP2MM(1, false, "g_iCurGameIndex came back as -1! This means the current game could not be determined!")
 
 //---------------
 // Arrays/Tables
@@ -200,6 +214,8 @@ OriginalPosMain <- null
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 hCountdownEnableTrigger <- null
 sInstantTransitionMap <- ""
+if (g_iCurGameIndex == PORTAL_STORIES_MEL)
+    FIRST_MAP_WITH_POTATO_GUN <- null
 
 //* FUNCTIONS *\\
 

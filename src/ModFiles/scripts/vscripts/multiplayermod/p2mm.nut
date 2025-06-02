@@ -21,14 +21,6 @@ printl("\n---------------------")
 printl("==== calling p2mm.nut")
 printl("---------------------\n")
 
-// iCurGameIndex constants.
-const PORTAL_2           = 0
-const PORTAL_STORIES_MEL = 1
-const APERTURE_TAG       = 2
-const PORTAL_RELOADED    = 3
-const INFRA              = 4
-const DIVINITY           = 5
-
 IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences and make sure nothing is invalid and compensate if so.
 IncludeScript("multiplayermod/vars&funcs.nut") // Load global variables and functions.
 

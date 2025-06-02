@@ -23,9 +23,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Disable nametags this load
         g_bAllowNametags = false
 
-        // Disable color indicator this load
-        g_bAllowColorIndicator = false
-
         // Shake the camera when you fall through the wood
         Entities.FindByName(null, "crash_landing_shake").__KeyValueFromString("spawnflags", "29")
 
