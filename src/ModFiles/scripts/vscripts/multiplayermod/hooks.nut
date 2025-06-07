@@ -81,113 +81,92 @@ function P2MMLoop() {
     MapSupport(false, true, false, false, false, false, false)
 
     // Get all players and check for changes
-    for (local p = null; p = Entities.FindByClassname(p, "player");) {
-        if (!p.ValidateScriptScope()) { continue }
+    for (local p = null; p = Entities.FindByClassname(p, "player");)
+    {
+        if (!p.ValidateScriptScope())
+            continue
+        local player = FindPlayerClass(p)
+        if (!player)
+            continue
         
         // Update everyone's class if PermaPotato is on
         // FindPlayerClass(p).potatogun = PermaPotato
 
         //## PotatoIfy loop ##//
-        if (PermaPotato) {
+        if (PermaPotato)
             PotatoIfy(p, "1")
-        } else {
+        else
             PotatoIfy(p, "0")
-        }
 
         //## Set PlayerModel ##//
-        if (FindPlayerClass(p) != null) {
-            if (FindPlayerClass(p).playermodel != null) {
-                if (FindPlayerClass(p).playermodel != p.GetModelName()) {
-                    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + FindPlayerClass(p).playermodel + "\")", 1)
-                }
-            }
+        if (player.playermodel != null)
+        {
+            if (player.playermodel != p.GetModelName())
+                EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + player.playermodel + "\")", 1)
         }
     }
 
     //## Update Portal Gun names ##//
-    for (local p = null; p = Entities.FindByClassname(p, "weapon_portalgun");) {
+    for (local pgun = null; pgun = Entities.FindByClassname(pgun, "weapon_portalgun");) {
         // if it doesn't have a name yet
-        if (p.GetName() == "") {
+        if (pgun.GetName() == "") {
             // Set The Name Of The Portalgun (based on PLAYER index)
-            p.__KeyValueFromString("targetname", "weapon_portalgun_player" + p.GetRootMoveParent().entindex())
+            pgun.__KeyValueFromString("targetname", "weapon_portalgun_player" + pgun.GetRootMoveParent().entindex())
         }
     }
 
-    // //## Nametags ##//
-    // if (Config_UseNametags && g_bAllowNametags) {
-    //     if (Time() - PreviousNametagItter > 0.1) {
-    //         PreviousNametagItter = Time()
-    //         for (local p = null; p = Entities.FindByClassname(p, "player");) {
-    //             if (FindPlayerClass(p) != null) {
+    // Update eye angles and positions for players.
+    for (local p = null; p = Entities.FindByClassname(p, "player");)
+    {
+        local player = FindPlayerClass(p)
+        if (!player)
+            continue
+        
+        player.eyeposition = p.EyePosition()
+        player.eyeangles = p.GetAngles()
+        player.eyeforwardvector = p.GetForwardVector()
+    }
 
-    //                 // Get number of players in the game
-    //                 local playernums = CalcNumPlayers()
+    // Player Nametags, display player username at center of screen when looking at a specific player.
+    if (Config_UseNametags && g_bAllowNametags)
+    {
+        for (local p = null; p = Entities.FindByClassname(p, "player");)
+        {
+            local player = FindPlayerClass(p)
+            if (!player)
+                continue
 
-    //                 local checkcount = 1
-    //                 // Optimise search based on player count
-    //                 if (playernums <= 6) {
-    //                     checkcount = playernums
-    //                 } else if (playernums <= 11) {
-    //                     checkcount = 6
-    //                 } else if (playernums <= 14) {
-    //                     checkcount = 4
-    //                 } else if (playernums <= 17) {
-    //                     checkcount = 3
-    //                 } else if (playernums <= 21) {
-    //                     checkcount = 2
-    //                 } else if (playernums <= 33) {
-    //                     checkcount = 1
-    //                 }
-    //                 local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), FindPlayerClass(p).eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
-    //                 if (eyeplayer != null) {
-    //                     local clr = FindPlayerClass(eyeplayer).color
-    //                     EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
-    //                     EntFireByHandle(nametagdisplay, "settext", FindPlayerClass(eyeplayer).username, 0, p, p)
-    //                     EntFireByHandle(nametagdisplay, "Display", "", 0, p, p)
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+            // Get various points for calculating 
+            local vecStart = player.eyeposition
+            //local vecForward = player.GetAngles()
+            local vecForward = player.eyeforwardvector
+            local vecEnd =  vecStart + (vecForward * 400)
+            local traceResult = TraceLineEx(vecStart, vecEnd, MASK_OPAQUE_AND_NPCS, p, COLLISION_GROUP_PLAYER)
+            // If traceResult is less than 1.0, a fraction of the trace line, something was hit.
+            if (traceResult < 1.0)
+            {
+                // Calculate the point in space of where the hit occured.
+                local hitPoint = vecStart + (vecEnd - vecStart) * traceResult
 
-    // //## Update eye angles ##//
-    // if (Config_UseNametags && g_bAllowNametags) {
-    //     if (!g_bCoordsAlternate) {
-    //         // Alternate so our timings space out correctly
-    //         if (LastCoordGetPlayer != null) {
-    //             LastCoordGetPlayer = Entities.FindByClassname(LastCoordGetPlayer, "player")
-    //         } else {
-    //             LastCoordGetPlayer = Entities.FindByClassname(null, "player")
-    //         }
-    //         if (LastCoordGetPlayer != null) {
-    //             EntFireByHandle(measuremovement_eyeposition, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
-    //             // Alternate so our timings space out correctly
-    //             g_bCoordsAlternate = true
-    //         }
-    //     } else {
-    //         if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement_eyeposition")) {
-    //             local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
-    //             if (currentplayerclass != null) {
-    //                 if (OriginalAngle == null && g_bCanCheckAngle) {
-    //                     OriginalAngle = measuremovement_eyeposition.GetAngles()
-    //                     Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
-    //                 }
+                if (Config_VisualDebug)
+                    DebugDrawBox(hitPoint, Vector(-75, -75, -75), Vector(75, 75, 75), 255, 255, 255, 10, -1)
+                    // DebugDrawBox(origin, mins, max, r, g, b, alpha, duration)
 
-    //                 currentplayerclass.eyeangles = measuremovement_eyeposition.GetAngles()
-    //                 currentplayerclass.eyeforwardvector = measuremovement_eyeposition.GetForwardVector()
-    //             }
-    //         }
-    //         // Alternate so our timings space out correctly
-    //         g_bCoordsAlternate = false
-    //     }
-    // } else {
-    //     for (local p = null; p = Entities.FindByClassname(p, "player");) {
-    //         FindPlayerClass(p).eyeangles = Vector(0, 0, 0)
-    //         FindPlayerClass(p).eyeforwardvector = Vector(0, 0, 0)
-    //     }
-    // }
+                local playerHit = Entities.FindByClassnameNearest("player", hitPoint, 75)
+                if (playerHit && playerHit != p)
+                {
+                    local playerHitClass = FindPlayerClass(playerHit)
+                    printlP2MM(0, true, "Player hit: " + playerHitClass.username)
+                    //ClientPrint(player.id, playerHitClass.username)
 
-    //printl(Entities.FindByName(null, "blue").EyePosition())
+                    HudPrint(player.id, playerHitClass.username, Vector(-1, 0.2, 1), 0, 0, Vector(playerHitClass.color.r, playerHitClass.color.g, playerHitClass.color.b), 255, Vector(0, 0, 0), 0, Vector(0.0, 0.0, 0.1))
+                }
+            }
+
+            if (Config_VisualDebug)
+                DebugDrawLine(vecStart, vecEnd, 255, 0, 0, false, 2)
+        }
+    }
 
     // // ENTITY OPTIMIZATION / DELETION ///////////////
     // local cnt = GetEntityCount()
