@@ -59,6 +59,147 @@ PORTAL_RELOADED    <- 3
 INFRA              <- 4
 DIVINITY           <- 5
 
+//* TraceLineEx Consts: Content Masks & Collisons *\\
+//  Taken from bspflags.h and const.h respectivley \\
+
+// contents flags are seperate bits
+// a given brush can contribute multiple content bits
+// multiple brushes can be in a single leaf
+
+// lower bits are stronger, and will eat weaker brushes completely
+const	CONTENTS_EMPTY			= 0		// No contents
+
+const	CONTENTS_SOLID			= 0x1		// an eye is never valid in a solid
+const	CONTENTS_WINDOW			= 0x2		// translucent, but not watery (glass)
+const	CONTENTS_AUX			= 0x4
+const	CONTENTS_GRATE			= 0x8		// alpha-tested "grate" textures.  Bullets/sight pass through, but solids don't
+const	CONTENTS_SLIME			= 0x10
+const	CONTENTS_WATER			= 0x20
+const	CONTENTS_BLOCKLOS		= 0x40	// block AI line of sight
+const   CONTENTS_OPAQUE			= 0x80	// things that cannot be seen through (may be non-solid though)
+const	LAST_VISIBLE_CONTENTS	= 0x80
+
+ALL_VISIBLE_CONTENTS  <- (LAST_VISIBLE_CONTENTS | (LAST_VISIBLE_CONTENTS-1)) // Has to be not const in order to perform bitwise OR operation.
+
+const CONTENTS_TESTFOGVOLUME	= 0x100
+const CONTENTS_UNUSED			= 0x200	
+
+// unused 
+// NOTE: If it's visible, grab from the top + update LAST_VISIBLE_CONTENTS
+// if not visible, then grab from the bottom.
+const CONTENTS_UNUSED6		= 0x400
+
+const CONTENTS_TEAM1			= 0x800	// per team contents used to differentiate collisions 
+const CONTENTS_TEAM2			= 0x1000	// between players and objects on different teams
+
+// ignore CONTENTS_OPAQUE on surfaces that have SURF_NODRAW
+const CONTENTS_IGNORE_NODRAW_OPAQUE	= 0x2000
+
+// hits entities which are MOVETYPE_PUSH (doors, plats, etc.)
+const CONTENTS_MOVEABLE		= 0x4000
+
+// remaining contents are non-visible, and don't eat brushes
+const	CONTENTS_AREAPORTAL		= 0x8000
+
+const	CONTENTS_PLAYERCLIP		= 0x10000
+const	CONTENTS_MONSTERCLIP	= 0x20000
+
+// currents can be added to any other contents, and may be mixed
+const	CONTENTS_CURRENT_0		= 0x40000
+const	CONTENTS_CURRENT_90		= 0x80000
+const	CONTENTS_CURRENT_180	= 0x100000
+const	CONTENTS_CURRENT_270	= 0x200000
+const	CONTENTS_CURRENT_UP		= 0x400000
+const	CONTENTS_CURRENT_DOWN	= 0x800000
+
+const	CONTENTS_ORIGIN			= 0x1000000	// removed before bsping an entity
+
+const	CONTENTS_MONSTER		= 0x2000000	// should never be on a brush, only in game
+const	CONTENTS_DEBRIS			= 0x4000000
+const	CONTENTS_DETAIL			= 0x8000000	// brushes to be added after vis leafs
+const	CONTENTS_TRANSLUCENT	= 0x10000000	// auto set if any surface has trans
+const	CONTENTS_LADDER			= 0x20000000
+const   CONTENTS_HITBOX			= 0x40000000	// use accurate hitboxes on trace
+
+
+//* Content Mask Consts *\\
+//? All those that aren't const have to be in order to have the bitwise OR operation be completed.
+
+const	MASK_ALL			= 0xFFFFFFFF
+// everything that is normally solid
+MASK_SOLID					<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_MONSTER|CONTENTS_GRATE)
+// everything that blocks player movement
+MASK_PLAYERSOLID			<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_PLAYERCLIP|CONTENTS_WINDOW|CONTENTS_MONSTER|CONTENTS_GRATE)
+// blocks npc movement
+MASK_NPCSOLID				<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_MONSTERCLIP|CONTENTS_WINDOW|CONTENTS_MONSTER|CONTENTS_GRATE)
+// water physics in these contents
+MASK_WATER					<- (CONTENTS_WATER|CONTENTS_MOVEABLE|CONTENTS_SLIME)
+// everything that blocks lighting
+MASK_OPAQUE					<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_OPAQUE)
+// everything that blocks lighting, but with monsters added.
+MASK_OPAQUE_AND_NPCS		<- (MASK_OPAQUE|CONTENTS_MONSTER)
+// everything that blocks line of sight for AI
+MASK_BLOCKLOS				<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_BLOCKLOS)
+// everything that blocks line of sight for AI plus NPCs
+MASK_BLOCKLOS_AND_NPCS		<- (MASK_BLOCKLOS|CONTENTS_MONSTER)
+// everything that blocks line of sight for players
+MASK_VISIBLE				<- (MASK_OPAQUE|CONTENTS_IGNORE_NODRAW_OPAQUE)
+// everything that blocks line of sight for players, but with monsters added.
+MASK_VISIBLE_AND_NPCS		<- (MASK_OPAQUE_AND_NPCS|CONTENTS_IGNORE_NODRAW_OPAQUE)
+// bullets see these as solid
+MASK_SHOT					<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_MONSTER|CONTENTS_WINDOW|CONTENTS_DEBRIS|CONTENTS_HITBOX)
+// non-raycasted weapons see this as solid (includes grates)
+MASK_SHOT_HULL				<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_MONSTER|CONTENTS_WINDOW|CONTENTS_DEBRIS|CONTENTS_GRATE)
+// hits solids (not grates) and passes through everything else
+MASK_SHOT_PORTAL			<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_MONSTER)
+// everything normally solid, except monsters (world+brush only)
+MASK_SOLID_BRUSHONLY		<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_GRATE)
+// everything normally solid for player movement, except monsters (world+brush only)
+MASK_PLAYERSOLID_BRUSHONLY	<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_PLAYERCLIP|CONTENTS_GRATE)
+// everything normally solid for npc movement, except monsters (world+brush only)
+MASK_NPCSOLID_BRUSHONLY		<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_MONSTERCLIP|CONTENTS_GRATE)
+// just the world, used for route rebuilding
+MASK_NPCWORLDSTATIC			<- (CONTENTS_SOLID|CONTENTS_WINDOW|CONTENTS_MONSTERCLIP|CONTENTS_GRATE)
+// These are things that can split areaportals
+MASK_SPLITAREAPORTAL		<- (CONTENTS_WATER|CONTENTS_SLIME)
+
+// UNDONE: This is untested, any moving water
+MASK_CURRENT				<- (CONTENTS_CURRENT_0|CONTENTS_CURRENT_90|CONTENTS_CURRENT_180|CONTENTS_CURRENT_270|CONTENTS_CURRENT_UP|CONTENTS_CURRENT_DOWN)
+
+// everything that blocks corpse movement
+// UNDONE: Not used yet / may be deleted
+MASK_DEADSOLID				<- (CONTENTS_SOLID|CONTENTS_PLAYERCLIP|CONTENTS_WINDOW|CONTENTS_GRATE)
+
+//* Collison Groups for TraceLineEx *\\
+const COLLISION_GROUP_NONE = 1
+const COLLISION_GROUP_DEBRIS = 2			 // Collides with nothing but world and static stuff
+const COLLISION_GROUP_DEBRIS_TRIGGER = 3     // Same as debris, but hits triggers
+const COLLISION_GROUP_INTERACTIVE_DEBRIS = 4 // Collides with everything except other interactive debris or debris
+const COLLISION_GROUP_INTERACTIVE = 5	     // Collides with everything except interactive debris or debris
+const COLLISION_GROUP_PLAYER = 6
+const COLLISION_GROUP_BREAKABLE_GLASS = 7
+const COLLISION_GROUP_VEHICLE = 8
+const COLLISION_GROUP_PLAYER_MOVEMENT = 9  // For HL2, same as COLLISION_GROUP_PLAYER, for
+	    								   // TF2, this filters out other players and CBaseObjects
+const COLLISION_GROUP_NPC = 10			   // Generic NPC group
+const COLLISION_GROUP_IN_VEHICLE = 11	   // for any entity inside a vehicle
+const COLLISION_GROUP_WEAPON = 12		   // for any weapons that need collision detection
+const COLLISION_GROUP_VEHICLE_CLIP = 13	   // vehicle clip brush to restrict vehicle movement
+const COLLISION_GROUP_PROJECTILE = 14	   // Projectiles!
+const COLLISION_GROUP_DOOR_BLOCKER = 15    // Blocks entities not permitted to get near moving doors
+const COLLISION_GROUP_PASSABLE_DOOR = 16   // Doors that the player shouldn't collide with
+const COLLISION_GROUP_DISSOLVING = 17	   // Things that are dissolving are in this group
+const COLLISION_GROUP_PUSHAWAY = 18		   // Nonsolid on client and server, pushaway in player code
+const COLLISION_GROUP_NPC_ACTOR = 19	   // Used so NPCs in scripts ignore the player.
+const COLLISION_GROUP_NPC_SCRIPTED = 20    // USed for NPCs in scripts that should not collide with each other
+const COLLISION_GROUP_PZ_CLIP = 21
+const COLLISION_GROUP_CAMERA_SOLID = 22		// Solid only to the camera's test trace
+const COLLISION_GROUP_PLACEMENT_SOLID = 23	// Solid only to the placement tool's test trace
+const COLLISION_GROUP_PLAYER_HELD = 24		// Held objects that shouldn't collide with players
+const COLLISION_GROUP_WEIGHTED_CUBE = 25		    // Cubes need a collision group that acts roughly like COLLISION_GROUP_NONE but doesn't collide with debris or interactive
+const COLLISION_GROUP_DEBRIS_BLOCK_PROJECTILE = 26  // Only collides with bullets
+const LAST_SHARED_COLLISION_GROUP = 27
+
 //---------------
 // Booleans
 //---------------
@@ -604,6 +745,7 @@ function CreateGenericPlayerClass(p)
 
     // Base info
     currentplayerclass.color <- GetPlayerColor(p)  // Player color
+    currentplayerclass.eyeposition <- Vector(0, 0, 0) // Eye position
     currentplayerclass.eyeangles <- Vector(0, 0, 0) // Player angles
     currentplayerclass.eyeforwardvector <- Vector(0, 0, 0) // Player angles
     currentplayerclass.id <- p.entindex() // Player entity index
@@ -617,7 +759,8 @@ function CreateGenericPlayerClass(p)
     // Gelocity
     if (GetMapName() == "workshop/596984281130013835/mp_coop_gelocity_1_v02" ||
         GetMapName() == "workshop/594730048530814099/mp_coop_gelocity_2_v01" ||
-        GetMapName() == "workshop/613885499245125173/mp_coop_gelocity_3_v02") {
+        GetMapName() == "workshop/613885499245125173/mp_coop_gelocity_3_v02")
+    {
 
         currentplayerclass.i_CompletedLaps <- 0 // Completed laps by player.
         currentplayerclass.l_PassedCheckpoints <- [] // List of passted checkpoints to keep track of progress in race.
@@ -638,9 +781,6 @@ function CreateGenericPlayerClass(p)
         currentplayerclass.hasvotedno <- false  // Did this player vote no?
     }
 
-    // Note down the registered player for later reference
-    playerclasses.push(currentplayerclass)
-
     // Aperture Tag Gelgun logic
     if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
     {
@@ -650,6 +790,9 @@ function CreateGenericPlayerClass(p)
         currentplayerclass.Attack2Held <- false
         currentplayerclass.AttackPriority <- 1
     }
+
+    // Note down the registered player for later reference
+    playerclasses.push(currentplayerclass)
 
     return currentplayerclass
 }
