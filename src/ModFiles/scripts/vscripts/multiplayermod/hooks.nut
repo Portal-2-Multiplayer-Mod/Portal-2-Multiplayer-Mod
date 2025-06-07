@@ -1090,12 +1090,16 @@ function OnPlayerJoin(p) {
         EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos; r_portal_fastpath 0; r_portal_use_pvs_optimization 0; mat_motion_blur_forward_enabled 0", 0, p, p)
 
         // show scoreboard
-        if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub && !Player2Joined) {
+        if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub && !Player2Joined)
+        {
             local p = Entities.FindByClassname(null, "player")
-            if (FindPlayerClass(p).id == 1) {
-                EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
-            }
+            if (FindPlayerClass(p).id == 1)
+                EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0.5, p, p)
         }
+
+        // Chat box is broken to not see messages in Aperture Tag, so we use developer for players to see chat messages in the top left of the screen.
+        if (g_iCurGameIndex == APERTURE_TAG)
+            EntFireByHandle(p2mm_clientcommand, "Command", "developer 1", 0, p, p)
     }
 
     // Don't show the join text for the listen server host
