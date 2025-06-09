@@ -1079,7 +1079,10 @@ function OnPlayerJoin(p) {
 
         // Chat box is broken to not see messages in Aperture Tag, so we use developer for players to see chat messages in the top left of the screen.
         if (g_iCurGameIndex == APERTURE_TAG)
+        {
             EntFireByHandle(p2mm_clientcommand, "Command", "developer 1", 0, p, p)
+            EntFireByHandle(p2mm_clientcommand, "Command", "gameinstructor_enable 0", 0, p, p)
+        }
     }
 
     // Don't show the join text for the listen server host
