@@ -2457,3 +2457,43 @@ if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
         EntFire("measureEye_" + index.tostring(), "Enable", "")
     }
 }
+
+/**
+ * @brief Convert degrees to radians.
+ * @param Degrees to convert.
+ * @return Radians.
+ */
+function DegToRad(degrees)
+{
+    return degrees * (PI / 180)
+}
+
+/**
+ * @brief Convert radians to degrees.
+ * @param radians to convert.
+ * @return Eegrees.
+ */
+function RadToDeg(radians)
+{
+    return radians * (180 / PI)
+}
+
+/**
+ * @brief Convert a Vector of angles to a forward vector.
+ * @param angles Vector of angles (pitch, yaw, roll).
+ * @return Angle converted to a forward vector.
+ */
+function AngleVectors(angles)
+{
+    local forwardVector = Vector(0, 0, 0)
+    local sinYaw = sin(DegToRad(angles.y))
+    local cosYaw = cos(DegToRad(angles.y))
+    local sinPitch = sin(DegToRad(angles.x))
+    local cosPitch = cos(DegToRad(angles.x))
+	
+	forwardVector.x = cos(cosYaw) * cos(cosPitch)
+	forwardVector.y = sin(sinYaw) * cos(cosPitch)
+	forwardVector.z = -sin(sinPitch)
+
+    return forwardVector
+}

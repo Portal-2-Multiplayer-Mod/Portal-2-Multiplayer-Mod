@@ -125,6 +125,7 @@ function P2MMLoop() {
         player.eyeposition = p.EyePosition()
         player.eyeangles = p.GetAngles()
         player.eyeforwardvector = p.GetForwardVector()
+        //player.eyeforwardvector = EyeAngles(p.entindex())
     }
 
     // Player Nametags, display player username at center of screen when looking at a specific player.
