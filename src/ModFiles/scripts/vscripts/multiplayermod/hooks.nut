@@ -243,7 +243,7 @@ function P2MMLoop() {
                     printlP2MM(0, true, "=================================HEALTH SPAWN")
                 }
             }
-            EntFire("p2mm_wait_for_players_text", "Display")
+            HudPrint(0, "Waiting for players...", Vector(0, 0, 1), 0, 0, Vector(50, 190, 50), 255, Vector(50, 190, 50), 255, Vector(0, 0, 0.2))
         }
     }
 
@@ -751,35 +751,16 @@ function PostPlayerSpawn() {
             EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName())
         }
 
-        // Make the text to indicate that the game is frozen waiting for the VScript debugger
-        vscriptDebugText <- Entities.CreateByClassname("game_text")
-        vscriptDebugText.__KeyValueFromString("targetname", "vscriptDebugText")
-        vscriptDebugText.__KeyValueFromString("x", "-1")
-        vscriptDebugText.__KeyValueFromString("y", "-1")
-        vscriptDebugText.__KeyValueFromString("holdtime", "1")
-        vscriptDebugText.__KeyValueFromString("fadeout", "0.2")
-        vscriptDebugText.__KeyValueFromString("fadein", "0.2")
-        vscriptDebugText.__KeyValueFromString("channel", "1")
-        vscriptDebugText.__KeyValueFromString("spawnflags", "1")
-        vscriptDebugText.__KeyValueFromString("color", "255 255 255")
-        vscriptDebugText.__KeyValueFromString("message", "Waiting for VScript Debugger to Attach...\nGAME WON'T UNFREEZE UNTIL\nDEBUGGER IS ATTACHED!")
-        EntFireByHandle(vscriptDebugText, "Display", "", 0.2, null, null)
+        HudPrint(0, "Waiting for VScript Debugger to Attach...\nGAME WON'T UNFREEZE UNTIL\nDEBUGGER IS ATTACHED!", Vector(0, 0.4, 3), 0, 0, Vector(255, 0, 0), 255, Vector(255, 0, 0), 255, Vector(0.2, 0.2, 3))
 
         // Call `script_debug` only on the host, that way other players will not be frozen.
         // But those same players can disconnect from the server due to time out if the host
         // does not connect the debugger quick enough unfreezing their game.
+        EntFire("p2mm_servercommand", "command", "stopvideos", 0.5, Entities.FindByName(null, "blue"))
         EntFire("p2mm_servercommand", "command", "script_debug", 1, Entities.FindByName(null, "blue"))
 
         // `script_debug` takes a second to do its thing, so delay the debug message
         EntFire("p2mm_servercommand", "command", "script printlP2MM(\"[DEBUGGING] VScript Debugger Attached!\")", 1.1)
-
-        // Reuse the same `game_text` entity to display a success message
-        EntFireByHandle(vscriptDebugText, "settext", "VScript Debugger Attached!", 2, null, null)
-        EntFireByHandle(vscriptDebugText, "Display", "", 2.5, null, null)
-
-        // Remove the `game_text` and vscriptDebugText instance as they're not needed anymore
-        EntFireByHandle(vscriptDebugText, "Kill", "", 4, null, null)
-        delete vscriptDebugText
     }
 
     // Display First Run Prompt
@@ -1088,13 +1069,10 @@ function OnPlayerJoin(p) {
     // Don't show the join text for the listen server host
     // TODO: Possibly need to rework "y" offset for dedicated?
     if (Config_UseJoinIndicator && PlayerID > 1) {
-        // Set join message to player name (or index)
         local iCurrentNumPlayers = CalcNumPlayers()
-        Entities.FindByName(null, "p2mm_player_joined_text").__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + GetMaxPlayers().tostring() + ")")
-        waitingtext.__KeyValueFromString("y", "0.075")
-        
+
         //# Say join message on HUD #//
-        EntFireByHandle(Entities.FindByName(null, "p2mm_player_joined_text"), "Display", "", 0.0, null, null)
+        HudPrint(0, GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + GetMaxPlayers().tostring() + ")", Vector(0, 0, 3), 0, 0, Vector(255, 200, 0), 255, Vector(255, 200, 0), 255, Vector(0.2, 0.2, 3))        
     }
 
     // Set color of player's in-game model
