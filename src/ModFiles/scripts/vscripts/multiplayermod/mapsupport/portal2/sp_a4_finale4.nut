@@ -121,6 +121,8 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "transition_portal2").Destroy()
         Entities.FindByName(null, "fail_hurt_trigger").Destroy()
 
+        Entities.FindByName(null, "credits").Destroy() // Game crashes when credits run, still needs to be fixed.
+
         Entities.FindByName(null, "ending_playmovie").__KeyValueFromString("targetname", "ending_playmovie_p2mp_override")
         Entities.FindByName(null, "credits_music").__KeyValueFromString("targetname", "credits_music_meme")
         
