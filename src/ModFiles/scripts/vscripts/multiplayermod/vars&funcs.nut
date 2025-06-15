@@ -1840,65 +1840,6 @@ function CombineList(list, startlength, inbetweenchars = " ") {
 
 function CreateOurEntities()
 {
-    // TODO: Redo nametags!
-    // if (Config_UseNametags/* && g_bAllowNametags*/) {
-    //     // Create an entity to measure player eye angles
-    //     measuremovement_eyeposition <- Entities.CreateByClassname("logic_measure_movement")
-    //     measuremovement_eyeposition.__KeyValueFromString( "measuretype", "1")
-    //     measuremovement_eyeposition.__KeyValueFromString( "measurereference", "" )
-    //     measuremovement_eyeposition.__KeyValueFromString( "measureretarget", "" )
-    //     measuremovement_eyeposition.__KeyValueFromString( "targetscale", "1.0" )
-    //     measuremovement_eyeposition.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement_eyeposition" )
-    //     measuremovement_eyeposition.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement_eyeposition" )
-    //     measuremovement_eyeposition.__KeyValueFromString( "target", "p2mm_logic_measure_movement_eyeposition" )
-    //     EntFireByHandle(measuremovement_eyeposition, "SetMeasureReference", "p2mm_logic_measure_movement_eyeposition", 0.0, null, null)
-    //     EntFireByHandle(measuremovement_eyeposition, "Disable", "", 0.0, null, null)
-
-    //     // Create an entity to display player nametags when aiming at them
-    //     nametagdisplay <- Entities.CreateByClassname("game_text")
-    //     nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
-    //     nametagdisplay.__KeyValueFromString("x", "-1")
-    //     nametagdisplay.__KeyValueFromString("y", "0.2")
-    //     nametagdisplay.__KeyValueFromString("holdtime", "0.1")
-    //     nametagdisplay.__KeyValueFromString("fadeout", "0.2")
-    //     nametagdisplay.__KeyValueFromString("fadein", "0.2")
-    //     nametagdisplay.__KeyValueFromString("channel", "1")
-    // }
-
-    // Create an display entity for the host to wait for another player to load in
-    waitingtext <- Entities.CreateByClassname("game_text")
-    waitingtext.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
-    waitingtext.__KeyValueFromString("message", "Waiting for players...")
-    waitingtext.__KeyValueFromString("holdtime", "0.2")
-    waitingtext.__KeyValueFromString("fadeout", "0")
-    waitingtext.__KeyValueFromString("fadein", "0")
-    waitingtext.__KeyValueFromString("spawnflags", "1")
-    waitingtext.__KeyValueFromString("color", "50 190 50")
-    waitingtext.__KeyValueFromString("channel", "1")
-
-    // Create a player disconnect message entity
-    local disconnectmessagedisplay = Entities.CreateByClassname("game_text")
-    disconnectmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_disconnect_message")
-    disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
-    disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
-    disconnectmessagedisplay.__KeyValueFromString("fadein", "0.2")
-    disconnectmessagedisplay.__KeyValueFromString("spawnflags", "1")
-    disconnectmessagedisplay.__KeyValueFromString("color", "140 40 40")
-    disconnectmessagedisplay.__KeyValueFromString("channel", "3")
-    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected")
-
-    if (Config_UseJoinIndicator) {
-        // Create a join message entity
-        local joinmessagedisplay = Entities.CreateByClassname("game_text")
-        joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
-        joinmessagedisplay.__KeyValueFromString("holdtime", "3")
-        joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
-        joinmessagedisplay.__KeyValueFromString("fadein", "0.2")
-        joinmessagedisplay.__KeyValueFromString("spawnflags", "1")
-        joinmessagedisplay.__KeyValueFromString("color", "255 200 0")
-        joinmessagedisplay.__KeyValueFromString("channel", "3")
-    }
-
     // Create a player_speedmod entity to modify a player's movement speed
     local playerspeedmod = Entities.CreateByClassname("player_speedmod")
     playerspeedmod.__KeyValueFromString("targetname", "p2mm_player_speedmod")
@@ -1925,8 +1866,7 @@ function Plyr_Disconnect_Function(displayname = null) {
         displayname = "\\\\n"
     }
 
-    Entities.FindByName(null, "p2mm_player_disconnect_message").__KeyValueFromString("message", displayname + " disconnected (" + (CalcNumPlayers() - 1).tostring() + "/" + GetMaxPlayers().tostring() + ")")
-    EntFire("p2mm_player_disconnect_message", "Display")
+    HudPrint(0, "Player " + displayname + " disconnected (" + (CalcNumPlayers() - 1).tostring() + "/" + GetMaxPlayers().tostring() + ")", Vector(0, 0, 3), 0, 0, Vector(140, 40, 40), 255, Vector(140, 40, 40), 255, Vector(0.2, 0.2, 3))
 }
 
 //--------------------------------------
