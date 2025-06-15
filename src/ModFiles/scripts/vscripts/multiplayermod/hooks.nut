@@ -123,9 +123,8 @@ function P2MMLoop() {
             continue
         
         player.eyeposition = p.EyePosition()
-        player.eyeangles = p.GetAngles()
+        player.eyeangles = EyeAngles(p.entindex())
         player.eyeforwardvector = p.GetForwardVector()
-        //player.eyeforwardvector = EyeAngles(p.entindex())
     }
 
     // Player Nametags, display player username at center of screen when looking at a specific player.
@@ -139,8 +138,7 @@ function P2MMLoop() {
 
             // Get various points for calculating 
             local vecStart = player.eyeposition
-            //local vecForward = player.GetAngles()
-            local vecForward = player.eyeforwardvector
+            local vecForward = AngleVectors(player.eyeangles)
             local vecEnd =  vecStart + (vecForward * 400)
             local traceResult = TraceLineEx(vecStart, vecEnd, MASK_OPAQUE_AND_NPCS, p, COLLISION_GROUP_PLAYER)
             // If traceResult is less than 1.0, a fraction of the trace line, something was hit.
@@ -153,17 +151,20 @@ function P2MMLoop() {
                     DebugDrawBox(hitPoint, Vector(-75, -75, -75), Vector(75, 75, 75), 255, 255, 255, 10, -1)
                     // DebugDrawBox(origin, mins, max, r, g, b, alpha, duration)
 
+                // Find the nearest player in the hit position and display their username on screen.
                 local playerHit = Entities.FindByClassnameNearest("player", hitPoint, 75)
                 if (playerHit && playerHit != p)
                 {
                     local playerHitClass = FindPlayerClass(playerHit)
-                    printlP2MM(0, true, "Player hit: " + playerHitClass.username)
+                    if (Config_VisualDebug)
+                        printlP2MM(0, true, "Player hit: " + playerHitClass.username)
                     //ClientPrint(player.id, playerHitClass.username)
 
                     HudPrint(player.id, playerHitClass.username, Vector(-1, 0.2, 1), 0, 0, Vector(playerHitClass.color.r, playerHitClass.color.g, playerHitClass.color.b), 255, Vector(0, 0, 0), 0, Vector(0.0, 0.0, 0.1))
                 }
             }
 
+            // Drag a line representing the looking direction.
             if (Config_VisualDebug)
                 DebugDrawLine(vecStart, vecEnd, 255, 0, 0, false, 2)
         }

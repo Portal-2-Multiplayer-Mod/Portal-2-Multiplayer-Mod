@@ -2491,9 +2491,9 @@ function AngleVectors(angles)
     local sinPitch = sin(DegToRad(angles.x))
     local cosPitch = cos(DegToRad(angles.x))
 	
-	forwardVector.x = cos(cosYaw) * cos(cosPitch)
-	forwardVector.y = sin(sinYaw) * cos(cosPitch)
-	forwardVector.z = -sin(sinPitch)
+	forwardVector.x = cosYaw * cosPitch
+	forwardVector.y = sinYaw * cosPitch
+	forwardVector.z = -sinPitch
 
     return forwardVector
 }
