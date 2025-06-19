@@ -15,6 +15,10 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         Entities.FindByName(null, "door_en").__KeyValueFromString("targetname", "door_en_p2mmoverride")
         EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(32, 256, 320), 32), "AddOutput", "OnTrigger door_en_area:Open::1.01", 0, null, null)
         EntFire("ground_enable_use", "AddOutput", "OnStartTouch door_en_p2mmoverride:Open")
+        Entities.FindByName(null, "portal_orange").__KeyValueFromString("targetname", "portal_orange_p2mmoverride")
+        Entities.FindByName(null, "Portal_blue").__KeyValueFromString("targetname", "portal_blue_p2mmoverride")
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(32, 256, 320), 32), "AddOutput", "OnStartTouch portal_orange_p2mmoverride:SetActivatedState:1", 0, null, null)
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(32, 256, 320), 32), "AddOutput", "OnStartTouch portal_blue_p2mmoverride:SetActivatedState:1", 0, null, null)
 
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator true true):0:-1")

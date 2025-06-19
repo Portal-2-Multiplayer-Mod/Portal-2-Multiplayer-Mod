@@ -24,6 +24,11 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("exit_gate", "Open", "")
         Entities.FindByClassnameNearest("trigger_once", Vector(2560, 5312, -1032), 32).Destroy()
 
+        for (local text = null; text = Entities.FindByClassname(text, "game_text");)
+        {
+            text.__KeyValueFromString("spawnflags", "1")
+        }
+
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator true true):0:-1")
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnEndTouch !activator:RunScriptCode:UpdateGels(activator true true):0:-1")

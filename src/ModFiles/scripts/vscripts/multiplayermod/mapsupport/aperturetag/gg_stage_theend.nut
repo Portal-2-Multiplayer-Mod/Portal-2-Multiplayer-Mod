@@ -17,6 +17,9 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         EntFire("escape_ele_path_2", "AddOutput", "OnPass !self:RunScriptCode:elevatorTeleport()")
         EntFire("poison", "AddOutput", "targetname poison_p2mmoverride")
         EntFire("poison_p2mmoverride", "Start", "", 2)
+        Entities.FindByName(null, "escape_elevator_door").__KeyValueFromString("targetname", "escape_elevator_door_p2mmoverride")
+        EntFire("incinarator_path_save_2", "AddOutput", "OnTrigger escape_elevator_door_p2mmoverride:SetAnimation:vert_door_opening:8.5")
+        EntFireByHandle(Entities.FindByClassnameNearest("trigger_once", Vector(64, 2672, 112), 32), "AddOutput", "OnStartTouch inci_exit_door_area:Open::1.02", 0, null, null)
 
         // Make fizzlers work
         EntFire("@fizzler_gun_1_on", "AddOutput", "OnStartTouch !activator:RunScriptCode:UpdateGels(activator true true):0:-1")
