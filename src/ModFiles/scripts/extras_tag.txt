@@ -1,5 +1,3 @@
-//Due to how the Portal 2 menu works we cannot have a menu with text for single players
-//The Extras is a work around that will allow us to have a chapter select
 "Aperture Tag"
 {
     "spliton"
