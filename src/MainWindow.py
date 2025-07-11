@@ -1030,7 +1030,7 @@ def MountModOnly() -> bool:
         Ui.CreateToast(GVars.translations["game_path_undefined_fetch"], 5)
         GetGamePath()
     
-    if RG.Portal2Running():
+    if RG.GameRunning():
         Log("Can't mount because game is currently running!")
         Ui.CreateToast(GVars.translations["mount_gamerunning_toast"], 5)
         return
@@ -1047,12 +1047,6 @@ def MountModOnly() -> bool:
     if ("undefined" in gamePath):
         Ui.CreateToast(
             GVars.translations["mount_nopath_toast"], 5, (255, 21, 0))
-        return False
-
-    # Check if both of Portal 2's DLC folders exist
-    if not RG.CheckForRequiredP2DLC(gamePath):
-        Ui.CreateToast(
-            GVars.translations["mount_nodlc_toast"], 5, (255, 21, 0))
         return False
 
     if VerifyModFiles():
@@ -1130,10 +1124,6 @@ def RunGameScript() -> None:
         if not args:
             Ui.CreateToast(GVars.translations["args-error"], 5)
             defaultArgs = "-allowspectators -nosixense -conclearlog -condebug -usercon -window_name_suffix Portal 2: Multiplayer Mod"
-            if gamePath.find("Portal Stories Mel") != -1:
-                defaultArgs = "-game portal_stories " + defaultArgs
-            # elif gamePath.find("Aperture Tag") != -1:
-            #     defaultArgs = "-game aperturetag " + defaultArgs
             RG.LaunchGame(gamePath, defaultArgs)
         else:
             RG.LaunchGame(gamePath, args)
@@ -1146,7 +1136,7 @@ def RunGameScript() -> None:
 
 
 def UnmountScript(shouldGetPath: bool = True) -> bool:
-    if RG.Portal2Running():
+    if RG.GameRunning():
         Log("Can't unmount because game is currently running!")
         Ui.CreateToast(GVars.translations["mount_gamerunning_toast"], 5)
         return False
@@ -1209,7 +1199,7 @@ def CheckForUpdates() -> bool:
     clientUpdate = UP.CheckForNewClient()
 
     if clientUpdate["status"]:
-        if clientUpdate["newRepo"] and (GVars.iol or GVars.iosd):
+        if (GVars.iol or GVars.iosd):
             NewClientNotifyPopup()
         else:
             ClientUpdateBox(clientUpdate)
@@ -1250,7 +1240,7 @@ def PostInitialize() -> None:
         CheckForUpdates()
 
     if VerifyGamePath():
-        if RG.Portal2Running():
+        if RG.GameRunning():
             Log("Can't unmount because game is currently running!")
         else:
             RG.DeleteModFolder(GVars.configData["Game-Path"]["value"])

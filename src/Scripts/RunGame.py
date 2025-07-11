@@ -107,41 +107,32 @@ def MountMod(gamepath: str) -> None:
         os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_portal_stories.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
         os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "transitions_portal_stories", mountedModFiles + os.sep + "scripts" + os.sep + "vscripts" + os.sep + "transitions")
     elif gamepath.find("Aperture Tag") != -1:
-      os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_aperturetag", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
-      os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_aperturetag.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
+        os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_aperturetag", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
+        #os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_aperturetag.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
+        #BF.CopyFolder(mountedModFiles + os.sep + "scripts" + os.sep + "items", gamepath + os.sep + "scripts" + os.sep + "items")
     elif gamepath.find("Divinity") != -1:
-      os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_divinity", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
-      os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_divinity.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
-
+        os.rename(mountedModFiles + os.sep + "maps" + os.sep + "soundcache_divinity", mountedModFiles + os.sep + "maps" + os.sep + "soundcache")
+        os.rename(mountedModFiles + os.sep + "scripts" + os.sep + "extras_divinity.txt", mountedModFiles + os.sep + "scripts" + os.sep + "extras.txt")
+        BF.CopyFolder(mountedModFiles + os.sep + "scripts" + os.sep + "items", gamepath + os.sep + "scripts" + os.sep + "items")
     Log("            ___________Mounting Mod End__________")
 
 # Using the identifier file in P2MM's (gamemaindir)_tempcontent folder, it can be determined
-# which (gamemaindir)_tempcontent folder that is mounted to Portal 2 is in fact P2MM's DLC folder
+# which (gamemaindir)_tempcontent folder that is mounted is in fact P2MM's DLC folder
 def FindP2MMFolder(gamepath: str) -> str | bool:
-    for file in os.listdir(gamepath):
+    # Assume if a executable for the game is not found for the gamepath to be for a SourceMod.
+    if (not (os.path.exists(gamepath + os.sep + "portal2.exe") or os.path.exists(gamepath + os.sep + "portal2_linux"))):
+        gamepath = os.path.dirname(gamepath)
+    for dir in os.listdir(gamepath):
         # Find all the folders that start with "(gamemaindir)_tempcontent" and check if they have the identifier.
-        if file.endswith("_tempcontent") and not file.startswith("p2mm_override_") and os.path.isdir(gamepath + os.sep + file) and ("p2mm.identifier" in os.listdir(gamepath + os.sep + file)):
-            p2mmFolder = gamepath + os.sep + file
+        if (not os.path.isdir(gamepath + os.sep + dir)):
+            continue
+        if ((dir.endswith("_tempcontent")) and (not dir.endswith("_p2mm_override")) and ("p2mm.identifier" in os.listdir(gamepath + os.sep + dir))):
+            p2mmFolder = gamepath + os.sep + dir
             Log("Found P2MM's (gamemaindir)_tempcontent folder: " + p2mmFolder)
             return p2mmFolder
     Log("P2MM's (gamemaindir)_tempcontent folder was not found!")
-    Log("It's most likely not been mounted to Portal 2 yet, already been unmounted, or the game path is incorrect...")
+    Log("It's most likely not been mounted yet, already been unmounted, or the game path is incorrect...")
     return False
-
-# Make sure the dlc folders that come with Portal 2 exist.
-# They are required since they include stuff for multiplayer and fixes for other things Portal 2 related.
-# portal2_dlc1 is required for multiplayer to work since it includes mp_coop_lobby_3 (although mp_coop_lobby_2 exists as a backup) and the stuff for the DLC course Art Therapy.
-# portal2_dlc2 is also required, while its mainly for PeTi, it also includes a bunch of other assets and fixes for Portal 2 that Valve had done.
-# If either of these folders are not detected P2MM won't start or be mounted.
-def CheckForRequiredP2DLC(gamepath: str) -> bool:
-    Log("Checking for DLC folders portal2_dlc1 and portal2_dlc2...")
-
-    if (not (os.path.exists(gamepath + os.sep + "portal2_dlc1") or os.path.exists(gamepath + os.sep + "portal2_dlc2"))):
-        Log("Either DLC folder portal2_dlc1 or portal2_dlc2 was not found!")
-        Log("P2MM will not be mounted/started!")
-        return False
-    Log("DLC folders were found...")
-    return True
 
 # Find and delete P2MM's (gamemaindir)_tempcontent folder
 def DeleteModFolder(gamepath: str) -> bool:
@@ -152,16 +143,19 @@ def DeleteModFolder(gamepath: str) -> bool:
     Log("           _________Deleting Any P2MM DLC Folders________")
 
     foundP2MMFolder = FindP2MMFolder(gamepath)
-    if foundP2MMFolder:
+    if foundP2MMFolder:    
         Log("Found old temp content folder: " + foundP2MMFolder)
         # delete the folder even if it's not empty
         BF.DeleteFolder(foundP2MMFolder)
         Log("Deleted old temp content folder: " + foundP2MMFolder)
     
-    # Rename p2mm_override_(gamemaindir)_tempcontent folder, if it exists, back to what that it was named before
+    # Rename (gamemaindir)_tempcontent_p2mm_override folder, if it exists, back to what that it was named before
     for file in os.listdir(gamepath):
-        if file.startswith("p2mm_override_") and os.path.isdir(gamepath + os.sep + file):
-            os.rename(gamepath + os.sep + file, gamepath + os.sep + file[14:])
+        if (not os.path.isdir(gamepath + os.sep + file)):
+            continue
+        if file.endswith("_p2mm_override"):
+            fileName = file.removesuffix("_p2mm_override")
+            os.rename(gamepath + os.sep + file, gamepath + os.sep + fileName)
             break
 
 # Prepare the location for (gamemaindir)_tempcontent for P2MM's files. Renaming any preexisting ones so it 
@@ -170,14 +164,31 @@ def PrepareTempContent(gamepath: str) -> str:
     
     # Go through each file in the gamepath to find any existing temp content folders
     for file in os.listdir(gamepath):
+        if (not (os.path.isdir(gamepath + os.sep + file) or os.path.islink(gamepath + os.sep + file))):
+            continue
         # Find all the folders that start with "_tempcontent", there should only be one.
         # If any folder we find is a (gamemaindir)_tempcontent folder without the identifier file inside 
-        if file.endswith("_tempcontent") and os.path.isdir(gamepath + os.sep + file) and not os.path.exists(gamepath + os.sep + file + os.sep + "p2mm.identifier"):
-            Log("Found a different (gamemaindir)_tempcontent folder!")
-            Log("Have to rename the folder so we can use our (gamemaindir)_tempcontent folder.")
-            # Hopefully nobody already has a p2mm_override_(gamemaindir)_tempcontent folder :D
-            if (not os.path.exists(gamepath + os.sep + "p2mm_override_" + file)):
-                os.rename(gamepath + os.sep + file, gamepath + os.sep + "p2mm_override_" + file)
+        if (file.endswith("_tempcontent") and not os.path.exists(gamepath + os.sep + file + os.sep + "p2mm.identifier")):
+            if os.path.islink(gamepath + os.sep + file):
+                Log('Have to remove symlink found with "_tempcontent" as it would interfere with the launcher and can not be handled in a clean manner. Sorry!')
+                os.unlink(gamepath + os.sep + file)
+                continue
+            if os.path.isdir(gamepath + os.sep + file):
+                Log("Found a different (gamemaindir)_tempcontent folder!")
+                Log("Have to rename the folder so we can use our (gamemaindir)_tempcontent folder...")
+                # Hopefully nobody already has a (gamemaindir)_tempcontent_p2mm_override folder :D
+                if (not os.path.exists(gamepath + os.sep + file + "_p2mm_override")):
+                    os.rename(gamepath + os.sep + file, gamepath + os.sep + file + "_p2mm_override")
+                continue
+        if (file.endswith("_tempcontent") and os.path.exists(gamepath + os.sep + file + os.sep + "p2mm.identifier")):
+            if os.path.islink(gamepath + os.sep + file):
+                Log("Found a P2:MM tempcontent folder symlink! Have to remove so there is no interference. Sorry!")
+                os.unlink(gamepath + os.sep + file)
+                continue
+            if os.path.isdir(gamepath + os.sep + file):
+                Log("Found a P2:MM tempcontent folder directory. Have to remove so there is no interference. Sorry!")
+                BF.DeleteFolder(gamepath + os.sep + file)
+    
     if gamepath.find("Portal Stories Mel") != -1:
         return "portal_stories_tempcontent"
     elif gamepath.find("Aperture Tag") != -1:
@@ -185,21 +196,21 @@ def PrepareTempContent(gamepath: str) -> str:
     # elif gamepath.find("Portal Reloaded") != -1:
     #     return "portalreloaded_tempcontent"
     elif gamepath.find("Divinity") != -1:
-        return "divinity_tempcontent"
+        return "../divinity_tempcontent"
     # elif gamepath.find("infra") != -1:
     #     return "infra_tempcontent"
     # elif gamepath.find("The Stanley Parable") != -1:
     #     return "thestanleyparable_tempcontent"
     return "portal2_tempcontent"
     
-def Portal2Running() -> bool:
+def GameRunning(executable: str = f"{"portal2.exe" if GVars.iow else "portal2_linux"}") -> bool:
     """Check if Portal 2 is running.
 
     Returns:
         bool: Whether Portal 2 is running or not
     """
 
-    return ("portal2.exe" or "portal2_linux") in subprocess.run(["tasklist"] if GVars.iow else ["ps", "aux"], stdout=subprocess.PIPE, text=True).stdout.lower()
+    return (executable) in subprocess.run(["tasklist"] if GVars.iow else ["ps", "aux"], stdout=subprocess.PIPE, text=True).stdout.lower()
 
 # █ █▄░█ █ ▀█▀
 # █ █░▀█ █ ░█░
@@ -221,8 +232,10 @@ def AssembleArgs(gamepath: str) -> str | bool:
 
         if gamepath.find("Portal Stories Mel") != -1:
             args.insert(1, "-game portal_stories")
-        # elif gamePath.find("Aperture Tag") != -1:
-        #   args.insert(1, "-game aperturetag")
+        elif gamepath.find("Aperture Tag") != -1:
+            args.insert(1, "-game aperturetag")
+        elif BF.CheckIfSourceMod(gamepath):
+            args.insert(1, f'-game "{gamepath}"')
 
         if GVars.configData['Portal2-VR-Mod']['value']: # Add launch arguments needed for the VR mod
             args.extend([
@@ -297,7 +310,7 @@ def AssembleArgs(gamepath: str) -> str | bool:
     return args
 
 # START THE GAME!!!
-def LaunchGame(gamepath: str, args: str) -> None:
+def LaunchGame(gamepath: str, gameArgs: str) -> None:
     Log("=============")
     Log("Running Game...")
 
@@ -308,30 +321,39 @@ def LaunchGame(gamepath: str, args: str) -> None:
             si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 
             # start Portal 2 branch based game with the launch options and dont wait for it to finish
-            def RunGame() -> None:
+            def RunGame(gamepath: str) -> None:
                 # start Portal 2 branch based game with the launch options and dont wait for it to finish
                 executable = "portal2.exe"
+                if BF.CheckIfSourceMod(gamepath=gamepath, executable=executable):
+                    gamepath = BF.TryFindPortal2Path()
                 # if gamepath.find("infra") != -1:
                 #     executable = "infra.exe"
                 # elif gamepath.find("The Stanley Parable") != -1:
                 #     executable = "stanley.exe"
                 Log("")
-                Log(f'Starting Portal 2: "{gamepath + os.sep + executable}" {args}')
-                subprocess.call(f'"{gamepath + os.sep + executable}" {args}', startupinfo=si)
+                Log(f'Starting Portal 2: "{gamepath + os.sep + executable}" {gameArgs}')
+                subprocess.call(f'"{gamepath + os.sep + executable}" {gameArgs}', startupinfo=si)
                 Log("Game exited successfully.")
                 # Run The AfterFunction
                 GVars.AfterFunction()
             # start the game in a new thread
-            thread = threading.Thread(target=RunGame)
+            #RunGame(gamepath)
+            thread = threading.Thread(target=RunGame, args=[gamepath])
             thread.daemon = True
             thread.start()
 
         elif (GVars.iol or GVars.iosd): #launching for linux
-            def RunGame():
+            executable = "portal2_linux"
+            # if gamepath.find("infra") != -1:
+            #     executable = "infra.exe"
+            # elif gamepath.find("The Stanley Parable") != -1:
+            #     executable = "stanley"
+            appid: str = BF.GetGameAppID(gamepath)
+            def RunGameThread():
                 def RunGame():
                     Log("")
-                    Log(f'Starting Portal 2: steam -applaunch 620 {args}\n')
-                    os.system(f'steam -applaunch 620 {args}')
+                    Log(f'Starting Portal 2: steam -applaunch {appid} {gameArgs}\n')
+                    os.system(f'steam -applaunch {appid} {gameArgs}')
                 thread = threading.Thread(target=RunGame)
                 thread.daemon = True
                 thread.start()
@@ -340,11 +362,6 @@ def LaunchGame(gamepath: str, args: str) -> None:
                     shouldcheck = True
                     latched = False
                     while shouldcheck:
-                        executable = "portal2_linux"
-                        # if gamepath.find("infra") != -1:
-                        #     executable = "infra.exe"
-                        # elif gamepath.find("The Stanley Parable") != -1:
-                        #     executable = "stanley"
                         gamerunning = str(os.system(f"pidof {executable}"))
                         if gamerunning == "256":
                             if latched == True:
@@ -354,7 +371,7 @@ def LaunchGame(gamepath: str, args: str) -> None:
                             latched = True
                         time.sleep(1)
                 CheckForGame()
-            thread = threading.Thread(target=RunGame)
+            thread = threading.Thread(target=RunGameThread)
             thread.daemon = True
             thread.start()
 

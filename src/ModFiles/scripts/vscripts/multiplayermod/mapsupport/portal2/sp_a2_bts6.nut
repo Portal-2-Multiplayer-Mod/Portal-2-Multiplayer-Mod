@@ -10,9 +10,6 @@ function MapSupport(MSInstantRun, MSLoop, MSPostPlayerSpawn, MSPostMapSpawn, MSO
         // Disable nametags this load
         g_bAllowNametags = false
 
-        // Disable color indicator this load
-        g_bAllowColorIndicator = false
-
         // Make some blackkkkk
         inffade <- true
 

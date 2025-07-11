@@ -22,7 +22,6 @@
   "unmount_button": "Desmontar",
   "unmounted_toast": "¡Desmontado!",
   "args-error": "¡Error al analizar los argumentos de lanzamiento!\n¡Usando solo los argumentos de lanzamiento predeterminados!\n¡Revise el registro para obtener más información!",
-  "mount_nodlc_toast": "¡La ruta del juego está perdiendo algunas carpetas de DLC!\nPor favor, verifique la integridad del juego en Steam.",
   "mount_nopath_toast": "¡La ruta del juego no es válida!\nPor favor, revise la configuración.",
   "mount_gamerunning_toast": "¡Portal 2 está ejecutándose actualmente!\n¡No se puede montar/desmontar!",
   "wiki_button": "Wiki de GitHub",

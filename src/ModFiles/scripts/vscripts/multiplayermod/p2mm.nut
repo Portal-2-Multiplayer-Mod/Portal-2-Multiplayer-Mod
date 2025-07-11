@@ -21,23 +21,17 @@ printl("\n---------------------")
 printl("==== calling p2mm.nut")
 printl("---------------------\n")
 
-// iCurGameIndex constants.
-const PORTAL_2           = 0
-const PORTAL_STORIES_MEL = 1
-const APERTURE_TAG       = 2
-const PORTAL_RELOADED    = 3
-const INFRA              = 4
-const DIVINITY           = 5
-
 IncludeScript("multiplayermod/config.nut") // Import the user configuration and preferences and make sure nothing is invalid and compensate if so.
 IncludeScript("multiplayermod/vars&funcs.nut") // Load global variables and functions.
 
 // Bad way to check, but what else can we do?
-if (Entities.FindByName(null, "p2mm_servercommand")){
-    // Primary check in case the script attempts to execute midgame and it already has
+if (Entities.FindByName(null, "p2mm_servercommand"))
+{
+    // Primary check in case the script attempts to execute midgame when it already has been loaded.
     printlP2MM(1, false, "p2mm.nut is attempting to run again! Stopping!")
     return
-} else {
+} else
+{
     // Create a global point_servercommand entity for us to pass through commands
     Entities.CreateByClassname("point_servercommand").__KeyValueFromString("targetname", "p2mm_servercommand")
     Entities.CreateByClassname("point_clientcommand").__KeyValueFromString("targetname", "p2mm_clientcommand")
@@ -49,35 +43,11 @@ printlP2MM(0, true, "- Max players allowed on the server: " + GetMaxPlayers())
 printlP2MM(0, true, "- Dedicated server: " + IsDedicatedServer())
 printl("")
 
-printlP2MM(0, true, "FirstRunState(-1): " + FirstRunState(-1).tostring())
-printlP2MM(0, true, "GetLastMap(): " + GetLastMap())
-printlP2MM(0, true, "GetMapName(): " + GetMapName())
-
-// Check if its the first map run so Last Map System stuff can be done
-if (FirstRunState(-1)) {
-    FirstRunState(0) // Set that first run state to false
-
-    // Reset developer level, developer needs to stay enabled for VScript Debugging to work
-    if (Config_DevMode || Config_VScriptDebug) {
-        EntFire("p2mm_servercommand", "command", "developer 1")
-    }
-    else {
-        EntFire("p2mm_servercommand", "command", "developer 0")
-    }
-    
-    // Check if Last Map System supplied a value and that it's a valid map, then restart on that map
-    if (IsMapValid(GetLastMap()) && (GetLastMap() != GetMapName())) {
-        FirstRunState(1) // Set state back to true because we are using one map as a transition to the map we actually want to be our first map
-
-        printlP2MM(0, true, "Transitioning to Last/Singleplayer Map!")
-        printlP2MM(0, true, "FirstRunState(-1): " + FirstRunState(-1).tostring())
-        printlP2MM(0, true, "GetLastMap(): " + GetLastMap())
-        printlP2MM(0, true, "GetMapName(): " + GetMapName())
-
-        EntFire("p2mm_servercommand", "command", "changelevel " + GetLastMap(), 0.5)
-        return
-    }
-}
+// Reset developer level, developer needs to stay enabled for VScript Debugging to work
+if (Config_DevMode || Config_VScriptDebug)
+    EntFire("p2mm_servercommand", "command", "developer 1")
+else
+    EntFire("p2mm_servercommand", "command", "developer 0")
 
 // Prints the current map, needed for the Last Map System
 // \n was here :>
@@ -105,7 +75,7 @@ local ConsoleAscii = [
 "##........##.........##..##.....##.##.....##",
 "##........##........####.##.....##.##.....##",
 "##........#########..##..##.....##.##.....##",
-"--------------- VERSION 2.3.0 --------------"
+"--------------- VERSION 3.0.0 --------------"
 ]
 printl("")
 foreach (line in ConsoleAscii) { printl(line) }
@@ -155,7 +125,7 @@ function LoadMapSupportCode(gametype) {
                 return
             } catch (exception) {}
         }
-        printlP2MM(1, false, "Failed to load or no map support (most likely the second) to load for \"" + GetMapName() + "\"")
+        printlP2MM(1, false, "Failed to load or no map support to load for \"" + GetMapName() + "\"! (Most likely the latter of the two)")
         printlP2MM(1, true, "Exception: " + exception)
         printlP2MM(0, false, "=============================================================\n")
         return

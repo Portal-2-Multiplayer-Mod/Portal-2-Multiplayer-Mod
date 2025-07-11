@@ -253,6 +253,49 @@ def TryFindPortal2Path() -> str | bool:
 
     return False
 
+knownNonSourceMods: dict = {"Portal 2": "620", "Portal Stories Mel": "317400", "Aperture Tag": "280740"}
+knownSourceMods: list = ["Divinity"]
+
+def CheckIfSourceMod(gamepath: str, executable: str = f"{"portal2.exe" if GVars.iow else "portal2_linux"}") -> bool:
+    """Check if the gamepath passed to the launch is one for a SourceMod.
+       First check if it is a known SourceGame, then check if the directory has no executable in its directory.
+
+    Args:
+        gamepath (str): Gamepath
+        executable (str): Assosiated executable
+
+    Returns:
+        bool: Whether it's a SourceMod or not.
+    """
+
+    for key, nonNonSourceMod in knownNonSourceMods.items():
+        if (gamepath.find(key) != -1):
+            return False
+
+    if (os.path.exists(gamepath + os.sep + executable)):
+        return False
+    
+    return True
+
+def GetGameAppID(gamepath: str) -> str:
+    """For Linux systems, get the game's AppID to start with.
+
+    Args:
+        gamepath (str): Game path.
+
+    Returns:
+        str: Game's AppID, defaults to Portal 2's.
+    """
+
+    if (CheckIfSourceMod(gamepath)):
+        return "620"
+    
+    for key, appid in knownNonSourceMods.items():
+        if (gamepath.find(key) != -1):
+            return appid
+        
+    return "620"
+
 def StringToParagraph(text: str, length: int) -> list[str]:
     """formats a string to a paragraph like text
 

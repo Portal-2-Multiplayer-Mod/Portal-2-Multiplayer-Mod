@@ -1,71 +1,111 @@
-Extras
+"Extras"
 {
-  "Ch1"
-{
-        "title" "Chapter 1: House of Leaves"
-	    "subtitle"	" "
-	    "pic"   "vgui/chapters/chapter1"
-}
-"empty"
-{
-	"title"			" "
-	"subtitle" 	        " "
-	"command"       	" "
-}
- "Intro"
-{
-        "title" "Intro"
+    "spliton"
+    {
+        "title"     "#P2MM_SplitScreenOn_t"
+        "subtitle"  "#P2MM_SplitScreenOn_d"
+        "command"   "p2mm_splitscreen 1; play ui/p2_store_ui_checkout_01"
+        "pic"       "vgui/p2mm/spliton"
+    }
+    "splitoff"
+    {
+        "title"     "#P2MM_SplitScreenOff_t"
+        "subtitle"  "#P2MM_SplitScreenOff_d"
+        "command"   "p2mm_splitscreen 0; play ui/p2_store_ui_add_to_cart_01"
+        "pic"       "vgui/p2mm/splitoff"
+    }
+    "lastmap"
+    {
+        "title"     "#P2MM_LastMap_t"
+        "subtitle"  "#P2MM_LastMap_d"
+        "command"   "p2mm_map P2MM_LASTMAP"
+        "pic"       "vgui/p2mm/lastmap"
+    }
+    "empty"
+    {
+    	"title"		""
+    	"subtitle"	""
+    }
+    "New_Game"
+    {
+        "title"     "New Game"
+        "subtitle"  "Start New Game"
+        "command"       "p2mm_map sp_a1_divinity_intro"
+        "pic"       "vgui/chapters/chapter7"
+    }
+    "empty"
+    {
+        "title"	   "Chapter Selection:"
+        "subtitle" "Chapter Selection"
+        "command"  " "
+        "pic"      "vgui/chapters/chapter6"
+    }
+    "House of Leaves"
+    {
+        "title" "House of Leaves"
         "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "map sp_a1_divinity_intro *mp"
+        "command"   "p2mm_map sp_a1_divinity_intro"
         "pic"   "vgui/chapters/chapter1"
-}
- "Map2"
-{
-        "title" "Behind the Scenes"
-        "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "map sp_a1_divinity_bts1 *mp"
-        "pic"   "vgui/chapters/chapter1"
-}
- "Map3"
-{
-        "title" "Field Intro"
-        "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "map sp_a1_divinity_field_intro *mp"
-        "pic"   "vgui/chapters/chapter1"
-}
- "Map4"
-{
-        "title" "Wall blocks Wall"
-        "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "map sp_a1_divinity_wall_blocks_wall *mp"
-        "pic"   "vgui/chapters/chapter1"
-}
- "Map5"
-{
-        "title" "Traversal"
-        "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "map sp_a1_divinity_traversal *mp"
-        "pic"   "vgui/chapters/chapter1"
-}
- "Map6"
-{
-        "title" "Funnel Tower"
-        "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "map sp_a1_divinity_funnel_tower *mp"
-        "pic"   "vgui/chapters/chapter1"
-}
- "Map7"
-{
-        "title" "Pink Plate"
-        "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "map sp_a1_divinity_pink_plate *mp"
-        "pic"   "vgui/chapters/chapter1"
-}
- "Map8"
-{
-        "title" "Core"
-        "subtitle"  "Chapter 1 - House of Leaves"
-        "command"   "map sp_a1_divinity_core01 *mp"
-        "pic"   "vgui/chapters/chapter1"
-}
+    }
+    "Desert Storm"
+    {
+        "title" "Desert Storm"
+        "subtitle"  "Chapter 2 - Desert Storm"
+        "command"   "play gladoswakeup\HackBuzzer"
+        "pic"   "vgui/chapters/chapter2"
+    }
+    "All I Want For Christmas"
+    {
+        "title" "All I Want For Christmas"
+        "subtitle"  "Chapter 3 - All I Want For Christmas"
+        "command"   "play gladoswakeup\HackBuzzer"
+        "pic"   "vgui/chapters/chapter3"
+    }
+    "Antennas to Heaven"
+    {
+        "title" "Antennas to Heaven"
+        "subtitle"  "Chapter 4 - Antennas to Heaven"
+        "command"   "play gladoswakeup\HackBuzzer"
+        "pic"   "vgui/chapters/chapter4"
+    }
+    "Fork in the Road"
+    {
+        "title" "Fork in the Road"
+        "subtitle"  "Chapter 5 - Fork in the Road"
+        "command"   "play gladoswakeup\HackBuzzer"
+        "pic"   "vgui/chapters/chapter5"
+    }
+    "empty"
+    {
+        "title"	" "
+        "subtitle"	" "
+        "command"	" "
+    }
+    "empty"
+    {
+        "title"	        "Bonus Maps:"
+        "subtitle"	" "
+        "command"	" "
+    }
+    "Bonus_Advanced"
+    {
+        "title" "Advanced Maps"
+        "subtitle"  "Harder versions of campaign maps."
+        "command"   "p2mm_map sp_adv_divinity_transit"
+        "pic"   "vgui/chapters/chapter8"
+    }
+    "Bonus_Elements"
+    {
+        "title" "Unused Elements"
+        "subtitle"  "Bonus maps using cut elements."
+        "command"   "play gladoswakeup\HackBuzzer"
+        "pic"   "vgui/chapters/chapter5"
+    }
+    "Bonus_Glass"
+    {
+        "title" "Cut Content Maps"
+        "subtitle"  "The original workshop puzzle pack."
+        "command"   "play gladoswakeup\HackBuzzer"
+        "pic"   "vgui/chapters/chapter5"
+    }
 }

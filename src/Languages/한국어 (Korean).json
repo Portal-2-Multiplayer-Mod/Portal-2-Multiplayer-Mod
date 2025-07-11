@@ -22,7 +22,6 @@
     "unmount_button": "마운트 해제",
     "unmounted_toast": "마운트 해제되었습니다!",
     "args-error": "실행 인자를 분석하지 못했습니다!\n기본 실행 인자만 사용합니다!\n자세한 정보는 로그를 확인하세요!",
-    "mount_nodlc_toast": "게임 경로에 DLC 폴더가 누락되었습니다! \n스팀에서 게임 무결성을 확인해 주세요.",
     "mount_nopath_toast": "게임의 경로가 일치하지 않습니다!! \n환경설정을 확인해보세요.",
     "mount_gamerunning_toast": "현재 Portal 2가 실행 중입니다!\n마운트/언마운트 할 수 없습니다!",
     "wiki_button": "Github 위키",

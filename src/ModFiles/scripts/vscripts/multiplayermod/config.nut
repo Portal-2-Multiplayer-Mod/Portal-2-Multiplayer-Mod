@@ -43,8 +43,7 @@ Config_CountdownPercentage <- 75
 // Set to the amount of time (in seconds) you allow players to get to the end after someone reaches it (if ^ percentage isnt met in time)
 Config_CountdownTimer <- 30
 
-// Set to true if you want the Paint gun instead of the Portal gun. (affects all players)
-// Has no effect on Aperture: Tag.
+// Set to true if you want the Paint gun instead of the Portal gun. Has no effect on Aperture: Tag. (affects all players)
 // Note: Paint will only paint a surface when the map is compiled for it, P2MM cannot change this.
 Config_ManualEnablePaintGun <- false
 

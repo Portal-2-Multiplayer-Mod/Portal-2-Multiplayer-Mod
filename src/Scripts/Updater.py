@@ -14,13 +14,10 @@ import Scripts.GlobalVariables as GVars
 from Scripts.BasicLogger import Log
 
 # When making your fork, make sure to change these to accommodate your version
-currentVersion = "2.3.0" #! Change this before releasing a new version!
+currentVersion = "3.0.0" #! Change this before releasing a new version!
 ownerName = "Portal-2-Multiplayer-Mod" # The user or organization that owns the repository
 repoName = "Portal-2-Multiplayer-Mod"  # The repository name, you can't use the id :(
 repoBranch = "main" # Change this to the target branch to retrieve ModFiles from
-
-newRepoName = "P2MM-Entanglement" # Repository name for P2MM 3.0, this is checked when it's released
-
 
 # thanks stackOverflow for this solution <3
 def HasInternet() -> bool:
@@ -61,7 +58,6 @@ def CheckForNewClient() -> dict:
 
     endpoint = "https://api.github.com/repos"
     foundNewVer = True
-    foundNewRepo = False
 
     #! search for a new client on the old repo
     try:
@@ -78,29 +74,7 @@ def CheckForNewClient() -> dict:
         elif (currentVersion != latestReleaseData["tag_name"]) and not ("beta" in latestReleaseData["tag_name"]):
             Log("Found new release!")
             foundNewVer = True
-
-    #! search for a new client on the new repo
-    try:
-        newRepoData = requests.get(
-            f"{endpoint}/{ownerName}/{newRepoName}/releases/latest").json()
-    except Exception as e:
-        Log(f"Error retrieving the latest releases in the new repository: {str(e)}")
-        return {"status": False}
-
-    if "tag_name" in newRepoData:
-        foundNewRepo = True
-
-    if foundNewRepo or foundNewVer:
-        results = {
-            "status": True,
-            "newRepo": False
-        }
-
-        if foundNewRepo:
-            results["newRepo"] = True
-
-    else:
-        results = {"status": False}
+    results = {"status": foundNewVer}
 
     return results
 

@@ -7,7 +7,7 @@ on:
       - '!src/ModFilesVPK/**'
 
 env:
-  VERSION: "2.3.0"
+  VERSION: "3.0.0"
 jobs:
   build:
     strategy:

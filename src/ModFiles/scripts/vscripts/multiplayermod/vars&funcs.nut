@@ -11,25 +11,29 @@
 //---------------
 // Classes
 //---------------
-class GlobalSpawnClass {
+class GlobalSpawnClass
+{
     m_bUseAutoSpawn = false // Try To Make All Spawns Global
     m_bUseSetSpawn = false // Use Set Spawnpoint
     m_bUseAutoCountEnd = false // Use Automatic detection for map countdowns.
 
     // Set SpawnPoint
-    m_cSetSpawn = class {
+    m_cSetSpawn = class
+    {
         position = Vector(0, 0, 0)
         radius = 0
     }
 
     // Red's Default Spawn Parameters
-    m_cRedPlayers = class {
+    m_cRedPlayers = class
+    {
         spawnpoint = Vector(0, 0, 0)
         rotation = Vector(0, 0, 0)
         velocity = Vector(0, 0, 0)
     }
     // Blue's Default Spawn Parameters
-    m_cBluePlayers = class {
+    m_cBluePlayers = class
+    {
         spawnpoint = Vector(0, 0, 0)
         rotation = Vector(0, 0, 0)
         velocity = Vector(0, 0, 0)
@@ -45,10 +49,160 @@ const TEAM_SPECTATOR	= 1
 const TEAM_RED          = 2
 const TEAM_BLUE         = 3
 
+// iCurGameIndex constants.
+//? These can't be const because they are used in p2mm.nut and that file calls this file.
+//? However these are still treated as if they were consts so their value shouldn't change.
+PORTAL_2           <- 0
+PORTAL_STORIES_MEL <- 1
+APERTURE_TAG       <- 2
+PORTAL_RELOADED    <- 3
+INFRA              <- 4
+DIVINITY           <- 5
+
+//* TraceLineEx Consts: Content Masks & Collisons *\\
+//  Taken from bspflags.h and const.h respectivley \\
+
+// contents flags are seperate bits
+// a given brush can contribute multiple content bits
+// multiple brushes can be in a single leaf
+
+// lower bits are stronger, and will eat weaker brushes completely
+const	CONTENTS_EMPTY			= 0		// No contents
+
+const	CONTENTS_SOLID			= 0x1		// an eye is never valid in a solid
+const	CONTENTS_WINDOW			= 0x2		// translucent, but not watery (glass)
+const	CONTENTS_AUX			= 0x4
+const	CONTENTS_GRATE			= 0x8		// alpha-tested "grate" textures.  Bullets/sight pass through, but solids don't
+const	CONTENTS_SLIME			= 0x10
+const	CONTENTS_WATER			= 0x20
+const	CONTENTS_BLOCKLOS		= 0x40	// block AI line of sight
+const   CONTENTS_OPAQUE			= 0x80	// things that cannot be seen through (may be non-solid though)
+const	LAST_VISIBLE_CONTENTS	= 0x80
+
+ALL_VISIBLE_CONTENTS  <- (LAST_VISIBLE_CONTENTS | (LAST_VISIBLE_CONTENTS-1)) // Has to be not const in order to perform bitwise OR operation.
+
+const CONTENTS_TESTFOGVOLUME	= 0x100
+const CONTENTS_UNUSED			= 0x200	
+
+// unused 
+// NOTE: If it's visible, grab from the top + update LAST_VISIBLE_CONTENTS
+// if not visible, then grab from the bottom.
+const CONTENTS_UNUSED6		= 0x400
+
+const CONTENTS_TEAM1			= 0x800	// per team contents used to differentiate collisions 
+const CONTENTS_TEAM2			= 0x1000	// between players and objects on different teams
+
+// ignore CONTENTS_OPAQUE on surfaces that have SURF_NODRAW
+const CONTENTS_IGNORE_NODRAW_OPAQUE	= 0x2000
+
+// hits entities which are MOVETYPE_PUSH (doors, plats, etc.)
+const CONTENTS_MOVEABLE		= 0x4000
+
+// remaining contents are non-visible, and don't eat brushes
+const	CONTENTS_AREAPORTAL		= 0x8000
+
+const	CONTENTS_PLAYERCLIP		= 0x10000
+const	CONTENTS_MONSTERCLIP	= 0x20000
+
+// currents can be added to any other contents, and may be mixed
+const	CONTENTS_CURRENT_0		= 0x40000
+const	CONTENTS_CURRENT_90		= 0x80000
+const	CONTENTS_CURRENT_180	= 0x100000
+const	CONTENTS_CURRENT_270	= 0x200000
+const	CONTENTS_CURRENT_UP		= 0x400000
+const	CONTENTS_CURRENT_DOWN	= 0x800000
+
+const	CONTENTS_ORIGIN			= 0x1000000	// removed before bsping an entity
+
+const	CONTENTS_MONSTER		= 0x2000000	// should never be on a brush, only in game
+const	CONTENTS_DEBRIS			= 0x4000000
+const	CONTENTS_DETAIL			= 0x8000000	// brushes to be added after vis leafs
+const	CONTENTS_TRANSLUCENT	= 0x10000000	// auto set if any surface has trans
+const	CONTENTS_LADDER			= 0x20000000
+const   CONTENTS_HITBOX			= 0x40000000	// use accurate hitboxes on trace
+
+
+//* Content Mask Consts *\\
+//? All those that aren't const have to be in order to have the bitwise OR operation be completed.
+
+const	MASK_ALL			= 0xFFFFFFFF
+// everything that is normally solid
+MASK_SOLID					<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_MONSTER|CONTENTS_GRATE)
+// everything that blocks player movement
+MASK_PLAYERSOLID			<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_PLAYERCLIP|CONTENTS_WINDOW|CONTENTS_MONSTER|CONTENTS_GRATE)
+// blocks npc movement
+MASK_NPCSOLID				<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_MONSTERCLIP|CONTENTS_WINDOW|CONTENTS_MONSTER|CONTENTS_GRATE)
+// water physics in these contents
+MASK_WATER					<- (CONTENTS_WATER|CONTENTS_MOVEABLE|CONTENTS_SLIME)
+// everything that blocks lighting
+MASK_OPAQUE					<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_OPAQUE)
+// everything that blocks lighting, but with monsters added.
+MASK_OPAQUE_AND_NPCS		<- (MASK_OPAQUE|CONTENTS_MONSTER)
+// everything that blocks line of sight for AI
+MASK_BLOCKLOS				<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_BLOCKLOS)
+// everything that blocks line of sight for AI plus NPCs
+MASK_BLOCKLOS_AND_NPCS		<- (MASK_BLOCKLOS|CONTENTS_MONSTER)
+// everything that blocks line of sight for players
+MASK_VISIBLE				<- (MASK_OPAQUE|CONTENTS_IGNORE_NODRAW_OPAQUE)
+// everything that blocks line of sight for players, but with monsters added.
+MASK_VISIBLE_AND_NPCS		<- (MASK_OPAQUE_AND_NPCS|CONTENTS_IGNORE_NODRAW_OPAQUE)
+// bullets see these as solid
+MASK_SHOT					<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_MONSTER|CONTENTS_WINDOW|CONTENTS_DEBRIS|CONTENTS_HITBOX)
+// non-raycasted weapons see this as solid (includes grates)
+MASK_SHOT_HULL				<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_MONSTER|CONTENTS_WINDOW|CONTENTS_DEBRIS|CONTENTS_GRATE)
+// hits solids (not grates) and passes through everything else
+MASK_SHOT_PORTAL			<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_MONSTER)
+// everything normally solid, except monsters (world+brush only)
+MASK_SOLID_BRUSHONLY		<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_GRATE)
+// everything normally solid for player movement, except monsters (world+brush only)
+MASK_PLAYERSOLID_BRUSHONLY	<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_PLAYERCLIP|CONTENTS_GRATE)
+// everything normally solid for npc movement, except monsters (world+brush only)
+MASK_NPCSOLID_BRUSHONLY		<- (CONTENTS_SOLID|CONTENTS_MOVEABLE|CONTENTS_WINDOW|CONTENTS_MONSTERCLIP|CONTENTS_GRATE)
+// just the world, used for route rebuilding
+MASK_NPCWORLDSTATIC			<- (CONTENTS_SOLID|CONTENTS_WINDOW|CONTENTS_MONSTERCLIP|CONTENTS_GRATE)
+// These are things that can split areaportals
+MASK_SPLITAREAPORTAL		<- (CONTENTS_WATER|CONTENTS_SLIME)
+
+// UNDONE: This is untested, any moving water
+MASK_CURRENT				<- (CONTENTS_CURRENT_0|CONTENTS_CURRENT_90|CONTENTS_CURRENT_180|CONTENTS_CURRENT_270|CONTENTS_CURRENT_UP|CONTENTS_CURRENT_DOWN)
+
+// everything that blocks corpse movement
+// UNDONE: Not used yet / may be deleted
+MASK_DEADSOLID				<- (CONTENTS_SOLID|CONTENTS_PLAYERCLIP|CONTENTS_WINDOW|CONTENTS_GRATE)
+
+//* Collison Groups for TraceLineEx *\\
+const COLLISION_GROUP_NONE = 1
+const COLLISION_GROUP_DEBRIS = 2			 // Collides with nothing but world and static stuff
+const COLLISION_GROUP_DEBRIS_TRIGGER = 3     // Same as debris, but hits triggers
+const COLLISION_GROUP_INTERACTIVE_DEBRIS = 4 // Collides with everything except other interactive debris or debris
+const COLLISION_GROUP_INTERACTIVE = 5	     // Collides with everything except interactive debris or debris
+const COLLISION_GROUP_PLAYER = 6
+const COLLISION_GROUP_BREAKABLE_GLASS = 7
+const COLLISION_GROUP_VEHICLE = 8
+const COLLISION_GROUP_PLAYER_MOVEMENT = 9  // For HL2, same as COLLISION_GROUP_PLAYER, for
+	    								   // TF2, this filters out other players and CBaseObjects
+const COLLISION_GROUP_NPC = 10			   // Generic NPC group
+const COLLISION_GROUP_IN_VEHICLE = 11	   // for any entity inside a vehicle
+const COLLISION_GROUP_WEAPON = 12		   // for any weapons that need collision detection
+const COLLISION_GROUP_VEHICLE_CLIP = 13	   // vehicle clip brush to restrict vehicle movement
+const COLLISION_GROUP_PROJECTILE = 14	   // Projectiles!
+const COLLISION_GROUP_DOOR_BLOCKER = 15    // Blocks entities not permitted to get near moving doors
+const COLLISION_GROUP_PASSABLE_DOOR = 16   // Doors that the player shouldn't collide with
+const COLLISION_GROUP_DISSOLVING = 17	   // Things that are dissolving are in this group
+const COLLISION_GROUP_PUSHAWAY = 18		   // Nonsolid on client and server, pushaway in player code
+const COLLISION_GROUP_NPC_ACTOR = 19	   // Used so NPCs in scripts ignore the player.
+const COLLISION_GROUP_NPC_SCRIPTED = 20    // USed for NPCs in scripts that should not collide with each other
+const COLLISION_GROUP_PZ_CLIP = 21
+const COLLISION_GROUP_CAMERA_SOLID = 22		// Solid only to the camera's test trace
+const COLLISION_GROUP_PLACEMENT_SOLID = 23	// Solid only to the placement tool's test trace
+const COLLISION_GROUP_PLAYER_HELD = 24		// Held objects that shouldn't collide with players
+const COLLISION_GROUP_WEIGHTED_CUBE = 25		    // Cubes need a collision group that acts roughly like COLLISION_GROUP_NONE but doesn't collide with debris or interactive
+const COLLISION_GROUP_DEBRIS_BLOCK_PROJECTILE = 26  // Only collides with bullets
+const LAST_SHARED_COLLISION_GROUP = 27
+
 //---------------
 // Booleans
 //---------------
-g_bAllowColorIndicator <- true // By default unless specified in mapsupport
 g_bAllowNametags <- true // By default unless specified in mapsupport
 g_bCanCheckAngle <- false
 g_bCanHook <- false
@@ -62,18 +216,16 @@ g_bOverridePluginGrabController <- true // By default unless specified in mapsup
 g_bHasSpawned <- false
 doCountdown <- false
 // Check entire map string
-if (GetMapName().slice(0, GetMapName().len()) == "mp_coop_community_hub") {
+if (GetMapName().slice(0, GetMapName().len()) == "mp_coop_community_hub")
     g_bIsCommunityCoopHub <- true
-} else {
+else
     g_bIsCommunityCoopHub <- false
-}
 
 // Check part of the map string
-if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) == "mp_coop") {
+if (GetMapName().len() >= 7 && GetMapName().slice(0, 7) == "mp_coop")
     g_bIsOnSingleplayerMaps <- false
-} else {
+else
     g_bIsOnSingleplayerMaps <- true
-}
 
 // Minimize the errors when in singleplayer maps
 // (We don't need these)
@@ -83,22 +235,6 @@ if (g_bIsOnSingleplayerMaps) {
     function CoopPingTool(int1, int2) {}
     function CoopBotAnimation(int1, int2) {}
 }
-
-// g_iCurGameIndex definition.
-g_iCurGameIndex <- -1
-switch (GetGameMainDir()) {
-    case "portal2":         g_iCurGameIndex = PORTAL_2;           break;
-    case "portal_stories":  g_iCurGameIndex = PORTAL_STORIES_MEL; break;
-    case "aperturetag":     g_iCurGameIndex = APERTURE_TAG;       break;
-    //case "portalreloaded":  g_iCurGameIndex = PORTAL_RELOADED;    break;
-    //case "infra":           g_iCurGameIndex = INFRA;              break;
-}
-// Special case has to be done with SourceMods as their main game dir is a path to the SourceMod.
-if (GetGameMainDir().find("Divinity"))
-    g_iCurGameIndex = DIVINITY
-
-if (g_iCurGameIndex == PORTAL_STORIES_MEL)
-    FIRST_MAP_WITH_POTATO_GUN <- null
 
 MadeSpawnClass <- false
 OrangeCacheFailed <- false
@@ -123,12 +259,31 @@ PreviousTime1Sec <- 0
 PreviousTime5Sec <- 0
 Countdown <- 0
 
-if (Config_RandomPortalSize) {
+if (Config_RandomPortalSize)
+{
     randomportalsize <- 34
     randomportalsizeh <- 34
 }
 
 TickSpeed <- 0.00
+
+// g_iCurGameIndex definition.
+g_iCurGameIndex <- -1
+switch (GetGameMainDir())
+{
+    case "portal2":         g_iCurGameIndex = PORTAL_2;           break;
+    case "portal_stories":  g_iCurGameIndex = PORTAL_STORIES_MEL; break;
+    case "aperturetag":     g_iCurGameIndex = APERTURE_TAG;       break;
+    //case "portalreloaded":  g_iCurGameIndex = PORTAL_RELOADED;    break;
+    //case "infra":           g_iCurGameIndex = INFRA;              break;
+}
+// Special case has to be done with SourceMods as their main game dir is a path to the SourceMod.
+if (GetGameMainDir().find("Divinity"))
+    g_iCurGameIndex = DIVINITY
+
+// Warn if no/invalid game was determined with g_iCurGameIndex
+if (g_iCurGameIndex == -1)
+    printlP2MM(1, false, "g_iCurGameIndex came back as -1! This means the current game could not be determined!")
 
 //---------------
 // Arrays/Tables
@@ -200,6 +355,8 @@ OriginalPosMain <- null
 setspot <- Vector(0, 0, 250) //Vector(5107, 3566, -250)
 hCountdownEnableTrigger <- null
 sInstantTransitionMap <- ""
+if (g_iCurGameIndex == PORTAL_STORIES_MEL)
+    FIRST_MAP_WITH_POTATO_GUN <- null
 
 //* FUNCTIONS *\\
 
@@ -571,10 +728,13 @@ function SetPlayerModel(p, mdl) {
     FindPlayerClass(p).playermodel = mdl
 }
 
-function CreateGenericPlayerClass(p) {
+function CreateGenericPlayerClass(p)
+{
     // Make sure there isnt an existing player class
-    foreach (indx, curlclass in playerclasses) {
-        if (curlclass.player == p) {
+    foreach (indx, curlclass in playerclasses)
+    {
+        if (curlclass.player == p)
+        {
             // If there is, remove it (This should never happen)
             playerclasses.remove(indx)
             break
@@ -585,6 +745,7 @@ function CreateGenericPlayerClass(p) {
 
     // Base info
     currentplayerclass.color <- GetPlayerColor(p)  // Player color
+    currentplayerclass.eyeposition <- Vector(0, 0, 0) // Eye position
     currentplayerclass.eyeangles <- Vector(0, 0, 0) // Player angles
     currentplayerclass.eyeforwardvector <- Vector(0, 0, 0) // Player angles
     currentplayerclass.id <- p.entindex() // Player entity index
@@ -598,19 +759,9 @@ function CreateGenericPlayerClass(p) {
     // Gelocity
     if (GetMapName() == "workshop/596984281130013835/mp_coop_gelocity_1_v02" ||
         GetMapName() == "workshop/594730048530814099/mp_coop_gelocity_2_v01" ||
-        GetMapName() == "workshop/613885499245125173/mp_coop_gelocity_3_v02") {
-        // Legacy Gelocity Mapsupport Code
-        currentplayerclass.nCurrentLap <- 0
-        currentplayerclass.GelocityCheckPointType <- 0
-        if (GetMapName() == "workshop/594730048530814099/mp_coop_gelocity_2_v01") {
-            currentplayerclass.Gelocity2Checkpoint <- true
-            currentplayerclass.Gelocity2CheckpointMove <- class {
-                pos = Vector(2580, -4399,  267)
-                rot = Vector(0, 90, 0)
-            }
-        }
+        GetMapName() == "workshop/613885499245125173/mp_coop_gelocity_3_v02")
+    {
 
-        // New Gelocity Mapsupport Code
         currentplayerclass.i_CompletedLaps <- 0 // Completed laps by player.
         currentplayerclass.l_PassedCheckpoints <- [] // List of passted checkpoints to keep track of progress in race.
         currentplayerclass.s_LastCheckPoint <- "start" // Last checkpoint player had passed.
@@ -623,39 +774,28 @@ function CreateGenericPlayerClass(p) {
     currentplayerclass.steamid <- GetSteamID(currentplayerclass.id) // Player Steam ID
 
     // Chat commands
-    if (Config_UseChatCommands) {
+    if (Config_UseChatCommands)
+    {
         currentplayerclass.startedvote <- false  // Did this player initiate a vote?
         currentplayerclass.hasvotedyes <- false  // Did this player vote yes?
         currentplayerclass.hasvotedno <- false  // Did this player vote no?
     }
 
+    // Aperture Tag Gelgun logic
+    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
+    {
+        currentplayerclass.BlueGelIsEnabled <- false
+        currentplayerclass.OrangeGelIsEnabled <- false
+        currentplayerclass.Attack1Held <- false
+        currentplayerclass.Attack2Held <- false
+        currentplayerclass.AttackPriority <- 1
+    }
+
     // Note down the registered player for later reference
     playerclasses.push(currentplayerclass)
 
-    // Aperture Tag Gelgun logic
-    if (g_iCurGameIndex == APERTURE_TAG) {
-        currentplayerclass.BlueGelIsEnabled <- false
-        currentplayerclass.OrangeGelIsEnabled <- false
-    }
-
     return currentplayerclass
 }
-
-// function GetEntityCount(classname = null) {
-//     if (classname == null) {
-//         local indx = 0
-//         for (local p = null; p = Entities.FindInSphere(p, Vector(0, 0, 0), 100000);) {
-//             indx += 1
-//         }
-//         return indx
-//     } else {
-//         local indx = 0
-//         for (local p = null; p = Entities.FindByClassname(p, classname);) {
-//             indx += 1
-//         }
-//         return indx
-//     }
-// }
 
 function DeleteAmountOfEntities(classname, amount) {
     local indx = 0
@@ -681,48 +821,54 @@ function DeleteAmountOfEntities(classname, amount) {
     return indx
 }
 
-function PrecacheModel(mdl) {
+function PrecacheModel(mdl)
+{
     // Add the models/ to the side of the model name if it's not already there
-    if (mdl.slice(0, 7) != "models/") {
+    if (mdl.slice(0, 7) != "models/")
         mdl = "models/" + mdl
-    }
+    
     // Add the .mdl to the end of the model name if it's not already there
-    if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl") {
+    if (mdl.slice(mdl.len() - 4, mdl.len()) != ".mdl")
         mdl = mdl + ".mdl"
-    }
+    
 
     // Remove the models/ from the left side and the .mdl from the right side
-    local MinifyModel = function(mdl) {
-        if (mdl.slice(0, 7) == "models/") {
+    local MinifyModel = function(mdl)
+    {
+        if (mdl.slice(0, 7) == "models/")
             mdl = mdl.slice(7, mdl.len())
-        }
-        if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl") {
+
+        if (mdl.slice(mdl.len() - 4, mdl.len()) == ".mdl")
             mdl = mdl.slice(0, mdl.len() - 4)
-        }
+
         return mdl
     }
     local minimdl = MinifyModel(mdl)
 
     // Check if the model is already precached
     local Precached = false
-    foreach (model in PrecachedProps) {
-        if (model == minimdl) {
+    foreach (model in PrecachedProps)
+    {
+        if (model == minimdl)
             Precached = true
-        }
     }
 
     // Check if the model is already in the map and if it's already been precached
-    if (!Entities.FindByModel(null, mdl) && !Precached) {
+    if (!Entities.FindByModel(null, mdl) && !Precached)
+    {
         // Attempt to precache it
-        EntFire("p2mm_servercommand", "command", "sv_cheats 1; prop_dynamic_create " + minimdl) // FIXME: "prop_dynamic_create" crashes on dedicated servers!!!
+        EntFire("p2mm_servercommand", "command", "sv_cheats 1; prop_dynamic_create " + minimdl) //! FIXME: "prop_dynamic_create" crashes on dedicated servers!!!
         PrecachedProps.push(minimdl)
-        if (!g_bCheatsOn) {
+        if (!g_bCheatsOn)
+        {
             // In case players are now joining
             EntFire("p2mm_servercommand", "command", "sv_cheats 0")
         }
         EntFire("p2mm_servercommand", "command", "script Entities.FindByModel(null, \"" + mdl + "\").Destroy()", 0.4)
         printlP2MM(0, true, "PrecacheModel() - Precached model: " + mdl)
-    } else {
+    }
+    else
+    {
         printlP2MM(1, true, "PrecacheModel() - Model: " + mdl + " already precached!")
     }
 }
@@ -1692,66 +1838,8 @@ function CombineList(list, startlength, inbetweenchars = " ") {
     return strip(newstr)
 }
 
-function CreateOurEntities() {
-
-    if (Config_UseNametags/* && g_bAllowNametags*/) {
-        // Create an entity to measure player eye angles
-        measuremovement_eyeposition <- Entities.CreateByClassname("logic_measure_movement")
-        measuremovement_eyeposition.__KeyValueFromString( "measuretype", "1")
-        measuremovement_eyeposition.__KeyValueFromString( "measurereference", "" )
-        measuremovement_eyeposition.__KeyValueFromString( "measureretarget", "" )
-        measuremovement_eyeposition.__KeyValueFromString( "targetscale", "1.0" )
-        measuremovement_eyeposition.__KeyValueFromString( "targetname", "p2mm_logic_measure_movement_eyeposition" )
-        measuremovement_eyeposition.__KeyValueFromString( "targetreference", "p2mm_logic_measure_movement_eyeposition" )
-        measuremovement_eyeposition.__KeyValueFromString( "target", "p2mm_logic_measure_movement_eyeposition" )
-        EntFireByHandle(measuremovement_eyeposition, "SetMeasureReference", "p2mm_logic_measure_movement_eyeposition", 0.0, null, null)
-        EntFireByHandle(measuremovement_eyeposition, "Disable", "", 0.0, null, null)
-
-        // Create an entity to display player nametags when aiming at them
-        nametagdisplay <- Entities.CreateByClassname("game_text")
-        nametagdisplay.__KeyValueFromString("targetname", "p2mm_nametag_text")
-        nametagdisplay.__KeyValueFromString("x", "-1")
-        nametagdisplay.__KeyValueFromString("y", "0.2")
-        nametagdisplay.__KeyValueFromString("holdtime", "0.1")
-        nametagdisplay.__KeyValueFromString("fadeout", "0.2")
-        nametagdisplay.__KeyValueFromString("fadein", "0.2")
-        nametagdisplay.__KeyValueFromString("channel", "1")
-    }
-
-    // Create an display entity for the host to wait for another player to load in
-    waitingtext <- Entities.CreateByClassname("game_text")
-    waitingtext.__KeyValueFromString("targetname", "p2mm_wait_for_players_text")
-    waitingtext.__KeyValueFromString("message", "Waiting for players...")
-    waitingtext.__KeyValueFromString("holdtime", "0.2")
-    waitingtext.__KeyValueFromString("fadeout", "0")
-    waitingtext.__KeyValueFromString("fadein", "0")
-    waitingtext.__KeyValueFromString("spawnflags", "1")
-    waitingtext.__KeyValueFromString("color", "50 190 50")
-    waitingtext.__KeyValueFromString("channel", "1")
-
-    // Create a player disconnect message entity
-    local disconnectmessagedisplay = Entities.CreateByClassname("game_text")
-    disconnectmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_disconnect_message")
-    disconnectmessagedisplay.__KeyValueFromString("holdtime", "3")
-    disconnectmessagedisplay.__KeyValueFromString("fadeout", "0.2")
-    disconnectmessagedisplay.__KeyValueFromString("fadein", "0.2")
-    disconnectmessagedisplay.__KeyValueFromString("spawnflags", "1")
-    disconnectmessagedisplay.__KeyValueFromString("color", "140 40 40")
-    disconnectmessagedisplay.__KeyValueFromString("channel", "3")
-    disconnectmessagedisplay.__KeyValueFromString("message", "Player disconnected")
-
-    if (Config_UseJoinIndicator) {
-        // Create a join message entity
-        local joinmessagedisplay = Entities.CreateByClassname("game_text")
-        joinmessagedisplay.__KeyValueFromString("targetname", "p2mm_player_joined_text")
-        joinmessagedisplay.__KeyValueFromString("holdtime", "3")
-        joinmessagedisplay.__KeyValueFromString("fadeout", "0.2")
-        joinmessagedisplay.__KeyValueFromString("fadein", "0.2")
-        joinmessagedisplay.__KeyValueFromString("spawnflags", "1")
-        joinmessagedisplay.__KeyValueFromString("color", "255 200 0")
-        joinmessagedisplay.__KeyValueFromString("channel", "3")
-    }
-
+function CreateOurEntities()
+{
     // Create a player_speedmod entity to modify a player's movement speed
     local playerspeedmod = Entities.CreateByClassname("player_speedmod")
     playerspeedmod.__KeyValueFromString("targetname", "p2mm_player_speedmod")
@@ -1778,8 +1866,7 @@ function Plyr_Disconnect_Function(displayname = null) {
         displayname = "\\\\n"
     }
 
-    Entities.FindByName(null, "p2mm_player_disconnect_message").__KeyValueFromString("message", displayname + " disconnected (" + (CalcNumPlayers() - 1).tostring() + "/" + GetMaxPlayers().tostring() + ")")
-    EntFire("p2mm_player_disconnect_message", "Display")
+    HudPrint(0, "Player " + displayname + " disconnected (" + (CalcNumPlayers() - 1).tostring() + "/" + GetMaxPlayers().tostring() + ")", Vector(0, 0, 3), 0, 0, Vector(140, 40, 40), 255, Vector(140, 40, 40), 255, Vector(0.2, 0.2, 3))
 }
 
 //--------------------------------------
@@ -2169,97 +2256,184 @@ function StartCountTransition(player) {
     }
 }
 
-if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
-    function StartGel(index, type) {
-        switch (type) {
+if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
+{
+    function UpdateSprayer(player)
+    {
+        local playerclass = FindPlayerClass(player)
+        local index = player.entindex()
+
+        printlP2MM(0, true, "MOUSE DETAILS FOR " + playerclass.username + ":")
+        printlP2MM(0, true, "Attack 1: " + playerclass.Attack1Held.tostring())
+        printlP2MM(0, true, "Attack 2: " + playerclass.Attack2Held.tostring())
+
+        if (playerclass.Attack1Held && !playerclass.Attack2Held)
+        {
+            playerclass.AttackPriority = 1
+            printlP2MM(0, true, "attack priority set to blue")
+        }
+
+        else if (playerclass.Attack2Held && !playerclass.Attack1Held)
+        {
+            playerclass.AttackPriority = 2
+            printlP2MM(0, true, "attack priority set to orange")
+        }
+
+        else if (!playerclass.Attack2Held && !playerclass.Attack1Held)
+        {
+            playerclass.AttackPriority = 0
+            EntFire("Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
+            EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
+            printlP2MM(0, true, "attack priority set to none")
+            return
+        }
+
+        switch (playerclass.AttackPriority)
+        {
             case 1:
-                if (FindPlayerClass(PlayerByIndex(index)).BlueGelIsEnabled != true) break
-                EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
-                EntFire("Bounce_Painter_" + index.tostring(), "Start", "")
+                EntFire("Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
+                if (playerclass.BlueGelIsEnabled)
+                    EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "Start", "")
+                else
+                    EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
                 break
+
             case 2:
-                if (FindPlayerClass(PlayerByIndex(index)).OrangeGelIsEnabled != true) break
-                EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
-                EntFire("Speed_Painter_" + index.tostring(), "Start", "")
+                EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
+                if (playerclass.OrangeGelIsEnabled)
+                    EntFire("Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), "Start", "")
+                else
+                    EntFire("Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), "Stop", "")
                 break
         }
     }
-    function EndGel(index) {
-        EntFire("Speed_Painter_" + index.tostring(), "Stop", "")
-        EntFire("Bounce_Painter_" + index.tostring(), "Stop", "")
+
+    function SetButtonState(player, attack, state)
+    {
+        switch (attack)
+        {
+            case 1:
+                FindPlayerClass(player).Attack1Held = state
+                break
+            case 2:
+                FindPlayerClass(player).Attack2Held = state
+                break
+        }
+        UpdateSprayer(player)
     }
 
-    function updateGels(player, speed, bounce) {
+    function UpdateGels(player, speed, bounce, isolateDevMsg = false)
+    {
         FindPlayerClass(player).OrangeGelIsEnabled = speed
         FindPlayerClass(player).BlueGelIsEnabled = bounce
-        EntFire("Speed_Painter_" + player.entindex().tostring(), "Stop", "")
-        EntFire("Bounce_Painter_" + player.entindex().tostring(), "Stop", "")
+        UpdateSprayer(player)
         // player.EmitSound("weapon_ambient/wpn_portal_fizzler_shimmy_01.wav")
-        printlP2MM(0, true, "updateGels called with player " + FindPlayerClass(player).username + " with blue gel state " + bounce.tostring() + " and orange gel state " + speed.tostring())
+        if (!isolateDevMsg) // Should be used if calling from MSLoop to avoid console spam
+            printlP2MM(0, true, "UpdateGels called with player " + FindPlayerClass(player).username + " with blue gel state " + bounce.tostring() + " and orange gel state " + speed.tostring())
     }
 
-    function GelPair(index) {
-        if (Entities.FindByName(null, "Bounce_Painter_" + index.tostring())) return
-        
+    function GelPair(index)
+    {
         local player = PlayerByIndex(index)
+        if (!Entities.FindByName(null, "Bounce_Painter_" + FindPlayerClass(player).steamid.tostring()))
+        {
+            // Setup the listener for when the player hits their +attack bind
+            local gameui = Entities.CreateByClassname("game_ui")
+            EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:SetButtonState(activator 1 true)", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack !activator:RunScriptCode:SetButtonState(activator 1 false)", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "PressedAttack2 !activator:RunScriptCode:SetButtonState(activator 2 true)", 0, null, null)
+            EntFireByHandle(gameui, "AddOutput", "UnpressedAttack2 !activator:RunScriptCode:SetButtonState(activator 2 false)", 0, null, null)
+            gameui.__KeyValueFromString("targetname", "gameui_" + index.tostring())
+            gameui.__KeyValueFromString("spawnflags", "0")
+            gameui.__KeyValueFromString("FieldOfView", "-1.0")
+            InitializeEntity(gameui)
 
-        // Setup the listener for when the player hits their +attack bind
-        local gameui = Entities.CreateByClassname("game_ui")
-        EntFireByHandle(gameui, "AddOutput", "PressedAttack !activator:RunScriptCode:StartGel(activator.entindex() 1)", 0, null, null)
-        EntFireByHandle(gameui, "AddOutput", "UnpressedAttack !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
-        EntFireByHandle(gameui, "AddOutput", "PressedAttack2 !activator:RunScriptCode:StartGel(activator.entindex() 2)", 0, null, null)
-        EntFireByHandle(gameui, "AddOutput", "UnpressedAttack2 !activator:RunScriptCode:EndGel(activator.entindex())", 0, null, null)
-        gameui.__KeyValueFromString("targetname", "gameui_" + index.tostring())
-        gameui.__KeyValueFromString("spawnflags", "0")
-        gameui.__KeyValueFromString("FieldOfView", "-1.0")
-        InitializeEntity(gameui)
-
-        // Setup both gels for for the gun. The Paint type must be set BEFORE initialization for the game to render the correct color.
-        local speed = Entities.CreateByClassname("info_paint_sprayer")
-        speed.__KeyValueFromString("painttype", "2")
-        InitializeEntity(speed)
-        speed.__KeyValueFromString("targetname", "Speed_Painter_" + index.tostring())
-        speed.__KeyValueFromString("blob_spread_radius", "1")
-        speed.__KeyValueFromString("blob_streak_percentage", "15")
-        speed.__KeyValueFromString("blobs_per_second", "35")
-        speed.__KeyValueFromString("max_speed", "1250")
-        speed.__KeyValueFromString("max_streak_speed_dampen", "10000")
-        speed.__KeyValueFromString("min_streak_speed_dampen", "10")
-        speed.__KeyValueFromString("max_streak_time", "0.2")
-        speed.__KeyValueFromString("min_streak_time", "0.1")
-        speed.__KeyValueFromString("min_speed", "1100")
-        speed.__KeyValueFromString("RenderMode", "0")
+            // Setup both gels for for the gun. The Paint type must be set BEFORE initialization for the game to render the correct color.
+            local speed = Entities.CreateByClassname("info_paint_sprayer")
+            speed.__KeyValueFromString("painttype", "2")
+            InitializeEntity(speed)
+            speed.__KeyValueFromString("targetname", "Speed_Painter_" + FindPlayerClass(player).steamid.tostring())
+            speed.__KeyValueFromString("blob_spread_radius", "1")
+            speed.__KeyValueFromString("blob_streak_percentage", "15")
+            speed.__KeyValueFromString("blobs_per_second", "35")
+            speed.__KeyValueFromString("max_speed", "1250")
+            speed.__KeyValueFromString("max_streak_speed_dampen", "10000")
+            speed.__KeyValueFromString("min_streak_speed_dampen", "10")
+            speed.__KeyValueFromString("max_streak_time", "0.2")
+            speed.__KeyValueFromString("min_streak_time", "0.1")
+            speed.__KeyValueFromString("min_speed", "1100")
+            speed.__KeyValueFromString("RenderMode", "0")
 
 
-        local bounce = Entities.CreateByClassname("info_paint_sprayer")
-        bounce.__KeyValueFromString("painttype", "0")
-        InitializeEntity(bounce)
-        bounce.__KeyValueFromString("targetname", "Bounce_Painter_" + index.tostring())
-        bounce.__KeyValueFromString("blob_spread_radius", "1")
-        bounce.__KeyValueFromString("blob_streak_percentage", "15")
-        bounce.__KeyValueFromString("blobs_per_second", "35")
-        bounce.__KeyValueFromString("max_speed", "1250")
-        bounce.__KeyValueFromString("max_streak_speed_dampen", "10000")
-        bounce.__KeyValueFromString("min_streak_speed_dampen", "10")
-        bounce.__KeyValueFromString("max_streak_time", "0.2")
-        bounce.__KeyValueFromString("min_streak_time", "0.1")
-        bounce.__KeyValueFromString("min_speed", "1100")
-        bounce.__KeyValueFromString("RenderMode", "0")
-        EntFire("Bounce_Painter_" + index.tostring(), "SetParent", "Speed_Painter_" + index.tostring())
+            local bounce = Entities.CreateByClassname("info_paint_sprayer")
+            bounce.__KeyValueFromString("painttype", "0")
+            InitializeEntity(bounce)
+            bounce.__KeyValueFromString("targetname", "Bounce_Painter_" + FindPlayerClass(player).steamid.tostring())
+            bounce.__KeyValueFromString("blob_spread_radius", "1")
+            bounce.__KeyValueFromString("blob_streak_percentage", "15")
+            bounce.__KeyValueFromString("blobs_per_second", "35")
+            bounce.__KeyValueFromString("max_speed", "1250")
+            bounce.__KeyValueFromString("max_streak_speed_dampen", "10000")
+            bounce.__KeyValueFromString("min_streak_speed_dampen", "10")
+            bounce.__KeyValueFromString("max_streak_time", "0.2")
+            bounce.__KeyValueFromString("min_streak_time", "0.1")
+            bounce.__KeyValueFromString("min_speed", "1100")
+            bounce.__KeyValueFromString("RenderMode", "0")
+            EntFire("Bounce_Painter_" + FindPlayerClass(player).steamid.tostring(), "SetParent", "Speed_Painter_" + FindPlayerClass(player).steamid.tostring())
 
-        local measureEye = Entities.CreateByClassname("logic_measure_movement")
-        InitializeEntity(measureEye)
-        
-        measureEye.__KeyValueFromString("targetname", "measureEye_" + index.tostring())
-        measureEye.__KeyValueFromString("MeasureType", "1")
-
-        EntFireByHandle(measureEye, "SetTargetReference", "measureEye_" + index.tostring(), 0, null, null)
-        EntFireByHandle(measureEye, "SetMeasureReference", "measureEye_" + index.tostring(), 0, null, null)
-        EntFireByHandle(measureEye, "SetMeasureTarget", player.GetName(), 0, null, null)
-        EntFireByHandle(measureEye, "SetTargetScale", "1", 0, null, null)
-        EntFireByHandle(measureEye, "SetTarget", "Speed_Painter_" + index.tostring(), 0, null, null)
-
+            local measureEye = Entities.CreateByClassname("logic_measure_movement")
+            InitializeEntity(measureEye)
+            
+            measureEye.__KeyValueFromString("targetname", "measureEye_" + index.tostring())
+            measureEye.__KeyValueFromString("MeasureType", "1")
+            printl(player.GetName())
+            EntFireByHandle(measureEye, "SetTargetReference", "measureEye_" + index.tostring(), 0, null, null)
+            EntFireByHandle(measureEye, "SetMeasureReference", "measureEye_" + index.tostring(), 0, null, null)
+            EntFireByHandle(measureEye, "SetMeasureTarget", player.GetName(), 0, null, null)
+            EntFireByHandle(measureEye, "SetTargetScale", "1", 0, null, null)
+            EntFireByHandle(measureEye, "SetTarget", "Speed_Painter_" + FindPlayerClass(player).steamid.tostring(), 0, null, null)
+        }
         EntFire("gameui_" + index.tostring(), "Activate", "", 0.2, player)
         EntFire("measureEye_" + index.tostring(), "Enable", "")
     }
+}
+
+/**
+ * @brief Convert degrees to radians.
+ * @param Degrees to convert.
+ * @return Radians.
+ */
+function DegToRad(degrees)
+{
+    return degrees * (PI / 180)
+}
+
+/**
+ * @brief Convert radians to degrees.
+ * @param radians to convert.
+ * @return Eegrees.
+ */
+function RadToDeg(radians)
+{
+    return radians * (180 / PI)
+}
+
+/**
+ * @brief Convert a Vector of angles to a forward vector.
+ * @param angles Vector of angles (pitch, yaw, roll).
+ * @return Angle converted to a forward vector.
+ */
+function AngleVectors(angles)
+{
+    local forwardVector = Vector(0, 0, 0)
+    local sinYaw = sin(DegToRad(angles.y))
+    local cosYaw = cos(DegToRad(angles.y))
+    local sinPitch = sin(DegToRad(angles.x))
+    local cosPitch = cos(DegToRad(angles.x))
+	
+	forwardVector.x = cosYaw * cosPitch
+	forwardVector.y = sinYaw * cosPitch
+	forwardVector.z = -sinPitch
+
+    return forwardVector
 }

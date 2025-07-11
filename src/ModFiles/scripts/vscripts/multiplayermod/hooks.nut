@@ -81,113 +81,94 @@ function P2MMLoop() {
     MapSupport(false, true, false, false, false, false, false)
 
     // Get all players and check for changes
-    for (local p = null; p = Entities.FindByClassname(p, "player");) {
-        if (!p.ValidateScriptScope()) { continue }
+    for (local p = null; p = Entities.FindByClassname(p, "player");)
+    {
+        if (!p.ValidateScriptScope())
+            continue
+        local player = FindPlayerClass(p)
+        if (!player)
+            continue
         
         // Update everyone's class if PermaPotato is on
         // FindPlayerClass(p).potatogun = PermaPotato
 
         //## PotatoIfy loop ##//
-        if (PermaPotato) {
+        if (PermaPotato)
             PotatoIfy(p, "1")
-        } else {
+        else
             PotatoIfy(p, "0")
-        }
 
         //## Set PlayerModel ##//
-        if (FindPlayerClass(p) != null) {
-            if (FindPlayerClass(p).playermodel != null) {
-                if (FindPlayerClass(p).playermodel != p.GetModelName()) {
-                    EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + FindPlayerClass(p).playermodel + "\")", 1)
-                }
-            }
+        if (player.playermodel != null)
+        {
+            if (player.playermodel != p.GetModelName())
+                EntFire("p2mm_servercommand", "command", "script Entities.FindByName(null, \"" + p.GetName() + "\").SetModel(\"" + player.playermodel + "\")", 1)
         }
     }
 
     //## Update Portal Gun names ##//
-    for (local p = null; p = Entities.FindByClassname(p, "weapon_portalgun");) {
+    for (local pgun = null; pgun = Entities.FindByClassname(pgun, "weapon_portalgun");) {
         // if it doesn't have a name yet
-        if (p.GetName() == "") {
+        if (pgun.GetName() == "") {
             // Set The Name Of The Portalgun (based on PLAYER index)
-            p.__KeyValueFromString("targetname", "weapon_portalgun_player" + p.GetRootMoveParent().entindex())
+            pgun.__KeyValueFromString("targetname", "weapon_portalgun_player" + pgun.GetRootMoveParent().entindex())
         }
     }
 
-    //## Nametags ##//
-    if (Config_UseNametags && g_bAllowNametags) {
-        if (Time() - PreviousNametagItter > 0.1) {
-            PreviousNametagItter = Time()
-            for (local p = null; p = Entities.FindByClassname(p, "player");) {
-                if (FindPlayerClass(p) != null) {
+    // Update eye angles and positions for players.
+    for (local p = null; p = Entities.FindByClassname(p, "player");)
+    {
+        local player = FindPlayerClass(p)
+        if (!player)
+            continue
+        
+        player.eyeposition = p.EyePosition()
+        player.eyeangles = EyeAngles(p.entindex())
+        player.eyeforwardvector = p.GetForwardVector()
+    }
 
-                    // Get number of players in the game
-                    local playernums = CalcNumPlayers()
+    // Player Nametags, display player username at center of screen when looking at a specific player.
+    if (Config_UseNametags && g_bAllowNametags)
+    {
+        for (local p = null; p = Entities.FindByClassname(p, "player");)
+        {
+            local player = FindPlayerClass(p)
+            if (!player)
+                continue
 
-                    local checkcount = 1
-                    // Optimise search based on player count
-                    if (playernums <= 6) {
-                        checkcount = playernums
-                    } else if (playernums <= 11) {
-                        checkcount = 6
-                    } else if (playernums <= 14) {
-                        checkcount = 4
-                    } else if (playernums <= 17) {
-                        checkcount = 3
-                    } else if (playernums <= 21) {
-                        checkcount = 2
-                    } else if (playernums <= 33) {
-                        checkcount = 1
-                    }
-                    local eyeplayer = ForwardVectorTraceLine(p.EyePosition(), FindPlayerClass(p).eyeforwardvector, 0, 10000, checkcount, 1, 32, p, "player")
-                    if (eyeplayer != null) {
-                        local clr = FindPlayerClass(eyeplayer).color
-                        EntFireByHandle(nametagdisplay, "settextcolor", clr.r + " " + clr.g + " " + clr.b, 0, p, p)
-                        EntFireByHandle(nametagdisplay, "settext", FindPlayerClass(eyeplayer).username, 0, p, p)
-                        EntFireByHandle(nametagdisplay, "Display", "", 0, p, p)
-                    }
+            // Get various points for calculating 
+            local vecStart = player.eyeposition
+            local vecForward = AngleVectors(player.eyeangles)
+            local vecEnd =  vecStart + (vecForward * 400)
+            local traceResult = TraceLineEx(vecStart, vecEnd, MASK_OPAQUE_AND_NPCS, p, COLLISION_GROUP_PLAYER)
+            // If traceResult is less than 1.0, a fraction of the trace line, something was hit.
+            if (traceResult < 1.0)
+            {
+                // Calculate the point in space of where the hit occured.
+                local hitPoint = vecStart + (vecEnd - vecStart) * traceResult
+
+                if (Config_VisualDebug)
+                    DebugDrawBox(hitPoint, Vector(-75, -75, -75), Vector(75, 75, 75), 255, 255, 255, 10, -1)
+                    // DebugDrawBox(origin, mins, max, r, g, b, alpha, duration)
+
+                // Find the nearest player in the hit position and display their username on screen.
+                local playerHit = Entities.FindByClassnameNearest("player", hitPoint, 75)
+                if (playerHit && playerHit != p)
+                {
+                    local playerHitClass = FindPlayerClass(playerHit)
+                    if (Config_VisualDebug)
+                        printlP2MM(0, true, "Player hit: " + playerHitClass.username)
+                    //ClientPrint(player.id, playerHitClass.username)
+
+                    HudPrint(player.id, playerHitClass.username, Vector(-1, 0.2, 1), 0, 0, Vector(playerHitClass.color.r, playerHitClass.color.g, playerHitClass.color.b), 255, Vector(0, 0, 0), 0, Vector(0.0, 0.0, 0.1))
                 }
             }
+
+            // Drag a line representing the looking direction.
+            if (Config_VisualDebug)
+                DebugDrawLine(vecStart, vecEnd, 255, 0, 0, false, 2)
         }
     }
-
-    // //## Update eye angles ##//
-    // if (Config_UseNametags && g_bAllowNametags) {
-    //     if (!g_bCoordsAlternate) {
-    //         // Alternate so our timings space out correctly
-    //         if (LastCoordGetPlayer != null) {
-    //             LastCoordGetPlayer = Entities.FindByClassname(LastCoordGetPlayer, "player")
-    //         } else {
-    //             LastCoordGetPlayer = Entities.FindByClassname(null, "player")
-    //         }
-    //         if (LastCoordGetPlayer != null) {
-    //             EntFireByHandle(measuremovement_eyeposition, "SetMeasureTarget", LastCoordGetPlayer.GetName(), 0.0, null, null)
-    //             // Alternate so our timings space out correctly
-    //             g_bCoordsAlternate = true
-    //         }
-    //     } else {
-    //         if (LastCoordGetPlayer != null && Entities.FindByName(null, "p2mm_logic_measure_movement_eyeposition")) {
-    //             local currentplayerclass = FindPlayerClass(LastCoordGetPlayer)
-    //             if (currentplayerclass != null) {
-    //                 if (OriginalAngle == null && g_bCanCheckAngle) {
-    //                     OriginalAngle = measuremovement_eyeposition.GetAngles()
-    //                     Entities.FindByClassname(null, "player").SetAngles(OriginalAngle.x + 7.0, OriginalAngle.y + 4.7, OriginalAngle.z + 7.1)
-    //                 }
-
-    //                 currentplayerclass.eyeangles = measuremovement_eyeposition.GetAngles()
-    //                 currentplayerclass.eyeforwardvector = measuremovement_eyeposition.GetForwardVector()
-    //             }
-    //         }
-    //         // Alternate so our timings space out correctly
-    //         g_bCoordsAlternate = false
-    //     }
-    // } else {
-    //     for (local p = null; p = Entities.FindByClassname(p, "player");) {
-    //         FindPlayerClass(p).eyeangles = Vector(0, 0, 0)
-    //         FindPlayerClass(p).eyeforwardvector = Vector(0, 0, 0)
-    //     }
-    // }
-
-    //printl(Entities.FindByName(null, "blue").EyePosition())
 
     // // ENTITY OPTIMIZATION / DELETION ///////////////
     // local cnt = GetEntityCount()
@@ -263,7 +244,7 @@ function P2MMLoop() {
                     printlP2MM(0, true, "=================================HEALTH SPAWN")
                 }
             }
-            EntFire("p2mm_wait_for_players_text", "Display")
+            HudPrint(0, "Waiting for players...", Vector(0, 0, 1), 0, 0, Vector(50, 190, 50), 255, Vector(50, 190, 50), 255, Vector(0, 0, 0.2))
         }
     }
 
@@ -279,13 +260,16 @@ function P2MMLoop() {
 
 
     //## Config developer mode loop ##//
-    if (Config_DevMode) {
+    if (Config_DevMode)
+    {
         // Change Config_DevMode variable based on convar "developer"
-        if (!GetDeveloperLevelP2MM()) {
-            if (StartDevModeCheck) {
+        if (!GetDeveloperLevelP2MM())
+        {
+            if (StartDevModeCheck)
                 Config_DevMode = false
-            }
-        } else {
+        }
+        else
+        {
             Config_DevMode = true
         }
     }
@@ -754,7 +738,8 @@ function PostPlayerSpawn() {
 
     // Code used to handle running VScript debugging on the host
     // This needs to be called in PostPlayerSpawn, because the game is in a state where `script_debug` will work as intended.
-    if (Config_VScriptDebug) {
+    if (Config_VScriptDebug)
+    {
         printlP2MM(0, false, "[DEBUGGING] Initiating VScript Debugging!")
 
         // Developer is needed for debugging to work.
@@ -767,41 +752,21 @@ function PostPlayerSpawn() {
             EntFire("p2mm_servercommand", "command", "changelevel " + GetMapName())
         }
 
-        // Make the text to indicate that the game is frozen waiting for the VScript debugger
-        vscriptDebugText <- Entities.CreateByClassname("game_text")
-        vscriptDebugText.__KeyValueFromString("targetname", "vscriptDebugText")
-        vscriptDebugText.__KeyValueFromString("x", "-1")
-        vscriptDebugText.__KeyValueFromString("y", "-1")
-        vscriptDebugText.__KeyValueFromString("holdtime", "1")
-        vscriptDebugText.__KeyValueFromString("fadeout", "0.2")
-        vscriptDebugText.__KeyValueFromString("fadein", "0.2")
-        vscriptDebugText.__KeyValueFromString("channel", "1")
-        vscriptDebugText.__KeyValueFromString("spawnflags", "1")
-        vscriptDebugText.__KeyValueFromString("color", "255 255 255")
-        vscriptDebugText.__KeyValueFromString("message", "Waiting for VScript Debugger to Attach...\nGAME WON'T UNFREEZE UNTIL\nDEBUGGER IS ATTACHED!")
-        EntFireByHandle(vscriptDebugText, "Display", "", 0.2, null, null)
+        HudPrint(0, "Waiting for VScript Debugger to Attach...\nGAME WON'T UNFREEZE UNTIL\nDEBUGGER IS ATTACHED!", Vector(0, 0.4, 3), 0, 0, Vector(255, 0, 0), 255, Vector(255, 0, 0), 255, Vector(0.2, 0.2, 3))
 
         // Call `script_debug` only on the host, that way other players will not be frozen.
         // But those same players can disconnect from the server due to time out if the host
         // does not connect the debugger quick enough unfreezing their game.
+        EntFire("p2mm_servercommand", "command", "stopvideos", 0.5, Entities.FindByName(null, "blue"))
         EntFire("p2mm_servercommand", "command", "script_debug", 1, Entities.FindByName(null, "blue"))
 
         // `script_debug` takes a second to do its thing, so delay the debug message
         EntFire("p2mm_servercommand", "command", "script printlP2MM(\"[DEBUGGING] VScript Debugger Attached!\")", 1.1)
-
-        // Reuse the same `game_text` entity to display a success message
-        EntFireByHandle(vscriptDebugText, "settext", "VScript Debugger Attached!", 2, null, null)
-        EntFireByHandle(vscriptDebugText, "Display", "", 2.5, null, null)
-
-        // Remove the `game_text` and vscriptDebugText instance as they're not needed anymore
-        EntFireByHandle(vscriptDebugText, "Kill", "", 4, null, null)
-        delete vscriptDebugText
     }
 
     // Display First Run Prompt
-    if (Config_FirstRunPrompt) {
+    if (Config_FirstRunPrompt)
         EntFire("p2mm_servercommand", "command", "script CallFirstRunPrompt()", 1)
-    }
 }
 
 // 4
@@ -847,13 +812,16 @@ function PostMapSpawn() {
     EntFire("p2mm_servercommand", "command", "script g_bCanHook = true", 1)
 
     // Precache different turret models for when Config_RandomTurret or Config_RandomTurretLoop are true
-    if (Config_RandomTurret || Config_RandomTurretLoop) {
+    if (Config_RandomTurret || Config_RandomTurretLoop)
+    {
         PrecacheModel("models/npcs/turret/turret_skeleton.mdl")
         PrecacheModel("models/npcs/turret/turret_backwards.mdl")
     }
-    if (g_iCurGameIndex == APERTURE_TAG && GetMapName().find("gg_") != null && GetMapName() != "gg_intro_wakeup") {
-        // Remove all Gelgun entities to get rid of some edicts and prevent issues
 
+    // Remove Aperture Tag's paint gun entities so P2:MM's can be used.
+    if (g_iCurGameIndex == APERTURE_TAG && GetMapName().find("gg_") != null && GetMapName() != "gg_intro_wakeup")
+    {
+        // Remove all Gelgun entities to get rid of some edicts and prevent issues
         Entities.FindByName(null, "@DoAllNOTListener").Destroy()
         Entities.FindByName(null, "@DoBlueListener").Destroy()
         Entities.FindByName(null, "@DoOrangeListener").Destroy()
@@ -873,10 +841,8 @@ function PostMapSpawn() {
         Entities.FindByName(null, "@LBL_*").Destroy()
         Entities.FindByName(null, "@ini_*").Destroy()
         Entities.FindByName(null, "@initial_firing_gell_sound_case").Destroy()
-        Entities.FindByName(null, "*-measure_movement").Destroy()
-        Entities.FindByName(null, "*-measure_movement").Destroy()
         Entities.FindByName(null, "@gel_ui").Destroy()
-        Entities.FindByName(null, "*-reference_target").Destroy()
+        Entities.FindByName(null, "@ini_firing_gell_sound_7").Destroy()
         Entities.FindByName(null, "*-reference_target_paint").Destroy()
         Entities.FindByName(null, "@firing_gell_sound").Destroy()
         Entities.FindByName(null, "@shake_global_sound").Destroy()
@@ -1086,24 +1052,28 @@ function OnPlayerJoin(p) {
         EntFireByHandle(p2mm_clientcommand, "Command", "stopvideos; r_portal_fastpath 0; r_portal_use_pvs_optimization 0; mat_motion_blur_forward_enabled 0", 0, p, p)
 
         // show scoreboard
-        if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub && !Player2Joined) {
+        if (!IsLocalSplitScreen() && !IsDedicatedServer() && !g_bIsCommunityCoopHub && !Player2Joined)
+        {
             local p = Entities.FindByClassname(null, "player")
-            if (FindPlayerClass(p).id == 1) {
-                EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0, p, p)
-            }
+            if (FindPlayerClass(p).id == 1)
+                EntFireByHandle(p2mm_clientcommand, "Command", "+score", 0.5, p, p)
+        }
+
+        // Chat box is broken to not see messages in Aperture Tag, so we use developer for players to see chat messages in the top left of the screen.
+        if (g_iCurGameIndex == APERTURE_TAG)
+        {
+            EntFireByHandle(p2mm_clientcommand, "Command", "developer 1", 0, p, p)
+            EntFireByHandle(p2mm_clientcommand, "Command", "gameinstructor_enable 0", 0, p, p)
         }
     }
 
     // Don't show the join text for the listen server host
     // TODO: Possibly need to rework "y" offset for dedicated?
     if (Config_UseJoinIndicator && PlayerID > 1) {
-        // Set join message to player name (or index)
         local iCurrentNumPlayers = CalcNumPlayers()
-        Entities.FindByName(null, "p2mm_player_joined_text").__KeyValueFromString("message", GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + GetMaxPlayers().tostring() + ")")
-        waitingtext.__KeyValueFromString("y", "0.075")
-        
+
         //# Say join message on HUD #//
-        EntFireByHandle(Entities.FindByName(null, "p2mm_player_joined_text"), "Display", "", 0.0, null, null)
+        HudPrint(0, GetPlayerName(PlayerID) + " joined the game (" + iCurrentNumPlayers.tostring() + "/" + GetMaxPlayers().tostring() + ")", Vector(0, 0, 3), 0, 0, Vector(255, 200, 0), 255, Vector(255, 200, 0), 255, Vector(0.2, 0.2, 3))        
     }
 
     // Set color of player's in-game model
@@ -1118,7 +1088,8 @@ function OnPlayerJoin(p) {
         }
     }
 
-    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
+    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
+    {
         EntFireByHandle(p2mm_clientcommand, "Command", "paintblob_draw_distance_from_eye 110f", 0, p, p)
         SetConVarString("paintblob_max_radius_scale", "0.8f")
     }
@@ -1128,6 +1099,13 @@ function OnPlayerJoin(p) {
 function OnDeath(p) {
     // Trigger map-specific code
     MapSupport(false, false, false, false, false, p, false)
+
+    if (g_iCurGameIndex == APERTURE_TAG)
+    {
+        // Disable the gels when a player respawns to prevent cheese
+        FindPlayerClass(p).OrangeGelIsEnabled = false
+        FindPlayerClass(p).BlueGelIsEnabled = false
+    }
 
     printlP2MM(0, true, FindPlayerClass(p).username + " died! OnDeath() has been triggered.")
 }
@@ -1144,18 +1122,22 @@ function OnRespawn(p) {
         TeleportToSpawnPoint(p, null)
     }
 
-    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG) {
+    if (Config_ManualEnablePaintGun || g_iCurGameIndex == APERTURE_TAG)
+    {
         GelPair(p.entindex())
         // Disable the player's portalgun
         local i = 0
-        for (local gun = null; gun = Entities.FindByClassname(gun, "weapon_portalgun");) {
-            if (gun.GetRootMoveParent() == p) {
+        for (local gun = null; gun = Entities.FindByClassname(gun, "weapon_portalgun");)
+        {
+            if (gun.GetRootMoveParent() == p)
+            {
                 gun.__KeyValueFromString("CanFirePortal1", "0")
                 gun.__KeyValueFromString("CanFirePortal2", "0")
                 i++
             }
             // There are 2 portalgun entities, so we need to do this twice to disable the gun.
-            if (i >= 2) break
+            if (i >= 2)
+                break
         }
     }
 }
