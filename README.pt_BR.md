@@ -66,6 +66,10 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
+> [!NOTE]
+> Por favor, não abuse de nenhum serviço multiplayer fornecido pela Valve para Portal 2, seus derivados ou mods. Este mod destina-se a partidas privadas com amigos e não nos responsabilizamos por usos que não sejam esse o propósito pretendido.
+
+
 # Criando o Launcher
 
 ## Dependências

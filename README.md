@@ -66,6 +66,10 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
+> [!NOTE]
+> Please do not abuse any multiplayer-related services Valve provides for Portal 2, its derivatives, or mods. This mod is intended for private matches with friends, and we assume no responsibility for uses beyond that intended purpose.
+
+
 # Building the Launcher
 
 ## Dependencies

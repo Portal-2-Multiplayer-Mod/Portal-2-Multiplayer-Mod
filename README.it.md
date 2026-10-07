@@ -66,6 +66,10 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
+> [!NOTE]
+> Vi preghiamo di non abusare dei servizi multiplayer forniti da Valve per Portal 2, i suoi derivati ​​o le mod. Questa mod è pensata per partite private con gli amici e non ci assumiamo alcuna responsabilità per utilizzi diversi da quello previsto.
+
+
 # Costruzione del Lanciatore
 
 ## Dipendenze

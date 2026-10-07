@@ -66,6 +66,10 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
+> [!NOTE]
+> Proszę nie nadużywać żadnych usług związanych z grą wieloosobową, które Valve zapewnia dla Portal 2, jego pochodnych lub modów. Ten mod jest przeznaczony do prywatnych meczów ze znajomymi i nie ponosimy żadnej odpowiedzialności za zastosowania wykraczające poza ten cel.
+
+
 # Budowanie Uruchamiacza
 
 ## Zależności

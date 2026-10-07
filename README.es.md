@@ -66,6 +66,10 @@
 
 - <https://discord.gg/kW3nG6GKpF>
 
+> [!NOTE]
+> Por favor, no abuses de los servicios multijugador que Valve ofrece para Portal 2, sus derivados o mods. Este mod está diseñado para partidas privadas con amigos, y no nos hacemos responsables de su uso fuera de este propósito.
+
+
 # Construyendo el Lanzador
 
 ## Dependencias
